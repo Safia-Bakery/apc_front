@@ -1,0 +1,19 @@
+.modal {
+  max-width: 600px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+.modalBody {
+  padding: 20px 30px;
+
+  textarea {
+    height: auto !important;
+  }
+}
+.footer {
+  padding: 15px;
+  display: flex;
+  justify-content: flex-end;
+}

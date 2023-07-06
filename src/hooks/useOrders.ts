@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/api/baseAxios";
+import { apiClient } from "src/main";
 import { OrderType } from "src/utils/types";
 
 export const useOrders = ({

@@ -1,80 +1,59 @@
 import axios, {
   AxiosInstance,
   AxiosRequestConfig,
-  AxiosResponse,
-  AxiosError,
   CancelTokenSource,
 } from "axios";
+import { Store } from "redux";
+import { RootState } from "src/redux/rootConfig";
 
-interface ApiResponse<T> {
-  data: T;
-}
-
-interface ApiError {
-  message: string;
-  code: number;
-}
-
-class APIClient {
-  private api: AxiosInstance;
+class BaseAPIClient {
+  private axiosInstance: AxiosInstance;
   private cancelTokenSource: CancelTokenSource;
-  private token: string | undefined;
+  private store?: Store<RootState>;
 
-  constructor(baseURL: string, token: string | undefined) {
-    this.api = axios.create({ baseURL });
+  constructor(baseURL: string, store?: Store<RootState>) {
     this.cancelTokenSource = axios.CancelToken.source();
-    this.token = token;
-    //@ts-ignore
-    this.api.interceptors.request.use((config) =>
-      this.addTokenToHeaders(config)
+    this.axiosInstance = axios.create({
+      baseURL,
+      timeout: 5000, // Set your desired timeout value
+    });
+    this.store = store;
+
+    this.axiosInstance.interceptors.request.use(
+      this.handleRequestSuccess,
+      this.handleRequestError
     );
   }
 
-  async get<T>(
-    url: string,
-    config?: AxiosRequestConfig
-  ): Promise<ApiResponse<T>> {
-    const response: AxiosResponse<ApiResponse<T>> = await this.api.get(
-      url,
-      this.addCancelTokenToConfig(config)
-    );
-    return response.data;
-  }
+  private handleRequestSuccess = (config: any): any => {
+    const state = this.store?.getState();
+    const token = state?.auth.token;
 
-  async post<T>(
-    url: string,
-    data?: any,
-    config?: AxiosRequestConfig
-  ): Promise<ApiResponse<T>> {
-    const response: AxiosResponse<ApiResponse<T>> = await this.api.post(
-      url,
-      data,
-      this.addCancelTokenToConfig(config)
-    );
-    return response.data;
-  }
-
-  private addCancelTokenToConfig(
-    config?: AxiosRequestConfig
-  ): AxiosRequestConfig {
-    return {
-      ...config,
-      cancelToken: this.cancelTokenSource.token,
-    };
-  }
-
-  private addTokenToHeaders(config: AxiosRequestConfig): AxiosRequestConfig {
-    config.headers = {
-      ...config.headers,
-      Authorization: `Bearer ${this.token}`,
-    };
+    if (token) {
+      config.headers = {
+        ...(config.headers || {}),
+        Authorization: `Bearer ${token}`,
+      };
+    }
+    config.cancelToken = this.cancelTokenSource.token;
     return config;
+  };
+
+  private handleRequestError = (error: any): Promise<never> => {
+    return Promise.reject(error);
+  };
+
+  public get<T>(url: string, config?: AxiosRequestConfig) {
+    return this.axiosInstance.get<T>(url, config);
   }
 
-  cancelRequest(): void {
-    this.cancelTokenSource.cancel("Request canceled by user.");
-    this.cancelTokenSource = axios.CancelToken.source();
+  public post<T>(url: string, data?: any, config?: AxiosRequestConfig) {
+    return this.axiosInstance.post<T>(url, data, config);
+  }
+
+  public cancelRequest(message?: string): void {
+    this.cancelTokenSource.cancel(message);
   }
 }
 
-export default APIClient;
+export default BaseAPIClient;

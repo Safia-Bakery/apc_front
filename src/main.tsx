@@ -1,12 +1,14 @@
-// import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import "./index.css";
+import "./index.scss";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/rootConfig";
 import "bootstrap/dist/css/bootstrap.min.css";
+import BaseAPIClient from "./api/axiosConfig.ts";
 
+const baseURL = "http://185.74.5.198:8000";
+export const apiClient = new BaseAPIClient(baseURL, store);
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <StrictMode>
   <Provider store={store}>

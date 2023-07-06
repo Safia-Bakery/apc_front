@@ -3,7 +3,6 @@ import styles from "./index.module.scss";
 import cl from "classnames";
 import loginMutation from "src/hooks/mutation/loginMutation";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
-import axios from "axios";
 import { loginHandler, tokenSelector } from "src/redux/reducers/authReducer";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -28,7 +27,7 @@ const Login = () => {
   const { mutate } = loginMutation();
 
   useEffect(() => {
-    if (token) navigate("/history-orders");
+    if (token) navigate("/");
   }, [navigate, token]);
 
   const onSubmit = () => {
@@ -38,11 +37,6 @@ const Login = () => {
       { username: "998" + fixedString(username), password },
       {
         onSuccess: (data) => {
-          console.log(data, "data login");
-          const token = data.access_token;
-
-          console.log(token, "token ddee");
-          axios.defaults.headers["Authorization"] = `Bearer ${token}`;
           dispatch(loginHandler(data.access_token));
           refetch();
           navigate("/");
@@ -62,6 +56,7 @@ const Login = () => {
             <InputMask
               className="form-control"
               mask="(99) 999-99-99"
+              value={909520009}
               autoFocus
               {...register("username", { required: "required" })}
               alwaysShowMask
@@ -73,6 +68,7 @@ const Login = () => {
             <input
               {...register("password", { required: "required" })}
               className="form-control"
+              value={"123456"}
               placeholder="Пароль"
               type="password"
             />

@@ -2,29 +2,41 @@ import Container from "src/components/Container";
 import styles from "./index.module.scss";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "src/redux/utils/types";
-import { roleSelector, tokenSelector } from "src/redux/reducers/authReducer";
+import { roleSelector } from "src/redux/reducers/authReducer";
 import { StatusRoles, Status, Order } from "src/utils/types";
-import { errorToast, successToast } from "src/utils/toast";
 import Loading from "src/components/Loader";
 import { handleStatus, numberWithCommas, rowColor } from "src/utils/helpers";
 import Pagination from "src/components/Pagination";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
+import Card from "src/components/Card";
+import Header from "src/components/Header";
 
 const itemsPerPage = 20;
 
+const column = [
+  { name: "#", key: "id" as keyof Order["id"] },
+  { name: "Номер", key: "purchaser" as keyof Order["purchaser"] },
+  { name: "Тип", key: "type" as keyof Order["product"] },
+  { name: "Отдел", key: "category.name" as keyof Order["category"] },
+  { name: "Группа проблем", key: "price" as keyof Order["price"] },
+  {
+    name: "Срочно",
+    key: "time_created" as keyof Order["time_created"],
+  },
+  { name: "Дата выполнения", key: "status" as keyof Order["status"] },
+  { name: "Дата", key: "status" as keyof Order["status"] },
+  { name: "Статус", key: "status" as keyof Order["status"] },
+  { name: "Автор", key: "status" as keyof Order["status"] },
+];
+
 const ActiveOrders = () => {
   const navigate = useNavigate();
-  // const createOrder = () => navigate("/create-orders");
   const me = useAppSelector(roleSelector);
   const admin =
     me?.role !== StatusRoles.purchasing && me?.role !== StatusRoles.superadmin;
   const [submitting, $submitting] = useState(false);
-
-  const token = useAppSelector(tokenSelector);
-
-  console.log(token, "token");
 
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -83,20 +95,6 @@ const ActiveOrders = () => {
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
 
-  const column = [
-    { name: "#", key: "id" as keyof Order["id"] },
-    { name: "Заказчик", key: "purchaser" as keyof Order["purchaser"] },
-    { name: "Отдел", key: "category.name" as keyof Order["category"] },
-    { name: "Название товара", key: "product" as keyof Order["product"] },
-    { name: "Цена (UZS)", key: "price" as keyof Order["price"] },
-    {
-      name: "Время поступления",
-      key: "time_created" as keyof Order["time_created"],
-    },
-    { name: "Статус", key: "status" as keyof Order["status"] },
-    admin ? { name: "Дествия", key: "" } : { name: "", key: "" },
-  ];
-
   useEffect(() => {
     refetch();
   }, [currentPage, refetch]);
@@ -104,121 +102,79 @@ const ActiveOrders = () => {
   if (orderLoading) return <Loading />;
 
   return (
-    <Container>
-      <div className="d-flex flex-column">
-        <h1>Активные заказы</h1>
-        {/* <button onClick={createOrder} className={`btn btn-info btn-fill mb-4 ${styles.btn}`}>
-          Создать
-        </button> */}
-      </div>
-      <div className="content table-responsive table-full-width">
-        <table className="table table-hover ">
-          <thead>
-            <tr>
-              {column.map(({ name, key }) => {
-                return (
-                  <th
-                    onClick={() => handleSort(key)}
-                    className=" font-weight-bold text-dark"
-                    key={name}
-                  >
-                    {name}{" "}
-                    {sortKey === key && (
-                      <span>{sortOrder === "asc" ? "▲" : "▼"}</span>
-                    )}
-                  </th>
-                );
-              })}
-            </tr>
-          </thead>
-
-          {orders?.items.length && (
-            <tbody>
-              {(sortData()?.length ? sortData() : orders?.items)?.map(
-                (order, idx) => (
-                  <tr className={rowColor(order.status)} key={order.id}>
-                    <td className={styles.num}> {handleIdx(idx)}</td>
-                    <td>{order.purchaser}</td>
-                    <td>{order?.category.name}</td>
-                    <td>{order.product}</td>
-                    <td>{numberWithCommas(order.price)}</td>
-                    <td>
-                      {dayjs(order.time_created).format("DD-MMM-YYYY HH:mm")}
-                    </td>
-                    <td>{handleStatus(order.status)}</td>
-                    {admin ? (
-                      <>
-                        <td className="d-flex gap-2 align-items-center">
-                          <button
-                            disabled={submitting}
-                            onClick={handleStatusSubmit({
-                              order_id: order.id,
-                              status: Status.accepted,
-                            })}
-                            type="button"
-                            className="btn btn-success"
-                          >
-                            Принять
-                          </button>
-                          <button
-                            disabled={submitting}
-                            onClick={handleStatusSubmit({
-                              order_id: order.id,
-                              status: Status.denied,
-                            })}
-                            type="button"
-                            className="btn btn-danger"
-                          >
-                            Отклонить
-                          </button>
-                          <div className="mx-2" />
-                          <div
-                            className={styles.viewBtn}
-                            onClick={handleNavigate(order.id)}
-                          >
-                            <img
-                              className={styles.viewImg}
-                              src="/assets/icons/view.svg"
-                              alt="edit"
-                            />
-                          </div>
-                        </td>
-                      </>
-                    ) : (
-                      <td>
-                        <div
-                          className={styles.viewBtn}
-                          onClick={handleNavigate(order.id)}
-                        >
-                          <img
-                            className={styles.viewImg}
-                            src="/assets/icons/view.svg"
-                            alt="edit"
-                          />
-                        </div>
-                      </td>
-                    )}
-                  </tr>
-                )
-              )}
-            </tbody>
-          )}
-        </table>
-        {!!orders && (
-          <Pagination
-            totalItems={orders?.total}
-            itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-          />
-        )}
-        {!orders?.items?.length && (
-          <div className="w-100">
-            <p className="text-center w-100 ">Спосок пуст</p>
+    <Card>
+      <Header title={"APC"}>
+        <button className="btn btn-primary btn-fill">Экспорт</button>
+        <button className="btn btn-success btn-fill">Добавить</button>
+      </Header>
+      <div className={styles.content}>
+        <div className="table-responsive grid-view">
+          <div className={styles.summary}>
+            Показаны записи <b>1-50</b> из <b>100</b>.
           </div>
-        )}
+          <table className="table table-hover">
+            <thead>
+              <tr>
+                {column.map(({ name, key }) => {
+                  return (
+                    <th
+                      onClick={() => handleSort(key)}
+                      className="font-weight-bold"
+                      key={name}
+                    >
+                      {name}{" "}
+                      {sortKey === key && (
+                        <span>{sortOrder === "asc" ? "▲" : "▼"}</span>
+                      )}
+                    </th>
+                  );
+                })}
+              </tr>
+            </thead>
+
+            {orders?.items.length && (
+              <tbody>
+                {(sortData()?.length ? sortData() : orders?.items)?.map(
+                  (order, idx) => (
+                    <tr className="bg-blue" data-key="109640">
+                      <td width="40">1</td>
+                      <td width="80">
+                        <a href={`/orders/${order.id}`}>109640</a>
+                      </td>
+                      <td>APC</td>
+                      <td>
+                        <span className="not-set">(не задано)</span>
+                      </td>
+                      <td>Электричество</td>
+                      <td className="text-center">Срочный</td>
+                      <td className="text-center">-</td>
+                      <td className="text-center">
+                        {dayjs(order.time_created).format("DD-MMM-YYYY HH:mm")}
+                      </td>
+                      <td className="text-center">Назначен</td>
+                      <td>Сафия Шохимардон</td>
+                    </tr>
+                  )
+                )}
+              </tbody>
+            )}
+          </table>
+          {!!orders && (
+            <Pagination
+              totalItems={orders?.total}
+              itemsPerPage={itemsPerPage}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
+          )}
+          {!orders?.items?.length && (
+            <div className="w-100">
+              <p className="text-center w-100 ">Спосок пуст</p>
+            </div>
+          )}
+        </div>
       </div>
-    </Container>
+    </Card>
   );
 };
 
