@@ -1,0 +1,31 @@
+.textArea {
+  height: initial !important;
+}
+.uploadImage {
+  display: flex;
+  flex-direction: column;
+}
+.datePicker {
+  display: block;
+}
+.deptItem {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  label {
+    margin-bottom: 0 !important;
+  }
+}
+
+.urgent {
+  display: flex;
+  align-items: center;
+  label {
+    margin-bottom: 0 !important;
+  }
+}
+.btn {
+  @media (max-width: 720px) {
+    width: 100% !important;
+  }
+}
