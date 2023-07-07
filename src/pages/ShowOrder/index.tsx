@@ -1,11 +1,17 @@
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AddProduct from "src/components/AddProduct";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
+import Modal from "src/components/Modal";
+import styles from "./index.module.scss";
 
 const ShowOrder = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [modal, $modal] = useState(false);
+
+  const handleModal = () => $modal((prev) => !prev);
 
   const goBack = () => navigate(-1);
   return (
@@ -35,10 +41,6 @@ const ShowOrder = () => {
                   <tr>
                     <th>Отдел</th>
                     <td>S МедГор</td>
-                  </tr>
-                  <tr>
-                    <th>Мастер</th>
-                    <td>Дадахон</td>
                   </tr>
                   <tr>
                     <th>Продукт</th>
@@ -94,6 +96,17 @@ const ShowOrder = () => {
                     <th>Автор</th>
                     <td>Медгородок Магазин</td>
                   </tr>
+                  <tr className="font-weight-bold">
+                    <th>Ответственный</th>
+                    <td>
+                      <button
+                        onClick={handleModal}
+                        className="btn btn-success btn-fill float-end"
+                      >
+                        Назначить
+                      </button>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -101,23 +114,41 @@ const ShowOrder = () => {
           <hr />
 
           <div className="text-right mb10">
-            <button
-              className="btn btn-warning btn-fill"
-              data-confirm="Вы дейстивительно хотите Забрать на ремонт?"
-            >
+            <button className="btn btn-warning btn-fill">
               Забрать для ремонта
             </button>{" "}
-            <button
-              className="btn btn-success btn-fill"
-              data-confirm="Вы дейстивительно хотите поменять статус на Починил?"
-            >
-              Починил
-            </button>{" "}
+            <button className="btn btn-success btn-fill">Починил</button>{" "}
           </div>
         </div>
       </Card>
 
       <AddProduct />
+
+      <Modal
+        onClose={handleModal}
+        isOpen={modal}
+        className={styles.assignModal}
+      >
+        <Header title="Выберите исполнителя">
+          <button onClick={handleModal} className="close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </Header>
+        <input type="text" className="form-control" />
+        <div className={styles.items}>
+          {[...Array(6)].map((item, idx) => (
+            <div key={idx} className={styles.item}>
+              <h6>Бригада - № {idx}</h6>
+              <button
+                onClick={handleModal}
+                className="btn btn-success btn-fill btn-sm"
+              >
+                Назначить
+              </button>
+            </div>
+          ))}
+        </div>
+      </Modal>
     </>
   );
 };

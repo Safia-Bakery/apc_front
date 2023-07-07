@@ -1,5 +1,6 @@
 import { ChangeEvent, FC } from "react";
 import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
+import styles from "./index.module.scss";
 
 interface Props {
   onChange?: (val: ChangeEvent<HTMLInputElement>) => void;
@@ -30,7 +31,7 @@ const InputBlock: FC<Props> = ({
 }) => {
   return (
     <div>
-      {label && <label>{label}</label>}
+      {label && <label className={styles.label}>{label}</label>}
       <input
         {...register}
         disabled={disabled}

@@ -9,6 +9,7 @@ import BaseAPIClient from "./api/axiosConfig.ts";
 
 const baseURL = "http://185.74.5.198:8000";
 export const apiClient = new BaseAPIClient(baseURL, store);
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <StrictMode>
   <Provider store={store}>

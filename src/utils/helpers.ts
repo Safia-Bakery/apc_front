@@ -1,6 +1,8 @@
 import { QueryClient } from "@tanstack/react-query";
 import { EPresetTimes, StatusRoles } from "./types";
 
+export const itemsPerPage = 20;
+
 export const numberWithCommas = (val: number) => {
   return val
     ?.toFixed(2)

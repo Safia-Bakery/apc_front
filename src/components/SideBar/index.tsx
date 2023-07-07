@@ -31,7 +31,7 @@ const superAdmins = [
   },
   {
     name: "Остатки на складах",
-    url: "/items-in-warehouse",
+    url: "/items-in-stock",
     icon: "/assets/icons/user.svg",
   },
   {
