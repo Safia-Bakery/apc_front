@@ -36,7 +36,7 @@ const AddProduct = () => {
             <tr>
               {column.map(({ name }) => {
                 return (
-                  <th className="font-weight-bold" key={name}>
+                  <th className={styles.tableHead} key={name}>
                     {name}
                   </th>
                 );

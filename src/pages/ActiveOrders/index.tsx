@@ -9,6 +9,7 @@ import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { itemsPerPage } from "src/utils/helpers";
+import TableHead from "src/components/TableHead";
 
 const column = [
   { name: "#", key: "id" as keyof Order["id"] },
@@ -95,76 +96,63 @@ const ActiveOrders = () => {
 
   return (
     <Card>
-      <Header title={"APC"}>
+      <Header title={"Orders"}>
         <button className="btn btn-primary btn-fill">Экспорт</button>
         <button className="btn btn-success btn-fill">Добавить</button>
       </Header>
-      <div className={styles.content}>
-        <div className="table-responsive grid-view">
-          <div className={styles.summary}>
-            Показаны записи <b>1-50</b> из <b>100</b>.
-          </div>
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                {column.map(({ name, key }) => {
-                  return (
-                    <th
-                      onClick={() => handleSort(key)}
-                      className="font-weight-bold"
-                      key={name}
-                    >
-                      {name}{" "}
-                      {sortKey === key && (
-                        <span>{sortOrder === "asc" ? "▲" : "▼"}</span>
-                      )}
-                    </th>
-                  );
-                })}
-              </tr>
-            </thead>
 
-            {orders?.items.length && (
-              <tbody>
-                {(sortData()?.length ? sortData() : orders?.items)?.map(
-                  (order, idx) => (
-                    <tr className="bg-blue" key={idx}>
-                      <td width="40">1</td>
-                      <td width="80">
-                        <a href={`/orders/${order.id}`}>109640</a>
-                      </td>
-                      <td>APC</td>
-                      <td>
-                        <span className="not-set">(не задано)</span>
-                      </td>
-                      <td>Электричество</td>
-                      <td className="text-center">Срочный</td>
-                      <td className="text-center">-</td>
-                      <td className="text-center">
-                        {dayjs(order.time_created).format("DD-MMM-YYYY HH:mm")}
-                      </td>
-                      <td className="text-center">Назначен</td>
-                      <td>Сафия Шохимардон</td>
-                    </tr>
-                  )
-                )}
-              </tbody>
-            )}
-          </table>
-          {!!orders && (
-            <Pagination
-              totalItems={orders?.total}
-              itemsPerPage={itemsPerPage}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
-            />
-          )}
-          {!orders?.items?.length && (
-            <div className="w-100">
-              <p className="text-center w-100">Спосок пуст</p>
-            </div>
-          )}
+      <div className="table-responsive grid-view content">
+        <div className={styles.summary}>
+          Показаны записи <b>1-50</b> из <b>100</b>.
         </div>
+        <table className="table table-hover">
+          <TableHead
+            column={column}
+            sort={handleSort}
+            sortKey={sortKey}
+            sortOrder={sortOrder}
+          />
+
+          {orders?.items.length && (
+            <tbody>
+              {(sortData()?.length ? sortData() : orders?.items)?.map(
+                (order, idx) => (
+                  <tr className="bg-blue" key={idx}>
+                    <td width="40">1</td>
+                    <td width="80">
+                      <a href={`/orders/${order.id}`}>109640</a>
+                    </td>
+                    <td>APC</td>
+                    <td>
+                      <span className="not-set">(не задано)</span>
+                    </td>
+                    <td>Электричество</td>
+                    <td>Срочный</td>
+                    <td>-</td>
+                    <td>
+                      {dayjs(order.time_created).format("DD-MMM-YYYY HH:mm")}
+                    </td>
+                    <td>Назначен</td>
+                    <td>Сафия Шохимардон</td>
+                  </tr>
+                )
+              )}
+            </tbody>
+          )}
+        </table>
+        {!!orders && (
+          <Pagination
+            totalItems={orders?.total}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        )}
+        {!orders?.items?.length && (
+          <div className="w-100">
+            <p className="text-center w-100">Спосок пуст</p>
+          </div>
+        )}
       </div>
     </Card>
   );

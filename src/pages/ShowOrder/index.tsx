@@ -114,10 +114,10 @@ const ShowOrder = () => {
           <hr />
 
           <div className="text-right mb10">
-            <button className="btn btn-warning btn-fill">
+            <button className="btn btn-warning btn-fill mr-2">
               Забрать для ремонта
-            </button>{" "}
-            <button className="btn btn-success btn-fill">Починил</button>{" "}
+            </button>
+            <button className="btn btn-success btn-fill">Починил</button>
           </div>
         </div>
       </Card>

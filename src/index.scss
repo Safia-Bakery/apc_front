@@ -36,6 +36,12 @@
     }
   }
 }
+a:hover {
+  color: #0056b3;
+}
+.table > thead > tr > th {
+  padding-bottom: 8px;
+}
 .mb10 {
   margin-bottom: 10px;
 }
@@ -56,4 +62,7 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+button {
+  border: none !important;
 }

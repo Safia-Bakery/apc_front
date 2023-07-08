@@ -26,6 +26,7 @@
     "react-yandex-maps": "^4.6.0",
     "redux-persist": "^6.0.0",
     "sass": "^1.63.6",
+    "yandex-maps": "^0.0.1",
     "ymaps": "^0.2.1"
   },
   "devDependencies": {

@@ -24,8 +24,11 @@ import Comments from "src/pages/Comments";
 import Settings from "src/pages/Settings";
 import Statistics from "src/pages/Statistics";
 import ShowCategory from "src/pages/ShowCategory";
-import AddEditRole from "src/pages/AddEditRole";
+import EditAddSetting from "src/pages/EditAddSetting";
 import EditAddUser from "src/pages/EditAddUser";
+import ShowComment from "src/pages/ShowComment";
+import EditAddRole from "src/pages/EditAddRole";
+import ShowRole from "src/pages/ShowRole";
 
 const Navigation = () => {
   const token = useAppSelector(tokenSelector);
@@ -55,16 +58,20 @@ const Navigation = () => {
         <Route element={<Categories />} path="/categories" />
         <Route element={<ShowCategory />} path="/categories/:id" />
         <Route element={<ShowCategory />} path="/add-category" />
-        <Route element={<AddEditRole />} path="/edit-role/:id" />
-        <Route element={<AddEditRole />} path="/add-role" />
+        <Route element={<EditAddRole />} path="/edit-role/:id" />
+        <Route element={<EditAddRole />} path="/add-role" />
         <Route element={<EditAddUser />} path="/edit-user/:id" />
         <Route element={<EditAddUser />} path="/add-user" />
         <Route element={<RemainsInStock />} path="/items-in-stock" />
         <Route element={<Brigades />} path="/brigades" />
         <Route element={<Users />} path="/users" />
         <Route element={<Roles />} path="/roles" />
+        <Route element={<ShowRole />} path="/roles/:id" />
         <Route element={<Comments />} path="/comments" />
+        <Route element={<ShowComment />} path="/comments/:id" />
         <Route element={<Settings />} path="/settings" />
+        <Route element={<EditAddSetting />} path="/settings/create" />
+        <Route element={<EditAddSetting />} path="/settings/:id" />
       </Routes>
     </>
   );

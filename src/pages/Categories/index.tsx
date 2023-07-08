@@ -8,6 +8,8 @@ import Pagination from "src/components/Pagination";
 import { useState } from "react";
 import useOrders from "src/hooks/useOrders";
 import { itemsPerPage } from "src/utils/helpers";
+import TableHead from "src/components/TableHead";
+import TableViewBtn from "src/components/TableViewBtn";
 
 const column = [
   { name: "#", key: "id" as keyof Order["id"] },
@@ -58,30 +60,18 @@ const Categories = () => {
         </button>
       </Header>
 
-      <div className={styles.content}>
-        <div className="table-responsive grid-view p-2">
+      <div className="content">
+        <div className="table-responsive grid-view">
           <div className={styles.summary}>
             Показаны записи <b>1-50</b> из <b>100</b>.
           </div>
           <table className="table table-hover">
-            <thead>
-              <tr>
-                {column.map(({ name, key }) => {
-                  return (
-                    <th
-                      onClick={() => handleSort(key)}
-                      className={styles.tableHead}
-                      key={name}
-                    >
-                      {name}{" "}
-                      {sortKey === key && (
-                        <span>{sortOrder === "asc" ? "▲" : "▼"}</span>
-                      )}
-                    </th>
-                  );
-                })}
-              </tr>
-            </thead>
+            <TableHead
+              column={column}
+              sort={handleSort}
+              sortKey={sortKey}
+              sortOrder={sortOrder}
+            />
 
             {orders?.items.length && (
               <tbody>
@@ -90,18 +80,9 @@ const Categories = () => {
                     <td width="40">1</td>
                     <td>test name</td>
                     <td>Активный</td>
-                    <td width={40}>
-                      <div
-                        className={styles.viewBtn}
-                        onClick={handleNavigate(`/categories/${1}`)}
-                      >
-                        <img
-                          className={styles.viewImg}
-                          src="/assets/icons/edit.svg"
-                          alt="edit"
-                        />
-                      </div>
-                    </td>
+                    <TableViewBtn
+                      onClick={handleNavigate(`/categories/${1}`)}
+                    />
                   </tr>
                 ))}
               </tbody>

@@ -6,7 +6,7 @@ import InputBlock from "src/components/Input";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 
-const AddEditRole = () => {
+const EditAddSetting = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
@@ -29,7 +29,7 @@ const AddEditRole = () => {
   }, []);
   return (
     <Card>
-      <Header title={"AddEditRole"}>
+      <Header title={"EditAddSetting"}>
         <button className="btn btn-success btn-fill" onClick={goBack}>
           Назад
         </button>
@@ -39,7 +39,7 @@ const AddEditRole = () => {
         <InputBlock
           register={register("name", { required: "Обязательное поле" })}
           className="form-control mb-2"
-          label="НАИМЕНОВАНИЕ"
+          label="НАЗВАНИЕ"
         />
 
         <InputBlock
@@ -63,4 +63,4 @@ const AddEditRole = () => {
   );
 };
 
-export default AddEditRole;
+export default EditAddSetting;
