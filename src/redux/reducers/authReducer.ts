@@ -4,7 +4,7 @@ import { StatusRoles } from "src/utils/types";
 
 interface State {
   token?: string;
-  me?: { id: number; username: string; role: StatusRoles };
+  me?: { id: number; username: string; role: StatusRoles; full_name: string };
 }
 
 const initialState: State = {

@@ -54,7 +54,7 @@ const Categories = () => {
       <Header title={"Categories"}>
         <button
           className="btn btn-success btn-fill"
-          onClick={handleNavigate(`/add-category`)}
+          onClick={handleNavigate(`add`)}
         >
           Добавить
         </button>

@@ -1,0 +1,25 @@
+.breadcrump {
+  background-color: transparent;
+  padding: 0 0 0 20px;
+  margin: 0;
+  line-height: 60px;
+  list-style: none;
+
+  li + li:before {
+    padding: 0 5px;
+    color: #ccc;
+    content: "/";
+    box-sizing: border-box;
+  }
+
+  li {
+    display: inline-block;
+
+    &.active {
+      color: #777;
+    }
+  }
+  a {
+    color: #337ab7;
+  }
+}

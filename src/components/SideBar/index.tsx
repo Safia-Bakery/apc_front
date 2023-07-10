@@ -79,7 +79,7 @@ const SideBar = () => {
       <div className={`sidebar ${active && "active"}`}>
         <div className="sidebar-wrapper">
           <div>
-            <div className="w-100 d-flex align-items-center flex-column">
+            <div className="w-100 d-flex flex-column">
               <h3 className="pointer mb-0">APC</h3>
               <p className="mb-0 descr">
                 <small>Аварийно-ремонтные службы</small>

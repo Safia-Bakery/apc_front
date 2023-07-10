@@ -16,8 +16,10 @@
 * {
   margin: 0;
   padding: 0;
+  color-scheme: light;
   box-sizing: border-box;
 }
+
 .pointer {
   cursor: pointer;
 }
@@ -65,4 +67,7 @@ a:hover {
 }
 button {
   border: none !important;
+}
+input {
+  color-scheme: light;
 }

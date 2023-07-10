@@ -89,6 +89,7 @@ export interface MeTypes {
   id: number;
   username: string;
   role: StatusRoles;
+  full_name: string;
 }
 export enum Status {
   accepted = "accepted",

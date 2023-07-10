@@ -98,7 +98,12 @@ const ActiveOrders = () => {
     <Card>
       <Header title={"Orders"}>
         <button className="btn btn-primary btn-fill">Экспорт</button>
-        <button className="btn btn-success btn-fill">Добавить</button>
+        <button
+          onClick={() => navigate("add")}
+          className="btn btn-success btn-fill"
+        >
+          Добавить
+        </button>
       </Header>
 
       <div className="table-responsive grid-view content">

@@ -57,7 +57,7 @@ const Settings = () => {
         </button>
         <button
           className="btn btn-success btn-fill"
-          onClick={handleNavigate("/settings/create")}
+          onClick={handleNavigate("add")}
         >
           Добавить
         </button>

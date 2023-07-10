@@ -1,18 +1,16 @@
 import { useForm } from "react-hook-form";
 import styles from "./index.module.scss";
 import cl from "classnames";
-import loginMutation from "src/hooks/mutation/loginMutation";
+import registerMutation from "src/hooks/mutation/registerMutation";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import { loginHandler, tokenSelector } from "src/redux/reducers/authReducer";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import useToken from "src/hooks/useToken";
 import { errorToast, successToast } from "src/utils/toast";
-import InputMask from "react-input-mask";
-import { fixedString } from "src/utils/helpers";
 import InputBlock from "src/components/Input";
 
-const Login = () => {
+const Register = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const token = useAppSelector(tokenSelector);
@@ -25,20 +23,24 @@ const Login = () => {
     getValues,
   } = useForm();
 
-  const { mutate } = loginMutation();
+  const { mutate } = registerMutation();
 
   useEffect(() => {
-    if (token) navigate("/");
+    // if (token) navigate("/");
   }, [navigate, token]);
 
   const onSubmit = () => {
-    const { username, password } = getValues();
+    const { username, password, full_name } = getValues();
 
     mutate(
-      { username, password },
+      {
+        username,
+        password,
+        full_name,
+      },
       {
         onSuccess: (data) => {
-          dispatch(loginHandler(data.access_token));
+          // dispatch(loginHandler(data.access_token));
           refetch();
           navigate("/");
           successToast("Добро пожаловать");
@@ -56,16 +58,15 @@ const Login = () => {
             register={register("username", { required: "required" })}
             className="form-control"
             autoFocus
-            value="test"
             label="Логин"
             error={errors.username}
           />
+
           <InputBlock
             register={register("password", { required: "required" })}
             className="form-control"
             inputType="password"
             label="Пароль"
-            value="testing"
             error={errors.password}
           />
 
@@ -78,4 +79,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

@@ -63,7 +63,7 @@ const Roles = () => {
       <Header title={"Roles"}>
         <button
           className="btn btn-success btn-fill"
-          onClick={handleNavigate("/add-role")}
+          onClick={handleNavigate("add")}
         >
           Добавить
         </button>
@@ -91,7 +91,7 @@ const Roles = () => {
                       <a href={`/roles/${1}`}>Admin</a>
                     </td>
                     <td>Admin_key</td>
-                    <TableViewBtn onClick={handleNavigate(`/edit-role/${1}`)} />
+                    <TableViewBtn onClick={handleNavigate(`edit/${1}`)} />
                   </tr>
                 )
               )}

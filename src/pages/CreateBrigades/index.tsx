@@ -9,15 +9,14 @@ import { ChangeEvent, useState } from "react";
 
 const paymentType = ["Перечисление", "Наличные", "Перевод на карту"];
 
-const EditAddUser = () => {
+const CreateBrigades = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
-
-  const [role, $role] = useState<string>(paymentType[0]);
+  const [payment_type, $payment_type] = useState<string>(paymentType[0]);
 
   const handlePayment = (e: ChangeEvent<HTMLSelectElement>) =>
-    $role(e.target.value);
+    $payment_type(e.target.value);
 
   const {
     register,
@@ -26,7 +25,6 @@ const EditAddUser = () => {
     getValues,
     reset,
   } = useForm();
-
   return (
     <Card>
       <Header title={"Изменить | Добавить"}>
@@ -35,7 +33,7 @@ const EditAddUser = () => {
         </button>
       </Header>
 
-      <form className={"content"}>
+      <form className="content">
         <div className="row">
           <div className="col-md-6">
             <InputBlock
@@ -124,4 +122,4 @@ const EditAddUser = () => {
   );
 };
 
-export default EditAddUser;
+export default CreateBrigades;

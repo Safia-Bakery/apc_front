@@ -70,7 +70,7 @@ const Users = () => {
       <Header title={"Users"}>
         <button
           className="btn btn-success btn-fill"
-          onClick={handleNavigate("/add-user")}
+          onClick={handleNavigate("/users/add")}
         >
           Добавить
         </button>
@@ -95,7 +95,7 @@ const Users = () => {
                   <tr className="bg-blue" key={idx}>
                     <td width="40">1</td>
                     <td width={250}>
-                      <a href={`/orders/${order.id}`}>Admin</a>
+                      <a href={`/roles/${order.id}`}>Admin</a>
                     </td>
                     <td>Admin_login</td>
                     <td>
@@ -106,7 +106,7 @@ const Users = () => {
                     <td className="text-center" width={140}>
                       {dayjs(order.time_created).format("DD-MMM-YYYY HH:mm")}
                     </td>
-                    <TableViewBtn onClick={handleNavigate(`/edit-user/${1}`)} />
+                    <TableViewBtn onClick={handleNavigate(`${1}`)} />
                   </tr>
                 )
               )}

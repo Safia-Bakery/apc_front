@@ -7,6 +7,10 @@ import axios from "axios";
 import Loading from "src/components/Loader";
 import { errorToast, successToast } from "src/utils/toast";
 import dayjs from "dayjs";
+import Card from "src/components/Card";
+import Header from "src/components/Header";
+import { useNavigate } from "react-router-dom";
+import cl from "classnames";
 // import { baseURL } from "src/api/axiosConfig";
 
 const paymentType = ["Перечисление", "Наличные", "Перевод на карту"];
@@ -21,6 +25,9 @@ const CreateOrder = () => {
   const [department, $department] = useState<number>();
   const [imageLoading, $imageLoading] = useState(false);
   const [payment_type, $payment_type] = useState<string>(paymentType[0]);
+
+  const navigate = useNavigate();
+  const goBack = () => navigate(-1);
 
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [selectedTime, setSelectedTime] = useState<string>("");
@@ -99,167 +106,103 @@ const CreateOrder = () => {
   // if (isLoading) return <Loading />;
 
   return (
-    <Container>
-      <h1>Создать заказ</h1>
-      <div className="d-flex flex-column">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="row">
-            <div className="col-md-4 form-group">
-              <label>Выберите сферу</label>
-              <div className="d-flex justify-content-between align-items-center gap-10">
-                {mockDepartment?.map(({ id, name }) => (
-                  <div
-                    key={id}
-                    className={styles.deptItem}
-                    onClick={handleDept(id)}
-                  >
-                    <label>{name}</label>
-                    <input
-                      onChange={handleDept(id)}
-                      checked={department === id}
-                      className="ml-2"
-                      type="radio"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-3 form-group">
-              <InputBlock
-                register={register("user_name", {
-                  required: "Обязательное поле",
-                })}
-                className="form-control"
-                placeholder="Укажите заказчика"
-                label="Укажите заказчика"
-                error={errors.user_name}
-              />
-            </div>
-            <div className="col-md-4 form-group">
-              <InputBlock
-                register={register("product_name", {
-                  required: "Обязательное поле",
-                })}
-                className="form-control"
-                placeholder="Название товара"
-                label="Название товара"
-                error={errors.product_name}
-              />
-            </div>
-            <div className="col-md-5 form-group">
-              <InputBlock
-                register={register("price", { required: "Обязательное поле" })}
-                className="form-control"
-                inputType="number"
-                placeholder="Цена (UZS)"
-                label="Цена (UZS)"
-                error={errors.price}
-              />
-            </div>
-          </div>
+    <Card>
+      <Header title={"Создать заказ"}>
+        <button className="btn btn-primary btn-fill" onClick={goBack}>
+          Назад
+        </button>
+      </Header>
 
-          <div className="row">
-            <div className="col-md-3 form-group">
-              <label>Выберите тип оплаты</label>
-              <select
-                defaultValue={"Select Item"}
-                className="form-select"
-                onChange={handlePayment}
-                aria-label="Default select example"
-              >
-                {paymentType.map((dep) => (
-                  <option key={dep} value={dep}>
-                    {dep}
-                  </option>
-                ))}
-              </select>
-              {errors.department && (
-                <div className="alert alert-danger p-2" role="alert">
-                  {errors.department.message?.toString()}
-                </div>
-              )}
+      <form
+        className={cl("content", styles.form)}
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="form-group">
+          <label>СОТРУДНИК</label>
+          <select
+            defaultValue={"Select Item"}
+            className="form-select"
+            onChange={handlePayment}
+          >
+            {paymentType.map((dep) => (
+              <option key={dep} value={dep}>
+                {dep}
+              </option>
+            ))}
+          </select>
+          {errors.department && (
+            <div className="alert alert-danger p-2" role="alert">
+              {errors.department.message?.toString()}
             </div>
-            <div className="col-md-4 form-group">
-              <InputBlock
-                register={register("payer", { required: "Обязательное поле" })}
-                className="form-control"
-                placeholder="Платильщик"
-                label="Платильщик"
-                error={errors.payer}
-              />
+          )}
+        </div>
+        <div className="form-group">
+          <label>ФИЛИАЛ</label>
+          <select
+            defaultValue={"Select Item"}
+            className="form-select"
+            onChange={handlePayment}
+          >
+            {paymentType.map((dep) => (
+              <option key={dep} value={dep}>
+                {dep}
+              </option>
+            ))}
+          </select>
+          {errors.department && (
+            <div className="alert alert-danger p-2" role="alert">
+              {errors.department.message?.toString()}
             </div>
-            <div className="col-md-5 form-group">
-              <InputBlock
-                register={register("provider", {
-                  required: "Обязательное поле",
-                })}
-                className="form-control"
-                placeholder="Поставщик"
-                label="Поставщик"
-                error={errors.provider}
-              />
+          )}
+        </div>
+        <div className="form-group">
+          <label>КАТЕГОРИЯ</label>
+          <select
+            defaultValue={"Select Item"}
+            className="form-select"
+            onChange={handlePayment}
+          >
+            {paymentType.map((dep) => (
+              <option key={dep} value={dep}>
+                {dep}
+              </option>
+            ))}
+          </select>
+          {errors.department && (
+            <div className="alert alert-danger p-2" role="alert">
+              {errors.department.message?.toString()}
             </div>
-          </div>
+          )}
+        </div>
 
-          <div className="row">
-            <div className="col-md-6 form-group">
-              <label>Комментарии</label>
-              <textarea
-                rows={4}
-                {...register("description")}
-                className={`form-control ${styles.textArea}`}
-                name="description"
-                placeholder="Комментарии"
-              />
+        <div className="form-group">
+          <label>Комментарии</label>
+          <textarea
+            rows={4}
+            {...register("description")}
+            className={`form-control ${styles.textArea}`}
+            name="description"
+            placeholder="Комментарии"
+          />
+        </div>
+
+        <div className={`row mb-4 col-md-12 ${styles.uploadImage}`}>
+          <label>Добавить файл</label>
+          <input
+            className="form-control"
+            type="file"
+            multiple
+            onChange={handleImage}
+            name="file-upload"
+            // accept="image/*"
+          />
+          {errors.image && (
+            <div className="alert alert-danger p-2" role="alert">
+              {errors.image.message?.toString()}
             </div>
-            <div className="col-md-6 form-group d-flex flex-column">
-              <label>Срок</label>
-              <InputBlock
-                className="form-control"
-                inputType="date"
-                error={errors.date}
-                register={register("date", { required: "required" })}
-                value={selectedDate}
-                onChange={handleDateChange}
-              />
-
-              <InputBlock
-                className="form-control"
-                inputType="time"
-                value={selectedTime}
-                onChange={handleTimeChange}
-              />
-              <div className={styles.urgent}>
-                <label>Срочно</label>
-                <input
-                  {...register("urgent")}
-                  className="ml-2"
-                  type="checkbox"
-                  name="urgent"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className={`row mb-4 col-md-12 ${styles.uploadImage}`}>
-            <label>Добавить файл</label>
-            <input
-              className="form-control"
-              type="file"
-              multiple
-              onChange={handleImage}
-              name="file-upload"
-              // accept="image/*"
-            />
-            {errors.image && (
-              <div className="alert alert-danger p-2" role="alert">
-                {errors.image.message?.toString()}
-              </div>
-            )}
-          </div>
-
+          )}
+        </div>
+        <div>
           <button
             disabled={imageLoading}
             type="submit"
@@ -267,9 +210,9 @@ const CreateOrder = () => {
           >
             Создать
           </button>
-        </form>
-      </div>
-    </Container>
+        </div>
+      </form>
+    </Card>
   );
 };
 

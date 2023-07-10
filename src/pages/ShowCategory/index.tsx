@@ -12,6 +12,8 @@ const ShowCategory = () => {
 
   const { id } = useParams();
 
+  console.log(id, "id skkk");
+
   const {
     register,
     handleSubmit,
