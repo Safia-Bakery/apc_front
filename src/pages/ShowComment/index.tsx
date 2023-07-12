@@ -27,7 +27,7 @@ const ShowComment = () => {
     data: orders,
     refetch,
     isLoading: orderLoading,
-  } = useOrders({ size: itemsPerPage, page: currentPage });
+  } = useOrders({ size: itemsPerPage, page: currentPage, enabled: false });
 
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");

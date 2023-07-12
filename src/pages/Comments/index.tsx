@@ -1,7 +1,7 @@
 import Card from "src/components/Card";
 import styles from "./index.module.scss";
 import Header from "src/components/Header";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Order } from "src/utils/types";
 import Pagination from "src/components/Pagination";
@@ -36,7 +36,11 @@ const Comments = () => {
     }
   };
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: orders } = useOrders({ size: itemsPerPage, page: currentPage });
+  const { data: orders } = useOrders({
+    size: itemsPerPage,
+    page: currentPage,
+    enabled: false,
+  });
 
   // const sortData = () => {
   //   if (orders?.items && sortKey) {
@@ -79,7 +83,7 @@ const Comments = () => {
                     <td width="40">1</td>
                     <td>sotrudnit name</td>
                     <td>
-                      <a href={`/comments/${109640}`}>109640</a>
+                      <Link to={`/comments/${109640}`}>109640</Link>
                     </td>
                     <td>rate</td>
                     <td>text</td>

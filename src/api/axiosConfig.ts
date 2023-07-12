@@ -15,7 +15,7 @@ class BaseAPIClient {
     this.cancelTokenSource = axios.CancelToken.source();
     this.axiosInstance = axios.create({
       baseURL,
-      timeout: 5000, // Set your desired timeout value
+      timeout: 3000,
     });
     this.store = store;
 
@@ -49,6 +49,9 @@ class BaseAPIClient {
 
   public post<T>(url: string, data?: any, config?: AxiosRequestConfig) {
     return this.axiosInstance.post<T>(url, data, config);
+  }
+  public put<T>(url: string, data?: any, config?: AxiosRequestConfig) {
+    return this.axiosInstance.put<T>(url, data, config);
   }
 
   public cancelRequest(message?: string): void {

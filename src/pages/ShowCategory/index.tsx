@@ -5,14 +5,22 @@ import { useNavigate, useParams } from "react-router-dom";
 import InputBlock from "src/components/Input";
 import cl from "classnames";
 import { useForm } from "react-hook-form";
+import useCategory from "src/hooks/useCategory";
+import { ChangeEvent, useEffect, useState } from "react";
+import categoryMutation from "src/hooks/mutation/categoryMutation";
+import useCategories from "src/hooks/useCategories";
+import { successToast } from "src/utils/toast";
 
 const ShowCategory = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
+  const { refetch: categoryRefetch } = useCategories({ enabled: false });
 
   const { id } = useParams();
 
-  console.log(id, "id skkk");
+  const { data: category } = useCategory({ id: Number(id) });
+  const [status, $status] = useState(0);
+  const { mutate } = categoryMutation();
 
   const {
     register,
@@ -21,6 +29,34 @@ const ShowCategory = () => {
     getValues,
     reset,
   } = useForm();
+
+  const onSubmit = () => {
+    const { name, description } = getValues();
+    mutate(
+      { name, description, status, ...(id && { id: Number(id) }) },
+      {
+        onSuccess: () => {
+          categoryRefetch();
+          successToast(!!id ? "successfully updated" : "successfully created");
+          navigate("/categories");
+        },
+      }
+    );
+  };
+
+  const handleStatus = (e: ChangeEvent<HTMLInputElement>) =>
+    $status(Number(e.target.value));
+
+  useEffect(() => {
+    if (category) {
+      $status(category?.status);
+      reset({
+        name: category?.name,
+        description: category?.description,
+      });
+    }
+  }, [category]);
+
   return (
     <Card>
       <Header title={"ShowCategory"}>
@@ -28,7 +64,7 @@ const ShowCategory = () => {
           Назад
         </button>
       </Header>
-      <form className="p-3">
+      <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
         <InputBlock
           register={register("name", { required: "Обязательное поле" })}
           className="form-control"
@@ -51,11 +87,21 @@ const ShowCategory = () => {
             className={cl(styles.formControl, "form-control")}
           >
             <label className={styles.radioBtn}>
-              <input type="radio" name="Category[is_active]" value="1" />
+              <input
+                checked={!!status}
+                type="radio"
+                value={1}
+                onChange={handleStatus}
+              />
               Активный
             </label>
             <label className={styles.radioBtn}>
-              <input type="radio" value="0" checked={true} />
+              <input
+                type="radio"
+                value={0}
+                onChange={handleStatus}
+                checked={!status}
+              />
               Не активный
             </label>
           </div>

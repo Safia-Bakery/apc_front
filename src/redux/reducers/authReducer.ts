@@ -1,10 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../rootConfig";
-import { StatusRoles } from "src/utils/types";
 
 interface State {
   token?: string;
-  me?: { id: number; username: string; role: StatusRoles; full_name: string };
+  me?: {
+    id: number;
+    username: string;
+    role: string;
+    full_name: string;
+  };
 }
 
 const initialState: State = {

@@ -1,7 +1,7 @@
 import Card from "src/components/Card";
 import styles from "./index.module.scss";
 import Header from "src/components/Header";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Order } from "src/utils/types";
 import Loading from "src/components/Loader";
@@ -36,7 +36,7 @@ const Users = () => {
     data: orders,
     refetch,
     isLoading: orderLoading,
-  } = useOrders({ size: itemsPerPage, page: currentPage });
+  } = useOrders({ size: itemsPerPage, page: currentPage, enabled: false });
 
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -95,7 +95,7 @@ const Users = () => {
                   <tr className="bg-blue" key={idx}>
                     <td width="40">1</td>
                     <td width={250}>
-                      <a href={`/roles/${order.id}`}>Admin</a>
+                      <Link to={`/roles/${order.id}`}>Admin</Link>
                     </td>
                     <td>Admin_login</td>
                     <td>

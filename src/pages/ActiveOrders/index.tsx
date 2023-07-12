@@ -1,5 +1,5 @@
 import styles from "./index.module.scss";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Status, Order } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
@@ -10,21 +10,22 @@ import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
+import { errorToast, successToast } from "src/utils/toast";
 
 const column = [
-  { name: "#", key: "id" as keyof Order["id"] },
-  { name: "Номер", key: "purchaser" as keyof Order["purchaser"] },
+  { name: "#", key: "" },
+  { name: "Номер", key: "id" as keyof Order["id"] },
   { name: "Тип", key: "type" as keyof Order["product"] },
-  { name: "Отдел", key: "category.name" as keyof Order["category"] },
-  { name: "Группа проблем", key: "price" as keyof Order["price"] },
+  { name: "Отдел", key: "fillial.name" as keyof Order["category"] },
+  { name: "Группа проблем", key: "category.name" as keyof Order["category"] },
   {
     name: "Срочно",
-    key: "time_created" as keyof Order["time_created"],
+    key: "urgent" as keyof Order["category"],
   },
-  { name: "Дата выполнения", key: "status" as keyof Order["status"] },
-  { name: "Дата", key: "status" as keyof Order["status"] },
+  { name: "Дата выполнения", key: "finished_at" as keyof Order["finished_at"] },
+  { name: "Дата", key: "created_at" as keyof Order["created_at"] },
   { name: "Статус", key: "status" as keyof Order["status"] },
-  { name: "Автор", key: "status" as keyof Order["status"] },
+  { name: "Автор", key: "brigada.name" as keyof Order["status"] },
 ];
 
 const ActiveOrders = () => {
@@ -47,7 +48,7 @@ const ActiveOrders = () => {
     data: orders,
     refetch,
     isLoading: orderLoading,
-  } = useOrders({ size: itemsPerPage, page: currentPage });
+  } = useOrders({ size: itemsPerPage, page: currentPage, enabled: false });
 
   const sortData = () => {
     if (orders?.items && sortKey) {
@@ -63,25 +64,6 @@ const ActiveOrders = () => {
   const handlePageChange = (page: number) => setCurrentPage(page);
 
   const handleNavigate = (id: number) => () => navigate(`/order/${id}`);
-
-  const handleStatusSubmit =
-    (body: { order_id: number; status: Status }) => () => {
-      $submitting(true);
-      // mutate(body, {
-      //   onSuccess: () => {
-      //     refetch();
-      //     body.status === Status.accepted
-      //       ? successToast("успешно принито")
-      //       : successToast("успешно отклонено");
-
-      //     $submitting(false);
-      //   },
-      //   onError: (error: any) => {
-      //     errorToast(error.toString());
-      //     $submitting(false);
-      //   },
-      // });
-    };
 
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
@@ -123,22 +105,24 @@ const ActiveOrders = () => {
               {(sortData()?.length ? sortData() : orders?.items)?.map(
                 (order, idx) => (
                   <tr className="bg-blue" key={idx}>
-                    <td width="40">1</td>
+                    <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
-                      <a href={`/orders/${order.id}`}>109640</a>
+                      <Link to={`/orders/${order?.id}`}>{order?.id}</Link>
                     </td>
                     <td>APC</td>
                     <td>
-                      <span className="not-set">(не задано)</span>
+                      <span className="not-set">{order?.fillial?.name}</span>
                     </td>
-                    <td>Электричество</td>
-                    <td>Срочный</td>
-                    <td>-</td>
+                    <td>{order?.category?.name}</td>
+                    <td>{!order?.urgent ? "Несрочный" : "Срочный"}</td>
                     <td>
-                      {dayjs(order.time_created).format("DD-MMM-YYYY HH:mm")}
+                      {dayjs(order?.finished_at).format("DD-MMM-YYYY HH:mm")}
                     </td>
-                    <td>Назначен</td>
-                    <td>Сафия Шохимардон</td>
+                    <td>
+                      {dayjs(order?.created_at).format("DD-MMM-YYYY HH:mm")}
+                    </td>
+                    <td>{order?.status}</td>
+                    <td>{order?.brigada?.name}</td>
                   </tr>
                 )
               )}

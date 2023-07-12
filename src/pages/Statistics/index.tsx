@@ -43,7 +43,11 @@ const Statistics = () => {
     }
   };
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: orders } = useOrders({ size: itemsPerPage, page: currentPage });
+  const { data: orders } = useOrders({
+    size: itemsPerPage,
+    page: currentPage,
+    enabled: false,
+  });
 
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {

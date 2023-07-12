@@ -5,8 +5,6 @@ import { roleSelector } from "src/redux/reducers/authReducer";
 const ControlPanel = () => {
   const me = useAppSelector(roleSelector);
 
-  console.log(me, "me");
-
   return (
     <div className={styles.card}>
       <div className="header text-center">

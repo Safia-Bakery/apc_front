@@ -17,11 +17,10 @@ export const useOrders = ({
     queryKey: ["orders", history],
     queryFn: () =>
       apiClient
-        .get(
-          `/get/${history ? "done/" : ""}order/list?size=${size}&page=${page}`
-        )
+        .get(`/request?size=${size}&page=${page}`)
         .then(({ data: response }) => (response as OrderType) || null),
     enabled,
+    refetchOnMount: true,
   });
 };
 export default useOrders;

@@ -1,0 +1,27 @@
+import { useMutation } from "@tanstack/react-query";
+import { apiClient } from "src/main";
+
+const roleMutation = () => {
+  return useMutation(
+    ["post_role"],
+    ({
+      name,
+      status = 1,
+      id,
+    }: {
+      name: string;
+      status?: number;
+      id?: number;
+    }) => {
+      if (id)
+        return apiClient
+          .put("/user/roles", { name, id })
+          .then(({ data }) => data);
+      else
+        return apiClient
+          .post("/user/roles", { name, status })
+          .then(({ data }) => data);
+    }
+  );
+};
+export default roleMutation;

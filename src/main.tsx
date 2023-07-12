@@ -11,11 +11,9 @@ const baseURL = "http://10.0.1.72:8000";
 export const apiClient = new BaseAPIClient(baseURL, store);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  // <StrictMode>
   <Provider store={store}>
     <PersistGate persistor={persistor} loading={null}>
       <App />
     </PersistGate>
   </Provider>
-  // </StrictMode>
 );

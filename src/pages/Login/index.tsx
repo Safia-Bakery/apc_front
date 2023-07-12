@@ -23,9 +23,17 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
     getValues,
+    reset,
   } = useForm();
 
   const { mutate } = loginMutation();
+
+  useEffect(() => {
+    reset({
+      username: "some",
+      password: "testing",
+    });
+  }, []);
 
   useEffect(() => {
     if (token) navigate("/");
@@ -56,7 +64,6 @@ const Login = () => {
             register={register("username", { required: "required" })}
             className="form-control"
             autoFocus
-            value="test"
             label="Логин"
             error={errors.username}
           />
@@ -65,7 +72,6 @@ const Login = () => {
             className="form-control"
             inputType="password"
             label="Пароль"
-            value="testing"
             error={errors.password}
           />
 

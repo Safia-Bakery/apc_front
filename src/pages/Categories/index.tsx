@@ -3,28 +3,28 @@ import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
 
-import { Order } from "src/utils/types";
+import { Category } from "src/utils/types";
 import Pagination from "src/components/Pagination";
 import { useState } from "react";
-import useOrders from "src/hooks/useOrders";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
+import useCategories from "src/hooks/useCategories";
 
 const column = [
-  { name: "#", key: "id" as keyof Order["id"] },
-  { name: "Наименование", key: "purchaser" as keyof Order["purchaser"] },
-  { name: "Статус", key: "status" as keyof Order["status"] },
+  { name: "#", key: "" },
+  { name: "Наименование", key: "name" as keyof Category["name"] },
+  { name: "Статус", key: "status" as keyof Category["status"] },
   { name: "", key: "" },
 ];
 
 const Categories = () => {
   const navigate = useNavigate();
 
-  const [sortKey, setSortKey] = useState<any>();
+  const [sortKey, setSortKey] = useState<keyof Category>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
-  const handleSort = (key: any) => {
+  const handleSort = (key: keyof Category) => {
     if (key === sortKey) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -33,21 +33,29 @@ const Categories = () => {
     }
   };
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: orders } = useOrders({ size: itemsPerPage, page: currentPage });
+  const { data: categories } = useCategories({
+    size: itemsPerPage,
+    page: currentPage,
+  });
 
-  // const sortData = () => {
-  //   if (orders?.items && sortKey) {
-  //     const sortedData = [...orders?.items].sort((a, b) => {
-  //       if (a[sortKey]! < b[sortKey]!) return sortOrder === "asc" ? -1 : 1;
-  //       if (a[sortKey]! > b[sortKey]!) return sortOrder === "asc" ? 1 : -1;
-  //       else return 0;
-  //     });
-  //     return sortedData;
-  //   }
-  // };
+  const sortData = () => {
+    if (categories?.items && sortKey) {
+      const sortedData = [...categories?.items].sort((a, b) => {
+        if (a[sortKey]! < b[sortKey]!) return sortOrder === "asc" ? -1 : 1;
+        if (a[sortKey]! > b[sortKey]!) return sortOrder === "asc" ? 1 : -1;
+        else return 0;
+      });
+      return sortedData;
+    }
+  };
 
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleNavigate = (route: string) => () => navigate(route);
+
+  const handleIdx = (index: number) => {
+    if (currentPage === 1) return index + 1;
+    else return index + 1 + itemsPerPage * (currentPage - 1);
+  };
 
   return (
     <Card>
@@ -73,30 +81,32 @@ const Categories = () => {
               sortOrder={sortOrder}
             />
 
-            {orders?.items.length && (
+            {categories?.items.length && (
               <tbody>
-                {[...Array(6)]?.map((order, idx) => (
-                  <tr key={idx} className="bg-blue">
-                    <td width="40">1</td>
-                    <td>test name</td>
-                    <td>Активный</td>
-                    <TableViewBtn
-                      onClick={handleNavigate(`/categories/${1}`)}
-                    />
-                  </tr>
-                ))}
+                {(sortData()?.length ? sortData() : categories?.items)?.map(
+                  (category, idx) => (
+                    <tr key={idx} className="bg-blue">
+                      <td width="40">{handleIdx(idx)}</td>
+                      <td>{category.name}</td>
+                      <td>{category.status ? "Активный" : "Неактивный"}</td>
+                      <TableViewBtn
+                        onClick={handleNavigate(`/categories/${category.id}`)}
+                      />
+                    </tr>
+                  )
+                )}
               </tbody>
             )}
           </table>
-          {!!orders && (
+          {!!categories && (
             <Pagination
-              totalItems={orders?.total}
+              totalItems={categories?.total}
               itemsPerPage={itemsPerPage}
               currentPage={currentPage}
               onPageChange={handlePageChange}
             />
           )}
-          {!orders?.items?.length && (
+          {!categories?.items?.length && (
             <div className="w-100">
               <p className="text-center w-100 ">Спосок пуст</p>
             </div>

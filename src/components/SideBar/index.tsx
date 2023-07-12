@@ -2,62 +2,63 @@ import { useState } from "react";
 import "./index.scss";
 import { useAppDispatch } from "src/redux/utils/types";
 import { logoutHandler } from "src/redux/reducers/authReducer";
+import { Link } from "react-router-dom";
 
-const superAdmins = [
+const routes = [
   {
     name: "Панель управления",
     url: "/",
-    icon: "/assets/icons/order.svg",
+    icon: "/assets/icons/controlPanel.svg",
   },
   {
     name: "Статистика",
     url: "/statistics",
-    icon: "/assets/icons/activeOrder.svg",
+    icon: "/assets/icons/statistics.svg",
   },
   {
     name: "Тепловая карта",
     url: "/map",
-    icon: "/assets/icons/historyOrder.svg",
+    icon: "/assets/icons/map.svg",
   },
   {
     name: "Заявки",
     url: "/orders",
-    icon: "/assets/icons/user.svg",
+    icon: "/assets/icons/orders.svg",
   },
   {
     name: "Категории",
     url: "/categories",
-    icon: "/assets/icons/user.svg",
+    icon: "/assets/icons/categories.svg",
   },
   {
     name: "Остатки на складах",
     url: "/items-in-stock",
-    icon: "/assets/icons/user.svg",
+    icon: "/assets/icons/remains-in-stock.svg",
   },
   {
     name: "Бригады",
     url: "/brigades",
-    icon: "/assets/icons/user.svg",
+    icon: "/assets/icons/brigades.svg",
   },
   {
     name: "Пользователи",
     url: "/users",
-    icon: "/assets/icons/user.svg",
+    icon: "/assets/icons/users.svg",
   },
   {
     name: "Роли",
     url: "/roles",
-    icon: "/assets/icons/user.svg",
+    icon: "/assets/icons/roles.svg",
   },
   {
     name: "Отзывы",
     url: "/comments",
-    icon: "/assets/icons/user.svg",
+    icon: "/assets/icons/comments.svg",
   },
   {
     name: "Настройки",
     url: "/settings",
-    icon: "/assets/icons/user.svg",
+    icon: "/assets/icons/settings.svg",
   },
 ];
 
@@ -76,7 +77,7 @@ const SideBar = () => {
         )}
       </header>
       <div className="block" />
-      <div className={`sidebar ${active && "active"}`}>
+      <div className={`sidebar ${active && "active"} sidebar-wrapper`}>
         <div className="sidebar-wrapper">
           <div>
             <div className="w-100 d-flex flex-column">
@@ -87,16 +88,16 @@ const SideBar = () => {
             </div>
 
             <ul className="nav mt-2">
-              {superAdmins.map((item) => (
+              {routes.map((item) => (
                 <li key={item.url}>
-                  <a className="nav-link" href={item.url}>
+                  <Link to={`${item.url}`} className="nav-link">
                     <img
                       src={item.icon}
                       alt={item.name}
                       className="sidebarIcon"
                     />
                     <p>{item.name}</p>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

@@ -31,6 +31,7 @@
 }
 
 .header {
+  z-index: 100;
   @media (max-width: 991px) {
     display: flex;
     justify-content: flex-end;

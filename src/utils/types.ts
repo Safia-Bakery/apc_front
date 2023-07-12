@@ -7,10 +7,13 @@ export enum EPresetTimes {
   TEN_DAYS = DAY * 10,
 }
 
-export interface CategoryTypes {
-  id: number;
-  name: string;
+export interface BasePaginatedRes {
+  total: number;
+  page: number;
+  size: number;
+  pages: number;
 }
+
 export interface RoleList {
   success: boolean;
   listroles: {
@@ -24,39 +27,73 @@ export interface RoleList {
   }[];
 }
 
-export interface UsersTypes {
+export interface UserTypes {
+  password: string;
   username: string;
-  hashed_password: string;
-  time_created: string;
-  id: number;
-  role: StatusRoles;
   full_name: string;
-  telegram_id: number;
+  group_id: number;
+  brigada_name: string;
+  brigada_description: string;
+  status: number;
 }
 
 export interface Order {
-  purchaser: string;
-  seller: string;
-  price: number;
-  status: StatusRoles;
-  urgent: boolean;
+  product: string;
   description: string;
   id: number;
-  product: string;
-  delivery_time: Date;
-  payer: string;
-  time_created: Date;
-  payment_type: string;
-  image?: string;
-  category: CategoryTypes;
+  rating: number;
+  created_at: Date;
+  status: number;
+  urgent: boolean;
+  brigada: {
+    id: number;
+    name: string;
+    description: string;
+    status: number;
+  };
+  file: {
+    url: string;
+  }[];
+  category: {
+    name: string;
+    description: string;
+    status: number;
+    id: number;
+  };
+  fillial: {
+    id: number;
+    name: string;
+    longtitude: number;
+    latitude: number;
+    country: string;
+    status: number;
+  };
+  finished_at: Date;
 }
 
-export interface OrderType {
+export interface OrderType extends BasePaginatedRes {
   items: Order[];
-  total: number;
-  page: number;
-  size: number;
-  pages: number;
+}
+
+export interface BranchType {
+  id: number;
+  name: string;
+  longtitude: number;
+  latitude: number;
+  country: string;
+  status: number;
+}
+export interface BranchTypes extends BasePaginatedRes {
+  items: BranchType[];
+}
+export interface BrigadaType {
+  id: number;
+  name: string;
+  description: string;
+  status: number;
+}
+export interface BrigadaTypes extends BasePaginatedRes {
+  items: BrigadaType[];
 }
 export interface CreateOrderType {
   category_id: number;
@@ -88,10 +125,45 @@ export enum StatusRoles {
 export interface MeTypes {
   id: number;
   username: string;
-  role: StatusRoles;
+  role?: { descrition: string; name: string };
   full_name: string;
+  permissions:
+    | {
+        [key: string]: string;
+      }
+    | "*";
 }
 export enum Status {
   accepted = "accepted",
   denied = "denied",
+}
+export interface RoleTypes {
+  status: number;
+  name: string;
+  id: number;
+}
+export interface PermissionTypes {
+  page_name: string;
+  id: number;
+}
+
+export interface RolePermissions {
+  permissions: number[];
+  pages: {
+    page_name: string;
+    id: number;
+  }[];
+  role_name: string;
+  role_id: number;
+}
+
+export interface Category {
+  name: string;
+  description: string;
+  status: number;
+  id: number;
+}
+
+export interface CategoryTypes extends BasePaginatedRes {
+  items: Category[];
 }

@@ -2,28 +2,19 @@ import Card from "src/components/Card";
 import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
-
-import { Order } from "src/utils/types";
+import { BrigadaType } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
 import { useState } from "react";
-import dayjs from "dayjs";
-import useOrders from "src/hooks/useOrders";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
+import useBrigadas from "src/hooks/useBrigadas";
 
 const column = [
-  { name: "#", key: "id" as keyof Order["id"] },
-  { name: "ФИО", key: "purchaser" as keyof Order["purchaser"] },
-  { name: "Логин", key: "type" as keyof Order["product"] },
-  { name: "Роль", key: "category.name" as keyof Order["category"] },
-  { name: "Телефон", key: "price" as keyof Order["price"] },
-  {
-    name: "Статус",
-    key: "status" as keyof Order["status"],
-  },
-  { name: "Последний визит", key: "status" as keyof Order["status"] },
+  { name: "#", key: "id" as keyof BrigadaType["id"] },
+  { name: "Названия", key: "name" as keyof BrigadaType["name"] },
+  { name: "Описания", key: "description" as keyof BrigadaType["description"] },
   { name: "", key: "" },
 ];
 
@@ -33,12 +24,12 @@ const Brigades = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const {
-    data: orders,
+    data: brigadas,
     refetch,
     isLoading: orderLoading,
-  } = useOrders({ size: itemsPerPage, page: currentPage });
+  } = useBrigadas({ size: itemsPerPage, page: currentPage, enabled: false });
 
-  const [sortKey, setSortKey] = useState<keyof Order>();
+  const [sortKey, setSortKey] = useState<keyof BrigadaType>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const handleSort = (key: any) => {
@@ -51,8 +42,8 @@ const Brigades = () => {
   };
 
   const sortData = () => {
-    if (orders?.items && sortKey) {
-      const sortedData = [...orders?.items].sort((a, b) => {
+    if (brigadas?.items && sortKey) {
+      const sortedData = [...brigadas?.items].sort((a, b) => {
         if (a[sortKey]! < b[sortKey]!) return sortOrder === "asc" ? -1 : 1;
         if (a[sortKey]! > b[sortKey]!) return sortOrder === "asc" ? 1 : -1;
         else return 0;
@@ -62,6 +53,10 @@ const Brigades = () => {
   };
 
   const handlePageChange = (page: number) => setCurrentPage(page);
+  const handleIdx = (index: number) => {
+    if (currentPage === 1) return index + 1;
+    else return index + 1 + itemsPerPage * (currentPage - 1);
+  };
 
   if (orderLoading) return <Loading />;
   return (
@@ -87,24 +82,14 @@ const Brigades = () => {
             sortOrder={sortOrder}
           />
 
-          {orders?.items.length && (
+          {brigadas?.items.length && (
             <tbody>
-              {(sortData()?.length ? sortData() : orders?.items)?.map(
+              {(sortData()?.length ? sortData() : brigadas?.items)?.map(
                 (order, idx) => (
                   <tr className="bg-blue" key={idx}>
-                    <td width="40">1</td>
-                    <td width={250}>
-                      <a href={`/roles/${order.id}`}>Admin</a>
-                    </td>
-                    <td>Admin_login</td>
-                    <td>
-                      <span className="not-set">Role</span>
-                    </td>
-                    <td>phone number</td>
-                    <td>status</td>
-                    <td className="text-center" width={140}>
-                      {dayjs(order.time_created).format("DD-MMM-YYYY HH:mm")}
-                    </td>
+                    <td width="40">{handleIdx(idx)}</td>
+                    <td width={250}>{order.name}</td>
+                    <td>{order.description}</td>
                     <TableViewBtn onClick={handleNavigate(`${1}`)} />
                   </tr>
                 )
@@ -112,15 +97,15 @@ const Brigades = () => {
             </tbody>
           )}
         </table>
-        {!!orders && (
+        {!!brigadas && (
           <Pagination
-            totalItems={orders?.total}
+            totalItems={brigadas?.total}
             itemsPerPage={itemsPerPage}
             currentPage={currentPage}
             onPageChange={handlePageChange}
           />
         )}
-        {!orders?.items?.length && (
+        {!brigadas?.items?.length && (
           <div className="w-100">
             <p className="text-center w-100 ">Спосок пуст</p>
           </div>

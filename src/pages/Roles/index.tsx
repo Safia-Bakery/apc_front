@@ -1,22 +1,19 @@
 import Card from "src/components/Card";
 import styles from "./index.module.scss";
 import Header from "src/components/Header";
-import { useNavigate } from "react-router-dom";
-import { Order } from "src/utils/types";
+import { Link, useNavigate } from "react-router-dom";
+import { RoleTypes } from "src/utils/types";
 
 import Loading from "src/components/Loader";
-import Pagination from "src/components/Pagination";
-import { useState } from "react";
-import dayjs from "dayjs";
-import useOrders from "src/hooks/useOrders";
-import { itemsPerPage } from "src/utils/helpers";
+import { Key, useState } from "react";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
+import useRoles from "src/hooks/useRoles";
 
 const column = [
-  { name: "#", key: "id" as keyof Order["id"] },
-  { name: "Название", key: "purchaser" as keyof Order["purchaser"] },
-  { name: "Ключ", key: "type" as keyof Order["product"] },
+  { name: "#", key: "" },
+  { name: "Название", key: "name" as keyof RoleTypes["name"] },
+  { name: "Ключ", key: "status" as keyof RoleTypes["status"] },
   { name: "", key: "" },
 ];
 
@@ -24,14 +21,9 @@ const Roles = () => {
   const navigate = useNavigate();
   const handleNavigate = (route: string) => () => navigate(route);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const {
-    data: orders,
-    refetch,
-    isLoading: orderLoading,
-  } = useOrders({ size: itemsPerPage, page: currentPage });
+  const { data: roles, isLoading: orderLoading } = useRoles({});
 
-  const [sortKey, setSortKey] = useState<keyof Order>();
+  const [sortKey, setSortKey] = useState<keyof RoleTypes>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const handleSort = (key: any) => {
@@ -44,8 +36,8 @@ const Roles = () => {
   };
 
   const sortData = () => {
-    if (orders?.items && sortKey) {
-      const sortedData = [...orders?.items].sort((a, b) => {
+    if (roles && sortKey) {
+      const sortedData = [...roles].sort((a, b) => {
         if (a[sortKey]! < b[sortKey]!) return sortOrder === "asc" ? -1 : 1;
         if (a[sortKey]! > b[sortKey]!) return sortOrder === "asc" ? 1 : -1;
         else return 0;
@@ -53,8 +45,6 @@ const Roles = () => {
       return sortedData;
     }
   };
-
-  const handlePageChange = (page: number) => setCurrentPage(page);
 
   if (orderLoading) return <Loading />;
 
@@ -81,32 +71,22 @@ const Roles = () => {
             sortOrder={sortOrder}
           />
 
-          {orders?.items.length && (
+          {roles?.length && (
             <tbody>
-              {(sortData()?.length ? sortData() : orders?.items)?.map(
-                (order, idx) => (
-                  <tr className="bg-blue" key={idx}>
-                    <td width="40">1</td>
-                    <td>
-                      <a href={`/roles/${1}`}>Admin</a>
-                    </td>
-                    <td>Admin_key</td>
-                    <TableViewBtn onClick={handleNavigate(`edit/${1}`)} />
-                  </tr>
-                )
-              )}
+              {(sortData()?.length ? sortData() : roles)?.map((role, idx) => (
+                <tr className="bg-blue" key={role.id}>
+                  <td width="40">{idx + 1}</td>
+                  <td>
+                    <Link to={`/roles/${role.id}`}>{role.name}</Link>
+                  </td>
+                  <td>{role.status}</td>
+                  <TableViewBtn onClick={handleNavigate(`edit/${role.id}`)} />
+                </tr>
+              ))}
             </tbody>
           )}
         </table>
-        {!!orders && (
-          <Pagination
-            totalItems={orders?.total}
-            itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-          />
-        )}
-        {!orders?.items?.length && (
+        {!roles?.length && (
           <div className="w-100">
             <p className="text-center w-100 ">Спосок пуст</p>
           </div>
