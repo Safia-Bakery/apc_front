@@ -9,15 +9,13 @@ interface LoginTypes {
 }
 
 const loginMutation = () => {
-  const options = {
-    headers: { "content-type": "application/x-www-form-urlencoded" },
-  };
+  const contentType = "application/x-www-form-urlencoded";
 
   return useMutation(
     ["login"],
     (body: { username: string; password: string }) =>
       apiClient
-        .post("/login", body, options)
+        .post({ url: "/login", body, contentType })
         .then(({ data }) => data as unknown as LoginTypes)
   );
 };

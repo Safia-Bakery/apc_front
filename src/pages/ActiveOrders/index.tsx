@@ -30,8 +30,6 @@ const column = [
 
 const ActiveOrders = () => {
   const navigate = useNavigate();
-  const [submitting, $submitting] = useState(false);
-
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
@@ -79,7 +77,7 @@ const ActiveOrders = () => {
   return (
     <Card>
       <Header title={"Orders"}>
-        <button className="btn btn-primary btn-fill">Экспорт</button>
+        <button className="btn btn-primary btn-fill mr-2">Экспорт</button>
         <button
           onClick={() => navigate("add")}
           className="btn btn-success btn-fill"
@@ -121,7 +119,7 @@ const ActiveOrders = () => {
                     <td>
                       {dayjs(order?.created_at).format("DD-MMM-YYYY HH:mm")}
                     </td>
-                    <td>{order?.status}</td>
+                    <td>{order.status ? "Активный" : "Неактивный"}</td>
                     <td>{order?.brigada?.name}</td>
                   </tr>
                 )

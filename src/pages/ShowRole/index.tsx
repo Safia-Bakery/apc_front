@@ -2,32 +2,13 @@ import Card from "src/components/Card";
 import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
-import usePermissions from "src/hooks/usePermissions";
 import permissionMutation from "src/hooks/mutation/permissionMutation";
 import { useAppSelector } from "src/redux/utils/types";
-import {
-  permissionSelector,
-  treeSelector,
-} from "src/redux/reducers/cacheResources";
+import { permissionSelector } from "src/redux/reducers/cacheResources";
 import useRolePermission from "src/hooks/useRolePermission";
 import { roleSelector } from "src/redux/reducers/authReducer";
 import { useEffect, useState } from "react";
 import Loading from "src/components/Loader";
-
-interface TreeTypes {
-  [key: number]: string;
-}
-
-const column = [
-  { name: "#" },
-  { name: "Наименование" },
-  { name: "Количество" },
-  { name: "Примичание" },
-  { name: "Дата" },
-  {
-    name: "Автор",
-  },
-];
 
 const ShowRole = () => {
   const navigate = useNavigate();
@@ -99,7 +80,6 @@ const ShowRole = () => {
                       type="checkbox"
                       value={id}
                       defaultChecked={rolePermission?.permissions.includes(id)}
-                      // defaultChecked={page_name === idTree?.[`${id}`]}
                       onChange={() => handlePermission(id)}
                     />
                   </td>

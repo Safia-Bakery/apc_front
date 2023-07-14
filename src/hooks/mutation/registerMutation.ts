@@ -13,7 +13,7 @@ const registerMutation = () => {
     ["register"],
     (body: { username: string; password: string; full_name: string }) =>
       apiClient
-        .post("/register", body)
+        .post({ url: "/register", body })
         .then(({ data }) => data as unknown as RegisterTypes)
   );
 };

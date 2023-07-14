@@ -11,7 +11,9 @@ const categoryMutation = () => {
       id?: number;
     }) => {
       if (!body.id)
-        return apiClient.post("/category", body).then(({ data }) => data);
+        return apiClient
+          .post({ url: "/category", body })
+          .then(({ data }) => data);
       else return apiClient.put("/category", body).then(({ data }) => data);
     }
   );

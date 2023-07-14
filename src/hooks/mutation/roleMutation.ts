@@ -19,7 +19,7 @@ const roleMutation = () => {
           .then(({ data }) => data);
       else
         return apiClient
-          .post("/user/roles", { name, status })
+          .post({ url: "/user/roles", body: { name, status } })
           .then(({ data }) => data);
     }
   );

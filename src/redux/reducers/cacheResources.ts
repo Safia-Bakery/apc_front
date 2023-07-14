@@ -1,55 +1,54 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../rootConfig";
-import { BrigadaType, PermissionTypes } from "src/utils/types";
-
-interface TreeTypes {
-  [key: number]: string;
-}
-let idTree: TreeTypes;
+import {
+  BranchTypes,
+  BrigadaType,
+  CategoryTypes,
+  PermissionTypes,
+  RoleTypes,
+} from "src/utils/types";
 
 interface State {
-  permissionsObj: TreeTypes | null;
   permissions: PermissionTypes[];
   brigada: BrigadaType[];
+  roles: RoleTypes[];
+  categories: CategoryTypes["items"];
+  branch: BranchTypes["items"];
 }
 
 const initialState: State = {
-  permissionsObj: null,
   permissions: [],
   brigada: [],
+  roles: [],
+  categories: [],
+  branch: [],
 };
 
 export const cacheResources = createSlice({
   name: "cached_datas",
   initialState,
   reducers: {
-    permissionHandler: (
-      state,
-      { payload }: PayloadAction<PermissionTypes[]>
-    ) => {
-      state.permissions = payload;
-      if (payload.length) {
-        const updatedObject = payload.reduce(
-          (result, item) => {
-            const { id, page_name } = item;
-            result[id] = page_name;
-            return result;
-          },
-          { ...idTree }
-        );
-        state.permissionsObj = updatedObject;
-      }
-    },
     brigadaHandler: (state, { payload }: PayloadAction<BrigadaType[]>) => {
       state.brigada = payload;
+    },
+    cachedRoles: (state, { payload }: PayloadAction<RoleTypes[]>) => {
+      state.roles = payload;
+    },
+    cachedCategories: (state, { payload }: PayloadAction<CategoryTypes>) => {
+      state.categories = payload.items;
+    },
+    cachedBranches: (state, { payload }: PayloadAction<BranchTypes>) => {
+      state.branch = payload.items;
     },
   },
 });
 
 export const permissionSelector = (state: RootState) => state.cache.permissions;
-export const treeSelector = (state: RootState) => state.cache.permissionsObj;
 export const brigadaSelector = (state: RootState) => state.cache.brigada;
+export const rolesSelector = (state: RootState) => state.cache.roles;
+export const categorySelector = (state: RootState) => state.cache.categories;
+export const branchSelector = (state: RootState) => state.cache.branch;
 
-export const { permissionHandler, brigadaHandler } = cacheResources.actions;
-
+export const { brigadaHandler, cachedRoles, cachedCategories, cachedBranches } =
+  cacheResources.actions;
 export default cacheResources.reducer;

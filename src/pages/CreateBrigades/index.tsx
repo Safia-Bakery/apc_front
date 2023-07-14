@@ -7,9 +7,10 @@ import { useForm } from "react-hook-form";
 import cl from "classnames";
 import { ChangeEvent, useState } from "react";
 import userMutation from "src/hooks/mutation/userMutation";
-import useRoles from "src/hooks/useRoles";
 import { errorToast, successToast } from "src/utils/toast";
 import useBrigadas from "src/hooks/useBrigadas";
+import { useAppSelector } from "src/redux/utils/types";
+import { rolesSelector } from "src/redux/reducers/cacheResources";
 
 const CreateBrigades = () => {
   const { id } = useParams();
@@ -20,8 +21,7 @@ const CreateBrigades = () => {
   const handleStatus = (e: ChangeEvent<HTMLInputElement>) =>
     $status(Number(e.target.value));
   const { mutate } = userMutation();
-
-  const { data: roles } = useRoles({});
+  const roles = useAppSelector(rolesSelector);
 
   const {
     register,
@@ -62,7 +62,7 @@ const CreateBrigades = () => {
   };
   return (
     <Card>
-      <Header title={"Изменить | Добавить"}>
+      <Header title={!id ? "Добавить" : `Изменить ${id}`}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад
         </button>
@@ -72,12 +72,12 @@ const CreateBrigades = () => {
         <div className="row">
           <div className="col-md-6">
             <InputBlock
-              register={register("full_name", {
+              register={register("brigada_name", {
                 required: "Обязательное поле",
               })}
               className="form-control mb-2"
-              label="ФИО"
-              error={errors.full_name}
+              label="Название бригады"
+              error={errors.brigada_name}
             />
             <InputBlock
               register={register("username", { required: "Обязательное поле" })}
@@ -91,7 +91,7 @@ const CreateBrigades = () => {
               <label className={styles.label}>РОЛЬ</label>
               <select
                 defaultValue={"Select Item"}
-                className="form-select"
+                className={cl("form-select", styles.select)}
                 {...register("group_id", { required: "Обязательное поле" })}
               >
                 {roles?.map((role) => (
@@ -115,12 +115,7 @@ const CreateBrigades = () => {
             />
           </div>
         </div>
-        <InputBlock
-          register={register("brigada_name", { required: "Обязательное поле" })}
-          className="form-control mb-2"
-          label="brigada_name"
-          error={errors.brigada_name}
-        />
+
         <div>
           <label className={styles.label}>ОПИСАНИЕ</label>
           <textarea
@@ -133,10 +128,7 @@ const CreateBrigades = () => {
 
         <div className="form-group field-category-is_active">
           <label className={styles.label}>СТАТУС</label>
-          <div
-            id="category-is_active"
-            className={cl(styles.formControl, "form-control")}
-          >
+          <div className={cl(styles.formControl, "form-control")}>
             <label className={styles.radioBtn}>
               <input onChange={handleStatus} type="radio" value="1" />
               Активный

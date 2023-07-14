@@ -21,7 +21,7 @@ const Roles = () => {
   const navigate = useNavigate();
   const handleNavigate = (route: string) => () => navigate(route);
 
-  const { data: roles, isLoading: orderLoading } = useRoles({});
+  const { data: roles, isLoading: orderLoading } = useRoles({ enabled: false });
 
   const [sortKey, setSortKey] = useState<keyof RoleTypes>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");

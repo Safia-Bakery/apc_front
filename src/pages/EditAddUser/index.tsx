@@ -6,26 +6,63 @@ import InputBlock from "src/components/Input";
 import { useForm } from "react-hook-form";
 import cl from "classnames";
 import { ChangeEvent, useState } from "react";
-
-const paymentType = ["Перечисление", "Наличные", "Перевод на карту"];
+import { useAppSelector } from "src/redux/utils/types";
+import { rolesSelector } from "src/redux/reducers/cacheResources";
+import useBrigadas from "src/hooks/useBrigadas";
+import userMutation from "src/hooks/mutation/userMutation";
+import { errorToast, successToast } from "src/utils/toast";
+import useUsers from "src/hooks/useUsers";
 
 const EditAddUser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
 
-  const [role, $role] = useState<string>(paymentType[0]);
+  const roles = useAppSelector(rolesSelector);
+  const [status, $status] = useState(0);
+  const { refetch: userRefetch } = useUsers({ enabled: false });
 
-  const handlePayment = (e: ChangeEvent<HTMLSelectElement>) =>
-    $role(e.target.value);
+  const { mutate } = userMutation();
 
+  const onSubmit = () => {
+    const {
+      username,
+      password,
+      full_name,
+      brigada_name,
+      brigada_description,
+      group_id,
+    } = getValues();
+
+    mutate(
+      {
+        group_id,
+        status,
+        full_name,
+        username,
+        password,
+        brigada_description: "",
+        brigada_name,
+      },
+      {
+        onSuccess: () => {
+          userRefetch();
+          successToast(!!id ? "successfully updated" : "successfully created");
+          navigate("/users");
+        },
+        onError: (e: any) => errorToast(e.message),
+      }
+    );
+  };
   const {
     register,
     handleSubmit,
     formState: { errors },
     getValues,
-    reset,
   } = useForm();
+
+  const handleStatus = (e: ChangeEvent<HTMLInputElement>) =>
+    $status(Number(e.target.value));
 
   return (
     <Card>
@@ -35,21 +72,25 @@ const EditAddUser = () => {
         </button>
       </Header>
 
-      <form className={"content"}>
+      <form className="content" onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
           <div className="col-md-6">
             <InputBlock
-              register={register("name", { required: "Обязательное поле" })}
+              register={register("full_name", {
+                required: "Обязательное поле",
+              })}
               className="form-control mb-2"
               label="ФИО"
+              error={errors.full_name}
             />
             <InputBlock
-              register={register("name", { required: "Обязательное поле" })}
+              register={register("username", { required: "Обязательное поле" })}
               className="form-control mb-2"
               label="ЛОГИН"
+              error={errors.username}
             />
             <InputBlock
-              register={register("name", { required: "Обязательное поле" })}
+              register={register("phone")}
               className="form-control mb-2"
               label="ТЕЛЕФОН"
             />
@@ -59,12 +100,12 @@ const EditAddUser = () => {
               <label className={styles.label}>РОЛЬ</label>
               <select
                 defaultValue={"Select Item"}
+                {...register("group_id", { required: "Обязательное поле" })}
                 className="form-select"
-                onChange={handlePayment}
               >
-                {paymentType.map((dep) => (
-                  <option key={dep} value={dep}>
-                    {dep}
+                {roles?.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
                   </option>
                 ))}
               </select>
@@ -75,13 +116,14 @@ const EditAddUser = () => {
               )}
             </div>
             <InputBlock
-              register={register("name", { required: "Обязательное поле" })}
+              register={register("password", { required: "Обязательное поле" })}
               className="form-control mb-2"
               inputType="password"
+              error={errors.password}
               label="ПАРОЛЬ"
             />
             <InputBlock
-              register={register("name", { required: "Обязательное поле" })}
+              register={register("email", { required: "Обязательное поле" })}
               className="form-control mb-2"
               inputType="email"
               label="E-MAIL"
@@ -100,17 +142,21 @@ const EditAddUser = () => {
 
         <div className="form-group field-category-is_active">
           <label className={styles.label}>СТАТУС</label>
-          <input type="hidden" name="Category[is_active]" value="" />
           <div
             id="category-is_active"
             className={cl(styles.formControl, "form-control")}
           >
             <label className={styles.radioBtn}>
-              <input type="radio" name="Category[is_active]" value="1" />
+              <input type="radio" value="1" onChange={handleStatus} />
               Активный
             </label>
             <label className={styles.radioBtn}>
-              <input type="radio" value="0" checked={true} />
+              <input
+                type="radio"
+                value="0"
+                onChange={handleStatus}
+                checked={!status}
+              />
               Не активный
             </label>
           </div>

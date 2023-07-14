@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import AddProduct from "src/components/AddProduct";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
@@ -10,6 +10,8 @@ import dayjs from "dayjs";
 import { useAppSelector } from "src/redux/utils/types";
 import { brigadaSelector } from "src/redux/reducers/cacheResources";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
+import { successToast } from "src/utils/toast";
+import { baseURL } from "src/main";
 
 const ShowOrder = () => {
   const { id } = useParams();
@@ -24,11 +26,19 @@ const ShowOrder = () => {
   const handleModal = () => $modal((prev) => !prev);
 
   const handleBrigada = (brigada_id: number) => () => {
-    attach({
-      request_id: Number(id),
-      brigada_id,
-    });
-    orderRefetch();
+    attach(
+      {
+        request_id: Number(id),
+        brigada_id,
+      },
+      {
+        onSuccess: () => {
+          orderRefetch();
+          successToast("assigned");
+        },
+      }
+    );
+
     handleModal();
   };
 
@@ -66,10 +76,14 @@ const ShowOrder = () => {
                     <td>{order?.product}</td>
                   </tr>
                   <tr>
-                    <th>Фото</th>
-                    {order?.file?.map((item) => (
-                      <td>{item.url}</td>
-                    ))}
+                    <th>file</th>
+                    <td className="d-flex flex-column">
+                      {order?.file?.map((item) => (
+                        <a target="_blank" href={`${baseURL}/${item.url}`}>
+                          {item.url}
+                        </a>
+                      ))}
+                    </td>
                   </tr>
                   <tr>
                     <th>Примичание</th>

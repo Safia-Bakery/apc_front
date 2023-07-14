@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "src/main";
-import { BrigadaTypes } from "src/utils/types";
+import { brigadaHandler } from "src/redux/reducers/cacheResources";
+import { useAppDispatch } from "src/redux/utils/types";
+import { BrigadaType, BrigadaTypes } from "src/utils/types";
 
 export const useBrigadas = ({
   enabled = true,
@@ -11,12 +13,16 @@ export const useBrigadas = ({
   size?: number;
   page?: number;
 }) => {
+  const dispatch = useAppDispatch();
   return useQuery({
     queryKey: ["brigadas"],
     queryFn: () =>
       apiClient
         .get(`/brigadas?size=${size}&page=${page}`)
-        .then(({ data: response }) => (response as BrigadaTypes) || null),
+        .then(({ data: response }: { data: any }) => {
+          dispatch(brigadaHandler(response.items as BrigadaTypes["items"]));
+          return response as BrigadaTypes;
+        }),
     enabled,
   });
 };

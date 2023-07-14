@@ -1,5 +1,4 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
-// import SideBar from "../SideBar";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import {
   logoutHandler,
@@ -31,13 +30,11 @@ import ShowRole from "src/pages/ShowRole";
 import BreadCrump from "../BreadCrump";
 import CreateBrigades from "src/pages/CreateBrigades";
 import Register from "src/pages/Register";
-import usePermissions from "src/hooks/usePermissions";
-import {
-  brigadaHandler,
-  permissionHandler,
-} from "src/redux/reducers/cacheResources";
 import Sidebar from "../CustomSidebar";
 import useBrigadas from "src/hooks/useBrigadas";
+import useRoles from "src/hooks/useRoles";
+import useCategories from "src/hooks/useCategories";
+import useBranches from "src/hooks/useBranches";
 
 const Navigation = () => {
   const token = useAppSelector(tokenSelector);
@@ -45,16 +42,18 @@ const Navigation = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { data: me, isError, error } = useToken({ enabled: !!token });
-  const { data: permissions } = usePermissions({ enabled: !!token });
-  const { data: brigadas } = useBrigadas({ enabled: !!token });
+  useRoles({ enabled: !!token });
+  useBrigadas({ enabled: !!token });
+  useBranches({ enabled: !!token });
+  useCategories({
+    enabled: !!token,
+  });
 
   useEffect(() => {
     if (!token) navigate("/login");
     if (isError || error) dispatch(logoutHandler());
     if (me) dispatch(roleHandler(me));
-    if (permissions) dispatch(permissionHandler(permissions));
-    if (brigadas) dispatch(brigadaHandler(brigadas.items));
-  }, [token, isError, me, error, permissions]);
+  }, [token, isError, me, error]);
 
   return (
     <>

@@ -13,7 +13,9 @@ const branchMutation = () => {
       status: number;
     }) => {
       if (!body.id)
-        return apiClient.post("/fillials", body).then(({ data }) => data);
+        return apiClient
+          .post({ url: "/fillials", body })
+          .then(({ data }) => data);
       else return apiClient.put("/fillials", body).then(({ data }) => data);
     }
   );

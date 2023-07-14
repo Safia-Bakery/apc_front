@@ -30,7 +30,7 @@ const InputBlock: FC<Props> = ({
   error,
 }) => {
   return (
-    <div>
+    <div className="form-group">
       {label && <label className={styles.label}>{label}</label>}
       <input
         {...register}

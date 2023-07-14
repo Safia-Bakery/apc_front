@@ -1,109 +1,60 @@
-import Container from "src/components/Container";
-import InputBlock from "src/components/Input";
 import styles from "./index.module.scss";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
-import Loading from "src/components/Loader";
 import { errorToast, successToast } from "src/utils/toast";
-import dayjs from "dayjs";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
 import cl from "classnames";
-// import { baseURL } from "src/api/axiosConfig";
-
-const paymentType = ["Перечисление", "Наличные", "Перевод на карту"];
-
-const mockDepartment = [
-  { id: 1, name: "Фабрика" },
-  { id: 2, name: "Розница" },
-];
+import orderMutation from "src/hooks/mutation/orderMutation";
+import { useAppSelector } from "src/redux/utils/types";
+import {
+  branchSelector,
+  categorySelector,
+} from "src/redux/reducers/cacheResources";
+import FileUploader from "src/components/FileUploader";
+import useOrders from "src/hooks/useOrders";
 
 const CreateOrder = () => {
-  const [imageId, $imageId] = useState<any>();
-  const [department, $department] = useState<number>();
-  const [imageLoading, $imageLoading] = useState(false);
-  const [payment_type, $payment_type] = useState<string>(paymentType[0]);
+  const [files, $files] = useState<any>();
+  const branches = useAppSelector(branchSelector);
+  const categories = useAppSelector(categorySelector);
+  const { mutate } = orderMutation();
+  const { refetch: ordersRefetch } = useOrders({ enabled: false });
 
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
-
-  const [selectedDate, setSelectedDate] = useState<string>("");
-  const [selectedTime, setSelectedTime] = useState<string>("");
-
-  const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSelectedDate(event.target.value);
-  };
-
-  const handleTimeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSelectedTime(event.target.value);
-  };
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     getValues,
-    reset,
   } = useForm();
 
-  const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.length) {
-      let formData = new FormData();
-      formData.append("image", e.target.files[0]);
-      $imageLoading(true);
-      axios
-        .post(`/image/upload`, formData)
-        .then(({ data }) => {
-          $imageId(data.id);
-        })
-        .catch((e) => {
-          errorToast(e.message);
-        })
-        .finally(() => $imageLoading(false));
-    }
-  };
-
-  const handleDept = (val: number) => () => $department(val);
-  const handlePayment = (e: ChangeEvent<HTMLSelectElement>) =>
-    $payment_type(e.target.value);
+  const handleFilesSelected = (data: FormData) => $files(data);
   const onSubmit = () => {
-    const {
-      user_name,
-      product_name,
-      price,
-      payer,
-      provider,
-      urgent,
-      description,
-    } = getValues();
+    const { urgent, category_id, fillial_id, description } = getValues();
 
-    // mutateOrder(
-    //   {
-    //     category_id: Number(department),
-    //     purchaser: user_name,
-    //     product: product_name,
-    //     seller: provider,
-    //     delivery_time: dayjs(selectedDate + selectedTime).toDate(),
-    //     price,
-    //     payer,
-    //     urgent,
-    //     description,
-    //     payment_type,
-    //     image_id: imageId,
-    //   },
-    //   {
-    //     onSuccess: () => {
-    //       reset();
-    //       successToast("Заказ успешно создано");
-    //     },
-    //     onError: (error: any) => errorToast(error.toString()),
-    //   }
-    // );
+    mutate(
+      {
+        category_id,
+        product: "s",
+        urgent,
+        description,
+        fillial_id,
+        files,
+      },
+      {
+        onSuccess: () => {
+          ordersRefetch();
+          successToast("Заказ успешно создано");
+          navigate("/orders");
+        },
+        onError: (error: any) => errorToast(error.toString()),
+      }
+    );
   };
-
-  // if (isLoading) return <Loading />;
 
   return (
     <Card>
@@ -118,34 +69,15 @@ const CreateOrder = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="form-group">
-          <label>СОТРУДНИК</label>
-          <select
-            defaultValue={"Select Item"}
-            className="form-select"
-            onChange={handlePayment}
-          >
-            {paymentType.map((dep) => (
-              <option key={dep} value={dep}>
-                {dep}
-              </option>
-            ))}
-          </select>
-          {errors.department && (
-            <div className="alert alert-danger p-2" role="alert">
-              {errors.department.message?.toString()}
-            </div>
-          )}
-        </div>
-        <div className="form-group">
           <label>ФИЛИАЛ</label>
           <select
             defaultValue={"Select Item"}
             className="form-select"
-            onChange={handlePayment}
+            {...register("fillial_id")}
           >
-            {paymentType.map((dep) => (
-              <option key={dep} value={dep}>
-                {dep}
+            {branches?.map((branch) => (
+              <option key={branch.id} value={branch.id}>
+                {branch.name}
               </option>
             ))}
           </select>
@@ -159,12 +91,12 @@ const CreateOrder = () => {
           <label>КАТЕГОРИЯ</label>
           <select
             defaultValue={"Select Item"}
+            {...register("category_id")}
             className="form-select"
-            onChange={handlePayment}
           >
-            {paymentType.map((dep) => (
-              <option key={dep} value={dep}>
-                {dep}
+            {categories?.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.name}
               </option>
             ))}
           </select>
@@ -186,25 +118,23 @@ const CreateOrder = () => {
           />
         </div>
 
-        <div className={`row mb-4 col-md-12 ${styles.uploadImage}`}>
+        <div className={`mb-4 ${styles.uploadImage}`}>
           <label>Добавить файл</label>
-          <input
-            className="form-control"
-            type="file"
-            multiple
-            onChange={handleImage}
-            name="file-upload"
-            // accept="image/*"
-          />
+          <FileUploader onFilesSelected={handleFilesSelected} />
+
           {errors.image && (
             <div className="alert alert-danger p-2" role="alert">
               {errors.image.message?.toString()}
             </div>
           )}
         </div>
+
+        <div className="form-group d-flex align-items-center form-control">
+          <label className="mb-0 mr-2">urgent</label>
+          <input type="checkbox" {...register("urgent")} />
+        </div>
         <div>
           <button
-            disabled={imageLoading}
             type="submit"
             className={`btn btn-info btn-fill pull-right ${styles.btn}`}
           >

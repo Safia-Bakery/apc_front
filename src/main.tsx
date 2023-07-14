@@ -7,7 +7,7 @@ import { persistor, store } from "./redux/rootConfig";
 import "bootstrap/dist/css/bootstrap.min.css";
 import BaseAPIClient from "./api/axiosConfig.ts";
 
-const baseURL = "http://10.0.1.72:8000";
+export const baseURL = "http://10.0.1.72:8000";
 export const apiClient = new BaseAPIClient(baseURL, store);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

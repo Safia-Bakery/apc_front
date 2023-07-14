@@ -35,6 +35,7 @@ const Branches = () => {
   const { data: branches } = useBranches({
     size: itemsPerPage,
     page: currentPage,
+    enabled: false,
   });
 
   const handleSort = (key: keyof BranchType) => {

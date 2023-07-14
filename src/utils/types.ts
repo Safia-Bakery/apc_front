@@ -167,3 +167,19 @@ export interface Category {
 export interface CategoryTypes extends BasePaginatedRes {
   items: Category[];
 }
+
+export interface UsersType {
+  username: string;
+  full_name: string;
+  email: string | null;
+  phone_number: string | null;
+  group: {
+    name: string;
+    id: number;
+  } | null;
+  status: number;
+}
+
+export interface UsersTypes extends BasePaginatedRes {
+  items: UsersType[];
+}

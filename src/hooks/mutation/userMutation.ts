@@ -5,7 +5,7 @@ import { UserTypes } from "src/utils/types";
 const userMutation = () => {
   return useMutation(["create_user"], (body: UserTypes) =>
     apiClient
-      .post(`/brigada/vs/user`, body)
+      .post({ url: `/brigada/vs/user`, body })
       .then(({ data }) => data)
       .catch((e) => e.message)
   );

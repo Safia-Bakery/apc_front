@@ -43,19 +43,65 @@ class BaseAPIClient {
     return Promise.reject(error);
   };
 
-  public get<T>(url: string, config?: AxiosRequestConfig) {
-    return this.axiosInstance.get<T>(url, config);
+  public get<T>(url: string, params?: object, config?: AxiosRequestConfig) {
+    const fullUrl = this.buildUrlWithParams(url, params);
+    return this.axiosInstance.get<T>(fullUrl, config);
   }
 
-  public post<T>(url: string, data?: any, config?: AxiosRequestConfig) {
-    return this.axiosInstance.post<T>(url, data, config);
+  public post<T>({
+    url,
+    body,
+    params,
+    config,
+    contentType = "application/json",
+  }: {
+    url: string;
+    body?: any;
+    params?: object;
+    config?: AxiosRequestConfig;
+    contentType?: string;
+  }) {
+    const fullUrl = this.buildUrlWithParams(url, params);
+    config = config || {};
+    config.headers = {
+      ...(config.headers || {}),
+      "Content-Type": contentType,
+    };
+    return this.axiosInstance.post<T>(fullUrl, body, config);
   }
-  public put<T>(url: string, data?: any, config?: AxiosRequestConfig) {
-    return this.axiosInstance.put<T>(url, data, config);
+
+  public put<T>(
+    url: string,
+    data?: any,
+    params?: object,
+    config?: AxiosRequestConfig
+  ) {
+    const fullUrl = this.buildUrlWithParams(url, params);
+    return this.axiosInstance.put<T>(fullUrl, data, config);
   }
 
   public cancelRequest(message?: string): void {
     this.cancelTokenSource.cancel(message);
+  }
+
+  private buildUrlWithParams(url: string, params?: object): string {
+    if (!params) {
+      return url;
+    }
+
+    const queryParams = Object.entries(params)
+      .filter(([_, value]) => value !== undefined) // Exclude undefined parameters
+      .map(
+        ([key, value]) =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+      )
+      .join("&");
+
+    if (url.includes("?")) {
+      return `${url}&${queryParams}`;
+    } else {
+      return `${url}?${queryParams}`;
+    }
   }
 }
 

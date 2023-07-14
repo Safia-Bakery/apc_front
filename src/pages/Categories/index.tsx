@@ -36,6 +36,7 @@ const Categories = () => {
   const { data: categories } = useCategories({
     size: itemsPerPage,
     page: currentPage,
+    enabled: false,
   });
 
   const sortData = () => {

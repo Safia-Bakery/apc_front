@@ -3,7 +3,7 @@ import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { Link, useNavigate } from "react-router-dom";
 
-import { Order } from "src/utils/types";
+import { Order, UsersType } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
 import { useState } from "react";
@@ -12,18 +12,15 @@ import useOrders from "src/hooks/useOrders";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
+import useUsers from "src/hooks/useUsers";
 
 const column = [
-  { name: "#", key: "id" as keyof Order["id"] },
-  { name: "ФИО", key: "purchaser" as keyof Order["purchaser"] },
-  { name: "Логин", key: "type" as keyof Order["product"] },
-  { name: "Роль", key: "category.name" as keyof Order["category"] },
-  { name: "Телефон", key: "price" as keyof Order["price"] },
-  {
-    name: "Статус",
-    key: "status" as keyof Order["status"],
-  },
-  { name: "Последний визит", key: "status" as keyof Order["status"] },
+  { name: "#", key: "" },
+  { name: "ФИО", key: "full_name" as keyof UsersType["full_name"] },
+  { name: "Логин", key: "username" as keyof UsersType["username"] },
+  { name: "Роль", key: "group.name" as keyof UsersType["username"] },
+  { name: "Телефон", key: "phone_number" as keyof UsersType["phone_number"] },
+  { name: "Статус", key: "status" as keyof UsersType["status"] },
   { name: "", key: "" },
 ];
 
@@ -36,19 +33,19 @@ const Users = () => {
     data: orders,
     refetch,
     isLoading: orderLoading,
-  } = useOrders({ size: itemsPerPage, page: currentPage, enabled: false });
+  } = useUsers({ size: itemsPerPage, page: currentPage });
 
-  const [sortKey, setSortKey] = useState<keyof Order>();
+  const [sortKey, setSortKey] = useState<keyof UsersType>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
-  const handleSort = (key: any) => {
+  function handleSort(key: keyof UsersType) {
     if (key === sortKey) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
       setSortKey(key);
       setSortOrder("asc");
     }
-  };
+  }
 
   const sortData = () => {
     if (orders?.items && sortKey) {
@@ -62,6 +59,10 @@ const Users = () => {
   };
 
   const handlePageChange = (page: number) => setCurrentPage(page);
+  const handleIdx = (index: number) => {
+    if (currentPage === 1) return index + 1;
+    else return index + 1 + itemsPerPage * (currentPage - 1);
+  };
 
   if (orderLoading) return <Loading />;
 
@@ -88,24 +89,26 @@ const Users = () => {
             sortOrder={sortOrder}
           />
 
-          {orders?.items.length && (
+          {orders?.items?.length && (
             <tbody>
               {(sortData()?.length ? sortData() : orders?.items)?.map(
                 (order, idx) => (
                   <tr className="bg-blue" key={idx}>
-                    <td width="40">1</td>
-                    <td width={250}>
-                      <Link to={`/roles/${order.id}`}>Admin</Link>
-                    </td>
-                    <td>Admin_login</td>
+                    <td width="40">{handleIdx(idx)}</td>
+                    <td>{order.full_name}</td>
                     <td>
-                      <span className="not-set">Role</span>
+                      <span className="not-set">{order?.username}</span>
                     </td>
-                    <td>phone number</td>
-                    <td>status</td>
-                    <td className="text-center" width={140}>
+                    <td width={250}>
+                      <Link to={`/roles/${order.group?.id}`}>
+                        {order.group?.name}
+                      </Link>
+                    </td>
+                    <td>{order?.phone_number}</td>
+                    <td>{order.status ? "Активный" : "Неактивный"}</td>
+                    {/* <td className="text-center" width={140}>
                       {dayjs(order.time_created).format("DD-MMM-YYYY HH:mm")}
-                    </td>
+                    </td> */}
                     <TableViewBtn onClick={handleNavigate(`${1}`)} />
                   </tr>
                 )

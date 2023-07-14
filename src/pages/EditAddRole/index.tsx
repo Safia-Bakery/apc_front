@@ -18,6 +18,7 @@ const EditAddRole = () => {
 
   const { data: role, refetch: roleRefecth } = useRolePermission({
     id: Number(id),
+    enabled: !!id,
   });
 
   const {
@@ -36,13 +37,13 @@ const EditAddRole = () => {
           successToast(!id ? "role created" : "role updated");
           navigate("/roles");
           usersRefetch();
+          roleRefecth();
         },
       }
     );
   };
 
   useEffect(() => {
-    roleRefecth();
     if (id && role?.role_name) {
       reset({
         name: role.role_name,
