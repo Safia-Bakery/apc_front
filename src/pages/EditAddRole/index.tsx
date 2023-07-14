@@ -53,7 +53,7 @@ const EditAddRole = () => {
   }, [role?.role_name, id]);
   return (
     <Card>
-      <Header title={"EditAddRole"}>
+      <Header title={!id ? "Добавить" : `Изменить роль №${id}`}>
         <button className="btn btn-success btn-fill" onClick={goBack}>
           Назад
         </button>

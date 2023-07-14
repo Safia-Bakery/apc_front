@@ -1,6 +1,6 @@
 import styles from "./index.module.scss";
 import { Link, useNavigate } from "react-router-dom";
-import { Status, Order } from "src/utils/types";
+import { Order } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
 import { useEffect, useState } from "react";
@@ -10,7 +10,6 @@ import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
-import { errorToast, successToast } from "src/utils/toast";
 
 const column = [
   { name: "#", key: "" },
@@ -61,8 +60,6 @@ const ActiveOrders = () => {
 
   const handlePageChange = (page: number) => setCurrentPage(page);
 
-  const handleNavigate = (id: number) => () => navigate(`/order/${id}`);
-
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
     else return index + 1 + itemsPerPage * (currentPage - 1);
@@ -88,7 +85,8 @@ const ActiveOrders = () => {
 
       <div className="table-responsive grid-view content">
         <div className={styles.summary}>
-          Показаны записи <b>1-50</b> из <b>100</b>.
+          Показаны записи <b>1-{orders?.items.length}</b> из{" "}
+          <b>{orders?.total}</b>.
         </div>
         <table className="table table-hover">
           <TableHead

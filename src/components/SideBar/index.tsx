@@ -1,8 +1,9 @@
-import { useState } from "react";
-import "./index.scss";
+import React, { useEffect, useState } from "react";
+import SidebarItem from "./SidebarItem";
 import { useAppDispatch } from "src/redux/utils/types";
 import { logoutHandler } from "src/redux/reducers/authReducer";
-import { Link } from "react-router-dom";
+import cl from "classnames";
+import "./index.scss";
 
 const routes = [
   {
@@ -57,27 +58,49 @@ const routes = [
   },
   {
     name: "Настройки",
-    url: "/settings",
+    subroutes: [
+      {
+        name: "Филлиалы",
+        url: "/branches",
+        icon: "/assets/icons/settings.svg",
+      },
+      {
+        name: "su1",
+        url: "/su1",
+        icon: "/assets/icons/settings.svg",
+      },
+      {
+        name: "swsw",
+        url: "/wedwe",
+        icon: "/assets/icons/settings.svg",
+      },
+    ],
     icon: "/assets/icons/settings.svg",
   },
 ];
 
-const SideBar = () => {
+const Sidebar: React.FC = () => {
   const dispatch = useAppDispatch();
   const [active, $active] = useState(false);
   const handleLogout = () => dispatch(logoutHandler());
+
+  const toggleActive = () => $active((prev) => !prev);
 
   return (
     <>
       <header className="shadow-sm header">
         {!active && (
-          <div className="burgerBtn p-3" onClick={() => $active(!active)}>
+          <div className="burgerBtn p-3" onClick={toggleActive}>
             <img src="/assets/icons/burger.svg" alt="burger" />
           </div>
         )}
       </header>
       <div className="block" />
-      <div className={`sidebar ${active && "active"} sidebar-wrapper`}>
+      <div className={cl({ ["overlay"]: active })} onClick={toggleActive} />
+      <aside
+        // onClick={toggleActive}
+        className={cl("sidebar", { ["active"]: active })}
+      >
         <div className="sidebar-wrapper">
           <div>
             <div className="w-100 d-flex flex-column">
@@ -86,36 +109,22 @@ const SideBar = () => {
                 <small>Аварийно-ремонтные службы</small>
               </p>
             </div>
-
-            <ul className="nav mt-2">
-              {routes.map((item) => (
-                <li key={item.url}>
-                  <Link to={`${item.url}`} className="nav-link">
-                    <img
-                      src={item.icon}
-                      alt={item.name}
-                      className="sidebarIcon"
-                    />
-                    <p>{item.name}</p>
-                  </Link>
-                </li>
+            <ul className="nav mt-2 menuItem p-2">
+              {routes.map((route) => (
+                <SidebarItem
+                  key={route.name}
+                  name={route.name}
+                  icon={route.icon}
+                  url={route.url}
+                  subItems={route.subroutes}
+                />
               ))}
             </ul>
           </div>
-          <div
-            onClick={handleLogout}
-            className="d-flex text-center justify-content-end px-3 pt-3 align-self-end font-weight-bold pointer logoutBlock"
-          >
-            Выйти
-            <div className="logout ml-2">
-              <img src="/assets/icons/logout.svg" alt="logout" />
-            </div>
-          </div>
         </div>
-      </div>
-      {active && <div className="overlay" onClick={() => $active(!active)} />}
+      </aside>
     </>
   );
 };
 
-export default SideBar;
+export default Sidebar;

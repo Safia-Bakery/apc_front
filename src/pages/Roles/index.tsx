@@ -1,11 +1,10 @@
 import Card from "src/components/Card";
-import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { Link, useNavigate } from "react-router-dom";
 import { RoleTypes } from "src/utils/types";
 
 import Loading from "src/components/Loader";
-import { Key, useState } from "react";
+import { useState } from "react";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useRoles from "src/hooks/useRoles";
@@ -60,9 +59,6 @@ const Roles = () => {
       </Header>
 
       <div className="table-responsive grid-view content">
-        <div className={styles.summary}>
-          Показаны записи <b>1-50</b> из <b>100</b>.
-        </div>
         <table className="table table-hover">
           <TableHead
             column={column}

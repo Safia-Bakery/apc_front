@@ -72,7 +72,8 @@ const Categories = () => {
       <div className="content">
         <div className="table-responsive grid-view">
           <div className={styles.summary}>
-            Показаны записи <b>1-50</b> из <b>100</b>.
+            Показаны записи <b>1-{categories?.items.length}</b> из{" "}
+            <b>{categories?.total}</b>.
           </div>
           <table className="table table-hover">
             <TableHead

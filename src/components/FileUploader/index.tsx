@@ -51,7 +51,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFilesSelected }) => {
     });
     return formData;
   };
-  console.log(fileRef.current?.files);
   return (
     <div>
       <input type="file" ref={fileRef} multiple onChange={handleFileChange} />

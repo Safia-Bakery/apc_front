@@ -23,11 +23,11 @@ const Brigades = () => {
   const handleNavigate = (id: number | string) => () => navigate(`${id}`);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const {
-    data: brigadas,
-    refetch,
-    isLoading: orderLoading,
-  } = useBrigadas({ size: itemsPerPage, page: currentPage, enabled: false });
+  const { data: brigadas, isLoading: orderLoading } = useBrigadas({
+    size: itemsPerPage,
+    page: currentPage,
+    enabled: false,
+  });
 
   const [sortKey, setSortKey] = useState<keyof BrigadaType>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -72,7 +72,8 @@ const Brigades = () => {
 
       <div className="table-responsive grid-view content">
         <div className={styles.summary}>
-          Показаны записи <b>1-50</b> из <b>100</b>.
+          Показаны записи <b>1-{brigadas?.items.length}</b> из{" "}
+          <b>{brigadas?.total}</b>.
         </div>
         <table className="table table-hover">
           <TableHead

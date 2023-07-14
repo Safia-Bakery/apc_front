@@ -5,13 +5,13 @@ import styles from "./index.module.scss";
 import InputBlock from "src/components/Input";
 import { useForm } from "react-hook-form";
 import cl from "classnames";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useAppSelector } from "src/redux/utils/types";
 import { rolesSelector } from "src/redux/reducers/cacheResources";
-import useBrigadas from "src/hooks/useBrigadas";
 import userMutation from "src/hooks/mutation/userMutation";
 import { errorToast, successToast } from "src/utils/toast";
 import useUsers from "src/hooks/useUsers";
+import useUser from "src/hooks/useUser";
 
 const EditAddUser = () => {
   const { id } = useParams();
@@ -21,28 +21,24 @@ const EditAddUser = () => {
   const roles = useAppSelector(rolesSelector);
   const [status, $status] = useState(0);
   const { refetch: userRefetch } = useUsers({ enabled: false });
+  const { data: user } = useUser({ id: Number(id) });
 
   const { mutate } = userMutation();
 
   const onSubmit = () => {
-    const {
-      username,
-      password,
-      full_name,
-      brigada_name,
-      brigada_description,
-      group_id,
-    } = getValues();
+    const { username, password, phone_number, full_name, email, group_id } =
+      getValues();
 
     mutate(
       {
-        group_id,
-        status,
         full_name,
         username,
+        group_id,
+        email,
         password,
-        brigada_description: "",
-        brigada_name,
+        status,
+        phone_number,
+        ...(id && { id: Number(id) }),
       },
       {
         onSuccess: () => {
@@ -59,14 +55,28 @@ const EditAddUser = () => {
     handleSubmit,
     formState: { errors },
     getValues,
+    reset,
   } = useForm();
 
   const handleStatus = (e: ChangeEvent<HTMLInputElement>) =>
     $status(Number(e.target.value));
 
+  useEffect(() => {
+    if (id && user) {
+      reset({
+        full_name: user.full_name,
+        username: user.username,
+        group_id: user.group?.id,
+        email: user.email,
+        phone_number: user.phone_number,
+        status: user.status,
+      });
+    }
+  }, [user, id]);
+
   return (
     <Card>
-      <Header title={"Изменить | Добавить"}>
+      <Header title={!id ? "Добавить" : `Изменить пользователь №${id}`}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад
         </button>
@@ -90,7 +100,7 @@ const EditAddUser = () => {
               error={errors.username}
             />
             <InputBlock
-              register={register("phone")}
+              register={register("phone_number")}
               className="form-control mb-2"
               label="ТЕЛЕФОН"
             />
@@ -123,7 +133,7 @@ const EditAddUser = () => {
               label="ПАРОЛЬ"
             />
             <InputBlock
-              register={register("email", { required: "Обязательное поле" })}
+              register={register("email")}
               className="form-control mb-2"
               inputType="email"
               label="E-MAIL"

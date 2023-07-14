@@ -13,7 +13,7 @@ import dayjs from "dayjs";
 
 const column = [
   { name: "#", key: "id" as keyof Order["id"] },
-  { name: "Сотрудник", key: "purchaser" as keyof Order["purchaser"] },
+  { name: "Сотрудник", key: "purchaser" as keyof Order["status"] },
   { name: "Заявка", key: "status" as keyof Order["status"] },
   { name: "Оценка", key: "status" as keyof Order["status"] },
   { name: "Текст", key: "status" as keyof Order["status"] },

@@ -28,13 +28,18 @@ export interface RoleList {
 }
 
 export interface UserTypes {
-  password: string;
   username: string;
   full_name: string;
-  group_id: number;
-  brigada_name: string;
-  brigada_description: string;
+  email: string;
+  phone_number: string;
+  group_id?: number;
   status: number;
+  password?: string;
+  id?: number;
+  group?: {
+    name: string;
+    id: number;
+  };
 }
 
 export interface Order {
@@ -91,6 +96,17 @@ export interface BrigadaType {
   name: string;
   description: string;
   status: number;
+  user?: {
+    username: string;
+    full_name: string;
+    email: string;
+    phone_number: string;
+    group: {
+      name: string;
+      id: number;
+    };
+    status: number;
+  }[];
 }
 export interface BrigadaTypes extends BasePaginatedRes {
   items: BrigadaType[];
@@ -170,6 +186,7 @@ export interface CategoryTypes extends BasePaginatedRes {
 
 export interface UsersType {
   username: string;
+  id: number;
   full_name: string;
   email: string | null;
   phone_number: string | null;

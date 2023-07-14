@@ -6,14 +6,13 @@ import InputBlock from "src/components/Input";
 import { ChangeEvent, useState } from "react";
 import { Order } from "src/utils/types";
 import TableHead from "src/components/TableHead";
-import TableViewBtn from "src/components/TableViewBtn";
 import useOrders from "src/hooks/useOrders";
 import { itemsPerPage } from "src/utils/helpers";
 import Pagination from "src/components/Pagination";
 
 const column = [
   { name: "#", key: "id" as keyof Order["id"] },
-  { name: "Время выполнения", key: "purchaser" as keyof Order["purchaser"] },
+  { name: "Время выполнения", key: "purchaser" as keyof Order["status"] },
   { name: "Статус заявок", key: "status" as keyof Order["status"] },
   {
     name: "Время обработки по бригадам",
@@ -76,7 +75,7 @@ const Statistics = () => {
             value={selectedDate}
             onChange={handleDateChange}
           />
-          <button type="submit" className={`btn btn-primary`}>
+          <button type="submit" className={`btn btn-primary mb-3`}>
             Создать
           </button>
         </div>

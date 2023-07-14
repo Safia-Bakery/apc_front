@@ -30,11 +30,12 @@ import ShowRole from "src/pages/ShowRole";
 import BreadCrump from "../BreadCrump";
 import CreateBrigades from "src/pages/CreateBrigades";
 import Register from "src/pages/Register";
-import Sidebar from "../CustomSidebar";
+import Sidebar from "../Sidebar";
 import useBrigadas from "src/hooks/useBrigadas";
 import useRoles from "src/hooks/useRoles";
 import useCategories from "src/hooks/useCategories";
 import useBranches from "src/hooks/useBranches";
+import TestSidebar from "../TestSidebar";
 
 const Navigation = () => {
   const token = useAppSelector(tokenSelector);
@@ -60,6 +61,7 @@ const Navigation = () => {
       {token && (
         <>
           <Sidebar />
+          {/* <TestSidebar /> */}
           <BreadCrump />
         </>
       )}

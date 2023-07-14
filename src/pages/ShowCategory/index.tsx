@@ -59,7 +59,7 @@ const ShowCategory = () => {
 
   return (
     <Card>
-      <Header title={"ShowCategory"}>
+      <Header title={!id ? "Добавить" : `Изменить категорие №${id}`}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад
         </button>

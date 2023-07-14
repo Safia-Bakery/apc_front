@@ -79,7 +79,11 @@ const ShowOrder = () => {
                     <th>file</th>
                     <td className="d-flex flex-column">
                       {order?.file?.map((item) => (
-                        <a target="_blank" href={`${baseURL}/${item.url}`}>
+                        <a
+                          target="_blank"
+                          key={item.url}
+                          href={`${baseURL}/${item.url}`}
+                        >
                           {item.url}
                         </a>
                       ))}

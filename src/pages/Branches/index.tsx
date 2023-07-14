@@ -11,18 +11,18 @@ import TableViewBtn from "src/components/TableViewBtn";
 import useBranches from "src/hooks/useBranches";
 
 const column = [
-  { name: "#", key: "id" as keyof BranchType["id"] },
-  { name: "Название", key: "username" as keyof BranchType["name"] },
-  { name: "Регион", key: "" },
+  { name: "#", key: "id" },
+  { name: "Название", key: "name" },
+  { name: "Регион", key: "country" },
   {
     name: "Широта",
-    key: "group.status" as keyof BranchType["latitude"],
+    key: "latitude",
   },
   {
     name: "Долгота",
-    key: "time_created" as keyof BranchType["longtitude"],
+    key: "longtitude",
   },
-  { name: "Актив", key: "group.name" as keyof BranchType["status"] },
+  { name: "Актив", key: "status" },
   { name: "", key: "" },
 ];
 
@@ -88,7 +88,8 @@ const Branches = () => {
 
       <div className="table-responsive grid-view content">
         <div className={styles.summary}>
-          Показаны записи <b>1-50</b> из <b>100</b>.
+          Показаны записи <b>1-{branches?.items.length}</b> из{" "}
+          <b>{branches?.total}</b>.
         </div>
         <table className="table table-hover">
           <TableHead

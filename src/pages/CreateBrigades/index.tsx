@@ -5,12 +5,13 @@ import styles from "./index.module.scss";
 import InputBlock from "src/components/Input";
 import { useForm } from "react-hook-form";
 import cl from "classnames";
-import { ChangeEvent, useState } from "react";
-import userMutation from "src/hooks/mutation/userMutation";
+import { ChangeEvent, useEffect, useState } from "react";
 import { errorToast, successToast } from "src/utils/toast";
 import useBrigadas from "src/hooks/useBrigadas";
 import { useAppSelector } from "src/redux/utils/types";
 import { rolesSelector } from "src/redux/reducers/cacheResources";
+import useBrigada from "src/hooks/useBrigada";
+import brigadaMutation from "src/hooks/mutation/brigadaMutation";
 
 const CreateBrigades = () => {
   const { id } = useParams();
@@ -20,35 +21,37 @@ const CreateBrigades = () => {
   const [status, $status] = useState(0);
   const handleStatus = (e: ChangeEvent<HTMLInputElement>) =>
     $status(Number(e.target.value));
-  const { mutate } = userMutation();
-  const roles = useAppSelector(rolesSelector);
+  const { mutate } = brigadaMutation();
+
+  const { data: brigada } = useBrigada({ id: Number(id) });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     getValues,
+    reset,
   } = useForm();
 
+  useEffect(() => {
+    if (id)
+      reset({
+        brigada_name: brigada?.name,
+        brigada_description: brigada?.description,
+        status: brigada?.status,
+      });
+  }, [brigada, id]);
+
   const onSubmit = () => {
-    const {
-      username,
-      password,
-      full_name,
-      brigada_name,
-      brigada_description,
-      group_id,
-    } = getValues();
+    const { brigada_name, brigada_description } = getValues();
 
     mutate(
       {
-        group_id,
         status,
-        full_name,
-        username,
-        password,
-        brigada_description,
-        brigada_name,
+        users: [1, 2],
+        description: brigada_description,
+        name: brigada_name,
+        ...(id && { id: Number(id) }),
       },
       {
         onSuccess: () => {
@@ -62,7 +65,7 @@ const CreateBrigades = () => {
   };
   return (
     <Card>
-      <Header title={!id ? "Добавить" : `Изменить ${id}`}>
+      <Header title={!id ? "Добавить" : `Изменить бригада №${id}`}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад
         </button>
@@ -70,7 +73,7 @@ const CreateBrigades = () => {
 
       <form className="content" onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
-          <div className="col-md-6">
+          <div>
             <InputBlock
               register={register("brigada_name", {
                 required: "Обязательное поле",
@@ -79,15 +82,15 @@ const CreateBrigades = () => {
               label="Название бригады"
               error={errors.brigada_name}
             />
-            <InputBlock
+            {/* <InputBlock
               register={register("username", { required: "Обязательное поле" })}
               className="form-control mb-2"
               label="ЛОГИН"
               error={errors.username}
-            />
+            /> */}
           </div>
-          <div className="col-md-6">
-            <div className="form-group">
+          {/* <div className="col-md-6"> */}
+          {/* <div className="form-group">
               <label className={styles.label}>РОЛЬ</label>
               <select
                 defaultValue={"Select Item"}
@@ -112,8 +115,8 @@ const CreateBrigades = () => {
               inputType="password"
               label="ПАРОЛЬ"
               error={errors.password}
-            />
-          </div>
+            /> */}
+          {/* </div> */}
         </div>
 
         <div>
