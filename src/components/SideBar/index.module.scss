@@ -1,0 +1,32 @@
+.sidebar {
+  width: 80px !important;
+  min-width: 80px !important;
+  &:hover {
+    width: 250px !important;
+    min-width: 250px !important;
+
+    .descr {
+      opacity: 1;
+    }
+  }
+}
+
+.active {
+  background: rgba(255, 255, 255, 0.23) !important;
+}
+.menuItem {
+  color: white !important;
+  a {
+    padding-left: 20px !important;
+  }
+  a:hover {
+    opacity: 1 !important;
+    background: rgba(255, 255, 255, 0.23) !important;
+  }
+}
+
+.descr {
+  opacity: 0;
+  transition: 0.2s;
+  width: 250px;
+}

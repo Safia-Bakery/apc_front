@@ -8,8 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import useToken from "src/hooks/useToken";
 import { errorToast, successToast } from "src/utils/toast";
-import InputMask from "react-input-mask";
-import { fixedString } from "src/utils/helpers";
 import InputBlock from "src/components/Input";
 
 const Login = () => {
@@ -50,6 +48,7 @@ const Login = () => {
           refetch();
           navigate("/");
           successToast("Добро пожаловать");
+          // window.location.reload();
         },
         onError: (error: any) => errorToast(error.toString()),
       }

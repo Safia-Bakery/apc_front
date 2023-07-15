@@ -112,10 +112,10 @@ const ActiveOrders = () => {
                     <td>{order?.category?.name}</td>
                     <td>{!order?.urgent ? "Несрочный" : "Срочный"}</td>
                     <td>
-                      {dayjs(order?.finished_at).format("DD-MMM-YYYY HH:mm")}
+                      {dayjs(order?.finished_at).format("DD-MM-YYYY HH:mm")}
                     </td>
                     <td>
-                      {dayjs(order?.created_at).format("DD-MMM-YYYY HH:mm")}
+                      {dayjs(order?.created_at).format("DD-MM-YYYY HH:mm")}
                     </td>
                     <td>{order.status ? "Активный" : "Неактивный"}</td>
                     <td>{order?.brigada?.name}</td>

@@ -105,7 +105,7 @@ const Users = () => {
                     <td>{user?.phone_number}</td>
                     <td>{user.status ? "Активный" : "Неактивный"}</td>
                     {/* <td className="text-center" width={140}>
-                      {dayjs(order.time_created).format("DD-MMM-YYYY HH:mm")}
+                      {dayjs(order.time_created).format("DD-MM-YYYY HH:mm")}
                     </td> */}
                     <TableViewBtn onClick={handleNavigate(`${user.id}`)} />
                   </tr>

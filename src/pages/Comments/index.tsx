@@ -88,7 +88,7 @@ const Comments = () => {
                     <td>rate</td>
                     <td>text</td>
                     <td>
-                      {dayjs("24.02.2023 16:33").format("DD-MMM-YYYY HH:mm")}
+                      {dayjs("24.02.2023 16:33").format("DD-MM-YYYY HH:mm")}
                     </td>
                   </tr>
                 ))}

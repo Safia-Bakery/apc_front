@@ -23,3 +23,29 @@
     color: #337ab7;
   }
 }
+.block {
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(63, 63, 68, 0.1);
+  margin-bottom: 10px;
+}
+.container {
+  display: flex;
+  justify-content: space-between;
+  outline: none !important;
+  align-items: center;
+  padding: 0 20px;
+
+  color: #9a9a9a !important;
+
+  a {
+    text-decoration: none !important;
+  }
+}
+.logout {
+  // color: #9a9a9a !important;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  cursor: pointer;
+}

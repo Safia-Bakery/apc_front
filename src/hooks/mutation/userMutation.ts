@@ -16,10 +16,7 @@ const userMutation = () => {
         url: "/register",
         body,
       })
-      .then((res) => {
-        if (res.status === 200) return res.data;
-        else throw new Error("error");
-      })
+      .then((res) => res.data)
       .catch((e) => e.message);
   });
 };

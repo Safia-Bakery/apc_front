@@ -51,9 +51,7 @@ const AddProduct = () => {
                 <td>name</td>
                 <td>45</td>
                 <td>Электричество</td>
-                <td>
-                  {dayjs(order?.time_created).format("DD-MMM-YYYY HH:mm")}
-                </td>
+                <td>{dayjs(order?.time_created).format("DD-MM-YYYY HH:mm")}</td>
                 <td>Сафия Шохимардон</td>
               </tr>
             ))}

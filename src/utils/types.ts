@@ -125,29 +125,15 @@ export interface CreateOrderType {
   payment_type: string;
 }
 
-export enum StatusRoles {
-  musa = "musa",
-  shakhzod = "shakhzod",
-  begzod = "begzod",
-  fin = "fin",
-  accountant = "accountant",
-  unconfirmed = "unconfirmed",
-  purchasing = "purchasing",
-  superadmin = "superadmin",
-  paid = "paid",
-  denied = "denied",
+export interface BoolObj {
+  [key: string]: boolean;
 }
-
 export interface MeTypes {
   id: number;
   username: string;
   role?: { descrition: string; name: string };
   full_name: string;
-  permissions:
-    | {
-        [key: string]: string;
-      }
-    | "*";
+  permissions: BoolObj | "*";
 }
 export enum Status {
   accepted = "accepted",
@@ -199,4 +185,18 @@ export interface UsersType {
 
 export interface UsersTypes extends BasePaginatedRes {
   items: UsersType[];
+}
+
+export enum Screens {
+  requests = "requests",
+  brigada = "brigada",
+  warehouse = "warehouse",
+  users = "users",
+  category = "category",
+  maps = "maps",
+  statistics = "statistics",
+  fillials = "fillials",
+  permitted = "permitted",
+  roles = "roles",
+  comments = "comments",
 }

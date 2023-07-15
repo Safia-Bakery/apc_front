@@ -9,6 +9,7 @@ import useRolePermission from "src/hooks/useRolePermission";
 import { roleSelector } from "src/redux/reducers/authReducer";
 import { useEffect, useState } from "react";
 import Loading from "src/components/Loader";
+import { successToast } from "src/utils/toast";
 
 const ShowRole = () => {
   const navigate = useNavigate();
@@ -39,7 +40,16 @@ const ShowRole = () => {
     }
   };
   const handleSave = () => {
-    mutate({ ids, id: Number(id) });
+    mutate(
+      { ids, id: Number(id) },
+      {
+        onSuccess: () => {
+          successToast("successfully updated");
+          refetch();
+          goBack();
+        },
+      }
+    );
   };
 
   useEffect(() => {

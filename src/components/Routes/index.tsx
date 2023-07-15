@@ -3,11 +3,12 @@ import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import {
   logoutHandler,
   roleHandler,
+  roleSelector,
   tokenSelector,
 } from "src/redux/reducers/authReducer";
 import CreateOrder from "pages/CreateOrder";
 import Login from "pages/Login";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import useToken from "src/hooks/useToken";
 import ControlPanel from "src/pages/ControlPanel";
 import ActiveOrders from "src/pages/ActiveOrders";
@@ -29,71 +30,118 @@ import EditAddRole from "src/pages/EditAddRole";
 import ShowRole from "src/pages/ShowRole";
 import BreadCrump from "../BreadCrump";
 import CreateBrigades from "src/pages/CreateBrigades";
-import Register from "src/pages/Register";
-import Sidebar from "../Sidebar";
 import useBrigadas from "src/hooks/useBrigadas";
 import useRoles from "src/hooks/useRoles";
 import useCategories from "src/hooks/useCategories";
 import useBranches from "src/hooks/useBranches";
-import TestSidebar from "../TestSidebar";
+import CustomSidebar from "../Sidebar";
+import usePermissions from "src/hooks/usePermissions";
+import { Screens } from "src/utils/types";
+
+export const routes = [
+  { element: <ControlPanel />, path: "/", screen: Screens.permitted },
+  { element: <CreateOrder />, path: "/orders/add", screen: Screens.requests },
+  { element: <ShowOrder />, path: "/orders/:id", screen: Screens.requests },
+  { element: <ActiveOrders />, path: "/orders", screen: Screens.requests },
+  { element: <YandexMap />, path: "/map", screen: Screens.maps },
+  { element: <Statistics />, path: "/statistics", screen: Screens.statistics },
+  { element: <Categories />, path: "/categories", screen: Screens.category },
+  {
+    element: <ShowCategory />,
+    path: "/categories/:id",
+    screen: Screens.category,
+  },
+  {
+    element: <ShowCategory />,
+    path: "/categories/add",
+    screen: Screens.category,
+  },
+  { element: <EditAddRole />, path: "/roles/edit/:id", screen: Screens.roles },
+  { element: <EditAddRole />, path: "/roles/add", screen: Screens.roles },
+  { element: <Roles />, path: "/roles", screen: Screens.roles },
+  { element: <ShowRole />, path: "/roles/:id", screen: Screens.roles },
+  { element: <EditAddUser />, path: "/users/add", screen: Screens.users },
+  { element: <Users />, path: "/users", screen: Screens.users },
+  { element: <EditAddUser />, path: "/users/:id", screen: Screens.users },
+  { element: <Brigades />, path: "/brigades", screen: Screens.brigada },
+  {
+    element: <CreateBrigades />,
+    path: "/brigades/add",
+    screen: Screens.brigada,
+  },
+  {
+    element: <CreateBrigades />,
+    path: "/brigades/:id",
+    screen: Screens.brigada,
+  },
+  { element: <Comments />, path: "/comments", screen: Screens.comments },
+  { element: <ShowComment />, path: "/comments/:id", screen: Screens.comments },
+  { element: <Branches />, path: "/branches", screen: Screens.fillials },
+  {
+    element: <EditAddBranch />,
+    path: "/branches/add",
+    screen: Screens.fillials,
+  },
+  {
+    element: <EditAddBranch />,
+    path: "/branches/:id",
+    screen: Screens.fillials,
+  },
+  {
+    element: <RemainsInStock />,
+    path: "/items-in-stock",
+    screen: Screens.warehouse,
+  },
+];
 
 const Navigation = () => {
   const token = useAppSelector(tokenSelector);
+  const user = useAppSelector(roleSelector);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { data: me, isError, error } = useToken({ enabled: !!token });
-  useRoles({ enabled: !!token });
-  useBrigadas({ enabled: !!token });
-  useBranches({ enabled: !!token });
-  useCategories({
-    enabled: !!token,
-  });
-
+  useRoles({});
+  useBrigadas({ enabled: !!token && user?.permissions.brigadas });
+  useBranches({ enabled: !!token && user?.permissions.fillials });
+  usePermissions({ enabled: !!token && user?.permissions.permissions });
+  useCategories({});
   useEffect(() => {
     if (!token) navigate("/login");
     if (isError || error) dispatch(logoutHandler());
     if (me) dispatch(roleHandler(me));
   }, [token, isError, me, error]);
 
-  return (
-    <>
-      {token && (
+  const renderSidebar = useMemo(() => {
+    if (user?.permissions && token)
+      return (
         <>
-          <Sidebar />
-          {/* <TestSidebar /> */}
+          <CustomSidebar />
           <BreadCrump />
         </>
-      )}
+      );
+  }, [user, me, token]);
+
+  return (
+    <>
+      {renderSidebar}
 
       <Routes>
+        {routes.map((route) => {
+          if (!!user?.permissions?.[route.screen]) {
+            return (
+              <Route
+                key={route.path}
+                element={route.element}
+                path={route.path}
+              />
+            );
+          }
+        })}
+
         <Route element={<Login />} path={"/login"} />
-        <Route element={<Register />} path={"/register"} />
         <Route element={<ControlPanel />} path={"/"} />
-        <Route element={<CreateOrder />} path={"/orders/add"} />
-        <Route element={<ShowOrder />} path={"/orders/:id"} />
-        <Route element={<ActiveOrders />} path={"/orders"} />
-        <Route element={<YandexMap />} path={"/map"} />
-        <Route element={<Statistics />} path={"/statistics"} />
-        <Route element={<Categories />} path={"/categories"} />
-        <Route element={<ShowCategory />} path={"/categories/:id"} />
-        <Route element={<EditAddRole />} path={"/roles/edit/:id"} />
-        <Route element={<EditAddRole />} path={"/roles/add"} />
-        <Route element={<EditAddUser />} path={"/users/add"} />
-        <Route element={<Brigades />} path={"/brigades"} />
-        <Route element={<CreateBrigades />} path={"/brigades/add"} />
-        <Route element={<CreateBrigades />} path={"/brigades/:id"} />
-        <Route element={<Users />} path={"/users"} />
-        <Route element={<Roles />} path={"/roles"} />
-        <Route element={<ShowRole />} path={"/roles/:id"} />
-        <Route element={<Comments />} path={"/comments"} />
-        <Route element={<ShowComment />} path={"/comments/:id"} />
-        <Route element={<Branches />} path={"/branches"} />
-        <Route element={<EditAddBranch />} path={"/branches/add"} />
-        <Route element={<EditAddBranch />} path={"/branches/:id"} />
-        <Route element={<ShowCategory />} path={"/categories/add"} />
-        <Route element={<EditAddUser />} path={"/users/:id"} />
-        <Route element={<RemainsInStock />} path={"/items-in-stock"} />
+        <Route element={<ControlPanel />} path={"*"} />
       </Routes>
     </>
   );

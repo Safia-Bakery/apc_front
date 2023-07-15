@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AddProduct from "src/components/AddProduct";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
@@ -119,7 +119,7 @@ const ShowOrder = () => {
                     <th>Дата выполнения</th>
                     <td>
                       {order?.finished_at
-                        ? dayjs(order?.finished_at).format("DD-MMM-YYYY HH:mm")
+                        ? dayjs(order?.finished_at).format("DD-MM-YYYY HH:mm")
                         : "В процессе"}
                     </td>
                   </tr>
@@ -130,12 +130,12 @@ const ShowOrder = () => {
                   <tr>
                     <th>Дата изменение</th>
                     <td>
-                      {dayjs(order?.created_at).format("DD-MMM-YYYY HH:mm")}
+                      {dayjs(order?.created_at).format("DD-MM-YYYY HH:mm")}
                     </td>
                   </tr>
                   <tr>
                     <th>Дата</th>
-                    <td>{dayjs(new Date()).format("DD-MMM-YYYY HH:mm")}</td>
+                    <td>{dayjs(new Date()).format("DD-MM-YYYY HH:mm")}</td>
                   </tr>
                   <tr>
                     <th>Автор</th>
@@ -145,7 +145,15 @@ const ShowOrder = () => {
                     <th>Ответственный</th>
                     <td>
                       {order?.brigada?.name ? (
-                        order?.brigada.name
+                        <>
+                          <span>{order?.brigada.name}</span>
+                          <button
+                            onClick={handleModal}
+                            className="btn btn-primary btn-fill float-end"
+                          >
+                            Переназначить
+                          </button>
+                        </>
                       ) : (
                         <button
                           onClick={handleModal}

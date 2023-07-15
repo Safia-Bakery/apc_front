@@ -1,7 +1,9 @@
-import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import Container from "../Container";
 import styles from "./index.module.scss";
+import { FC } from "react";
+import { logoutHandler, roleSelector } from "src/redux/reducers/authReducer";
+import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 
 interface Breadcrumb {
   path: string;
@@ -26,15 +28,21 @@ const routeNameMappings: { [key: string]: string } = {
   edit: "Изменить",
 };
 
-const Breadcrumbs: React.FC = () => {
+const Breadcrumbs: FC = () => {
   const location = useLocation();
   const pathname = location.pathname;
+  const dispatch = useAppDispatch();
+  const handleLogout = () => {
+    dispatch(logoutHandler());
+    window.location.reload();
+  };
+  const me = useAppSelector(roleSelector);
 
   const breadcrumbs: Breadcrumb[] = [];
 
   const pathSegments = pathname.split("/").filter((segment) => segment !== "");
 
-  pathSegments.reduce((prevPath, currentPath, index) => {
+  pathSegments.reduce((prevPath, currentPath) => {
     const path = `${prevPath}/${currentPath}`;
     const name =
       routeNameMappings[currentPath] || currentPath.replace(/-/g, " ");
@@ -45,22 +53,30 @@ const Breadcrumbs: React.FC = () => {
   }, "");
 
   return (
-    <Container>
-      <ul className={styles.breadcrump}>
-        <li>
-          <Link to="/">Главная</Link>
-        </li>
-        {breadcrumbs.map((breadcrumb, index) => (
-          <li key={breadcrumb.path}>
-            {index === breadcrumbs.length - 1 ? (
-              <span>{breadcrumb.name}</span>
-            ) : (
-              <Link to={breadcrumb.path}>{breadcrumb.name}</Link>
-            )}
-          </li>
-        ))}
-      </ul>
-    </Container>
+    <div className={styles.block}>
+      <Container>
+        <div className={styles.container}>
+          <ul className={styles.breadcrump}>
+            <li>
+              <Link to="/">Главная</Link>
+            </li>
+            {breadcrumbs.map((breadcrumb, index) => (
+              <li key={breadcrumb.path}>
+                {index === breadcrumbs.length - 1 ? (
+                  <span>{breadcrumb.name}</span>
+                ) : (
+                  <Link to={breadcrumb.path}>{breadcrumb.name}</Link>
+                )}
+              </li>
+            ))}
+          </ul>
+
+          <span onClick={handleLogout} className={styles.logout}>
+            Выйти ({me?.full_name})
+          </span>
+        </div>
+      </Container>
+    </div>
   );
 };
 
