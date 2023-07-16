@@ -30,13 +30,10 @@ import EditAddRole from "src/pages/EditAddRole";
 import ShowRole from "src/pages/ShowRole";
 import BreadCrump from "../BreadCrump";
 import CreateBrigades from "src/pages/CreateBrigades";
-import useBrigadas from "src/hooks/useBrigadas";
-import useRoles from "src/hooks/useRoles";
-import useCategories from "src/hooks/useCategories";
-import useBranches from "src/hooks/useBranches";
-import CustomSidebar from "../Sidebar";
-import usePermissions from "src/hooks/usePermissions";
+import CustomSidebar from "../SideBar";
 import { Screens } from "src/utils/types";
+import useQueriesPrefetch from "src/hooks/sync/useQueriesPrefetch";
+import Loading from "../Loader";
 
 export const routes = [
   { element: <ControlPanel />, path: "/", screen: Screens.permitted },
@@ -101,11 +98,9 @@ const Navigation = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { data: me, isError, error } = useToken({ enabled: !!token });
-  useRoles({});
-  useBrigadas({ enabled: !!token && user?.permissions.brigadas });
-  useBranches({ enabled: !!token && user?.permissions.fillials });
-  usePermissions({ enabled: !!token && user?.permissions.permissions });
-  useCategories({});
+
+  const { isLoading: appLoading } = useQueriesPrefetch();
+
   useEffect(() => {
     if (!token) navigate("/login");
     if (isError || error) dispatch(logoutHandler());
@@ -121,6 +116,8 @@ const Navigation = () => {
         </>
       );
   }, [user, me, token]);
+
+  if (appLoading) return <Loading />;
 
   return (
     <>

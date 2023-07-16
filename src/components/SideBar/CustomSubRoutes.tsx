@@ -1,6 +1,5 @@
 import { MenuItem, SubMenu } from "react-pro-sidebar";
 import styles from "./index.module.scss";
-
 import { Link, useMatch } from "react-router-dom";
 import cl from "classnames";
 import { FC } from "react";
@@ -22,7 +21,7 @@ interface Props {
   routeIcon: string;
 }
 
-const SubRoutes: FC<Props> = ({ subroutes, routeIcon, routeName }) => {
+const Subroutes: FC<Props> = ({ subroutes, routeIcon, routeName }) => {
   const user = useAppSelector(roleSelector);
   return (
     <SubMenu
@@ -54,4 +53,4 @@ const SubRoutes: FC<Props> = ({ subroutes, routeIcon, routeName }) => {
   );
 };
 
-export default SubRoutes;
+export default Subroutes;

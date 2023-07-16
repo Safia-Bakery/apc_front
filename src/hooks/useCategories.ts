@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "src/main";
-import { roleSelector, tokenSelector } from "src/redux/reducers/authReducer";
 import { cachedCategories } from "src/redux/reducers/cacheResources";
-import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
+import { useAppDispatch } from "src/redux/utils/types";
 import { CategoryTypes } from "src/utils/types";
 
 export const useCategories = ({
@@ -15,8 +14,6 @@ export const useCategories = ({
   page?: number;
 }) => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(roleSelector);
-  const token = useAppSelector(tokenSelector);
   return useQuery({
     queryKey: ["categories"],
     queryFn: () =>
@@ -24,7 +21,7 @@ export const useCategories = ({
         dispatch(cachedCategories(response as CategoryTypes));
         return response as CategoryTypes;
       }),
-    enabled: !!token && !!user?.permissions.category && enabled,
+    enabled,
   });
 };
 export default useCategories;

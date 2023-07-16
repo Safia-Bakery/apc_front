@@ -5,7 +5,7 @@ import cl from "classnames";
 import { Screens } from "src/utils/types";
 import { useAppSelector } from "src/redux/utils/types";
 import { roleSelector } from "src/redux/reducers/authReducer";
-import SubRoutes from "./SubRoutes";
+import Subroutes from "./CustomSubRoutes";
 
 const routes = [
   {
@@ -137,7 +137,7 @@ const CustomSidebar = () => {
 
           if (item.subroutes?.length)
             return (
-              <SubRoutes
+              <Subroutes
                 key={item.name + item.url}
                 subroutes={item.subroutes}
                 routeIcon={item.icon}
