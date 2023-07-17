@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { apiClient } from "src/main";
+import { errorToast } from "src/utils/toast";
 
 const branchMutation = () => {
   return useMutation(
@@ -17,7 +18,8 @@ const branchMutation = () => {
           .post({ url: "/fillials", body })
           .then(({ data }) => data);
       else return apiClient.put("/fillials", body).then(({ data }) => data);
-    }
+    },
+    { onError: (e: Error) => errorToast(e.message) }
   );
 };
 export default branchMutation;

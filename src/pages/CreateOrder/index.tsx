@@ -1,7 +1,7 @@
 import styles from "./index.module.scss";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { errorToast, successToast } from "src/utils/toast";
+import { successToast } from "src/utils/toast";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
@@ -51,7 +51,6 @@ const CreateOrder = () => {
           successToast("Заказ успешно создано");
           navigate("/orders");
         },
-        onError: (error: any) => errorToast(error.toString()),
       }
     );
   };

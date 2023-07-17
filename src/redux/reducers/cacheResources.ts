@@ -6,6 +6,8 @@ import {
   CategoryTypes,
   PermissionTypes,
   RoleTypes,
+  UsersTypes,
+  ValueLabel,
 } from "src/utils/types";
 
 interface State {
@@ -14,6 +16,7 @@ interface State {
   roles: RoleTypes[];
   categories: CategoryTypes["items"];
   branch: BranchTypes["items"];
+  users: ValueLabel[];
 }
 
 const initialState: State = {
@@ -22,6 +25,7 @@ const initialState: State = {
   roles: [],
   categories: [],
   branch: [],
+  users: [],
 };
 
 export const cacheResources = createSlice({
@@ -40,6 +44,12 @@ export const cacheResources = createSlice({
     cachedBranches: (state, { payload }: PayloadAction<BranchTypes>) => {
       state.branch = payload.items;
     },
+    cachedUsers: (state, { payload }: PayloadAction<UsersTypes>) => {
+      state.users = payload.items.map((item) => ({
+        value: item.id,
+        label: item.username,
+      }));
+    },
     cachedPermissions: (
       state,
       { payload }: PayloadAction<PermissionTypes[]>
@@ -54,6 +64,7 @@ export const brigadaSelector = (state: RootState) => state.cache.brigada;
 export const rolesSelector = (state: RootState) => state.cache.roles;
 export const categorySelector = (state: RootState) => state.cache.categories;
 export const branchSelector = (state: RootState) => state.cache.branch;
+export const usersSelector = (state: RootState) => state.cache.users;
 
 export const {
   brigadaHandler,
@@ -61,5 +72,6 @@ export const {
   cachedCategories,
   cachedBranches,
   cachedPermissions,
+  cachedUsers,
 } = cacheResources.actions;
 export default cacheResources.reducer;

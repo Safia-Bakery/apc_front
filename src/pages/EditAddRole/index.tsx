@@ -3,7 +3,7 @@ import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import InputBlock from "src/components/Input";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import roleMutation from "src/hooks/mutation/roleMutation";
 import { successToast } from "src/utils/toast";
 import useRoles from "src/hooks/useRoles";
@@ -67,12 +67,32 @@ const EditAddRole = () => {
           error={errors.name}
         />
 
-        <InputBlock
-          register={register("key")}
-          className="form-control mb-2"
-          disabled={!!id}
-          label="КЛЮЧ"
-        />
+        {/* <div className="form-group field-category-is_active">
+          <label className={styles.label}>СТАТУС</label>
+          <div
+            id="category-is_active"
+            className={cl(styles.formControl, "form-control")}
+          >
+            <label className={styles.radioBtn}>
+              <input
+                checked={!!status}
+                type="radio"
+                value={1}
+                onChange={handleStatus}
+              />
+              Активный
+            </label>
+            <label className={styles.radioBtn}>
+              <input
+                type="radio"
+                value={0}
+                onChange={handleStatus}
+                checked={!status}
+              />
+              Не активный
+            </label>
+          </div>
+        </div> */}
 
         <button type="submit" className="btn btn-success btn-fill">
           Сохранить

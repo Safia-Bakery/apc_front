@@ -10,6 +10,8 @@ import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useBrigadas from "src/hooks/useBrigadas";
+import InputBlock from "src/components/Input";
+import { useForm } from "react-hook-form";
 
 const column = [
   { name: "#", key: "id" as keyof BrigadaType["id"] },
@@ -58,6 +60,8 @@ const Brigades = () => {
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
 
+  const { register, getValues } = useForm();
+
   if (orderLoading) return <Loading />;
   return (
     <Card>
@@ -81,7 +85,24 @@ const Brigades = () => {
             sort={handleSort}
             sortKey={sortKey}
             sortOrder={sortOrder}
-          />
+          >
+            <td></td>
+            <td className="p-0">
+              <InputBlock
+                register={register("name")}
+                blockClass={"m-2"}
+                className="form-control"
+              />
+            </td>
+            <td className="p-0">
+              <InputBlock
+                register={register("description")}
+                blockClass={"m-2"}
+                className="form-control"
+              />
+            </td>
+            <td></td>
+          </TableHead>
 
           {brigadas?.items.length && (
             <tbody>
@@ -91,7 +112,7 @@ const Brigades = () => {
                     <td width="40">{handleIdx(idx)}</td>
                     <td width={250}>{order.name}</td>
                     <td>{order.description}</td>
-                    <TableViewBtn onClick={handleNavigate(`${1}`)} />
+                    <TableViewBtn onClick={handleNavigate(`${order.id}`)} />
                   </tr>
                 )
               )}

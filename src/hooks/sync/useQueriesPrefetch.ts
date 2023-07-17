@@ -5,6 +5,7 @@ import useRoles from "src/hooks/useRoles";
 import useCategories from "src/hooks/useCategories";
 import useBranches from "src/hooks/useBranches";
 import usePermissions from "src/hooks/usePermissions";
+import useUsers from "../useUsers";
 
 const useQueriesPrefetch = () => {
   const token = useAppSelector(tokenSelector);
@@ -14,27 +15,31 @@ const useQueriesPrefetch = () => {
     enabled: !!token && !!user?.permissions?.roles,
   });
   const { isLoading: brigadaLoading } = useBrigadas({
-    enabled: !!token && user?.permissions?.brigadas,
+    enabled: !!token && !!user?.permissions?.brigadas,
   });
   const { isLoading: branchLoading } = useBranches({
-    enabled: !!token && user?.permissions?.fillials,
+    enabled: !!token && !!user?.permissions?.fillials,
   });
   const { isLoading: permissionLoading } = usePermissions({
-    enabled: !!token && user?.permissions?.permissions,
+    enabled: !!token && !!user?.permissions?.permissions,
   });
   const { isLoading: categoryLoading } = useCategories({
     enabled: !!token && !!user?.permissions?.category,
   });
+  const { isLoading: usersLoading } = useUsers({
+    enabled: !!token && !!user?.permissions?.users,
+  });
 
-  return {
-    isLoading:
-      (rolesLoading ||
-        brigadaLoading ||
-        branchLoading ||
-        permissionLoading ||
-        categoryLoading) &&
-      !!token,
-  };
+  console.log(rolesLoading, "rolesLoading");
+
+  // return {
+  //   isLoading:
+  //     rolesLoading ||
+  //     brigadaLoading ||
+  //     branchLoading ||
+  //     permissionLoading ||
+  //     categoryLoading,
+  // };
 };
 
 export default useQueriesPrefetch;

@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { apiClient } from "src/main";
+import { errorToast } from "src/utils/toast";
 
 interface BodyType {
   id?: number;
@@ -21,7 +22,8 @@ const brigadaMutation = () => {
         return apiClient
           .post({ url: `/brigadas`, body: { name, description, status } })
           .then(({ data }) => data);
-    }
+    },
+    { onError: (e: Error) => errorToast(e.message) }
   );
 };
 export default brigadaMutation;

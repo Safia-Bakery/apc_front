@@ -8,8 +8,23 @@ import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import { itemsPerPage } from "src/utils/helpers";
+import {
+  OrderTypeNames,
+  StatusName,
+  UrgentNames,
+  itemsPerPage,
+} from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
+import BaseSelect from "src/components/BaseSelect";
+import InputBlock from "src/components/Input";
+import { useForm } from "react-hook-form";
+import { useAppSelector } from "src/redux/utils/types";
+import {
+  branchSelector,
+  brigadaSelector,
+  categorySelector,
+} from "src/redux/reducers/cacheResources";
+import DateInput from "src/components/DateRangeInput";
 
 const column = [
   { name: "#", key: "" },
@@ -31,6 +46,9 @@ const ActiveOrders = () => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const branches = useAppSelector(branchSelector);
+  const categories = useAppSelector(categorySelector);
+  const brigadas = useAppSelector(brigadaSelector);
 
   const handleSort = (key: any) => {
     if (key === sortKey) {
@@ -65,9 +83,20 @@ const ActiveOrders = () => {
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
 
+  const handleDateRangeSelected = (
+    startDate: Date | null,
+    endDate: Date | null
+  ) => {
+    // Handle the selected date range
+    console.log("Start Date:", startDate);
+    console.log("End Date:", endDate);
+  };
+
+  const { register, getValues } = useForm();
+
   useEffect(() => {
     refetch();
-  }, [currentPage, refetch]);
+  }, [currentPage]);
 
   if (orderLoading) return <Loading />;
 
@@ -94,7 +123,74 @@ const ActiveOrders = () => {
             sort={handleSort}
             sortKey={sortKey}
             sortOrder={sortOrder}
-          />
+          >
+            <td></td>
+            <td className="p-0">
+              <InputBlock
+                register={register("name")}
+                blockClass={"m-2"}
+                inputType="number"
+                className="form-control"
+              />
+            </td>
+            <td className="p-0">
+              <BaseSelect
+                blockClass={"m-2"}
+                register={register("type")}
+                value={OrderTypeNames}
+              />
+            </td>
+            <td className="p-0">
+              <BaseSelect
+                blockClass={"m-2"}
+                register={register("fillials")}
+                value={branches}
+              />
+            </td>
+            <td className="p-0">
+              <BaseSelect
+                blockClass={"m-2"}
+                register={register("category")}
+                value={categories}
+              />
+            </td>
+            <td className="p-0">
+              <BaseSelect
+                blockClass={"m-2"}
+                register={register("urgent")}
+                value={UrgentNames}
+              />
+            </td>
+            <td className="p-0">
+              <DateInput
+                blockClass={"m-2"}
+                register={register("urgent")}
+                onDateRangeSelected={handleDateRangeSelected}
+              />
+            </td>
+            <td className="p-0">
+              <DateInput
+                register={register("urgent")}
+                blockClass={"m-2"}
+                onDateRangeSelected={handleDateRangeSelected}
+              />
+            </td>
+            <td className="p-0">
+              <BaseSelect
+                blockClass={"m-2"}
+                register={register("status")}
+                value={StatusName}
+              />
+            </td>
+            <td className="p-0">
+              <BaseSelect
+                blockClass={"m-2"}
+                register={register("brigada")}
+                value={brigadas}
+              />
+            </td>
+            <td></td>
+          </TableHead>
 
           {orders?.items.length && (
             <tbody>

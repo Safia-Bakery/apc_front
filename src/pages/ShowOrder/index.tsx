@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AddProduct from "src/components/AddProduct";
 import Card from "src/components/Card";
@@ -12,41 +12,140 @@ import { brigadaSelector } from "src/redux/reducers/cacheResources";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import { successToast } from "src/utils/toast";
 import { baseURL } from "src/main";
+import BaseSelect from "src/components/BaseSelect";
+import { CancelReason, handleStatus } from "src/utils/helpers";
+import { useForm } from "react-hook-form";
+import { BrigadaType, RequestStatus } from "src/utils/types";
+
+const enum ModalTypes {
+  closed = "closed",
+  cancelRequest = "cancelRequest",
+  assign = "assign",
+}
 
 const ShowOrder = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [modal, $modal] = useState(false);
+  const [modal, $modal] = useState<ModalTypes>(ModalTypes.closed);
   const { mutate: attach } = attachBrigadaMutation();
+  const handleModal = (type: ModalTypes) => () => $modal(type);
+  const [brigada, $brigada] = useState<{ id: number; name: string }>();
+  const { register, getValues } = useForm();
 
   const brigades = useAppSelector(brigadaSelector);
 
+  console.log(brigada?.name);
+
+  const selectBrigada = (item: BrigadaType) => () => {
+    $brigada({ id: item.id, name: item.name });
+    $modal(ModalTypes.closed);
+  };
+
   const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
 
-  const handleModal = () => $modal((prev) => !prev);
-
-  const handleBrigada = (brigada_id: number) => () => {
-    attach(
-      {
-        request_id: Number(id),
-        brigada_id,
-      },
-      {
-        onSuccess: () => {
-          orderRefetch();
-          successToast("assigned");
+  const handleBrigada =
+    ({ status }: { status: RequestStatus }) =>
+    () => {
+      attach(
+        {
+          request_id: Number(id),
+          brigada_id: Number(brigada?.id),
+          status,
+          comment: getValues("cancel_reason"),
         },
-      }
-    );
+        {
+          onSuccess: () => {
+            orderRefetch();
+            successToast("assigned");
+          },
+        }
+      );
 
-    handleModal();
-  };
+      $modal(ModalTypes.closed);
+    };
+
+  const renderModal = useMemo(() => {
+    if (modal === ModalTypes.assign)
+      return (
+        <>
+          <Header title="Выберите исполнителя">
+            <button onClick={handleModal(ModalTypes.closed)} className="close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </Header>
+          <div className={styles.items}>
+            {brigades.map((item, idx) => (
+              <div key={idx} className={styles.item}>
+                <h6>{item?.name}</h6>
+                <button
+                  onClick={selectBrigada(item)}
+                  className="btn btn-success btn-fill btn-sm"
+                >
+                  Назначить
+                </button>
+              </div>
+            ))}
+          </div>
+        </>
+      );
+    if (modal === ModalTypes.cancelRequest)
+      return (
+        <>
+          <Header title="Выберите исполнителя">
+            <button onClick={handleModal(ModalTypes.closed)} className="close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </Header>
+          <div className="p-3">
+            <div className="form-group">
+              <label>Выберите причину</label>
+              <select
+                defaultValue={"Select Item"}
+                {...register("cancel_reason")}
+                className="form-select"
+              >
+                {CancelReason?.map((item) => (
+                  <option key={item.id} value={item.name}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label>Комментарии</label>
+              <textarea
+                rows={4}
+                {...register("cancel_reason")}
+                className={`form-control ${styles.textArea}`}
+                name="description"
+                placeholder="Комментарии"
+              />
+            </div>
+
+            <button
+              className=""
+              onClick={handleBrigada({ status: RequestStatus.rejected })}
+            >
+              otpravit
+            </button>
+          </div>
+        </>
+      );
+
+    return;
+  }, [modal]);
+
+  useEffect(() => {
+    if (order?.brigada?.name && order?.brigada?.id)
+      $brigada({ id: order.brigada.id, name: order.brigada.name });
+  }, [order?.brigada]);
 
   const goBack = () => navigate(-1);
   return (
     <>
       <Card>
-        <Header title={`#${id}`}>
+        <Header title={`Заказ №${id}`}>
           <button className="btn btn-primary btn-fill" onClick={goBack}>
             Назад
           </button>
@@ -95,7 +194,7 @@ const ShowOrder = () => {
                   </tr>
                   <tr>
                     <th>Статус</th>
-                    <td>{order?.status}</td>
+                    <td>{handleStatus(order?.status)}</td>
                   </tr>
                 </tbody>
               </table>
@@ -144,11 +243,11 @@ const ShowOrder = () => {
                   <tr className="font-weight-bold">
                     <th>Ответственный</th>
                     <td>
-                      {order?.brigada?.name ? (
+                      {brigada?.name ? (
                         <>
-                          <span>{order?.brigada.name}</span>
+                          <span>{brigada?.name}</span>
                           <button
-                            onClick={handleModal}
+                            onClick={handleModal(ModalTypes.assign)}
                             className="btn btn-primary btn-fill float-end"
                           >
                             Переназначить
@@ -156,7 +255,7 @@ const ShowOrder = () => {
                         </>
                       ) : (
                         <button
-                          onClick={handleModal}
+                          onClick={handleModal(ModalTypes.assign)}
                           className="btn btn-success btn-fill float-end"
                         >
                           Назначить
@@ -170,41 +269,45 @@ const ShowOrder = () => {
           </div>
           <hr />
 
-          <div className="text-right mb10">
-            <button className="btn btn-warning btn-fill mr-2">
-              Забрать для ремонта
-            </button>
-            <button className="btn btn-success btn-fill">Починил</button>
-          </div>
+          {order?.status !== RequestStatus.confirmed &&
+            order?.status !== RequestStatus.rejected &&
+            order?.status !== RequestStatus.done && (
+              <div className="d-flex justify-content-between mb10">
+                <button
+                  onClick={handleModal(ModalTypes.cancelRequest)}
+                  className="btn btn-danger btn-fill"
+                >
+                  Отменить
+                </button>
+                <div className="">
+                  <button
+                    onClick={handleBrigada({
+                      status: RequestStatus.sendToRepair,
+                    })}
+                    className="btn btn-warning btn-fill mr-2"
+                  >
+                    Забрать для ремонта
+                  </button>
+                  <button
+                    onClick={handleBrigada({ status: RequestStatus.done })}
+                    className="btn btn-success btn-fill"
+                  >
+                    Починил
+                  </button>
+                </div>
+              </div>
+            )}
         </div>
       </Card>
 
       <AddProduct />
 
       <Modal
-        onClose={handleModal}
-        isOpen={modal}
+        onClose={handleModal(ModalTypes.closed)}
+        isOpen={modal !== ModalTypes.closed}
         className={styles.assignModal}
       >
-        <Header title="Выберите исполнителя">
-          <button onClick={handleModal} className="close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </Header>
-        <input type="text" className="form-control" />
-        <div className={styles.items}>
-          {brigades.map((item, idx) => (
-            <div key={idx} className={styles.item}>
-              <h6>{item.name}</h6>
-              <button
-                onClick={handleBrigada(item.id)}
-                className="btn btn-success btn-fill btn-sm"
-              >
-                Назначить
-              </button>
-            </div>
-          ))}
-        </div>
+        {renderModal}
       </Modal>
     </>
   );

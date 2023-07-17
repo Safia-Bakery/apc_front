@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { apiClient } from "src/main";
+import { errorToast } from "src/utils/toast";
 
 const orderMutation = () => {
   const contentType = "multipart/form-data";
@@ -34,7 +35,8 @@ const orderMutation = () => {
           },
           contentType,
         })
-        .then(({ data }) => data)
+        .then(({ data }) => data),
+    { onError: (e: Error) => errorToast(e.message) }
   );
 };
 export default orderMutation;

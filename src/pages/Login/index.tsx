@@ -7,7 +7,7 @@ import { loginHandler, tokenSelector } from "src/redux/reducers/authReducer";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import useToken from "src/hooks/useToken";
-import { errorToast, successToast } from "src/utils/toast";
+import { successToast } from "src/utils/toast";
 import InputBlock from "src/components/Input";
 
 const Login = () => {
@@ -50,7 +50,6 @@ const Login = () => {
           successToast("Добро пожаловать");
           // window.location.reload();
         },
-        onError: (error: any) => errorToast(error.toString()),
       }
     );
   };

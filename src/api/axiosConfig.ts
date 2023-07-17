@@ -39,7 +39,7 @@ class BaseAPIClient {
     return config;
   };
 
-  private handleRequestError = (error: any): Promise<never> => {
+  private handleRequestError = (e: Error): Promise<never> => {
     return Promise.reject(error);
   };
 

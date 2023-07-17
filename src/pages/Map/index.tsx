@@ -30,7 +30,7 @@ const YandexMap: FC = () => {
     });
     map.current?.controls.add(searchControl);
 
-    searchControl.events.add("resultselect", function (e: any) {
+    searchControl.events.add("resultselect", function (e: Error) {
       const searchCoords =
         searchControl.getResponseMetaData().SearchResponse.Point.coordinates;
       const display: string =

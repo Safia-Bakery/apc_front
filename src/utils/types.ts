@@ -33,7 +33,7 @@ export interface UserTypes {
   email: string;
   phone_number: string;
   group_id?: number;
-  status: number;
+  status?: number;
   password?: string;
   id?: number;
   group?: {
@@ -97,6 +97,7 @@ export interface BrigadaType {
   description: string;
   status: number;
   user?: {
+    id: number;
     username: string;
     full_name: string;
     email: string;
@@ -189,7 +190,7 @@ export interface UsersTypes extends BasePaginatedRes {
 
 export enum Screens {
   requests = "requests",
-  brigada = "brigada",
+  brigadas = "brigadas",
   warehouse = "warehouse",
   users = "users",
   category = "category",
@@ -199,4 +200,17 @@ export enum Screens {
   permitted = "permitted",
   roles = "roles",
   comments = "comments",
+  permissions = "permissions",
+}
+export interface ValueLabel {
+  label: string;
+  value: number;
+}
+export enum RequestStatus {
+  new,
+  confirmed,
+  inProgress,
+  done,
+  rejected,
+  sendToRepair,
 }

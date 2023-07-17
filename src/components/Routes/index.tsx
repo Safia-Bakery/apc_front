@@ -30,10 +30,11 @@ import EditAddRole from "src/pages/EditAddRole";
 import ShowRole from "src/pages/ShowRole";
 import BreadCrump from "../BreadCrump";
 import CreateBrigades from "src/pages/CreateBrigades";
-import CustomSidebar from "../SideBar";
+
 import { Screens } from "src/utils/types";
 import useQueriesPrefetch from "src/hooks/sync/useQueriesPrefetch";
 import Loading from "../Loader";
+import CustomSidebar from "../Sidebar";
 
 export const routes = [
   { element: <ControlPanel />, path: "/", screen: Screens.permitted },
@@ -60,16 +61,16 @@ export const routes = [
   { element: <EditAddUser />, path: "/users/add", screen: Screens.users },
   { element: <Users />, path: "/users", screen: Screens.users },
   { element: <EditAddUser />, path: "/users/:id", screen: Screens.users },
-  { element: <Brigades />, path: "/brigades", screen: Screens.brigada },
+  { element: <Brigades />, path: "/brigades", screen: Screens.brigadas },
   {
     element: <CreateBrigades />,
     path: "/brigades/add",
-    screen: Screens.brigada,
+    screen: Screens.brigadas,
   },
   {
     element: <CreateBrigades />,
     path: "/brigades/:id",
-    screen: Screens.brigada,
+    screen: Screens.brigadas,
   },
   { element: <Comments />, path: "/comments", screen: Screens.comments },
   { element: <ShowComment />, path: "/comments/:id", screen: Screens.comments },
@@ -99,7 +100,7 @@ const Navigation = () => {
   const dispatch = useAppDispatch();
   const { data: me, isError, error } = useToken({ enabled: !!token });
 
-  const { isLoading: appLoading } = useQueriesPrefetch();
+  useQueriesPrefetch();
 
   useEffect(() => {
     if (!token) navigate("/login");
@@ -117,7 +118,7 @@ const Navigation = () => {
       );
   }, [user, me, token]);
 
-  if (appLoading) return <Loading />;
+  // if (appLoading) return <Loading />;
 
   return (
     <>

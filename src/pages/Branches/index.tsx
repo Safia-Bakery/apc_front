@@ -5,10 +5,13 @@ import { useNavigate } from "react-router-dom";
 import Pagination from "src/components/Pagination";
 import { useState } from "react";
 import { BranchType } from "src/utils/types";
-import { itemsPerPage } from "src/utils/helpers";
+import { RegionNames, StatusName, itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useBranches from "src/hooks/useBranches";
+import InputBlock from "src/components/Input";
+import { useForm } from "react-hook-form";
+import BaseSelect from "src/components/BaseSelect";
 
 const column = [
   { name: "#", key: "id" },
@@ -56,6 +59,7 @@ const Branches = () => {
       return sortedData;
     }
   };
+  const { register, getValues } = useForm();
 
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleNavigate = (route: string) => () => navigate(route);
@@ -97,7 +101,47 @@ const Branches = () => {
             sort={handleSort}
             sortKey={sortKey}
             sortOrder={sortOrder}
-          />
+          >
+            <td></td>
+            <td className="p-0">
+              <InputBlock
+                register={register("name")}
+                blockClass={"m-2"}
+                className="form-control"
+              />
+            </td>
+            <td className="p-0">
+              <BaseSelect
+                blockClass={"m-2"}
+                register={register("region")}
+                value={RegionNames}
+              />
+            </td>
+            <td className="p-0">
+              <InputBlock
+                register={register("lat")}
+                blockClass={"m-2"}
+                inputType="number"
+                className="form-control"
+              />
+            </td>
+            <td className="p-0">
+              <InputBlock
+                register={register("lng")}
+                blockClass={"m-2"}
+                inputType="number"
+                className="form-control"
+              />
+            </td>
+            <td className="p-0">
+              <BaseSelect
+                blockClass={"m-2"}
+                register={register("status")}
+                value={StatusName}
+              />
+            </td>
+            <td></td>
+          </TableHead>
 
           {branches?.items.length && (
             <tbody>
@@ -109,7 +153,7 @@ const Branches = () => {
                     <td>{branch.country}</td>
                     <td>{branch.latitude}</td>
                     <td>{branch.longtitude}</td>
-                    <td>{!branch.status ? "Нет" : "Да"}</td>
+                    <td>{!branch.status ? "Не активный" : "Активный"}</td>
                     <TableViewBtn
                       onClick={handleNavigate(`/branches/${branch.id}`)}
                     />

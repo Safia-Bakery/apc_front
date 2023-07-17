@@ -9,7 +9,7 @@ import cl from "classnames";
 import useBranch from "src/hooks/useBranch";
 import branchMutation from "src/hooks/mutation/branchMutation";
 import useBranches from "src/hooks/useBranches";
-import { errorToast, successToast } from "src/utils/toast";
+import { successToast } from "src/utils/toast";
 
 const EditAddBranch = () => {
   const { id } = useParams();
@@ -51,7 +51,6 @@ const EditAddBranch = () => {
           successToast(!!id ? "successfully updated" : "successfully created");
           navigate("/branches");
         },
-        onError: (e: any) => errorToast(e.message),
       }
     );
   };
@@ -107,7 +106,6 @@ const EditAddBranch = () => {
 
         <div className="form-group field-category-is_active">
           <label className={styles.label}>СТАТУС</label>
-          <input type="hidden" name="Category[is_active]" value="" />
           <div
             id="category-is_active"
             className={cl(styles.formControl, "form-control")}

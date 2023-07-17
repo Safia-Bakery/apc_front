@@ -1,6 +1,7 @@
 import { ChangeEvent, FC } from "react";
 import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 import styles from "./index.module.scss";
+import cl from "classnames";
 
 interface Props {
   onChange?: (val: ChangeEvent<HTMLInputElement>) => void;
@@ -13,6 +14,7 @@ interface Props {
   disabled?: boolean;
   label?: string;
   register?: Object;
+  blockClass?: string;
   error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined;
 }
 
@@ -27,10 +29,11 @@ const InputBlock: FC<Props> = ({
   disabled = false,
   label,
   register,
+  blockClass,
   error,
 }) => {
   return (
-    <div className="form-group">
+    <div className={cl("form-group", blockClass)}>
       {label && <label className={styles.label}>{label}</label>}
       <input
         {...register}

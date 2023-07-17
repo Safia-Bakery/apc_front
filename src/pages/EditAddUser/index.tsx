@@ -9,9 +9,11 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useAppSelector } from "src/redux/utils/types";
 import { rolesSelector } from "src/redux/reducers/cacheResources";
 import userMutation from "src/hooks/mutation/userMutation";
-import { errorToast, successToast } from "src/utils/toast";
+import { successToast } from "src/utils/toast";
 import useUsers from "src/hooks/useUsers";
 import useUser from "src/hooks/useUser";
+import InputMask from "react-input-mask";
+import { fixedString } from "src/utils/helpers";
 
 const EditAddUser = () => {
   const { id } = useParams();
@@ -19,7 +21,6 @@ const EditAddUser = () => {
   const goBack = () => navigate(-1);
 
   const roles = useAppSelector(rolesSelector);
-  const [status, $status] = useState(0);
   const { refetch: userRefetch } = useUsers({ enabled: false });
   const { data: user } = useUser({ id: Number(id) });
 
@@ -36,8 +37,7 @@ const EditAddUser = () => {
         group_id,
         email,
         password,
-        status,
-        phone_number,
+        phone_number: fixedString(phone_number),
         ...(id && { id: Number(id) }),
       },
       {
@@ -46,7 +46,6 @@ const EditAddUser = () => {
           successToast(!!id ? "successfully updated" : "successfully created");
           navigate("/users");
         },
-        onError: (e: any) => errorToast(e.message),
       }
     );
   };
@@ -58,9 +57,6 @@ const EditAddUser = () => {
     reset,
   } = useForm();
 
-  const handleStatus = (e: ChangeEvent<HTMLInputElement>) =>
-    $status(Number(e.target.value));
-
   useEffect(() => {
     if (id && user) {
       reset({
@@ -69,7 +65,6 @@ const EditAddUser = () => {
         group_id: user.group?.id,
         email: user.email,
         phone_number: user.phone_number,
-        status: user.status,
       });
     }
   }, [user, id]);
@@ -99,10 +94,22 @@ const EditAddUser = () => {
               label="ЛОГИН"
               error={errors.username}
             />
-            <InputBlock
-              register={register("phone_number")}
+            {/* <InputBlock
+              register={register("phone_number", {
+                required: "Обязательное поле",
+              })}
               className="form-control mb-2"
               label="ТЕЛЕФОН"
+              error={errors.phone_number}
+            /> */}
+
+            <InputMask
+              className="form-control"
+              mask="(999-99)-999-99-99"
+              autoFocus
+              defaultValue={"998"}
+              {...register("phone_number", { required: "required" })}
+              alwaysShowMask
             />
           </div>
           <div className="col-md-6">
@@ -150,7 +157,7 @@ const EditAddUser = () => {
           />
         </div>
 
-        <div className="form-group field-category-is_active">
+        {/* <div className="form-group field-category-is_active">
           <label className={styles.label}>СТАТУС</label>
           <div
             id="category-is_active"
@@ -170,7 +177,7 @@ const EditAddUser = () => {
               Не активный
             </label>
           </div>
-        </div>
+        </div> */}
 
         <button type="submit" className="btn btn-success btn-fill">
           Сохранить

@@ -8,10 +8,12 @@ import cl from "classnames";
 import { ChangeEvent, useEffect, useState } from "react";
 import { errorToast, successToast } from "src/utils/toast";
 import useBrigadas from "src/hooks/useBrigadas";
-import { useAppSelector } from "src/redux/utils/types";
-import { rolesSelector } from "src/redux/reducers/cacheResources";
 import useBrigada from "src/hooks/useBrigada";
 import brigadaMutation from "src/hooks/mutation/brigadaMutation";
+import Select, { MultiValue } from "react-select";
+import { useAppSelector } from "src/redux/utils/types";
+import { usersSelector } from "src/redux/reducers/cacheResources";
+import { ValueLabel } from "src/utils/types";
 
 const CreateBrigades = () => {
   const { id } = useParams();
@@ -22,8 +24,12 @@ const CreateBrigades = () => {
   const handleStatus = (e: ChangeEvent<HTMLInputElement>) =>
     $status(Number(e.target.value));
   const { mutate } = brigadaMutation();
-
-  const { data: brigada } = useBrigada({ id: Number(id) });
+  const users = useAppSelector(usersSelector);
+  const { data: brigada, refetch: brigadaRefetch } = useBrigada({
+    id: Number(id),
+  });
+  const [selectedUsers, $selectedUsers] = useState<MultiValue<ValueLabel>>();
+  const [selectedIds, $selectedIds] = useState<number[]>([]);
 
   const {
     register,
@@ -33,14 +39,29 @@ const CreateBrigades = () => {
     reset,
   } = useForm();
 
+  console.log(selectedUsers, "selectedUsers");
+
   useEffect(() => {
-    if (id)
+    if (id) {
       reset({
         brigada_name: brigada?.name,
         brigada_description: brigada?.description,
         status: brigada?.status,
       });
-  }, [brigada, id]);
+      if (brigada?.user?.length) {
+        console.log("first");
+        $selectedUsers(
+          brigada.user.map((item) => ({
+            value: item.id,
+            label: item.username,
+          }))
+        );
+      }
+    }
+  }, [brigada, id, users]);
+
+  const handleUsers = (_: MultiValue<any>, ids: any) =>
+    $selectedIds((id) => [...id, ids.option.value]);
 
   const onSubmit = () => {
     const { brigada_name, brigada_description } = getValues();
@@ -48,7 +69,7 @@ const CreateBrigades = () => {
     mutate(
       {
         status,
-        users: [1, 2],
+        users: selectedIds,
         description: brigada_description,
         name: brigada_name,
         ...(id && { id: Number(id) }),
@@ -56,10 +77,11 @@ const CreateBrigades = () => {
       {
         onSuccess: () => {
           brigadasRefetch();
+          brigadaRefetch();
           successToast(!!id ? "successfully updated" : "successfully created");
           navigate("/brigades");
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e: Error) => errorToast(e.message),
       }
     );
   };
@@ -82,43 +104,21 @@ const CreateBrigades = () => {
               label="Название бригады"
               error={errors.brigada_name}
             />
-            {/* <InputBlock
-              register={register("username", { required: "Обязательное поле" })}
-              className="form-control mb-2"
-              label="ЛОГИН"
-              error={errors.username}
-            /> */}
           </div>
-          {/* <div className="col-md-6"> */}
-          {/* <div className="form-group">
-              <label className={styles.label}>РОЛЬ</label>
-              <select
-                defaultValue={"Select Item"}
-                className={cl("form-select", styles.select)}
-                {...register("group_id", { required: "Обязательное поле" })}
-              >
-                {roles?.map((role) => (
-                  <option key={role.id} value={role.id}>
-                    {role.name}
-                  </option>
-                ))}
-              </select>
-              {errors.department && (
-                <div className="alert alert-danger p-2" role="alert">
-                  {errors.department.message?.toString()}
-                </div>
-              )}
-            </div>
-            <InputBlock
-              register={register("password", { required: "Обязательное поле" })}
-              className="form-control mb-2"
-              inputType="password"
-              label="ПАРОЛЬ"
-              error={errors.password}
-            /> */}
-          {/* </div> */}
         </div>
 
+        {!!id && (
+          <div className="mb-3">
+            <label className={styles.label}>Добавить пользователей</label>
+            <Select
+              isMulti
+              onChange={handleUsers}
+              defaultValue={selectedUsers}
+              options={users}
+              value={selectedUsers}
+            />
+          </div>
+        )}
         <div>
           <label className={styles.label}>ОПИСАНИЕ</label>
           <textarea

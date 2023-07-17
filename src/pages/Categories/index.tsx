@@ -6,10 +6,13 @@ import { useNavigate } from "react-router-dom";
 import { Category } from "src/utils/types";
 import Pagination from "src/components/Pagination";
 import { useState } from "react";
-import { itemsPerPage } from "src/utils/helpers";
+import { StatusName, itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useCategories from "src/hooks/useCategories";
+import InputBlock from "src/components/Input";
+import { useForm } from "react-hook-form";
+import BaseSelect from "src/components/BaseSelect";
 
 const column = [
   { name: "#", key: "" },
@@ -50,6 +53,7 @@ const Categories = () => {
     }
   };
 
+  const { register, getValues } = useForm();
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleNavigate = (route: string) => () => navigate(route);
 
@@ -81,7 +85,24 @@ const Categories = () => {
               sort={handleSort}
               sortKey={sortKey}
               sortOrder={sortOrder}
-            />
+            >
+              <td></td>
+              <td className="p-0">
+                <InputBlock
+                  register={register("name")}
+                  blockClass={"m-2"}
+                  className="form-control"
+                />
+              </td>
+              <td className="p-0">
+                <BaseSelect
+                  blockClass={"m-2"}
+                  register={register("status")}
+                  value={StatusName}
+                />
+              </td>
+              <td></td>
+            </TableHead>
 
             {categories?.items.length && (
               <tbody>
