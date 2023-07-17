@@ -14,6 +14,7 @@ import {
 } from "src/redux/reducers/cacheResources";
 import FileUploader from "src/components/FileUploader";
 import useOrders from "src/hooks/useOrders";
+import UploadComponent from "src/components/FileUpload";
 
 const CreateOrder = () => {
   const [files, $files] = useState<any>();
@@ -120,6 +121,8 @@ const CreateOrder = () => {
         <div className={`mb-4 ${styles.uploadImage}`}>
           <label>Добавить файл</label>
           <FileUploader onFilesSelected={handleFilesSelected} />
+
+          <UploadComponent />
 
           {errors.image && (
             <div className="alert alert-danger p-2" role="alert">
