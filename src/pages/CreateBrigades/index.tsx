@@ -39,8 +39,6 @@ const CreateBrigades = () => {
     reset,
   } = useForm();
 
-  console.log(selectedUsers, "selectedUsers");
-
   useEffect(() => {
     if (id) {
       reset({
@@ -49,7 +47,6 @@ const CreateBrigades = () => {
         status: brigada?.status,
       });
       if (brigada?.user?.length) {
-        console.log("first");
         $selectedUsers(
           brigada.user.map((item) => ({
             value: item.id,

@@ -97,6 +97,7 @@ const Categories = () => {
               <td className="p-0">
                 <BaseSelect
                   blockClass={"m-2"}
+                  selectedNone
                   register={register("status")}
                   value={StatusName}
                 />

@@ -136,6 +136,7 @@ const ActiveOrders = () => {
             <td className="p-0">
               <BaseSelect
                 blockClass={"m-2"}
+                selectedNone
                 register={register("type")}
                 value={OrderTypeNames}
               />
@@ -143,6 +144,7 @@ const ActiveOrders = () => {
             <td className="p-0">
               <BaseSelect
                 blockClass={"m-2"}
+                selectedNone
                 register={register("fillials")}
                 value={branches}
               />
@@ -150,6 +152,7 @@ const ActiveOrders = () => {
             <td className="p-0">
               <BaseSelect
                 blockClass={"m-2"}
+                selectedNone
                 register={register("category")}
                 value={categories}
               />
@@ -157,6 +160,7 @@ const ActiveOrders = () => {
             <td className="p-0">
               <BaseSelect
                 blockClass={"m-2"}
+                selectedNone
                 register={register("urgent")}
                 value={UrgentNames}
               />
@@ -180,6 +184,7 @@ const ActiveOrders = () => {
                 blockClass={"m-2"}
                 register={register("status")}
                 value={StatusName}
+                selectedNone
               />
             </td>
             <td className="p-0">
@@ -187,6 +192,7 @@ const ActiveOrders = () => {
                 blockClass={"m-2"}
                 register={register("brigada")}
                 value={brigadas}
+                selectedNone
               />
             </td>
             <td></td>

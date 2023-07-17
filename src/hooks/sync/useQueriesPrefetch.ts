@@ -30,8 +30,6 @@ const useQueriesPrefetch = () => {
     enabled: !!token && !!user?.permissions?.users,
   });
 
-  console.log(rolesLoading, "rolesLoading");
-
   // return {
   //   isLoading:
   //     rolesLoading ||

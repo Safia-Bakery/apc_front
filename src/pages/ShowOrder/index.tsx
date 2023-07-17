@@ -12,7 +12,6 @@ import { brigadaSelector } from "src/redux/reducers/cacheResources";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import { successToast } from "src/utils/toast";
 import { baseURL } from "src/main";
-import BaseSelect from "src/components/BaseSelect";
 import { CancelReason, handleStatus } from "src/utils/helpers";
 import { useForm } from "react-hook-form";
 import { BrigadaType, RequestStatus } from "src/utils/types";
@@ -33,8 +32,6 @@ const ShowOrder = () => {
   const { register, getValues } = useForm();
 
   const brigades = useAppSelector(brigadaSelector);
-
-  console.log(brigada?.name);
 
   const selectBrigada = (item: BrigadaType) => () => {
     $brigada({ id: item.id, name: item.name });

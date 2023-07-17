@@ -114,6 +114,7 @@ const Users = () => {
             <td className="p-0">
               <BaseSelect
                 blockClass={"m-2"}
+                selectedNone
                 register={register("role")}
                 value={roles}
               />
@@ -127,6 +128,7 @@ const Users = () => {
             </td>
             <td className="p-0">
               <BaseSelect
+                selectedNone
                 blockClass={"m-2"}
                 register={register("status")}
                 value={StatusName}

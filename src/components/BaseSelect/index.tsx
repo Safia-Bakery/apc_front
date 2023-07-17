@@ -11,6 +11,7 @@ interface Props {
   register?: Object;
   blockClass?: string;
   isMulti?: boolean;
+  selectedNone?: boolean;
 }
 
 const BaseSelect: FC<Props> = ({
@@ -21,17 +22,18 @@ const BaseSelect: FC<Props> = ({
   label,
   register,
   blockClass,
+  selectedNone,
 }) => {
   return (
     <div className={cl("form-group", blockClass)}>
       {label && <label className={styles.label}>{label}</label>}
       <select
-        defaultValue={"Select Item"}
         disabled={disabled}
         onChange={onChange}
         {...register}
         className={cl(className, "form-select")}
       >
+        {selectedNone && <option selected></option>}
         {value?.map((item) => (
           <option key={item.id} value={item.id}>
             {item.name}
