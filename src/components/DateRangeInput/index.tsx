@@ -5,7 +5,7 @@ import cl from "classnames";
 
 interface DateInputProps {
   onDateRangeSelected: (startDate: Date | null, endDate: Date | null) => void;
-  register: Object;
+  register?: Object;
   blockClass?: string;
 }
 
@@ -26,7 +26,7 @@ const DateInput: React.FC<DateInputProps> = ({
   return (
     <div className={cl("form-group", blockClass)}>
       <DatePicker
-        // selected={startDate}
+        selected={startDate}
         onChange={onChange}
         startDate={startDate}
         endDate={endDate}

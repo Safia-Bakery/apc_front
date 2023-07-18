@@ -15,7 +15,7 @@ const roleMutation = () => {
     }) => {
       if (id)
         return apiClient
-          .put("/user/roles", { name, id })
+          .put({ url: "/user/roles", body: { name, id } })
           .then(({ data }) => data);
       else
         return apiClient

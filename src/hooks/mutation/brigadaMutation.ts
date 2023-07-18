@@ -16,11 +16,14 @@ const brigadaMutation = () => {
     ({ id, name, description, status, users }: BodyType) => {
       if (id)
         return apiClient
-          .put(`/brigadas`, { name, id, description, status, users })
+          .put({
+            url: "/brigadas",
+            body: { name, id, description, status, users },
+          })
           .then(({ data }) => data);
       else
         return apiClient
-          .post({ url: `/brigadas`, body: { name, description, status } })
+          .post({ url: "/brigadas", body: { name, description, status } })
           .then(({ data }) => data);
     },
     { onError: (e: Error) => errorToast(e.message) }

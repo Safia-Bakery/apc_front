@@ -17,7 +17,10 @@ const branchMutation = () => {
         return apiClient
           .post({ url: "/fillials", body })
           .then(({ data }) => data);
-      else return apiClient.put("/fillials", body).then(({ data }) => data);
+      else
+        return apiClient
+          .put({ url: "/fillials", body })
+          .then(({ data }) => data);
     },
     { onError: (e: Error) => errorToast(e.message) }
   );

@@ -173,7 +173,7 @@ const ShowComment = () => {
               sortOrder={sortOrder}
             />
 
-            {orders?.items.length && (
+            {!!orders?.items.length && (
               <tbody>
                 {(sortData()?.length ? sortData() : orders?.items)?.map(
                   (order, idx) => (

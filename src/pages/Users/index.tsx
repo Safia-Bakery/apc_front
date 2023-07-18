@@ -7,16 +7,12 @@ import { UsersType } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
 import { useState } from "react";
-import { StatusName, itemsPerPage } from "src/utils/helpers";
+import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useUsers from "src/hooks/useUsers";
-import InputBlock from "src/components/Input";
 import { useForm } from "react-hook-form";
-import BaseSelect from "src/components/BaseSelect";
-import { useAppSelector } from "src/redux/utils/types";
-import { roleSelector } from "src/redux/reducers/authReducer";
-import { rolesSelector } from "src/redux/reducers/cacheResources";
+import UsersFilter from "./filter";
 
 const column = [
   { name: "#", key: "" },
@@ -31,13 +27,11 @@ const column = [
 const Users = () => {
   const navigate = useNavigate();
   const handleNavigate = (route: string) => () => navigate(route);
-  const roles = useAppSelector(rolesSelector);
 
   const [currentPage, setCurrentPage] = useState(1);
   const { data: users, isLoading: orderLoading } = useUsers({
     size: itemsPerPage,
     page: currentPage,
-    enabled: false,
   });
 
   const { register, getValues } = useForm();
@@ -96,48 +90,10 @@ const Users = () => {
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            <td></td>
-            <td className="p-0">
-              <InputBlock
-                register={register("name")}
-                blockClass={"m-2"}
-                className="form-control"
-              />
-            </td>
-            <td className="p-0">
-              <InputBlock
-                register={register("login")}
-                blockClass={"m-2"}
-                className="form-control"
-              />
-            </td>
-            <td className="p-0">
-              <BaseSelect
-                blockClass={"m-2"}
-                selectedNone
-                register={register("role")}
-                value={roles}
-              />
-            </td>
-            <td className="p-0">
-              <InputBlock
-                register={register("phone_number")}
-                blockClass={"m-2"}
-                className="form-control"
-              />
-            </td>
-            <td className="p-0">
-              <BaseSelect
-                selectedNone
-                blockClass={"m-2"}
-                register={register("status")}
-                value={StatusName}
-              />
-            </td>
-            <td></td>
+            <UsersFilter currentPage={currentPage} />
           </TableHead>
 
-          {users?.items?.length && (
+          {!!users?.items?.length && (
             <tbody>
               {(sortData()?.length ? sortData() : users?.items)?.map(
                 (user, idx) => (
@@ -154,9 +110,6 @@ const Users = () => {
                     </td>
                     <td>{user?.phone_number}</td>
                     <td>{user.status ? "Активный" : "Неактивный"}</td>
-                    {/* <td className="text-center" width={140}>
-                      {dayjs(order.time_created).format("DD-MM-YYYY HH:mm")}
-                    </td> */}
                     <TableViewBtn onClick={handleNavigate(`${user.id}`)} />
                   </tr>
                 )

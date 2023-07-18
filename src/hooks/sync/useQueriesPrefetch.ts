@@ -26,9 +26,6 @@ const useQueriesPrefetch = () => {
   const { isLoading: categoryLoading } = useCategories({
     enabled: !!token && !!user?.permissions?.category,
   });
-  const { isLoading: usersLoading } = useUsers({
-    enabled: !!token && !!user?.permissions?.users,
-  });
 
   // return {
   //   isLoading:

@@ -76,7 +76,7 @@ const Comments = () => {
               sortOrder={sortOrder}
             />
 
-            {orders?.items.length && (
+            {!!orders?.items.length && (
               <tbody>
                 {[...Array(6)]?.map((order, idx) => (
                   <tr key={idx} className="bg-blue">

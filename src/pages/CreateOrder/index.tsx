@@ -1,4 +1,3 @@
-import styles from "./index.module.scss";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { successToast } from "src/utils/toast";
@@ -12,9 +11,9 @@ import {
   branchSelector,
   categorySelector,
 } from "src/redux/reducers/cacheResources";
-import FileUploader from "src/components/FileUploader";
 import useOrders from "src/hooks/useOrders";
-import UploadComponent from "src/components/FileUpload";
+import UploadComponent, { FileItem } from "src/components/FileUpload";
+import styles from "./index.module.scss";
 
 const CreateOrder = () => {
   const [files, $files] = useState<any>();
@@ -33,7 +32,13 @@ const CreateOrder = () => {
     getValues,
   } = useForm();
 
-  const handleFilesSelected = (data: FormData) => $files(data);
+  const handleFilesSelected = (data: FileItem[]) => {
+    const formData = new FormData();
+    data.forEach((item) => {
+      formData.append("files", item.file, item.file.name);
+    });
+    $files(formData);
+  };
   const onSubmit = () => {
     const { urgent, category_id, fillial_id, description } = getValues();
 
@@ -55,6 +60,14 @@ const CreateOrder = () => {
       }
     );
   };
+
+  // const convertFilesToFormData = (): FormData => {
+  //   const formData = new FormData();
+  //   fileList.forEach((item) => {
+  //     formData.append("files", item.file, item.file.name);
+  //   });
+  //   return formData;
+  // };
 
   return (
     <Card>
@@ -120,9 +133,9 @@ const CreateOrder = () => {
 
         <div className={`mb-4 ${styles.uploadImage}`}>
           <label>Добавить файл</label>
-          <FileUploader onFilesSelected={handleFilesSelected} />
+          {/* <FileUploader onFilesSelected={handleFilesSelected} /> */}
 
-          <UploadComponent />
+          <UploadComponent onFilesSelected={handleFilesSelected} />
 
           {errors.image && (
             <div className="alert alert-danger p-2" role="alert">

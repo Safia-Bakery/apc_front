@@ -1,27 +1,32 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "src/main";
-import { cachedUsers } from "src/redux/reducers/cacheResources";
-import { useAppDispatch } from "src/redux/utils/types";
 import { UsersTypes } from "src/utils/types";
+
+interface BodyTypes {
+  full_name?: string;
+  username?: string;
+  phone_number?: string;
+  role_id?: number;
+  user_status?: number;
+}
 
 export const useUsers = ({
   enabled = true,
-  size = 20,
-  page = 1,
+  size,
+  page,
+  body,
 }: {
   enabled?: boolean;
   size?: number;
   page?: number;
+  body?: BodyTypes;
 }) => {
-  const dispatch = useAppDispatch();
-
   return useQuery({
     queryKey: ["users"],
     queryFn: () =>
       apiClient
-        .get(`/users?size=${size}&page=${page}`)
+        .get(`/users`, { page, size, ...body })
         .then(({ data: response }) => {
-          dispatch(cachedUsers(response as UsersTypes));
           return response as UsersTypes;
         }),
     enabled,

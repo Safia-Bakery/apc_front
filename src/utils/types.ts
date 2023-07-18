@@ -50,6 +50,7 @@ export interface Order {
   created_at: Date;
   status: number;
   urgent: boolean;
+  user: UserTypes;
   brigada: {
     id: number;
     name: string;
@@ -214,3 +215,20 @@ export enum RequestStatus {
   rejected,
   sendToRepair,
 }
+type dateRangeType = {
+  start: Date;
+  end: Date;
+};
+export type RequestFilter = {
+  id?: number;
+  department?: string;
+  fillial_id?: number;
+  category_id?: number;
+  urgent?: boolean;
+  created_from?: string;
+  created_to?: string;
+  finished_from?: string;
+  finished_to?: string;
+  request_status?: number;
+  user?: string;
+};

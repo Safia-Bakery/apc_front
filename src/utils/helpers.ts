@@ -8,16 +8,16 @@ export const StatusName = [
   { name: "Не активный", id: 0 },
 ];
 export const OrderTypeNames = [
-  { name: "APC", id: 1 },
-  { name: "IT", id: 0 },
+  { name: "APC", id: "APC" },
+  { name: "IT", id: "IT" },
 ];
 export const UrgentNames = [
   { name: "Срочный", id: 1 },
-  { name: "Несрочный", id: 0 },
+  { name: "Несрочный", id: 2 },
 ];
 export const RegionNames = [
-  { name: "Uzbekistan", id: 1 },
-  { name: "Kazakhstan", id: 2 },
+  { name: "Uzbekistan", id: "Uzbekistan" },
+  { name: "Kazakhstan", id: "Kazakhstan" },
 ];
 export const CancelReason = [
   { name: "Do not needed", id: 1 },
@@ -74,3 +74,12 @@ export const handleStatus = (status: RequestStatus | undefined) => {
       return "new";
   }
 };
+
+export const RequestStatusArr = [
+  { id: RequestStatus.confirmed, name: RequestStatus["1"] },
+  { id: RequestStatus.new, name: RequestStatus["0"] },
+  { id: RequestStatus.inProgress, name: RequestStatus["2"] },
+  { id: RequestStatus.done, name: RequestStatus["3"] },
+  { id: RequestStatus.rejected, name: RequestStatus["4"] },
+  { id: RequestStatus.sendToRepair, name: RequestStatus["5"] },
+];

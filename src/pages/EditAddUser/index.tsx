@@ -4,8 +4,7 @@ import Header from "src/components/Header";
 import styles from "./index.module.scss";
 import InputBlock from "src/components/Input";
 import { useForm } from "react-hook-form";
-import cl from "classnames";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAppSelector } from "src/redux/utils/types";
 import { rolesSelector } from "src/redux/reducers/cacheResources";
 import userMutation from "src/hooks/mutation/userMutation";
@@ -24,27 +23,32 @@ const EditAddUser = () => {
   const { refetch: userRefetch } = useUsers({ enabled: false });
   const { data: user } = useUser({ id: Number(id) });
 
-  const { mutate } = userMutation();
+  const mutation = userMutation();
 
   const onSubmit = () => {
     const { username, password, phone_number, full_name, email, group_id } =
       getValues();
 
-    mutate(
+    mutation.mutate(
       {
         full_name,
         username,
         group_id,
+        status: 2,
         email,
         password,
         phone_number: fixedString(phone_number),
         ...(id && { id: Number(id) }),
       },
       {
-        onSuccess: () => {
-          userRefetch();
-          successToast(!!id ? "successfully updated" : "successfully created");
-          navigate("/users");
+        onSuccess: (data: any) => {
+          if (data.status === 200) {
+            userRefetch();
+            navigate("/users");
+            successToast(
+              !!id ? "successfully updated" : "successfully created"
+            );
+          }
         },
       }
     );
@@ -94,22 +98,14 @@ const EditAddUser = () => {
               label="ЛОГИН"
               error={errors.username}
             />
-            {/* <InputBlock
-              register={register("phone_number", {
-                required: "Обязательное поле",
-              })}
-              className="form-control mb-2"
-              label="ТЕЛЕФОН"
-              error={errors.phone_number}
-            /> */}
-
+            <label className={styles.label}>ТЕЛЕФОН</label>
             <InputMask
               className="form-control"
               mask="(999-99)-999-99-99"
-              autoFocus
               defaultValue={"998"}
-              {...register("phone_number", { required: "required" })}
-              alwaysShowMask
+              {...register("phone_number", {
+                required: "required",
+              })}
             />
           </div>
           <div className="col-md-6">
@@ -133,7 +129,13 @@ const EditAddUser = () => {
               )}
             </div>
             <InputBlock
-              register={register("password", { required: "Обязательное поле" })}
+              register={register("password", {
+                required: "Обязательное поле",
+                minLength: {
+                  value: 6,
+                  message: "Надо ввести минимум 6 символов",
+                },
+              })}
               className="form-control mb-2"
               inputType="password"
               error={errors.password}
@@ -142,7 +144,7 @@ const EditAddUser = () => {
             <InputBlock
               register={register("email")}
               className="form-control mb-2"
-              inputType="email"
+              // inputType="email"
               label="E-MAIL"
             />
           </div>
@@ -157,29 +159,7 @@ const EditAddUser = () => {
           />
         </div>
 
-        {/* <div className="form-group field-category-is_active">
-          <label className={styles.label}>СТАТУС</label>
-          <div
-            id="category-is_active"
-            className={cl(styles.formControl, "form-control")}
-          >
-            <label className={styles.radioBtn}>
-              <input type="radio" value="1" onChange={handleStatus} />
-              Активный
-            </label>
-            <label className={styles.radioBtn}>
-              <input
-                type="radio"
-                value="0"
-                onChange={handleStatus}
-                checked={!status}
-              />
-              Не активный
-            </label>
-          </div>
-        </div> */}
-
-        <button type="submit" className="btn btn-success btn-fill">
+        <button type="submit" className="btn btn-success btn-fill mt-3">
           Сохранить
         </button>
       </form>

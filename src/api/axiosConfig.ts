@@ -6,6 +6,14 @@ import axios, {
 import { Store } from "redux";
 import { RootState } from "src/redux/rootConfig";
 
+interface BaseUrlParams {
+  url: string;
+  body?: any;
+  params?: object;
+  config?: AxiosRequestConfig;
+  contentType?: string;
+}
+
 class BaseAPIClient {
   private axiosInstance: AxiosInstance;
   private cancelTokenSource: CancelTokenSource;
@@ -40,7 +48,7 @@ class BaseAPIClient {
   };
 
   private handleRequestError = (e: Error): Promise<never> => {
-    return Promise.reject(error);
+    return Promise.reject(e);
   };
 
   public get<T>(url: string, params?: object, config?: AxiosRequestConfig) {
@@ -54,13 +62,7 @@ class BaseAPIClient {
     params,
     config,
     contentType = "application/json",
-  }: {
-    url: string;
-    body?: any;
-    params?: object;
-    config?: AxiosRequestConfig;
-    contentType?: string;
-  }) {
+  }: BaseUrlParams) {
     const fullUrl = this.buildUrlWithParams(url, params);
     config = config || {};
     config.headers = {
@@ -70,14 +72,15 @@ class BaseAPIClient {
     return this.axiosInstance.post<T>(fullUrl, body, config);
   }
 
-  public put<T>(
-    url: string,
-    data?: any,
-    params?: object,
-    config?: AxiosRequestConfig
-  ) {
+  public put<T>({
+    url,
+    body,
+    params,
+    config,
+    contentType = "application/json",
+  }: BaseUrlParams) {
     const fullUrl = this.buildUrlWithParams(url, params);
-    return this.axiosInstance.put<T>(fullUrl, data, config);
+    return this.axiosInstance.put<T>(fullUrl, body, config);
   }
 
   public cancelRequest(message?: string): void {

@@ -11,7 +11,9 @@ const attachBrigadaMutation = () => {
       status: RequestStatus;
       comment?: string;
     }) =>
-      apiClient.put("/request/attach/brigada", body).then(({ data }) => data)
+      apiClient
+        .put({ url: "/request/attach/brigada", body })
+        .then(({ data }) => data)
   );
 };
 export default attachBrigadaMutation;

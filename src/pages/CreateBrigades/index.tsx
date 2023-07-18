@@ -14,6 +14,7 @@ import Select, { MultiValue } from "react-select";
 import { useAppSelector } from "src/redux/utils/types";
 import { usersSelector } from "src/redux/reducers/cacheResources";
 import { ValueLabel } from "src/utils/types";
+import useUsersForBrigada from "src/hooks/useUsersForBrigada";
 
 const CreateBrigades = () => {
   const { id } = useParams();
@@ -24,6 +25,7 @@ const CreateBrigades = () => {
   const handleStatus = (e: ChangeEvent<HTMLInputElement>) =>
     $status(Number(e.target.value));
   const { mutate } = brigadaMutation();
+  useUsersForBrigada({ id: Number(id) });
   const users = useAppSelector(usersSelector);
   const { data: brigada, refetch: brigadaRefetch } = useBrigada({
     id: Number(id),

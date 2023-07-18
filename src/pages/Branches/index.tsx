@@ -5,13 +5,12 @@ import { useNavigate } from "react-router-dom";
 import Pagination from "src/components/Pagination";
 import { useState } from "react";
 import { BranchType } from "src/utils/types";
-import { RegionNames, StatusName, itemsPerPage } from "src/utils/helpers";
+import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useBranches from "src/hooks/useBranches";
-import InputBlock from "src/components/Input";
 import { useForm } from "react-hook-form";
-import BaseSelect from "src/components/BaseSelect";
+import BranchesFilter from "./filter";
 
 const column = [
   { name: "#", key: "id" },
@@ -102,49 +101,10 @@ const Branches = () => {
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            <td></td>
-            <td className="p-0">
-              <InputBlock
-                register={register("name")}
-                blockClass={"m-2"}
-                className="form-control"
-              />
-            </td>
-            <td className="p-0">
-              <BaseSelect
-                blockClass={"m-2"}
-                selectedNone
-                register={register("region")}
-                value={RegionNames}
-              />
-            </td>
-            <td className="p-0">
-              <InputBlock
-                register={register("lat")}
-                blockClass={"m-2"}
-                inputType="number"
-                className="form-control"
-              />
-            </td>
-            <td className="p-0">
-              <InputBlock
-                register={register("lng")}
-                blockClass={"m-2"}
-                inputType="number"
-                className="form-control"
-              />
-            </td>
-            <td className="p-0">
-              <BaseSelect
-                blockClass={"m-2"}
-                register={register("status")}
-                value={StatusName}
-              />
-            </td>
-            <td></td>
+            <BranchesFilter currentPage={currentPage} />
           </TableHead>
 
-          {branches?.items.length && (
+          {!!branches?.items.length && (
             <tbody>
               {(sortData()?.length ? sortData() : branches.items)?.map(
                 (branch, idx) => (

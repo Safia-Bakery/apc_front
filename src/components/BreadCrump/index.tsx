@@ -18,7 +18,7 @@ const routeNameMappings: { [key: string]: string } = {
   about: "About",
   contact: "Contact",
   home: "Главная",
-  orders: "Заказы",
+  orders: "Заявки",
   map: "Карта",
   statistics: "Статистика",
   categories: "Категории",

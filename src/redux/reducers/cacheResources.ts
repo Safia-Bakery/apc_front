@@ -6,7 +6,7 @@ import {
   CategoryTypes,
   PermissionTypes,
   RoleTypes,
-  UsersTypes,
+  UsersType,
   ValueLabel,
 } from "src/utils/types";
 
@@ -44,8 +44,8 @@ export const cacheResources = createSlice({
     cachedBranches: (state, { payload }: PayloadAction<BranchTypes>) => {
       state.branch = payload.items;
     },
-    cachedUsers: (state, { payload }: PayloadAction<UsersTypes>) => {
-      state.users = payload.items.map((item) => ({
+    cachedUsers: (state, { payload }: PayloadAction<UsersType[]>) => {
+      state.users = payload?.map((item) => ({
         value: item.id,
         label: item.username,
       }));

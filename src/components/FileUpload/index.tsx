@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import { ChangeEvent, FC, useState } from "react";
 
-interface FileItem {
+export interface FileItem {
   file: File;
   id: number;
 }
+interface FileUploaderProps {
+  onFilesSelected: (formData: FileItem[]) => void;
+}
 
-const UploadComponent: React.FC = () => {
+const UploadComponent: FC<FileUploaderProps> = ({ onFilesSelected }) => {
   const [fileList, setFileList] = useState<FileItem[]>([]);
   const [fileIdCounter, setFileIdCounter] = useState(0);
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
       const updatedFileList: FileItem[] = [...fileList];
@@ -20,6 +23,7 @@ const UploadComponent: React.FC = () => {
         };
         updatedFileList.push(newFileItem);
       }
+      onFilesSelected(updatedFileList);
       setFileList(updatedFileList);
       setFileIdCounter(fileIdCounter + files.length);
     }
@@ -28,6 +32,7 @@ const UploadComponent: React.FC = () => {
   const handleFileDelete = (id: number) => {
     const updatedFileList = fileList.filter((item) => item.id !== id);
     setFileList(updatedFileList);
+    onFilesSelected(updatedFileList);
   };
 
   return (

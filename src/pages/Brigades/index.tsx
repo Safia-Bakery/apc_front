@@ -10,13 +10,12 @@ import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useBrigadas from "src/hooks/useBrigadas";
-import InputBlock from "src/components/Input";
-import { useForm } from "react-hook-form";
+import BrigadesFilter from "./filter";
 
 const column = [
-  { name: "#", key: "id" as keyof BrigadaType["id"] },
-  { name: "Названия", key: "name" as keyof BrigadaType["name"] },
-  { name: "Описания", key: "description" as keyof BrigadaType["description"] },
+  { name: "#", key: "id" },
+  { name: "Названия", key: "name" },
+  { name: "Описания", key: "description" },
   { name: "", key: "" },
 ];
 
@@ -25,7 +24,11 @@ const Brigades = () => {
   const handleNavigate = (id: number | string) => () => navigate(`${id}`);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: brigadas, isLoading: orderLoading } = useBrigadas({
+  const {
+    data: brigadas,
+    isLoading: orderLoading,
+    refetch,
+  } = useBrigadas({
     size: itemsPerPage,
     page: currentPage,
     enabled: false,
@@ -54,13 +57,14 @@ const Brigades = () => {
     }
   };
 
-  const handlePageChange = (page: number) => setCurrentPage(page);
+  const handlePageChange = (page: number) => {
+    refetch();
+    setCurrentPage(page);
+  };
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
-
-  const { register, getValues } = useForm();
 
   if (orderLoading) return <Loading />;
   return (
@@ -86,25 +90,10 @@ const Brigades = () => {
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            <td></td>
-            <td className="p-0">
-              <InputBlock
-                register={register("name")}
-                blockClass={"m-2"}
-                className="form-control"
-              />
-            </td>
-            <td className="p-0">
-              <InputBlock
-                register={register("description")}
-                blockClass={"m-2"}
-                className="form-control"
-              />
-            </td>
-            <td></td>
+            {/* <BrigadesFilter currentPage={currentPage} /> */}
           </TableHead>
 
-          {brigadas?.items.length && (
+          {!!brigadas?.items?.length && (
             <tbody>
               {(sortData()?.length ? sortData() : brigadas?.items)?.map(
                 (order, idx) => (

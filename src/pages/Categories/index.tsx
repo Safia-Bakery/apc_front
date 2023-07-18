@@ -2,22 +2,19 @@ import Card from "src/components/Card";
 import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
-
 import { Category } from "src/utils/types";
 import Pagination from "src/components/Pagination";
 import { useState } from "react";
-import { StatusName, itemsPerPage } from "src/utils/helpers";
+import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useCategories from "src/hooks/useCategories";
-import InputBlock from "src/components/Input";
-import { useForm } from "react-hook-form";
-import BaseSelect from "src/components/BaseSelect";
+import CategoriesFilter from "./filter";
 
 const column = [
   { name: "#", key: "" },
-  { name: "Наименование", key: "name" as keyof Category["name"] },
-  { name: "Статус", key: "status" as keyof Category["status"] },
+  { name: "Наименование", key: "name" },
+  { name: "Статус", key: "status" },
   { name: "", key: "" },
 ];
 
@@ -39,7 +36,6 @@ const Categories = () => {
   const { data: categories } = useCategories({
     size: itemsPerPage,
     page: currentPage,
-    enabled: false,
   });
 
   const sortData = () => {
@@ -53,7 +49,6 @@ const Categories = () => {
     }
   };
 
-  const { register, getValues } = useForm();
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleNavigate = (route: string) => () => navigate(route);
 
@@ -86,26 +81,10 @@ const Categories = () => {
               sortKey={sortKey}
               sortOrder={sortOrder}
             >
-              <td></td>
-              <td className="p-0">
-                <InputBlock
-                  register={register("name")}
-                  blockClass={"m-2"}
-                  className="form-control"
-                />
-              </td>
-              <td className="p-0">
-                <BaseSelect
-                  blockClass={"m-2"}
-                  selectedNone
-                  register={register("status")}
-                  value={StatusName}
-                />
-              </td>
-              <td></td>
+              <CategoriesFilter currentPage={currentPage} />
             </TableHead>
 
-            {categories?.items.length && (
+            {!!categories?.items.length && (
               <tbody>
                 {(sortData()?.length ? sortData() : categories?.items)?.map(
                   (category, idx) => (

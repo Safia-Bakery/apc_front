@@ -1,23 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "src/main";
-import { OrderType } from "src/utils/types";
+import { OrderType, RequestFilter } from "src/utils/types";
 
 export const useOrders = ({
-  history = false,
   enabled = true,
-  size = 20,
-  page = 1,
+  size,
+  page,
+  body,
 }: {
-  history?: boolean;
   enabled?: boolean;
   size?: number;
   page?: number;
+  body?: RequestFilter;
 }) => {
   return useQuery({
-    queryKey: ["orders", history],
+    queryKey: ["orders"],
     queryFn: () =>
       apiClient
-        .get(`/request?size=${size}&page=${page}`)
+        .get("/request", { ...body, page, size })
         .then(({ data: response }) => (response as OrderType) || null),
     enabled,
     refetchOnMount: true,

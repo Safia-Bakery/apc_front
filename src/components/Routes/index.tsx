@@ -11,7 +11,7 @@ import Login from "pages/Login";
 import { useEffect, useMemo } from "react";
 import useToken from "src/hooks/useToken";
 import ControlPanel from "src/pages/ControlPanel";
-import ActiveOrders from "src/pages/ActiveOrders";
+import Requests from "src/pages/Requests";
 import ShowOrder from "src/pages/ShowOrder";
 import YandexMap from "src/pages/Map";
 import Categories from "src/pages/Categories";
@@ -40,7 +40,7 @@ export const routes = [
   { element: <ControlPanel />, path: "/", screen: Screens.permitted },
   { element: <CreateOrder />, path: "/orders/add", screen: Screens.requests },
   { element: <ShowOrder />, path: "/orders/:id", screen: Screens.requests },
-  { element: <ActiveOrders />, path: "/orders", screen: Screens.requests },
+  { element: <Requests />, path: "/orders", screen: Screens.requests },
   { element: <YandexMap />, path: "/map", screen: Screens.maps },
   { element: <Statistics />, path: "/statistics", screen: Screens.statistics },
   { element: <Categories />, path: "/categories", screen: Screens.category },

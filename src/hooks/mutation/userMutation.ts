@@ -9,7 +9,7 @@ const userMutation = () => {
     (body: UserTypes) => {
       if (body.id)
         return apiClient
-          .put("/register", body)
+          .put({ url: "/register", body })
           .then((res) => {
             if (res.status === 200) return res.data;
           })
@@ -19,8 +19,10 @@ const userMutation = () => {
           url: "/register",
           body,
         })
-        .then((res) => res.data)
-        .catch((e) => e.message);
+        .then((res) => {
+          if (res.status === 200) return res;
+        })
+        .catch((e: Error) => errorToast(e.message));
     },
     { onError: (e: Error) => errorToast(e.message) }
   );
