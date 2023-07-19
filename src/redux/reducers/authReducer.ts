@@ -7,7 +7,7 @@ interface State {
   me: {
     id: number;
     username: string;
-    role?: { descrition: string; name: string };
+    role?: string;
     full_name: string;
     permissions: BoolPermissionTypes;
   } | null;
