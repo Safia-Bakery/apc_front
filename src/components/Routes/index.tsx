@@ -33,8 +33,7 @@ import CreateBrigades from "src/pages/CreateBrigades";
 
 import { Screens } from "src/utils/types";
 import useQueriesPrefetch from "src/hooks/sync/useQueriesPrefetch";
-import Loading from "../Loader";
-import CustomSidebar from "../Sidebar";
+import CustomSidebar from "../CustomSidebar";
 import Logs from "src/pages/LogsScreen";
 
 export const routes = [
