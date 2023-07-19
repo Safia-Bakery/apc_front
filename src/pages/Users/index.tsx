@@ -2,7 +2,6 @@ import Card from "src/components/Card";
 import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { Link, useNavigate } from "react-router-dom";
-
 import { UsersType } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
@@ -11,16 +10,15 @@ import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useUsers from "src/hooks/useUsers";
-import { useForm } from "react-hook-form";
 import UsersFilter from "./filter";
 
 const column = [
   { name: "#", key: "" },
-  { name: "ФИО", key: "full_name" as keyof UsersType["full_name"] },
-  { name: "Логин", key: "username" as keyof UsersType["username"] },
-  { name: "Роль", key: "group.name" as keyof UsersType["username"] },
-  { name: "Телефон", key: "phone_number" as keyof UsersType["phone_number"] },
-  { name: "Статус", key: "status" as keyof UsersType["status"] },
+  { name: "ФИО", key: "full_name" },
+  { name: "Логин", key: "username" },
+  { name: "Роль", key: "group.name" },
+  { name: "Телефон", key: "phone_number" },
+  { name: "Статус", key: "status" },
   { name: "", key: "" },
 ];
 
@@ -33,8 +31,6 @@ const Users = () => {
     size: itemsPerPage,
     page: currentPage,
   });
-
-  const { register, getValues } = useForm();
 
   const [sortKey, setSortKey] = useState<keyof UsersType>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -69,7 +65,7 @@ const Users = () => {
 
   return (
     <Card>
-      <Header title={"Users"}>
+      <Header title={"Пользователи"}>
         <button
           className="btn btn-success btn-fill"
           onClick={handleNavigate("/users/add")}
@@ -109,7 +105,7 @@ const Users = () => {
                       </Link>
                     </td>
                     <td>{user?.phone_number}</td>
-                    <td>{user.status ? "Активный" : "Неактивный"}</td>
+                    <td>{!user.status ? "Активный" : "Неактивный"}</td>
                     <TableViewBtn onClick={handleNavigate(`${user.id}`)} />
                   </tr>
                 )

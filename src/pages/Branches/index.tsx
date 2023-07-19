@@ -114,7 +114,7 @@ const Branches = () => {
                     <td>{branch.country}</td>
                     <td>{branch.latitude}</td>
                     <td>{branch.longtitude}</td>
-                    <td>{!branch.status ? "Не активный" : "Активный"}</td>
+                    <td>{branch.status ? "Не активный" : "Активный"}</td>
                     <TableViewBtn
                       onClick={handleNavigate(`/branches/${branch.id}`)}
                     />

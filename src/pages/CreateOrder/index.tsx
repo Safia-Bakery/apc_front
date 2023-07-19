@@ -145,7 +145,7 @@ const CreateOrder = () => {
         </div>
 
         <div className="form-group d-flex align-items-center form-control">
-          <label className="mb-0 mr-2">urgent</label>
+          <label className="mb-0 mr-2">Срочно</label>
           <input type="checkbox" {...register("urgent")} />
         </div>
         <div>

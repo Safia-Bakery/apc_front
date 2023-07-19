@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { apiClient } from "src/main";
 import { errorToast } from "src/utils/toast";
 import { UserTypes } from "src/utils/types";
@@ -21,10 +22,15 @@ const userMutation = () => {
         })
         .then((res) => {
           if (res.status === 200) return res;
-        })
-        .catch((e: Error) => errorToast(e.message));
+        });
+      // .catch((e: Error) => errorToast(e.message));
     },
-    { onError: (e: Error) => errorToast(e.message) }
+    {
+      onError: (e: any) =>
+        errorToast(
+          e.response?.data.detail ? e.response?.data.detail : e.message
+        ),
+    }
   );
 };
 export default userMutation;

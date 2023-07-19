@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import BaseSelect from "src/components/BaseSelect";
 import InputBlock from "src/components/Input";
 import useCategories from "src/hooks/useCategories";
@@ -9,6 +9,7 @@ interface Props {
   currentPage: number;
 }
 const CategoriesFilter: FC<Props> = ({ currentPage }) => {
+  const initialLoadRef = useRef(true);
   const [name, $name] = useDebounce("");
   const [category_status, $category_status] = useState<number>();
 
@@ -20,7 +21,16 @@ const CategoriesFilter: FC<Props> = ({ currentPage }) => {
   });
 
   useEffect(() => {
-    refetch();
+    if (initialLoadRef.current) {
+      initialLoadRef.current = false;
+      return;
+    }
+
+    const fetchData = async () => {
+      await refetch();
+    };
+
+    fetchData();
   }, [category_status, name]);
   return (
     <>

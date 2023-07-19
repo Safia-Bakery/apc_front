@@ -8,7 +8,7 @@ const RemainsInStock = () => {
   const goBack = () => navigate(-1);
   return (
     <Card>
-      <Header title={"RemainsInStock"}>
+      <Header title={"Остатки на складах"}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад
         </button>

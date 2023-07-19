@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import BaseSelect from "src/components/BaseSelect";
 import InputBlock from "src/components/Input";
 import useBranches from "src/hooks/useBranches";
@@ -10,6 +10,7 @@ interface Props {
 }
 
 const BranchesFilter: FC<Props> = ({ currentPage }) => {
+  const initialLoadRef = useRef(true);
   const [name, $name] = useDebounce("");
   const [country, $country] = useState("");
   const [latitude, $latitude] = useDebounce<number>(0);
@@ -30,7 +31,16 @@ const BranchesFilter: FC<Props> = ({ currentPage }) => {
   });
 
   useEffect(() => {
-    refetch();
+    if (initialLoadRef.current) {
+      initialLoadRef.current = false;
+      return;
+    }
+
+    const fetchData = async () => {
+      await refetch();
+    };
+
+    fetchData();
   }, [name, country, latitude, longitude, fillial_status]);
   return (
     <>

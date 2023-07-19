@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { apiClient } from "src/main";
+import { errorToast } from "src/utils/toast";
 import { RequestStatus } from "src/utils/types";
 
 const attachBrigadaMutation = () => {
@@ -13,7 +14,10 @@ const attachBrigadaMutation = () => {
     }) =>
       apiClient
         .put({ url: "/request/attach/brigada", body })
-        .then(({ data }) => data)
+        .then((res) => {
+          if (res.status === 200) return res.data;
+        })
+        .catch((e: Error) => errorToast(e.message))
   );
 };
 export default attachBrigadaMutation;

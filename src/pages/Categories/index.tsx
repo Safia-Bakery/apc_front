@@ -59,7 +59,7 @@ const Categories = () => {
 
   return (
     <Card>
-      <Header title={"Categories"}>
+      <Header title={"Категории"}>
         <button
           className="btn btn-success btn-fill"
           onClick={handleNavigate(`add`)}
@@ -91,7 +91,7 @@ const Categories = () => {
                     <tr key={idx} className="bg-blue">
                       <td width="40">{handleIdx(idx)}</td>
                       <td>{category.name}</td>
-                      <td>{category.status ? "Активный" : "Неактивный"}</td>
+                      <td>{!category.status ? "Активный" : "Неактивный"}</td>
                       <TableViewBtn
                         onClick={handleNavigate(`/categories/${category.id}`)}
                       />

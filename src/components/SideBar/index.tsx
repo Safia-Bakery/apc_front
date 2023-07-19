@@ -42,7 +42,7 @@ const routes = [
     name: "Бригады",
     url: "/brigades",
     icon: "/assets/icons/brigades.svg",
-    screen: Screens.brigadas,
+    screen: Screens.brigada,
   },
   {
     name: "Пользователи",

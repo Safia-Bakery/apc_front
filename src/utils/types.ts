@@ -191,7 +191,7 @@ export interface UsersTypes extends BasePaginatedRes {
 
 export enum Screens {
   requests = "requests",
-  brigadas = "brigadas",
+  brigada = "brigada",
   warehouse = "warehouse",
   users = "users",
   category = "category",
@@ -202,6 +202,25 @@ export enum Screens {
   roles = "roles",
   comments = "comments",
   permissions = "permissions",
+  ismanager = "ismanager",
+  isbrigader = "isbrigader",
+}
+
+export interface BoolPermissionTypes {
+  requests: boolean;
+  brigada: boolean;
+  warehouse: boolean;
+  users: boolean;
+  category: boolean;
+  maps: boolean;
+  statistics: boolean;
+  fillials: boolean;
+  permitted: boolean;
+  roles: boolean;
+  comments: boolean;
+  permissions: boolean;
+  ismanager: boolean;
+  isbrigader: boolean;
 }
 export interface ValueLabel {
   label: string;
@@ -210,15 +229,10 @@ export interface ValueLabel {
 export enum RequestStatus {
   new,
   confirmed,
-  inProgress,
+  sendToRepair,
   done,
   rejected,
-  sendToRepair,
 }
-type dateRangeType = {
-  start: Date;
-  end: Date;
-};
 export type RequestFilter = {
   id?: number;
   department?: string;

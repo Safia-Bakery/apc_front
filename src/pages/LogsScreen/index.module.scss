@@ -1,0 +1,21 @@
+.modal {
+  max-width: 600px;
+  width: 100%;
+}
+.modalBody {
+  padding: 20px 30px;
+
+  textarea {
+    height: auto !important;
+  }
+}
+.footer {
+  padding: 15px;
+  display: flex;
+  justify-content: flex-end;
+}
+.tableHead {
+  font-weight: 600;
+  background-color: #d5302c !important;
+  color: white !important;
+}

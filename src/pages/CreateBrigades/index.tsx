@@ -132,14 +132,14 @@ const CreateBrigades = () => {
           <label className={styles.label}>СТАТУС</label>
           <div className={cl(styles.formControl, "form-control")}>
             <label className={styles.radioBtn}>
-              <input onChange={handleStatus} type="radio" value="1" />
+              <input onChange={handleStatus} type="radio" value="0" />
               Активный
             </label>
             <label className={styles.radioBtn}>
               <input
                 onChange={handleStatus}
                 type="radio"
-                value="0"
+                value="2"
                 checked={!status}
               />
               Не активный

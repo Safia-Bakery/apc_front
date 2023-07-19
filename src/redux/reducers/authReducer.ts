@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../rootConfig";
-import { BoolObj, Screens } from "src/utils/types";
+import { BoolPermissionTypes, Screens } from "src/utils/types";
 
 interface State {
   token: string | null;
@@ -9,7 +9,7 @@ interface State {
     username: string;
     role?: { descrition: string; name: string };
     full_name: string;
-    permissions: BoolObj;
+    permissions: BoolPermissionTypes;
   } | null;
 }
 
@@ -35,13 +35,10 @@ export const authReducer = createSlice({
     roleHandler: (state, { payload }) => {
       state.me = payload;
       if (payload.permissions === "*" && state.me) {
-        const resultObject = Object.keys(Screens).reduce(
-          (acc: BoolObj, key) => {
-            acc[key] = true;
-            return acc;
-          },
-          {}
-        );
+        const resultObject = Object.keys(Screens).reduce((acc: any, key) => {
+          acc[key] = true;
+          return acc;
+        }, {});
         state.me.permissions = resultObject;
       }
     },

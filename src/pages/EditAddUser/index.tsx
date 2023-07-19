@@ -23,18 +23,17 @@ const EditAddUser = () => {
   const { refetch: userRefetch } = useUsers({ enabled: false });
   const { data: user } = useUser({ id: Number(id) });
 
-  const mutation = userMutation();
+  const { mutate } = userMutation();
 
   const onSubmit = () => {
     const { username, password, phone_number, full_name, email, group_id } =
       getValues();
 
-    mutation.mutate(
+    mutate(
       {
         full_name,
         username,
         group_id,
-        status: 2,
         email,
         password,
         phone_number: fixedString(phone_number),
@@ -49,6 +48,7 @@ const EditAddUser = () => {
               !!id ? "successfully updated" : "successfully created"
             );
           }
+          console.log(data, "data");
         },
       }
     );

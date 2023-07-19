@@ -4,8 +4,8 @@ import { EPresetTimes, RequestStatus } from "./types";
 export const itemsPerPage = 20;
 
 export const StatusName = [
-  { name: "Активный", id: 1 },
-  { name: "Не активный", id: 0 },
+  { name: "Активный", id: 0 },
+  { name: "Не активный", id: 2 },
 ];
 export const OrderTypeNames = [
   { name: "APC", id: "APC" },
@@ -57,29 +57,24 @@ export const queryClient = new QueryClient({
 
 export const handleStatus = (status: RequestStatus | undefined) => {
   switch (status) {
-    case RequestStatus.new:
-      return "new";
     case RequestStatus.confirmed:
-      return "confirmed";
+      return "Принят";
     case RequestStatus.done:
-      return "done";
-    case RequestStatus.inProgress:
-      return "inProgress";
-    case RequestStatus.rejected:
-      return "rejected";
+      return "Закончен";
     case RequestStatus.sendToRepair:
-      return "sendToRepair";
+      return "Отправлен для ремонта";
+    case RequestStatus.rejected:
+      return "Отклонён";
 
     default:
-      return "new";
+      return "Новый";
   }
 };
 
 export const RequestStatusArr = [
   { id: RequestStatus.confirmed, name: RequestStatus["1"] },
   { id: RequestStatus.new, name: RequestStatus["0"] },
-  { id: RequestStatus.inProgress, name: RequestStatus["2"] },
+  { id: RequestStatus.sendToRepair, name: RequestStatus["2"] },
   { id: RequestStatus.done, name: RequestStatus["3"] },
   { id: RequestStatus.rejected, name: RequestStatus["4"] },
-  { id: RequestStatus.sendToRepair, name: RequestStatus["5"] },
 ];

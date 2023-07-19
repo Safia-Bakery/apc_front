@@ -35,11 +35,13 @@ import { Screens } from "src/utils/types";
 import useQueriesPrefetch from "src/hooks/sync/useQueriesPrefetch";
 import Loading from "../Loader";
 import CustomSidebar from "../Sidebar";
+import Logs from "src/pages/LogsScreen";
 
 export const routes = [
   { element: <ControlPanel />, path: "/", screen: Screens.permitted },
   { element: <CreateOrder />, path: "/orders/add", screen: Screens.requests },
   { element: <ShowOrder />, path: "/orders/:id", screen: Screens.requests },
+  { element: <Logs />, path: "/logs", screen: Screens.requests },
   { element: <Requests />, path: "/orders", screen: Screens.requests },
   { element: <YandexMap />, path: "/map", screen: Screens.maps },
   { element: <Statistics />, path: "/statistics", screen: Screens.statistics },
@@ -61,16 +63,16 @@ export const routes = [
   { element: <EditAddUser />, path: "/users/add", screen: Screens.users },
   { element: <Users />, path: "/users", screen: Screens.users },
   { element: <EditAddUser />, path: "/users/:id", screen: Screens.users },
-  { element: <Brigades />, path: "/brigades", screen: Screens.brigadas },
+  { element: <Brigades />, path: "/brigades", screen: Screens.brigada },
   {
     element: <CreateBrigades />,
     path: "/brigades/add",
-    screen: Screens.brigadas,
+    screen: Screens.brigada,
   },
   {
     element: <CreateBrigades />,
     path: "/brigades/:id",
-    screen: Screens.brigadas,
+    screen: Screens.brigada,
   },
   { element: <Comments />, path: "/comments", screen: Screens.comments },
   { element: <ShowComment />, path: "/comments/:id", screen: Screens.comments },
@@ -119,6 +121,8 @@ const Navigation = () => {
   }, [user, me, token]);
 
   // if (appLoading) return <Loading />;
+
+  console.log(user?.permissions, "user?.permissions");
 
   return (
     <>

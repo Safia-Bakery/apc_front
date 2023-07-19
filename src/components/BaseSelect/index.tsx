@@ -37,7 +37,7 @@ const BaseSelect: FC<Props> = ({
       >
         {defaultSelected && <option value={""}></option>}
         {values?.map((item) => (
-          <option key={item.id} value={item.id}>
+          <option key={item.id + item.name} value={item.id}>
             {item.name}
           </option>
         ))}

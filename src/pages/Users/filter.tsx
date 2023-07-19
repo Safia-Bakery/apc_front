@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import BaseSelect from "src/components/BaseSelect";
 import InputBlock from "src/components/Input";
 import useDebounce from "src/hooks/useDebounce";
@@ -12,6 +12,7 @@ interface Props {
 }
 
 const UsersFilter: FC<Props> = ({ currentPage }) => {
+  const initialLoadRef = useRef(true);
   const roles = useAppSelector(rolesSelector);
   const [full_name, $full_name] = useDebounce("");
   const [username, $username] = useDebounce("");
@@ -22,7 +23,7 @@ const UsersFilter: FC<Props> = ({ currentPage }) => {
   const { refetch } = useUsers({
     size: itemsPerPage,
     page: currentPage,
-    enabled: false,
+
     body: {
       user_status,
       ...(!!full_name && { full_name }),
@@ -33,7 +34,16 @@ const UsersFilter: FC<Props> = ({ currentPage }) => {
   });
 
   useEffect(() => {
-    refetch();
+    if (initialLoadRef.current) {
+      initialLoadRef.current = false;
+      return;
+    }
+
+    const fetchData = async () => {
+      await refetch();
+    };
+
+    fetchData();
   }, [full_name, username, phone_number, role_id, user_status]);
   return (
     <>

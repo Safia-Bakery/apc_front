@@ -114,7 +114,7 @@ const EditAddBranch = () => {
               <input
                 checked={!!status}
                 type="radio"
-                value={1}
+                value={0}
                 onChange={handleStatus}
               />
               Активный
@@ -122,7 +122,7 @@ const EditAddBranch = () => {
             <label className={styles.radioBtn}>
               <input
                 type="radio"
-                value={0}
+                value={2}
                 onChange={handleStatus}
                 checked={!status}
               />

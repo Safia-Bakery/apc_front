@@ -5,7 +5,6 @@ import useRoles from "src/hooks/useRoles";
 import useCategories from "src/hooks/useCategories";
 import useBranches from "src/hooks/useBranches";
 import usePermissions from "src/hooks/usePermissions";
-import useUsers from "../useUsers";
 
 const useQueriesPrefetch = () => {
   const token = useAppSelector(tokenSelector);
@@ -15,7 +14,7 @@ const useQueriesPrefetch = () => {
     enabled: !!token && !!user?.permissions?.roles,
   });
   const { isLoading: brigadaLoading } = useBrigadas({
-    enabled: !!token && !!user?.permissions?.brigadas,
+    enabled: !!token && !!user?.permissions?.brigada,
   });
   const { isLoading: branchLoading } = useBranches({
     enabled: !!token && !!user?.permissions?.fillials,

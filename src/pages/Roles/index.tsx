@@ -49,7 +49,7 @@ const Roles = () => {
 
   return (
     <Card>
-      <Header title={"Roles"}>
+      <Header title={"Роли"}>
         <button
           className="btn btn-success btn-fill"
           onClick={handleNavigate("add")}

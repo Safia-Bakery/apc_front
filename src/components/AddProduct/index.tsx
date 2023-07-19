@@ -30,7 +30,7 @@ const AddProduct = () => {
           Добавить
         </button>
       </Header>
-      <div className="content">
+      <div className="content table-responsive table-full-width overflow-hidden">
         <table className="table table-hover">
           <thead>
             <tr>

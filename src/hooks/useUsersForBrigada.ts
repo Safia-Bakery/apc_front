@@ -15,7 +15,7 @@ export const useUsersForBrigada = ({
   return useQuery({
     queryKey: ["users_for_brigada"],
     queryFn: () =>
-      apiClient.get("/users/for/brigada", { id }).then(({ data: response }) => {
+      apiClient.get(`/users/for/brigada/${id}`).then(({ data: response }) => {
         dispatch(cachedUsers(response as UsersType[]));
         return response as UsersType[];
       }),

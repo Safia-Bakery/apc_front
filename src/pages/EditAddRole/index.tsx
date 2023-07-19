@@ -3,7 +3,7 @@ import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import InputBlock from "src/components/Input";
 import { useForm } from "react-hook-form";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect } from "react";
 import roleMutation from "src/hooks/mutation/roleMutation";
 import { successToast } from "src/utils/toast";
 import useRoles from "src/hooks/useRoles";

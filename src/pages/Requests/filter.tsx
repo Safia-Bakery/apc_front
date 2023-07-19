@@ -11,7 +11,7 @@ import {
   branchSelector,
   categorySelector,
 } from "src/redux/reducers/cacheResources";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import DateInput from "src/components/DateRangeInput";
 import useOrders from "src/hooks/useOrders";
 import useDebounce from "src/hooks/useDebounce";
@@ -27,6 +27,7 @@ interface Props {
 }
 
 const RequestsFilter: FC<Props> = ({ currentPage }) => {
+  const initialLoadRef = useRef(true);
   const branches = useAppSelector(branchSelector);
   const categories = useAppSelector(categorySelector);
 
@@ -60,7 +61,16 @@ const RequestsFilter: FC<Props> = ({ currentPage }) => {
   });
 
   useEffect(() => {
-    refetch();
+    if (initialLoadRef.current) {
+      initialLoadRef.current = false;
+      return;
+    }
+
+    const fetchData = async () => {
+      await refetch();
+    };
+
+    fetchData();
   }, [
     id,
     department,

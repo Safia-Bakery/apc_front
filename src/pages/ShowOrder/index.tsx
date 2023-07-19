@@ -15,6 +15,7 @@ import { baseURL } from "src/main";
 import { CancelReason, handleStatus } from "src/utils/helpers";
 import { useForm } from "react-hook-form";
 import { BrigadaType, RequestStatus } from "src/utils/types";
+import { roleSelector } from "src/redux/reducers/authReducer";
 
 const enum ModalTypes {
   closed = "closed",
@@ -32,11 +33,14 @@ const ShowOrder = () => {
   const { register, getValues } = useForm();
 
   const brigades = useAppSelector(brigadaSelector);
+  const me = useAppSelector(roleSelector);
 
   const selectBrigada = (item: BrigadaType) => () => {
     $brigada({ id: item.id, name: item.name });
     $modal(ModalTypes.closed);
   };
+
+  const handleNavigate = (route: string) => () => navigate(route);
 
   const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
 
@@ -61,6 +65,86 @@ const ShowOrder = () => {
       $modal(ModalTypes.closed);
     };
 
+  const renderBtns = useMemo(() => {
+    if (me?.permissions.ismanager && order?.status === 0 && !!brigada?.name)
+      return (
+        <div className="float-end mb10">
+          <button
+            onClick={handleModal(ModalTypes.cancelRequest)}
+            className="btn btn-danger btn-fill mr-2"
+          >
+            Отклонить
+          </button>
+          <button
+            onClick={handleBrigada({ status: RequestStatus.confirmed })}
+            className="btn btn-success btn-fill"
+          >
+            Принять
+          </button>
+        </div>
+      );
+    if (me?.permissions.isbrigader)
+      return (
+        <div className="d-flex justify-content-between mb10">
+          {order?.status! < 3 && (
+            <button
+              onClick={handleModal(ModalTypes.cancelRequest)}
+              className="btn btn-danger btn-fill"
+            >
+              Отменить
+            </button>
+          )}
+          <div>
+            {order?.status! < 2 && (
+              <button
+                onClick={handleBrigada({
+                  status: RequestStatus.sendToRepair,
+                })}
+                className="btn btn-warning btn-fill mr-2"
+              >
+                Забрать для ремонта
+              </button>
+            )}
+            {order?.status! < 3 && (
+              <button
+                onClick={handleBrigada({ status: RequestStatus.done })}
+                className="btn btn-success btn-fill"
+              >
+                Починил
+              </button>
+            )}
+          </div>
+        </div>
+      );
+  }, [me?.permissions, order?.status, brigada?.name]);
+
+  const renderAssignment = useMemo(() => {
+    if (me?.permissions.ismanager && order?.status === 0) {
+      if (brigada?.name) {
+        return (
+          <>
+            <span>{brigada?.name}</span>
+            <button
+              onClick={handleModal(ModalTypes.assign)}
+              className="btn btn-primary btn-fill float-end"
+            >
+              Переназначить
+            </button>
+          </>
+        );
+      }
+      return (
+        <button
+          onClick={handleModal(ModalTypes.assign)}
+          className="btn btn-success btn-fill float-end"
+        >
+          Назначить
+        </button>
+      );
+    }
+    return <span>{brigada?.name}</span>;
+  }, [me?.permissions, brigada?.name, order?.status]);
+
   const renderModal = useMemo(() => {
     if (modal === ModalTypes.assign)
       return (
@@ -75,6 +159,7 @@ const ShowOrder = () => {
               <div key={idx} className={styles.item}>
                 <h6>{item?.name}</h6>
                 <button
+                  disabled={!!item.user?.length} // todo
                   onClick={selectBrigada(item)}
                   className="btn btn-success btn-fill btn-sm"
                 >
@@ -121,10 +206,10 @@ const ShowOrder = () => {
             </div>
 
             <button
-              className=""
+              className="btn btn-success"
               onClick={handleBrigada({ status: RequestStatus.rejected })}
             >
-              otpravit
+              Отправить
             </button>
           </div>
         </>
@@ -143,6 +228,12 @@ const ShowOrder = () => {
     <>
       <Card>
         <Header title={`Заказ №${id}`}>
+          <button
+            className="btn btn-warning btn-fill mr-2"
+            onClick={handleNavigate("/logs")}
+          >
+            Логи
+          </button>
           <button className="btn btn-primary btn-fill" onClick={goBack}>
             Назад
           </button>
@@ -208,7 +299,7 @@ const ShowOrder = () => {
                     <td>{!order?.urgent ? "Нет" : "Да"}</td>
                   </tr>
                   <tr>
-                    <th>Забрал для </th>
+                    <th>Забрал для</th>
                     <td>---------</td>
                   </tr>
                   <tr>
@@ -239,61 +330,14 @@ const ShowOrder = () => {
                   </tr>
                   <tr className="font-weight-bold">
                     <th>Ответственный</th>
-                    <td>
-                      {brigada?.name ? (
-                        <>
-                          <span>{brigada?.name}</span>
-                          <button
-                            onClick={handleModal(ModalTypes.assign)}
-                            className="btn btn-primary btn-fill float-end"
-                          >
-                            Переназначить
-                          </button>
-                        </>
-                      ) : (
-                        <button
-                          onClick={handleModal(ModalTypes.assign)}
-                          className="btn btn-success btn-fill float-end"
-                        >
-                          Назначить
-                        </button>
-                      )}
-                    </td>
+                    <td>{renderAssignment}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
           <hr />
-
-          {order?.status !== RequestStatus.confirmed &&
-            order?.status !== RequestStatus.rejected &&
-            order?.status !== RequestStatus.done && (
-              <div className="d-flex justify-content-between mb10">
-                <button
-                  onClick={handleModal(ModalTypes.cancelRequest)}
-                  className="btn btn-danger btn-fill"
-                >
-                  Отменить
-                </button>
-                <div className="">
-                  <button
-                    onClick={handleBrigada({
-                      status: RequestStatus.sendToRepair,
-                    })}
-                    className="btn btn-warning btn-fill mr-2"
-                  >
-                    Забрать для ремонта
-                  </button>
-                  <button
-                    onClick={handleBrigada({ status: RequestStatus.done })}
-                    className="btn btn-success btn-fill"
-                  >
-                    Починил
-                  </button>
-                </div>
-              </div>
-            )}
+          {renderBtns}
         </div>
       </Card>
 

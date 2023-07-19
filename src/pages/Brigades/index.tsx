@@ -10,7 +10,6 @@ import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useBrigadas from "src/hooks/useBrigadas";
-import BrigadesFilter from "./filter";
 
 const column = [
   { name: "#", key: "id" },
