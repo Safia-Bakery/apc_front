@@ -10,11 +10,9 @@ import { errorToast, successToast } from "src/utils/toast";
 import useBrigadas from "src/hooks/useBrigadas";
 import useBrigada from "src/hooks/useBrigada";
 import brigadaMutation from "src/hooks/mutation/brigadaMutation";
-import Select, { MultiValue } from "react-select";
-import { useAppSelector } from "src/redux/utils/types";
-import { usersSelector } from "src/redux/reducers/cacheResources";
-import { ValueLabel } from "src/utils/types";
 import useUsersForBrigada from "src/hooks/useUsersForBrigada";
+import BaseInputs from "src/components/BaseInputs";
+import MainSelect from "src/components/BaseInputs/MainSelect";
 
 const CreateBrigades = () => {
   const { id } = useParams();
@@ -25,13 +23,14 @@ const CreateBrigades = () => {
   const handleStatus = (e: ChangeEvent<HTMLInputElement>) =>
     $status(Number(e.target.value));
   const { mutate } = brigadaMutation();
-  useUsersForBrigada({ id: Number(id) });
-  const users = useAppSelector(usersSelector);
+  const { refetch: usersRefetch, data: users } = useUsersForBrigada({
+    id: Number(id),
+    enabled: !!id,
+  });
   const { data: brigada, refetch: brigadaRefetch } = useBrigada({
     id: Number(id),
+    enabled: !!id,
   });
-  const [selectedUsers, $selectedUsers] = useState<MultiValue<ValueLabel>>();
-  const [selectedIds, $selectedIds] = useState<number[]>([]);
 
   const {
     register,
@@ -42,33 +41,23 @@ const CreateBrigades = () => {
   } = useForm();
 
   useEffect(() => {
-    if (id) {
+    if (id && brigada) {
       reset({
         brigada_name: brigada?.name,
         brigada_description: brigada?.description,
         status: brigada?.status,
+        brigadir: brigada?.user?.[0].id,
       });
-      if (brigada?.user?.length) {
-        $selectedUsers(
-          brigada.user.map((item) => ({
-            value: item.id,
-            label: item.username,
-          }))
-        );
-      }
     }
   }, [brigada, id, users]);
 
-  const handleUsers = (_: MultiValue<any>, ids: any) =>
-    $selectedIds((id) => [...id, ids.option.value]);
-
   const onSubmit = () => {
-    const { brigada_name, brigada_description } = getValues();
+    const { brigada_name, brigada_description, brigadir } = getValues();
 
     mutate(
       {
         status,
-        users: selectedIds,
+        users: [brigadir],
         description: brigada_description,
         name: brigada_name,
         ...(id && { id: Number(id) }),
@@ -79,6 +68,7 @@ const CreateBrigades = () => {
           brigadaRefetch();
           successToast(!!id ? "successfully updated" : "successfully created");
           navigate("/brigades");
+          if (!!id) usersRefetch();
         },
         onError: (e: Error) => errorToast(e.message),
       }
@@ -99,7 +89,7 @@ const CreateBrigades = () => {
               register={register("brigada_name", {
                 required: "Обязательное поле",
               })}
-              className="form-control mb-2"
+              className="formmb-2"
               label="Название бригады"
               error={errors.brigada_name}
             />
@@ -107,32 +97,37 @@ const CreateBrigades = () => {
         </div>
 
         {!!id && (
-          <div className="mb-3">
-            <label className={styles.label}>Добавить пользователей</label>
-            <Select
-              isMulti
-              onChange={handleUsers}
-              defaultValue={selectedUsers}
-              options={users}
-              value={selectedUsers}
-            />
-          </div>
+          <BaseInputs label="Выберите бригадир" error={errors.brigadir}>
+            <MainSelect
+              register={register("brigadir", { required: "Обязательное поле" })}
+            >
+              <option value={undefined}></option>
+              {users?.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.username}
+                </option>
+              ))}
+            </MainSelect>
+          </BaseInputs>
         )}
-        <div>
-          <label className={styles.label}>ОПИСАНИЕ</label>
+        <BaseInputs label="ОПИСАНИЕ">
           <textarea
             rows={4}
             {...register("brigada_description")}
             className={`form-control h-100 ${styles.textArea}`}
-            name="brigada_description"
           />
-        </div>
+        </BaseInputs>
 
         <div className="form-group field-category-is_active">
           <label className={styles.label}>СТАТУС</label>
           <div className={cl(styles.formControl, "form-control")}>
             <label className={styles.radioBtn}>
-              <input onChange={handleStatus} type="radio" value="0" />
+              <input
+                onChange={handleStatus}
+                checked={!status}
+                type="radio"
+                value="0"
+              />
               Активный
             </label>
             <label className={styles.radioBtn}>
@@ -140,7 +135,7 @@ const CreateBrigades = () => {
                 onChange={handleStatus}
                 type="radio"
                 value="2"
-                checked={!status}
+                checked={!!status}
               />
               Не активный
             </label>

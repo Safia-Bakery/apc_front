@@ -1,5 +1,7 @@
 import { FC, useEffect, useRef, useState } from "react";
-import BaseSelect from "src/components/BaseSelect";
+import BaseInputs from "src/components/BaseInputs";
+import MainSelect from "src/components/BaseInputs/MainSelect";
+
 import InputBlock from "src/components/Input";
 import useCategories from "src/hooks/useCategories";
 import useDebounce from "src/hooks/useDebounce";
@@ -39,16 +41,15 @@ const CategoriesFilter: FC<Props> = ({ currentPage }) => {
         <InputBlock
           onChange={(e) => $name(e.target.value)}
           blockClass={"m-2"}
-          className="form-control"
         />
       </td>
       <td className="p-0">
-        <BaseSelect
-          blockClass={"m-2"}
-          onChange={(e) => $category_status(Number(e.target.value))}
-          defaultSelected
-          values={StatusName}
-        />
+        <BaseInputs className="m-2">
+          <MainSelect
+            values={StatusName}
+            onChange={(e) => $category_status(Number(e.target.value))}
+          />
+        </BaseInputs>
       </td>
       <td></td>
     </>

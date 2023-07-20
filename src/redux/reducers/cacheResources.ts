@@ -16,7 +16,7 @@ interface State {
   roles: RoleTypes[];
   categories: CategoryTypes["items"];
   branch: BranchTypes["items"];
-  users: ValueLabel[];
+  users: UsersType[];
 }
 
 const initialState: State = {
@@ -45,10 +45,7 @@ export const cacheResources = createSlice({
       state.branch = payload.items;
     },
     cachedUsers: (state, { payload }: PayloadAction<UsersType[]>) => {
-      state.users = payload?.map((item) => ({
-        value: item.id,
-        label: item.username,
-      }));
+      state.users = payload;
     },
     cachedPermissions: (
       state,

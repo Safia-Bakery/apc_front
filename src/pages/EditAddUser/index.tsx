@@ -6,18 +6,24 @@ import InputBlock from "src/components/Input";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { useAppSelector } from "src/redux/utils/types";
-import { rolesSelector } from "src/redux/reducers/cacheResources";
+import {
+  brigadaSelector,
+  rolesSelector,
+} from "src/redux/reducers/cacheResources";
 import userMutation from "src/hooks/mutation/userMutation";
 import { successToast } from "src/utils/toast";
 import useUsers from "src/hooks/useUsers";
 import useUser from "src/hooks/useUser";
 import InputMask from "react-input-mask";
 import { fixedString } from "src/utils/helpers";
+import BaseInput from "src/components/BaseInputs";
+import MainSelect from "src/components/BaseInputs/MainSelect";
 
 const EditAddUser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
+  const brigada = useAppSelector(brigadaSelector);
 
   const roles = useAppSelector(rolesSelector);
   const { refetch: userRefetch } = useUsers({ enabled: false });
@@ -26,18 +32,28 @@ const EditAddUser = () => {
   const { mutate } = userMutation();
 
   const onSubmit = () => {
-    const { username, password, phone_number, full_name, email, group_id } =
-      getValues();
+    const {
+      username,
+      password,
+      phone_number,
+      full_name,
+      email,
+      group_id,
+      telegram_id,
+      brigada_id,
+    } = getValues();
 
     mutate(
       {
         full_name,
         username,
         group_id,
-        email,
         password,
         phone_number: fixedString(phone_number),
-        ...(id && { id: Number(id) }),
+        brigada_id,
+        ...(email && { email }),
+        ...(telegram_id && { telegram_id }),
+        ...(id && { user_id: Number(id) }),
       },
       {
         onSuccess: (data: any) => {
@@ -48,7 +64,6 @@ const EditAddUser = () => {
               !!id ? "successfully updated" : "successfully created"
             );
           }
-          console.log(data, "data");
         },
       }
     );
@@ -69,6 +84,7 @@ const EditAddUser = () => {
         group_id: user.group?.id,
         email: user.email,
         phone_number: user.phone_number,
+        brigada_id: user.brigader?.id,
       });
     }
   }, [user, id]);
@@ -88,46 +104,43 @@ const EditAddUser = () => {
               register={register("full_name", {
                 required: "Обязательное поле",
               })}
-              className="form-control mb-2"
+              className="mb-2"
               label="ФИО"
               error={errors.full_name}
             />
             <InputBlock
               register={register("username", { required: "Обязательное поле" })}
-              className="form-control mb-2"
+              className="mb-2"
               label="ЛОГИН"
               error={errors.username}
             />
             <label className={styles.label}>ТЕЛЕФОН</label>
             <InputMask
-              className="form-control"
+              className="form-control mb-2"
               mask="(999-99)-999-99-99"
               defaultValue={"998"}
               {...register("phone_number", {
                 required: "required",
               })}
             />
+            {!!id && (
+              <InputBlock
+                register={register("telegram_id")}
+                className="mb-2"
+                label="Телеграм ID"
+                error={errors.telegram_id}
+              />
+            )}
           </div>
           <div className="col-md-6">
-            <div className="form-group">
-              <label className={styles.label}>РОЛЬ</label>
-              <select
-                defaultValue={"Select Item"}
-                {...register("group_id", { required: "Обязательное поле" })}
-                className="form-select"
-              >
-                {roles?.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-              {errors.department && (
-                <div className="alert alert-danger p-2" role="alert">
-                  {errors.department.message?.toString()}
-                </div>
-              )}
-            </div>
+            <BaseInput label="РОЛЬ" error={errors.department}>
+              <MainSelect
+                values={roles}
+                register={register("group_id", {
+                  required: "Обязательное поле",
+                })}
+              />
+            </BaseInput>
             <InputBlock
               register={register("password", {
                 required: "Обязательное поле",
@@ -136,17 +149,24 @@ const EditAddUser = () => {
                   message: "Надо ввести минимум 6 символов",
                 },
               })}
-              className="form-control mb-2"
+              className="mb-2"
               inputType="password"
               error={errors.password}
               label="ПАРОЛЬ"
             />
             <InputBlock
               register={register("email")}
-              className="form-control mb-2"
-              // inputType="email"
+              className="mb-2"
               label="E-MAIL"
             />
+            {!!id && (
+              <BaseInput label="Бригада">
+                <MainSelect
+                  values={brigada}
+                  register={register("brigada_id")}
+                />
+              </BaseInput>
+            )}
           </div>
         </div>
         <div>

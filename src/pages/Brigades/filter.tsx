@@ -22,14 +22,12 @@ const BrigadesFilter: FC<Props> = ({ currentPage }) => {
       <td className="p-0">
         <InputBlock
           blockClass={"m-2"}
-          className="form-control"
           onChange={(e) => $debName(e.target.value)}
         />
       </td>
       <td className="p-0">
         <InputBlock
           blockClass={"m-2"}
-          className="form-control"
           onChange={(e) => $debDescr(e.target.value)}
         />
       </td>

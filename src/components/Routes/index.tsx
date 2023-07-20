@@ -121,8 +121,6 @@ const Navigation = () => {
 
   // if (appLoading) return <Loading />;
 
-  console.log(user?.permissions, "user?.permissions");
-
   return (
     <>
       {renderSidebar}

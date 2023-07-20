@@ -16,11 +16,16 @@ import { CancelReason, handleStatus } from "src/utils/helpers";
 import { useForm } from "react-hook-form";
 import { BrigadaType, RequestStatus } from "src/utils/types";
 import { roleSelector } from "src/redux/reducers/authReducer";
+import UploadComponent, { FileItem } from "src/components/FileUpload";
+import cl from "classnames";
+import BaseInput from "src/components/BaseInputs";
+import MainSelect from "src/components/BaseInputs/MainSelect";
 
 const enum ModalTypes {
   closed = "closed",
   cancelRequest = "cancelRequest",
   assign = "assign",
+  showPhoto = "showPhoto",
 }
 
 const ShowOrder = () => {
@@ -31,7 +36,8 @@ const ShowOrder = () => {
   const handleModal = (type: ModalTypes) => () => $modal(type);
   const [brigada, $brigada] = useState<{ id: number; name: string }>();
   const { register, getValues } = useForm();
-
+  const [files, $files] = useState<FormData>();
+  const [photo, $photo] = useState<string>();
   const brigades = useAppSelector(brigadaSelector);
   const me = useAppSelector(roleSelector);
 
@@ -43,6 +49,19 @@ const ShowOrder = () => {
   const handleNavigate = (route: string) => () => navigate(route);
 
   const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
+
+  const handleFilesSelected = (data: FileItem[]) => {
+    const formData = new FormData();
+    data.forEach((item) => {
+      formData.append("files", item.file, item.file.name);
+    });
+    $files(formData);
+  };
+
+  const handleShowPhoto = (image: string) => () => {
+    $photo(image);
+    $modal(ModalTypes.showPhoto);
+  };
 
   const handleBrigada =
     ({ status }: { status: RequestStatus }) =>
@@ -61,7 +80,6 @@ const ShowOrder = () => {
           },
         }
       );
-
       $modal(ModalTypes.closed);
     };
 
@@ -146,74 +164,88 @@ const ShowOrder = () => {
   }, [me?.permissions, brigada?.name, order?.status]);
 
   const renderModal = useMemo(() => {
-    if (modal === ModalTypes.assign)
-      return (
-        <>
-          <Header title="Выберите исполнителя">
-            <button onClick={handleModal(ModalTypes.closed)} className="close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </Header>
-          <div className={styles.items}>
-            {brigades.map((item, idx) => (
-              <div key={idx} className={styles.item}>
-                <h6>{item?.name}</h6>
-                <button
-                  disabled={!!item.user?.length} // todo
-                  onClick={selectBrigada(item)}
-                  className="btn btn-success btn-fill btn-sm"
-                >
-                  Назначить
-                </button>
-              </div>
-            ))}
-          </div>
-        </>
-      );
-    if (modal === ModalTypes.cancelRequest)
-      return (
-        <>
-          <Header title="Выберите исполнителя">
-            <button onClick={handleModal(ModalTypes.closed)} className="close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </Header>
-          <div className="p-3">
-            <div className="form-group">
-              <label>Выберите причину</label>
-              <select
-                defaultValue={"Select Item"}
-                {...register("cancel_reason")}
-                className="form-select"
+    switch (modal) {
+      case ModalTypes.assign:
+        return (
+          <div className={styles.birgadesModal}>
+            <Header title="Выберите исполнителя">
+              <button
+                onClick={handleModal(ModalTypes.closed)}
+                className="close"
               >
-                {CancelReason?.map((item) => (
-                  <option key={item.id} value={item.name}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </Header>
+            <div className={styles.items}>
+              {brigades.map((item, idx) => (
+                <div key={idx} className={styles.item}>
+                  <h6>{item?.name}</h6>
+                  <button
+                    onClick={selectBrigada(item)}
+                    className="btn btn-success btn-fill btn-sm"
+                  >
+                    Назначить
+                  </button>
+                </div>
+              ))}
             </div>
-
-            <div className="form-group">
-              <label>Комментарии</label>
-              <textarea
-                rows={4}
-                {...register("cancel_reason")}
-                className={`form-control ${styles.textArea}`}
-                name="description"
-                placeholder="Комментарии"
-              />
-            </div>
-
-            <button
-              className="btn btn-success"
-              onClick={handleBrigada({ status: RequestStatus.rejected })}
-            >
-              Отправить
-            </button>
           </div>
-        </>
-      );
+        );
+      case ModalTypes.cancelRequest:
+        return (
+          <div className={styles.birgadesModal}>
+            <Header title="Выберите исполнителя">
+              <button
+                onClick={handleModal(ModalTypes.closed)}
+                className="close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </Header>
+            <div className="p-3">
+              <BaseInput label="Выберите причину">
+                <MainSelect
+                  values={CancelReason}
+                  register={register("cancel_reason")}
+                />
+              </BaseInput>
+
+              <BaseInput label="Комментарии">
+                <textarea
+                  rows={4}
+                  {...register("cancel_reason")}
+                  className={`form-control ${styles.textArea}`}
+                  name="description"
+                  placeholder="Комментарии"
+                />
+              </BaseInput>
+
+              <button
+                className="btn btn-success"
+                onClick={handleBrigada({ status: RequestStatus.rejected })}
+              >
+                Отправить
+              </button>
+            </div>
+          </div>
+        );
+
+      case ModalTypes.showPhoto:
+        return (
+          <div className={styles.imgBlock}>
+            <button
+              onClick={handleModal(ModalTypes.closed)}
+              className={cl(styles.close, "close")}
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <img src={photo} className={styles.image} alt="uploaded-file" />
+          </div>
+        );
+
+      default:
+        return;
+    }
 
     return;
   }, [modal]);
@@ -222,6 +254,10 @@ const ShowOrder = () => {
     if (order?.brigada?.name && order?.brigada?.id)
       $brigada({ id: order.brigada.id, name: order.brigada.name });
   }, [order?.brigada]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const goBack = () => navigate(-1);
   return (
@@ -266,13 +302,12 @@ const ShowOrder = () => {
                     <th>file</th>
                     <td className="d-flex flex-column">
                       {order?.file?.map((item) => (
-                        <a
-                          target="_blank"
+                        <div
+                          onClick={handleShowPhoto(`${baseURL}/${item.url}`)}
                           key={item.url}
-                          href={`${baseURL}/${item.url}`}
                         >
                           {item.url}
-                        </a>
+                        </div>
                       ))}
                     </td>
                   </tr>
@@ -326,7 +361,7 @@ const ShowOrder = () => {
                   </tr>
                   <tr>
                     <th>Автор</th>
-                    <td>{order?.fillial.name}</td>
+                    <td>{order?.fillial?.name}</td>
                   </tr>
                   <tr className="font-weight-bold">
                     <th>Ответственный</th>
@@ -338,6 +373,13 @@ const ShowOrder = () => {
           </div>
           <hr />
           {renderBtns}
+        </div>
+      </Card>
+
+      <Card>
+        <Header title={"Добавить фотоотчёт"} />
+        <div className="m-3">
+          <UploadComponent onFilesSelected={handleFilesSelected} />
         </div>
       </Card>
 

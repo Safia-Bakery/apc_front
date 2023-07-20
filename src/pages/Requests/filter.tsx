@@ -4,18 +4,20 @@ import {
   UrgentNames,
   itemsPerPage,
 } from "src/utils/helpers";
-import BaseSelect from "src/components/BaseSelect";
+
 import InputBlock from "src/components/Input";
 import { useAppSelector } from "src/redux/utils/types";
 import {
   branchSelector,
   categorySelector,
 } from "src/redux/reducers/cacheResources";
+import DatePicker from "react-datepicker";
 import { FC, useEffect, useRef, useState } from "react";
-import DateInput from "src/components/DateRangeInput";
 import useOrders from "src/hooks/useOrders";
 import useDebounce from "src/hooks/useDebounce";
-import dayjs from "dayjs";
+import "react-datepicker/dist/react-datepicker.css";
+import BaseInputs from "src/components/BaseInputs";
+import MainSelect from "src/components/BaseInputs/MainSelect";
 
 type dateRangeType = {
   start: string;
@@ -36,8 +38,8 @@ const RequestsFilter: FC<Props> = ({ currentPage }) => {
   const [fillial_id, $fillial_id] = useState<number>();
   const [category_id, $category_id] = useState<number>();
   const [urgent, $urgent] = useState<boolean>();
-  const [startDate, $startDate] = useState<dateRangeType>();
-  const [endDate, $endDate] = useState<dateRangeType>();
+  const [startDate, $startDate] = useState<Date | null>();
+  const [endDate, $endDate] = useState<Date | null>();
   const [request_status, $request_status] = useState<number>();
   const [user, $user] = useDebounce<string>("");
 
@@ -46,17 +48,25 @@ const RequestsFilter: FC<Props> = ({ currentPage }) => {
     page: currentPage,
     enabled: false,
     body: {
-      department,
-      fillial_id,
-      category_id,
-      urgent,
-      finished_from: endDate?.start,
-      finished_to: endDate?.end,
-      created_from: startDate?.start,
-      created_to: startDate?.end,
-      request_status,
+      // department,
+      // fillial_id,
+      // category_id,
+      // urgent,
+      finished_from: endDate?.toISOString(),
+      finished_to: endDate?.toISOString(),
+      created_from: startDate?.toISOString(),
+      created_to: startDate?.toISOString(),
+      // request_status,
       ...(!!id && { id }),
-      ...(!!user && { user }),
+      ...(!!department && { department }),
+      ...(!!fillial_id && { fillial_id }),
+      ...(!!category_id && { category_id }),
+      ...(!!urgent && { urgent }),
+      // ...(!!endDate?.start && { finished_from: endDate?.start }),
+      // ...(!!endDate?.end && { finished_to: endDate?.end }),
+      // ...(!!startDate?.start && { created_from: startDate?.start }),
+      // ...(!!startDate?.end && { created_to: startDate?.end }),
+      ...(!!request_status && { request_status }),
     },
   });
 
@@ -83,17 +93,9 @@ const RequestsFilter: FC<Props> = ({ currentPage }) => {
     user,
   ]);
 
-  const startRange = (start: Date | null, end: Date | null) => {
-    if (start && end)
-      $startDate({
-        start: start.toISOString(),
-        end: end.toISOString(),
-      });
-  };
-  const finishRange = (start: Date | null, end: Date | null) => {
-    if (start && end)
-      $endDate({ start: start.toISOString(), end: end.toISOString() });
-  };
+  const startRange = (start: Date | null) => $startDate(start);
+
+  const finishRange = (start: Date | null) => $endDate(start);
 
   return (
     <>
@@ -103,60 +105,68 @@ const RequestsFilter: FC<Props> = ({ currentPage }) => {
           onChange={(e) => $id(Number(e.target.value))}
           blockClass={"m-2"}
           inputType="number"
+        />
+      </td>
+      <td className="p-0">
+        <BaseInputs className="m-2">
+          <MainSelect
+            values={OrderTypeNames}
+            onChange={(e) => $department(e.target.value)}
+          />
+        </BaseInputs>
+      </td>
+      <td className="p-0">
+        <BaseInputs className="m-2">
+          <MainSelect
+            values={branches}
+            onChange={(e) => $fillial_id(Number(e.target.value))}
+          />
+        </BaseInputs>
+      </td>
+      <td className="p-0">
+        <BaseInputs className="m-2">
+          <MainSelect
+            values={categories}
+            onChange={(e) => $category_id(Number(e.target.value))}
+          />
+        </BaseInputs>
+      </td>
+      <td className="p-0">
+        <BaseInputs className="m-2">
+          <MainSelect
+            values={UrgentNames}
+            onChange={(e) => $urgent(!!Number(e.target.value))}
+          />
+        </BaseInputs>
+      </td>
+      <td className="p-0">
+        <DatePicker
+          selected={startDate}
+          onChange={startRange}
+          wrapperClassName="form-group m-2"
           className="form-control"
         />
       </td>
       <td className="p-0">
-        <BaseSelect
-          blockClass={"m-2"}
-          onChange={(e) => $department(e.target.value)}
-          defaultSelected
-          values={OrderTypeNames}
+        <DatePicker
+          selected={endDate}
+          onChange={finishRange}
+          wrapperClassName="form-group m-2"
+          className="form-control"
         />
       </td>
       <td className="p-0">
-        <BaseSelect
-          blockClass={"m-2"}
-          onChange={(e) => $fillial_id(Number(e.target.value))}
-          defaultSelected
-          values={branches}
-        />
-      </td>
-      <td className="p-0">
-        <BaseSelect
-          blockClass={"m-2"}
-          defaultSelected
-          onChange={(e) => $category_id(Number(e.target.value))}
-          values={categories}
-        />
-      </td>
-      <td className="p-0">
-        <BaseSelect
-          blockClass={"m-2"}
-          onChange={(e) => $urgent(!!Number(e.target.value))}
-          defaultSelected
-          values={UrgentNames}
-        />
-      </td>
-      <td className="p-0">
-        <DateInput blockClass={"m-2"} onDateRangeSelected={finishRange} />
-      </td>
-      <td className="p-0">
-        <DateInput blockClass={"m-2"} onDateRangeSelected={startRange} />
-      </td>
-      <td className="p-0">
-        <BaseSelect
-          blockClass={"m-2"}
-          onChange={(e) => $request_status(Number(e.target.value))}
-          values={RequestStatusArr}
-          defaultSelected
-        />
+        <BaseInputs className="m-2">
+          <MainSelect
+            values={RequestStatusArr}
+            onChange={(e) => $request_status(Number(e.target.value))}
+          />
+        </BaseInputs>
       </td>
       <td className="p-0">
         <InputBlock
           blockClass={"m-2"}
           onChange={(e) => $user(e.target.value)}
-          className="form-control"
         />
       </td>
       <td></td>

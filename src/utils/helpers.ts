@@ -49,8 +49,8 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      cacheTime: EPresetTimes.HOUR,
-      staleTime: EPresetTimes.MINUTE * 30,
+      cacheTime: EPresetTimes.MINUTE * 10,
+      staleTime: EPresetTimes.MINUTE * 5,
     },
   },
 });
@@ -78,3 +78,20 @@ export const RequestStatusArr = [
   { id: RequestStatus.done, name: RequestStatus["3"] },
   { id: RequestStatus.rejected, name: RequestStatus["4"] },
 ];
+
+export const requestRows = (status: RequestStatus) => {
+  switch (status) {
+    case RequestStatus.done:
+      return "table-success";
+    case RequestStatus.confirmed:
+      return "table-primary";
+    case RequestStatus.new:
+      return "table-info";
+    case RequestStatus.rejected:
+      return "table-danger";
+    case RequestStatus.sendToRepair:
+      return "table-warning";
+    default:
+      return "table-info";
+  }
+};

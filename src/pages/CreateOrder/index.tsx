@@ -14,9 +14,14 @@ import {
 import useOrders from "src/hooks/useOrders";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import styles from "./index.module.scss";
+import InputBlock from "src/components/Input";
+import BaseInputs from "src/components/BaseInputs";
+import MainSelect from "src/components/BaseInputs/MainSelect";
+import MainInput from "src/components/BaseInputs/MainInput";
+import BaseInput from "src/components/BaseInputs";
 
 const CreateOrder = () => {
-  const [files, $files] = useState<any>();
+  const [files, $files] = useState<FormData>();
   const branches = useAppSelector(branchSelector);
   const categories = useAppSelector(categorySelector);
   const { mutate } = orderMutation();
@@ -40,12 +45,12 @@ const CreateOrder = () => {
     $files(formData);
   };
   const onSubmit = () => {
-    const { urgent, category_id, fillial_id, description } = getValues();
-
+    const { urgent, category_id, fillial_id, description, product } =
+      getValues();
     mutate(
       {
         category_id,
-        product: "s",
+        product,
         urgent,
         description,
         fillial_id,
@@ -61,14 +66,6 @@ const CreateOrder = () => {
     );
   };
 
-  // const convertFilesToFormData = (): FormData => {
-  //   const formData = new FormData();
-  //   fileList.forEach((item) => {
-  //     formData.append("files", item.file, item.file.name);
-  //   });
-  //   return formData;
-  // };
-
   return (
     <Card>
       <Header title={"Создать заказ"}>
@@ -81,47 +78,18 @@ const CreateOrder = () => {
         className={cl("content", styles.form)}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="form-group">
-          <label>ФИЛИАЛ</label>
-          <select
-            defaultValue={"Select Item"}
-            className="form-select"
-            {...register("fillial_id")}
-          >
-            {branches?.map((branch) => (
-              <option key={branch.id} value={branch.id}>
-                {branch.name}
-              </option>
-            ))}
-          </select>
-          {errors.department && (
-            <div className="alert alert-danger p-2" role="alert">
-              {errors.department.message?.toString()}
-            </div>
-          )}
-        </div>
-        <div className="form-group">
-          <label>КАТЕГОРИЯ</label>
-          <select
-            defaultValue={"Select Item"}
-            {...register("category_id")}
-            className="form-select"
-          >
-            {categories?.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.name}
-              </option>
-            ))}
-          </select>
-          {errors.department && (
-            <div className="alert alert-danger p-2" role="alert">
-              {errors.department.message?.toString()}
-            </div>
-          )}
-        </div>
+        <BaseInput label="ФИЛИАЛ" error={errors.department}>
+          <MainSelect values={branches} register={register("fillial_id")} />
+        </BaseInput>
+        <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
+          <MainSelect values={categories} register={register("category_id")} />
+        </BaseInputs>
 
-        <div className="form-group">
-          <label>Комментарии</label>
+        <BaseInputs label="Продукт">
+          <MainInput register={register("product")} />
+        </BaseInputs>
+
+        <BaseInputs label="Комментарии">
           <textarea
             rows={4}
             {...register("description")}
@@ -129,21 +97,15 @@ const CreateOrder = () => {
             name="description"
             placeholder="Комментарии"
           />
-        </div>
+        </BaseInputs>
 
-        <div className={`mb-4 ${styles.uploadImage}`}>
-          <label>Добавить файл</label>
-          {/* <FileUploader onFilesSelected={handleFilesSelected} /> */}
-
+        <BaseInputs
+          className={`mb-4 ${styles.uploadImage}`}
+          label="Добавить файл"
+          error={errors.image}
+        >
           <UploadComponent onFilesSelected={handleFilesSelected} />
-
-          {errors.image && (
-            <div className="alert alert-danger p-2" role="alert">
-              {errors.image.message?.toString()}
-            </div>
-          )}
-        </div>
-
+        </BaseInputs>
         <div className="form-group d-flex align-items-center form-control">
           <label className="mb-0 mr-2">Срочно</label>
           <input type="checkbox" {...register("urgent")} />

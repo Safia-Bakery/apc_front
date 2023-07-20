@@ -60,14 +60,12 @@ const Login = () => {
         <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
           <InputBlock
             register={register("username", { required: "required" })}
-            className="form-control"
             autoFocus
             label="Логин"
             error={errors.username}
           />
           <InputBlock
             register={register("password", { required: "required" })}
-            className="form-control"
             inputType="password"
             label="Пароль"
             error={errors.password}

@@ -1,5 +1,7 @@
 import { FC, useEffect, useRef, useState } from "react";
-import BaseSelect from "src/components/BaseSelect";
+import BaseInputs from "src/components/BaseInputs";
+import MainSelect from "src/components/BaseInputs/MainSelect";
+
 import InputBlock from "src/components/Input";
 import useDebounce from "src/hooks/useDebounce";
 import useUsers from "src/hooks/useUsers";
@@ -52,38 +54,35 @@ const UsersFilter: FC<Props> = ({ currentPage }) => {
         <InputBlock
           onChange={(e) => $full_name(e.target.value)}
           blockClass={"m-2"}
-          className="form-control"
         />
       </td>
       <td className="p-0">
         <InputBlock
           onChange={(e) => $username(e.target.value)}
           blockClass={"m-2"}
-          className="form-control"
         />
       </td>
       <td className="p-0">
-        <BaseSelect
-          blockClass={"m-2"}
-          defaultSelected
-          onChange={(e) => $role_id(Number(e.target.value))}
-          values={roles}
-        />
+        <BaseInputs className="mb-0">
+          <MainSelect
+            values={roles}
+            onChange={(e) => $role_id(Number(e.target.value))}
+          />
+        </BaseInputs>
       </td>
       <td className="p-0">
         <InputBlock
           onChange={(e) => $phone_number(e.target.value)}
           blockClass={"m-2"}
-          className="form-control"
         />
       </td>
       <td className="p-0">
-        <BaseSelect
-          defaultSelected
-          blockClass={"m-2"}
-          onChange={(e) => $user_status(Number(e.target.value))}
-          values={StatusName}
-        />
+        <BaseInputs className="mb-0">
+          <MainSelect
+            values={StatusName}
+            onChange={(e) => $user_status(Number(e.target.value))}
+          />
+        </BaseInputs>
       </td>
       <td></td>
     </>

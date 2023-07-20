@@ -62,7 +62,7 @@ const EditAddRole = () => {
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
         <InputBlock
           register={register("name", { required: "Обязательное поле" })}
-          className="form-control mb-2"
+          className="mb-2"
           label="НАИМЕНОВАНИЕ"
           error={errors.name}
         />

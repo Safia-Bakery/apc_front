@@ -26,6 +26,7 @@ export const useCategories = ({
           return response as CategoryTypes;
         }),
     enabled,
+    refetchOnMount: true,
   });
 };
 export default useCategories;

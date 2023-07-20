@@ -77,14 +77,14 @@ const EditAddBranch = () => {
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
         <InputBlock
           register={register("name", { required: "Обязательное поле" })}
-          className="form-control mb-2"
+          className="mb-2"
           label="НАЗВАНИЕ"
           disabled={!!id}
           error={errors.name}
         />
         <InputBlock
           register={register("region", { required: "Обязательное поле" })}
-          className="form-control mb-2"
+          className="mb-2"
           label="РЕГИОН"
           disabled={!!id}
           error={errors.region}
@@ -92,14 +92,14 @@ const EditAddBranch = () => {
 
         <InputBlock
           register={register("lat", { required: "Обязательное поле" })}
-          className="form-control mb-2"
+          className="mb-2"
           label="ШИРОТА"
           error={errors.lat}
         />
 
         <InputBlock
           register={register("lng", { required: "Обязательное поле" })}
-          className="form-control mb-2"
+          className="mb-2"
           label="ДОЛГОТА"
           error={errors.lng}
         />
@@ -112,7 +112,7 @@ const EditAddBranch = () => {
           >
             <label className={styles.radioBtn}>
               <input
-                checked={!!status}
+                checked={!status}
                 type="radio"
                 value={0}
                 onChange={handleStatus}
@@ -124,7 +124,7 @@ const EditAddBranch = () => {
                 type="radio"
                 value={2}
                 onChange={handleStatus}
-                checked={!status}
+                checked={!!status}
               />
               Не активный
             </label>

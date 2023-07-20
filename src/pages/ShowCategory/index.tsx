@@ -67,7 +67,6 @@ const ShowCategory = () => {
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
         <InputBlock
           register={register("name", { required: "Обязательное поле" })}
-          className="form-control"
           label="НАИМЕНОВАНИЕ"
         />
 
@@ -88,7 +87,7 @@ const ShowCategory = () => {
           >
             <label className={styles.radioBtn}>
               <input
-                checked={!!status}
+                checked={!status}
                 type="radio"
                 value={0}
                 onChange={handleStatus}
@@ -100,7 +99,7 @@ const ShowCategory = () => {
                 type="radio"
                 value={2}
                 onChange={handleStatus}
-                checked={!status}
+                checked={!!status}
               />
               Не активный
             </label>

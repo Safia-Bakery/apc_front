@@ -36,6 +36,7 @@ export interface UserTypes {
   status?: number;
   password?: string;
   id?: number;
+  brigader?: BrigadaType;
   group?: {
     name: string;
     id: number;

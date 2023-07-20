@@ -1,5 +1,7 @@
 import { FC, useEffect, useRef, useState } from "react";
-import BaseSelect from "src/components/BaseSelect";
+import BaseInputs from "src/components/BaseInputs";
+import MainSelect from "src/components/BaseInputs/MainSelect";
+
 import InputBlock from "src/components/Input";
 import useBranches from "src/hooks/useBranches";
 import useDebounce from "src/hooks/useDebounce";
@@ -48,24 +50,22 @@ const BranchesFilter: FC<Props> = ({ currentPage }) => {
       <td className="p-0">
         <InputBlock
           blockClass={"m-2"}
-          className="form-control"
           onChange={(e) => $name(e.target.value)}
         />
       </td>
       <td className="p-0">
-        <BaseSelect
-          blockClass={"m-2"}
-          defaultSelected
-          onChange={(e) => $country(e.target.value)}
-          values={RegionNames}
-        />
+        <BaseInputs className="mb-0">
+          <MainSelect
+            values={RegionNames}
+            onChange={(e) => $country(e.target.value)}
+          />
+        </BaseInputs>
       </td>
       <td className="p-0">
         <InputBlock
           onChange={(e) => $latitude(Number(e.target.value))}
           blockClass={"m-2"}
           inputType="number"
-          className="form-control"
         />
       </td>
       <td className="p-0">
@@ -73,16 +73,15 @@ const BranchesFilter: FC<Props> = ({ currentPage }) => {
           onChange={(e) => $longitude(Number(e.target.value))}
           blockClass={"m-2"}
           inputType="number"
-          className="form-control"
         />
       </td>
       <td className="p-0">
-        <BaseSelect
-          blockClass={"m-2"}
-          defaultSelected
-          onChange={(e) => $fillial_status(Number(e.target.value))}
-          values={StatusName}
-        />
+        <BaseInputs className="mb-0">
+          <MainSelect
+            values={StatusName}
+            onChange={(e) => $fillial_status(Number(e.target.value))}
+          />
+        </BaseInputs>
       </td>
       <td></td>
     </>

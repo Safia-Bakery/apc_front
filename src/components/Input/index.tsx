@@ -38,7 +38,7 @@ const InputBlock: FC<Props> = ({
       <input
         {...register}
         disabled={disabled}
-        className={className}
+        className={cl(className, "form-control")}
         type={inputType}
         value={value}
         onFocus={onFocus}

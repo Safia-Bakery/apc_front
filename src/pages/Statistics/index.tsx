@@ -64,13 +64,11 @@ const Statistics = () => {
       <div className="content">
         <div className={styles.dateBlock}>
           <InputBlock
-            className="form-control"
             inputType="date"
             value={selectedDate}
             onChange={handleDateChange}
           />
           <InputBlock
-            className="form-control"
             inputType="date"
             value={selectedDate}
             onChange={handleDateChange}

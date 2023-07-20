@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import { handleStatus, itemsPerPage } from "src/utils/helpers";
+import { handleStatus, itemsPerPage, requestRows } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import RequestsFilter from "./filter";
 
@@ -103,7 +103,7 @@ const Requests = () => {
             <tbody>
               {(sortData()?.length ? sortData() : orders?.items)?.map(
                 (order, idx) => (
-                  <tr className="bg-blue" key={idx}>
+                  <tr className={requestRows(order.status)} key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
                       <Link to={`/orders/${order?.id}`}>{order?.id}</Link>
