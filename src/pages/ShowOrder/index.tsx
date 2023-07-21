@@ -12,14 +12,15 @@ import { brigadaSelector } from "src/redux/reducers/cacheResources";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import { successToast } from "src/utils/toast";
 import { baseURL } from "src/main";
-import { CancelReason, handleStatus } from "src/utils/helpers";
+import { CancelReason, detectFileType, handleStatus } from "src/utils/helpers";
 import { useForm } from "react-hook-form";
-import { BrigadaType, RequestStatus } from "src/utils/types";
+import { BrigadaType, FileType, RequestStatus } from "src/utils/types";
 import { roleSelector } from "src/redux/reducers/authReducer";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import cl from "classnames";
 import BaseInput from "src/components/BaseInputs";
 import MainSelect from "src/components/BaseInputs/MainSelect";
+import MainTextArea from "src/components/BaseInputs/MainTextArea";
 
 const enum ModalTypes {
   closed = "closed",
@@ -58,9 +59,12 @@ const ShowOrder = () => {
     $files(formData);
   };
 
-  const handleShowPhoto = (image: string) => () => {
-    $photo(image);
-    $modal(ModalTypes.showPhoto);
+  const handleShowPhoto = (file: string) => () => {
+    if (detectFileType(file) === FileType.other) return window.open(file);
+    else {
+      $photo(file);
+      $modal(ModalTypes.showPhoto);
+    }
   };
 
   const handleBrigada =
@@ -211,13 +215,7 @@ const ShowOrder = () => {
               </BaseInput>
 
               <BaseInput label="Комментарии">
-                <textarea
-                  rows={4}
-                  {...register("cancel_reason")}
-                  className={`form-control ${styles.textArea}`}
-                  name="description"
-                  placeholder="Комментарии"
-                />
+                <MainTextArea register={register("cancel_reason")} />
               </BaseInput>
 
               <button
@@ -239,7 +237,11 @@ const ShowOrder = () => {
             >
               <span aria-hidden="true">&times;</span>
             </button>
-            <img src={photo} className={styles.image} alt="uploaded-file" />
+            {photo && detectFileType(photo) === FileType.photo ? (
+              <img src={photo} className={styles.image} alt="uploaded-file" />
+            ) : (
+              <video src={photo} className={styles.image} controls />
+            )}
           </div>
         );
 
@@ -303,6 +305,7 @@ const ShowOrder = () => {
                     <td className="d-flex flex-column">
                       {order?.file?.map((item) => (
                         <div
+                          className={styles.imgUrl}
                           onClick={handleShowPhoto(`${baseURL}/${item.url}`)}
                           key={item.url}
                         >
@@ -376,12 +379,14 @@ const ShowOrder = () => {
         </div>
       </Card>
 
-      <Card>
-        <Header title={"Добавить фотоотчёт"} />
-        <div className="m-3">
-          <UploadComponent onFilesSelected={handleFilesSelected} />
-        </div>
-      </Card>
+      {me?.permissions.isbrigader && (
+        <Card>
+          <Header title={"Добавить фотоотчёт"} />
+          <div className="m-3">
+            <UploadComponent onFilesSelected={handleFilesSelected} />
+          </div>
+        </Card>
+      )}
 
       <AddProduct />
 

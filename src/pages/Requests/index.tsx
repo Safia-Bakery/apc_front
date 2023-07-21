@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Order } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
@@ -46,7 +46,11 @@ const Requests = () => {
     data: orders,
     refetch,
     isLoading: orderLoading,
-  } = useOrders({ size: itemsPerPage, page: currentPage, enabled: true });
+  } = useOrders({
+    enabled: true,
+    size: itemsPerPage,
+    page: currentPage,
+  });
 
   const sortData = () => {
     if (orders?.items && sortKey) {
@@ -65,6 +69,21 @@ const Requests = () => {
     if (currentPage === 1) return index + 1;
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
+
+  const summary = useMemo(() => {
+    const indexOfLastItem = currentPage * orders?.items?.length!;
+    const indexOfFirstItem =
+      indexOfLastItem - orders?.items?.length! > 1 ? itemsPerPage : 0;
+    return (
+      <div className={styles.summary}>
+        Показаны записи{" "}
+        <b>
+          {indexOfFirstItem + 1}-{indexOfLastItem}
+        </b>{" "}
+        из <b>{orders?.total}</b>.
+      </div>
+    );
+  }, [currentPage, orders?.items.length]);
 
   useEffect(() => {
     refetch();
@@ -85,10 +104,7 @@ const Requests = () => {
       </Header>
 
       <div className="table-responsive grid-view content">
-        <div className={styles.summary}>
-          Показаны записи <b>1-{orders?.items.length}</b> из{" "}
-          <b>{orders?.total}</b>.
-        </div>
+        {summary}
         <table className="table table-hover">
           <TableHead
             column={column}

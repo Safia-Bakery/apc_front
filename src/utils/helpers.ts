@@ -1,11 +1,11 @@
 import { QueryClient } from "@tanstack/react-query";
-import { EPresetTimes, RequestStatus } from "./types";
+import { EPresetTimes, FileType, RequestStatus } from "./types";
 
 export const itemsPerPage = 20;
 
 export const StatusName = [
-  { name: "Активный", id: 0 },
-  { name: "Не активный", id: 2 },
+  { name: "Активный", id: "1" },
+  { name: "Не активный", id: "0" },
 ];
 export const OrderTypeNames = [
   { name: "APC", id: "APC" },
@@ -72,11 +72,11 @@ export const handleStatus = (status: RequestStatus | undefined) => {
 };
 
 export const RequestStatusArr = [
-  { id: RequestStatus.confirmed, name: RequestStatus["1"] },
-  { id: RequestStatus.new, name: RequestStatus["0"] },
-  { id: RequestStatus.sendToRepair, name: RequestStatus["2"] },
-  { id: RequestStatus.done, name: RequestStatus["3"] },
-  { id: RequestStatus.rejected, name: RequestStatus["4"] },
+  { id: RequestStatus.confirmed, name: "Принят" },
+  { id: RequestStatus.new, name: "Новый" },
+  { id: RequestStatus.sendToRepair, name: "Отправлен для ремонта" },
+  { id: RequestStatus.done, name: "Закончен" },
+  { id: RequestStatus.rejected, name: "Отклонён" },
 ];
 
 export const requestRows = (status: RequestStatus) => {
@@ -93,5 +93,18 @@ export const requestRows = (status: RequestStatus) => {
       return "table-warning";
     default:
       return "table-info";
+  }
+};
+export const detectFileType = (url: string) => {
+  const extension = url.split(".").pop()?.toLowerCase();
+  const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp"];
+  const videoExtensions = ["mp4", "avi", "mkv", "mov", "webm"];
+
+  if (extension && imageExtensions.includes(extension)) {
+    return FileType.photo;
+  } else if (extension && videoExtensions.includes(extension)) {
+    return FileType.video;
+  } else {
+    return FileType.other;
   }
 };

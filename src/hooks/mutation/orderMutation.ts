@@ -14,6 +14,8 @@ interface Body {
 const orderMutation = () => {
   const contentType = "multipart/form-data";
 
+  const config = { timeout: 100000 };
+
   return useMutation(
     ["create_order"],
     ({ urgent, product, description, category_id, fillial_id, files }: Body) =>
@@ -28,6 +30,7 @@ const orderMutation = () => {
             category_id,
             fillial_id,
           },
+          config,
           contentType,
         })
         .then(({ data }) => data),

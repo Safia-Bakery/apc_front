@@ -3,9 +3,13 @@ import styles from "./index.module.scss";
 import { NavLink, useMatch } from "react-router-dom";
 import cl from "classnames";
 import { Screens } from "src/utils/types";
-import { useAppSelector } from "src/redux/utils/types";
+import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import { roleSelector } from "src/redux/reducers/authReducer";
 import Subroutes from "./CustomSubRoutes";
+import {
+  sidebarHandler,
+  toggleSidebar,
+} from "src/redux/reducers/toggleReducer";
 
 const routes = [
   {
@@ -67,7 +71,7 @@ const routes = [
     icon: "/assets/icons/settings.svg",
     subroutes: [
       {
-        name: "Филлиалы",
+        name: "Филиалы",
         url: "/branches",
         icon: "/assets/icons/settings.svg",
         screen: Screens.fillials,
@@ -78,12 +82,18 @@ const routes = [
 
 const CustomSidebar = () => {
   const user = useAppSelector(roleSelector);
+  const collapsed = useAppSelector(toggleSidebar);
+  const dispatch = useAppDispatch();
+
+  const handleOverlay = () => {
+    dispatch(sidebarHandler(!collapsed));
+  };
 
   if (!user) return;
   return (
     <Sidebar
       backgroundColor="#d5302c"
-      className={styles.sidebar}
+      className={cl(styles.sidebar, { [styles.collapsed]: collapsed })}
       rootStyles={{
         color: "white",
         height: "100%",
@@ -101,10 +111,14 @@ const CustomSidebar = () => {
       <Menu
         menuItemStyles={{
           subMenuContent: ({ level }) => ({
+            zIndex: 100,
             backgroundColor: level === 0 ? "#922624" : "transparent",
           }),
         }}
       >
+        {collapsed && (
+          <div className={styles.overlay} onClick={handleOverlay} />
+        )}
         <MenuItem
           icon={
             <img

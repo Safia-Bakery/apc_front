@@ -244,6 +244,14 @@ export type RequestFilter = {
   created_to?: string;
   finished_from?: string;
   finished_to?: string;
-  request_status?: number;
+  request_status?: string;
   user?: string;
+  page?: number;
+  size?: number;
 };
+
+export enum FileType {
+  other = "other",
+  video = "video",
+  photo = "photo",
+}

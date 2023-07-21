@@ -61,7 +61,7 @@ const Breadcrumbs: FC = () => {
       <Container>
         <div className={styles.container}>
           <ul className={styles.breadcrump}>
-            {/* <button
+            <button
               onClick={() => dispatch(sidebarHandler(true))}
               className="btn btn-danger p-2 btn-fill btn-round btn-icon"
             >
@@ -72,7 +72,7 @@ const Breadcrumbs: FC = () => {
                 src="/assets/icons/burger.svg"
                 alt="burger"
               />
-            </button> */}
+            </button>
             <li className="ml-3">
               <Link to="/">Главная</Link>
             </li>
@@ -88,7 +88,7 @@ const Breadcrumbs: FC = () => {
           </ul>
 
           <span onClick={handleLogout} className={styles.logout}>
-            Выйти ({me?.full_name})
+            Выйти ({me?.username})
           </span>
         </div>
       </Container>

@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, HTMLInputTypeAttribute, ReactNode } from "react";
+import { ChangeEvent, FC, ReactNode } from "react";
 import cl from "classnames";
 import styles from "./index.module.scss";
 

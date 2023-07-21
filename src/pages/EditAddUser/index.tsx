@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import styles from "./index.module.scss";
-import InputBlock from "src/components/Input";
+
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { useAppSelector } from "src/redux/utils/types";
@@ -18,6 +18,9 @@ import InputMask from "react-input-mask";
 import { fixedString } from "src/utils/helpers";
 import BaseInput from "src/components/BaseInputs";
 import MainSelect from "src/components/BaseInputs/MainSelect";
+import MainInput from "src/components/BaseInputs/MainInput";
+import MainTextArea from "src/components/BaseInputs/MainTextArea";
+import BaseInputs from "src/components/BaseInputs";
 
 const EditAddUser = () => {
   const { id } = useParams();
@@ -26,8 +29,8 @@ const EditAddUser = () => {
   const brigada = useAppSelector(brigadaSelector);
 
   const roles = useAppSelector(rolesSelector);
-  const { refetch: userRefetch } = useUsers({ enabled: false });
-  const { data: user } = useUser({ id: Number(id) });
+  const { refetch: usersRefetch } = useUsers({ enabled: false });
+  const { data: user, refetch: userRefetch } = useUser({ id: Number(id) });
 
   const { mutate } = userMutation();
 
@@ -50,14 +53,15 @@ const EditAddUser = () => {
         group_id,
         password,
         phone_number: fixedString(phone_number),
-        brigada_id,
-        ...(email && { email }),
+        ...(!!email && { email }),
+        ...(brigada_id && { brigada_id }),
         ...(telegram_id && { telegram_id }),
-        ...(id && { user_id: Number(id) }),
+        ...(!!id && { user_id: Number(id) }),
       },
       {
         onSuccess: (data: any) => {
           if (data.status === 200) {
+            usersRefetch();
             userRefetch();
             navigate("/users");
             successToast(
@@ -87,7 +91,7 @@ const EditAddUser = () => {
         brigada_id: user.brigader?.id,
       });
     }
-  }, [user, id]);
+  }, [user, id, getValues("phone_number")]);
 
   return (
     <Card>
@@ -100,20 +104,21 @@ const EditAddUser = () => {
       <form className="content" onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
           <div className="col-md-6">
-            <InputBlock
-              register={register("full_name", {
-                required: "Обязательное поле",
-              })}
-              className="mb-2"
-              label="ФИО"
-              error={errors.full_name}
-            />
-            <InputBlock
-              register={register("username", { required: "Обязательное поле" })}
-              className="mb-2"
-              label="ЛОГИН"
-              error={errors.username}
-            />
+            <BaseInputs label="ФИО" error={errors.full_name}>
+              <MainInput
+                register={register("full_name", {
+                  required: "Обязательное поле",
+                })}
+              />
+            </BaseInputs>
+
+            <BaseInputs label="ЛОГИН" error={errors.username}>
+              <MainInput
+                register={register("username", {
+                  required: "Обязательное поле",
+                })}
+              />
+            </BaseInputs>
             <label className={styles.label}>ТЕЛЕФОН</label>
             <InputMask
               className="form-control mb-2"
@@ -124,41 +129,31 @@ const EditAddUser = () => {
               })}
             />
             {!!id && (
-              <InputBlock
-                register={register("telegram_id")}
-                className="mb-2"
-                label="Телеграм ID"
-                error={errors.telegram_id}
-              />
+              <BaseInputs label="Телеграм ID" error={errors.telegram_id}>
+                <MainInput register={register("telegram_id")} />
+              </BaseInputs>
             )}
           </div>
           <div className="col-md-6">
             <BaseInput label="РОЛЬ" error={errors.department}>
-              <MainSelect
-                values={roles}
-                register={register("group_id", {
+              <MainSelect values={roles} register={register("group_id")} />
+            </BaseInput>
+            <BaseInput error={errors.password} label="ПАРОЛЬ">
+              <MainInput
+                type={"password"}
+                register={register("password", {
                   required: "Обязательное поле",
+                  minLength: {
+                    value: 6,
+                    message: "Надо ввести минимум 6 символов",
+                  },
                 })}
               />
             </BaseInput>
-            <InputBlock
-              register={register("password", {
-                required: "Обязательное поле",
-                minLength: {
-                  value: 6,
-                  message: "Надо ввести минимум 6 символов",
-                },
-              })}
-              className="mb-2"
-              inputType="password"
-              error={errors.password}
-              label="ПАРОЛЬ"
-            />
-            <InputBlock
-              register={register("email")}
-              className="mb-2"
-              label="E-MAIL"
-            />
+
+            <BaseInput label="E-MAIL">
+              <MainInput register={register("email")} />
+            </BaseInput>
             {!!id && (
               <BaseInput label="Бригада">
                 <MainSelect
@@ -169,15 +164,9 @@ const EditAddUser = () => {
             )}
           </div>
         </div>
-        <div>
-          <label className={styles.label}>ОПИСАНИЕ</label>
-          <textarea
-            rows={4}
-            {...register("description")}
-            className={`form-control h-100 ${styles.textArea}`}
-            name="description"
-          />
-        </div>
+        <BaseInput label="ОПИСАНИЕ">
+          <MainTextArea register={register("description")} />
+        </BaseInput>
 
         <button type="submit" className="btn btn-success btn-fill mt-3">
           Сохранить

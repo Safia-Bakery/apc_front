@@ -2,7 +2,7 @@ import Card from "src/components/Card";
 import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
-import InputBlock from "src/components/Input";
+
 import cl from "classnames";
 import { useForm } from "react-hook-form";
 import useCategory from "src/hooks/useCategory";
@@ -10,6 +10,9 @@ import { ChangeEvent, useEffect, useState } from "react";
 import categoryMutation from "src/hooks/mutation/categoryMutation";
 import useCategories from "src/hooks/useCategories";
 import { successToast } from "src/utils/toast";
+import BaseInput from "src/components/BaseInputs";
+import MainInput from "src/components/BaseInputs/MainInput";
+import MainTextArea from "src/components/BaseInputs/MainTextArea";
 
 const ShowCategory = () => {
   const navigate = useNavigate();
@@ -65,31 +68,31 @@ const ShowCategory = () => {
         </button>
       </Header>
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
-        <InputBlock
-          register={register("name", { required: "Обязательное поле" })}
-          label="НАИМЕНОВАНИЕ"
-        />
+        <BaseInput label="НАИМЕНОВАНИЕ">
+          <MainInput
+            register={register("name", { required: "Обязательное поле" })}
+          />
+        </BaseInput>
 
-        <label className={styles.label}>ОПИСАНИЕ</label>
-
-        <textarea
-          {...register("description", { required: "Обязательное поле" })}
-          rows={4}
-          className="form-control h-100"
-        />
+        <BaseInput label="ОПИСАНИЕ">
+          <MainTextArea
+            register={register("description", {
+              required: "Обязательное поле",
+            })}
+          />
+        </BaseInput>
 
         <div className="form-group field-category-is_active">
           <label className={styles.label}>СТАТУС</label>
-          <input type="hidden" name="Category[is_active]" value="" />
           <div
             id="category-is_active"
             className={cl(styles.formControl, "form-control")}
           >
             <label className={styles.radioBtn}>
               <input
-                checked={!status}
+                checked={!!status}
                 type="radio"
-                value={0}
+                value={1}
                 onChange={handleStatus}
               />
               Активный
@@ -97,9 +100,9 @@ const ShowCategory = () => {
             <label className={styles.radioBtn}>
               <input
                 type="radio"
-                value={2}
+                value={0}
                 onChange={handleStatus}
-                checked={!!status}
+                checked={!status}
               />
               Не активный
             </label>

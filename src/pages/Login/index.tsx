@@ -8,7 +8,9 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import useToken from "src/hooks/useToken";
 import { successToast } from "src/utils/toast";
-import InputBlock from "src/components/Input";
+
+import BaseInput from "src/components/BaseInputs";
+import MainInput from "src/components/BaseInputs/MainInput";
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -58,18 +60,18 @@ const Login = () => {
       <div className={cl(styles.content, "p-4 shadow bg-white rounded")}>
         <h1 className="text-center mb-3">Войти</h1>
         <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
-          <InputBlock
-            register={register("username", { required: "required" })}
-            autoFocus
-            label="Логин"
-            error={errors.username}
-          />
-          <InputBlock
-            register={register("password", { required: "required" })}
-            inputType="password"
-            label="Пароль"
-            error={errors.password}
-          />
+          <BaseInput label="Логин" error={errors.username}>
+            <MainInput
+              register={register("username", { required: "required" })}
+              autoFocus
+            />
+          </BaseInput>
+          <BaseInput label="Пароль" error={errors.password}>
+            <MainInput
+              register={register("password", { required: "required" })}
+              type="password"
+            />
+          </BaseInput>
 
           <button type="submit" className="btn btn-info btn-fill pull-right">
             Логин

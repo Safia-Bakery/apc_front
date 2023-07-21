@@ -3,13 +3,12 @@ import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
 import Pagination from "src/components/Pagination";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { BranchType } from "src/utils/types";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useBranches from "src/hooks/useBranches";
-import { useForm } from "react-hook-form";
 import BranchesFilter from "./filter";
 
 const column = [
@@ -58,10 +57,24 @@ const Branches = () => {
       return sortedData;
     }
   };
-  const { register, getValues } = useForm();
 
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleNavigate = (route: string) => () => navigate(route);
+
+  const summary = useMemo(() => {
+    const indexOfLastItem = currentPage * branches?.items?.length!;
+    const indexOfFirstItem =
+      indexOfLastItem - branches?.items?.length! > 1 ? itemsPerPage : 0;
+    return (
+      <div className={styles.summary}>
+        Показаны записи{" "}
+        <b>
+          {indexOfFirstItem + 1}-{indexOfLastItem}
+        </b>{" "}
+        из <b>{branches?.total}</b>.
+      </div>
+    );
+  }, [currentPage, branches?.items.length]);
 
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
@@ -90,10 +103,7 @@ const Branches = () => {
       </Header>
 
       <div className="table-responsive grid-view content">
-        <div className={styles.summary}>
-          Показаны записи <b>1-{branches?.items.length}</b> из{" "}
-          <b>{branches?.total}</b>.
-        </div>
+        {summary}
         <table className="table table-hover">
           <TableHead
             column={column}
@@ -114,7 +124,7 @@ const Branches = () => {
                     <td>{branch.country}</td>
                     <td>{branch.latitude}</td>
                     <td>{branch.longtitude}</td>
-                    <td>{branch.status ? "Не активный" : "Активный"}</td>
+                    <td>{!branch.status ? "Не активный" : "Активный"}</td>
                     <TableViewBtn
                       onClick={handleNavigate(`/branches/${branch.id}`)}
                     />

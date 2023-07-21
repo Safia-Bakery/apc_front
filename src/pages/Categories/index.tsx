@@ -4,7 +4,7 @@ import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
 import { Category } from "src/utils/types";
 import Pagination from "src/components/Pagination";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
@@ -57,6 +57,21 @@ const Categories = () => {
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
 
+  const summary = useMemo(() => {
+    const indexOfLastItem = currentPage * categories?.items?.length!;
+    const indexOfFirstItem =
+      indexOfLastItem - categories?.items?.length! > 1 ? itemsPerPage : 0;
+    return (
+      <div className={styles.summary}>
+        Показаны записи{" "}
+        <b>
+          {indexOfFirstItem + 1}-{indexOfLastItem}
+        </b>{" "}
+        из <b>{categories?.total}</b>.
+      </div>
+    );
+  }, [currentPage, categories?.items.length]);
+
   return (
     <Card>
       <Header title={"Категории"}>
@@ -70,10 +85,7 @@ const Categories = () => {
 
       <div className="content">
         <div className="table-responsive grid-view">
-          <div className={styles.summary}>
-            Показаны записи <b>1-{categories?.items.length}</b> из{" "}
-            <b>{categories?.total}</b>.
-          </div>
+          {summary}
           <table className="table table-hover">
             <TableHead
               column={column}
@@ -91,7 +103,7 @@ const Categories = () => {
                     <tr key={idx} className="bg-blue">
                       <td width="40">{handleIdx(idx)}</td>
                       <td>{category.name}</td>
-                      <td>{!category.status ? "Активный" : "Неактивный"}</td>
+                      <td>{category.status ? "Активный" : "Неактивный"}</td>
                       <TableViewBtn
                         onClick={handleNavigate(`/categories/${category.id}`)}
                       />

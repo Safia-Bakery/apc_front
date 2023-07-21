@@ -1,13 +1,14 @@
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
-import InputBlock from "src/components/Input";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import roleMutation from "src/hooks/mutation/roleMutation";
 import { successToast } from "src/utils/toast";
 import useRoles from "src/hooks/useRoles";
 import useRolePermission from "src/hooks/useRolePermission";
+import BaseInputs from "src/components/BaseInputs";
+import MainInput from "src/components/BaseInputs/MainInput";
 
 const EditAddRole = () => {
   const { id } = useParams();
@@ -60,12 +61,11 @@ const EditAddRole = () => {
       </Header>
 
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
-        <InputBlock
-          register={register("name", { required: "Обязательное поле" })}
-          className="mb-2"
-          label="НАИМЕНОВАНИЕ"
-          error={errors.name}
-        />
+        <BaseInputs label="НАИМЕНОВАНИЕ" error={errors.name}>
+          <MainInput
+            register={register("name", { required: "Обязательное поле" })}
+          />
+        </BaseInputs>
 
         {/* <div className="form-group field-category-is_active">
           <label className={styles.label}>СТАТУС</label>

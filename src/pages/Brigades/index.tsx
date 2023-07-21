@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { BrigadaType } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
@@ -65,6 +65,21 @@ const Brigades = () => {
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
 
+  const summary = useMemo(() => {
+    const indexOfLastItem = currentPage * brigadas?.items?.length!;
+    const indexOfFirstItem =
+      indexOfLastItem - brigadas?.items?.length! > 1 ? itemsPerPage : 0;
+    return (
+      <div className={styles.summary}>
+        Показаны записи{" "}
+        <b>
+          {indexOfFirstItem + 1}-{indexOfLastItem}
+        </b>{" "}
+        из <b>{brigadas?.total}</b>.
+      </div>
+    );
+  }, [currentPage, brigadas?.items.length]);
+
   if (orderLoading) return <Loading />;
   return (
     <Card>
@@ -78,10 +93,7 @@ const Brigades = () => {
       </Header>
 
       <div className="table-responsive grid-view content">
-        <div className={styles.summary}>
-          Показаны записи <b>1-{brigadas?.items.length}</b> из{" "}
-          <b>{brigadas?.total}</b>.
-        </div>
+        {summary}
         <table className="table table-hover">
           <TableHead
             column={column}

@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import styles from "./index.module.scss";
-import InputBlock from "src/components/Input";
+
 import { useForm } from "react-hook-form";
 import cl from "classnames";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -13,6 +13,8 @@ import brigadaMutation from "src/hooks/mutation/brigadaMutation";
 import useUsersForBrigada from "src/hooks/useUsersForBrigada";
 import BaseInputs from "src/components/BaseInputs";
 import MainSelect from "src/components/BaseInputs/MainSelect";
+import MainTextArea from "src/components/BaseInputs/MainTextArea";
+import MainInput from "src/components/BaseInputs/MainInput";
 
 const CreateBrigades = () => {
   const { id } = useParams();
@@ -84,16 +86,13 @@ const CreateBrigades = () => {
 
       <form className="content" onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
-          <div>
-            <InputBlock
+          <BaseInputs label="Название бригады" error={errors.brigada_name}>
+            <MainInput
               register={register("brigada_name", {
                 required: "Обязательное поле",
               })}
-              className="formmb-2"
-              label="Название бригады"
-              error={errors.brigada_name}
             />
-          </div>
+          </BaseInputs>
         </div>
 
         {!!id && (
@@ -111,11 +110,7 @@ const CreateBrigades = () => {
           </BaseInputs>
         )}
         <BaseInputs label="ОПИСАНИЕ">
-          <textarea
-            rows={4}
-            {...register("brigada_description")}
-            className={`form-control h-100 ${styles.textArea}`}
-          />
+          <MainTextArea register={register("brigada_description")} />
         </BaseInputs>
 
         <div className="form-group field-category-is_active">
@@ -124,9 +119,9 @@ const CreateBrigades = () => {
             <label className={styles.radioBtn}>
               <input
                 onChange={handleStatus}
-                checked={!status}
+                checked={!!status}
                 type="radio"
-                value="0"
+                value="1"
               />
               Активный
             </label>
@@ -134,8 +129,8 @@ const CreateBrigades = () => {
               <input
                 onChange={handleStatus}
                 type="radio"
-                value="2"
-                checked={!!status}
+                value="0"
+                checked={!status}
               />
               Не активный
             </label>

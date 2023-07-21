@@ -9,7 +9,7 @@ interface BodyTypes {
   country?: string;
   latitude?: number;
   longitude?: number;
-  fillial_status?: number;
+  fillial_status?: number | string;
 }
 
 export const useBranches = ({

@@ -13,7 +13,7 @@ export const useCategories = ({
   enabled?: boolean;
   size?: number;
   page?: number;
-  body?: { name?: string; category_status?: number };
+  body?: { name?: string; category_status?: string };
 }) => {
   const dispatch = useAppDispatch();
   return useQuery({

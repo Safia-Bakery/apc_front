@@ -1,6 +1,7 @@
 .sidebar {
   width: 80px !important;
   min-width: 80px !important;
+
   &:hover {
     width: 250px !important;
     min-width: 250px !important;
@@ -11,11 +12,17 @@
   }
 }
 
+.collapsed {
+  width: 250px !important;
+  min-width: 250px !important;
+}
+
 .active {
   background: rgba(255, 255, 255, 0.23) !important;
 }
 .menuItem {
   color: white !important;
+  z-index: 100 !important;
   a {
     padding-left: 20px !important;
   }
@@ -29,4 +36,12 @@
   opacity: 0;
   transition: 0.2s;
   width: 250px;
+}
+.overlay {
+  z-index: 99;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }

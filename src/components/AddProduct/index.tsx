@@ -4,6 +4,10 @@ import Header from "../Header";
 import Modal from "../Modal";
 import styles from "./index.module.scss";
 import dayjs from "dayjs";
+import BaseInput from "../BaseInputs";
+import MainTextArea from "../BaseInputs/MainTextArea";
+import { useForm } from "react-hook-form";
+import MainInput from "../BaseInputs/MainInput";
 
 const column = [
   { name: "#" },
@@ -18,6 +22,13 @@ const column = [
 
 const AddProduct = () => {
   const [modal, $modal] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+    reset,
+  } = useForm();
 
   const handleModal = () => $modal((prev) => !prev);
   return (
@@ -82,29 +93,13 @@ const AddProduct = () => {
             </select>
           </div>
 
-          <div className="form-group field-apcitems-amount required">
-            <label className="control-label">Количество</label>
-            <input
-              type="number"
-              id="apcitems-amount"
-              className="form-control"
-              name="ApcItems[amount]"
-              step="any"
-              aria-required="true"
-            />
+          <BaseInput label="Количество">
+            <MainInput type="number" register={register("qnt")} />
+          </BaseInput>
 
-            <div className="help-block"></div>
-          </div>
-
-          <div className="form-group field-apcitems-comment">
-            <label className="control-label">Примичание</label>
-            <textarea
-              id="apcitems-comment"
-              className="form-control"
-              name="ApcItems[comment]"
-              rows={6}
-            ></textarea>
-          </div>
+          <BaseInput label="Примичание">
+            <MainTextArea register={register("description")} />
+          </BaseInput>
         </div>
 
         <hr />

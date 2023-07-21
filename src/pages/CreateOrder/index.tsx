@@ -14,11 +14,12 @@ import {
 import useOrders from "src/hooks/useOrders";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import styles from "./index.module.scss";
-import InputBlock from "src/components/Input";
+
 import BaseInputs from "src/components/BaseInputs";
 import MainSelect from "src/components/BaseInputs/MainSelect";
 import MainInput from "src/components/BaseInputs/MainInput";
 import BaseInput from "src/components/BaseInputs";
+import MainTextArea from "src/components/BaseInputs/MainTextArea";
 
 const CreateOrder = () => {
   const [files, $files] = useState<FormData>();
@@ -90,11 +91,8 @@ const CreateOrder = () => {
         </BaseInputs>
 
         <BaseInputs label="Комментарии">
-          <textarea
-            rows={4}
-            {...register("description")}
-            className={`form-control ${styles.textArea}`}
-            name="description"
+          <MainTextArea
+            register={register("description")}
             placeholder="Комментарии"
           />
         </BaseInputs>

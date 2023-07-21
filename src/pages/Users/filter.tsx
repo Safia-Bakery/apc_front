@@ -1,17 +1,23 @@
 import { FC, useEffect, useRef, useState } from "react";
+import BaseInput from "src/components/BaseInputs";
 import BaseInputs from "src/components/BaseInputs";
+import MainInput from "src/components/BaseInputs/MainInput";
 import MainSelect from "src/components/BaseInputs/MainSelect";
 
-import InputBlock from "src/components/Input";
 import useDebounce from "src/hooks/useDebounce";
 import useUsers from "src/hooks/useUsers";
 import { rolesSelector } from "src/redux/reducers/cacheResources";
 import { useAppSelector } from "src/redux/utils/types";
-import { StatusName, itemsPerPage } from "src/utils/helpers";
+import { itemsPerPage } from "src/utils/helpers";
 
 interface Props {
   currentPage: number;
 }
+
+const StatusName = [
+  { name: "Активный", id: 0 },
+  { name: "Не активный", id: 2 },
+];
 
 const UsersFilter: FC<Props> = ({ currentPage }) => {
   const initialLoadRef = useRef(true);
@@ -51,16 +57,14 @@ const UsersFilter: FC<Props> = ({ currentPage }) => {
     <>
       <td></td>
       <td className="p-0">
-        <InputBlock
-          onChange={(e) => $full_name(e.target.value)}
-          blockClass={"m-2"}
-        />
+        <BaseInput className="m-2">
+          <MainInput onChange={(e) => $full_name(e.target.value)} />
+        </BaseInput>
       </td>
       <td className="p-0">
-        <InputBlock
-          onChange={(e) => $username(e.target.value)}
-          blockClass={"m-2"}
-        />
+        <BaseInput className="m-2">
+          <MainInput onChange={(e) => $username(e.target.value)} />
+        </BaseInput>
       </td>
       <td className="p-0">
         <BaseInputs className="mb-0">
@@ -71,10 +75,9 @@ const UsersFilter: FC<Props> = ({ currentPage }) => {
         </BaseInputs>
       </td>
       <td className="p-0">
-        <InputBlock
-          onChange={(e) => $phone_number(e.target.value)}
-          blockClass={"m-2"}
-        />
+        <BaseInput className="m-2">
+          <MainInput onChange={(e) => $phone_number(e.target.value)} />
+        </BaseInput>
       </td>
       <td className="p-0">
         <BaseInputs className="mb-0">

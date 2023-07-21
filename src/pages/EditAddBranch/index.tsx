@@ -2,7 +2,6 @@ import Card from "src/components/Card";
 import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
-import InputBlock from "src/components/Input";
 import { useForm } from "react-hook-form";
 import { ChangeEvent, useEffect, useState } from "react";
 import cl from "classnames";
@@ -10,6 +9,8 @@ import useBranch from "src/hooks/useBranch";
 import branchMutation from "src/hooks/mutation/branchMutation";
 import useBranches from "src/hooks/useBranches";
 import { successToast } from "src/utils/toast";
+import MainInput from "src/components/BaseInputs/MainInput";
+import BaseInputs from "src/components/BaseInputs";
 
 const EditAddBranch = () => {
   const { id } = useParams();
@@ -75,34 +76,39 @@ const EditAddBranch = () => {
       </Header>
 
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
-        <InputBlock
-          register={register("name", { required: "Обязательное поле" })}
-          className="mb-2"
-          label="НАЗВАНИЕ"
-          disabled={!!id}
-          error={errors.name}
-        />
-        <InputBlock
-          register={register("region", { required: "Обязательное поле" })}
-          className="mb-2"
-          label="РЕГИОН"
-          disabled={!!id}
-          error={errors.region}
-        />
+        <BaseInputs label="НАЗВАНИЕ" error={errors.name}>
+          <MainInput
+            register={register("name", { required: "Обязательное поле" })}
+            disabled={!!id}
+          />
+        </BaseInputs>
 
-        <InputBlock
-          register={register("lat", { required: "Обязательное поле" })}
-          className="mb-2"
-          label="ШИРОТА"
-          error={errors.lat}
-        />
+        <BaseInputs label="НАЗВАНИЕ" error={errors.name}>
+          <MainInput
+            register={register("name", { required: "Обязательное поле" })}
+            disabled={!!id}
+          />
+        </BaseInputs>
 
-        <InputBlock
-          register={register("lng", { required: "Обязательное поле" })}
-          className="mb-2"
-          label="ДОЛГОТА"
-          error={errors.lng}
-        />
+        <BaseInputs label="РЕГИОН" error={errors.region}>
+          <MainInput
+            register={register("region", { required: "Обязательное поле" })}
+            disabled={!!id}
+          />
+        </BaseInputs>
+
+        <BaseInputs label="ШИРОТА" error={errors.lat}>
+          <MainInput
+            register={register("lat", { required: "Обязательное поле" })}
+          />
+        </BaseInputs>
+
+        <BaseInputs label="ДОЛГОТА" error={errors.lng}>
+          <MainInput
+            register={register("lng", { required: "Обязательное поле" })}
+            disabled={!!id}
+          />
+        </BaseInputs>
 
         <div className="form-group field-category-is_active">
           <label className={styles.label}>СТАТУС</label>
@@ -112,9 +118,9 @@ const EditAddBranch = () => {
           >
             <label className={styles.radioBtn}>
               <input
-                checked={!status}
+                checked={!!status}
                 type="radio"
-                value={0}
+                value={1}
                 onChange={handleStatus}
               />
               Активный
@@ -122,9 +128,9 @@ const EditAddBranch = () => {
             <label className={styles.radioBtn}>
               <input
                 type="radio"
-                value={2}
+                value={0}
                 onChange={handleStatus}
-                checked={!!status}
+                checked={!status}
               />
               Не активный
             </label>

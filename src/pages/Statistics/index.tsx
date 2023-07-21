@@ -2,13 +2,14 @@ import Card from "src/components/Card";
 import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
-import InputBlock from "src/components/Input";
-import { ChangeEvent, useState } from "react";
+
+import { ChangeEvent, useMemo, useState } from "react";
 import { Order } from "src/utils/types";
 import TableHead from "src/components/TableHead";
 import useOrders from "src/hooks/useOrders";
 import { itemsPerPage } from "src/utils/helpers";
 import Pagination from "src/components/Pagination";
+import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
 
 const column = [
   { name: "#", key: "id" as keyof Order["id"] },
@@ -53,6 +54,21 @@ const Statistics = () => {
     setSelectedDate(event.target.value);
   };
 
+  const summary = useMemo(() => {
+    const indexOfLastItem = currentPage * orders?.items?.length!;
+    const indexOfFirstItem =
+      indexOfLastItem - orders?.items?.length! > 1 ? itemsPerPage : 0;
+    return (
+      <div className={styles.summary}>
+        Показаны записи{" "}
+        <b>
+          {indexOfFirstItem + 1}-{indexOfLastItem}
+        </b>{" "}
+        из <b>{orders?.total}</b>.
+      </div>
+    );
+  }, [currentPage, orders?.items.length]);
+
   return (
     <Card>
       <Header title={"Статистика"}>
@@ -63,25 +79,15 @@ const Statistics = () => {
 
       <div className="content">
         <div className={styles.dateBlock}>
-          <InputBlock
-            inputType="date"
-            value={selectedDate}
-            onChange={handleDateChange}
-          />
-          <InputBlock
-            inputType="date"
-            value={selectedDate}
-            onChange={handleDateChange}
-          />
-          <button type="submit" className={`btn btn-primary mb-3`}>
+          <MainDatePicker selected={new Date()} onChange={handleDateChange} />
+          <MainDatePicker selected={new Date()} onChange={handleDateChange} />
+          <button type="submit" className={`btn btn-primary my-2`}>
             Создать
           </button>
         </div>
 
         <div className="table-responsive grid-view">
-          <div className={styles.summary}>
-            Показаны записи <b>1-50</b> из <b>100</b>.
-          </div>
+          {summary}
           <table className="table table-hover">
             <TableHead
               column={column}

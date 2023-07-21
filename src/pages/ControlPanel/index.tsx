@@ -8,7 +8,7 @@ const ControlPanel = () => {
   return (
     <div className={styles.card}>
       <div className="header text-center">
-        <h4 className="title m-0">Добро пожаловать {me?.full_name}</h4>
+        <h4 className="title m-0">Добро пожаловать {me?.username}</h4>
         <p className={styles.category}>{me?.role}</p>
       </div>
     </div>

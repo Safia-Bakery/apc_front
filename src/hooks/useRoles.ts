@@ -7,7 +7,7 @@ import { RoleTypes } from "src/utils/types";
 export const useRoles = ({ enabled = true }: { enabled?: boolean }) => {
   const dispatch = useAppDispatch();
   return useQuery({
-    queryKey: ["user", "role"],
+    queryKey: ["user_role"],
     queryFn: () =>
       apiClient.get(`/user/role`).then(({ data: response }) => {
         dispatch(cachedRoles(response as RoleTypes[]));
