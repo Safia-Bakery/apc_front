@@ -4,10 +4,7 @@ import styles from "./index.module.scss";
 import { FC } from "react";
 import { logoutHandler, roleSelector } from "src/redux/reducers/authReducer";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
-import {
-  sidebarHandler,
-  toggleSidebar,
-} from "src/redux/reducers/toggleReducer";
+import { sidebarHandler } from "src/redux/reducers/toggleReducer";
 
 interface Breadcrumb {
   path: string;

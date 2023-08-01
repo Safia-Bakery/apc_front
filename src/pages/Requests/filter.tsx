@@ -2,7 +2,6 @@ import {
   OrderTypeNames,
   RequestStatusArr,
   UrgentNames,
-  itemsPerPage,
 } from "src/utils/helpers";
 
 import { useAppSelector } from "src/redux/utils/types";
