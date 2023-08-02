@@ -1,34 +1,31 @@
-import styles from "./index.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { Order } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { handleStatus, itemsPerPage, requestRows } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
-import RequestsFilter from "./filter";
+import InventoryFilter from "./filter";
+import ItemsCount from "src/components/ItemsCount";
 
 const column = [
   { name: "#", key: "" },
   { name: "Номер", key: "id" },
-  { name: "Тип", key: "type" },
-  { name: "Отдел", key: "fillial.name" },
-  { name: "Группа проблем", key: "category.name" },
+  { name: "ОТПРАВИТЕЛЬ", key: "type" },
+  { name: "ПОЛУЧАТЕЛЬ", key: "fillial.name" },
+  { name: "Дата", key: "category.name" },
   {
-    name: "Срочно",
-    key: "urgent",
+    name: "Статус",
+    key: "status",
   },
-  { name: "Дата выполнения", key: "finished_at" },
-  { name: "Дата", key: "created_at" },
-  { name: "Статус", key: "status" },
   { name: "Автор", key: "user.name" },
 ];
 
-const Requests = () => {
+const RequestsInventory = () => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -70,21 +67,6 @@ const Requests = () => {
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
 
-  const summary = useMemo(() => {
-    const indexOfLastItem = currentPage * orders?.items?.length!;
-    const indexOfFirstItem =
-      indexOfLastItem - orders?.items?.length! > 1 ? itemsPerPage : 0;
-    return (
-      <div className={styles.summary}>
-        Показаны записи{" "}
-        <b>
-          {indexOfFirstItem + 1}-{indexOfLastItem}
-        </b>{" "}
-        из <b>{orders?.total}</b>.
-      </div>
-    );
-  }, [currentPage, orders?.items.length]);
-
   useEffect(() => {
     refetch();
   }, [currentPage]);
@@ -93,8 +75,8 @@ const Requests = () => {
 
   return (
     <Card>
-      <Header title={"Заявки"}>
-        <button className="btn btn-primary btn-fill mr-2">Экспорт</button>
+      <Header title={"Заявка на инвентарь"}>
+        {/* <button className="btn btn-primary btn-fill mr-2">Экспорт</button> */}
         <button
           onClick={() => navigate("add")}
           className="btn btn-success btn-fill"
@@ -104,7 +86,7 @@ const Requests = () => {
       </Header>
 
       <div className="table-responsive grid-view content">
-        {summary}
+        <ItemsCount data={orders} currentPage={currentPage} />
         <table className="table table-hover">
           <TableHead
             column={column}
@@ -112,7 +94,7 @@ const Requests = () => {
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            <RequestsFilter currentPage={currentPage} />
+            <InventoryFilter currentPage={currentPage} />
           </TableHead>
 
           {!!orders?.items?.length && (
@@ -124,19 +106,14 @@ const Requests = () => {
                     <td width="80">
                       <Link to={`/orders/${order?.id}`}>{order?.id}</Link>
                     </td>
-                    <td>APC</td>
                     <td>
-                      <span className="not-set">{order?.fillial?.name}</span>
+                      <span className="not-set">{order?.user.full_name}</span>
                     </td>
-                    <td>{order?.category?.name}</td>
-                    <td>{!order?.urgent ? "Несрочный" : "Срочный"}</td>
-                    <td>
-                      {dayjs(order?.finished_at).format("DD-MM-YYYY HH:mm")}
-                    </td>
+                    <td>{order?.fillial?.name}</td>
                     <td>
                       {dayjs(order?.created_at).format("DD-MM-YYYY HH:mm")}
                     </td>
-                    <td>{handleStatus(order.status)}</td>
+                    <td>{handleStatus(order?.status)}</td>
                     <td>{order?.user?.full_name}</td>
                   </tr>
                 )
@@ -162,4 +139,4 @@ const Requests = () => {
   );
 };
 
-export default Requests;
+export default RequestsInventory;

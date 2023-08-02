@@ -57,23 +57,25 @@ const Login = () => {
   };
   return (
     <div className={styles.login_wrap}>
-      <div className={cl(styles.content, "p-4 shadow bg-white rounded")}>
-        <h1 className="text-center mb-3">Войти</h1>
+      <div className={cl(styles.content, "p-5 shadow bg-white rounded")}>
+        <h2 className="text-center mb-3">Авторизация</h2>
         <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
-          <BaseInput label="Логин" error={errors.username}>
+          <BaseInput className="mb-0" error={errors.username}>
             <MainInput
               register={register("username", { required: "required" })}
               autoFocus
+              placeholder={"Логин"}
             />
           </BaseInput>
-          <BaseInput label="Пароль" error={errors.password}>
+          <BaseInput className="mb-0" error={errors.password}>
             <MainInput
               register={register("password", { required: "required" })}
               type="password"
+              placeholder={"Пароль"}
             />
           </BaseInput>
 
-          <button type="submit" className="btn btn-info btn-fill pull-right">
+          <button type="submit" className="btn btn-primary btn-fill pull-right">
             Логин
           </button>
         </form>

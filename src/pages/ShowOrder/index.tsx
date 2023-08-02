@@ -3,24 +3,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import AddProduct from "src/components/AddProduct";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import Modal from "src/components/Modal";
 import styles from "./index.module.scss";
 import useOrder from "src/hooks/useOrder";
 import dayjs from "dayjs";
 import { useAppSelector } from "src/redux/utils/types";
-import { brigadaSelector } from "src/redux/reducers/cacheResources";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import { successToast } from "src/utils/toast";
 import { baseURL } from "src/main";
-import { CancelReason, detectFileType, handleStatus } from "src/utils/helpers";
+import { detectFileType, handleStatus } from "src/utils/helpers";
 import { useForm } from "react-hook-form";
-import { BrigadaType, FileType, RequestStatus } from "src/utils/types";
+import { FileType, RequestStatus } from "src/utils/types";
 import { roleSelector } from "src/redux/reducers/authReducer";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
-import cl from "classnames";
-import BaseInput from "src/components/BaseInputs";
-import MainSelect from "src/components/BaseInputs/MainSelect";
-import MainTextArea from "src/components/BaseInputs/MainTextArea";
+import ShowRequestModals from "src/components/ShowRequestModals";
 
 const enum ModalTypes {
   closed = "closed",
@@ -32,20 +27,12 @@ const enum ModalTypes {
 const ShowOrder = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [modal, $modal] = useState<ModalTypes>(ModalTypes.closed);
   const { mutate: attach } = attachBrigadaMutation();
-  const handleModal = (type: ModalTypes) => () => $modal(type);
+  const handleModal = (type: ModalTypes) => () => navigate(`?modal=${type}`);
   const [brigada, $brigada] = useState<{ id: number; name: string }>();
   const { register, getValues } = useForm();
   const [files, $files] = useState<FormData>();
-  const [photo, $photo] = useState<string>();
-  const brigades = useAppSelector(brigadaSelector);
   const me = useAppSelector(roleSelector);
-
-  const selectBrigada = (item: BrigadaType) => () => {
-    $brigada({ id: item.id, name: item.name });
-    $modal(ModalTypes.closed);
-  };
 
   const handleNavigate = (route: string) => () => navigate(route);
 
@@ -62,8 +49,7 @@ const ShowOrder = () => {
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
     else {
-      $photo(file);
-      $modal(ModalTypes.showPhoto);
+      navigate(`?modal=${ModalTypes.showPhoto}&photo=${file}`);
     }
   };
 
@@ -84,7 +70,7 @@ const ShowOrder = () => {
           },
         }
       );
-      $modal(ModalTypes.closed);
+      navigate(`?`);
     };
 
   const renderBtns = useMemo(() => {
@@ -141,7 +127,7 @@ const ShowOrder = () => {
   }, [me?.permissions, order?.status, brigada?.name]);
 
   const renderAssignment = useMemo(() => {
-    if (me?.permissions.ismanager && order?.status === 0) {
+    if (me?.permissions?.ismanager && order?.status === 0) {
       if (brigada?.name) {
         return (
           <>
@@ -166,91 +152,6 @@ const ShowOrder = () => {
     }
     return <span>{brigada?.name}</span>;
   }, [me?.permissions, brigada?.name, order?.status]);
-
-  const renderModal = useMemo(() => {
-    switch (modal) {
-      case ModalTypes.assign:
-        return (
-          <div className={styles.birgadesModal}>
-            <Header title="Выберите исполнителя">
-              <button
-                onClick={handleModal(ModalTypes.closed)}
-                className="close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </Header>
-            <div className={styles.items}>
-              {brigades.map((item, idx) => (
-                <div key={idx} className={styles.item}>
-                  <h6>{item?.name}</h6>
-                  <button
-                    onClick={selectBrigada(item)}
-                    className="btn btn-success btn-fill btn-sm"
-                  >
-                    Назначить
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      case ModalTypes.cancelRequest:
-        return (
-          <div className={styles.birgadesModal}>
-            <Header title="Выберите исполнителя">
-              <button
-                onClick={handleModal(ModalTypes.closed)}
-                className="close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </Header>
-            <div className="p-3">
-              <BaseInput label="Выберите причину">
-                <MainSelect
-                  values={CancelReason}
-                  register={register("cancel_reason")}
-                />
-              </BaseInput>
-
-              <BaseInput label="Комментарии">
-                <MainTextArea register={register("cancel_reason")} />
-              </BaseInput>
-
-              <button
-                className="btn btn-success"
-                onClick={handleBrigada({ status: RequestStatus.rejected })}
-              >
-                Отправить
-              </button>
-            </div>
-          </div>
-        );
-
-      case ModalTypes.showPhoto:
-        return (
-          <div className={styles.imgBlock}>
-            <button
-              onClick={handleModal(ModalTypes.closed)}
-              className={cl(styles.close, "close")}
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-            {photo && detectFileType(photo) === FileType.photo ? (
-              <img src={photo} className={styles.image} alt="uploaded-file" />
-            ) : (
-              <video src={photo} className={styles.image} controls />
-            )}
-          </div>
-        );
-
-      default:
-        return;
-    }
-
-    return;
-  }, [modal]);
 
   useEffect(() => {
     if (order?.brigada?.name && order?.brigada?.id)
@@ -375,7 +276,6 @@ const ShowOrder = () => {
             </div>
           </div>
           <hr />
-          {renderBtns}
         </div>
       </Card>
 
@@ -388,15 +288,10 @@ const ShowOrder = () => {
         </Card>
       )}
 
-      <AddProduct />
-
-      <Modal
-        onClose={handleModal(ModalTypes.closed)}
-        isOpen={modal !== ModalTypes.closed}
-        className={styles.assignModal}
-      >
-        {renderModal}
-      </Modal>
+      <AddProduct>
+        <div className="p-2">{renderBtns}</div>
+      </AddProduct>
+      <ShowRequestModals />
     </>
   );
 };

@@ -27,6 +27,7 @@ const routeNameMappings: { [key: string]: string } = {
   settings: "Настройки",
   add: "Добавить",
   edit: "Изменить",
+  "orders-inventory": "Заявка на инвентарь",
 };
 
 const Breadcrumbs: FC = () => {

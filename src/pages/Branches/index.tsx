@@ -1,15 +1,15 @@
 import Card from "src/components/Card";
-import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
 import Pagination from "src/components/Pagination";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { BranchType } from "src/utils/types";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useBranches from "src/hooks/useBranches";
 import BranchesFilter from "./filter";
+import ItemsCount from "src/components/ItemsCount";
 
 const column = [
   { name: "#", key: "id" },
@@ -61,21 +61,6 @@ const Branches = () => {
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleNavigate = (route: string) => () => navigate(route);
 
-  const summary = useMemo(() => {
-    const indexOfLastItem = currentPage * branches?.items?.length!;
-    const indexOfFirstItem =
-      indexOfLastItem - branches?.items?.length! > 1 ? itemsPerPage : 0;
-    return (
-      <div className={styles.summary}>
-        Показаны записи{" "}
-        <b>
-          {indexOfFirstItem + 1}-{indexOfLastItem}
-        </b>{" "}
-        из <b>{branches?.total}</b>.
-      </div>
-    );
-  }, [currentPage, branches?.items.length]);
-
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
     else return index + 1 + itemsPerPage * (currentPage - 1);
@@ -103,7 +88,7 @@ const Branches = () => {
       </Header>
 
       <div className="table-responsive grid-view content">
-        {summary}
+        <ItemsCount data={branches} currentPage={currentPage} />
         <table className="table table-hover">
           <TableHead
             column={column}

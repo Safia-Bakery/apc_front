@@ -10,6 +10,7 @@ import useOrders from "src/hooks/useOrders";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import dayjs from "dayjs";
+import ItemsCount from "src/components/ItemsCount";
 
 const column = [
   { name: "#", key: "id" as keyof Order["id"] },
@@ -65,9 +66,7 @@ const Comments = () => {
 
       <div className="content">
         <div className="table-responsive grid-view">
-          <div className={styles.summary}>
-            Показаны записи <b>1-50</b> из <b>100</b>.
-          </div>
+          <ItemsCount data={orders} currentPage={currentPage} />
           <table className="table table-hover">
             <TableHead
               column={column}

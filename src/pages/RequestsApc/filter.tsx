@@ -19,16 +19,11 @@ import BaseInput from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
 
-type dateRangeType = {
-  start: string;
-  end: string;
-};
-
 interface Props {
   currentPage: number;
 }
 
-const RequestsFilter: FC<Props> = ({ currentPage }) => {
+const InventoryFilter: FC<Props> = ({ currentPage }) => {
   const initialLoadRef = useRef(true);
   const branches = useAppSelector(branchSelector);
   const categories = useAppSelector(categorySelector);
@@ -56,6 +51,7 @@ const RequestsFilter: FC<Props> = ({ currentPage }) => {
       ...(!!category_id && { category_id }),
       ...(!!request_status && { request_status }),
       ...(!!user && { user }),
+      ...(!!urgent && { urgent }),
     },
   });
 
@@ -133,7 +129,7 @@ const RequestsFilter: FC<Props> = ({ currentPage }) => {
       <td className="p-0">
         <MainDatePicker selected={startDate} onChange={startRange} />
       </td>
-      <td className="p-0">
+      {/* <td className="p-0">
         <MainDatePicker selected={endDate} onChange={finishRange} />
       </td>
       <td className="p-0">
@@ -149,9 +145,9 @@ const RequestsFilter: FC<Props> = ({ currentPage }) => {
           <MainInput onChange={(e) => $user(e.target.value)} />
         </BaseInput>
       </td>
-      <td></td>
+      <td></td> */}
     </>
   );
 };
 
-export default RequestsFilter;
+export default InventoryFilter;

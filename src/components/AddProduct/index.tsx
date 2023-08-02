@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, PropsWithChildren, useState } from "react";
 import Card from "../Card";
 import Header from "../Header";
 import Modal from "../Modal";
@@ -20,7 +20,7 @@ const column = [
   },
 ];
 
-const AddProduct = () => {
+const AddProduct: FC<PropsWithChildren> = ({ children }) => {
   const [modal, $modal] = useState(false);
   const {
     register,
@@ -69,6 +69,8 @@ const AddProduct = () => {
           </tbody>
         </table>
         <hr />
+
+        {children}
       </div>
       <Modal className={styles.modal} isOpen={modal} onClose={handleModal}>
         <Header title="Добавить расходной товар">

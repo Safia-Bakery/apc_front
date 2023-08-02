@@ -10,6 +10,7 @@ import useOrders from "src/hooks/useOrders";
 import { itemsPerPage } from "src/utils/helpers";
 import Pagination from "src/components/Pagination";
 import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
+import ItemsCount from "src/components/ItemsCount";
 
 const column = [
   { name: "#", key: "id" as keyof Order["id"] },
@@ -54,21 +55,6 @@ const Statistics = () => {
     setSelectedDate(event.target.value);
   };
 
-  const summary = useMemo(() => {
-    const indexOfLastItem = currentPage * orders?.items?.length!;
-    const indexOfFirstItem =
-      indexOfLastItem - orders?.items?.length! > 1 ? itemsPerPage : 0;
-    return (
-      <div className={styles.summary}>
-        Показаны записи{" "}
-        <b>
-          {indexOfFirstItem + 1}-{indexOfLastItem}
-        </b>{" "}
-        из <b>{orders?.total}</b>.
-      </div>
-    );
-  }, [currentPage, orders?.items.length]);
-
   return (
     <Card>
       <Header title={"Статистика"}>
@@ -87,7 +73,7 @@ const Statistics = () => {
         </div>
 
         <div className="table-responsive grid-view">
-          {summary}
+          <ItemsCount data={orders} currentPage={currentPage} />
           <table className="table table-hover">
             <TableHead
               column={column}

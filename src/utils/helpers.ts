@@ -86,7 +86,7 @@ export const requestRows = (status: RequestStatus) => {
     case RequestStatus.confirmed:
       return "table-primary";
     case RequestStatus.new:
-      return "table-info";
+      return "";
     case RequestStatus.rejected:
       return "table-danger";
     case RequestStatus.sendToRepair:

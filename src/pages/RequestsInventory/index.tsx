@@ -1,0 +1,150 @@
+import { Link, useNavigate } from "react-router-dom";
+import { Order } from "src/utils/types";
+import Loading from "src/components/Loader";
+import Pagination from "src/components/Pagination";
+import { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import useOrders from "src/hooks/useOrders";
+import Card from "src/components/Card";
+import Header from "src/components/Header";
+import { handleStatus, itemsPerPage, requestRows } from "src/utils/helpers";
+import TableHead from "src/components/TableHead";
+import RequestsFilter from "../RequestsApc/filter";
+import ItemsCount from "src/components/ItemsCount";
+
+const column = [
+  { name: "#", key: "" },
+  { name: "Номер", key: "id" },
+  { name: "Тип", key: "type" },
+  { name: "Отдел", key: "fillial.name" },
+  { name: "Группа проблем", key: "category.name" },
+  {
+    name: "Срочно",
+    key: "urgent",
+  },
+  { name: "Дата выполнения", key: "finished_at" },
+  { name: "Дата", key: "created_at" },
+  { name: "Статус", key: "status" },
+  { name: "Автор", key: "user.name" },
+];
+
+const RequestsApc = () => {
+  const navigate = useNavigate();
+  const [sortKey, setSortKey] = useState<keyof Order>();
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+
+  const handleSort = (key: any) => {
+    if (key === sortKey) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortKey(key);
+      setSortOrder("asc");
+    }
+  };
+  const [currentPage, setCurrentPage] = useState(1);
+  const {
+    data: orders,
+    refetch,
+    isLoading: orderLoading,
+  } = useOrders({
+    enabled: true,
+    size: itemsPerPage,
+    page: currentPage,
+  });
+
+  const sortData = () => {
+    if (orders?.items && sortKey) {
+      const sortedData = [...orders?.items].sort((a, b) => {
+        if (a[sortKey] < b[sortKey]) return sortOrder === "asc" ? -1 : 1;
+        if (a[sortKey] > b[sortKey]) return sortOrder === "asc" ? 1 : -1;
+        else return 0;
+      });
+      return sortedData;
+    }
+  };
+
+  const handlePageChange = (page: number) => setCurrentPage(page);
+
+  const handleIdx = (index: number) => {
+    if (currentPage === 1) return index + 1;
+    else return index + 1 + itemsPerPage * (currentPage - 1);
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [currentPage]);
+
+  if (orderLoading) return <Loading />;
+
+  return (
+    <Card>
+      <Header title={"Заявки"}>
+        <button className="btn btn-primary btn-fill mr-2">Экспорт</button>
+        <button
+          onClick={() => navigate("add")}
+          className="btn btn-success btn-fill"
+        >
+          Добавить
+        </button>
+      </Header>
+
+      <div className="table-responsive grid-view content">
+        <ItemsCount data={orders} currentPage={currentPage} />
+        <table className="table table-hover">
+          <TableHead
+            column={column}
+            sort={handleSort}
+            sortKey={sortKey}
+            sortOrder={sortOrder}
+          >
+            <RequestsFilter currentPage={currentPage} />
+          </TableHead>
+
+          {!!orders?.items?.length && (
+            <tbody>
+              {(sortData()?.length ? sortData() : orders?.items)?.map(
+                (order, idx) => (
+                  <tr className={requestRows(order.status)} key={idx}>
+                    <td width="40">{handleIdx(idx)}</td>
+                    <td width="80">
+                      <Link to={`/orders/${order?.id}`}>{order?.id}</Link>
+                    </td>
+                    <td>APC</td>
+                    <td>
+                      <span className="not-set">{order?.fillial?.name}</span>
+                    </td>
+                    <td>{order?.category?.name}</td>
+                    <td>{!order?.urgent ? "Несрочный" : "Срочный"}</td>
+                    <td>
+                      {dayjs(order?.finished_at).format("DD-MM-YYYY HH:mm")}
+                    </td>
+                    <td>
+                      {dayjs(order?.created_at).format("DD-MM-YYYY HH:mm")}
+                    </td>
+                    <td>{handleStatus(order.status)}</td>
+                    <td>{order?.user?.full_name}</td>
+                  </tr>
+                )
+              )}
+            </tbody>
+          )}
+        </table>
+        {!!orders && (
+          <Pagination
+            totalItems={orders?.total}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        )}
+        {!orders?.items?.length && (
+          <div className="w-100">
+            <p className="text-center w-100">Спосок пуст</p>
+          </div>
+        )}
+      </div>
+    </Card>
+  );
+};
+
+export default RequestsApc;

@@ -1,16 +1,16 @@
 import Card from "src/components/Card";
-import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { Link, useNavigate } from "react-router-dom";
 import { UsersType } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useUsers from "src/hooks/useUsers";
 import UsersFilter from "./filter";
+import ItemsCount from "src/components/ItemsCount";
 
 const column = [
   { name: "#", key: "" },
@@ -61,20 +61,6 @@ const Users = () => {
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
 
-  const summary = useMemo(() => {
-    const indexOfLastItem = currentPage * users?.items?.length!;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    return (
-      <div className={styles.summary}>
-        Показаны записи{" "}
-        <b>
-          {indexOfFirstItem + 1}-{indexOfLastItem}
-        </b>{" "}
-        из <b>{users?.total}</b>.
-      </div>
-    );
-  }, [currentPage, users?.items.length]);
-
   if (orderLoading) return <Loading />;
 
   return (
@@ -89,7 +75,7 @@ const Users = () => {
       </Header>
 
       <div className="table-responsive grid-view content">
-        {summary}
+        <ItemsCount data={users} currentPage={currentPage} />
         <table className="table table-hover">
           <TableHead
             column={column}
