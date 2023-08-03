@@ -22,7 +22,7 @@ const MainSelect: FC<Props> = ({
 }) => {
   return (
     <select
-      className={cl("form-select", styles.select)}
+      className={cl("form-select form-control", styles.select)}
       {...others}
       {...register}
     >

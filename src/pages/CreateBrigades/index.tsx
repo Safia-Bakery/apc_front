@@ -114,7 +114,7 @@ const CreateBrigades = () => {
         <BaseInputs label="СТАТУС">
           <MainRadioBtns
             values={StatusName}
-            checked={status}
+            value={!!status}
             onChange={handleStatus}
           />
         </BaseInputs>

@@ -119,15 +119,16 @@ const EditAddUser = () => {
                 })}
               />
             </BaseInputs>
-            <label className={styles.label}>ТЕЛЕФОН</label>
-            <InputMask
-              className="form-control mb-2"
-              mask="(999-99)-999-99-99"
-              defaultValue={"998"}
-              {...register("phone_number", {
-                required: "required",
-              })}
-            />
+            <BaseInputs label="ТЕЛЕФОН">
+              <InputMask
+                className="form-control mb-2"
+                mask="(999-99)-999-99-99"
+                defaultValue={"998"}
+                {...register("phone_number", {
+                  required: "required",
+                })}
+              />
+            </BaseInputs>
             {!!id && (
               <BaseInputs label="Телеграм ID" error={errors.telegram_id}>
                 <MainInput register={register("telegram_id")} />
