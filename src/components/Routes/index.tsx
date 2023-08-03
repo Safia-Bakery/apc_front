@@ -6,13 +6,13 @@ import {
   roleSelector,
   tokenSelector,
 } from "src/redux/reducers/authReducer";
-import CreateOrder from "pages/CreateOrder";
+import CreateApcRequest from "src/pages/CreateApcRequest";
 import Login from "pages/Login";
 import { useEffect, useMemo } from "react";
 import useToken from "src/hooks/useToken";
 import ControlPanel from "src/pages/ControlPanel";
-import RequestsApc from "src/pages/RequestsInventory";
-import ShowOrder from "src/pages/ShowOrder";
+import RequestsApc from "src/pages/RequestsApc";
+import ShowRequestApc from "src/pages/ShowRequestApc";
 import YandexMap from "src/pages/Map";
 import Categories from "src/pages/Categories";
 import RemainsInStock from "src/pages/RemailnsInStock";
@@ -30,29 +30,57 @@ import EditAddRole from "src/pages/EditAddRole";
 import ShowRole from "src/pages/ShowRole";
 import BreadCrump from "../BreadCrump";
 import CreateBrigades from "src/pages/CreateBrigades";
-
 import { Screens } from "src/utils/types";
 import useQueriesPrefetch from "src/hooks/sync/useQueriesPrefetch";
 import CustomSidebar from "../CustomSidebar";
 import Logs from "src/pages/LogsScreen";
-import RequestsInventory from "src/pages/RequestsApc";
-import DynamicForm from "src/pages/AddInventoryRequest";
+import RequestInventory from "src/pages/RequestInventory";
+import AddInventoryRequest from "src/pages/AddInventoryRequest";
+import RequestsIT from "src/pages/RequestsIT";
+import CreateITRequest from "src/pages/CreateITRequest";
 
 export const routes = [
   { element: <ControlPanel />, path: "/", screen: Screens.permitted },
-  { element: <CreateOrder />, path: "/orders/add", screen: Screens.requests },
-  { element: <ShowOrder />, path: "/orders/:id", screen: Screens.requests },
-  { element: <Logs />, path: "/logs", screen: Screens.requests },
-  { element: <RequestsApc />, path: "/orders", screen: Screens.requests },
   {
-    element: <RequestsInventory />,
-    path: "/orders-inventory",
-    screen: Screens.requests,
+    element: <CreateITRequest />,
+    path: "/requests-it/add",
+    screen: Screens.requests_it,
   },
   {
-    element: <DynamicForm />,
-    path: "/orders-inventory/add",
-    screen: Screens.requests,
+    element: <CreateApcRequest />,
+    path: "/requests-apc/add",
+    screen: Screens.requests_apc,
+  },
+  {
+    element: <ShowRequestApc />,
+    path: "/requests-apc/:id",
+    screen: Screens.requests_apc,
+  },
+  {
+    element: <RequestsApc />,
+    path: "/requests-apc",
+    screen: Screens.requests_apc,
+  },
+  {
+    element: <ShowRequestApc />,
+    path: "/requests-it/:id",
+    screen: Screens.requests_it,
+  },
+  {
+    element: <RequestsIT />,
+    path: "/requests-it",
+    screen: Screens.requests_it,
+  },
+  { element: <Logs />, path: "/logs", screen: Screens.requests_apc },
+  {
+    element: <RequestInventory />,
+    path: "/requests-inventory",
+    screen: Screens.requests_inventory,
+  },
+  {
+    element: <AddInventoryRequest />,
+    path: "/requests-inventory/add",
+    screen: Screens.requests_inventory,
   },
   { element: <YandexMap />, path: "/map", screen: Screens.maps },
   { element: <Statistics />, path: "/statistics", screen: Screens.statistics },
@@ -125,7 +153,7 @@ const Navigation = () => {
     if (user?.permissions && token)
       return (
         <>
-          {/* <CustomSidebar /> */}
+          <CustomSidebar />
           <BreadCrump />
         </>
       );

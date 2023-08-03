@@ -97,6 +97,14 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
       <td className="p-0">
         <BaseInputs className="m-2">
           <MainSelect
+            values={OrderTypeNames}
+            onChange={(e) => $department(e.target.value)}
+          />
+        </BaseInputs>
+      </td>
+      <td className="p-0">
+        <BaseInputs className="m-2">
+          <MainSelect
             values={branches}
             onChange={(e) => $fillial_id(Number(e.target.value))}
           />
@@ -121,7 +129,7 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
       <td className="p-0">
         <MainDatePicker selected={startDate} onChange={startRange} />
       </td>
-      <td className="p-0">
+      {/* <td className="p-0">
         <MainDatePicker selected={endDate} onChange={finishRange} />
       </td>
       <td className="p-0">
@@ -137,7 +145,7 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
           <MainInput onChange={(e) => $user(e.target.value)} />
         </BaseInput>
       </td>
-      <td></td>
+      <td></td> */}
     </>
   );
 };

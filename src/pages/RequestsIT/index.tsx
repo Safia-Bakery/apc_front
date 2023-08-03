@@ -9,26 +9,26 @@ import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { handleStatus, itemsPerPage, requestRows } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
-import RequestsFilter from "../RequestsApc/filter";
+import InventoryFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
+import styles from "./index.module.scss";
 
 const column = [
   { name: "#", key: "" },
   { name: "Номер", key: "id" },
-  { name: "Тип", key: "type" },
-  { name: "Отдел", key: "fillial.name" },
-  { name: "Группа проблем", key: "category.name" },
+  { name: "Сотрудник", key: "type" },
+  { name: "Исполнитель", key: "fillial.name" },
+  { name: "Филиал", key: "fillial.name" },
+  { name: "Категория", key: "fillial.name" },
+  { name: "Комментарий", key: "fillial.name" },
   {
-    name: "Срочно",
-    key: "urgent",
+    name: "Статус",
+    key: "status",
   },
-  { name: "Дата выполнения", key: "finished_at" },
-  { name: "Дата", key: "created_at" },
-  { name: "Статус", key: "status" },
-  { name: "Автор", key: "user.name" },
+  { name: "Дата", key: "category.name" },
 ];
 
-const RequestsApc = () => {
+const RequestsIT = () => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -43,7 +43,7 @@ const RequestsApc = () => {
   };
   const [currentPage, setCurrentPage] = useState(1);
   const {
-    data: orders,
+    data: requests,
     refetch,
     isLoading: orderLoading,
   } = useOrders({
@@ -53,8 +53,8 @@ const RequestsApc = () => {
   });
 
   const sortData = () => {
-    if (orders?.items && sortKey) {
-      const sortedData = [...orders?.items].sort((a, b) => {
+    if (requests?.items && sortKey) {
+      const sortedData = [...requests?.items].sort((a, b) => {
         if (a[sortKey] < b[sortKey]) return sortOrder === "asc" ? -1 : 1;
         if (a[sortKey] > b[sortKey]) return sortOrder === "asc" ? 1 : -1;
         else return 0;
@@ -78,8 +78,8 @@ const RequestsApc = () => {
 
   return (
     <Card>
-      <Header title={"Заявки"}>
-        <button className="btn btn-primary btn-fill mr-2">Экспорт</button>
+      <Header title={"Заявка на инвентарь"}>
+        {/* <button className="btn btn-primary btn-fill mr-2">Экспорт</button> */}
         <button
           onClick={() => navigate("add")}
           className="btn btn-success btn-fill"
@@ -89,7 +89,7 @@ const RequestsApc = () => {
       </Header>
 
       <div className="table-responsive grid-view content">
-        <ItemsCount data={orders} currentPage={currentPage} />
+        <ItemsCount data={requests} currentPage={currentPage} />
         <table className="table table-hover">
           <TableHead
             column={column}
@@ -97,47 +97,46 @@ const RequestsApc = () => {
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            <RequestsFilter currentPage={currentPage} />
+            <InventoryFilter currentPage={currentPage} />
           </TableHead>
 
-          {!!orders?.items?.length && (
+          {!!requests?.items?.length && (
             <tbody>
-              {(sortData()?.length ? sortData() : orders?.items)?.map(
+              {(sortData()?.length ? sortData() : requests?.items)?.map(
                 (order, idx) => (
                   <tr className={requestRows(order.status)} key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
-                      <Link to={`/orders/${order?.id}`}>{order?.id}</Link>
+                      <Link to={`/requests-it/${order?.id}`}>{order?.id}</Link>
                     </td>
-                    <td>APC</td>
                     <td>
-                      <span className="not-set">{order?.fillial?.name}</span>
+                      <span className="not-set">{order?.user?.full_name}</span>
                     </td>
+                    <td>-------------</td>
+                    <td>{order?.fillial?.name}</td>
                     <td>{order?.category?.name}</td>
-                    <td>{!order?.urgent ? "Несрочный" : "Срочный"}</td>
-                    <td>
-                      {dayjs(order?.finished_at).format("DD-MM-YYYY HH:mm")}
+                    <td width={100} className={styles.text}>
+                      {order?.description}
                     </td>
+                    <td>{handleStatus(order?.status)}</td>
                     <td>
                       {dayjs(order?.created_at).format("DD-MM-YYYY HH:mm")}
                     </td>
-                    <td>{handleStatus(order.status)}</td>
-                    <td>{order?.user?.full_name}</td>
                   </tr>
                 )
               )}
             </tbody>
           )}
         </table>
-        {!!orders && (
+        {!!requests && (
           <Pagination
-            totalItems={orders?.total}
+            totalItems={requests?.total}
             itemsPerPage={itemsPerPage}
             currentPage={currentPage}
             onPageChange={handlePageChange}
           />
         )}
-        {!orders?.items?.length && (
+        {!requests?.items?.length && (
           <div className="w-100">
             <p className="text-center w-100">Спосок пуст</p>
           </div>
@@ -147,4 +146,4 @@ const RequestsApc = () => {
   );
 };
 
-export default RequestsApc;
+export default RequestsIT;

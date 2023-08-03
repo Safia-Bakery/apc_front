@@ -4,8 +4,8 @@ import { EPresetTimes, FileType, RequestStatus } from "./types";
 export const itemsPerPage = 20;
 
 export const StatusName = [
-  { name: "Активный", id: "1" },
-  { name: "Не активный", id: "0" },
+  { name: "Активный", id: 1 },
+  { name: "Не активный", id: 0 },
 ];
 export const OrderTypeNames = [
   { name: "APC", id: "APC" },

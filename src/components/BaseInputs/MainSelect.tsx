@@ -1,13 +1,14 @@
 import { ChangeEvent, FC, ReactNode } from "react";
 import cl from "classnames";
 import styles from "./index.module.scss";
+import { UseFormRegisterReturn } from "react-hook-form";
 
 interface Props {
   onChange?: (val: ChangeEvent<HTMLSelectElement>) => void;
   className?: string;
   value?: string;
   disabled?: boolean;
-  register?: Object;
+  register?: UseFormRegisterReturn;
   values?: { id: number | string; name: string; status?: number }[];
   children?: ReactNode;
 }

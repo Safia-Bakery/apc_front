@@ -37,15 +37,15 @@ const Comments = () => {
     }
   };
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: orders } = useOrders({
+  const { data: requests } = useOrders({
     size: itemsPerPage,
     page: currentPage,
     enabled: false,
   });
 
   // const sortData = () => {
-  //   if (orders?.items && sortKey) {
-  //     const sortedData = [...orders?.items].sort((a, b) => {
+  //   if (requests?.items && sortKey) {
+  //     const sortedData = [...requests?.items].sort((a, b) => {
   //       if (a[sortKey]! < b[sortKey]!) return sortOrder === "asc" ? -1 : 1;
   //       if (a[sortKey]! > b[sortKey]!) return sortOrder === "asc" ? 1 : -1;
   //       else return 0;
@@ -66,7 +66,7 @@ const Comments = () => {
 
       <div className="content">
         <div className="table-responsive grid-view">
-          <ItemsCount data={orders} currentPage={currentPage} />
+          <ItemsCount data={requests} currentPage={currentPage} />
           <table className="table table-hover">
             <TableHead
               column={column}
@@ -75,7 +75,7 @@ const Comments = () => {
               sortOrder={sortOrder}
             />
 
-            {!!orders?.items.length && (
+            {!!requests?.items.length && (
               <tbody>
                 {[...Array(6)]?.map((order, idx) => (
                   <tr key={idx} className="bg-blue">
@@ -94,15 +94,15 @@ const Comments = () => {
               </tbody>
             )}
           </table>
-          {!!orders && (
+          {!!requests && (
             <Pagination
-              totalItems={orders?.total}
+              totalItems={requests?.total}
               itemsPerPage={itemsPerPage}
               currentPage={currentPage}
               onPageChange={handlePageChange}
             />
           )}
-          {!orders?.items?.length && (
+          {!requests?.items?.length && (
             <div className="w-100">
               <p className="text-center w-100 ">Спосок пуст</p>
             </div>

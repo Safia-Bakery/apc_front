@@ -9,22 +9,23 @@ import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { handleStatus, itemsPerPage, requestRows } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
-import RequestsFilter from "./filter";
+import InventoryFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 
 const column = [
   { name: "#", key: "" },
   { name: "Номер", key: "id" },
-  { name: "Отдел", key: "fillial.name" },
-  { name: "Группа проблем", key: "category.name" },
-  { name: "Срочно", key: "urgent" },
-  { name: "Дата выполнения", key: "finished_at" },
-  { name: "Дата", key: "created_at" },
-  { name: "Статус", key: "status" },
+  { name: "ОТПРАВИТЕЛЬ", key: "type" },
+  { name: "ПОЛУЧАТЕЛЬ", key: "fillial.name" },
+  { name: "Дата", key: "category.name" },
+  {
+    name: "Статус",
+    key: "status",
+  },
   { name: "Автор", key: "user.name" },
 ];
 
-const RequestsApc = () => {
+const RequestInventory = () => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -74,8 +75,8 @@ const RequestsApc = () => {
 
   return (
     <Card>
-      <Header title={"Заявки"}>
-        <button className="btn btn-primary btn-fill mr-2">Экспорт</button>
+      <Header title={"Заявка на инвентарь"}>
+        {/* <button className="btn btn-primary btn-fill mr-2">Экспорт</button> */}
         <button
           onClick={() => navigate("add")}
           className="btn btn-success btn-fill"
@@ -93,7 +94,7 @@ const RequestsApc = () => {
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            <RequestsFilter currentPage={currentPage} />
+            <InventoryFilter currentPage={currentPage} />
           </TableHead>
 
           {!!requests?.items?.length && (
@@ -103,20 +104,18 @@ const RequestsApc = () => {
                   <tr className={requestRows(order.status)} key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
-                      <Link to={`/requests-apc/${order?.id}`}>{order?.id}</Link>
+                      <Link to={`/requests-inventory/${order?.id}`}>
+                        {order?.id}
+                      </Link>
                     </td>
                     <td>
-                      <span className="not-set">{order?.fillial?.name}</span>
+                      <span className="not-set">{order?.user.full_name}</span>
                     </td>
-                    <td>{order?.category?.name}</td>
-                    <td>{!order?.urgent ? "Несрочный" : "Срочный"}</td>
-                    <td>
-                      {dayjs(order?.finished_at).format("DD-MM-YYYY HH:mm")}
-                    </td>
+                    <td>{order?.fillial?.name}</td>
                     <td>
                       {dayjs(order?.created_at).format("DD-MM-YYYY HH:mm")}
                     </td>
-                    <td>{handleStatus(order.status)}</td>
+                    <td>{handleStatus(order?.status)}</td>
                     <td>{order?.user?.full_name}</td>
                   </tr>
                 )
@@ -142,4 +141,4 @@ const RequestsApc = () => {
   );
 };
 
-export default RequestsApc;
+export default RequestInventory;

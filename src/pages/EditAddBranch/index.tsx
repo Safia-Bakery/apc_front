@@ -11,6 +11,8 @@ import useBranches from "src/hooks/useBranches";
 import { successToast } from "src/utils/toast";
 import MainInput from "src/components/BaseInputs/MainInput";
 import BaseInputs from "src/components/BaseInputs";
+import MainRadioBtns from "src/components/BaseInputs/MainRadioBtns";
+import { StatusName } from "src/utils/helpers";
 
 const EditAddBranch = () => {
   const { id } = useParams();
@@ -31,8 +33,7 @@ const EditAddBranch = () => {
     reset,
   } = useForm();
 
-  const handleStatus = (e: ChangeEvent<HTMLInputElement>) =>
-    $status(Number(e.target.value));
+  const handleStatus = (e: boolean) => $status(Number(e));
 
   const onSubmit = () => {
     const { lat, lng, region, name } = getValues();
@@ -110,32 +111,13 @@ const EditAddBranch = () => {
           />
         </BaseInputs>
 
-        <div className="form-group field-category-is_active">
-          <label className={styles.label}>СТАТУС</label>
-          <div
-            id="category-is_active"
-            className={cl(styles.formControl, "form-control")}
-          >
-            <label className={styles.radioBtn}>
-              <input
-                checked={!!status}
-                type="radio"
-                value={1}
-                onChange={handleStatus}
-              />
-              Активный
-            </label>
-            <label className={styles.radioBtn}>
-              <input
-                type="radio"
-                value={0}
-                onChange={handleStatus}
-                checked={!status}
-              />
-              Не активный
-            </label>
-          </div>
-        </div>
+        <BaseInputs label="СТАТУС">
+          <MainRadioBtns
+            values={StatusName}
+            checked={status}
+            onChange={handleStatus}
+          />
+        </BaseInputs>
 
         <button type="submit" className="btn btn-success btn-fill">
           Сохранить

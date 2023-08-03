@@ -1,13 +1,14 @@
 import { ChangeEvent, FC } from "react";
 import cl from "classnames";
 import styles from "./index.module.scss";
+import { UseFormRegisterReturn } from "react-hook-form";
 interface Props {
   onChange?: (val: ChangeEvent<HTMLTextAreaElement>) => void;
   className?: string;
   value?: string;
   placeholder?: string | null;
   disabled?: boolean;
-  register?: Object;
+  register?: UseFormRegisterReturn;
 }
 
 const MainTextArea: FC<Props> = ({

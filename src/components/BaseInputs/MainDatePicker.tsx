@@ -1,13 +1,14 @@
 import { FC } from "react";
 import DatePicker from "react-datepicker";
 import cl from "classnames";
+import { UseFormRegisterReturn } from "react-hook-form";
 
 interface Props {
   onChange?: any;
   className?: string;
   value?: string;
   disabled?: boolean;
-  register?: Object;
+  register?: UseFormRegisterReturn;
   selected?: Date | null | undefined;
 }
 

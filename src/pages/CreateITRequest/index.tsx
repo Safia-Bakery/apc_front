@@ -20,13 +20,16 @@ import MainSelect from "src/components/BaseInputs/MainSelect";
 import MainInput from "src/components/BaseInputs/MainInput";
 import BaseInput from "src/components/BaseInputs";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
+import useUsers from "src/hooks/useUsers";
+import Loading from "src/components/Loader";
 
-const CreateOrder = () => {
+const CreateITRequest = () => {
   const [files, $files] = useState<FormData>();
   const branches = useAppSelector(branchSelector);
   const categories = useAppSelector(categorySelector);
   const { mutate } = orderMutation();
-  const { refetch: ordersRefetch } = useOrders({ enabled: false });
+  const { refetch: requestsRefetch } = useOrders({ enabled: false });
+  const { data: users, isLoading } = useUsers({});
 
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
@@ -59,13 +62,15 @@ const CreateOrder = () => {
       },
       {
         onSuccess: () => {
-          ordersRefetch();
+          requestsRefetch();
           successToast("Заказ успешно создано");
-          navigate("/orders");
+          navigate("/requests-apc");
         },
       }
     );
   };
+
+  if (isLoading) return <Loading />;
 
   return (
     <Card>
@@ -79,6 +84,16 @@ const CreateOrder = () => {
         className={cl("content", styles.form)}
         onSubmit={handleSubmit(onSubmit)}
       >
+        <BaseInput label="СОТРУДНИК" error={errors.user}>
+          <MainSelect register={register("user")}>
+            <option value={undefined}></option>
+            {users?.items?.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.full_name}
+              </option>
+            ))}
+          </MainSelect>
+        </BaseInput>
         <BaseInput label="ФИЛИАЛ" error={errors.department}>
           <MainSelect values={branches} register={register("fillial_id")} />
         </BaseInput>
@@ -121,4 +136,4 @@ const CreateOrder = () => {
   );
 };
 
-export default CreateOrder;
+export default CreateITRequest;

@@ -4,3 +4,13 @@
 .textArea {
   height: initial !important;
 }
+.formControl {
+  display: flex !important;
+  gap: 10px;
+}
+.radioBtn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 0;
+}

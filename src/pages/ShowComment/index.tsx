@@ -24,7 +24,7 @@ const ShowComment = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const {
-    data: orders,
+    data: requests,
     refetch,
     isLoading: orderLoading,
   } = useOrders({ size: itemsPerPage, page: currentPage, enabled: false });
@@ -44,8 +44,8 @@ const ShowComment = () => {
   };
 
   const sortData = () => {
-    if (orders?.items && sortKey) {
-      const sortedData = [...orders?.items].sort((a, b) => {
+    if (requests?.items && sortKey) {
+      const sortedData = [...requests?.items].sort((a, b) => {
         if (a[sortKey]! < b[sortKey]!) return sortOrder === "asc" ? -1 : 1;
         if (a[sortKey]! > b[sortKey]!) return sortOrder === "asc" ? 1 : -1;
         else return 0;
@@ -173,9 +173,9 @@ const ShowComment = () => {
               sortOrder={sortOrder}
             />
 
-            {!!orders?.items.length && (
+            {!!requests?.items.length && (
               <tbody>
-                {(sortData()?.length ? sortData() : orders?.items)?.map(
+                {(sortData()?.length ? sortData() : requests?.items)?.map(
                   (order, idx) => (
                     <tr className="bg-blue" key={idx}>
                       <td width="40">1</td>

@@ -29,10 +29,10 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
   const categories = useAppSelector(categorySelector);
 
   const [id, $id] = useDebounce<number>(0);
-  const [department, $department] = useState<string>();
+  const [executor, $executor] = useState<string>();
   const [fillial_id, $fillial_id] = useState<number>();
+  const [comment, $comment] = useState<string>();
   const [category_id, $category_id] = useState<number>();
-  const [urgent, $urgent] = useState<boolean>();
   const [startDate, $startDate] = useState<Date | null>();
   const [endDate, $endDate] = useState<Date | null>();
   const [request_status, $request_status] = useState<string>();
@@ -46,12 +46,12 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
       created_from: startDate?.toISOString(),
       created_to: startDate?.toISOString(),
       ...(!!id && { id }),
-      ...(!!department && { department }),
+      ...(!!executor && { executor }),
       ...(!!fillial_id && { fillial_id }),
       ...(!!category_id && { category_id }),
       ...(!!request_status && { request_status }),
       ...(!!user && { user }),
-      ...(!!urgent && { urgent }),
+      ...(!!comment && { comment }),
     },
   });
 
@@ -68,10 +68,10 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
     fetchData();
   }, [
     id,
-    department,
+    executor,
     fillial_id,
     category_id,
-    urgent,
+    comment,
     startDate,
     endDate,
     request_status,
@@ -95,6 +95,16 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
         </BaseInput>
       </td>
       <td className="p-0">
+        <BaseInput className="m-2">
+          <MainInput onChange={(e) => $user(e.target.value)} />
+        </BaseInput>
+      </td>
+      <td className="p-0">
+        <BaseInputs className="m-2">
+          <MainInput onChange={(e) => $executor(e.target.value)} />
+        </BaseInputs>
+      </td>
+      <td className="p-0">
         <BaseInputs className="m-2">
           <MainSelect
             values={branches}
@@ -112,18 +122,10 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
       </td>
       <td className="p-0">
         <BaseInputs className="m-2">
-          <MainSelect
-            values={UrgentNames}
-            onChange={(e) => $urgent(!!Number(e.target.value))}
-          />
+          <MainInput onChange={(e) => $comment(e.target.value)} />
         </BaseInputs>
       </td>
-      <td className="p-0">
-        <MainDatePicker selected={startDate} onChange={startRange} />
-      </td>
-      <td className="p-0">
-        <MainDatePicker selected={endDate} onChange={finishRange} />
-      </td>
+
       <td className="p-0">
         <BaseInputs className="m-2">
           <MainSelect
@@ -133,11 +135,8 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
         </BaseInputs>
       </td>
       <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput onChange={(e) => $user(e.target.value)} />
-        </BaseInput>
+        <MainDatePicker selected={endDate} onChange={finishRange} />
       </td>
-      <td></td>
     </>
   );
 };

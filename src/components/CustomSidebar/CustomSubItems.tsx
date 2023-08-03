@@ -42,7 +42,7 @@ const Subroutes: FC<Props> = ({ subroutes, routeIcon, routeName }) => {
               className={cl(styles.menuItem, {
                 [styles.active]: useMatch(sub.url),
               })}
-              component={<Link to={sub.url} />}
+              component={<Link to={sub.url} state={{ name: sub.name }} />}
             >
               {sub.name}
             </MenuItem>

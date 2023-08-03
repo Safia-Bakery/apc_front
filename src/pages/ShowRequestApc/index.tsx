@@ -24,7 +24,7 @@ const enum ModalTypes {
   showPhoto = "showPhoto",
 }
 
-const ShowOrder = () => {
+const ShowRequestApc = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { mutate: attach } = attachBrigadaMutation();
@@ -296,4 +296,4 @@ const ShowOrder = () => {
   );
 };
 
-export default ShowOrder;
+export default ShowRequestApc;

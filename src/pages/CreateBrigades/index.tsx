@@ -1,10 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import styles from "./index.module.scss";
-
 import { useForm } from "react-hook-form";
-import cl from "classnames";
 import { ChangeEvent, useEffect, useState } from "react";
 import { errorToast, successToast } from "src/utils/toast";
 import useBrigadas from "src/hooks/useBrigadas";
@@ -15,6 +12,8 @@ import BaseInputs from "src/components/BaseInputs";
 import MainSelect from "src/components/BaseInputs/MainSelect";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import MainInput from "src/components/BaseInputs/MainInput";
+import MainRadioBtns from "src/components/BaseInputs/MainRadioBtns";
+import { StatusName } from "src/utils/helpers";
 
 const CreateBrigades = () => {
   const { id } = useParams();
@@ -22,8 +21,7 @@ const CreateBrigades = () => {
   const goBack = () => navigate(-1);
   const { refetch: brigadasRefetch } = useBrigadas({ enabled: false });
   const [status, $status] = useState(0);
-  const handleStatus = (e: ChangeEvent<HTMLInputElement>) =>
-    $status(Number(e.target.value));
+  const handleStatus = (e: boolean) => $status(Number(e));
   const { mutate } = brigadaMutation();
   const { refetch: usersRefetch, data: users } = useUsersForBrigada({
     id: Number(id),
@@ -113,29 +111,13 @@ const CreateBrigades = () => {
           <MainTextArea register={register("brigada_description")} />
         </BaseInputs>
 
-        <div className="form-group field-category-is_active">
-          <label className={styles.label}>СТАТУС</label>
-          <div className={cl(styles.formControl, "form-control")}>
-            <label className={styles.radioBtn}>
-              <input
-                onChange={handleStatus}
-                checked={!!status}
-                type="radio"
-                value="1"
-              />
-              Активный
-            </label>
-            <label className={styles.radioBtn}>
-              <input
-                onChange={handleStatus}
-                type="radio"
-                value="0"
-                checked={!status}
-              />
-              Не активный
-            </label>
-          </div>
-        </div>
+        <BaseInputs label="СТАТУС">
+          <MainRadioBtns
+            values={StatusName}
+            checked={status}
+            onChange={handleStatus}
+          />
+        </BaseInputs>
 
         <button type="submit" className="btn btn-success btn-fill">
           Сохранить

@@ -67,33 +67,6 @@ const EditAddRole = () => {
           />
         </BaseInputs>
 
-        {/* <div className="form-group field-category-is_active">
-          <label className={styles.label}>СТАТУС</label>
-          <div
-            id="category-is_active"
-            className={cl(styles.formControl, "form-control")}
-          >
-            <label className={styles.radioBtn}>
-              <input
-                checked={!!status}
-                type="radio"
-                value={1}
-                onChange={handleStatus}
-              />
-              Активный
-            </label>
-            <label className={styles.radioBtn}>
-              <input
-                type="radio"
-                value={0}
-                onChange={handleStatus}
-                checked={!status}
-              />
-              Не активный
-            </label>
-          </div>
-        </div> */}
-
         <button type="submit" className="btn btn-success btn-fill">
           Сохранить
         </button>

@@ -1,5 +1,6 @@
 import { ChangeEvent, FC, HTMLInputTypeAttribute } from "react";
 import cl from "classnames";
+import { UseFormRegisterReturn } from "react-hook-form";
 
 interface Props {
   onChange?: (val: ChangeEvent<HTMLInputElement>) => void;
@@ -9,7 +10,7 @@ interface Props {
   placeholder?: string | null;
   autoFocus?: boolean;
   disabled?: boolean;
-  register?: Object;
+  register?: UseFormRegisterReturn;
 }
 
 const MainInput: FC<Props> = ({

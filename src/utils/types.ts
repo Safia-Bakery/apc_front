@@ -167,6 +167,7 @@ export interface Category {
   description: string;
   status: number;
   id: number;
+  urgent: number;
 }
 
 export interface CategoryTypes extends BasePaginatedRes {
@@ -191,7 +192,9 @@ export interface UsersTypes extends BasePaginatedRes {
 }
 
 export enum Screens {
-  requests = "requests",
+  requests_apc = "requests_apc",
+  requests_it = "requests_it",
+  requests_inventory = "requests_inventory",
   brigada = "brigada",
   warehouse = "warehouse",
   users = "users",
@@ -207,22 +210,6 @@ export enum Screens {
   isbrigader = "isbrigader",
 }
 
-export interface BoolPermissionTypes {
-  requests: boolean;
-  brigada: boolean;
-  warehouse: boolean;
-  users: boolean;
-  category: boolean;
-  maps: boolean;
-  statistics: boolean;
-  fillials: boolean;
-  permitted: boolean;
-  roles: boolean;
-  comments: boolean;
-  permissions: boolean;
-  ismanager: boolean;
-  isbrigader: boolean;
-}
 export interface ValueLabel {
   label: string;
   value: number;

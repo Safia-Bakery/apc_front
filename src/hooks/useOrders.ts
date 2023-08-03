@@ -14,7 +14,7 @@ export const useOrders = ({
   body?: RequestFilter;
 }) => {
   return useQuery({
-    queryKey: ["orders"],
+    queryKey: ["requests"],
     queryFn: () =>
       apiClient
         .get("/request", { ...body, page, size })

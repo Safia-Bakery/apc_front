@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "src/main";
-import { cachedUsers } from "src/redux/reducers/cacheResources";
 import { useAppDispatch } from "src/redux/utils/types";
 import { UsersType } from "src/utils/types";
 
@@ -16,7 +15,7 @@ export const useUsersForBrigada = ({
     queryKey: ["users_for_brigada", id],
     queryFn: () =>
       apiClient.get(`/users/for/brigada/${id}`).then(({ data: response }) => {
-        dispatch(cachedUsers(response as UsersType[]));
+        // dispatch(cachedUsers(response as UsersType[]));
         return response as UsersType[];
       }),
     enabled,

@@ -15,7 +15,7 @@ const routeNameMappings: { [key: string]: string } = {
   about: "About",
   contact: "Contact",
   home: "Главная",
-  orders: "Заявки",
+  requests: "Заявки",
   map: "Карта",
   statistics: "Статистика",
   categories: "Категории",
@@ -27,7 +27,9 @@ const routeNameMappings: { [key: string]: string } = {
   settings: "Настройки",
   add: "Добавить",
   edit: "Изменить",
-  "orders-inventory": "Заявка на инвентарь",
+  "requests-inventory": "Заявка на инвентарь",
+  "requests-apc": "Заявки APC",
+  "requests-it": "Заявки IT",
 };
 
 const Breadcrumbs: FC = () => {

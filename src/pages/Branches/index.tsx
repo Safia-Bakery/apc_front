@@ -1,6 +1,6 @@
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Pagination from "src/components/Pagination";
 import { useState } from "react";
 import { BranchType } from "src/utils/types";
@@ -29,7 +29,8 @@ const column = [
 
 const Branches = () => {
   const navigate = useNavigate();
-
+  // const location = useLocation()
+  // const { name } = location.state
   const [sortKey, setSortKey] = useState<keyof BranchType>();
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");

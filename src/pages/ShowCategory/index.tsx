@@ -1,18 +1,17 @@
 import Card from "src/components/Card";
-import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
-
-import cl from "classnames";
 import { useForm } from "react-hook-form";
 import useCategory from "src/hooks/useCategory";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import categoryMutation from "src/hooks/mutation/categoryMutation";
 import useCategories from "src/hooks/useCategories";
 import { successToast } from "src/utils/toast";
 import BaseInput from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
+import MainRadioBtns from "src/components/BaseInputs/MainRadioBtns";
+import { StatusName } from "src/utils/helpers";
 
 const ShowCategory = () => {
   const navigate = useNavigate();
@@ -34,9 +33,9 @@ const ShowCategory = () => {
   } = useForm();
 
   const onSubmit = () => {
-    const { name, description } = getValues();
+    const { name, description, urgent } = getValues();
     mutate(
-      { name, description, status, ...(id && { id: Number(id) }) },
+      { name, description, status, ...(id && { id: Number(id) }), urgent },
       {
         onSuccess: () => {
           categoryRefetch();
@@ -47,8 +46,7 @@ const ShowCategory = () => {
     );
   };
 
-  const handleStatus = (e: ChangeEvent<HTMLInputElement>) =>
-    $status(Number(e.target.value));
+  const handleStatus = (e: boolean) => $status(Number(e));
 
   useEffect(() => {
     if (category) {
@@ -58,7 +56,7 @@ const ShowCategory = () => {
         description: category?.description,
       });
     }
-  }, [category]);
+  }, [category, reset]);
 
   return (
     <Card>
@@ -68,13 +66,13 @@ const ShowCategory = () => {
         </button>
       </Header>
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
-        <BaseInput label="НАИМЕНОВАНИЕ">
+        <BaseInput label="НАИМЕНОВАНИЕ" error={errors.name}>
           <MainInput
             register={register("name", { required: "Обязательное поле" })}
           />
         </BaseInput>
 
-        <BaseInput label="ОПИСАНИЕ">
+        <BaseInput label="ОПИСАНИЕ" error={errors.description}>
           <MainTextArea
             register={register("description", {
               required: "Обязательное поле",
@@ -82,32 +80,22 @@ const ShowCategory = () => {
           />
         </BaseInput>
 
-        <div className="form-group field-category-is_active">
-          <label className={styles.label}>СТАТУС</label>
-          <div
-            id="category-is_active"
-            className={cl(styles.formControl, "form-control")}
-          >
-            <label className={styles.radioBtn}>
-              <input
-                checked={!!status}
-                type="radio"
-                value={1}
-                onChange={handleStatus}
-              />
-              Активный
-            </label>
-            <label className={styles.radioBtn}>
-              <input
-                type="radio"
-                value={0}
-                onChange={handleStatus}
-                checked={!status}
-              />
-              Не активный
-            </label>
-          </div>
+        <div className="form-group d-flex align-items-center form-control">
+          <label className="mb-0 mr-2">Срочно</label>
+          <input
+            type="checkbox"
+            defaultChecked={!!category?.urgent}
+            {...register("urgent")}
+          />
         </div>
+
+        <BaseInput label="СТАТУС">
+          <MainRadioBtns
+            value={!!status}
+            values={StatusName}
+            onChange={handleStatus}
+          />
+        </BaseInput>
         <button type="submit" className="btn btn-success btn-fill">
           Сохранить
         </button>

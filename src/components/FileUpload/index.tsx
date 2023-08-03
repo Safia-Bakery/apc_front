@@ -37,7 +37,12 @@ const UploadComponent: FC<FileUploaderProps> = ({ onFilesSelected }) => {
 
   return (
     <div>
-      <input type="file" multiple onChange={handleFileUpload} />
+      <input
+        className="form-control"
+        type="file"
+        multiple
+        onChange={handleFileUpload}
+      />
       <div className="file-list">
         {fileList.map((item) => (
           <div key={item.id} className="file-item">

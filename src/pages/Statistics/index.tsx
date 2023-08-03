@@ -44,7 +44,7 @@ const Statistics = () => {
     }
   };
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: orders } = useOrders({
+  const { data: requests } = useOrders({
     size: itemsPerPage,
     page: currentPage,
     enabled: false,
@@ -73,7 +73,7 @@ const Statistics = () => {
         </div>
 
         <div className="table-responsive grid-view">
-          <ItemsCount data={orders} currentPage={currentPage} />
+          <ItemsCount data={requests} currentPage={currentPage} />
           <table className="table table-hover">
             <TableHead
               column={column}
@@ -82,7 +82,7 @@ const Statistics = () => {
               sortOrder={sortOrder}
             />
 
-            {!!orders?.items.length && (
+            {!!requests?.items.length && (
               <tbody>
                 {[...Array(6)]?.map((order, idx) => (
                   <tr key={idx} className="bg-blue">
@@ -100,15 +100,15 @@ const Statistics = () => {
               </tbody>
             )}
           </table>
-          {!!orders && (
+          {!!requests && (
             <Pagination
-              totalItems={orders?.total}
+              totalItems={requests?.total}
               itemsPerPage={itemsPerPage}
               currentPage={currentPage}
               onPageChange={handlePageChange}
             />
           )}
-          {!orders?.items?.length && (
+          {!requests?.items?.length && (
             <div className="w-100">
               <p className="text-center w-100 ">Спосок пуст</p>
             </div>

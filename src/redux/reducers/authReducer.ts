@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../rootConfig";
-import { BoolPermissionTypes, Screens } from "src/utils/types";
+import { Screens } from "src/utils/types";
 
 interface State {
   token: string | null;
@@ -9,7 +9,9 @@ interface State {
     username: string;
     role?: string;
     full_name: string;
-    permissions: BoolPermissionTypes;
+    permissions: {
+      [key in Screens]: boolean;
+    };
   } | null;
 }
 

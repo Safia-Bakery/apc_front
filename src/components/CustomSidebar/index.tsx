@@ -5,7 +5,7 @@ import cl from "classnames";
 import { Screens } from "src/utils/types";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import { roleSelector } from "src/redux/reducers/authReducer";
-import Subroutes from "./CustomSubRoutes";
+import Subroutes from "./CustomSubItems";
 import {
   sidebarHandler,
   toggleSidebar,
@@ -26,9 +26,29 @@ const routes = [
   },
   {
     name: "Заявки",
-    url: "/orders",
     icon: "/assets/icons/orders.svg",
-    screen: Screens.requests,
+    screen:
+      Screens.requests_apc || Screens.requests_inventory || Screens.requests_it,
+    subroutes: [
+      {
+        name: "Заявки APC",
+        url: "/requests-apc",
+        icon: "/assets/icons/orders.svg",
+        screen: Screens.requests_apc,
+      },
+      {
+        name: "Заявки Инвентарь",
+        url: "/requests-inventory",
+        icon: "/assets/icons/orders.svg",
+        screen: Screens.requests_inventory,
+      },
+      {
+        name: "Заявки IT",
+        url: "/requests-it",
+        icon: "/assets/icons/orders.svg",
+        screen: Screens.requests_it,
+      },
+    ],
   },
   {
     name: "Категории",
@@ -69,6 +89,7 @@ const routes = [
   {
     name: "Настройки",
     icon: "/assets/icons/settings.svg",
+    screen: Screens.fillials,
     subroutes: [
       {
         name: "Филиалы",
@@ -135,7 +156,17 @@ const CustomSidebar = () => {
           Панель управления
         </MenuItem>
         {routes.map((item) => {
-          if (item.screen && user?.permissions[item.screen])
+          if (user?.permissions[item.screen]) {
+            if (item.subroutes?.length)
+              return (
+                <Subroutes
+                  key={item.name + item.url}
+                  subroutes={item.subroutes}
+                  routeIcon={item.icon}
+                  routeName={item.name}
+                />
+              );
+
             return (
               <MenuItem
                 key={item.name + item.url}
@@ -143,21 +174,15 @@ const CustomSidebar = () => {
                 className={cl(styles.menuItem, {
                   [styles.active]: item.url && useMatch(item.url),
                 })}
-                component={<NavLink to={item.url || ""} />}
+                component={
+                  <NavLink state={{ name: item.name }} to={item.url || ""} />
+                }
               >
                 {item.name}
               </MenuItem>
             );
+          }
 
-          if (item.subroutes?.length)
-            return (
-              <Subroutes
-                key={item.name + item.url}
-                subroutes={item.subroutes}
-                routeIcon={item.icon}
-                routeName={item.name}
-              />
-            );
           return null;
         })}
       </Menu>
