@@ -30,8 +30,8 @@ const Login = () => {
 
   useEffect(() => {
     reset({
-      username: "some",
-      password: "testing",
+      username: "test",
+      password: "111111",
     });
   }, []);
 

@@ -28,8 +28,8 @@ const Subroutes: FC<Props> = ({ subroutes, routeIcon, routeName }) => {
       icon={<img height={30} width={30} src={routeIcon} />}
       label={routeName}
       rootStyles={{
-        background: "#d5302c",
-        backgroundColor: "#d5302c",
+        background: "#FB404B",
+        backgroundColor: "#FB404B",
       }}
       className={styles.menuItem}
     >

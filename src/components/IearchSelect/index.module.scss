@@ -1,0 +1,18 @@
+.drop {
+  position: absolute;
+  top: 80px;
+  background-color: white;
+  z-index: 100;
+  right: 0;
+  left: 0;
+}
+.list {
+  overflow-y: scroll;
+  padding-left: 0 !important;
+  cursor: pointer;
+  max-height: 300px;
+}
+.arrow {
+  position: absolute;
+  right: 10px;
+}

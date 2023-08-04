@@ -6,7 +6,7 @@
     width: 250px !important;
     min-width: 250px !important;
 
-    .descr {
+    .title {
       opacity: 1;
     }
   }
@@ -32,10 +32,12 @@
   }
 }
 
-.descr {
+.title {
   opacity: 0;
   transition: 0.2s;
   width: 250px;
+  padding: 12px 20px;
+  cursor: pointer;
 }
 .overlay {
   z-index: 99;
@@ -44,4 +46,25 @@
   bottom: 0;
   left: 0;
   right: 0;
+}
+.logo {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // padding-left: 20px;
+
+  .logoimg {
+    display: block;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0px;
+    right: 15px;
+    width: calc(100% - 30px);
+    height: 1px;
+    background-color: #fff;
+    opacity: 0.8;
+  }
 }

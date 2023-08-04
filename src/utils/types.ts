@@ -242,3 +242,29 @@ export enum FileType {
   video = "video",
   photo = "photo",
 }
+export interface ToolsEarchType {
+  id: string;
+  name: string;
+  code: string;
+  firstchildi?: {
+    id: string;
+    name: string;
+    code: string;
+    secondchildi?: {
+      id: string;
+      name: string;
+      code: string;
+      thirdchildi?: {
+        id: string;
+        name: string;
+        code: string;
+        fourthchildi?: {
+          id: string;
+          name: string;
+          code: string;
+        }[];
+      }[];
+    }[];
+  }[];
+}
+[];

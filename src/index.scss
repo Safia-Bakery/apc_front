@@ -95,3 +95,16 @@ input {
 .table-success {
   background-color: #e7ffcbd4 !important;
 }
+.ps-sidebar-container .css-8ry1do {
+  padding-right: 20px !important;
+}
+.customSidebar {
+  &:hover {
+    .ps-submenu-expand-icon.css-1cuxlhl {
+      display: block !important;
+    }
+  }
+}
+.ps-submenu-expand-icon.css-1cuxlhl {
+  display: none !important;
+}

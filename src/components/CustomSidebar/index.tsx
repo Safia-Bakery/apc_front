@@ -113,8 +113,10 @@ const CustomSidebar = () => {
   if (!user) return;
   return (
     <Sidebar
-      backgroundColor="#d5302c"
-      className={cl(styles.sidebar, { [styles.collapsed]: collapsed })}
+      backgroundColor="#FB404B"
+      className={cl(styles.sidebar, "customSidebar", {
+        [cl(styles.collapsed)]: collapsed,
+      })}
       rootStyles={{
         color: "white",
         height: "100%",
@@ -123,17 +125,22 @@ const CustomSidebar = () => {
         zIndex: 100,
       }}
     >
-      <div className="w-100 d-flex flex-column">
-        <h3 className="pointer mb-0 pl-2">APC</h3>
-        <p className={cl("mb-0 pl-2 ", styles.descr)}>
-          <small>Аварийно-ремонтные службы</small>
-        </p>
+      <div className={cl(styles.logo)}>
+        {/* <img
+          src="/assets/icons/home.svg"
+          alt="home"
+          className={styles.logoimg}
+          height={30}
+          width={30}
+        /> */}
+        <h3 className={cl(styles.title)}>Сервис</h3>
       </div>
       <Menu
+        className={styles.menu}
         menuItemStyles={{
           subMenuContent: ({ level }) => ({
             zIndex: 100,
-            backgroundColor: level === 0 ? "#922624" : "transparent",
+            backgroundColor: level === 0 ? "rgba(0, 0, 0, .15)" : "transparent",
           }),
         }}
       >

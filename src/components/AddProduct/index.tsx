@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, useState } from "react";
+import { FC, PropsWithChildren, useMemo, useState } from "react";
 import Card from "../Card";
 import Header from "../Header";
 import Modal from "../Modal";
@@ -8,6 +8,10 @@ import BaseInput from "../BaseInputs";
 import MainTextArea from "../BaseInputs/MainTextArea";
 import { useForm } from "react-hook-form";
 import MainInput from "../BaseInputs/MainInput";
+import useToolsIearchs from "src/hooks/useToolsIearchs";
+import { MultiValue } from "react-select";
+import DropDownSub from "../IearchSelect";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const column = [
   { name: "#" },
@@ -15,13 +19,23 @@ const column = [
   { name: "Количество" },
   { name: "Примичание" },
   { name: "Дата" },
-  {
-    name: "Автор",
-  },
+  { name: "Автор" },
 ];
 
 const AddProduct: FC<PropsWithChildren> = ({ children }) => {
   const [modal, $modal] = useState(false);
+  const navigate = useNavigate();
+
+  const { search } = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const itemModal = searchParams.get("itemModal");
+  const {
+    data: iearch,
+    isLoading: iearchLoading,
+    refetch: iearchRefetch,
+  } = useToolsIearchs({
+    enabled: false,
+  });
   const {
     register,
     handleSubmit,
@@ -30,7 +44,25 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
     reset,
   } = useForm();
 
-  const handleModal = () => $modal((prev) => !prev);
+  const handleMultiSelectChange = (selectedItems: MultiValue<any[]>) => {
+    console.log(selectedItems);
+  };
+
+  console.log(iearch, "iearch");
+
+  const handleProducts = () => {
+    navigate("?itemModal=true");
+  };
+
+  // const renderProducts = useMemo(() => {
+  //   if (iearchLoading) return "loading";
+  //   return <MultiSelect />;
+  // }, [iearchLoading, iearch]);
+
+  const handleModal = () => {
+    iearchRefetch();
+    $modal((prev) => !prev);
+  };
   return (
     <Card>
       <Header title="Товары">
@@ -72,16 +104,25 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
 
         {children}
       </div>
-      <Modal className={styles.modal} isOpen={modal} onClose={handleModal}>
+      <Modal className={styles.modal} isOpen={true} onClose={handleModal}>
         <Header title="Добавить расходной товар">
           <button onClick={handleModal} className="close">
             <span aria-hidden="true">&times;</span>
           </button>
         </Header>
         <div className={styles.modalBody}>
-          <div className="form-group field-apcitems-product_id">
+          {/* {renderProducts} */}
+
+          {/* {iearch?.length && (
+            <MultiSelect options={iearch} onChange={handleMultiSelectChange} />
+          )} */}
+          <div className="form-group field-apcitems-product_id position-relative">
             <label className="control-label">Товар</label>
-            <select className="form-control">
+            <div className="form-control" onClick={handleProducts}>
+              choose
+            </div>
+            {Boolean(itemModal) && <DropDownSub />}
+            {/* <select className="form-control">
               <option value="">Выберите товар</option>
               <option value="00085b3a-adb6-45f5-b4f4-72966f357aee">
                 Ложка для персонала
@@ -92,7 +133,7 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
               <option value="001879dc-3f5c-448b-ba6b-146005ef9681">
                 Тарелка глубокая для супа
               </option>
-            </select>
+            </select> */}
           </div>
 
           <BaseInput label="Количество">
