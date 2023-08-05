@@ -3,7 +3,7 @@ import styles from "./index.module.scss";
 import cl from "classnames";
 import loginMutation from "src/hooks/mutation/loginMutation";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
-import { loginHandler, tokenSelector } from "src/redux/reducers/authReducer";
+import { loginHandler, tokenSelector } from "src/redux/reducers/auth";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import useToken from "src/hooks/useToken";

@@ -13,7 +13,7 @@ import { baseURL } from "src/main";
 import { detectFileType, handleStatus } from "src/utils/helpers";
 import { useForm } from "react-hook-form";
 import { FileType, RequestStatus } from "src/utils/types";
-import { roleSelector } from "src/redux/reducers/authReducer";
+import { roleSelector } from "src/redux/reducers/auth";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import ShowRequestModals from "src/components/ShowRequestModals";
 
@@ -30,7 +30,7 @@ const ShowRequestApc = () => {
   const { mutate: attach } = attachBrigadaMutation();
   const handleModal = (type: ModalTypes) => () => navigate(`?modal=${type}`);
   const [brigada, $brigada] = useState<{ id: number; name: string }>();
-  const { register, getValues } = useForm();
+  const { getValues } = useForm();
   const [files, $files] = useState<FormData>();
   const me = useAppSelector(roleSelector);
 

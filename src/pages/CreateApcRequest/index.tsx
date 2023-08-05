@@ -7,10 +7,7 @@ import { useNavigate } from "react-router-dom";
 import cl from "classnames";
 import orderMutation from "src/hooks/mutation/orderMutation";
 import { useAppSelector } from "src/redux/utils/types";
-import {
-  branchSelector,
-  categorySelector,
-} from "src/redux/reducers/cacheResources";
+import { branchSelector, categorySelector } from "src/redux/reducers/cache";
 import useOrders from "src/hooks/useOrders";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import styles from "./index.module.scss";
@@ -20,6 +17,8 @@ import MainSelect from "src/components/BaseInputs/MainSelect";
 import MainInput from "src/components/BaseInputs/MainInput";
 import BaseInput from "src/components/BaseInputs";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
+import SelectBranches from "src/components/SelectBranches";
+import { BranchType } from "src/utils/types";
 
 const CreateApcRequest = () => {
   const [files, $files] = useState<FormData>();
@@ -27,16 +26,32 @@ const CreateApcRequest = () => {
   const categories = useAppSelector(categorySelector);
   const { mutate } = orderMutation();
   const { refetch: requestsRefetch } = useOrders({ enabled: false });
-
-  const navigate = useNavigate();
-  const goBack = () => navigate(-1);
-
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
     getValues,
   } = useForm();
+
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+
+  const handleItemClick = (itemId: string) => {
+    if (expandedItems.includes(itemId)) {
+      setExpandedItems(expandedItems.filter((id) => id !== itemId));
+    } else {
+      setExpandedItems([...expandedItems, itemId]);
+    }
+  };
+
+  const handleBranch = (product: BranchType) => {
+    reset({ fillial_id: product.id, fillial: product.name });
+  };
+
+  const isItemExpanded = (itemId: string) => expandedItems.includes(itemId);
+
+  const navigate = useNavigate();
+  const goBack = () => navigate(-1);
 
   const handleFilesSelected = (data: FileItem[]) => {
     const formData = new FormData();
@@ -54,7 +69,7 @@ const CreateApcRequest = () => {
         product,
         urgent,
         description,
-        fillial_id,
+        fillial_id: "bc01b998-a0fb-4bc8-a61a-a0471f74e7a1",
         files,
       },
       {
@@ -80,10 +95,24 @@ const CreateApcRequest = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <BaseInput label="ФИЛИАЛ" error={errors.department}>
-          <MainSelect values={branches} register={register("fillial_id")} />
+          <MainInput
+            value="fillial"
+            register={register("fillial", { required: "Обязательное поле" })}
+          />
+          <SelectBranches
+            data={branches}
+            isItemExpanded={isItemExpanded}
+            handleItemClick={handleItemClick}
+            handleBranch={handleBranch}
+          />
         </BaseInput>
         <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
-          <MainSelect values={categories} register={register("category_id")} />
+          <MainSelect
+            values={categories}
+            register={register("category_id", {
+              required: "Обязательное поле",
+            })}
+          />
         </BaseInputs>
 
         <BaseInputs label="Продукт">

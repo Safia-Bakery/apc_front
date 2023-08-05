@@ -4,7 +4,7 @@ import { Link, useMatch } from "react-router-dom";
 import cl from "classnames";
 import { FC } from "react";
 import { Screens } from "src/utils/types";
-import { roleSelector } from "src/redux/reducers/authReducer";
+import { roleSelector } from "src/redux/reducers/auth";
 import { useAppSelector } from "src/redux/utils/types";
 
 interface Item {

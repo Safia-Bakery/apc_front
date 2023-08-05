@@ -6,7 +6,7 @@ import MainSelect from "src/components/BaseInputs/MainSelect";
 
 import useDebounce from "src/hooks/useDebounce";
 import useUsers from "src/hooks/useUsers";
-import { rolesSelector } from "src/redux/reducers/cacheResources";
+import { rolesSelector } from "src/redux/reducers/cache";
 import { useAppSelector } from "src/redux/utils/types";
 import { itemsPerPage } from "src/utils/helpers";
 

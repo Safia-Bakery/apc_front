@@ -7,10 +7,7 @@ import { useNavigate } from "react-router-dom";
 import cl from "classnames";
 import orderMutation from "src/hooks/mutation/orderMutation";
 import { useAppSelector } from "src/redux/utils/types";
-import {
-  branchSelector,
-  categorySelector,
-} from "src/redux/reducers/cacheResources";
+import { branchSelector, categorySelector } from "src/redux/reducers/cache";
 import useOrders from "src/hooks/useOrders";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import styles from "./index.module.scss";

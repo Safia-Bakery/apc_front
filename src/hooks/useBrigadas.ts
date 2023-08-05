@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "src/main";
-import { brigadaHandler } from "src/redux/reducers/cacheResources";
+import { brigadaHandler } from "src/redux/reducers/cache";
 import { useAppDispatch } from "src/redux/utils/types";
 import { BrigadaTypes } from "src/utils/types";
 

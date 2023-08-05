@@ -1,6 +1,6 @@
 import { useAppSelector } from "src/redux/utils/types";
 import styles from "./index.module.scss";
-import { roleSelector } from "src/redux/reducers/authReducer";
+import { roleSelector } from "src/redux/reducers/auth";
 
 const ControlPanel = () => {
   const me = useAppSelector(roleSelector);

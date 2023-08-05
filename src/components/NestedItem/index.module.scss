@@ -1,11 +1,7 @@
-.drop {
-  position: absolute;
-  top: 80px;
-  background-color: white;
-  z-index: 100;
-  right: 0;
-  left: 0;
+.expanded {
+  transform: rotate(180deg);
 }
+
 .list {
   overflow-y: scroll;
   padding-left: 0 !important;

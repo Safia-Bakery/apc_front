@@ -83,12 +83,14 @@ export interface OrderType extends BasePaginatedRes {
 }
 
 export interface BranchType {
-  id: number;
+  id: string;
   name: string;
-  longtitude: number;
-  latitude: number;
+  longtitude: number | null;
+  latitude: number | null;
   country: string;
   status: number;
+  origin: number;
+  fillial_department: BranchType[];
 }
 export interface BranchTypes extends BasePaginatedRes {
   items: BranchType[];
@@ -242,29 +244,16 @@ export enum FileType {
   video = "video",
   photo = "photo",
 }
+
 export interface ToolsEarchType {
   id: string;
   name: string;
   code: string;
-  firstchildi?: {
-    id: string;
-    name: string;
-    code: string;
-    secondchildi?: {
-      id: string;
-      name: string;
-      code: string;
-      thirdchildi?: {
-        id: string;
-        name: string;
-        code: string;
-        fourthchildi?: {
-          id: string;
-          name: string;
-          code: string;
-        }[];
-      }[];
-    }[];
-  }[];
+  child: ToolsEarchType[];
 }
-[];
+
+export interface CartProducts extends ToolsEarchType {
+  count: number;
+  comment: string;
+  author: { name: string; id: number };
+}

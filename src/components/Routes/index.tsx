@@ -5,7 +5,7 @@ import {
   roleHandler,
   roleSelector,
   tokenSelector,
-} from "src/redux/reducers/authReducer";
+} from "src/redux/reducers/auth";
 import CreateApcRequest from "src/pages/CreateApcRequest";
 import Login from "pages/Login";
 import { useEffect, useMemo } from "react";
@@ -179,6 +179,7 @@ const Navigation = () => {
         })}
 
         <Route element={<Login />} path={"/login"} />
+        {/* <Route element={<ShowRequestApc />} path={"/requests-apc/1"} /> */}
         <Route element={<ControlPanel />} path={"/"} />
         <Route element={<ControlPanel />} path={"*"} />
       </Routes>

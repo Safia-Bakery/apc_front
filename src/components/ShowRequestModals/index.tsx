@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import Modal from "../Modal";
-import { brigadaSelector } from "src/redux/reducers/cacheResources";
+import { brigadaSelector } from "src/redux/reducers/cache";
 import { useAppSelector } from "src/redux/utils/types";
-import { roleSelector } from "src/redux/reducers/authReducer";
+import { roleSelector } from "src/redux/reducers/auth";
 import { BrigadaType, FileType, RequestStatus } from "src/utils/types";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";

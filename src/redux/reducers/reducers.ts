@@ -1,10 +1,12 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import auth from "./authReducer";
-import cache from "./cacheResources";
-import toggle from "./toggleReducer";
+import auth from "./auth";
+import cache from "./cache";
+import toggle from "./toggle";
+import usedProducts from "./usedProducts";
 
 export default combineReducers({
   auth,
   cache,
   toggle,
+  usedProducts,
 });

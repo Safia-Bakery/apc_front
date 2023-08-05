@@ -6,10 +6,7 @@ import styles from "./index.module.scss";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { useAppSelector } from "src/redux/utils/types";
-import {
-  brigadaSelector,
-  rolesSelector,
-} from "src/redux/reducers/cacheResources";
+import { brigadaSelector, rolesSelector } from "src/redux/reducers/cache";
 import userMutation from "src/hooks/mutation/userMutation";
 import { successToast } from "src/utils/toast";
 import useUsers from "src/hooks/useUsers";

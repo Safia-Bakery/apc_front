@@ -7,7 +7,7 @@ interface Body {
   product: string;
   description: string;
   category_id: number;
-  fillial_id: number;
+  fillial_id: string;
   files: any;
 }
 

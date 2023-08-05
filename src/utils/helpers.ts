@@ -1,7 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 import { EPresetTimes, FileType, RequestStatus } from "./types";
 
-export const itemsPerPage = 20;
+export const itemsPerPage = 50;
 
 export const StatusName = [
   { name: "Активный", id: 1 },
@@ -97,7 +97,16 @@ export const requestRows = (status: RequestStatus) => {
 };
 export const detectFileType = (url: string) => {
   const extension = url.split(".").pop()?.toLowerCase();
-  const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp"];
+  const imageExtensions = [
+    "jpg",
+    "jpeg",
+    "png",
+    "gif",
+    "bmp",
+    "HEIC",
+    "IMG",
+    "TIFF",
+  ];
   const videoExtensions = ["mp4", "avi", "mkv", "mov", "webm"];
 
   if (extension && imageExtensions.includes(extension)) {

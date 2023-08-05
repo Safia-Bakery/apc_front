@@ -1,17 +1,13 @@
-import { FC, PropsWithChildren, useMemo, useState } from "react";
+import { FC, PropsWithChildren } from "react";
 import Card from "../Card";
 import Header from "../Header";
-import Modal from "../Modal";
 import styles from "./index.module.scss";
-import dayjs from "dayjs";
-import BaseInput from "../BaseInputs";
-import MainTextArea from "../BaseInputs/MainTextArea";
-import { useForm } from "react-hook-form";
-import MainInput from "../BaseInputs/MainInput";
 import useToolsIearchs from "src/hooks/useToolsIearchs";
-import { MultiValue } from "react-select";
-import DropDownSub from "../IearchSelect";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "src/redux/utils/types";
+import { itemsSelector } from "src/redux/reducers/usedProducts";
+
+import AddProductModal from "../AddProductModal";
 
 const column = [
   { name: "#" },
@@ -23,45 +19,11 @@ const column = [
 ];
 
 const AddProduct: FC<PropsWithChildren> = ({ children }) => {
-  const [modal, $modal] = useState(false);
   const navigate = useNavigate();
-
-  const { search } = useLocation();
-  const searchParams = new URLSearchParams(search);
-  const itemModal = searchParams.get("itemModal");
-  const {
-    data: iearch,
-    isLoading: iearchLoading,
-    refetch: iearchRefetch,
-  } = useToolsIearchs({
-    enabled: false,
-  });
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-    reset,
-  } = useForm();
-
-  const handleMultiSelectChange = (selectedItems: MultiValue<any[]>) => {
-    console.log(selectedItems);
-  };
-
-  console.log(iearch, "iearch");
-
-  const handleProducts = () => {
-    navigate("?itemModal=true");
-  };
-
-  // const renderProducts = useMemo(() => {
-  //   if (iearchLoading) return "loading";
-  //   return <MultiSelect />;
-  // }, [iearchLoading, iearch]);
+  const products = useAppSelector(itemsSelector);
 
   const handleModal = () => {
-    iearchRefetch();
-    $modal((prev) => !prev);
+    navigate("?add_product_modal=true");
   };
   return (
     <Card>
@@ -73,86 +35,43 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
           Добавить
         </button>
       </Header>
-      <div className="content table-responsive table-full-width overflow-hidden">
-        <table className="table table-hover">
-          <thead>
-            <tr>
-              {column.map(({ name }) => {
-                return (
-                  <th className={styles.tableHead} key={name}>
-                    {name}
-                  </th>
-                );
-              })}
-            </tr>
-          </thead>
-
-          <tbody>
-            {[...Array(4)]?.map((order, idx) => (
-              <tr className="bg-blue" key={idx}>
-                <td width="40">{idx + 1}</td>
-                <td>name</td>
-                <td>45</td>
-                <td>Электричество</td>
-                <td>{dayjs(order?.time_created).format("DD-MM-YYYY HH:mm")}</td>
-                <td>Сафия Шохимардон</td>
+      <div className="content">
+        <div className="content table-responsive table-full-width overflow-hidden">
+          <table className="table table-hover">
+            <thead>
+              <tr>
+                {column.map(({ name }) => {
+                  return (
+                    <th className={styles.tableHead} key={name}>
+                      {name}
+                    </th>
+                  );
+                })}
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <hr />
+            </thead>
 
-        {children}
+            <tbody>
+              {products?.map((item, idx) => (
+                <tr className="bg-blue" key={idx}>
+                  <td width="40">{idx + 1}</td>
+                  <td>{item.name}</td>
+                  <td>{item.count}</td>
+                  <td>{item.comment}</td>
+                  <td>
+                    {/* {dayjs(order?.time_created).format("DD-MM-YYYY HH:mm")} */}
+                    -----
+                  </td>
+                  <td>{item.author.name}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <hr />
+
+          {children}
+        </div>
       </div>
-      <Modal className={styles.modal} isOpen={true} onClose={handleModal}>
-        <Header title="Добавить расходной товар">
-          <button onClick={handleModal} className="close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </Header>
-        <div className={styles.modalBody}>
-          {/* {renderProducts} */}
-
-          {/* {iearch?.length && (
-            <MultiSelect options={iearch} onChange={handleMultiSelectChange} />
-          )} */}
-          <div className="form-group field-apcitems-product_id position-relative">
-            <label className="control-label">Товар</label>
-            <div className="form-control" onClick={handleProducts}>
-              choose
-            </div>
-            {Boolean(itemModal) && <DropDownSub />}
-            {/* <select className="form-control">
-              <option value="">Выберите товар</option>
-              <option value="00085b3a-adb6-45f5-b4f4-72966f357aee">
-                Ложка для персонала
-              </option>
-              <option value="0015b9c7-8266-4b57-906c-18ef494bafac">
-                Щетка жесткая 50 см
-              </option>
-              <option value="001879dc-3f5c-448b-ba6b-146005ef9681">
-                Тарелка глубокая для супа
-              </option>
-            </select> */}
-          </div>
-
-          <BaseInput label="Количество">
-            <MainInput type="number" register={register("qnt")} />
-          </BaseInput>
-
-          <BaseInput label="Примичание">
-            <MainTextArea register={register("description")} />
-          </BaseInput>
-        </div>
-
-        <hr />
-
-        <div className={styles.footer}>
-          <button type="submit" className="btn btn-success btn-fill">
-            Добавить
-          </button>
-        </div>
-      </Modal>
+      <AddProductModal />
     </Card>
   );
 };

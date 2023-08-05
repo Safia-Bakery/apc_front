@@ -1,0 +1,14 @@
+.expanded {
+  transform: rotate(180deg);
+}
+
+.list {
+  overflow-y: scroll;
+  padding-left: 0 !important;
+  cursor: pointer;
+  max-height: 300px;
+}
+.arrow {
+  position: absolute;
+  right: 10px;
+}

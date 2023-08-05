@@ -4,12 +4,9 @@ import { NavLink, useMatch } from "react-router-dom";
 import cl from "classnames";
 import { Screens } from "src/utils/types";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
-import { roleSelector } from "src/redux/reducers/authReducer";
+import { roleSelector } from "src/redux/reducers/auth";
 import Subroutes from "./CustomSubItems";
-import {
-  sidebarHandler,
-  toggleSidebar,
-} from "src/redux/reducers/toggleReducer";
+import { sidebarHandler, toggleSidebar } from "src/redux/reducers/toggle";
 
 const routes = [
   {

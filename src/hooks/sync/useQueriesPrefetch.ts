@@ -1,4 +1,4 @@
-import { roleSelector, tokenSelector } from "src/redux/reducers/authReducer";
+import { roleSelector, tokenSelector } from "src/redux/reducers/auth";
 import { useAppSelector } from "src/redux/utils/types";
 import useBrigadas from "src/hooks/useBrigadas";
 import useRoles from "src/hooks/useRoles";

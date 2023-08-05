@@ -5,10 +5,7 @@ import {
 } from "src/utils/helpers";
 
 import { useAppSelector } from "src/redux/utils/types";
-import {
-  branchSelector,
-  categorySelector,
-} from "src/redux/reducers/cacheResources";
+import { branchSelector, categorySelector } from "src/redux/reducers/cache";
 import { FC, useEffect, useRef, useState } from "react";
 import useOrders from "src/hooks/useOrders";
 import useDebounce from "src/hooks/useDebounce";
