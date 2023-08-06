@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AddProduct from "src/components/AddProduct";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
@@ -16,6 +16,7 @@ import { FileType, RequestStatus } from "src/utils/types";
 import { roleSelector } from "src/redux/reducers/auth";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import ShowRequestModals from "src/components/ShowRequestModals";
+import { selectedBrigadaSelector } from "src/redux/reducers/cache";
 
 const enum ModalTypes {
   closed = "closed",
@@ -29,10 +30,14 @@ const ShowRequestApc = () => {
   const navigate = useNavigate();
   const { mutate: attach } = attachBrigadaMutation();
   const handleModal = (type: ModalTypes) => () => navigate(`?modal=${type}`);
-  const [brigada, $brigada] = useState<{ id: number; name: string }>();
   const { getValues } = useForm();
   const [files, $files] = useState<FormData>();
   const me = useAppSelector(roleSelector);
+
+  const { search } = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const brigadaJson = searchParams.get("assigned_brigada");
+  const brigada = useAppSelector(selectedBrigadaSelector);
 
   const handleNavigate = (route: string) => () => navigate(route);
 
@@ -152,11 +157,6 @@ const ShowRequestApc = () => {
     }
     return <span>{brigada?.name}</span>;
   }, [me?.permissions, brigada?.name, order?.status]);
-
-  useEffect(() => {
-    if (order?.brigada?.name && order?.brigada?.id)
-      $brigada({ id: order.brigada.id, name: order.brigada.name });
-  }, [order?.brigada]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

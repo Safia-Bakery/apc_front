@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { successToast } from "src/utils/toast";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import cl from "classnames";
 import orderMutation from "src/hooks/mutation/orderMutation";
 import { useAppSelector } from "src/redux/utils/types";
@@ -15,7 +15,6 @@ import styles from "./index.module.scss";
 import BaseInputs from "src/components/BaseInputs";
 import MainSelect from "src/components/BaseInputs/MainSelect";
 import MainInput from "src/components/BaseInputs/MainInput";
-import BaseInput from "src/components/BaseInputs";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import SelectBranches from "src/components/SelectBranches";
 import { BranchType } from "src/utils/types";
@@ -26,6 +25,9 @@ const CreateApcRequest = () => {
   const categories = useAppSelector(categorySelector);
   const { mutate } = orderMutation();
   const { refetch: requestsRefetch } = useOrders({ enabled: false });
+  const { search } = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const choose_fillial = searchParams.get("choose_fillial");
   const {
     register,
     handleSubmit,
@@ -46,6 +48,7 @@ const CreateApcRequest = () => {
 
   const handleBranch = (product: BranchType) => {
     reset({ fillial_id: product.id, fillial: product.name });
+    navigate("?");
   };
 
   const isItemExpanded = (itemId: string) => expandedItems.includes(itemId);
@@ -94,18 +97,32 @@ const CreateApcRequest = () => {
         className={cl("content", styles.form)}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <BaseInput label="ФИЛИАЛ" error={errors.department}>
-          <MainInput
-            value="fillial"
-            register={register("fillial", { required: "Обязательное поле" })}
-          />
-          <SelectBranches
-            data={branches}
-            isItemExpanded={isItemExpanded}
-            handleItemClick={handleItemClick}
-            handleBranch={handleBranch}
-          />
-        </BaseInput>
+        <BaseInputs
+          className="position-relative"
+          label="ФИЛИАЛ"
+          error={errors.department}
+        >
+          <div
+            className="pointer"
+            onClick={() => navigate("?choose_fillial=true")}
+          >
+            <MainInput
+              register={register("fillial", { required: "Обязательное поле" })}
+            />
+          </div>
+          {!!choose_fillial && (
+            <>
+              <div className={styles.overlay} onClick={() => navigate("?")} />
+              <SelectBranches
+                className={styles.fillialBlock}
+                data={branches}
+                isItemExpanded={isItemExpanded}
+                handleItemClick={handleItemClick}
+                handleBranch={handleBranch}
+              />
+            </>
+          )}
+        </BaseInputs>
         <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
           <MainSelect
             values={categories}

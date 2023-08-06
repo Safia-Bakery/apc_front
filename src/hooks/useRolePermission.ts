@@ -7,7 +7,7 @@ export const useRolePermission = ({
   enabled = true,
 }: {
   enabled?: boolean;
-  id: number;
+  id: number | string;
 }) => {
   return useQuery({
     queryKey: ["role_permissions", id],

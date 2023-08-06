@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { apiClient } from "src/main";
 
 interface RegisterTypes {
-  id: number;
+  id: number | string;
   username: string;
   full_name: string;
   success: boolean;

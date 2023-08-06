@@ -67,7 +67,7 @@ const Roles = () => {
             sortOrder={sortOrder}
           />
 
-          {roles?.length && (
+          {!!roles?.length && (
             <tbody>
               {(sortData()?.length ? sortData() : roles)?.map((role, idx) => (
                 <tr className="bg-blue" key={role.id}>

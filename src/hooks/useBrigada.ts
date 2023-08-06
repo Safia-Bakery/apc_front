@@ -7,7 +7,7 @@ export const useBrigada = ({
   enabled = true,
 }: {
   enabled?: boolean;
-  id: number;
+  id: number | string;
 }) => {
   return useQuery({
     queryKey: ["brigada", id],

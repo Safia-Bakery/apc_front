@@ -46,7 +46,7 @@ const CreateBrigades = () => {
         brigada_name: brigada?.name,
         brigada_description: brigada?.description,
         status: brigada?.status,
-        brigadir: brigada?.user?.[0].id,
+        brigadir: brigada?.user?.[0]?.id,
       });
     }
   }, [brigada, id, users]);

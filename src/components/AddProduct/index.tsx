@@ -2,7 +2,6 @@ import { FC, PropsWithChildren } from "react";
 import Card from "../Card";
 import Header from "../Header";
 import styles from "./index.module.scss";
-import useToolsIearchs from "src/hooks/useToolsIearchs";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "src/redux/utils/types";
 import { itemsSelector } from "src/redux/reducers/usedProducts";

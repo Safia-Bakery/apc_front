@@ -8,7 +8,7 @@ export const useUsersForBrigada = ({
   id,
 }: {
   enabled?: boolean;
-  id: number;
+  id: number | string;
 }) => {
   const dispatch = useAppDispatch();
   return useQuery({

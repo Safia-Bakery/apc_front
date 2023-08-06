@@ -2,7 +2,7 @@ import { ChangeEvent, FC, useState } from "react";
 
 export interface FileItem {
   file: File;
-  id: number;
+  id: number | string;
 }
 interface FileUploaderProps {
   onFilesSelected: (formData: FileItem[]) => void;
@@ -29,7 +29,7 @@ const UploadComponent: FC<FileUploaderProps> = ({ onFilesSelected }) => {
     }
   };
 
-  const handleFileDelete = (id: number) => {
+  const handleFileDelete = (id: number | string) => {
     const updatedFileList = fileList.filter((item) => item.id !== id);
     setFileList(updatedFileList);
     onFilesSelected(updatedFileList);

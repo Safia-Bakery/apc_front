@@ -39,21 +39,21 @@ export interface UserTypes {
   brigader?: BrigadaType;
   group?: {
     name: string;
-    id: number;
+    id: number | string;
   };
 }
 
 export interface Order {
   product: string;
   description: string;
-  id: number;
+  id: number | string;
   rating: number;
   created_at: Date;
   status: number;
   urgent: boolean;
   user: UserTypes;
   brigada: {
-    id: number;
+    id: number | string;
     name: string;
     description: string;
     status: number;
@@ -65,10 +65,10 @@ export interface Order {
     name: string;
     description: string;
     status: number;
-    id: number;
+    id: number | string;
   };
   fillial: {
-    id: number;
+    id: number | string;
     name: string;
     longtitude: number;
     latitude: number;
@@ -101,14 +101,14 @@ export interface BrigadaType {
   description: string;
   status: number;
   user?: {
-    id: number;
+    id: number | string;
     username: string;
     full_name: string;
     email: string;
     phone_number: string;
     group: {
       name: string;
-      id: number;
+      id: number | string;
     };
     status: number;
   }[];
@@ -134,7 +134,7 @@ export interface BoolObj {
   [key: string]: boolean;
 }
 export interface MeTypes {
-  id: number;
+  id: number | string;
   username: string;
   role?: { descrition: string; name: string };
   full_name: string;
@@ -147,18 +147,18 @@ export enum Status {
 export interface RoleTypes {
   status: number;
   name: string;
-  id: number;
+  id: number | string;
 }
 export interface PermissionTypes {
   page_name: string;
-  id: number;
+  id: number | string;
 }
 
 export interface RolePermissions {
   permissions: number[];
   pages: {
     page_name: string;
-    id: number;
+    id: number | string;
   }[];
   role_name: string;
   role_id: number;
@@ -168,7 +168,7 @@ export interface Category {
   name: string;
   description: string;
   status: number;
-  id: number;
+  id: number | string;
   urgent: number;
 }
 
@@ -178,13 +178,13 @@ export interface CategoryTypes extends BasePaginatedRes {
 
 export interface UsersType {
   username: string;
-  id: number;
+  id: number | string;
   full_name: string;
   email: string | null;
   phone_number: string | null;
   group: {
     name: string;
-    id: number;
+    id: number | string;
   } | null;
   status: number;
 }
@@ -255,5 +255,5 @@ export interface ToolsEarchType {
 export interface CartProducts extends ToolsEarchType {
   count: number;
   comment: string;
-  author: { name: string; id: number };
+  author: { name: string; id: number | string };
 }

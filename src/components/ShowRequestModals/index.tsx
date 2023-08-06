@@ -1,7 +1,11 @@
 import { useMemo, useState } from "react";
 import Modal from "../Modal";
-import { brigadaSelector } from "src/redux/reducers/cache";
-import { useAppSelector } from "src/redux/utils/types";
+import {
+  brigadaSelector,
+  selectBrigada,
+  selectedBrigadaSelector,
+} from "src/redux/reducers/cache";
+import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import { roleSelector } from "src/redux/reducers/auth";
 import { BrigadaType, FileType, RequestStatus } from "src/utils/types";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -33,17 +37,15 @@ const ShowRequestModals = () => {
   const photo = searchParams.get("photo");
   const { mutate: attach } = attachBrigadaMutation();
   const handleModal = (type: string) => navigate(type);
-  const [brigada, $brigada] = useState<{ id: number; name: string }>();
   const { register, getValues } = useForm();
+  const dispatch = useAppDispatch();
+  const brigada = useAppSelector(selectedBrigadaSelector);
 
   const brigades = useAppSelector(brigadaSelector);
-  const me = useAppSelector(roleSelector);
-
-  const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
-  const selectBrigada = (item: BrigadaType) => () => {
-    $brigada({ id: item.id, name: item.name });
-    // $modal(ModalTypes.closed);
-    handleModal(`?`);
+  const { refetch: orderRefetch } = useOrder({ id: Number(id) });
+  const selectedBrigada = (item: BrigadaType) => () => {
+    handleModal("?");
+    dispatch(selectBrigada({ id: item.id, name: item.name }));
   };
 
   const handleBrigada =
@@ -81,7 +83,7 @@ const ShowRequestModals = () => {
                 <div key={idx} className={styles.item}>
                   <h6>{item?.name}</h6>
                   <button
-                    onClick={selectBrigada(item)}
+                    onClick={selectedBrigada(item)}
                     className="btn btn-success btn-fill btn-sm"
                   >
                     Назначить

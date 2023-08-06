@@ -7,7 +7,7 @@ export const useUser = ({
   enabled = true,
 }: {
   enabled?: boolean;
-  id: number;
+  id: number | string;
 }) => {
   return useQuery({
     queryKey: ["user", id],

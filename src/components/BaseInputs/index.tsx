@@ -19,7 +19,7 @@ const BaseInput: FC<BaseProps> = ({
   labelClassName,
 }) => {
   return (
-    <div className={cl("form-group", className)}>
+    <div className={cl("form-group ", className)}>
       {label && (
         <label className={cl(styles.label, labelClassName)}>{label}</label>
       )}

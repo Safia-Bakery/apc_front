@@ -7,7 +7,7 @@ export const useCategory = ({
   enabled = true,
 }: {
   enabled?: boolean;
-  id: number;
+  id: number | string;
 }) => {
   return useQuery({
     queryKey: ["category", id],

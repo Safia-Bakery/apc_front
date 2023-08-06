@@ -30,7 +30,7 @@ const Login = () => {
 
   useEffect(() => {
     reset({
-      username: "test",
+      username: "tests",
       password: "111111",
     });
   }, []);

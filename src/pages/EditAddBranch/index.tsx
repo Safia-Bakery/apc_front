@@ -22,8 +22,20 @@ const EditAddBranch = () => {
 
   const { mutate } = branchMutation();
 
-  const { data: branch, refetch } = useBranch({ id: Number(id) });
+  const { data: branch, refetch } = useBranch({ id: id! });
   const { refetch: branchesRefetch } = useBranches({ enabled: false });
+
+  useEffect(() => {
+    if (!!id) {
+      $status(Number(branch?.status));
+      reset({
+        name: branch?.name,
+        region: branch?.country,
+        lat: branch?.latitude,
+        lng: branch?.longtitude,
+      });
+    }
+  }, [branch]);
 
   const {
     register,
@@ -84,13 +96,6 @@ const EditAddBranch = () => {
           />
         </BaseInputs>
 
-        <BaseInputs label="НАЗВАНИЕ" error={errors.name}>
-          <MainInput
-            register={register("name", { required: "Обязательное поле" })}
-            disabled={!!id}
-          />
-        </BaseInputs>
-
         <BaseInputs label="РЕГИОН" error={errors.region}>
           <MainInput
             register={register("region", { required: "Обязательное поле" })}
@@ -107,7 +112,6 @@ const EditAddBranch = () => {
         <BaseInputs label="ДОЛГОТА" error={errors.lng}>
           <MainInput
             register={register("lng", { required: "Обязательное поле" })}
-            disabled={!!id}
           />
         </BaseInputs>
 

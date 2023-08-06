@@ -7,7 +7,6 @@ import {
   PermissionTypes,
   RoleTypes,
   UsersType,
-  ValueLabel,
 } from "src/utils/types";
 
 interface State {
@@ -17,6 +16,7 @@ interface State {
   categories: CategoryTypes["items"];
   branch: BranchTypes["items"];
   users: UsersType[];
+  selectedBrigada?: { id: number; name: string };
 }
 
 const initialState: State = {
@@ -26,6 +26,7 @@ const initialState: State = {
   categories: [],
   branch: [],
   users: [],
+  selectedBrigada: undefined,
 };
 
 export const cacheResources = createSlice({
@@ -34,6 +35,12 @@ export const cacheResources = createSlice({
   reducers: {
     brigadaHandler: (state, { payload }: PayloadAction<BrigadaType[]>) => {
       state.brigada = payload;
+    },
+    selectBrigada: (
+      state,
+      { payload }: PayloadAction<{ id: number; name: string }>
+    ) => {
+      state.selectedBrigada = payload;
     },
     cachedRoles: (state, { payload }: PayloadAction<RoleTypes[]>) => {
       state.roles = payload;
@@ -62,6 +69,8 @@ export const rolesSelector = (state: RootState) => state.cache.roles;
 export const categorySelector = (state: RootState) => state.cache.categories;
 export const branchSelector = (state: RootState) => state.cache.branch;
 export const usersSelector = (state: RootState) => state.cache.users;
+export const selectedBrigadaSelector = (state: RootState) =>
+  state.cache.selectedBrigada;
 
 export const {
   brigadaHandler,
@@ -70,5 +79,6 @@ export const {
   cachedBranches,
   cachedPermissions,
   cachedUsers,
+  selectBrigada,
 } = cacheResources.actions;
 export default cacheResources.reducer;

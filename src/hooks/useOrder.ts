@@ -7,7 +7,7 @@ export const useOrder = ({
   enabled = true,
 }: {
   enabled?: boolean;
-  id: number;
+  id: number | string;
 }) => {
   return useQuery({
     queryKey: ["order", id],

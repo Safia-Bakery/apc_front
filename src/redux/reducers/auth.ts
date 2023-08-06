@@ -5,7 +5,7 @@ import { Screens } from "src/utils/types";
 interface State {
   token: string | null;
   me: {
-    id: number;
+    id: number | string;
     username: string;
     role?: string;
     full_name: string;

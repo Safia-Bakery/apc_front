@@ -57,7 +57,7 @@ const AddProductModal = () => {
 
   useEffect(() => {
     if (Boolean(modal)) iearchRefetch();
-  }, []);
+  }, [modal]);
 
   return (
     <Modal

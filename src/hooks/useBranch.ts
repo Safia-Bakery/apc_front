@@ -7,7 +7,7 @@ export const useBranch = ({
   enabled = true,
 }: {
   enabled?: boolean;
-  id: number;
+  id: number | string;
 }) => {
   return useQuery({
     queryKey: ["branch", id],

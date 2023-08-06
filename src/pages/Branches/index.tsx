@@ -10,6 +10,8 @@ import TableViewBtn from "src/components/TableViewBtn";
 import useBranches from "src/hooks/useBranches";
 import BranchesFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
+import useBranchSync from "src/hooks/useBranchSync";
+import Loading from "src/components/Loader";
 
 const column = [
   { name: "#", key: "id" },
@@ -32,6 +34,12 @@ const Branches = () => {
   const [sortKey, setSortKey] = useState<keyof BranchType>();
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const {
+    refetch: branchSync,
+    isLoading,
+    isFetching,
+  } = useBranchSync({ enabled: false });
+
   const { data: branches } = useBranches({
     size: itemsPerPage,
     page: currentPage,
@@ -60,15 +68,19 @@ const Branches = () => {
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleNavigate = (route: string) => () => navigate(route);
 
+  const handleSync = () => branchSync();
+
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
 
+  if (isFetching) return <Loading />;
+
   return (
     <Card>
       <Header title={"Филиалы"}>
-        <button className="btn btn-primary btn-fill mr-2">
+        <button onClick={handleSync} className="btn btn-primary btn-fill mr-2">
           <img
             src="/assets/icons/sync.svg"
             height={20}
@@ -98,7 +110,7 @@ const Branches = () => {
             <BranchesFilter currentPage={currentPage} />
           </TableHead>
 
-          {!!branches?.items.length && (
+          {!!branches?.items?.length && (
             <tbody>
               {(sortData()?.length ? sortData() : branches.items)?.map(
                 (branch, idx) => (

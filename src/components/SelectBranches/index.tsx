@@ -19,40 +19,42 @@ const SelectBranches: FC<NestedListItemsProps> = ({
   handleBranch: handleProduct,
 }) => {
   return (
-    <ul className={cl(className, "list-group")}>
-      {data?.map((item) => (
-        <Fragment key={item.id}>
-          <li
-            onClick={() =>
-              !!item.fillial_department?.length
-                ? handleItemClick(item.id)
-                : handleProduct(item)
-            }
-            className={cl("list-group-item position-relative pointer")}
-          >
-            {item.name}
-            {!!item.fillial_department?.length && (
-              <img
-                src="/assets/icons/arrow.svg"
-                alt="arrow"
-                className={cl(styles.arrow, {
-                  [styles.expanded]: isItemExpanded(item.id),
-                })}
+    <>
+      <ul className={cl(className, "list-group", styles.block)}>
+        {data?.map((item) => (
+          <Fragment key={item.id}>
+            <li
+              onClick={() =>
+                !!item.fillial_department?.length
+                  ? handleItemClick(item.id)
+                  : handleProduct(item)
+              }
+              className={cl("list-group-item position-relative pointer")}
+            >
+              {item.name}
+              {!!item.fillial_department?.length && (
+                <img
+                  src="/assets/icons/arrow.svg"
+                  alt="arrow"
+                  className={cl(styles.arrow, {
+                    [styles.expanded]: isItemExpanded(item.id),
+                  })}
+                />
+              )}
+            </li>
+            {isItemExpanded(item.id) && (
+              <SelectBranches
+                className="pl-4"
+                data={item?.fillial_department}
+                isItemExpanded={isItemExpanded}
+                handleItemClick={handleItemClick}
+                handleBranch={handleProduct}
               />
             )}
-          </li>
-          {isItemExpanded(item.id) && (
-            <SelectBranches
-              className="pl-4"
-              data={item?.fillial_department}
-              isItemExpanded={isItemExpanded}
-              handleItemClick={handleItemClick}
-              handleBranch={handleProduct}
-            />
-          )}
-        </Fragment>
-      ))}
-    </ul>
+          </Fragment>
+        ))}
+      </ul>
+    </>
   );
 };
 
