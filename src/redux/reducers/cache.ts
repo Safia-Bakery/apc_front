@@ -46,16 +46,9 @@ export const cacheResources = createSlice({
     cachedUsers: (state, { payload }: PayloadAction<UsersType[]>) => {
       state.users = payload;
     },
-    cachedPermissions: (
-      state,
-      { payload }: PayloadAction<PermissionTypes[]>
-    ) => {
-      state.permissions = payload;
-    },
   },
 });
 
-export const permissionSelector = (state: RootState) => state.cache.permissions;
 export const brigadaSelector = (state: RootState) => state.cache.brigada;
 export const rolesSelector = (state: RootState) => state.cache.roles;
 export const categorySelector = (state: RootState) => state.cache.categories;
@@ -67,7 +60,6 @@ export const {
   cachedRoles,
   cachedCategories,
   cachedBranches,
-  cachedPermissions,
   cachedUsers,
 } = cacheResources.actions;
 export default cacheResources.reducer;

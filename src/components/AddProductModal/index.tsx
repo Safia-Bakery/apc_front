@@ -5,15 +5,18 @@ import BaseInput from "../BaseInputs";
 import MainTextArea from "../BaseInputs/MainTextArea";
 import { useForm } from "react-hook-form";
 import MainInput from "../BaseInputs/MainInput";
-import useToolsIearchs from "src/hooks/useToolsIearchs";
+import useTools from "src/hooks/useTools";
 import IearchSelect from "../IerchySelect";
-import { useLocation, useNavigate } from "react-router-dom";
-import { ToolsEarchType } from "src/utils/types";
-import { useAppDispatch } from "src/redux/utils/types";
-import { setProduct } from "src/redux/reducers/usedProducts";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import { useEffect } from "react";
+import usedItemsMutation from "src/hooks/mutation/usedItems";
+import { successToast } from "src/utils/toast";
+import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
+import useOrder from "src/hooks/useOrder";
 
 const AddProductModal = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { search } = useLocation();
@@ -21,9 +24,16 @@ const AddProductModal = () => {
   const modal = searchParams.get("add_product_modal");
   const productJson = searchParams.get("product");
   const itemModal = searchParams.get("itemModal");
-  const product = JSON.parse(productJson!) as ToolsEarchType;
+  const product = JSON.parse(productJson!) as { id: number; name: string };
+  const files = useAppSelector(reportImgSelector);
 
-  const { refetch: iearchRefetch } = useToolsIearchs({
+  const { mutate } = usedItemsMutation();
+  const { refetch: orderRefetch } = useOrder({
+    id: Number(id),
+    enabled: false,
+  });
+
+  const { refetch: iearchRefetch } = useTools({
     enabled: false,
   });
 
@@ -32,6 +42,7 @@ const AddProductModal = () => {
     handleSubmit,
     formState: { errors },
     getValues,
+    reset,
   } = useForm();
 
   const handleProducts = () => {
@@ -44,15 +55,24 @@ const AddProductModal = () => {
 
   const onSubmit = () => {
     const { count, comment } = getValues();
-    dispatch(
-      setProduct({
-        ...product,
+    mutate(
+      {
+        amount: count,
+        request_id: Number(id),
+        tool_id: product.id,
         comment,
-        count,
-        author: { name: "todo", id: 2 },
-      })
+        ...(!!files && { files }),
+      },
+      {
+        onSuccess: () => {
+          successToast("submitted");
+          reset();
+          navigate("?");
+          orderRefetch();
+          dispatch(uploadReport(undefined));
+        },
+      }
     );
-    navigate("?");
   };
 
   useEffect(() => {

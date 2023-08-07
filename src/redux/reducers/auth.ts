@@ -25,8 +25,6 @@ export const authReducer = createSlice({
   initialState,
   reducers: {
     logoutHandler: () => {
-      // state.me = null;
-      // state.token = null;
       localStorage.clear();
     },
 

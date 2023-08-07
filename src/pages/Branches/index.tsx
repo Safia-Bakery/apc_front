@@ -2,7 +2,7 @@ import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
 import Pagination from "src/components/Pagination";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { BranchType } from "src/utils/types";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
@@ -34,11 +34,7 @@ const Branches = () => {
   const [sortKey, setSortKey] = useState<keyof BranchType>();
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const {
-    refetch: branchSync,
-    isLoading,
-    isFetching,
-  } = useBranchSync({ enabled: false });
+  const { refetch: branchSync, isFetching } = useBranchSync({ enabled: false });
 
   const { data: branches, refetch } = useBranches({
     size: itemsPerPage,
@@ -54,16 +50,16 @@ const Branches = () => {
       setSortOrder("asc");
     }
   };
-  const sortData = () => {
+  const sortData = useMemo(() => {
     if (branches?.items && sortKey) {
-      const sortedData = [...branches?.items].sort((a, b) => {
+      return [...branches?.items].sort((a, b) => {
         if (a[sortKey]! < b[sortKey]!) return sortOrder === "asc" ? -1 : 1;
         if (a[sortKey]! > b[sortKey]!) return sortOrder === "asc" ? 1 : -1;
         else return 0;
       });
-      return sortedData;
     }
-  };
+    return [];
+  }, [branches?.items, sortKey, sortOrder]);
 
   const handlePageChange = (page: number) => {
     refetch();
@@ -115,7 +111,7 @@ const Branches = () => {
 
           {!!branches?.items?.length && (
             <tbody>
-              {(sortData()?.length ? sortData() : branches.items)?.map(
+              {(sortData?.length ? sortData : branches.items)?.map(
                 (branch, idx) => (
                   <tr key={idx} className="bg-blue">
                     <td width="40">{handleIdx(idx)}</td>

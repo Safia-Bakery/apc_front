@@ -20,7 +20,7 @@ export const useOrders = ({
         .get("/request", { ...body, page, size })
         .then(({ data: response }) => (response as OrderType) || null),
     enabled,
-    refetchOnMount: true,
+    // refetchOnMount: true,
   });
 };
 export default useOrders;

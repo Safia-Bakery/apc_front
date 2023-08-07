@@ -4,12 +4,12 @@ import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import permissionMutation from "src/hooks/mutation/permissionMutation";
 import { useAppSelector } from "src/redux/utils/types";
-import { permissionSelector } from "src/redux/reducers/cache";
 import useRolePermission from "src/hooks/useRolePermission";
 import { roleSelector } from "src/redux/reducers/auth";
 import { useEffect, useState } from "react";
 import Loading from "src/components/Loader";
 import { successToast } from "src/utils/toast";
+import usePermissions from "src/hooks/usePermissions";
 
 const ShowRole = () => {
   const navigate = useNavigate();
@@ -25,8 +25,8 @@ const ShowRole = () => {
     enabled: !!id,
   });
   const { mutate } = permissionMutation();
+  const { data: permissions } = usePermissions({});
 
-  const permissions = useAppSelector(permissionSelector);
   const me = useAppSelector(roleSelector);
 
   const handlePermission = (val: number) => {

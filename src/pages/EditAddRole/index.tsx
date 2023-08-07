@@ -63,6 +63,7 @@ const EditAddRole = () => {
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
         <BaseInputs label="НАИМЕНОВАНИЕ" error={errors.name}>
           <MainInput
+            autoFocus
             register={register("name", { required: "Обязательное поле" })}
           />
         </BaseInputs>

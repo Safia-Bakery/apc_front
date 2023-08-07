@@ -55,11 +55,13 @@ export interface Order {
   brigada: {
     id: number | string;
     name: string;
-    description: string;
-    status: number;
+    description?: string;
+    status?: number;
+    order?: string;
   };
   file: {
     url: string;
+    status: number;
   }[];
   category: {
     name: string;
@@ -67,10 +69,22 @@ export interface Order {
     status: number;
     id: number | string;
   };
+  expanditure: {
+    id: number;
+    amount: number;
+    tool: {
+      code: string;
+      id: number;
+      mainunit: string;
+      name: string;
+      producttype: string;
+    };
+  }[];
   fillial: {
     id: number | string;
     name: string;
     longtitude: number;
+    origin: number;
     latitude: number;
     country: string;
     status: number;
@@ -252,7 +266,16 @@ export interface ToolsEarchType {
   child: ToolsEarchType[];
 }
 
-export interface CartProducts extends ToolsEarchType {
+export interface ToolTypes extends BasePaginatedRes {
+  items: {
+    name: string;
+    id: number;
+  }[];
+}
+
+export interface CartProducts {
+  id: number;
+  name: string;
   count: number;
   comment: string;
   author: { name: string; id: number | string };

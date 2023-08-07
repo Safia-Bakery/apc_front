@@ -1,8 +1,7 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import Modal from "../Modal";
 import { brigadaSelector } from "src/redux/reducers/cache";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
-import { roleSelector } from "src/redux/reducers/auth";
 import { BrigadaType, FileType, RequestStatus } from "src/utils/types";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -19,7 +18,7 @@ import cl from "classnames";
 import {
   selectBrigada,
   selectedBrigadaSelector,
-} from "src/redux/reducers/toggle";
+} from "src/redux/reducers/selects";
 
 const enum ModalTypes {
   closed = "closed",

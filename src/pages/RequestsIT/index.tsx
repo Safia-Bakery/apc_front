@@ -47,7 +47,7 @@ const RequestsIT = () => {
     refetch,
     isLoading: orderLoading,
   } = useOrders({
-    enabled: true,
+    enabled: false,
     size: itemsPerPage,
     page: currentPage,
   });

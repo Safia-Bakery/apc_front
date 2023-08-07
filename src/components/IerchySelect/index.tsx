@@ -1,32 +1,41 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./index.module.scss";
 import { useState } from "react";
-import useToolsIearchs from "src/hooks/useToolsIearchs";
-import { ToolsEarchType } from "src/utils/types";
+import useTools from "src/hooks/useTools";
+import { ToolTypes, ToolsEarchType } from "src/utils/types";
 import NestedListItems from "../NestedItem";
+import BaseInput from "../BaseInputs";
+import MainInput from "../BaseInputs/MainInput";
+import useDebounce from "src/hooks/useDebounce";
+import cl from "classnames";
 
 const IearchSelect: React.FC = () => {
   const navigate = useNavigate();
-  const [expandedItems, setExpandedItems] = useState<string[]>([]);
-  const { data } = useToolsIearchs({
+  const initialLoadRef = useRef(true);
+  const [search, $search] = useDebounce("");
+  const { data, refetch } = useTools({
     enabled: false,
+    ...(!!search && { query: search }),
   });
 
   const onClose = () => navigate("?add_product_modal=true");
 
-  const handleItemClick = (itemId: string) => {
-    if (expandedItems.includes(itemId)) {
-      setExpandedItems(expandedItems.filter((id) => id !== itemId));
-    } else {
-      setExpandedItems([...expandedItems, itemId]);
-    }
-  };
-
-  const handleProduct = (product: ToolsEarchType) =>
+  const handleProduct = (product: { id: number; name: string }) =>
     navigate(`?add_product_modal=true&product=${JSON.stringify(product)}`);
 
-  const isItemExpanded = (itemId: string) => expandedItems.includes(itemId);
+  useEffect(() => {
+    if (initialLoadRef.current) {
+      initialLoadRef.current = false;
+      return;
+    }
+
+    const fetchData = async () => {
+      await refetch();
+    };
+
+    fetchData();
+  }, [search]);
 
   return (
     <>
@@ -38,21 +47,20 @@ const IearchSelect: React.FC = () => {
           </button>
           Выберите товар
         </div>
-        <div className="bs-searchbox">
-          <input
-            type="text"
-            className="form-control"
-            role="textbox"
-            aria-label="Search"
-          />
-        </div>
-        <NestedListItems
-          className={"pl-0"}
-          data={data}
-          isItemExpanded={isItemExpanded}
-          handleItemClick={handleItemClick}
-          handleProduct={handleProduct}
-        />
+        <BaseInput>
+          <MainInput value={search} onChange={(e) => $search(e.target.value)} />
+        </BaseInput>
+        <ul className={cl("list-group", styles.list)}>
+          {data?.items?.map((item) => (
+            <li
+              key={item.id}
+              onClick={() => handleProduct(item)}
+              className={cl("list-group-item position-relative pointer")}
+            >
+              {item.name}
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   );

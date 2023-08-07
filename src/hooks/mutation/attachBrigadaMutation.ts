@@ -14,9 +14,7 @@ const attachBrigadaMutation = () => {
     }) =>
       apiClient
         .put({ url: "/request/attach/brigada", body })
-        .then((res) => {
-          if (res.status === 200) return res.data;
-        })
+        .then((res) => res)
         .catch((e: Error) => errorToast(e.message))
   );
 };

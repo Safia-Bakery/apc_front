@@ -8,7 +8,6 @@ import cl from "classnames";
 import orderMutation from "src/hooks/mutation/orderMutation";
 import { useAppSelector } from "src/redux/utils/types";
 import { branchSelector, categorySelector } from "src/redux/reducers/cache";
-import useOrders from "src/hooks/useOrders";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import styles from "./index.module.scss";
 
@@ -24,7 +23,6 @@ const CreateApcRequest = () => {
   const branches = useAppSelector(branchSelector);
   const categories = useAppSelector(categorySelector);
   const { mutate } = orderMutation();
-  const { refetch: requestsRefetch } = useOrders({ enabled: false });
   const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const choose_fillial = searchParams.get("choose_fillial");
@@ -72,12 +70,12 @@ const CreateApcRequest = () => {
         product,
         urgent,
         description,
-        fillial_id: "bc01b998-a0fb-4bc8-a61a-a0471f74e7a1",
+        fillial_id,
         files,
       },
       {
         onSuccess: () => {
-          requestsRefetch();
+          // requestsRefetch();
           successToast("Заказ успешно создано");
           navigate("/requests-apc");
         },

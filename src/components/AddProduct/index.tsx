@@ -2,11 +2,12 @@ import { FC, PropsWithChildren } from "react";
 import Card from "../Card";
 import Header from "../Header";
 import styles from "./index.module.scss";
-import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "src/redux/utils/types";
-import { itemsSelector } from "src/redux/reducers/usedProducts";
+import { useNavigate, useParams } from "react-router-dom";
 
 import AddProductModal from "../AddProductModal";
+import useOrder from "src/hooks/useOrder";
+import syncExpenditure from "src/hooks/mutation/syncExpenditure";
+import { successToast } from "src/utils/toast";
 
 const column = [
   { name: "#" },
@@ -18,15 +19,47 @@ const column = [
 ];
 
 const AddProduct: FC<PropsWithChildren> = ({ children }) => {
+  const { id } = useParams();
   const navigate = useNavigate();
-  const products = useAppSelector(itemsSelector);
+  const { mutate, isLoading } = syncExpenditure();
+
+  const handleSync = () =>
+    mutate(
+      {
+        request_id: Number(id),
+      },
+      {
+        onSuccess: (data: any) => {
+          if (data.status == 200) successToast("Успешно синхронизировано");
+        },
+      }
+    );
+
+  const { data: products } = useOrder({
+    id: Number(id),
+    enabled: false,
+  });
 
   const handleModal = () => {
     navigate("?add_product_modal=true");
   };
+
   return (
     <Card>
       <Header title="Товары">
+        <button
+          onClick={handleSync}
+          className="btn btn-primary btn-fill btn-sm mr-2"
+        >
+          <img
+            src="/assets/icons/sync.svg"
+            height={20}
+            width={20}
+            alt="sync"
+            className="mr-2"
+          />
+          Синхронизировать с iiko
+        </button>
         <button
           className="btn btn-success btn-fill btn-sm"
           onClick={handleModal}
@@ -50,17 +83,17 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
             </thead>
 
             <tbody>
-              {products?.map((item, idx) => (
-                <tr className="bg-blue" key={idx}>
+              {products?.expanditure?.map((item, idx) => (
+                <tr className="bg-blue" key={item.id}>
                   <td width="40">{idx + 1}</td>
-                  <td>{item.name}</td>
-                  <td>{item.count}</td>
-                  <td>{item.comment}</td>
+                  <td>{item.tool.name}</td>
+                  <td>{item.amount}</td>
+                  <td>{"item.comment"}</td>
                   <td>
                     {/* {dayjs(order?.time_created).format("DD-MM-YYYY HH:mm")} */}
                     -----
                   </td>
-                  <td>{item.author.name}</td>
+                  <td>{"item.author.name"}</td>
                 </tr>
               ))}
             </tbody>

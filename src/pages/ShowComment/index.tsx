@@ -23,11 +23,11 @@ const ShowComment = () => {
   const [modal, $modal] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const {
-    data: requests,
-    refetch,
-    isLoading: orderLoading,
-  } = useOrders({ size: itemsPerPage, page: currentPage, enabled: false });
+  const { data: requests } = useOrders({
+    size: itemsPerPage,
+    page: currentPage,
+    enabled: false,
+  });
 
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");

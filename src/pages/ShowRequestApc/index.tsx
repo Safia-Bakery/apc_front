@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import AddProduct from "src/components/AddProduct";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import styles from "./index.module.scss";
 import useOrder from "src/hooks/useOrder";
 import dayjs from "dayjs";
-import { useAppSelector } from "src/redux/utils/types";
+import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import { successToast } from "src/utils/toast";
 import { baseURL } from "src/main";
@@ -16,7 +16,11 @@ import { FileType, RequestStatus } from "src/utils/types";
 import { roleSelector } from "src/redux/reducers/auth";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import ShowRequestModals from "src/components/ShowRequestModals";
-import { selectedBrigadaSelector } from "src/redux/reducers/toggle";
+import {
+  selectBrigada,
+  selectedBrigadaSelector,
+  uploadReport,
+} from "src/redux/reducers/selects";
 
 const enum ModalTypes {
   closed = "closed",
@@ -28,28 +32,20 @@ const enum ModalTypes {
 const ShowRequestApc = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { mutate: attach } = attachBrigadaMutation();
   const handleModal = (type: ModalTypes) => () => navigate(`?modal=${type}`);
   const { getValues } = useForm();
-  const [files, $files] = useState<FormData>();
   const me = useAppSelector(roleSelector);
   const brigada = useAppSelector(selectedBrigadaSelector);
   const detectBrigada = brigada?.order === id;
-  // const { search } = useLocation();
-  // const searchParams = new URLSearchParams(search);
-  // const brigadaJson = searchParams.get("assigned_brigada");
+  const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
+  const isNew = order?.status === RequestStatus.new;
 
   const handleNavigate = (route: string) => () => navigate(route);
 
-  const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
-
-  const handleFilesSelected = (data: FileItem[]) => {
-    const formData = new FormData();
-    data.forEach((item) => {
-      formData.append("files", item.file, item.file.name);
-    });
-    $files(formData);
-  };
+  const handleFilesSelected = (data: FileItem[]) =>
+    dispatch(uploadReport(data));
 
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
@@ -70,9 +66,11 @@ const ShowRequestApc = () => {
             comment: getValues("cancel_reason"),
           },
           {
-            onSuccess: () => {
-              orderRefetch();
-              successToast("assigned");
+            onSuccess: (data: any) => {
+              if (data.status === 200) {
+                orderRefetch();
+                successToast("assigned");
+              }
             },
           }
         );
@@ -80,12 +78,7 @@ const ShowRequestApc = () => {
     };
 
   const renderBtns = useMemo(() => {
-    if (
-      me?.permissions.ismanager &&
-      order?.status === 0 &&
-      !!brigada?.name &&
-      detectBrigada
-    )
+    if (me?.permissions.ismanager && isNew && !!brigada?.name && detectBrigada)
       return (
         <div className="float-end mb10">
           <button
@@ -102,7 +95,7 @@ const ShowRequestApc = () => {
           </button>
         </div>
       );
-    if (me?.permissions.isbrigader)
+    if (!!brigada?.name && me?.permissions.isbrigader)
       return (
         <div className="d-flex justify-content-between mb10">
           {order?.status! < 3 && (
@@ -138,7 +131,7 @@ const ShowRequestApc = () => {
   }, [me?.permissions, order?.status, brigada?.name]);
 
   const renderAssignment = useMemo(() => {
-    if (me?.permissions?.ismanager && order?.status === 0) {
+    if (me?.permissions?.ismanager && isNew) {
       if (brigada?.name && detectBrigada) {
         return (
           <>
@@ -167,6 +160,11 @@ const ShowRequestApc = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    if (order?.brigada?.name)
+      dispatch(selectBrigada({ ...order?.brigada, order: id }));
+  }, [order?.brigada]);
 
   const goBack = () => navigate(-1);
   return (
@@ -210,15 +208,39 @@ const ShowRequestApc = () => {
                   <tr>
                     <th>file</th>
                     <td className="d-flex flex-column">
-                      {order?.file?.map((item) => (
-                        <div
-                          className={styles.imgUrl}
-                          onClick={handleShowPhoto(`${baseURL}/${item.url}`)}
-                          key={item.url}
-                        >
-                          {item.url}
-                        </div>
-                      ))}
+                      {order?.file?.map((item, index) => {
+                        if (item.status === 0)
+                          return (
+                            <div
+                              className={styles.imgUrl}
+                              onClick={handleShowPhoto(
+                                `${baseURL}/${item.url}`
+                              )}
+                              key={item.url + index}
+                            >
+                              {item.url}
+                            </div>
+                          );
+                      })}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Фотоотчёт</th>
+                    <td className="d-flex flex-column">
+                      {order?.file?.map((item, index) => {
+                        if (item.status === 1)
+                          return (
+                            <div
+                              className={styles.imgUrl}
+                              onClick={handleShowPhoto(
+                                `${baseURL}/${item.url}`
+                              )}
+                              key={item.url + index}
+                            >
+                              {item.url}
+                            </div>
+                          );
+                      })}
                     </td>
                   </tr>
                   <tr>
@@ -282,10 +304,11 @@ const ShowRequestApc = () => {
             </div>
           </div>
           <hr />
+          {isNew && renderBtns}
         </div>
       </Card>
 
-      {me?.permissions.isbrigader && (
+      {me?.permissions.isbrigader && order?.status !== 0 && (
         <Card>
           <Header title={"Добавить фотоотчёт"} />
           <div className="m-3">
@@ -294,9 +317,11 @@ const ShowRequestApc = () => {
         </Card>
       )}
 
-      <AddProduct>
-        <div className="p-2">{renderBtns}</div>
-      </AddProduct>
+      {!isNew && (
+        <AddProduct>
+          <div className="p-2">{renderBtns}</div>
+        </AddProduct>
+      )}
       <ShowRequestModals />
     </>
   );
