@@ -151,7 +151,7 @@ export interface RoleTypes {
 }
 export interface PermissionTypes {
   page_name: string;
-  id: number | string;
+  id: number;
 }
 
 export interface RolePermissions {

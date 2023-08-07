@@ -1,10 +1,6 @@
 import { useMemo, useState } from "react";
 import Modal from "../Modal";
-import {
-  brigadaSelector,
-  selectBrigada,
-  selectedBrigadaSelector,
-} from "src/redux/reducers/cache";
+import { brigadaSelector } from "src/redux/reducers/cache";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import { roleSelector } from "src/redux/reducers/auth";
 import { BrigadaType, FileType, RequestStatus } from "src/utils/types";
@@ -20,6 +16,10 @@ import { successToast } from "src/utils/toast";
 import useOrder from "src/hooks/useOrder";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import cl from "classnames";
+import {
+  selectBrigada,
+  selectedBrigadaSelector,
+} from "src/redux/reducers/toggle";
 
 const enum ModalTypes {
   closed = "closed",
@@ -45,7 +45,7 @@ const ShowRequestModals = () => {
   const { refetch: orderRefetch } = useOrder({ id: Number(id) });
   const selectedBrigada = (item: BrigadaType) => () => {
     handleModal("?");
-    dispatch(selectBrigada({ id: item.id, name: item.name }));
+    dispatch(selectBrigada({ id: item.id, name: item.name, order: id! }));
   };
 
   const handleBrigada =

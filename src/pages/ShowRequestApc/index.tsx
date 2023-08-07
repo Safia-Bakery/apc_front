@@ -16,7 +16,7 @@ import { FileType, RequestStatus } from "src/utils/types";
 import { roleSelector } from "src/redux/reducers/auth";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import ShowRequestModals from "src/components/ShowRequestModals";
-import { selectedBrigadaSelector } from "src/redux/reducers/cache";
+import { selectedBrigadaSelector } from "src/redux/reducers/toggle";
 
 const enum ModalTypes {
   closed = "closed",
@@ -33,11 +33,11 @@ const ShowRequestApc = () => {
   const { getValues } = useForm();
   const [files, $files] = useState<FormData>();
   const me = useAppSelector(roleSelector);
-
-  const { search } = useLocation();
-  const searchParams = new URLSearchParams(search);
-  const brigadaJson = searchParams.get("assigned_brigada");
   const brigada = useAppSelector(selectedBrigadaSelector);
+  const detectBrigada = brigada?.order === id;
+  // const { search } = useLocation();
+  // const searchParams = new URLSearchParams(search);
+  // const brigadaJson = searchParams.get("assigned_brigada");
 
   const handleNavigate = (route: string) => () => navigate(route);
 
@@ -61,25 +61,31 @@ const ShowRequestApc = () => {
   const handleBrigada =
     ({ status }: { status: RequestStatus }) =>
     () => {
-      attach(
-        {
-          request_id: Number(id),
-          brigada_id: Number(brigada?.id),
-          status,
-          comment: getValues("cancel_reason"),
-        },
-        {
-          onSuccess: () => {
-            orderRefetch();
-            successToast("assigned");
+      if (detectBrigada)
+        attach(
+          {
+            request_id: Number(id),
+            brigada_id: Number(brigada?.id),
+            status,
+            comment: getValues("cancel_reason"),
           },
-        }
-      );
+          {
+            onSuccess: () => {
+              orderRefetch();
+              successToast("assigned");
+            },
+          }
+        );
       navigate(`?`);
     };
 
   const renderBtns = useMemo(() => {
-    if (me?.permissions.ismanager && order?.status === 0 && !!brigada?.name)
+    if (
+      me?.permissions.ismanager &&
+      order?.status === 0 &&
+      !!brigada?.name &&
+      detectBrigada
+    )
       return (
         <div className="float-end mb10">
           <button
@@ -133,7 +139,7 @@ const ShowRequestApc = () => {
 
   const renderAssignment = useMemo(() => {
     if (me?.permissions?.ismanager && order?.status === 0) {
-      if (brigada?.name) {
+      if (brigada?.name && detectBrigada) {
         return (
           <>
             <span>{brigada?.name}</span>
@@ -155,7 +161,7 @@ const ShowRequestApc = () => {
         </button>
       );
     }
-    return <span>{brigada?.name}</span>;
+    return <span>{detectBrigada ? brigada?.name : ""}</span>;
   }, [me?.permissions, brigada?.name, order?.status]);
 
   useEffect(() => {

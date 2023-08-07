@@ -40,7 +40,7 @@ const Branches = () => {
     isFetching,
   } = useBranchSync({ enabled: false });
 
-  const { data: branches } = useBranches({
+  const { data: branches, refetch } = useBranches({
     size: itemsPerPage,
     page: currentPage,
     enabled: false,
@@ -65,7 +65,10 @@ const Branches = () => {
     }
   };
 
-  const handlePageChange = (page: number) => setCurrentPage(page);
+  const handlePageChange = (page: number) => {
+    refetch();
+    setCurrentPage(page);
+  };
   const handleNavigate = (route: string) => () => navigate(route);
 
   const handleSync = () => branchSync();
@@ -136,6 +139,7 @@ const Branches = () => {
             itemsPerPage={itemsPerPage}
             currentPage={currentPage}
             onPageChange={handlePageChange}
+            refetch={refetch}
           />
         )}
         {!branches?.items?.length && (
