@@ -1,4 +1,6 @@
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
+import { reportImgSelector } from "src/redux/reducers/selects";
+import { useAppSelector } from "src/redux/utils/types";
 
 export interface FileItem {
   file: File;
@@ -6,11 +8,20 @@ export interface FileItem {
 }
 interface FileUploaderProps {
   onFilesSelected: (formData: FileItem[]) => void;
+  inputRef?: any;
 }
 
-const UploadComponent: FC<FileUploaderProps> = ({ onFilesSelected }) => {
+const UploadComponent: FC<FileUploaderProps> = ({
+  onFilesSelected,
+  inputRef,
+}) => {
   const [fileList, setFileList] = useState<FileItem[]>([]);
   const [fileIdCounter, setFileIdCounter] = useState(0);
+  const upladedFiles = useAppSelector(reportImgSelector);
+
+  useEffect(() => {
+    if (!upladedFiles) setFileList([]);
+  }, [upladedFiles]);
 
   const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -40,6 +51,7 @@ const UploadComponent: FC<FileUploaderProps> = ({ onFilesSelected }) => {
       <input
         className="form-control"
         type="file"
+        ref={inputRef}
         multiple
         onChange={handleFileUpload}
       />

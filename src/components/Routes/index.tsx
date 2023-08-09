@@ -1,11 +1,6 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
-import {
-  logoutHandler,
-  roleHandler,
-  roleSelector,
-  tokenSelector,
-} from "src/redux/reducers/auth";
+import { logoutHandler, tokenSelector } from "src/redux/reducers/auth";
 import CreateApcRequest from "src/pages/CreateApcRequest";
 import Login from "pages/Login";
 import { useEffect, useMemo } from "react";
@@ -38,6 +33,7 @@ import RequestInventory from "src/pages/RequestInventory";
 import AddInventoryRequest from "src/pages/AddInventoryRequest";
 import RequestsIT from "src/pages/RequestsIT";
 import CreateITRequest from "src/pages/CreateITRequest";
+import { permissioms as me } from "src/utils/helpers";
 
 export const routes = [
   { element: <ControlPanel />, path: "/", screen: Screens.permitted },
@@ -135,19 +131,20 @@ export const routes = [
 
 const Navigation = () => {
   const token = useAppSelector(tokenSelector);
-  const user = useAppSelector(roleSelector);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { data: me, isError, error } = useToken({ enabled: !!token });
+  const { data: user, isError, error } = useToken({ enabled: !!token });
+  //@ts-ignore
+  const isSuperAdmin = user?.permissions === "*";
 
   useQueriesPrefetch();
 
   useEffect(() => {
     if (!token) navigate("/login");
-    if (isError || error) dispatch(logoutHandler());
-    if (me) dispatch(roleHandler(me));
-  }, [token, isError, me, error]);
+    if (error) dispatch(logoutHandler());
+    // if (isSuperAdmin && !!user) dispatch(roleHandler());
+  }, [token, error, user]);
 
   const renderSidebar = useMemo(() => {
     if (user?.permissions && token)
@@ -167,7 +164,7 @@ const Navigation = () => {
 
       <Routes>
         {routes.map((route) => {
-          if (!!user?.permissions?.[route.screen]) {
+          if (!!(isSuperAdmin ? me : user?.permissions)?.[route.screen]) {
             return (
               <Route
                 key={route.path}

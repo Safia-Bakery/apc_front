@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AddProduct from "src/components/AddProduct";
 import Card from "src/components/Card";
@@ -12,15 +12,17 @@ import { successToast } from "src/utils/toast";
 import { baseURL } from "src/main";
 import { detectFileType, handleStatus } from "src/utils/helpers";
 import { useForm } from "react-hook-form";
-import { FileType, RequestStatus } from "src/utils/types";
-import { roleSelector } from "src/redux/reducers/auth";
+import { FileType, Order, RequestStatus } from "src/utils/types";
+import { permissioms as role } from "src/utils/helpers";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import ShowRequestModals from "src/components/ShowRequestModals";
+import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
+import useToken from "src/hooks/useToken";
+import useQueryString from "src/hooks/useQueryString";
 import {
-  selectBrigada,
-  selectedBrigadaSelector,
-  uploadReport,
-} from "src/redux/reducers/selects";
+  useNavigateParams,
+  useRemoveParams,
+} from "src/hooks/useCustomNavigate";
 
 const enum ModalTypes {
   closed = "closed",
@@ -33,14 +35,25 @@ const ShowRequestApc = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const modal = useQueryString("modal");
+  const navigateParams = useNavigateParams();
+  const removeParams = useRemoveParams();
   const { mutate: attach } = attachBrigadaMutation();
-  const handleModal = (type: ModalTypes) => () => navigate(`?modal=${type}`);
+  const handleModal = (type: ModalTypes) => () => {
+    navigateParams({ modal: type });
+  };
   const { getValues } = useForm();
-  const me = useAppSelector(roleSelector);
-  const brigada = useAppSelector(selectedBrigadaSelector);
-  const detectBrigada = brigada?.order === id;
+
+  const { data: user } = useToken({ enabled: false });
+  //@ts-ignore
+  const me = user?.permissions === "*" ? role : user?.permissions;
+  const brigadaJson = useQueryString("brigada");
+  const brigada = JSON.parse(brigadaJson!) as Order["brigada"];
   const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
+  const isFinished = order?.status === RequestStatus.done;
+  const inputRef = useRef<any>(null);
+  const upladedFiles = useAppSelector(reportImgSelector);
 
   const handleNavigate = (route: string) => () => navigate(route);
 
@@ -50,14 +63,14 @@ const ShowRequestApc = () => {
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
     else {
-      navigate(`?modal=${ModalTypes.showPhoto}&photo=${file}`);
+      navigateParams({ modal: ModalTypes.showPhoto, photo: file });
     }
   };
 
   const handleBrigada =
     ({ status }: { status: RequestStatus }) =>
     () => {
-      if (detectBrigada)
+      if (brigada?.id)
         attach(
           {
             request_id: Number(id),
@@ -70,15 +83,16 @@ const ShowRequestApc = () => {
               if (data.status === 200) {
                 orderRefetch();
                 successToast("assigned");
+                // $brigada(undefined);
               }
             },
           }
         );
-      navigate(`?`);
+      removeParams(["modal"]);
     };
 
   const renderBtns = useMemo(() => {
-    if (me?.permissions.ismanager && isNew && !!brigada?.name && detectBrigada)
+    if (me?.ismanager && isNew && !!brigada?.name)
       return (
         <div className="float-end mb10">
           <button
@@ -95,7 +109,7 @@ const ShowRequestApc = () => {
           </button>
         </div>
       );
-    if (!!brigada?.name && me?.permissions.isbrigader)
+    if (!!order?.brigada?.name && me?.isbrigader)
       return (
         <div className="d-flex justify-content-between mb10">
           {order?.status! < 3 && (
@@ -128,11 +142,11 @@ const ShowRequestApc = () => {
           </div>
         </div>
       );
-  }, [me?.permissions, order?.status, brigada?.name]);
+  }, [me, order?.status, brigada?.name]);
 
   const renderAssignment = useMemo(() => {
-    if (me?.permissions?.ismanager && isNew) {
-      if (brigada?.name && detectBrigada) {
+    if (me?.ismanager && isNew) {
+      if (brigada?.name) {
         return (
           <>
             <span>{brigada?.name}</span>
@@ -154,19 +168,19 @@ const ShowRequestApc = () => {
         </button>
       );
     }
-    return <span>{detectBrigada ? brigada?.name : ""}</span>;
-  }, [me?.permissions, brigada?.name, order?.status]);
+    return <span>{brigada?.name ? brigada?.name : order?.brigada?.name}</span>;
+  }, [me, brigada?.name, order?.status]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
-    if (order?.brigada?.name)
-      dispatch(selectBrigada({ ...order?.brigada, order: id }));
-  }, [order?.brigada]);
+    if (!upladedFiles && inputRef.current?.value) {
+      inputRef.current.value = null;
+    }
+  }, [upladedFiles]);
 
-  const goBack = () => navigate(-1);
   return (
     <>
       <Card>
@@ -177,7 +191,10 @@ const ShowRequestApc = () => {
           >
             Логи
           </button>
-          <button className="btn btn-primary btn-fill" onClick={goBack}>
+          <button
+            className="btn btn-primary btn-fill"
+            onClick={handleNavigate("/requests-apc")}
+          >
             Назад
           </button>
         </Header>
@@ -308,11 +325,14 @@ const ShowRequestApc = () => {
         </div>
       </Card>
 
-      {me?.permissions.isbrigader && order?.status !== 0 && (
+      {me?.isbrigader && order?.status !== 0 && (
         <Card>
           <Header title={"Добавить фотоотчёт"} />
           <div className="m-3">
-            <UploadComponent onFilesSelected={handleFilesSelected} />
+            <UploadComponent
+              onFilesSelected={handleFilesSelected}
+              inputRef={inputRef}
+            />
           </div>
         </Card>
       )}

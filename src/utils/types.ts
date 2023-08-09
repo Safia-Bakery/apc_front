@@ -144,15 +144,15 @@ export interface CreateOrderType {
   payment_type: string;
 }
 
-export interface BoolObj {
-  [key: string]: boolean;
-}
+export type BoolObj = {
+  [key in Screens]: boolean;
+};
 export interface MeTypes {
   id: number | string;
   username: string;
   role?: { descrition: string; name: string };
   full_name: string;
-  permissions: BoolObj | "*";
+  permissions: BoolObj;
 }
 export enum Status {
   accepted = "accepted",

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { BrigadaType } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
@@ -57,13 +57,16 @@ const Brigades = () => {
   };
 
   const handlePageChange = (page: number) => {
-    refetch();
     setCurrentPage(page);
   };
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
+
+  useEffect(() => {
+    if (currentPage > 1) refetch();
+  }, [currentPage]);
 
   if (orderLoading) return <Loading />;
   return (

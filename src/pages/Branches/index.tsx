@@ -2,7 +2,7 @@ import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
 import Pagination from "src/components/Pagination";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BranchType } from "src/utils/types";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
@@ -62,7 +62,6 @@ const Branches = () => {
   }, [branches?.items, sortKey, sortOrder]);
 
   const handlePageChange = (page: number) => {
-    refetch();
     setCurrentPage(page);
   };
   const handleNavigate = (route: string) => () => navigate(route);
@@ -73,6 +72,10 @@ const Branches = () => {
     if (currentPage === 1) return index + 1;
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
+
+  useEffect(() => {
+    if (currentPage > 1) refetch();
+  }, [currentPage]);
 
   if (isFetching) return <Loading />;
 
@@ -135,7 +138,7 @@ const Branches = () => {
             itemsPerPage={itemsPerPage}
             currentPage={currentPage}
             onPageChange={handlePageChange}
-            refetch={refetch}
+            // refetch={refetch}
           />
         )}
         {!branches?.items?.length && (

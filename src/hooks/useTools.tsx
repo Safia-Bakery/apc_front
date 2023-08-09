@@ -5,7 +5,7 @@ import { ToolTypes } from "src/utils/types";
 export const useTools = ({
   enabled = true,
   size,
-  page,
+  page = 1,
   query,
 }: {
   enabled?: boolean;

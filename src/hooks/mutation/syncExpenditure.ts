@@ -2,13 +2,6 @@ import { useMutation } from "@tanstack/react-query";
 import { apiClient } from "src/main";
 import { errorToast } from "src/utils/toast";
 
-interface RegisterTypes {
-  id: number | string;
-  username: string;
-  full_name: string;
-  success: boolean;
-}
-
 const syncExpenditure = () => {
   return useMutation(["expenditure_sync"], (body: { request_id: number }) =>
     apiClient

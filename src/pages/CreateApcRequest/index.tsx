@@ -3,29 +3,27 @@ import { useForm } from "react-hook-form";
 import { successToast } from "src/utils/toast";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import cl from "classnames";
 import orderMutation from "src/hooks/mutation/orderMutation";
 import { useAppSelector } from "src/redux/utils/types";
 import { branchSelector, categorySelector } from "src/redux/reducers/cache";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import styles from "./index.module.scss";
-
 import BaseInputs from "src/components/BaseInputs";
 import MainSelect from "src/components/BaseInputs/MainSelect";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import SelectBranches from "src/components/SelectBranches";
 import { BranchType } from "src/utils/types";
+import useQueryString from "src/hooks/useQueryString";
 
 const CreateApcRequest = () => {
   const [files, $files] = useState<FormData>();
   const branches = useAppSelector(branchSelector);
   const categories = useAppSelector(categorySelector);
   const { mutate } = orderMutation();
-  const { search } = useLocation();
-  const searchParams = new URLSearchParams(search);
-  const choose_fillial = searchParams.get("choose_fillial");
+  const choose_fillial = useQueryString("choose_fillial");
   const {
     register,
     handleSubmit,

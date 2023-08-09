@@ -4,8 +4,8 @@ import { Link, useMatch } from "react-router-dom";
 import cl from "classnames";
 import { FC } from "react";
 import { Screens } from "src/utils/types";
-import { roleSelector } from "src/redux/reducers/auth";
-import { useAppSelector } from "src/redux/utils/types";
+import useToken from "src/hooks/useToken";
+import { permissioms as me } from "src/utils/helpers";
 
 interface Item {
   name: string;
@@ -22,7 +22,9 @@ interface Props {
 }
 
 const Subroutes: FC<Props> = ({ subroutes, routeIcon, routeName }) => {
-  const user = useAppSelector(roleSelector);
+  const { data: user } = useToken({ enabled: false });
+  //@ts-ignore
+  const isSuperAdmin = user?.permissions === "*";
   return (
     <SubMenu
       icon={<img height={30} width={30} src={routeIcon} />}
@@ -34,7 +36,7 @@ const Subroutes: FC<Props> = ({ subroutes, routeIcon, routeName }) => {
       className={styles.menuItem}
     >
       {subroutes.map((sub) => {
-        if (user?.permissions[sub.screen])
+        if ((isSuperAdmin ? me : user?.permissions)?.[sub.screen])
           return (
             <MenuItem
               key={sub.url + sub.name}

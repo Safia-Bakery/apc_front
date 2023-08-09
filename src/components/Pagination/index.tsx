@@ -22,9 +22,9 @@ const Pagination: FC<PaginationProps> = ({
     (_, index) => index + 1
   );
 
-  useEffect(() => {
-    if (refetch) refetch();
-  }, [currentPage]);
+  // useEffect(() => {
+  //   if (refetch) refetch();
+  // }, [currentPage]);
 
   return (
     <nav>

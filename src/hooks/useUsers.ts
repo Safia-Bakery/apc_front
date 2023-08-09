@@ -22,7 +22,7 @@ export const useUsers = ({
   body?: BodyTypes;
 }) => {
   return useQuery({
-    queryKey: ["users"],
+    queryKey: ["users", page],
     queryFn: () =>
       apiClient
         .get(`/users`, { page, size, ...body })

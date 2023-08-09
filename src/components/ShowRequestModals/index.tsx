@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import Modal from "../Modal";
 import { brigadaSelector } from "src/redux/reducers/cache";
-import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
+import { useAppSelector } from "src/redux/utils/types";
 import { BrigadaType, FileType, RequestStatus } from "src/utils/types";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import styles from "./index.module.scss";
 import Header from "../Header";
@@ -15,10 +15,12 @@ import { successToast } from "src/utils/toast";
 import useOrder from "src/hooks/useOrder";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import cl from "classnames";
+import { selectedBrigadaSelector } from "src/redux/reducers/selects";
+import useQueryString from "src/hooks/useQueryString";
 import {
-  selectBrigada,
-  selectedBrigadaSelector,
-} from "src/redux/reducers/selects";
+  useNavigateParams,
+  useRemoveParams,
+} from "src/hooks/useCustomNavigate";
 
 const enum ModalTypes {
   closed = "closed",
@@ -29,22 +31,27 @@ const enum ModalTypes {
 
 const ShowRequestModals = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const { search } = useLocation();
-  const searchParams = new URLSearchParams(search);
-  const modal = searchParams.get("modal");
-  const photo = searchParams.get("photo");
+  const modal = useQueryString("modal");
+  const photo = useQueryString("photo");
+
+  const customnavigate = useNavigateParams();
+  const removeParams = useRemoveParams();
+
   const { mutate: attach } = attachBrigadaMutation();
-  const handleModal = (type: string) => navigate(type);
   const { register, getValues } = useForm();
-  const dispatch = useAppDispatch();
   const brigada = useAppSelector(selectedBrigadaSelector);
 
   const brigades = useAppSelector(brigadaSelector);
   const { refetch: orderRefetch } = useOrder({ id: Number(id) });
   const selectedBrigada = (item: BrigadaType) => () => {
-    handleModal("?");
-    dispatch(selectBrigada({ id: item.id, name: item.name, order: id! }));
+    customnavigate({
+      brigada: JSON.stringify({
+        id: item.id,
+        name: item.name,
+        order: id!,
+      }),
+      modal: ModalTypes.closed,
+    });
   };
 
   const handleBrigada =
@@ -64,7 +71,7 @@ const ShowRequestModals = () => {
           },
         }
       );
-      handleModal("?");
+      removeParams(["modal"]);
     };
 
   const renderModal = useMemo(() => {
@@ -73,7 +80,7 @@ const ShowRequestModals = () => {
         return (
           <div className={styles.birgadesModal}>
             <Header title="Выберите исполнителя">
-              <button onClick={() => handleModal("?")} className="close">
+              <button onClick={() => removeParams(["modal"])} className="close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </Header>
@@ -96,7 +103,7 @@ const ShowRequestModals = () => {
         return (
           <div className={styles.birgadesModal}>
             <Header title="Выберите исполнителя">
-              <button onClick={() => handleModal("?")} className="close">
+              <button onClick={() => removeParams(["modal"])} className="close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </Header>
@@ -126,7 +133,7 @@ const ShowRequestModals = () => {
         return (
           <div className={styles.imgBlock}>
             <button
-              onClick={() => handleModal("?")}
+              onClick={() => removeParams(["modal", "photo"])}
               className={cl(styles.close, "close")}
             >
               <span aria-hidden="true">&times;</span>
@@ -140,14 +147,14 @@ const ShowRequestModals = () => {
         );
 
       default:
-        return null;
+        return;
     }
   }, [modal]);
 
   return (
     <Modal
-      onClose={() => handleModal("?")}
-      isOpen={!!modal}
+      onClose={() => removeParams(["modal", !!photo ? "photo" : ""])}
+      isOpen={!!modal && modal !== ModalTypes.closed}
       className={styles.assignModal}
     >
       {renderModal}

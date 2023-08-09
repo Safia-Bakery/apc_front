@@ -12,15 +12,19 @@ import { successToast } from "src/utils/toast";
 import MainInput from "src/components/BaseInputs/MainInput";
 import BaseInputs from "src/components/BaseInputs";
 import MainRadioBtns from "src/components/BaseInputs/MainRadioBtns";
-import { StatusName } from "src/utils/helpers";
+import { StatusName, departments } from "src/utils/helpers";
+import MainSelect from "src/components/BaseInputs/MainSelect";
+import branchDepartmentMutation from "src/hooks/mutation/branchDepartment";
 
 const EditAddBranch = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
   const [status, $status] = useState(0);
+  const [department, $department] = useState<boolean>(false);
 
   const { mutate } = branchMutation();
+  const { mutate: depMutation } = branchDepartmentMutation();
 
   const { data: branch, refetch } = useBranch({ id: id! });
   const { refetch: branchesRefetch } = useBranches({ enabled: false });
@@ -47,8 +51,18 @@ const EditAddBranch = () => {
 
   const handleStatus = (e: boolean) => $status(Number(e));
 
+  const handleDep = (body: { origin: number; id: string }) => {
+    depMutation(body, {
+      onSuccess: () => {
+        refetch();
+        successToast("Успешно изменено");
+      },
+    });
+  };
+
   const onSubmit = () => {
     const { lat, lng, region, name } = getValues();
+
     mutate(
       {
         latitude: Number(lat),
@@ -56,6 +70,7 @@ const EditAddBranch = () => {
         country: region,
         name,
         status,
+
         ...(id && { id: Number(id) }),
       },
       {
@@ -68,6 +83,8 @@ const EditAddBranch = () => {
       }
     );
   };
+
+  const toggleDep = () => $department((prev) => !prev);
 
   useEffect(() => {
     if (branch && id) {
@@ -83,50 +100,74 @@ const EditAddBranch = () => {
   return (
     <Card>
       <Header title={!id ? "Добавить" : `Изменить филиал №${id}`}>
+        <button
+          className={`btn-${
+            department ? "success" : "info"
+          } btn btn-success btn-fill mr-3`}
+          onClick={toggleDep}
+        >
+          Определить {!department ? "отдел" : "филлиал"}
+        </button>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад
         </button>
       </Header>
 
-      <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
-        <BaseInputs label="НАЗВАНИЕ" error={errors.name}>
-          <MainInput
-            register={register("name", { required: "Обязательное поле" })}
-            disabled={!!id}
-          />
-        </BaseInputs>
+      {!department ? (
+        <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
+          <BaseInputs label="НАЗВАНИЕ" error={errors.name}>
+            <MainInput
+              register={register("name", { required: "Обязательное поле" })}
+              disabled={!!id}
+            />
+          </BaseInputs>
 
-        <BaseInputs label="РЕГИОН" error={errors.region}>
-          <MainInput
-            register={register("region", { required: "Обязательное поле" })}
-            disabled={!!id}
-          />
-        </BaseInputs>
+          <BaseInputs label="РЕГИОН" error={errors.region}>
+            <MainInput
+              register={register("region", { required: "Обязательное поле" })}
+              disabled={!!id}
+            />
+          </BaseInputs>
 
-        <BaseInputs label="ШИРОТА" error={errors.lat}>
-          <MainInput
-            register={register("lat", { required: "Обязательное поле" })}
-          />
-        </BaseInputs>
+          <BaseInputs label="ШИРОТА" error={errors.lat}>
+            <MainInput
+              register={register("lat", { required: "Обязательное поле" })}
+            />
+          </BaseInputs>
 
-        <BaseInputs label="ДОЛГОТА" error={errors.lng}>
-          <MainInput
-            register={register("lng", { required: "Обязательное поле" })}
-          />
-        </BaseInputs>
+          <BaseInputs label="ДОЛГОТА" error={errors.lng}>
+            <MainInput
+              register={register("lng", { required: "Обязательное поле" })}
+            />
+          </BaseInputs>
 
-        <BaseInputs label="СТАТУС">
-          <MainRadioBtns
-            values={StatusName}
-            value={!!status}
-            onChange={handleStatus}
-          />
-        </BaseInputs>
+          <BaseInputs label="СТАТУС">
+            <MainRadioBtns
+              values={StatusName}
+              value={!!status}
+              onChange={handleStatus}
+            />
+          </BaseInputs>
 
-        <button type="submit" className="btn btn-success btn-fill">
-          Сохранить
-        </button>
-      </form>
+          <button type="submit" className="btn btn-success btn-fill">
+            Сохранить
+          </button>
+        </form>
+      ) : (
+        <form className="p-3">
+          {branch?.fillial_department.map((item) => (
+            <BaseInputs key={item.id} label={item.name}>
+              <MainSelect
+                onChange={(e) =>
+                  handleDep({ origin: Number(e.target.value), id: item.id })
+                }
+                value={item.origin}
+                values={departments}
+              />
+            </BaseInputs>
+          ))}
+        </form>
+      )}
     </Card>
   );
 };

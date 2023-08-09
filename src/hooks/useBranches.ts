@@ -15,7 +15,7 @@ interface BodyTypes {
 export const useBranches = ({
   enabled = true,
   size,
-  page,
+  page = 1,
   body,
 }: {
   enabled?: boolean;
@@ -25,7 +25,7 @@ export const useBranches = ({
 }) => {
   const dispatch = useAppDispatch();
   return useQuery({
-    queryKey: ["branches"],
+    queryKey: ["branches", page],
     queryFn: () =>
       apiClient
         .get("/fillials", { page, size, ...body })

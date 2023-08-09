@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import { EPresetTimes, FileType, RequestStatus } from "./types";
+import { EPresetTimes, FileType, RequestStatus, Screens } from "./types";
 
 export const itemsPerPage = 50;
 
@@ -117,3 +117,13 @@ export const detectFileType = (url: string) => {
     return FileType.other;
   }
 };
+
+export const departments = [
+  { id: 1, name: "APC" },
+  { id: 2, name: "Инвентарь" },
+  // { id: 3, name: "IT" },
+];
+export const permissioms = Object.keys(Screens).reduce((acc: any, key) => {
+  acc[key] = true;
+  return acc;
+}, {});

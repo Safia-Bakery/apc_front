@@ -3,13 +3,13 @@ import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import permissionMutation from "src/hooks/mutation/permissionMutation";
-import { useAppSelector } from "src/redux/utils/types";
 import useRolePermission from "src/hooks/useRolePermission";
-import { roleSelector } from "src/redux/reducers/auth";
+import { permissioms as role } from "src/utils/helpers";
 import { useEffect, useState } from "react";
 import Loading from "src/components/Loader";
 import { successToast } from "src/utils/toast";
 import usePermissions from "src/hooks/usePermissions";
+import useToken from "src/hooks/useToken";
 
 const ShowRole = () => {
   const navigate = useNavigate();
@@ -26,8 +26,9 @@ const ShowRole = () => {
   });
   const { mutate } = permissionMutation();
   const { data: permissions } = usePermissions({});
-
-  const me = useAppSelector(roleSelector);
+  const { data: user } = useToken({ enabled: false });
+  //@ts-ignore
+  const me = role?.permissions === "*" ? me : user;
 
   const handlePermission = (val: number) => {
     let numbers = ids || [];

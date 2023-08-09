@@ -7,23 +7,27 @@ import { useForm } from "react-hook-form";
 import MainInput from "../BaseInputs/MainInput";
 import useTools from "src/hooks/useTools";
 import IearchSelect from "../IerchySelect";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import { useEffect } from "react";
 import usedItemsMutation from "src/hooks/mutation/usedItems";
 import { successToast } from "src/utils/toast";
 import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
 import useOrder from "src/hooks/useOrder";
+import useQueryString from "src/hooks/useQueryString";
+import {
+  useNavigateParams,
+  useRemoveParams,
+} from "src/hooks/useCustomNavigate";
 
 const AddProductModal = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const removeRoute = useRemoveParams();
+  const navigate = useNavigateParams();
   const dispatch = useAppDispatch();
-  const { search } = useLocation();
-  const searchParams = new URLSearchParams(search);
-  const modal = searchParams.get("add_product_modal");
-  const productJson = searchParams.get("product");
-  const itemModal = searchParams.get("itemModal");
+  const modal = useQueryString("add_product_modal");
+  const productJson = useQueryString("product");
+  const itemModal = useQueryString("itemModal");
   const product = JSON.parse(productJson!) as { id: number; name: string };
   const files = useAppSelector(reportImgSelector);
 
@@ -37,20 +41,14 @@ const AddProductModal = () => {
     enabled: false,
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-    reset,
-  } = useForm();
+  const { register, handleSubmit, getValues, reset } = useForm();
 
   const handleProducts = () => {
-    navigate(`${search}&itemModal=true`);
+    navigate({ itemModal: true });
   };
 
   const handleModal = () => {
-    if (!!modal) navigate("?");
+    if (!!modal) removeRoute(["add_product_modal", "product", "itemModal"]);
   };
 
   const onSubmit = () => {
@@ -65,11 +63,11 @@ const AddProductModal = () => {
       },
       {
         onSuccess: () => {
+          dispatch(uploadReport(null));
           successToast("submitted");
           reset();
-          navigate("?");
+          handleModal();
           orderRefetch();
-          dispatch(uploadReport(undefined));
         },
       }
     );
@@ -97,7 +95,7 @@ const AddProductModal = () => {
             <div className="form-control" onClick={handleProducts}>
               {!product?.name ? "Выберите продукт" : product.name}
             </div>
-            {Boolean(itemModal) && <IearchSelect />}
+            {!!itemModal && itemModal !== "false" && <IearchSelect />}
           </div>
 
           <BaseInput label="Количество">

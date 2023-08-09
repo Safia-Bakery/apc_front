@@ -7,7 +7,7 @@ import { BrigadaTypes } from "src/utils/types";
 export const useBrigadas = ({
   enabled = true,
   size,
-  page,
+  page = 1,
 }: {
   enabled?: boolean;
   size?: number;
@@ -15,7 +15,7 @@ export const useBrigadas = ({
 }) => {
   const dispatch = useAppDispatch();
   return useQuery({
-    queryKey: ["brigadas"],
+    queryKey: ["brigadas", page],
     queryFn: () =>
       apiClient
         .get("/brigadas", { page, size })

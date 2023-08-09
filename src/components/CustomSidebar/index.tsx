@@ -4,9 +4,10 @@ import { NavLink, useMatch } from "react-router-dom";
 import cl from "classnames";
 import { Screens } from "src/utils/types";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
-import { roleSelector } from "src/redux/reducers/auth";
 import Subroutes from "./CustomSubItems";
 import { sidebarHandler, toggleSidebar } from "src/redux/reducers/selects";
+import useToken from "src/hooks/useToken";
+import { permissioms as me } from "src/utils/helpers";
 
 const routes = [
   {
@@ -99,13 +100,12 @@ const routes = [
 ];
 
 const CustomSidebar = () => {
-  const user = useAppSelector(roleSelector);
   const collapsed = useAppSelector(toggleSidebar);
   const dispatch = useAppDispatch();
-
-  const handleOverlay = () => {
-    dispatch(sidebarHandler(!collapsed));
-  };
+  const { data: user } = useToken({ enabled: false });
+  //@ts-ignore
+  const isSuperAdmin = user?.permissions === "*";
+  const handleOverlay = () => dispatch(sidebarHandler(!collapsed));
 
   if (!user) return;
   return (
@@ -160,7 +160,7 @@ const CustomSidebar = () => {
           Панель управления
         </MenuItem>
         {routes.map((item) => {
-          if (user?.permissions[item.screen]) {
+          if ((isSuperAdmin ? me : user.permissions)?.[item.screen]) {
             if (item.subroutes?.length)
               return (
                 <Subroutes

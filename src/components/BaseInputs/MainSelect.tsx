@@ -6,7 +6,7 @@ import { UseFormRegisterReturn } from "react-hook-form";
 interface Props {
   onChange?: (val: ChangeEvent<HTMLSelectElement>) => void;
   className?: string;
-  value?: string;
+  value?: string | number;
   disabled?: boolean;
   register?: UseFormRegisterReturn;
   values?: { id: number | string; name: string; status?: number }[];

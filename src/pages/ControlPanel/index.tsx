@@ -1,15 +1,14 @@
-import { useAppSelector } from "src/redux/utils/types";
 import styles from "./index.module.scss";
-import { roleSelector } from "src/redux/reducers/auth";
+import useToken from "src/hooks/useToken";
 
 const ControlPanel = () => {
-  const me = useAppSelector(roleSelector);
+  const { data: user } = useToken({ enabled: false });
 
   return (
     <div className={styles.card}>
       <div className="header text-center">
-        <h4 className="title m-0">Добро пожаловать {me?.username}</h4>
-        <p className={styles.category}>{me?.role}</p>
+        <h4 className="title m-0">Добро пожаловать {user?.username}</h4>
+        <p className={styles.category}>{user?.role?.toString()}</p>
       </div>
     </div>
   );

@@ -6,13 +6,13 @@ import { FileItem } from "src/components/FileUpload";
 interface State {
   sidebarToggler: boolean;
   selectedBrigada?: Order["brigada"];
-  photoReport?: FileItem[];
+  photoReport?: FileItem[] | null;
 }
 
 const initialState: State = {
   sidebarToggler: false,
   selectedBrigada: undefined,
-  photoReport: undefined,
+  photoReport: null,
 };
 
 export const toggleReducer = createSlice({
@@ -22,17 +22,15 @@ export const toggleReducer = createSlice({
     sidebarHandler: (state, { payload }: PayloadAction<boolean>) => {
       state.sidebarToggler = payload;
     },
-    selectBrigada: (state, { payload }: PayloadAction<Order["brigada"]>) => {
+    selectBrigada: (
+      state,
+      { payload }: PayloadAction<Order["brigada"] | undefined>
+    ) => {
       state.selectedBrigada = payload;
     },
 
-    uploadReport: (
-      state,
-      { payload }: PayloadAction<FileItem[] | undefined>
-    ) => {
-      if (payload) {
-        state.photoReport = payload;
-      }
+    uploadReport: (state, { payload }: PayloadAction<FileItem[] | null>) => {
+      state.photoReport = payload;
     },
   },
 });

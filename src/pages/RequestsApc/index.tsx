@@ -47,7 +47,6 @@ const RequestsApc = () => {
     size: itemsPerPage,
     page: currentPage,
   });
-
   const sortData = () => {
     if (requests?.items && sortKey) {
       const sortedData = [...requests?.items].sort((a, b) => {

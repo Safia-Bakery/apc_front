@@ -8,6 +8,7 @@ import AddProductModal from "../AddProductModal";
 import useOrder from "src/hooks/useOrder";
 import syncExpenditure from "src/hooks/mutation/syncExpenditure";
 import { successToast } from "src/utils/toast";
+import { useNavigateParams } from "src/hooks/useCustomNavigate";
 
 const column = [
   { name: "#" },
@@ -20,7 +21,9 @@ const column = [
 
 const AddProduct: FC<PropsWithChildren> = ({ children }) => {
   const { id } = useParams();
-  const navigate = useNavigate();
+
+  const navigate = useNavigateParams();
+
   const { mutate, isLoading } = syncExpenditure();
 
   const handleSync = () =>
@@ -41,7 +44,7 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
   });
 
   const handleModal = () => {
-    navigate("?add_product_modal=true");
+    navigate({ add_product_modal: true });
   };
 
   return (

@@ -3,7 +3,7 @@ import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
 import { Category } from "src/utils/types";
 import Pagination from "src/components/Pagination";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
@@ -33,7 +33,7 @@ const Categories = () => {
     }
   };
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: categories } = useCategories({
+  const { data: categories, refetch } = useCategories({
     size: itemsPerPage,
     page: currentPage,
   });
@@ -56,6 +56,9 @@ const Categories = () => {
     if (currentPage === 1) return index + 1;
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
+  useEffect(() => {
+    if (currentPage > 1) refetch();
+  }, [currentPage]);
 
   return (
     <Card>

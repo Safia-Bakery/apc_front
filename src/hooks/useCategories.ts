@@ -7,7 +7,7 @@ import { CategoryTypes } from "src/utils/types";
 export const useCategories = ({
   enabled = true,
   size,
-  page,
+  page = 1,
   body,
 }: {
   enabled?: boolean;
@@ -17,7 +17,7 @@ export const useCategories = ({
 }) => {
   const dispatch = useAppDispatch();
   return useQuery({
-    queryKey: ["categories"],
+    queryKey: ["categories", page],
     queryFn: () =>
       apiClient
         .get("/category", { size, page, ...body })

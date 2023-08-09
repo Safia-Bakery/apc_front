@@ -5,7 +5,7 @@ import { OrderType, RequestFilter } from "src/utils/types";
 export const useOrders = ({
   enabled = true,
   size,
-  page,
+  page = 1,
   body,
 }: {
   enabled?: boolean;
@@ -14,7 +14,7 @@ export const useOrders = ({
   body?: RequestFilter;
 }) => {
   return useQuery({
-    queryKey: ["requests"],
+    queryKey: ["requests", page],
     queryFn: () =>
       apiClient
         .get("/request", { ...body, page, size })

@@ -2,9 +2,10 @@ import { Link, useLocation } from "react-router-dom";
 import Container from "../Container";
 import styles from "./index.module.scss";
 import { FC } from "react";
-import { logoutHandler, roleSelector } from "src/redux/reducers/auth";
-import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
+import { logoutHandler } from "src/redux/reducers/auth";
+import { useAppDispatch } from "src/redux/utils/types";
 import { sidebarHandler } from "src/redux/reducers/selects";
+import useToken from "src/hooks/useToken";
 
 interface Breadcrumb {
   path: string;
@@ -40,7 +41,7 @@ const Breadcrumbs: FC = () => {
     dispatch(logoutHandler());
     window.location.reload();
   };
-  const me = useAppSelector(roleSelector);
+  const { data: me } = useToken({ enabled: false });
 
   const breadcrumbs: Breadcrumb[] = [];
 

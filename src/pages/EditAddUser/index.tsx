@@ -26,7 +26,7 @@ const EditAddUser = () => {
   const brigada = useAppSelector(brigadaSelector);
 
   const roles = useAppSelector(rolesSelector);
-  const { refetch: usersRefetch } = useUsers({ enabled: false });
+  const { refetch: usersRefetch } = useUsers({ enabled: false, page: 1 });
   const { data: user, refetch: userRefetch } = useUser({ id: Number(id) });
 
   const { mutate } = userMutation();
@@ -59,11 +59,11 @@ const EditAddUser = () => {
         onSuccess: (data: any) => {
           if (data.status === 200) {
             usersRefetch();
-            userRefetch();
             navigate("/users");
             successToast(
               !!id ? "successfully updated" : "successfully created"
             );
+            if (!!id) userRefetch();
           }
         },
       }

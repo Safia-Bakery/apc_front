@@ -93,7 +93,7 @@ class BaseAPIClient {
     }
 
     const queryParams = Object.entries(params)
-      .filter(([_, value]) => value !== undefined) // Exclude undefined parameters
+      .filter(([_, value]) => value !== undefined)
       .map(
         ([key, value]) =>
           `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
