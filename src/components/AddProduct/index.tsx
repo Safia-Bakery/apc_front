@@ -2,13 +2,15 @@ import { FC, PropsWithChildren } from "react";
 import Card from "../Card";
 import Header from "../Header";
 import styles from "./index.module.scss";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import AddProductModal from "../AddProductModal";
 import useOrder from "src/hooks/useOrder";
 import syncExpenditure from "src/hooks/mutation/syncExpenditure";
 import { successToast } from "src/utils/toast";
 import { useNavigateParams } from "src/hooks/useCustomNavigate";
+import deleteExpenditureMutation from "src/hooks/mutation/deleteExpenditure";
+import useToken from "src/hooks/useToken";
 
 const column = [
   { name: "#" },
@@ -17,14 +19,35 @@ const column = [
   { name: "Примичание" },
   { name: "Дата" },
   { name: "Автор" },
+  { name: "" },
 ];
 
 const AddProduct: FC<PropsWithChildren> = ({ children }) => {
   const { id } = useParams();
 
   const navigate = useNavigateParams();
+  const { data: me } = useToken({});
+  //@ts-ignore
+  const iikoBtn = me!.permissions.ismanager || me?.permissions === "*";
 
-  const { mutate, isLoading } = syncExpenditure();
+  const { mutate } = syncExpenditure();
+  const { mutate: deleteExp } = deleteExpenditureMutation();
+
+  const { data: products, refetch } = useOrder({
+    id: Number(id),
+    enabled: false,
+  });
+
+  const handleDelete = (id: number) => () => {
+    deleteExp(id, {
+      onSuccess: (data: any) => {
+        if (data.success) {
+          successToast("Успешно удалено");
+          refetch();
+        }
+      },
+    });
+  };
 
   const handleSync = () =>
     mutate(
@@ -38,11 +61,6 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
       }
     );
 
-  const { data: products } = useOrder({
-    id: Number(id),
-    enabled: false,
-  });
-
   const handleModal = () => {
     navigate({ add_product_modal: true });
   };
@@ -50,19 +68,21 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
   return (
     <Card>
       <Header title="Товары">
-        <button
-          onClick={handleSync}
-          className="btn btn-primary btn-fill btn-sm mr-2"
-        >
-          <img
-            src="/assets/icons/sync.svg"
-            height={20}
-            width={20}
-            alt="sync"
-            className="mr-2"
-          />
-          Синхронизировать с iiko
-        </button>
+        {iikoBtn && (
+          <button
+            onClick={handleSync}
+            className="btn btn-primary btn-fill btn-sm mr-2"
+          >
+            <img
+              src="/assets/icons/sync.svg"
+              height={20}
+              width={20}
+              alt="sync"
+              className="mr-2"
+            />
+            Синхронизировать с iiko
+          </button>
+        )}
         <button
           className="btn btn-success btn-fill btn-sm"
           onClick={handleModal}
@@ -97,6 +117,14 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
                     -----
                   </td>
                   <td>{"item.author.name"}</td>
+                  <td width={50}>
+                    <div
+                      className="d-flex justify-content-center pointer"
+                      onClick={handleDelete(item.id)}
+                    >
+                      <img src="/assets/icons/delete.svg" alt="delete" />
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>

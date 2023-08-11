@@ -12,6 +12,7 @@ import BranchesFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import useBranchSync from "src/hooks/useBranchSync";
 import Loading from "src/components/Loader";
+import useToken from "src/hooks/useToken";
 
 const column = [
   { name: "#", key: "id" },
@@ -35,6 +36,10 @@ const Branches = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const { refetch: branchSync, isFetching } = useBranchSync({ enabled: false });
+
+  const { data: me } = useToken({});
+  //@ts-ignore
+  const iikoBtn = me!.permissions.ismanager || me?.permissions === "*";
 
   const { data: branches, refetch } = useBranches({
     size: itemsPerPage,
@@ -82,16 +87,21 @@ const Branches = () => {
   return (
     <Card>
       <Header title={"Филиалы"}>
-        <button onClick={handleSync} className="btn btn-primary btn-fill mr-2">
-          <img
-            src="/assets/icons/sync.svg"
-            height={20}
-            width={20}
-            alt="sync"
-            className="mr-2"
-          />
-          Синхронизировать с iiko
-        </button>
+        {iikoBtn && (
+          <button
+            onClick={handleSync}
+            className="btn btn-primary btn-fill mr-2"
+          >
+            <img
+              src="/assets/icons/sync.svg"
+              height={20}
+              width={20}
+              alt="sync"
+              className="mr-2"
+            />
+            Синхронизировать с iiko
+          </button>
+        )}
         <button
           className="btn btn-success btn-fill"
           onClick={handleNavigate("add")}

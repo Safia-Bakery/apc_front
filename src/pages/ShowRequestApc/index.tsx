@@ -35,7 +35,6 @@ const ShowRequestApc = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const modal = useQueryString("modal");
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
   const { mutate: attach } = attachBrigadaMutation();
@@ -67,27 +66,28 @@ const ShowRequestApc = () => {
     }
   };
 
+  console.log(brigada?.id, "brigada?.id");
+
   const handleBrigada =
     ({ status }: { status: RequestStatus }) =>
     () => {
-      if (brigada?.id)
-        attach(
-          {
-            request_id: Number(id),
-            brigada_id: Number(brigada?.id),
-            status,
-            comment: getValues("cancel_reason"),
+      // if (brigada?.id)
+      attach(
+        {
+          request_id: Number(id),
+          brigada_id: Number(brigada?.id),
+          status,
+          comment: getValues("cancel_reason"),
+        },
+        {
+          onSuccess: (data: any) => {
+            if (data.status === 200) {
+              orderRefetch();
+              successToast("assigned");
+            }
           },
-          {
-            onSuccess: (data: any) => {
-              if (data.status === 200) {
-                orderRefetch();
-                successToast("assigned");
-                // $brigada(undefined);
-              }
-            },
-          }
-        );
+        }
+      );
       removeParams(["modal"]);
     };
 
@@ -109,7 +109,7 @@ const ShowRequestApc = () => {
           </button>
         </div>
       );
-    if (!!order?.brigada?.name && me?.isbrigader)
+    if (!!order?.brigada?.name && me?.isbrigadir)
       return (
         <div className="d-flex justify-content-between mb10">
           {order?.status! < 3 && (
@@ -325,7 +325,7 @@ const ShowRequestApc = () => {
         </div>
       </Card>
 
-      {me?.isbrigader && order?.status !== 0 && (
+      {me?.isbrigadir && order?.status !== 0 && (
         <Card>
           <Header title={"Добавить фотоотчёт"} />
           <div className="m-3">

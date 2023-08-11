@@ -72,6 +72,11 @@ class BaseAPIClient {
     return this.axiosInstance.post<T>(fullUrl, body, config);
   }
 
+  public delete<T>({ url, body, params }: BaseUrlParams) {
+    const fullUrl = this.buildUrlWithParams(url, params);
+    return this.axiosInstance.delete<T>(fullUrl, body);
+  }
+
   public put<T>({
     url,
     body,

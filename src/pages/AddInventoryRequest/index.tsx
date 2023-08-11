@@ -56,7 +56,6 @@ const AddInventoryRequest = () => {
     console.log(data);
   };
 
-  // Function to add multiple input fields at once
   const addInputFields = () => {
     append(initialInventory);
   };
@@ -138,10 +137,10 @@ const AddInventoryRequest = () => {
                   <button
                     style={{ height: 40 }}
                     type="button"
-                    onClick={() => (index > 1 ? remove(index) : null)}
+                    onClick={() => (fields.length > 1 ? remove(index) : null)}
                     className="btn btn-danger"
                   >
-                    Remove
+                    Удалить
                   </button>
                 </td>
               </tr>
@@ -153,7 +152,7 @@ const AddInventoryRequest = () => {
           className={cl("btn btn-primary m-2 btn-fill", styles.btn)}
           onClick={addInputFields}
         >
-          Add
+          Добавить
         </button>
 
         <BaseInputs label="ПРИМЕЧАНИЕ">

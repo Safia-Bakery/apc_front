@@ -28,6 +28,7 @@ const routeNameMappings: { [key: string]: string } = {
   settings: "Настройки",
   add: "Добавить",
   edit: "Изменить",
+  branches: "Филлиалы",
   "requests-inventory": "Заявка на инвентарь",
   "requests-apc": "Заявки APC",
   "requests-it": "Заявки IT",

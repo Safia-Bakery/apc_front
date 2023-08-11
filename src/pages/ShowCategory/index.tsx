@@ -10,8 +10,7 @@ import { successToast } from "src/utils/toast";
 import BaseInput from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
-import MainRadioBtns from "src/components/BaseInputs/MainRadioBtns";
-import { StatusName } from "src/utils/helpers";
+import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
 
 const ShowCategory = () => {
   const navigate = useNavigate();
@@ -20,8 +19,7 @@ const ShowCategory = () => {
 
   const { id } = useParams();
 
-  const { data: category } = useCategory({ id: Number(id) });
-  const [status, $status] = useState(0);
+  const { data: category, isLoading } = useCategory({ id: Number(id) });
   const { mutate } = categoryMutation();
 
   const {
@@ -33,7 +31,7 @@ const ShowCategory = () => {
   } = useForm();
 
   const onSubmit = () => {
-    const { name, description, urgent } = getValues();
+    const { name, description, urgent, status } = getValues();
     mutate(
       { name, description, status, ...(id && { id: Number(id) }), urgent },
       {
@@ -46,17 +44,18 @@ const ShowCategory = () => {
     );
   };
 
-  const handleStatus = (e: boolean) => $status(Number(e));
-
   useEffect(() => {
     if (category) {
-      $status(category?.status);
       reset({
         name: category?.name,
         description: category?.description,
+        urgent: category.urgent,
+        status: !!category.status,
       });
     }
   }, [category, reset]);
+
+  if (isLoading && !!id) return;
 
   return (
     <Card>
@@ -80,22 +79,14 @@ const ShowCategory = () => {
           />
         </BaseInput>
 
-        <div className="form-group d-flex align-items-center form-control">
-          <label className="mb-0 mr-2">Срочно</label>
-          <input
-            type="checkbox"
-            defaultChecked={!!category?.urgent}
-            {...register("urgent")}
-          />
-        </div>
+        <MainCheckBox
+          label="Срочно"
+          register={register("urgent")}
+          value={!!category?.urgent}
+        />
 
-        <BaseInput label="СТАТУС">
-          <MainRadioBtns
-            value={!!status}
-            values={StatusName}
-            onChange={handleStatus}
-          />
-        </BaseInput>
+        <MainCheckBox label="Активный" register={register("status")} />
+
         <button type="submit" className="btn btn-success btn-fill">
           Сохранить
         </button>

@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useForm } from "react-hook-form";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { errorToast, successToast } from "src/utils/toast";
 import useBrigadas from "src/hooks/useBrigadas";
 import useBrigada from "src/hooks/useBrigada";
@@ -12,16 +12,13 @@ import BaseInputs from "src/components/BaseInputs";
 import MainSelect from "src/components/BaseInputs/MainSelect";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import MainInput from "src/components/BaseInputs/MainInput";
-import MainRadioBtns from "src/components/BaseInputs/MainRadioBtns";
-import { StatusName } from "src/utils/helpers";
+import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
 
 const CreateBrigades = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
   const { refetch: brigadasRefetch } = useBrigadas({ enabled: false });
-  const [status, $status] = useState(0);
-  const handleStatus = (e: boolean) => $status(Number(e));
   const { mutate } = brigadaMutation();
   const { refetch: usersRefetch, data: users } = useUsersForBrigada({
     id: Number(id),
@@ -45,14 +42,14 @@ const CreateBrigades = () => {
       reset({
         brigada_name: brigada?.name,
         brigada_description: brigada?.description,
-        status: brigada?.status,
         brigadir: brigada?.user?.[0]?.id,
+        status: !!brigada.status,
       });
     }
   }, [brigada, id, users]);
 
   const onSubmit = () => {
-    const { brigada_name, brigada_description, brigadir } = getValues();
+    const { brigada_name, brigada_description, brigadir, status } = getValues();
 
     mutate(
       {
@@ -111,13 +108,7 @@ const CreateBrigades = () => {
           <MainTextArea register={register("brigada_description")} />
         </BaseInputs>
 
-        <BaseInputs label="СТАТУС">
-          <MainRadioBtns
-            values={StatusName}
-            value={!!status}
-            onChange={handleStatus}
-          />
-        </BaseInputs>
+        <MainCheckBox label="Активный" register={register("status")} />
 
         <button type="submit" className="btn btn-success btn-fill">
           Сохранить

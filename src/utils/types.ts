@@ -152,7 +152,7 @@ export interface MeTypes {
   username: string;
   role?: { descrition: string; name: string };
   full_name: string;
-  permissions: BoolObj;
+  permissions: { [key in Screens]: boolean };
 }
 export enum Status {
   accepted = "accepted",
@@ -208,7 +208,8 @@ export interface UsersTypes extends BasePaginatedRes {
 }
 
 export enum Screens {
-  requests_apc = "requests_apc",
+  requests = "requests",
+  // requests_apc = "requests_apc",
   requests_it = "requests_it",
   requests_inventory = "requests_inventory",
   brigada = "brigada",
@@ -223,7 +224,7 @@ export enum Screens {
   comments = "comments",
   permissions = "permissions",
   ismanager = "ismanager",
-  isbrigader = "isbrigader",
+  isbrigadir = "isbrigadir",
 }
 
 export interface ValueLabel {

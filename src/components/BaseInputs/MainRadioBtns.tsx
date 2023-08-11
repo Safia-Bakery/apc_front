@@ -34,25 +34,6 @@ const MainRadioBtns: FC<Props> = ({ values, value, onChange }) => {
           {item.name}
         </label>
       ))}
-
-      {/* <label className={styles.radioBtn}>
-        <input
-          checked={!!checked}
-          type="radio"
-          value={1}
-          onChange={handleCheckboxChange}
-        />
-        Активный
-      </label>
-      <label className={styles.radioBtn}>
-        <input
-          type="radio"
-          value={0}
-          onChange={handleCheckboxChange}
-          checked={!checked}
-        />
-        Не активный
-      </label> */}
     </div>
   );
 };

@@ -26,13 +26,13 @@ const routes = [
     name: "Заявки",
     icon: "/assets/icons/orders.svg",
     screen:
-      Screens.requests_apc || Screens.requests_inventory || Screens.requests_it,
+      Screens.requests || Screens.requests_inventory || Screens.requests_it,
     subroutes: [
       {
         name: "Заявки APC",
         url: "/requests-apc",
         icon: "/assets/icons/orders.svg",
-        screen: Screens.requests_apc,
+        screen: Screens.requests,
       },
       {
         name: "Заявки Инвентарь",

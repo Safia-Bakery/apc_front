@@ -5,7 +5,7 @@ import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
 import cl from "classnames";
-import orderMutation from "src/hooks/mutation/orderMutation";
+import requestMutation from "src/hooks/mutation/orderMutation";
 import { useAppSelector } from "src/redux/utils/types";
 import { branchSelector, categorySelector } from "src/redux/reducers/cache";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
@@ -22,7 +22,7 @@ const CreateApcRequest = () => {
   const [files, $files] = useState<FormData>();
   const branches = useAppSelector(branchSelector);
   const categories = useAppSelector(categorySelector);
-  const { mutate } = orderMutation();
+  const { mutate } = requestMutation();
   const choose_fillial = useQueryString("choose_fillial");
   const {
     register,
@@ -60,13 +60,11 @@ const CreateApcRequest = () => {
     $files(formData);
   };
   const onSubmit = () => {
-    const { urgent, category_id, fillial_id, description, product } =
-      getValues();
+    const { category_id, fillial_id, description, product } = getValues();
     mutate(
       {
         category_id,
         product,
-        urgent,
         description,
         fillial_id,
         files,
@@ -146,10 +144,10 @@ const CreateApcRequest = () => {
         >
           <UploadComponent onFilesSelected={handleFilesSelected} />
         </BaseInputs>
-        <div className="form-group d-flex align-items-center form-control">
+        {/* <div className="form-group d-flex align-items-center form-control">
           <label className="mb-0 mr-2">Срочно</label>
           <input type="checkbox" {...register("urgent")} />
-        </div>
+        </div> */}
         <div>
           <button
             type="submit"

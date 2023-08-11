@@ -45,17 +45,17 @@ export const routes = [
   {
     element: <CreateApcRequest />,
     path: "/requests-apc/add",
-    screen: Screens.requests_apc,
+    screen: Screens.requests,
   },
   {
     element: <ShowRequestApc />,
     path: "/requests-apc/:id",
-    screen: Screens.requests_apc,
+    screen: Screens.requests,
   },
   {
     element: <RequestsApc />,
     path: "/requests-apc",
-    screen: Screens.requests_apc,
+    screen: Screens.requests,
   },
   {
     element: <ShowRequestApc />,
@@ -67,7 +67,7 @@ export const routes = [
     path: "/requests-it",
     screen: Screens.requests_it,
   },
-  { element: <Logs />, path: "/logs", screen: Screens.requests_apc },
+  { element: <Logs />, path: "/logs", screen: Screens.requests },
   {
     element: <RequestInventory />,
     path: "/requests-inventory",
@@ -134,7 +134,7 @@ const Navigation = () => {
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { data: user, isError, error } = useToken({ enabled: !!token });
+  const { data: user, error } = useToken({ enabled: !!token });
   //@ts-ignore
   const isSuperAdmin = user?.permissions === "*";
 
@@ -142,8 +142,7 @@ const Navigation = () => {
 
   useEffect(() => {
     if (!token) navigate("/login");
-    if (error) dispatch(logoutHandler());
-    // if (isSuperAdmin && !!user) dispatch(roleHandler());
+    if (!!error) dispatch(logoutHandler());
   }, [token, error, user]);
 
   const renderSidebar = useMemo(() => {
