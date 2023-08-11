@@ -1,26 +1,25 @@
 import Card from "src/components/Card";
-import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { Link, useNavigate } from "react-router-dom";
 import Pagination from "src/components/Pagination";
 import ItemsCount from "src/components/ItemsCount";
 import TableHead from "src/components/TableHead";
-import { itemsPerPage, requestRows } from "src/utils/helpers";
+import { itemsPerPage } from "src/utils/helpers";
 import useOrders from "src/hooks/useOrders";
 import { useEffect, useState } from "react";
-import StockFilter from "./filter";
 import dayjs from "dayjs";
 import TableViewBtn from "src/components/TableViewBtn";
+import MainInput from "src/components/BaseInputs/MainInput";
 
 const column = [
   { name: "#", key: "" },
-  { name: "Наименование", key: "name" },
-  { name: "Синх.", key: "fillial.name" },
-  { name: "Актив", key: "category.name" },
+  { name: "Продукт", key: "name" },
+  { name: "Колчество", key: "fillial.name" },
+  { name: "Дата синх.", key: "category.name" },
   { name: "", key: "" },
 ];
 
-const RemainsInStock = () => {
+const ShowRemainsInStock = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
   const handleNavigate = (route: string) => () => navigate(route);
@@ -77,6 +76,7 @@ const RemainsInStock = () => {
       </Header>
 
       <div className="table-responsive grid-view content">
+        <MainInput placeholder="Поиск..." />
         <ItemsCount data={requests} currentPage={currentPage} />
         <table className="table table-hover">
           <TableHead
@@ -84,9 +84,7 @@ const RemainsInStock = () => {
             sort={handleSort}
             sortKey={sortKey}
             sortOrder={sortOrder}
-          >
-            <StockFilter currentPage={currentPage} />
-          </TableHead>
+          />
 
           {!!requests?.items?.length && (
             <tbody>
@@ -97,10 +95,10 @@ const RemainsInStock = () => {
                     <td>
                       <Link to={`${order?.id}`}>{order?.id}</Link>
                     </td>
+                    <td>{order?.user?.full_name}</td>
                     <td>
                       {dayjs(order?.created_at).format("DD-MM-YYYY HH:mm")}
                     </td>
-                    <td>{order?.user?.full_name}</td>
                     <TableViewBtn onClick={handleNavigate(`${order.id}`)} />
                   </tr>
                 )
@@ -126,4 +124,4 @@ const RemainsInStock = () => {
   );
 };
 
-export default RemainsInStock;
+export default ShowRemainsInStock;

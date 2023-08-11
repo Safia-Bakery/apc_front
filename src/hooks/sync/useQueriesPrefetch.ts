@@ -13,22 +13,25 @@ const useQueriesPrefetch = () => {
   //@ts-ignore
   const user = me?.permissions === "*" ? permissioms : me?.permissions;
 
-  const { isFetching: rolesLoading } = useRoles({
+  const { isLoading: rolesLoading } = useRoles({
     enabled: !!token && !!user?.roles,
   });
-  const { isFetching: brigadaLoading } = useBrigadas({
+  const { isLoading: brigadaLoading } = useBrigadas({
     enabled: !!token && !!user?.brigada,
   });
-  const { isFetching: branchLoading } = useBranches({
+  const { isLoading: branchLoading } = useBranches({
     enabled: !!token && !!user?.fillials,
   });
-  const { isFetching: categoryLoading } = useCategories({
+  const { isLoading: categoryLoading } = useCategories({
     enabled: !!token && !!user?.category,
   });
 
   return {
-    isFetching:
-      rolesLoading || brigadaLoading || branchLoading || categoryLoading,
+    isLoading:
+      (!!user?.roles && rolesLoading) ||
+      (!!user?.brigada && brigadaLoading) ||
+      (!!user?.fillials && branchLoading) ||
+      (!!user?.category && categoryLoading),
   };
 };
 

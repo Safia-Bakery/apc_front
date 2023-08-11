@@ -34,6 +34,8 @@ import AddInventoryRequest from "src/pages/AddInventoryRequest";
 import RequestsIT from "src/pages/RequestsIT";
 import CreateITRequest from "src/pages/CreateITRequest";
 import { permissioms as me } from "src/utils/helpers";
+import Loading from "../Loader";
+import ShowRemainsInStock from "src/pages/ShowRemainsInStock";
 
 export const routes = [
   { element: <ControlPanel />, path: "/", screen: Screens.permitted },
@@ -127,23 +129,27 @@ export const routes = [
     path: "/items-in-stock",
     screen: Screens.warehouse,
   },
+  {
+    element: <ShowRemainsInStock />,
+    path: "/items-in-stock/:id",
+    screen: Screens.warehouse,
+  },
 ];
 
 const Navigation = () => {
   const token = useAppSelector(tokenSelector);
-
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { data: user, error } = useToken({ enabled: !!token });
+  const { data: user, error, isLoading } = useToken({});
   //@ts-ignore
   const isSuperAdmin = user?.permissions === "*";
 
-  useQueriesPrefetch();
+  const { isLoading: appLoading } = useQueriesPrefetch();
 
   useEffect(() => {
     if (!token) navigate("/login");
     if (!!error) dispatch(logoutHandler());
-  }, [token, error, user]);
+  }, [token, error]);
 
   const renderSidebar = useMemo(() => {
     if (user?.permissions && token)
@@ -155,13 +161,16 @@ const Navigation = () => {
       );
   }, [user, me, token]);
 
-  // if (appLoading) return <Loading />;
+  if (appLoading || (isLoading && !!token)) return <Loading />;
 
   return (
     <>
       {renderSidebar}
 
       <Routes>
+        <Route element={<Login />} path={"/login"} />
+        <Route element={<ControlPanel />} path={"/"} />
+        {/* <Route element={<ControlPanel />} path={"*"} /> */}
         {routes.map((route) => {
           if (!!(isSuperAdmin ? me : user?.permissions)?.[route.screen]) {
             return (
@@ -173,11 +182,6 @@ const Navigation = () => {
             );
           }
         })}
-
-        <Route element={<Login />} path={"/login"} />
-        {/* <Route element={<ShowRequestApc />} path={"/requests-apc/1"} /> */}
-        <Route element={<ControlPanel />} path={"/"} />
-        <Route element={<ControlPanel />} path={"*"} />
       </Routes>
     </>
   );

@@ -8,11 +8,9 @@ import MainInput from "../BaseInputs/MainInput";
 import useTools from "src/hooks/useTools";
 import IearchSelect from "../IerchySelect";
 import { useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import { useEffect } from "react";
 import usedItemsMutation from "src/hooks/mutation/usedItems";
 import { successToast } from "src/utils/toast";
-import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
 import useOrder from "src/hooks/useOrder";
 import useQueryString from "src/hooks/useQueryString";
 import {
@@ -24,12 +22,11 @@ const AddProductModal = () => {
   const { id } = useParams();
   const removeRoute = useRemoveParams();
   const navigate = useNavigateParams();
-  const dispatch = useAppDispatch();
+
   const modal = useQueryString("add_product_modal");
   const productJson = useQueryString("product");
   const itemModal = useQueryString("itemModal");
   const product = JSON.parse(productJson!) as { id: number; name: string };
-  const files = useAppSelector(reportImgSelector);
 
   const { mutate } = usedItemsMutation();
   const { refetch: orderRefetch } = useOrder({
@@ -59,11 +56,9 @@ const AddProductModal = () => {
         request_id: Number(id),
         tool_id: product.id,
         comment,
-        ...(!!files && { files }),
       },
       {
         onSuccess: () => {
-          dispatch(uploadReport(null));
           successToast("submitted");
           reset();
           handleModal();

@@ -23,6 +23,7 @@ import {
   useNavigateParams,
   useRemoveParams,
 } from "src/hooks/useCustomNavigate";
+import uploadFileMutation from "src/hooks/mutation/uploadFile";
 
 const enum ModalTypes {
   closed = "closed",
@@ -54,6 +55,8 @@ const ShowRequestApc = () => {
   const inputRef = useRef<any>(null);
   const upladedFiles = useAppSelector(reportImgSelector);
 
+  const { mutate } = uploadFileMutation();
+
   const handleNavigate = (route: string) => () => navigate(route);
 
   const handleFilesSelected = (data: FileItem[]) =>
@@ -65,8 +68,6 @@ const ShowRequestApc = () => {
       navigateParams({ modal: ModalTypes.showPhoto, photo: file });
     }
   };
-
-  console.log(brigada?.id, "brigada?.id");
 
   const handleBrigada =
     ({ status }: { status: RequestStatus }) =>
@@ -90,6 +91,24 @@ const ShowRequestApc = () => {
       );
       removeParams(["modal"]);
     };
+
+  const handlerSubmitFile = () => {
+    if (upladedFiles?.length)
+      mutate(
+        {
+          request_id: Number(id),
+          files: upladedFiles,
+        },
+        {
+          onSuccess: () => {
+            orderRefetch();
+            successToast("Сохранено");
+            inputRef.current.value = null;
+            dispatch(uploadReport(null));
+          },
+        }
+      );
+  };
 
   const renderBtns = useMemo(() => {
     if (me?.ismanager && isNew && !!brigada?.name)
@@ -175,11 +194,11 @@ const ShowRequestApc = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  useEffect(() => {
-    if (!upladedFiles && inputRef.current?.value) {
-      inputRef.current.value = null;
-    }
-  }, [upladedFiles]);
+  // useEffect(() => {
+  //   if (!upladedFiles && inputRef.current?.value) {
+  //     inputRef.current.value = null;
+  //   }
+  // }, [upladedFiles, inputRef?.current]);
 
   return (
     <>
@@ -333,6 +352,12 @@ const ShowRequestApc = () => {
               onFilesSelected={handleFilesSelected}
               inputRef={inputRef}
             />
+            <button
+              onClick={handlerSubmitFile}
+              className="btn btn-success float-end btn-fill my-3"
+            >
+              Сохранить
+            </button>
           </div>
         </Card>
       )}

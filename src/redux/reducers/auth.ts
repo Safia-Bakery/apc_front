@@ -13,8 +13,8 @@ export const authReducer = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logoutHandler: () => {
-      localStorage.clear();
+    logoutHandler: (state) => {
+      state.token = null;
     },
     loginHandler: (state, { payload }) => {
       state.token = payload;

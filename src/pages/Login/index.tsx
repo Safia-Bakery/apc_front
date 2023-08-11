@@ -30,7 +30,7 @@ const Login = () => {
 
   useEffect(() => {
     reset({
-      username: "tests",
+      username: "test",
       password: "111111",
     });
   }, []);
@@ -50,7 +50,6 @@ const Login = () => {
           refetch();
           navigate("/");
           successToast("Добро пожаловать");
-          // window.location.reload();
         },
       }
     );
