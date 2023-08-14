@@ -8,96 +8,8 @@ import Subroutes from "./CustomSubItems";
 import { sidebarHandler, toggleSidebar } from "src/redux/reducers/selects";
 import useToken from "src/hooks/useToken";
 import { permissioms as me } from "src/utils/helpers";
-
-const routes = [
-  {
-    name: "Статистика",
-    url: "/statistics",
-    icon: "/assets/icons/statistics.svg",
-    screen: Screens.statistics,
-  },
-  {
-    name: "Тепловая карта",
-    url: "/map",
-    icon: "/assets/icons/map.svg",
-    screen: Screens.maps,
-  },
-  {
-    name: "Заявки",
-    icon: "/assets/icons/orders.svg",
-    screen:
-      Screens.requests || Screens.requests_inventory || Screens.requests_it,
-    subroutes: [
-      {
-        name: "Заявки APC",
-        url: "/requests-apc",
-        icon: "/assets/icons/orders.svg",
-        screen: Screens.requests,
-      },
-      {
-        name: "Заявки Инвентарь",
-        url: "/requests-inventory",
-        icon: "/assets/icons/orders.svg",
-        screen: Screens.requests_inventory,
-      },
-      {
-        name: "Заявки IT",
-        url: "/requests-it",
-        icon: "/assets/icons/orders.svg",
-        screen: Screens.requests_it,
-      },
-    ],
-  },
-  {
-    name: "Категории",
-    url: "/categories",
-    icon: "/assets/icons/categories.svg",
-    screen: Screens.category,
-  },
-  {
-    name: "Остатки на складах",
-    url: "/items-in-stock",
-    icon: "/assets/icons/remains-in-stock.svg",
-    screen: Screens.warehouse,
-  },
-  {
-    name: "Бригады",
-    url: "/brigades",
-    icon: "/assets/icons/brigades.svg",
-    screen: Screens.brigada,
-  },
-  {
-    name: "Пользователи",
-    url: "/users",
-    icon: "/assets/icons/users.svg",
-    screen: Screens.users,
-  },
-  {
-    name: "Роли",
-    url: "/roles",
-    icon: "/assets/icons/roles.svg",
-    screen: Screens.roles,
-  },
-  {
-    name: "Отзывы",
-    url: "/comments",
-    icon: "/assets/icons/comments.svg",
-    screen: Screens.comments,
-  },
-  {
-    name: "Настройки",
-    icon: "/assets/icons/settings.svg",
-    screen: Screens.fillials,
-    subroutes: [
-      {
-        name: "Филиалы",
-        url: "/branches",
-        icon: "/assets/icons/settings.svg",
-        screen: Screens.fillials,
-      },
-    ],
-  },
-];
+import { categorySelector } from "src/redux/reducers/cache";
+import { useMemo } from "react";
 
 const CustomSidebar = () => {
   const collapsed = useAppSelector(toggleSidebar);
@@ -106,6 +18,135 @@ const CustomSidebar = () => {
   //@ts-ignore
   const isSuperAdmin = user?.permissions === "*";
   const handleOverlay = () => dispatch(sidebarHandler(!collapsed));
+  const categories = useAppSelector(categorySelector);
+
+  const routes = useMemo(() => {
+    return [
+      {
+        name: "Статистика",
+        url: "/statistics",
+        icon: "/assets/icons/statistics.svg",
+        screen: Screens.statistics,
+      },
+      {
+        name: "Тепловая карта",
+        url: "/map",
+        icon: "/assets/icons/map.svg",
+        screen: Screens.maps,
+      },
+      {
+        name: "APC",
+        icon: "/assets/icons/orders.svg",
+        screen: Screens.requests || Screens.brigada || Screens.warehouse,
+        subroutes: [
+          {
+            name: "Заявки",
+            url: "/requests-apc",
+            icon: "/assets/icons/orders.svg",
+            screen: Screens.requests,
+          },
+          {
+            name: "Бригады",
+            url: "/brigades",
+            icon: "/assets/icons/brigades.svg",
+            screen: Screens.brigada,
+          },
+          {
+            name: "Остатки на складах",
+            url: "/items-in-stock",
+            icon: "/assets/icons/remains-in-stock.svg",
+            screen: Screens.warehouse,
+          },
+        ],
+      },
+      {
+        name: "Инвентарь",
+        icon: "/assets/icons/orders.svg",
+        screen: Screens.requests,
+        subroutes: [
+          {
+            name: "Заявки",
+            url: "/requests-inventory",
+            icon: "/assets/icons/orders.svg",
+            screen: Screens.requests,
+          },
+        ],
+      },
+
+      {
+        name: "IT",
+        icon: "/assets/icons/orders.svg",
+        screen: Screens.requests,
+        subroutes: [
+          {
+            name: "Заявки",
+            url: "/requests-it",
+            icon: "/assets/icons/orders.svg",
+            screen: Screens.requests,
+          },
+        ],
+      },
+
+      {
+        name: "Маркетинг",
+        icon: "/assets/icons/orders.svg",
+        screen: Screens.requests,
+        subroutes: [
+          {
+            name: "Заявки",
+            url: "/requests-it",
+            icon: "/assets/icons/orders.svg",
+            screen: Screens.requests,
+          },
+          // ...categories?.map((cat) => {
+          //   return {
+          //     name: cat?.name,
+          //     url: `/requests-${cat?.id}`,
+          //     icon: "/assets/icons/orders.svg",
+          //     screen: Screens.requests,
+          //   };
+          // }),
+        ],
+      },
+      {
+        name: "Категории",
+        url: "/categories",
+        icon: "/assets/icons/categories.svg",
+        screen: Screens.category,
+      },
+      {
+        name: "Пользователи",
+        url: "/users",
+        icon: "/assets/icons/users.svg",
+        screen: Screens.users,
+      },
+      {
+        name: "Роли",
+        url: "/roles",
+        icon: "/assets/icons/roles.svg",
+        screen: Screens.roles,
+      },
+      {
+        name: "Отзывы",
+        url: "/comments",
+        icon: "/assets/icons/comments.svg",
+        screen: Screens.comments,
+      },
+      {
+        name: "Настройки",
+        icon: "/assets/icons/settings.svg",
+        screen: Screens.fillials,
+        subroutes: [
+          {
+            name: "Филиалы",
+            url: "/branches",
+            icon: "/assets/icons/settings.svg",
+            screen: Screens.fillials,
+          },
+        ],
+      },
+    ];
+  }, [categories, user?.permissions]);
 
   if (!user) return;
   return (
