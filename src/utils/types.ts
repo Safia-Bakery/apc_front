@@ -68,6 +68,7 @@ export interface Order {
     description: string;
     status: number;
     id: number | string;
+    urgent: boolean;
   };
   expanditure: {
     id: number;

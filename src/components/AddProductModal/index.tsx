@@ -17,16 +17,20 @@ import {
   useNavigateParams,
   useRemoveParams,
 } from "src/hooks/useCustomNavigate";
+import useToken from "src/hooks/useToken";
 
 const AddProductModal = () => {
   const { id } = useParams();
   const removeRoute = useRemoveParams();
   const navigate = useNavigateParams();
-
   const modal = useQueryString("add_product_modal");
   const productJson = useQueryString("product");
   const itemModal = useQueryString("itemModal");
   const product = JSON.parse(productJson!) as { id: number; name: string };
+
+  const { data: me } = useToken({ enabled: false });
+  //@ts-ignore
+  // const brigadir = me!.permissions.isbrigadir; //todo
 
   const { mutate } = usedItemsMutation();
   const { refetch: orderRefetch } = useOrder({
@@ -69,13 +73,15 @@ const AddProductModal = () => {
   };
 
   useEffect(() => {
-    if (Boolean(modal)) iearchRefetch();
+    // if (!!modal && brigadir) iearchRefetch(); //todo
+    if (!!modal) iearchRefetch();
   }, [modal]);
 
   return (
     <Modal
       className={styles.modal}
-      isOpen={Boolean(modal)}
+      isOpen={!!modal}
+      // isOpen={!!modal && brigadir}  //todo
       onClose={handleModal}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -90,6 +96,7 @@ const AddProductModal = () => {
             <div className="form-control" onClick={handleProducts}>
               {!product?.name ? "Выберите продукт" : product.name}
             </div>
+            {/* {!!itemModal && itemModal !== "false" && brigadir && (  //todo*/}
             {!!itemModal && itemModal !== "false" && <IearchSelect />}
           </div>
 

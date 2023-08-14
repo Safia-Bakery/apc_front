@@ -19,7 +19,11 @@ const ShowCategory = () => {
 
   const { id } = useParams();
 
-  const { data: category, isLoading } = useCategory({ id: Number(id) });
+  const {
+    data: category,
+    isLoading,
+    refetch,
+  } = useCategory({ id: Number(id) });
   const { mutate } = categoryMutation();
 
   const {
@@ -39,6 +43,7 @@ const ShowCategory = () => {
           categoryRefetch();
           successToast(!!id ? "successfully updated" : "successfully created");
           navigate("/categories");
+          refetch();
         },
       }
     );

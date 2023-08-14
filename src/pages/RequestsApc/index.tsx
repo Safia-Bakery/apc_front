@@ -11,6 +11,7 @@ import { handleStatus, itemsPerPage, requestRows } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import RequestsFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
+import cl from "classnames";
 
 const column = [
   { name: "#", key: "" },
@@ -105,9 +106,15 @@ const RequestsApc = () => {
                       <Link to={`/requests-apc/${order?.id}`}>{order?.id}</Link>
                     </td>
                     <td>
-                      <span className="not-set">{order?.fillial?.name}</span>
+                      <span className={"not-set"}>{order?.fillial?.name}</span>
                     </td>
-                    <td>{order?.category?.name}</td>
+                    <td
+                      className={cl({
+                        ["font-weight-bold"]: order.category.urgent,
+                      })}
+                    >
+                      {order?.category?.name}
+                    </td>
                     <td>{!order?.urgent ? "Несрочный" : "Срочный"}</td>
                     <td>
                       {dayjs(order?.finished_at).format("DD-MM-YYYY HH:mm")}

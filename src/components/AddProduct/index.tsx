@@ -26,7 +26,7 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
   const { id } = useParams();
 
   const navigate = useNavigateParams();
-  const { data: me } = useToken({});
+  const { data: me } = useToken({ enabled: false });
   //@ts-ignore
   const iikoBtn = me!.permissions.ismanager || me?.permissions === "*";
 
@@ -61,9 +61,7 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
       }
     );
 
-  const handleModal = () => {
-    navigate({ add_product_modal: true });
-  };
+  const handleModal = () => navigate({ add_product_modal: true });
 
   return (
     <Card>
