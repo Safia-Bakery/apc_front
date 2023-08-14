@@ -15,7 +15,10 @@ import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
 const ShowCategory = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
-  const { refetch: categoryRefetch } = useCategories({ enabled: false });
+  const { refetch: categoryRefetch } = useCategories({
+    enabled: false,
+    page: 1,
+  });
 
   const { id } = useParams();
 
@@ -43,7 +46,7 @@ const ShowCategory = () => {
           categoryRefetch();
           successToast(!!id ? "successfully updated" : "successfully created");
           navigate("/categories");
-          refetch();
+          if (id) refetch();
         },
       }
     );
