@@ -28,7 +28,7 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
   const navigate = useNavigateParams();
   const { data: me } = useToken({ enabled: false });
   //@ts-ignore
-  const iikoBtn = me!.permissions.ismanager || me?.permissions === "*";
+  const iikoBtn = me!.permissions.isbrigadir || me?.permissions === "*";
 
   const { mutate } = syncExpenditure();
   const { mutate: deleteExp } = deleteExpenditureMutation();

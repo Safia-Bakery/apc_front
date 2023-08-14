@@ -8,7 +8,7 @@ const branchMutation = () => {
     (body: {
       name: string;
       longtitude: number;
-      id?: number;
+      id?: string;
       latitude: number;
       country?: string;
       status: number;

@@ -16,6 +16,8 @@ import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
 
 const EditAddBranch = () => {
   const { id } = useParams();
+
+  console.log(id, "id");
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
   const [department, $department] = useState<boolean>(false);
@@ -65,8 +67,7 @@ const EditAddBranch = () => {
         country: region,
         name,
         status,
-
-        ...(id && { id: Number(id) }),
+        ...(!!id && { id }),
       },
       {
         onSuccess: () => {
@@ -137,11 +138,10 @@ const EditAddBranch = () => {
             />
           </BaseInputs>
         ))}
+        <button type="submit" className="btn btn-success btn-fill">
+          Сохранить
+        </button>
       </form>
-
-      <button type="submit" className="btn btn-success btn-fill">
-        Сохранить
-      </button>
     </Card>
   );
 };

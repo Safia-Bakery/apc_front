@@ -65,6 +65,12 @@ const Users = () => {
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
 
+  const userStatus = (item: number) => {
+    if (item === 1) return "суперадмин";
+    if (item === 2) return "Неактивный";
+    if (item === 0) return "Активный";
+  };
+
   useEffect(() => {
     if (currentPage > 1) refetch();
   }, [currentPage]);
@@ -105,13 +111,13 @@ const Users = () => {
                       <span className="not-set">{user?.username}</span>
                     </td>
                     <td width={250}>
-                      <Link to={`/roles/${user.group?.id}`}>
+                      <Link to={`/roles/${user?.group?.id}`}>
                         {user.group?.name}
                       </Link>
                     </td>
                     <td>{user?.phone_number}</td>
-                    <td>{!!user.status ? "Активный" : "Неактивный"}</td>
-                    <TableViewBtn onClick={handleNavigate(`${user.id}`)} />
+                    <td>{userStatus(user?.status)}</td>
+                    <TableViewBtn onClick={handleNavigate(`${user?.id}`)} />
                   </tr>
                 )
               )}

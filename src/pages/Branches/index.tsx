@@ -39,7 +39,7 @@ const Branches = () => {
 
   const { data: me } = useToken({});
   //@ts-ignore
-  const iikoBtn = me!.permissions.ismanager || me?.permissions === "*";
+  const iikoBtn = me!.permissions.isbrigadir || me?.permissions === "*";
 
   const { data: branches, refetch } = useBranches({
     size: itemsPerPage,
