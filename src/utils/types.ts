@@ -37,6 +37,7 @@ export interface UserTypes {
   password?: string;
   id?: number;
   brigader?: BrigadaType;
+  telegram_id: number | null;
   group?: {
     name: string;
     id: number | string;

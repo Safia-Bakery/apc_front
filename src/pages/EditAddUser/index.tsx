@@ -86,6 +86,7 @@ const EditAddUser = () => {
         email: user.email,
         phone_number: user.phone_number,
         brigada_id: user.brigader?.id,
+        telegram_id: user?.telegram_id,
       });
     }
   }, [user, id, getValues("phone_number")]);
