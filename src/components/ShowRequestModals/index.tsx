@@ -55,12 +55,12 @@ const ShowRequestModals = () => {
   };
 
   const handleBrigada =
-    ({ status }: { status: RequestStatus }) =>
+    ({ status, item }: { status: RequestStatus; item?: BrigadaType }) =>
     () => {
       attach(
         {
           request_id: Number(id),
-          brigada_id: Number(brigada?.id),
+          brigada_id: Number(item?.id),
           status,
           comment: getValues("cancel_reason"),
         },
@@ -89,7 +89,10 @@ const ShowRequestModals = () => {
                 <div key={idx} className={styles.item}>
                   <h6>{item?.name}</h6>
                   <button
-                    onClick={selectedBrigada(item)}
+                    onClick={handleBrigada({
+                      status: RequestStatus.confirmed,
+                      item,
+                    })}
                     className="btn btn-success btn-fill btn-sm"
                   >
                     Назначить

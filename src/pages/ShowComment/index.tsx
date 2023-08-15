@@ -14,7 +14,7 @@ const column = [
   { name: "Сотрудник", key: "purchaser" as keyof Order["product"] },
   { name: "Оценка", key: "type" as keyof Order["product"] },
   { name: "Текст", key: "category.name" as keyof Order["category"] },
-  { name: "	Дата", key: "price" as keyof Order["product"] },
+  { name: "Дата", key: "price" as keyof Order["product"] },
 ];
 
 const ShowComment = () => {

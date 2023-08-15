@@ -37,6 +37,7 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
     id: Number(id),
     enabled: false,
   });
+  const isFinished = products?.status && products?.status < 3;
 
   const handleDelete = (id: number) => () => {
     deleteExp(id, {
@@ -81,12 +82,14 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
             Синхронизировать с iiko
           </button>
         )}
-        <button
-          className="btn btn-success btn-fill btn-sm"
-          onClick={handleModal}
-        >
-          Добавить
-        </button>
+        {isFinished && (
+          <button
+            className="btn btn-success btn-fill btn-sm"
+            onClick={handleModal}
+          >
+            Добавить
+          </button>
+        )}
       </Header>
       <div className="content">
         <div className="content table-responsive table-full-width overflow-hidden">

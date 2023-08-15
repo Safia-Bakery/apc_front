@@ -3,7 +3,7 @@ import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
 
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Order } from "src/utils/types";
 import TableHead from "src/components/TableHead";
 import useOrders from "src/hooks/useOrders";

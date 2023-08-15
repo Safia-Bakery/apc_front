@@ -2,8 +2,6 @@ import Card from "src/components/Card";
 import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { Link, useNavigate } from "react-router-dom";
-
-import { Order } from "src/utils/types";
 import Pagination from "src/components/Pagination";
 import { useState } from "react";
 import useOrders from "src/hooks/useOrders";
@@ -13,12 +11,12 @@ import dayjs from "dayjs";
 import ItemsCount from "src/components/ItemsCount";
 
 const column = [
-  { name: "#", key: "id" as keyof Order["id"] },
-  { name: "Сотрудник", key: "purchaser" as keyof Order["status"] },
-  { name: "Заявка", key: "status" as keyof Order["status"] },
-  { name: "Оценка", key: "status" as keyof Order["status"] },
-  { name: "Текст", key: "status" as keyof Order["status"] },
-  { name: "Дата", key: "status" as keyof Order["status"] },
+  { name: "#", key: "id" },
+  { name: "Сотрудник", key: "purchaser" },
+  { name: "Заявка", key: "status" },
+  { name: "Оценка", key: "status" },
+  { name: "Текст", key: "status" },
+  { name: "Дата", key: "status" },
 ];
 
 const Comments = () => {
