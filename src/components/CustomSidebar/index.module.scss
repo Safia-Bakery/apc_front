@@ -20,6 +20,12 @@
 .collapsed {
   width: 250px !important;
   min-width: 250px !important;
+
+  .logo {
+    .title {
+      opacity: 1;
+    }
+  }
 }
 
 .active {
@@ -34,6 +40,10 @@
   a:hover {
     opacity: 1 !important;
     background: rgba(255, 255, 255, 0.23) !important;
+  }
+
+  .ps-submenu-expand-icon.css-1cuxlhl {
+    display: block !important;
   }
 }
 
@@ -57,7 +67,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  // padding-left: 20px;
   margin-bottom: 10px;
 
   .logoimg {

@@ -99,12 +99,16 @@ input {
   padding-right: 20px !important;
 }
 .customSidebar {
-  &:hover {
-    .ps-submenu-expand-icon.css-1cuxlhl {
-      display: block !important;
-    }
+  &:hover .ps-submenu-expand-icon.css-1cuxlhl {
+    display: block !important;
   }
 }
 .ps-submenu-expand-icon.css-1cuxlhl {
   display: none !important;
+}
+
+.collapsed {
+  .ps-submenu-expand-icon.css-1cuxlhl {
+    display: block !important;
+  }
 }

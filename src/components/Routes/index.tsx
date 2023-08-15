@@ -69,7 +69,7 @@ export const routes = [
     path: "/requests-it",
     screen: Screens.requests_it,
   },
-  { element: <Logs />, path: "/logs", screen: Screens.requests },
+  { element: <Logs />, path: "/logs/:id", screen: Screens.requests },
   {
     element: <RequestInventory />,
     path: "/requests-inventory",

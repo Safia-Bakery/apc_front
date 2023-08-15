@@ -20,6 +20,7 @@
   z-index: 99;
   width: 100%;
   min-height: 350px;
+  max-height: 80vh;
   animation-duration: 0.3s;
   animation-timing-function: ease-out;
   background: white;
@@ -28,8 +29,8 @@
 }
 .content {
   @media (max-width: 920px) {
-    height: 100vh;
-    overflow: scroll;
+    height: 100%;
+    // overflow-y: scroll;
   }
 }
 

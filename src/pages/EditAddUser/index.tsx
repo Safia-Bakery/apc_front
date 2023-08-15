@@ -2,11 +2,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import styles from "./index.module.scss";
-
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { useAppSelector } from "src/redux/utils/types";
-import { brigadaSelector, rolesSelector } from "src/redux/reducers/cache";
+import { rolesSelector } from "src/redux/reducers/cache";
 import userMutation from "src/hooks/mutation/userMutation";
 import { successToast } from "src/utils/toast";
 import useUsers from "src/hooks/useUsers";
@@ -18,12 +17,12 @@ import MainSelect from "src/components/BaseInputs/MainSelect";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import BaseInputs from "src/components/BaseInputs";
+import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
 
 const EditAddUser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
-  const brigada = useAppSelector(brigadaSelector);
 
   const roles = useAppSelector(rolesSelector);
   const { refetch: usersRefetch } = useUsers({ enabled: false, page: 1 });
@@ -41,6 +40,7 @@ const EditAddUser = () => {
       group_id,
       telegram_id,
       brigada_id,
+      status,
     } = getValues();
 
     mutate(
@@ -49,6 +49,7 @@ const EditAddUser = () => {
         username,
         group_id,
         password,
+        status,
         phone_number: fixedString(phone_number),
         ...(!!email && { email }),
         ...(brigada_id && { brigada_id }),
@@ -59,7 +60,7 @@ const EditAddUser = () => {
         onSuccess: (data: any) => {
           if (data.status === 200) {
             usersRefetch();
-            navigate("/users");
+            navigate(`/roles/${getValues("group_id")}`);
             successToast(
               !!id ? "successfully updated" : "successfully created"
             );
@@ -87,6 +88,7 @@ const EditAddUser = () => {
         phone_number: user.phone_number,
         brigada_id: user.brigader?.id,
         telegram_id: user?.telegram_id,
+        status: !user.status ? true : false,
       });
     }
   }, [user, id, getValues("phone_number")]);
@@ -153,14 +155,18 @@ const EditAddUser = () => {
             <BaseInput label="E-MAIL">
               <MainInput register={register("email")} />
             </BaseInput>
-            {!!id && (
+            {/* {!!id && (
               <BaseInput label="Бригада">
                 <MainSelect
                   values={brigada}
                   register={register("brigada_id")}
                 />
               </BaseInput>
-            )}
+            )} */}
+
+            <BaseInput label="статус">
+              <MainCheckBox label="Активный" register={register("status")} />
+            </BaseInput>
           </div>
         </div>
         <BaseInput label="ОПИСАНИЕ">

@@ -1,7 +1,3 @@
-.modal {
-  max-width: 600px;
-  width: 100%;
-}
 .modalBody {
   padding: 20px 30px;
   position: relative;
@@ -10,4 +6,11 @@
   padding: 15px;
   display: flex;
   justify-content: flex-end;
+}
+.block {
+  height: 60vh;
+  overflow-y: scroll;
+}
+.form {
+  height: 100%;
 }

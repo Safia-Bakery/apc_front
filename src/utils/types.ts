@@ -182,6 +182,7 @@ export interface RolePermissions {
 
 export interface Category {
   name: string;
+  department?: string;
   description: string;
   status: number;
   id: number | string;
@@ -190,6 +191,17 @@ export interface Category {
 
 export interface CategoryTypes extends BasePaginatedRes {
   items: Category[];
+}
+
+export interface Comments {
+  id: number;
+  request: Order;
+  user: UserTypes;
+  comment: string;
+}
+
+export interface CommentTypes extends BasePaginatedRes {
+  items: Comments[];
 }
 
 export interface UsersType {

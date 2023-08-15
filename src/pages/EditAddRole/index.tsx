@@ -13,7 +13,7 @@ import MainInput from "src/components/BaseInputs/MainInput";
 const EditAddRole = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const goBack = () => navigate(-1);
+  const goBack = () => navigate("/users");
   const { refetch: usersRefetch } = useRoles({ enabled: false });
   const { mutate: postRole } = roleMutation();
 

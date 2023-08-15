@@ -13,8 +13,9 @@ import ItemsCount from "src/components/ItemsCount";
 
 const column = [
   { name: "#", key: "id" },
-  { name: "Названия", key: "name" },
-  { name: "Описания", key: "description" },
+  { name: "Название бригады", key: "name" },
+  { name: "Бригадир", key: "description" },
+  { name: "Описание", key: "description" },
   { name: "", key: "" },
 ];
 
@@ -99,6 +100,7 @@ const Brigades = () => {
                   <tr className="bg-blue" key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td width={250}>{order.name}</td>
+                    <td>{order.user?.[0]?.full_name}</td>
                     <td>{order.description}</td>
                     <TableViewBtn onClick={handleNavigate(`${order.id}`)} />
                   </tr>

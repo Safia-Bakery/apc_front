@@ -19,18 +19,18 @@
 }
 .items {
   overflow-y: scroll;
-  height: 300px;
+  max-height: 300px;
+  height: 100%;
   margin-top: 10px;
 }
 .textArea {
   height: initial !important;
 }
 .image {
-  height: 600px;
-  width: 700px;
+  max-height: 80vh;
+  height: 100%;
+  max-width: 80vw;
   display: block;
-  // background-size: contain;
-  // object-fit: contain;
 }
 .imgBlock {
   position: relative;

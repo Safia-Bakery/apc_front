@@ -153,7 +153,7 @@ const CustomSidebar = () => {
     <Sidebar
       backgroundColor="#FB404B"
       className={cl(styles.sidebar, "customSidebar", {
-        [cl(styles.collapsed)]: collapsed,
+        [cl(styles.collapsed, "collapsed")]: collapsed,
       })}
       rootStyles={{
         color: "white",

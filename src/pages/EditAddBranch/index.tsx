@@ -16,8 +16,6 @@ import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
 
 const EditAddBranch = () => {
   const { id } = useParams();
-
-  console.log(id, "id");
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
   const [department, $department] = useState<boolean>(false);

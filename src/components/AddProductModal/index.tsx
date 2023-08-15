@@ -84,37 +84,39 @@ const AddProductModal = () => {
       // isOpen={!!modal && brigadir}  //todo
       onClose={handleModal}
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <Header title="Добавить расходной товар">
           <button onClick={handleModal} className="close">
             <span aria-hidden="true">&times;</span>
           </button>
         </Header>
-        <div className={styles.modalBody}>
-          <div className="form-group field-apcitems-product_id position-relative">
-            <label className="control-label">Товар</label>
-            <div className="form-control" onClick={handleProducts}>
-              {!product?.name ? "Выберите продукт" : product.name}
+        <div className={styles.block}>
+          <div className={styles.modalBody}>
+            <div className="form-group field-apcitems-product_id position-relative">
+              <label className="control-label">Товар</label>
+              <div className="form-control" onClick={handleProducts}>
+                {!product?.name ? "Выберите продукт" : product.name}
+              </div>
+              {/* {!!itemModal && itemModal !== "false" && brigadir && (  //todo*/}
+              {!!itemModal && itemModal !== "false" && <IearchSelect />}
             </div>
-            {/* {!!itemModal && itemModal !== "false" && brigadir && (  //todo*/}
-            {!!itemModal && itemModal !== "false" && <IearchSelect />}
+
+            <BaseInput label="Количество">
+              <MainInput type="number" register={register("count")} />
+            </BaseInput>
+
+            <BaseInput label="Примичание">
+              <MainTextArea register={register("comment")} />
+            </BaseInput>
           </div>
 
-          <BaseInput label="Количество">
-            <MainInput type="number" register={register("count")} />
-          </BaseInput>
+          <hr />
 
-          <BaseInput label="Примичание">
-            <MainTextArea register={register("comment")} />
-          </BaseInput>
-        </div>
-
-        <hr />
-
-        <div className={styles.footer}>
-          <button type="submit" className="btn btn-success btn-fill">
-            Добавить
-          </button>
+          <div className={styles.footer}>
+            <button type="submit" className="btn btn-success btn-fill">
+              Добавить
+            </button>
+          </div>
         </div>
       </form>
     </Modal>

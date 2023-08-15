@@ -13,6 +13,7 @@ interface Props {
 const CategoriesFilter: FC<Props> = ({ currentPage }) => {
   const initialLoadRef = useRef(true);
   const [name, $name] = useDebounce("");
+  const [department, $department] = useDebounce("");
   const [category_status, $category_status] = useState<string>();
 
   const { refetch } = useCategories({
@@ -22,6 +23,7 @@ const CategoriesFilter: FC<Props> = ({ currentPage }) => {
     body: {
       ...(!!name && { name }),
       ...(!!category_status && { category_status }),
+      ...(!!department && { department }),
     },
   });
 
@@ -43,6 +45,11 @@ const CategoriesFilter: FC<Props> = ({ currentPage }) => {
       <td className="p-0">
         <BaseInputs className="m-2">
           <MainInput onChange={(e) => $name(e.target.value)} />
+        </BaseInputs>
+      </td>
+      <td className="p-0">
+        <BaseInputs className="m-2">
+          <MainInput onChange={(e) => $department(e.target.value)} />
         </BaseInputs>
       </td>
       <td className="p-0">

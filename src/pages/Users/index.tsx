@@ -102,8 +102,9 @@ const Users = () => {
 
           {!!users?.items?.length && (
             <tbody>
-              {(sortData()?.length ? sortData() : users?.items)?.map(
-                (user, idx) => (
+              {(sortData()?.length ? sortData() : users?.items)
+                ?.filter((user) => user.status !== 1)
+                .map((user, idx) => (
                   <tr className="bg-blue" key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td>{user.full_name}</td>
@@ -119,8 +120,7 @@ const Users = () => {
                     <td>{userStatus(user?.status)}</td>
                     <TableViewBtn onClick={handleNavigate(`${user?.id}`)} />
                   </tr>
-                )
-              )}
+                ))}
             </tbody>
           )}
         </table>

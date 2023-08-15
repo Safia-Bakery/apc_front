@@ -1,7 +1,9 @@
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./index.module.scss";
+import useOrder from "src/hooks/useOrder";
+import dayjs from "dayjs";
 
 const column = [
   { name: "#" },
@@ -12,8 +14,11 @@ const column = [
 ];
 
 const Logs = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const handleNavigate = () => navigate(-1);
+
+  const { data: order } = useOrder({ id: Number(id), enabled: false });
   return (
     <Card>
       <Header title={"Logs"}>
@@ -41,8 +46,8 @@ const Logs = () => {
               <tr className="bg-blue" key={idx}>
                 <td width="40">{idx + 1}</td>
                 <td>action</td>
-                <td>courries</td>
-                <td>data</td>
+                <td>{order?.brigada?.name}</td>
+                <td>{dayjs(order?.created_at).format("DD-MM-YYYY HH:mm")}</td>
                 <td>datamin</td>
               </tr>
             ))}

@@ -75,7 +75,7 @@ const Roles = () => {
                   <td>
                     <Link to={`/roles/${role.id}`}>{role.name}</Link>
                   </td>
-                  <td>{role.status}</td>
+                  <td>{!role.status ? "Не активный" : "Активный"}</td>
                   <TableViewBtn onClick={handleNavigate(`edit/${role.id}`)} />
                 </tr>
               ))}
@@ -84,7 +84,7 @@ const Roles = () => {
         </table>
         {!roles?.length && (
           <div className="w-100">
-            <p className="text-center w-100 ">Спосок пуст</p>
+            <p className="text-center w-100">Спосок пуст</p>
           </div>
         )}
       </div>

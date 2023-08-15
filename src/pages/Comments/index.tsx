@@ -4,11 +4,11 @@ import Header from "src/components/Header";
 import { Link, useNavigate } from "react-router-dom";
 import Pagination from "src/components/Pagination";
 import { useState } from "react";
-import useOrders from "src/hooks/useOrders";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import dayjs from "dayjs";
 import ItemsCount from "src/components/ItemsCount";
+import useComments from "src/hooks/useComments";
 
 const column = [
   { name: "#", key: "id" },
@@ -35,14 +35,18 @@ const Comments = () => {
     }
   };
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: requests } = useOrders({
+  const { data: comments } = useComments({
     size: itemsPerPage,
     page: currentPage,
-    enabled: false,
   });
 
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleNavigate = (route: string) => () => navigate(route);
+
+  const handleIdx = (index: number) => {
+    if (currentPage === 1) return index + 1;
+    else return index + 1 + itemsPerPage * (currentPage - 1);
+  };
   return (
     <Card>
       <Header title={"Comments"}>
@@ -53,7 +57,7 @@ const Comments = () => {
 
       <div className="content">
         <div className="table-responsive grid-view">
-          <ItemsCount data={requests} currentPage={currentPage} />
+          <ItemsCount data={comments} currentPage={currentPage} />
           <table className="table table-hover">
             <TableHead
               column={column}
@@ -62,34 +66,38 @@ const Comments = () => {
               sortOrder={sortOrder}
             />
 
-            {!!requests?.items.length && (
+            {!!comments?.items?.length && (
               <tbody>
-                {[...Array(6)]?.map((order, idx) => (
+                {comments?.items?.map((comment, idx) => (
                   <tr key={idx} className="bg-blue">
-                    <td width="40">1</td>
-                    <td>sotrudnit name</td>
+                    <td width="40">{handleIdx(idx)}</td>
+                    <td>{comment.user?.full_name}</td>
                     <td>
-                      <Link to={`/comments/${109640}`}>109640</Link>
+                      <Link to={`/comments/${comment?.request?.id}`}>
+                        {comment?.request?.id}
+                      </Link>
                     </td>
                     <td>rate</td>
-                    <td>text</td>
+                    <td>{comment?.comment}</td>
                     <td>
-                      {dayjs("24.02.2023 16:33").format("DD-MM-YYYY HH:mm")}
+                      {dayjs(comment?.request?.finished_at).format(
+                        "DD-MM-YYYY HH:mm"
+                      )}
                     </td>
                   </tr>
                 ))}
               </tbody>
             )}
           </table>
-          {!!requests && (
+          {!!comments && (
             <Pagination
-              totalItems={requests?.total}
+              totalItems={comments?.total}
               itemsPerPage={itemsPerPage}
               currentPage={currentPage}
               onPageChange={handlePageChange}
             />
           )}
-          {!requests?.items?.length && (
+          {!comments?.items?.length && (
             <div className="w-100">
               <p className="text-center w-100 ">Спосок пуст</p>
             </div>

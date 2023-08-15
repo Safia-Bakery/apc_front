@@ -91,7 +91,7 @@ const CreateBrigades = () => {
         </div>
 
         {!!id && (
-          <BaseInputs label="Выберите бригадир" error={errors.brigadir}>
+          <BaseInputs label="Выберите бригадира" error={errors.brigadir}>
             <MainSelect
               register={register("brigadir", { required: "Обязательное поле" })}
             >

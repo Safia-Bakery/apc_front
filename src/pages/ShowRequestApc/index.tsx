@@ -24,6 +24,7 @@ import {
   useRemoveParams,
 } from "src/hooks/useCustomNavigate";
 import uploadFileMutation from "src/hooks/mutation/uploadFile";
+import { loginHandler } from "src/redux/reducers/auth";
 
 const enum ModalTypes {
   closed = "closed",
@@ -34,6 +35,7 @@ const enum ModalTypes {
 
 const ShowRequestApc = () => {
   const { id } = useParams();
+  const tokenKey = useQueryString("key");
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const navigateParams = useNavigateParams();
@@ -43,7 +45,6 @@ const ShowRequestApc = () => {
     navigateParams({ modal: type });
   };
   const { getValues } = useForm();
-
   const { data: user } = useToken({ enabled: false });
   //@ts-ignore
   const me = user?.permissions === "*" ? role : user?.permissions;
@@ -51,7 +52,6 @@ const ShowRequestApc = () => {
   const brigada = JSON.parse(brigadaJson!) as Order["brigada"];
   const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
-  const isFinished = order?.status === RequestStatus.done;
   const inputRef = useRef<any>(null);
   const upladedFiles = useAppSelector(reportImgSelector);
 
@@ -72,7 +72,6 @@ const ShowRequestApc = () => {
   const handleBrigada =
     ({ status }: { status: RequestStatus }) =>
     () => {
-      // if (brigada?.id)
       attach(
         {
           request_id: Number(id),
@@ -120,12 +119,6 @@ const ShowRequestApc = () => {
           >
             Отклонить
           </button>
-          {/* <button
-            onClick={handleBrigada({ status: RequestStatus.confirmed })}
-            className="btn btn-success btn-fill"
-          >
-            Принять
-          </button> */}
         </div>
       );
     if (!!order?.brigada?.name && me?.isbrigadir)
@@ -188,17 +181,15 @@ const ShowRequestApc = () => {
       );
     }
     return <span>{order?.brigada?.name}</span>;
-  }, [me, order?.status, order?.brigada.name]);
+  }, [me, order?.status, order?.brigada?.name]);
+
+  useEffect(() => {
+    if (tokenKey) dispatch(loginHandler(tokenKey));
+  }, [tokenKey]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  // useEffect(() => {
-  //   if (!upladedFiles && inputRef.current?.value) {
-  //     inputRef.current.value = null;
-  //   }
-  // }, [upladedFiles, inputRef?.current]);
 
   return (
     <>
@@ -206,7 +197,7 @@ const ShowRequestApc = () => {
         <Header title={`Заказ №${id}`}>
           <button
             className="btn btn-warning btn-fill mr-2"
-            onClick={handleNavigate("/logs")}
+            onClick={handleNavigate(`/logs/${id}`)}
           >
             Логи
           </button>
