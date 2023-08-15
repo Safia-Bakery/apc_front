@@ -120,12 +120,12 @@ const ShowRequestApc = () => {
           >
             Отклонить
           </button>
-          <button
+          {/* <button
             onClick={handleBrigada({ status: RequestStatus.confirmed })}
             className="btn btn-success btn-fill"
           >
             Принять
-          </button>
+          </button> */}
         </div>
       );
     if (!!order?.brigada?.name && me?.isbrigadir)
@@ -161,14 +161,14 @@ const ShowRequestApc = () => {
           </div>
         </div>
       );
-  }, [me, order?.status, brigada?.name]);
+  }, [me, order?.status]);
 
   const renderAssignment = useMemo(() => {
-    if (me?.ismanager && isNew) {
-      if (brigada?.name) {
+    if (me?.ismanager) {
+      if (order?.brigada?.name) {
         return (
           <>
-            <span>{brigada?.name}</span>
+            <span>{order?.brigada?.name}</span>
             <button
               onClick={handleModal(ModalTypes.assign)}
               className="btn btn-primary btn-fill float-end"
@@ -187,8 +187,8 @@ const ShowRequestApc = () => {
         </button>
       );
     }
-    return <span>{brigada?.name ? brigada?.name : order?.brigada?.name}</span>;
-  }, [me, brigada?.name, order?.status]);
+    return <span>{order?.brigada?.name}</span>;
+  }, [me, order?.status, order?.brigada.name]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

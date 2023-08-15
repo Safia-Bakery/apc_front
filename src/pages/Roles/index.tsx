@@ -11,8 +11,8 @@ import useRoles from "src/hooks/useRoles";
 
 const column = [
   { name: "#", key: "" },
-  { name: "Название", key: "name" as keyof RoleTypes["name"] },
-  { name: "Статус", key: "status" as keyof RoleTypes["status"] },
+  { name: "Название", key: "name" },
+  { name: "Статус", key: "status" },
   { name: "", key: "" },
 ];
 
