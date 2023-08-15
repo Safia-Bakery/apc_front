@@ -15,12 +15,8 @@ import { successToast } from "src/utils/toast";
 import useOrder from "src/hooks/useOrder";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import cl from "classnames";
-import { selectedBrigadaSelector } from "src/redux/reducers/selects";
 import useQueryString from "src/hooks/useQueryString";
-import {
-  useNavigateParams,
-  useRemoveParams,
-} from "src/hooks/useCustomNavigate";
+import { useRemoveParams } from "src/hooks/useCustomNavigate";
 
 const enum ModalTypes {
   closed = "closed",
@@ -33,26 +29,13 @@ const ShowRequestModals = () => {
   const { id } = useParams();
   const modal = useQueryString("modal");
   const photo = useQueryString("photo");
-
-  const customnavigate = useNavigateParams();
   const removeParams = useRemoveParams();
 
   const { mutate: attach } = attachBrigadaMutation();
   const { register, getValues } = useForm();
-  const brigada = useAppSelector(selectedBrigadaSelector);
 
   const brigades = useAppSelector(brigadaSelector);
   const { refetch: orderRefetch } = useOrder({ id: Number(id) });
-  const selectedBrigada = (item: BrigadaType) => () => {
-    customnavigate({
-      brigada: JSON.stringify({
-        id: item.id,
-        name: item.name,
-        order: id!,
-      }),
-      modal: ModalTypes.closed,
-    });
-  };
 
   const handleBrigada =
     ({ status, item }: { status: RequestStatus; item?: BrigadaType }) =>
