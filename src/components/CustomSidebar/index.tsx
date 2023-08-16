@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import Subroutes from "./CustomSubItems";
 import { sidebarHandler, toggleSidebar } from "src/redux/reducers/selects";
 import useToken from "src/hooks/useToken";
-import { permissioms as me } from "src/utils/helpers";
+import { isMobile, permissioms as me } from "src/utils/helpers";
 import { categorySelector } from "src/redux/reducers/cache";
 import { useMemo } from "react";
 
@@ -157,7 +157,7 @@ const CustomSidebar = () => {
       })}
       rootStyles={{
         color: "white",
-        height: "100%",
+        height: "100lvh",
         position: "fixed",
         top: 0,
         zIndex: 100,
@@ -196,7 +196,12 @@ const CustomSidebar = () => {
           className={cl(styles.menuItem, {
             [styles.active]: useMatch("/"),
           })}
-          component={<NavLink to={"/"} />}
+          component={
+            <NavLink
+              to={"/"}
+              onClick={() => isMobile && dispatch(sidebarHandler(false))}
+            />
+          }
         >
           Панель управления
         </MenuItem>
@@ -220,7 +225,15 @@ const CustomSidebar = () => {
                   [styles.active]: item.url && useMatch(item.url),
                 })}
                 component={
-                  <NavLink state={{ name: item.name }} to={item.url || ""} />
+                  <NavLink
+                    onClick={() =>
+                      !item.subroutes?.length &&
+                      isMobile &&
+                      dispatch(sidebarHandler(false))
+                    }
+                    state={{ name: item.name }}
+                    to={item.url || ""}
+                  />
                 }
               >
                 {item.name}

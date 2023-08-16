@@ -127,3 +127,5 @@ export const permissioms = Object.keys(Screens).reduce((acc: any, key) => {
   acc[key] = true;
   return acc;
 }, {});
+
+export const isMobile = window.innerWidth <= 1200;

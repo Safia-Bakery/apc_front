@@ -41,6 +41,7 @@ import { permissioms as me } from "src/utils/helpers";
 import Loading from "../Loader";
 import ShowRemainsInStock from "src/pages/ShowRemainsInStock";
 import useQueryString from "src/hooks/useQueryString";
+import TelegramAddProduct from "src/pages/TelegramAddProduct";
 
 export const routes = [
   { element: <ControlPanel />, path: "/", screen: Screens.permitted },
@@ -179,6 +180,7 @@ const Navigation = () => {
       <Routes>
         <Route element={<Login />} path={"/login"} />
         <Route element={<ControlPanel />} path={"/"} />
+        <Route element={<TelegramAddProduct />} path={"/tg-add-product/:id"} />
         {/* <Route element={<ControlPanel />} path={"*"} /> */}
         {routes.map((route) => {
           if (!!(isSuperAdmin ? me : user?.permissions)?.[route.screen]) {

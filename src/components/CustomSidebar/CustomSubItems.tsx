@@ -5,7 +5,9 @@ import cl from "classnames";
 import { FC } from "react";
 import { Screens } from "src/utils/types";
 import useToken from "src/hooks/useToken";
-import { permissioms as me } from "src/utils/helpers";
+import { isMobile, permissioms as me } from "src/utils/helpers";
+import { sidebarHandler } from "src/redux/reducers/selects";
+import { useAppDispatch } from "src/redux/utils/types";
 
 interface Item {
   name: string;
@@ -22,6 +24,7 @@ interface Props {
 }
 
 const Subroutes: FC<Props> = ({ subroutes, routeIcon, routeName }) => {
+  const dispatch = useAppDispatch();
   const { data: user } = useToken({ enabled: false });
   //@ts-ignore
   const isSuperAdmin = user?.permissions === "*";
@@ -44,7 +47,13 @@ const Subroutes: FC<Props> = ({ subroutes, routeIcon, routeName }) => {
               className={cl(styles.menuItem, {
                 [styles.active]: useMatch(sub.url),
               })}
-              component={<Link to={sub.url} state={{ name: sub.name }} />}
+              component={
+                <Link
+                  onClick={() => isMobile && dispatch(sidebarHandler(false))}
+                  to={sub.url}
+                  state={{ name: sub.name }}
+                />
+              }
             >
               {sub.name}
             </MenuItem>

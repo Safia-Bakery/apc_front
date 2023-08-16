@@ -8,8 +8,10 @@
   }
 
   &:hover {
-    width: 250px !important;
-    min-width: 250px !important;
+    @media (min-width: 1200px) {
+      width: 250px !important;
+      min-width: 250px !important;
+    }
 
     .title {
       opacity: 1;
