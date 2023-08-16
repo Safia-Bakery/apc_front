@@ -77,7 +77,16 @@ const TelegramAddProduct = () => {
             if (data.status === 200) {
               successToast("Успешно закончен");
               //@ts-ignore
-              Telegram.WebApp.close();
+              Telegram.WebApp.MainButton.setText("Choose Color")
+                .show()
+                .onClick(function () {
+                  //@ts-ignore
+                  const data = JSON.stringify({ success: true });
+                  //@ts-ignore
+                  Telegram.WebApp.sendData(data);
+                  //@ts-ignore
+                  Telegram.WebApp.close();
+                });
             }
           },
         }
