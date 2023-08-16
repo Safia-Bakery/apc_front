@@ -16,6 +16,7 @@ const column = [
   { name: "Название бригады", key: "name" },
   { name: "Бригадир", key: "description" },
   { name: "Описание", key: "description" },
+  { name: "Статус", key: "status" },
   { name: "", key: "" },
 ];
 
@@ -102,6 +103,7 @@ const Brigades = () => {
                     <td width={250}>{order.name}</td>
                     <td>{order.user?.[0]?.full_name}</td>
                     <td>{order.description}</td>
+                    <td>{!!order.status ? "Активный" : "Неактивный"}</td>
                     <TableViewBtn onClick={handleNavigate(`${order.id}`)} />
                   </tr>
                 )

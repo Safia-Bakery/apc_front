@@ -1,6 +1,10 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
-import { logoutHandler, tokenSelector } from "src/redux/reducers/auth";
+import {
+  loginHandler,
+  logoutHandler,
+  tokenSelector,
+} from "src/redux/reducers/auth";
 import CreateApcRequest from "src/pages/CreateApcRequest";
 import Login from "pages/Login";
 import { useEffect, useMemo } from "react";
@@ -36,6 +40,7 @@ import CreateITRequest from "src/pages/CreateITRequest";
 import { permissioms as me } from "src/utils/helpers";
 import Loading from "../Loader";
 import ShowRemainsInStock from "src/pages/ShowRemainsInStock";
+import useQueryString from "src/hooks/useQueryString";
 
 export const routes = [
   { element: <ControlPanel />, path: "/", screen: Screens.permitted },
@@ -141,15 +146,19 @@ const Navigation = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { data: user, error, isLoading } = useToken({});
+  const tokenKey = useQueryString("key");
+  const { pathname, search } = useLocation();
   //@ts-ignore
   const isSuperAdmin = user?.permissions === "*";
-
   const { isLoading: appLoading } = useQueriesPrefetch();
-
   useEffect(() => {
     if (!token) navigate("/login");
     if (!!error) dispatch(logoutHandler());
-  }, [token, error]);
+    if (!!tokenKey) {
+      dispatch(loginHandler(tokenKey));
+      navigate(pathname + search);
+    }
+  }, [token, error, tokenKey]);
 
   const renderSidebar = useMemo(() => {
     if (user?.permissions && token)

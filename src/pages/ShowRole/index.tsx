@@ -14,7 +14,7 @@ import useToken from "src/hooks/useToken";
 const ShowRole = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const goBack = () => navigate(-1);
+  const goBack = () => navigate("/users");
   const [ids, $ids] = useState<number[]>([]);
   const {
     data: rolePermission,
