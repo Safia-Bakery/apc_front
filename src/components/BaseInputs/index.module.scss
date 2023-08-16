@@ -19,3 +19,8 @@
   color: #888888;
   text-transform: uppercase;
 }
+.inputBox {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

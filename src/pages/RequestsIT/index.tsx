@@ -107,7 +107,9 @@ const RequestsIT = () => {
                   <tr className={requestRows(order.status)} key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
-                      <Link to={`/requests-it/${order?.id}`}>{order?.id}</Link>
+                      <Link to={`/requests-designer/${order?.id}`}>
+                        {order?.id}
+                      </Link>
                     </td>
                     <td>
                       <span className="not-set">{order?.user?.full_name}</span>

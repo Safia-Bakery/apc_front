@@ -80,7 +80,7 @@ const CustomSidebar = () => {
         subroutes: [
           {
             name: "Заявки",
-            url: "/requests-it",
+            url: "/requests-designer",
             icon: "/assets/icons/orders.svg",
             screen: Screens.requests,
           },
@@ -93,19 +93,35 @@ const CustomSidebar = () => {
         screen: Screens.requests,
         subroutes: [
           {
-            name: "Заявки",
-            url: "/requests-it",
+            name: "Проектная работа для дизайнеров",
+            url: "/requests-designer",
             icon: "/assets/icons/orders.svg",
             screen: Screens.requests,
           },
-          // ...categories?.map((cat) => {
-          //   return {
-          //     name: cat?.name,
-          //     url: `/requests-${cat?.id}`,
-          //     icon: "/assets/icons/orders.svg",
-          //     screen: Screens.requests,
-          //   };
-          // }),
+          {
+            name: "Локальный маркетинг",
+            url: "/requests-local-marketing",
+            icon: "/assets/icons/orders.svg",
+            screen: Screens.requests,
+          },
+          {
+            name: "Промо-продукция",
+            url: "/requests-promo-production",
+            icon: "/assets/icons/orders.svg",
+            screen: Screens.requests,
+          },
+          {
+            name: "POS-Материалы",
+            url: "/requests-pos",
+            icon: "/assets/icons/orders.svg",
+            screen: Screens.requests,
+          },
+          {
+            name: "Комплекты",
+            url: "/requests-kits",
+            icon: "/assets/icons/orders.svg",
+            screen: Screens.requests,
+          },
         ],
       },
       {
@@ -164,13 +180,6 @@ const CustomSidebar = () => {
       }}
     >
       <div className={cl(styles.logo)}>
-        {/* <img
-          src="/assets/icons/home.svg"
-          alt="home"
-          className={styles.logoimg}
-          height={30}
-          width={30}
-        /> */}
         <h3 className={cl(styles.title)}>Сервис</h3>
       </div>
       <Menu

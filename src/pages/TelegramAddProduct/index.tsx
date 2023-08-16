@@ -18,6 +18,7 @@ import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import Header from "src/components/Header";
 import { RequestStatus } from "src/utils/types";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
+import cl from "classnames";
 
 const TelegramAddProduct = () => {
   const { id } = useParams();
@@ -49,7 +50,7 @@ const TelegramAddProduct = () => {
       {
         amount: count,
         request_id: Number(id),
-        tool_id: product.id,
+        tool_id: product?.id,
         comment,
       },
       {
@@ -75,6 +76,8 @@ const TelegramAddProduct = () => {
           onSuccess: (data: any) => {
             if (data.status === 200) {
               successToast("Успешно закончен");
+              //@ts-ignore
+              Telegram.WebApp.close();
             }
           },
         }
@@ -94,7 +97,10 @@ const TelegramAddProduct = () => {
         <div className={styles.modalBody}>
           <div className="form-group field-apcitems-product_id position-relative">
             <label className="control-label">Товар</label>
-            <div className="form-control" onClick={handleProducts}>
+            <div
+              className={cl("form-control", styles.input)}
+              onClick={handleProducts}
+            >
               {!product?.name ? "Выберите продукт" : product.name}
             </div>
             {/* {!!itemModal && itemModal !== "false" && brigadir && (  //todo*/}

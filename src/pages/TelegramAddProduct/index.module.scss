@@ -22,3 +22,8 @@
   background-color: #f5f5f5;
   overflow-y: scroll;
 }
+.input {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

@@ -30,7 +30,7 @@ const routeNameMappings: { [key: string]: string } = {
   branches: "Филлиалы",
   "requests-inventory": "Заявка на инвентарь",
   "requests-apc": "Заявки APC",
-  "requests-it": "Заявки IT",
+  "requests-designer": "Заявки IT",
 };
 
 const Breadcrumbs: FC = () => {

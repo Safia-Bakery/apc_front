@@ -47,7 +47,7 @@ export const routes = [
   { element: <ControlPanel />, path: "/", screen: Screens.permitted },
   {
     element: <CreateITRequest />,
-    path: "/requests-it/add",
+    path: "/requests-designer/add",
     screen: Screens.requests_it,
   },
   {
@@ -67,12 +67,12 @@ export const routes = [
   },
   {
     element: <ShowRequestApc />,
-    path: "/requests-it/:id",
+    path: "/requests-designer/:id",
     screen: Screens.requests_it,
   },
   {
     element: <RequestsIT />,
-    path: "/requests-it",
+    path: "/requests-designer",
     screen: Screens.requests_it,
   },
   { element: <Logs />, path: "/logs/:id", screen: Screens.requests },

@@ -1,6 +1,7 @@
 import { ChangeEvent, FC, HTMLInputTypeAttribute } from "react";
 import cl from "classnames";
 import { UseFormRegisterReturn } from "react-hook-form";
+import styles from "./index.module.scss";
 
 interface Props {
   onChange?: (val: ChangeEvent<HTMLInputElement>) => void;
@@ -21,7 +22,7 @@ const MainInput: FC<Props> = ({
 }) => {
   return (
     <input
-      className={cl(className, "form-control mb-2")}
+      className={cl(className, "form-control mb-2", styles.tinputBox)}
       placeholder={placeholder || ""}
       {...register}
       {...others}
