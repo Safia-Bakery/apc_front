@@ -2,14 +2,14 @@ import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useBranch from "src/hooks/useBranch";
 import branchMutation from "src/hooks/mutation/branchMutation";
 import useBranches from "src/hooks/useBranches";
 import { successToast } from "src/utils/toast";
 import MainInput from "src/components/BaseInputs/MainInput";
 import BaseInputs from "src/components/BaseInputs";
-import { departments } from "src/utils/helpers";
+import { BranchDep } from "src/utils/helpers";
 import MainSelect from "src/components/BaseInputs/MainSelect";
 import branchDepartmentMutation from "src/hooks/mutation/branchDepartment";
 import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
@@ -18,13 +18,15 @@ const EditAddBranch = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
-  const [department, $department] = useState<boolean>(false);
 
   const { mutate } = branchMutation();
   const { mutate: depMutation } = branchDepartmentMutation();
 
   const { data: branch, refetch } = useBranch({ id: id! });
-  const { refetch: branchesRefetch } = useBranches({ enabled: false });
+  const { refetch: branchesRefetch } = useBranches({
+    enabled: false,
+    origin: 0,
+  });
 
   useEffect(() => {
     if (!!id && branch) {
@@ -78,8 +80,10 @@ const EditAddBranch = () => {
     );
   };
 
-  const toggleDep = () => $department((prev) => !prev);
-
+  const findName = (origin: number) => {
+    return branch?.fillial_department.find((item) => item.origin === origin)
+      ?.id;
+  };
   return (
     <Card>
       <Header title={!id ? "Добавить" : `Изменить филиал №${id}`}>
@@ -125,17 +129,27 @@ const EditAddBranch = () => {
 
         <MainCheckBox label="Активный" register={register("status")} />
 
-        {branch?.fillial_department.map((item) => (
-          <BaseInputs key={item.id} label={item.name}>
-            <MainSelect
-              onChange={(e) =>
-                handleDep({ origin: Number(e.target.value), id: item.id })
-              }
-              value={item.origin}
-              values={departments}
-            />
-          </BaseInputs>
-        ))}
+        <BaseInputs label={"APC"}>
+          <MainSelect
+            onChange={(e) =>
+              handleDep({ origin: BranchDep.apc, id: e.target.value })
+            }
+            value={findName(BranchDep.apc)}
+            values={branch?.fillial_department}
+          />
+        </BaseInputs>
+        <BaseInputs label={"Инвентарь"}>
+          <MainSelect
+            onChange={(e) =>
+              handleDep({
+                origin: BranchDep.inventory,
+                id: e.target.value,
+              })
+            }
+            value={findName(BranchDep.inventory)}
+            values={branch?.fillial_department}
+          />
+        </BaseInputs>
         <button type="submit" className="btn btn-success btn-fill">
           Сохранить
         </button>

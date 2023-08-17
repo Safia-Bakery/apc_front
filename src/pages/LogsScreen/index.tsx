@@ -47,7 +47,7 @@ const Logs = () => {
                 <td width="40">{idx + 1}</td>
                 <td>action</td>
                 <td>{order?.brigada?.name}</td>
-                <td>{dayjs(order?.created_at).format("DD-MM-YYYY HH:mm")}</td>
+                <td>{dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}</td>
                 <td>datamin</td>
               </tr>
             ))}

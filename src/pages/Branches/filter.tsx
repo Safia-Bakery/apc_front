@@ -22,6 +22,7 @@ const BranchesFilter: FC<Props> = ({ currentPage }) => {
   const { refetch } = useBranches({
     size: itemsPerPage,
     page: currentPage,
+    origin: 0,
     enabled: false,
     body: {
       ...(!!name && { name }),

@@ -36,7 +36,7 @@ const CustomSidebar = () => {
       },
       {
         name: "APC",
-        icon: "/assets/icons/orders.svg",
+        icon: "/assets/icons/apc.svg",
         screen: Screens.requests || Screens.brigada || Screens.warehouse,
         subroutes: [
           {
@@ -61,7 +61,7 @@ const CustomSidebar = () => {
       },
       {
         name: "Инвентарь",
-        icon: "/assets/icons/orders.svg",
+        icon: "/assets/icons/inventary.svg",
         screen: Screens.requests_inventory,
         subroutes: [
           {
@@ -75,7 +75,7 @@ const CustomSidebar = () => {
 
       {
         name: "IT",
-        icon: "/assets/icons/orders.svg",
+        icon: "/assets/icons/it.svg",
         screen: Screens.requests_it,
         subroutes: [
           {
@@ -89,7 +89,7 @@ const CustomSidebar = () => {
 
       {
         name: "Маркетинг",
-        icon: "/assets/icons/orders.svg",
+        icon: "/assets/icons/marketing.svg",
         screen: Screens.requests_marketing,
         subroutes: [
           {
@@ -156,7 +156,7 @@ const CustomSidebar = () => {
           {
             name: "Филиалы",
             url: "/branches",
-            icon: "/assets/icons/settings.svg",
+            icon: "/assets/icons/branch.svg",
             screen: Screens.fillials,
           },
         ],
@@ -179,8 +179,9 @@ const CustomSidebar = () => {
         zIndex: 100,
       }}
     >
-      <div className={cl(styles.logo)}>
-        <h3 className={cl(styles.title)}>Сервис</h3>
+      <div className={styles.logo}>
+        <h3 className={styles.title}>Service</h3>
+        <p className={styles.subTitle}>АРС / Inventory / IT / Marketing</p>
       </div>
       <Menu
         className={styles.menu}

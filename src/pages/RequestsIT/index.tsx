@@ -122,7 +122,7 @@ const RequestsIT = () => {
                     </td>
                     <td>{handleStatus(order?.status)}</td>
                     <td>
-                      {dayjs(order?.created_at).format("DD-MM-YYYY HH:mm")}
+                      {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
                     </td>
                   </tr>
                 )

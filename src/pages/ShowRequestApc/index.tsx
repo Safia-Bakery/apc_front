@@ -217,6 +217,18 @@ const ShowRequestApc = () => {
               >
                 <tbody>
                   <tr>
+                    <th>Клиент</th>
+                    <td>{order?.user?.full_name}</td>
+                  </tr>
+                  <tr>
+                    <th>Номер телефона</th>
+                    <td>
+                      <a href={`tel:+${order?.user.phone_number}`}>
+                        +{order?.user.phone_number}
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
                     <th>Тип</th>
                     <td>APC</td>
                   </tr>
@@ -300,27 +312,30 @@ const ShowRequestApc = () => {
                     <th>Дата выполнения</th>
                     <td>
                       {order?.finished_at
-                        ? dayjs(order?.finished_at).format("DD-MM-YYYY HH:mm")
+                        ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
                         : "В процессе"}
                     </td>
                   </tr>
                   <tr>
                     <th>Изменил</th>
-                    <td>{order?.brigada?.name}</td>
+                    <td>
+                      {!!order?.user_manager
+                        ? order?.user_manager
+                        : "Не задано"}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th>Дата</th>
+                    <td>
+                      {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
+                    </td>
                   </tr>
                   <tr>
                     <th>Дата изменение</th>
                     <td>
-                      {dayjs(order?.created_at).format("DD-MM-YYYY HH:mm")}
+                      {dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")}
                     </td>
-                  </tr>
-                  <tr>
-                    <th>Дата</th>
-                    <td>{dayjs(new Date()).format("DD-MM-YYYY HH:mm")}</td>
-                  </tr>
-                  <tr>
-                    <th>Автор</th>
-                    <td>{order?.fillial?.name}</td>
                   </tr>
                   <tr className="font-weight-bold">
                     <th>Ответственный</th>

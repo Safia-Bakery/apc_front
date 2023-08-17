@@ -129,3 +129,9 @@ export const permissioms = Object.keys(Screens).reduce((acc: any, key) => {
 }, {});
 
 export const isMobile = window.innerWidth <= 1200;
+
+export const BranchDep = {
+  all: 0,
+  apc: 1,
+  inventory: 2,
+};

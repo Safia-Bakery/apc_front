@@ -45,6 +45,7 @@ const Branches = () => {
     size: itemsPerPage,
     page: currentPage,
     enabled: false,
+    origin: 0,
   });
 
   const handleSort = (key: keyof BranchType) => {

@@ -102,7 +102,7 @@ const ShowComment = () => {
                   </tr>
                   <tr>
                     <th>Дата</th>
-                    <td>{dayjs("order").format("DD-MM-YYYY HH:mm")}</td>
+                    <td>{dayjs("order").format("DD.MM.YYYY HH:mm")}</td>
                   </tr>
                 </tbody>
               </table>
@@ -117,7 +117,7 @@ const ShowComment = () => {
                   </tr>
                   <tr>
                     <th>Добавлен в </th>
-                    <td>{dayjs("order").format("DD-MM-YYYY HH:mm")}</td>
+                    <td>{dayjs("order").format("DD.MM.YYYY HH:mm")}</td>
                   </tr>
                   <tr>
                     <th>Назначил испольнителя</th>
@@ -125,7 +125,7 @@ const ShowComment = () => {
                   </tr>
                   <tr>
                     <th>Назначен испольнитель в</th>
-                    <td>{dayjs("order").format("DD-MM-YYYY HH:mm")}</td>
+                    <td>{dayjs("order").format("DD.MM.YYYY HH:mm")}</td>
                   </tr>
                   <tr>
                     <th>Принял</th>
@@ -149,7 +149,7 @@ const ShowComment = () => {
                   </tr>
                   <tr>
                     <th>Отменен в</th>
-                    <td>{dayjs("order").format("DD-MM-YYYY HH:mm")}</td>
+                    <td>{dayjs("order").format("DD.MM.YYYY HH:mm")}</td>
                   </tr>
                   <tr>
                     <th>Причина отмены</th>
@@ -183,7 +183,7 @@ const ShowComment = () => {
                       <td>rate - 5</td>
                       <td>text</td>
                       <td>
-                        {dayjs("order.time_created").format("DD-MM-YYYY HH:mm")}
+                        {dayjs("order.time_created").format("DD.MM.YYYY HH:mm")}
                       </td>
                     </tr>
                   )

@@ -81,7 +81,7 @@ const Comments = () => {
                     <td>{comment?.comment}</td>
                     <td>
                       {dayjs(comment?.request?.finished_at).format(
-                        "DD-MM-YYYY HH:mm"
+                        "DD.MM.YYYY HH:mm"
                       )}
                     </td>
                   </tr>

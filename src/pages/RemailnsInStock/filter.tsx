@@ -1,12 +1,4 @@
-import {
-  OrderTypeNames,
-  RequestStatusArr,
-  StatusName,
-  UrgentNames,
-} from "src/utils/helpers";
-
-import { useAppSelector } from "src/redux/utils/types";
-import { branchSelector, categorySelector } from "src/redux/reducers/cache";
+import { StatusName } from "src/utils/helpers";
 import { FC, useEffect, useRef, useState } from "react";
 import useOrders from "src/hooks/useOrders";
 import useDebounce from "src/hooks/useDebounce";
@@ -23,9 +15,6 @@ interface Props {
 
 const StockFilter: FC<Props> = ({ currentPage }) => {
   const initialLoadRef = useRef(true);
-  const branches = useAppSelector(branchSelector);
-  const categories = useAppSelector(categorySelector);
-
   const [id, $id] = useDebounce<number>(0);
   const [department, $department] = useState<string>();
   const [fillial_id, $fillial_id] = useState<number>();

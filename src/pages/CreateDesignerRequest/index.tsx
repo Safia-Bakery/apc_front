@@ -17,6 +17,7 @@ import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import SelectBranches from "src/components/SelectBranches";
 import { BranchType } from "src/utils/types";
 import useQueryString from "src/hooks/useQueryString";
+import BranchSelect from "src/components/BranchSelect";
 
 const CreateDesignerRequest = () => {
   const [files, $files] = useState<FormData>();
@@ -104,7 +105,8 @@ const CreateDesignerRequest = () => {
               register={register("fillial", { required: "Обязательное поле" })}
             />
           </div>
-          {!!choose_fillial && (
+          {!!choose_fillial && choose_fillial !== "false" && <BranchSelect />}
+          {/* {!!choose_fillial && (
             <>
               <div className={styles.overlay} onClick={() => navigate("?")} />
               <SelectBranches
@@ -115,7 +117,7 @@ const CreateDesignerRequest = () => {
                 handleBranch={handleBranch}
               />
             </>
-          )}
+          )} */}
         </BaseInputs>
         <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
           <MainSelect

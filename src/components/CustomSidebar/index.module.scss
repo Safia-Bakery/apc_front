@@ -13,7 +13,8 @@
       min-width: 250px !important;
     }
 
-    .title {
+    .title,
+    .subTitle {
       opacity: 1;
     }
   }
@@ -23,19 +24,29 @@
   width: 250px !important;
   min-width: 250px !important;
 
-  .logo {
-    .title {
-      opacity: 1;
-    }
+  .title,
+  .subTitle {
+    opacity: 1;
   }
+}
+.title,
+.subTitle {
+  opacity: 0;
 }
 
 .title {
-  opacity: 0;
   transition: 0.2s;
   width: 250px;
-  padding: 12px 20px;
+  padding: 12px 0 0 20px;
   cursor: pointer;
+  font-family: "Bruno Ace SC" !important;
+  font-size: 28px;
+}
+.subTitle {
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: initial;
+  white-space: nowrap;
 }
 .overlay {
   z-index: 99;
@@ -48,6 +59,8 @@
 .logo {
   position: relative;
   display: flex;
+
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-bottom: 10px;

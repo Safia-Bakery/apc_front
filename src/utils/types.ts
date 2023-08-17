@@ -50,9 +50,11 @@ export interface Order {
   id: number | string;
   rating: number;
   created_at: Date;
+  started_at: Date;
   status: number;
   urgent: boolean;
   user: UserTypes;
+  user_manager: string;
   brigada: {
     id: number | string;
     name: string;
@@ -75,6 +77,8 @@ export interface Order {
     id: number;
     amount: number;
     comment: string;
+    user: UserTypes;
+    created_at: Date;
     tool: {
       code: string;
       id: number;
@@ -89,6 +93,7 @@ export interface Order {
     longtitude: number;
     origin: number;
     latitude: number;
+    parentfillial: { name: string };
     country: string;
     status: number;
   };

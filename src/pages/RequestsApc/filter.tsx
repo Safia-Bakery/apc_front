@@ -5,7 +5,7 @@ import {
 } from "src/utils/helpers";
 
 import { useAppSelector } from "src/redux/utils/types";
-import { branchSelector, categorySelector } from "src/redux/reducers/cache";
+import { categorySelector } from "src/redux/reducers/cache";
 import { FC, useEffect, useRef, useState } from "react";
 import useOrders from "src/hooks/useOrders";
 import useDebounce from "src/hooks/useDebounce";
@@ -15,6 +15,9 @@ import MainSelect from "src/components/BaseInputs/MainSelect";
 import BaseInput from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
+import BranchSelect from "src/components/BranchSelect";
+import useQueryString from "src/hooks/useQueryString";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   currentPage: number;
@@ -22,12 +25,15 @@ interface Props {
 
 const InventoryFilter: FC<Props> = ({ currentPage }) => {
   const initialLoadRef = useRef(true);
-  const branches = useAppSelector(branchSelector);
+  const navigate = useNavigate();
   const categories = useAppSelector(categorySelector);
+
+  const choose_fillial = useQueryString("choose_fillial");
+  const branchJson = useQueryString("branch");
+  const branch = branchJson && JSON.parse(branchJson);
 
   const [id, $id] = useDebounce<number>(0);
   const [department, $department] = useState<string>();
-  const [fillial_id, $fillial_id] = useState<number>();
   const [category_id, $category_id] = useState<number>();
   const [urgent, $urgent] = useState<boolean>();
   const [startDate, $startDate] = useState<Date | null>();
@@ -44,7 +50,7 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
       created_to: startDate?.toISOString(),
       ...(!!id && { id }),
       ...(!!department && { department }),
-      ...(!!fillial_id && { fillial_id }),
+      ...(!!branch?.id && { fillial_id: branch?.id }),
       ...(!!category_id && { category_id }),
       ...(!!request_status && { request_status }),
       ...(!!user && { user }),
@@ -66,7 +72,7 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
   }, [
     id,
     department,
-    fillial_id,
+    branch?.id,
     category_id,
     urgent,
     startDate,
@@ -77,8 +83,6 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
   ]);
 
   const startRange = (start: Date | null) => $startDate(start);
-
-  const finishRange = (start: Date | null) => $endDate(start);
 
   return (
     <>
@@ -92,11 +96,21 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
         </BaseInput>
       </td>
       <td className="p-0">
-        <BaseInputs className="m-2">
-          <MainSelect
-            values={branches}
-            onChange={(e) => $fillial_id(Number(e.target.value))}
-          />
+        <td className="p-0">
+          <BaseInput className="m-2">
+            <MainInput onChange={(e) => $user(e.target.value)} />
+          </BaseInput>
+        </td>
+      </td>
+      <td className="p-0">
+        <BaseInputs className="m-2 position-relative">
+          <div
+            className="pointer"
+            onClick={() => navigate("?choose_fillial=true")}
+          >
+            <MainInput value={branch?.name || ""} />
+          </div>
+          {!!choose_fillial && choose_fillial !== "false" && <BranchSelect />}
         </BaseInputs>
       </td>
       <td className="p-0">
@@ -115,11 +129,14 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
           />
         </BaseInputs>
       </td>
+
       <td className="p-0">
-        <MainDatePicker selected={startDate} onChange={startRange} />
+        <BaseInput className="m-2">
+          <MainInput onChange={(e) => $user(e.target.value)} />
+        </BaseInput>
       </td>
       <td className="p-0">
-        <MainDatePicker selected={endDate} onChange={finishRange} />
+        <MainDatePicker selected={startDate} onChange={startRange} />
       </td>
       <td className="p-0">
         <BaseInputs className="m-2">
@@ -129,12 +146,11 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
           />
         </BaseInputs>
       </td>
-      <td className="p-0">
+      <td>
         <BaseInput className="m-2">
           <MainInput onChange={(e) => $user(e.target.value)} />
         </BaseInput>
       </td>
-      <td></td>
     </>
   );
 };

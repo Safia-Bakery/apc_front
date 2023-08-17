@@ -11,6 +11,7 @@ import { successToast } from "src/utils/toast";
 import { useNavigateParams } from "src/hooks/useCustomNavigate";
 import deleteExpenditureMutation from "src/hooks/mutation/deleteExpenditure";
 import useToken from "src/hooks/useToken";
+import dayjs from "dayjs";
 
 const column = [
   { name: "#" },
@@ -113,11 +114,8 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
                   <td>{item?.tool?.name}</td>
                   <td>{item?.amount}</td>
                   <td>{item?.comment}</td>
-                  <td>
-                    {/* {dayjs(order?.time_created).format("DD-MM-YYYY HH:mm")} */}
-                    -----
-                  </td>
-                  <td>{"item.author.name"}</td>
+                  <td>{dayjs(item?.created_at).format("DD.MM.YYYY HH:mm")}</td>
+                  <td>{item.user.full_name}</td>
                   <td width={50}>
                     <div
                       className="d-flex justify-content-center pointer"

@@ -155,7 +155,7 @@ const TelegramAddProduct = () => {
               </thead>
 
               <tbody>
-                {order?.expanditure?.map((item, idx) => (
+                {order?.expanditure?.map((item) => (
                   <tr className="bg-blue" key={item.id}>
                     <td>{item?.tool?.name}</td>
                     <td>{item?.amount}</td>

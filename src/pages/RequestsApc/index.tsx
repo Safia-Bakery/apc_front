@@ -15,14 +15,15 @@ import cl from "classnames";
 
 const column = [
   { name: "#", key: "" },
-  { name: "Номер", key: "id" },
-  { name: "Отдел", key: "fillial.name" },
+  { name: "Номер заявки", key: "id" },
+  { name: "Клиент", key: "user" },
+  { name: "Филиал/Отдел", key: "name" },
   { name: "Группа проблем", key: "category.name" },
   { name: "Срочно", key: "urgent" },
-  { name: "Дата выполнения", key: "finished_at" },
-  { name: "Дата", key: "created_at" },
+  { name: "Бригада", key: "brigada" },
+  { name: "Дата поступления", key: "created_at" },
   { name: "Статус", key: "status" },
-  { name: "Автор", key: "user.name" },
+  { name: "Изменил", key: "user_manager" },
 ];
 
 const RequestsApc = () => {
@@ -100,32 +101,41 @@ const RequestsApc = () => {
             <tbody>
               {(sortData()?.length ? sortData() : requests?.items)?.map(
                 (order, idx) => (
-                  <tr className={requestRows(order.status)} key={idx}>
+                  <tr className={requestRows(order?.status)} key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
                       <Link to={`/requests-apc/${order?.id}`}>{order?.id}</Link>
                     </td>
+                    <td>{order?.user?.full_name}</td>
                     <td>
-                      <span className={"not-set"}>{order?.fillial?.name}</span>
+                      <span className={"not-set"}>
+                        {order?.fillial?.parentfillial?.name}
+                      </span>
                     </td>
                     <td
                       className={cl({
-                        ["font-weight-bold"]: order.category.urgent,
+                        ["font-weight-bold"]: order?.category?.urgent,
                       })}
                     >
                       {order?.category?.name}
                     </td>
-                    <td>{!order?.category.urgent ? "Несрочный" : "Срочный"}</td>
                     <td>
-                      {order?.finished_at
-                        ? dayjs(order?.finished_at).format("DD-MM-YYYY HH:mm")
-                        : "---------"}
+                      {!order?.category?.urgent ? "Несрочный" : "Срочный"}
                     </td>
                     <td>
-                      {dayjs(order?.created_at).format("DD-MM-YYYY HH:mm")}
+                      {!!order?.brigada?.name
+                        ? order?.brigada?.name
+                        : "Не задано"}
                     </td>
-                    <td>{handleStatus(order.status)}</td>
-                    <td>{order?.user?.full_name}</td>
+                    <td>
+                      {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
+                    </td>
+                    <td>{handleStatus(order?.status)}</td>
+                    <td>
+                      {!!order?.user_manager
+                        ? order?.user_manager
+                        : "Не задано"}
+                    </td>
                   </tr>
                 )
               )}

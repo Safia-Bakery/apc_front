@@ -21,6 +21,7 @@ const useQueriesPrefetch = () => {
   });
   const { isLoading: branchLoading } = useBranches({
     enabled: !!token && !!user?.fillials,
+    origin: 0,
   });
   const { isLoading: categoryLoading } = useCategories({
     enabled: !!token && !!user?.category,

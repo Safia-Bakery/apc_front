@@ -17,18 +17,20 @@ export const useBranches = ({
   size,
   page = 1,
   body,
+  origin = 0,
 }: {
   enabled?: boolean;
   size?: number;
   page?: number;
   body?: BodyTypes;
+  origin?: number;
 }) => {
   const dispatch = useAppDispatch();
   return useQuery({
-    queryKey: ["branches", page],
+    queryKey: ["branches"],
     queryFn: () =>
       apiClient
-        .get("/fillials", { page, size, ...body })
+        .get("/fillials", { page, size, origin, ...body })
         .then(({ data: response }) => {
           dispatch(cachedBranches(response as BranchTypes));
           return response as BranchTypes;

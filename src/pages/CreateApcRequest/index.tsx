@@ -7,47 +7,29 @@ import { useNavigate } from "react-router-dom";
 import cl from "classnames";
 import requestMutation from "src/hooks/mutation/orderMutation";
 import { useAppSelector } from "src/redux/utils/types";
-import { branchSelector, categorySelector } from "src/redux/reducers/cache";
+import { categorySelector } from "src/redux/reducers/cache";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import styles from "./index.module.scss";
 import BaseInputs from "src/components/BaseInputs";
 import MainSelect from "src/components/BaseInputs/MainSelect";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
-import SelectBranches from "src/components/SelectBranches";
-import { BranchType } from "src/utils/types";
 import useQueryString from "src/hooks/useQueryString";
+import BranchSelect from "src/components/BranchSelect";
 
 const CreateApcRequest = () => {
   const [files, $files] = useState<FormData>();
-  const branches = useAppSelector(branchSelector);
   const categories = useAppSelector(categorySelector);
   const { mutate } = requestMutation();
   const choose_fillial = useQueryString("choose_fillial");
+  const branchJson = useQueryString("branch");
+  const branch = branchJson && JSON.parse(branchJson);
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
     getValues,
   } = useForm();
-
-  const [expandedItems, setExpandedItems] = useState<string[]>([]);
-
-  const handleItemClick = (itemId: string) => {
-    if (expandedItems.includes(itemId)) {
-      setExpandedItems(expandedItems.filter((id) => id !== itemId));
-    } else {
-      setExpandedItems([...expandedItems, itemId]);
-    }
-  };
-
-  const handleBranch = (product: BranchType) => {
-    reset({ fillial_id: product.id, fillial: product.name });
-    navigate("?");
-  };
-
-  const isItemExpanded = (itemId: string) => expandedItems.includes(itemId);
 
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
@@ -60,18 +42,17 @@ const CreateApcRequest = () => {
     $files(formData);
   };
   const onSubmit = () => {
-    const { category_id, fillial_id, description, product } = getValues();
+    const { category_id, description, product } = getValues();
     mutate(
       {
         category_id,
         product,
         description,
-        fillial_id,
+        fillial_id: branch?.id,
         files,
       },
       {
         onSuccess: () => {
-          // requestsRefetch();
           successToast("Заказ успешно создано");
           navigate("/requests-apc");
         },
@@ -101,21 +82,11 @@ const CreateApcRequest = () => {
             onClick={() => navigate("?choose_fillial=true")}
           >
             <MainInput
+              value={branch?.name || ""}
               register={register("fillial", { required: "Обязательное поле" })}
             />
           </div>
-          {!!choose_fillial && (
-            <>
-              <div className={styles.overlay} onClick={() => navigate("?")} />
-              <SelectBranches
-                className={styles.fillialBlock}
-                data={branches}
-                isItemExpanded={isItemExpanded}
-                handleItemClick={handleItemClick}
-                handleBranch={handleBranch}
-              />
-            </>
-          )}
+          {!!choose_fillial && choose_fillial !== "false" && <BranchSelect />}
         </BaseInputs>
         <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
           <MainSelect
@@ -144,10 +115,6 @@ const CreateApcRequest = () => {
         >
           <UploadComponent onFilesSelected={handleFilesSelected} />
         </BaseInputs>
-        {/* <div className="form-group d-flex align-items-center form-control">
-          <label className="mb-0 mr-2">Срочно</label>
-          <input type="checkbox" {...register("urgent")} />
-        </div> */}
         <div>
           <button
             type="submit"
