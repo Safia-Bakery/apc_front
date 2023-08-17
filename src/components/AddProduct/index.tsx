@@ -110,9 +110,9 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
               {products?.expanditure?.map((item, idx) => (
                 <tr className="bg-blue" key={item.id}>
                   <td width="40">{idx + 1}</td>
-                  <td>{item.tool.name}</td>
-                  <td>{item.amount}</td>
-                  <td>{"item.comment"}</td>
+                  <td>{item?.tool?.name}</td>
+                  <td>{item?.amount}</td>
+                  <td>{item?.comment}</td>
                   <td>
                     {/* {dayjs(order?.time_created).format("DD-MM-YYYY HH:mm")} */}
                     -----

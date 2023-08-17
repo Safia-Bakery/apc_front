@@ -96,11 +96,13 @@ const CreateBrigades = () => {
               register={register("brigadir", { required: "Обязательное поле" })}
             >
               <option value={undefined}></option>
-              {users?.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.username}
-                </option>
-              ))}
+              {users
+                ?.filter((item) => !!item.username)
+                ?.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.username}
+                  </option>
+                ))}
             </MainSelect>
           </BaseInputs>
         )}

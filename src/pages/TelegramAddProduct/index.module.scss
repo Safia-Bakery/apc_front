@@ -1,6 +1,10 @@
 .modalBody {
   padding: 20px 30px;
   position: relative;
+
+  @media (max-width: 1200px) {
+    padding: 10px;
+  }
 }
 .footer {
   padding: 15px;
@@ -26,4 +30,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+.tableHead {
+  font-weight: 600;
+  background-color: #fb404b !important;
+  color: white !important;
 }

@@ -42,12 +42,14 @@ import Loading from "../Loader";
 import ShowRemainsInStock from "src/pages/ShowRemainsInStock";
 import useQueryString from "src/hooks/useQueryString";
 import TelegramAddProduct from "src/pages/TelegramAddProduct";
+import RequestsIDesigners from "src/pages/RequestsIDesigners";
+import CreateDesignerRequest from "src/pages/CreateDesignerRequest";
 
 export const routes = [
   { element: <ControlPanel />, path: "/", screen: Screens.permitted },
   {
     element: <CreateITRequest />,
-    path: "/requests-designer/add",
+    path: "/requests-it/add",
     screen: Screens.requests_it,
   },
   {
@@ -71,8 +73,13 @@ export const routes = [
     screen: Screens.requests_it,
   },
   {
-    element: <RequestsIT />,
+    element: <RequestsIDesigners />,
     path: "/requests-designer",
+    screen: Screens.requests,
+  },
+  {
+    element: <CreateDesignerRequest />,
+    path: "/requests-designer/add",
     screen: Screens.requests_it,
   },
   { element: <Logs />, path: "/logs/:id", screen: Screens.requests },

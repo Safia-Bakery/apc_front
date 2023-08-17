@@ -74,6 +74,7 @@ export interface Order {
   expanditure: {
     id: number;
     amount: number;
+    comment: string;
     tool: {
       code: string;
       id: number;
@@ -223,8 +224,9 @@ export interface UsersTypes extends BasePaginatedRes {
 
 export enum Screens {
   requests = "requests",
-  // requests_apc = "requests_apc",
+  requests_apc = "requests_apc",
   requests_it = "requests_it",
+  requests_marketing = "requests_marketing",
   requests_inventory = "requests_inventory",
   brigada = "brigada",
   warehouse = "warehouse",

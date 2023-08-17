@@ -30,7 +30,7 @@ const routeNameMappings: { [key: string]: string } = {
   branches: "Филлиалы",
   "requests-inventory": "Заявка на инвентарь",
   "requests-apc": "Заявки APC",
-  "requests-designer": "Заявки IT",
+  "requests-designer": "Проектная работа для дизайнеров",
 };
 
 const Breadcrumbs: FC = () => {
@@ -49,8 +49,9 @@ const Breadcrumbs: FC = () => {
 
   pathSegments.reduce((prevPath, currentPath) => {
     const path = `${prevPath}/${currentPath}`;
-    const name =
-      routeNameMappings[currentPath] || currentPath.replace(/-/g, " ");
+    const name = location?.state?.name
+      ? location.state?.name
+      : routeNameMappings[currentPath] || currentPath.replace(/-/g, " ");
 
     breadcrumbs.push({ path, name });
 

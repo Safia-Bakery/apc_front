@@ -26,7 +26,7 @@ const userMutation = () => {
           .then((res) => {
             if (res.status === 200) return res;
           })
-          .catch((e) => e.message);
+          .catch((e) => errorToast(e.message));
       return apiClient
         .post({
           url: "/register",

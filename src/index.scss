@@ -95,9 +95,9 @@ input {
 .table-success {
   background-color: #e7ffcbd4 !important;
 }
-.ps-sidebar-container .css-8ry1do {
-  padding-right: 20px !important;
-}
+// .ps-sidebar-container .css-8ry1do {
+//   padding-right: 20px !important;
+// }
 .customSidebar {
   &:hover .ps-submenu-expand-icon.css-1cuxlhl {
     display: block !important;
@@ -112,6 +112,12 @@ input {
     display: block !important;
   }
 }
-.css-12w9als {
-  white-space: initial !important;
-}
+// .css-12w9als {
+//   white-space: initial !important;
+//   text-overflow: initial !important;
+//   display: flex;
+//   flex-wrap: nowrap !important;
+// }
+// .ps-submenu-content {
+//   overflow: hidden !important;
+// }

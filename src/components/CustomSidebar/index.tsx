@@ -42,7 +42,7 @@ const CustomSidebar = () => {
           {
             name: "Заявки",
             url: "/requests-apc",
-            icon: "/assets/icons/orders.svg",
+            icon: "/assets/icons/subOrder.svg",
             screen: Screens.requests,
           },
           {
@@ -62,13 +62,13 @@ const CustomSidebar = () => {
       {
         name: "Инвентарь",
         icon: "/assets/icons/orders.svg",
-        screen: Screens.requests,
+        screen: Screens.requests_inventory,
         subroutes: [
           {
             name: "Заявки",
             url: "/requests-inventory",
-            icon: "/assets/icons/orders.svg",
-            screen: Screens.requests,
+            icon: "/assets/icons/subOrder.svg",
+            screen: Screens.requests_inventory,
           },
         ],
       },
@@ -76,13 +76,13 @@ const CustomSidebar = () => {
       {
         name: "IT",
         icon: "/assets/icons/orders.svg",
-        screen: Screens.requests,
+        screen: Screens.requests_it,
         subroutes: [
           {
             name: "Заявки",
             url: "/requests-designer",
-            icon: "/assets/icons/orders.svg",
-            screen: Screens.requests,
+            icon: "/assets/icons/subOrder.svg",
+            screen: Screens.requests_it,
           },
         ],
       },
@@ -90,37 +90,37 @@ const CustomSidebar = () => {
       {
         name: "Маркетинг",
         icon: "/assets/icons/orders.svg",
-        screen: Screens.requests,
+        screen: Screens.requests_marketing,
         subroutes: [
           {
             name: "Проектная работа для дизайнеров",
             url: "/requests-designer",
-            icon: "/assets/icons/orders.svg",
-            screen: Screens.requests,
+            icon: "/assets/icons/subOrder.svg",
+            screen: Screens.requests_marketing,
           },
           {
             name: "Локальный маркетинг",
             url: "/requests-local-marketing",
-            icon: "/assets/icons/orders.svg",
-            screen: Screens.requests,
+            icon: "/assets/icons/subOrder.svg",
+            screen: Screens.requests_marketing,
           },
           {
             name: "Промо-продукция",
             url: "/requests-promo-production",
-            icon: "/assets/icons/orders.svg",
-            screen: Screens.requests,
+            icon: "/assets/icons/subOrder.svg",
+            screen: Screens.requests_marketing,
           },
           {
             name: "POS-Материалы",
             url: "/requests-pos",
-            icon: "/assets/icons/orders.svg",
-            screen: Screens.requests,
+            icon: "/assets/icons/subOrder.svg",
+            screen: Screens.requests_marketing,
           },
           {
             name: "Комплекты",
             url: "/requests-kits",
-            icon: "/assets/icons/orders.svg",
-            screen: Screens.requests,
+            icon: "/assets/icons/subOrder.svg",
+            screen: Screens.requests_marketing,
           },
         ],
       },

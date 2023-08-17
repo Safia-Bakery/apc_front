@@ -19,6 +19,9 @@ import Header from "src/components/Header";
 import { RequestStatus } from "src/utils/types";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import cl from "classnames";
+import deleteExpenditureMutation from "src/hooks/mutation/deleteExpenditure";
+
+const column = [{ name: "Наименование" }, { name: "Количество" }, { name: "" }];
 
 const TelegramAddProduct = () => {
   const { id } = useParams();
@@ -28,9 +31,10 @@ const TelegramAddProduct = () => {
   const itemModal = useQueryString("itemModal");
   const product = JSON.parse(productJson!) as { id: number; name: string };
   const { mutate: attach } = attachBrigadaMutation();
+  const { mutate: deleteExp } = deleteExpenditureMutation();
 
   const { mutate } = usedItemsMutation();
-  const { data: order } = useOrder({
+  const { data: order, refetch } = useOrder({
     id: Number(id),
   });
 
@@ -58,9 +62,21 @@ const TelegramAddProduct = () => {
           successToast("Продукт добавлен");
           removeRoute(["product"]);
           reset();
+          refetch();
         },
       }
     );
+  };
+
+  const handleDelete = (id: number) => () => {
+    deleteExp(id, {
+      onSuccess: (data: any) => {
+        if (data.success) {
+          successToast("Успешно удалено");
+          refetch();
+        }
+      },
+    });
   };
 
   const handleFinishOrder =
@@ -77,7 +93,7 @@ const TelegramAddProduct = () => {
             if (data.status === 200) {
               successToast("Успешно закончен");
               //@ts-ignore
-              Telegram.WebApp.MainButton.setText("Choose Color")
+              Telegram.WebApp.MainButton.setText("Закрыть")
                 .show()
                 .onClick(function () {
                   //@ts-ignore
@@ -123,12 +139,46 @@ const TelegramAddProduct = () => {
           <BaseInput label="Примичание">
             <MainTextArea register={register("comment")} />
           </BaseInput>
+
+          {!!order?.expanditure?.length && (
+            <table className="table table-hover">
+              <thead>
+                <tr>
+                  {column.map(({ name }) => {
+                    return (
+                      <th className={styles.tableHead} key={name}>
+                        {name}
+                      </th>
+                    );
+                  })}
+                </tr>
+              </thead>
+
+              <tbody>
+                {order?.expanditure?.map((item, idx) => (
+                  <tr className="bg-blue" key={item.id}>
+                    <td>{item?.tool?.name}</td>
+                    <td>{item?.amount}</td>
+                    <td width={50}>
+                      <div
+                        className="d-flex justify-content-center pointer"
+                        onClick={handleDelete(item.id)}
+                      >
+                        <img src="/assets/icons/delete.svg" alt="delete" />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
 
         <hr />
 
         <div className={styles.footer}>
           <button
+            type="button"
             onClick={handleFinishOrder({ status: RequestStatus.done })}
             className="btn btn-success btn-fill"
           >
@@ -140,7 +190,6 @@ const TelegramAddProduct = () => {
         </div>
       </div>
     </form>
-    // </Modal>
   );
 };
 

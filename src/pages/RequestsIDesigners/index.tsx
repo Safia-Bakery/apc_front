@@ -9,23 +9,26 @@ import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { handleStatus, itemsPerPage, requestRows } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
-import RequestsFilter from "./filter";
+import InventoryFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
-import cl from "classnames";
+import styles from "./index.module.scss";
 
 const column = [
   { name: "#", key: "" },
   { name: "Номер", key: "id" },
-  { name: "Отдел", key: "fillial.name" },
-  { name: "Группа проблем", key: "category.name" },
-  { name: "Срочно", key: "urgent" },
-  { name: "Дата выполнения", key: "finished_at" },
-  { name: "Дата", key: "created_at" },
-  { name: "Статус", key: "status" },
-  { name: "Автор", key: "user.name" },
+  { name: "Сотрудник", key: "type" },
+  { name: "Исполнитель", key: "fillial.name" },
+  { name: "Филиал", key: "fillial.name" },
+  { name: "Категория", key: "fillial.name" },
+  { name: "Комментарий", key: "fillial.name" },
+  {
+    name: "Статус",
+    key: "status",
+  },
+  { name: "Дата", key: "category.name" },
 ];
 
-const RequestsApc = () => {
+const RequestsIDesigners = () => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -44,10 +47,11 @@ const RequestsApc = () => {
     refetch,
     isLoading: orderLoading,
   } = useOrders({
-    enabled: true,
+    enabled: false,
     size: itemsPerPage,
     page: currentPage,
   });
+
   const sortData = () => {
     if (requests?.items && sortKey) {
       const sortedData = [...requests?.items].sort((a, b) => {
@@ -74,8 +78,7 @@ const RequestsApc = () => {
 
   return (
     <Card>
-      <Header title={"Заявки"}>
-        <button className="btn btn-primary btn-fill mr-2">Экспорт</button>
+      <Header title={"Заявка на инвентарь"}>
         <button
           onClick={() => navigate("add")}
           className="btn btn-success btn-fill"
@@ -93,7 +96,7 @@ const RequestsApc = () => {
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            <RequestsFilter currentPage={currentPage} />
+            <InventoryFilter currentPage={currentPage} />
           </TableHead>
 
           {!!requests?.items?.length && (
@@ -103,29 +106,23 @@ const RequestsApc = () => {
                   <tr className={requestRows(order.status)} key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
-                      <Link to={`/requests-apc/${order?.id}`}>{order?.id}</Link>
+                      <Link to={`/requests-designer/${order?.id}`}>
+                        {order?.id}
+                      </Link>
                     </td>
                     <td>
-                      <span className={"not-set"}>{order?.fillial?.name}</span>
+                      <span className="not-set">{order?.user?.full_name}</span>
                     </td>
-                    <td
-                      className={cl({
-                        ["font-weight-bold"]: order.category.urgent,
-                      })}
-                    >
-                      {order?.category?.name}
+                    <td>-------------</td>
+                    <td>{order?.fillial?.name}</td>
+                    <td>{order?.category?.name}</td>
+                    <td width={100} className={styles.text}>
+                      {order?.description}
                     </td>
-                    <td>{!order?.category.urgent ? "Несрочный" : "Срочный"}</td>
-                    <td>
-                      {order?.finished_at
-                        ? dayjs(order?.finished_at).format("DD-MM-YYYY HH:mm")
-                        : "---------"}
-                    </td>
+                    <td>{handleStatus(order?.status)}</td>
                     <td>
                       {dayjs(order?.created_at).format("DD-MM-YYYY HH:mm")}
                     </td>
-                    <td>{handleStatus(order.status)}</td>
-                    <td>{order?.user?.full_name}</td>
                   </tr>
                 )
               )}
@@ -150,4 +147,4 @@ const RequestsApc = () => {
   );
 };
 
-export default RequestsApc;
+export default RequestsIDesigners;

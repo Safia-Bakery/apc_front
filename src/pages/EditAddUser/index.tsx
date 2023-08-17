@@ -49,7 +49,7 @@ const EditAddUser = () => {
         username,
         group_id,
         password,
-        status,
+        status: !status ? 2 : 0,
         phone_number: fixedString(phone_number),
         ...(!!email && { email }),
         ...(brigada_id && { brigada_id }),

@@ -1,0 +1,36 @@
+.textArea {
+  height: initial !important;
+}
+.uploadImage {
+  display: flex;
+  flex-direction: column;
+  padding-right: 0 !important;
+}
+.btn {
+  @media (max-width: 720px) {
+    width: 100% !important;
+  }
+}
+.form {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-size: 12px;
+    text-transform: uppercase;
+    padding-left: 0;
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+.fillialBlock {
+  z-index: 100;
+  position: relative;
+}
