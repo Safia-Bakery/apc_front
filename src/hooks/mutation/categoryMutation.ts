@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { apiClient } from "src/main";
+import { Departments } from "src/utils/types";
 
 interface Body {
   name: string;
@@ -7,6 +8,7 @@ interface Body {
   description: string;
   id?: number;
   urgent: number;
+  department?: Departments;
 }
 
 const categoryMutation = () => {

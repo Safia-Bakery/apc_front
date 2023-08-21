@@ -2,18 +2,19 @@ import { MenuItem, SubMenu } from "react-pro-sidebar";
 import styles from "./index.module.scss";
 import { Link, useMatch } from "react-router-dom";
 import cl from "classnames";
-import { FC, useState } from "react";
-import { Screens } from "src/utils/types";
-import useToken from "src/hooks/useToken";
-import { isMobile, permissioms as me } from "src/utils/helpers";
+import { FC } from "react";
+import { MainPerm, MarketingSubDep } from "src/utils/types";
+import { isMobile } from "src/utils/helpers";
 import { sidebarHandler } from "src/redux/reducers/selects";
-import { useAppDispatch } from "src/redux/utils/types";
+import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
+import { permissionSelector } from "src/redux/reducers/auth";
 
 interface Item {
   name: string;
   url: string;
   icon: string;
-  screen: Screens;
+  screen: MainPerm;
+  state?: string;
 }
 
 interface Props {
@@ -24,9 +25,7 @@ interface Props {
 
 const Subroutes: FC<Props> = ({ subroutes, routeIcon, routeName }) => {
   const dispatch = useAppDispatch();
-  const { data: user } = useToken({ enabled: false });
-  //@ts-ignore
-  const isSuperAdmin = user?.permissions === "*";
+  const permission = useAppSelector(permissionSelector);
 
   return (
     <SubMenu
@@ -39,7 +38,7 @@ const Subroutes: FC<Props> = ({ subroutes, routeIcon, routeName }) => {
       className={cl(styles.subMenuItem)}
     >
       {subroutes.map((sub) => {
-        if ((isSuperAdmin ? me : user?.permissions)?.[sub.screen])
+        if (permission?.[sub.screen])
           return (
             <MenuItem
               key={sub.url + sub.name}
@@ -52,7 +51,7 @@ const Subroutes: FC<Props> = ({ subroutes, routeIcon, routeName }) => {
                 <Link
                   onClick={() => isMobile && dispatch(sidebarHandler(false))}
                   to={sub.url}
-                  state={{ name: sub.name }}
+                  state={{ name: sub.name, screen: sub?.state }}
                 />
               }
             >

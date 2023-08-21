@@ -10,6 +10,7 @@ import TableViewBtn from "src/components/TableViewBtn";
 import useCategories from "src/hooks/useCategories";
 import CategoriesFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
+import useQueryString from "src/hooks/useQueryString";
 
 const column = [
   { name: "#", key: "" },
@@ -21,7 +22,7 @@ const column = [
 
 const Categories = () => {
   const navigate = useNavigate();
-
+  const dep = useQueryString("dep");
   const [sortKey, setSortKey] = useState<keyof Category>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
@@ -37,6 +38,7 @@ const Categories = () => {
   const { data: categories, refetch } = useCategories({
     size: itemsPerPage,
     page: currentPage,
+    ...(dep && { department: +dep }),
   });
 
   const sortData = () => {
@@ -66,7 +68,7 @@ const Categories = () => {
       <Header title={"Категории"}>
         <button
           className="btn btn-success btn-fill"
-          onClick={handleNavigate(`add`)}
+          onClick={handleNavigate(`add${!!dep ? `?dep=${dep}` : ""}`)}
         >
           Добавить
         </button>
@@ -85,17 +87,21 @@ const Categories = () => {
               <CategoriesFilter currentPage={currentPage} />
             </TableHead>
 
-            {!!categories?.items.length && (
+            {!!categories?.items?.length && (
               <tbody>
                 {(sortData()?.length ? sortData() : categories?.items)?.map(
                   (category, idx) => (
                     <tr key={idx} className="bg-blue">
                       <td width="40">{handleIdx(idx)}</td>
-                      <td>{category.name}</td>
+                      <td>{category?.name}</td>
                       <td>{category?.department}</td>
-                      <td>{category.status ? "Активный" : "Неактивный"}</td>
+                      <td>{category?.status ? "Активный" : "Неактивный"}</td>
                       <TableViewBtn
-                        onClick={handleNavigate(`/categories/${category.id}`)}
+                        onClick={handleNavigate(
+                          `/categories/${category.id}?${
+                            category?.department ? `dep=${category.department}` : ""
+                          }`
+                        )}
                       />
                     </tr>
                   )

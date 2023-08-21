@@ -3,7 +3,7 @@ import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
 import Pagination from "src/components/Pagination";
 import { useEffect, useMemo, useState } from "react";
-import { BranchType } from "src/utils/types";
+import { BranchType, MainPerm } from "src/utils/types";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
@@ -13,6 +13,8 @@ import ItemsCount from "src/components/ItemsCount";
 import useBranchSync from "src/hooks/useBranchSync";
 import Loading from "src/components/Loader";
 import useToken from "src/hooks/useToken";
+import { useAppSelector } from "src/redux/utils/types";
+import { permissionSelector } from "src/redux/reducers/auth";
 
 const column = [
   { name: "#", key: "id" },
@@ -36,10 +38,9 @@ const Branches = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const { refetch: branchSync, isFetching } = useBranchSync({ enabled: false });
+  const permisisons = useAppSelector(permissionSelector);
 
-  const { data: me } = useToken({});
-  //@ts-ignore
-  const iikoBtn = me!.permissions.isbrigadir || me?.permissions === "*";
+  const iikoBtn = permisisons?.[MainPerm.synch_fillials_iiko];
 
   const { data: branches, refetch } = useBranches({
     size: itemsPerPage,

@@ -4,13 +4,11 @@ import {
   BranchTypes,
   BrigadaType,
   CategoryTypes,
-  PermissionTypes,
   RoleTypes,
   UsersType,
 } from "src/utils/types";
 
 interface State {
-  permissions: PermissionTypes[];
   brigada: BrigadaType[];
   roles: RoleTypes[];
   categories: CategoryTypes["items"];
@@ -19,7 +17,6 @@ interface State {
 }
 
 const initialState: State = {
-  permissions: [],
   brigada: [],
   roles: [],
   categories: [],

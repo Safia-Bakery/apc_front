@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import { EPresetTimes, FileType, RequestStatus, Screens } from "./types";
+import { Departments, EPresetTimes, FileType, RequestStatus } from "./types";
 
 export const itemsPerPage = 50;
 
@@ -106,6 +106,7 @@ export const detectFileType = (url: string) => {
     "HEIC",
     "IMG",
     "TIFF",
+    "svg",
   ];
   const videoExtensions = ["mp4", "avi", "mkv", "mov", "webm"];
 
@@ -118,20 +119,17 @@ export const detectFileType = (url: string) => {
   }
 };
 
-export const departments = [
-  { id: 1, name: "APC" },
-  { id: 2, name: "Инвентарь" },
-  // { id: 3, name: "IT" },
-];
-export const permissioms = Object.keys(Screens).reduce((acc: any, key) => {
-  acc[key] = true;
-  return acc;
-}, {});
-
 export const isMobile = window.innerWidth <= 1200;
 
-export const BranchDep = {
-  all: 0,
-  apc: 1,
-  inventory: 2,
+export const handleDepartment = (dep: Departments | undefined) => {
+  switch (dep) {
+    case Departments.apc:
+      return "APC";
+    case Departments.inventory:
+      return "Инвентарь";
+    case Departments.marketing:
+      return "Маркетинг";
+    case Departments.it:
+      return "IT";
+  }
 };

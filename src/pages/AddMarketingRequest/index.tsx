@@ -1,57 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { successToast } from "src/utils/toast";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import cl from "classnames";
 import requestMutation from "src/hooks/mutation/orderMutation";
-import { useAppSelector } from "src/redux/utils/types";
-import { branchSelector, categorySelector } from "src/redux/reducers/cache";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import styles from "./index.module.scss";
 import BaseInputs from "src/components/BaseInputs";
 import MainSelect from "src/components/BaseInputs/MainSelect";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
-import SelectBranches from "src/components/SelectBranches";
-import { BranchType } from "src/utils/types";
 import useQueryString from "src/hooks/useQueryString";
 import BranchSelect from "src/components/BranchSelect";
+import useCategories from "src/hooks/useCategories";
+import Loading from "src/components/Loader";
+import { useNavigateParams } from "src/hooks/useCustomNavigate";
+import { MarketingSubDep, MarketingSubDepRu } from "src/utils/types";
 
-const CreateDesignerRequest = () => {
+const AddMarketingRequest = () => {
   const [files, $files] = useState<FormData>();
-  const branches = useAppSelector(branchSelector);
-  const categories = useAppSelector(categorySelector);
   const { mutate } = requestMutation();
   const choose_fillial = useQueryString("choose_fillial");
+  const branchJson = useQueryString("branch");
+  const branch = branchJson && JSON.parse(branchJson);
+  const sub_id = useQueryString("sub_id");
+  const { data: categories, isLoading } = useCategories({
+    sub_id: Number(sub_id),
+  });
+
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
     getValues,
+    reset,
   } = useForm();
 
-  const [expandedItems, setExpandedItems] = useState<string[]>([]);
-
-  const handleItemClick = (itemId: string) => {
-    if (expandedItems.includes(itemId)) {
-      setExpandedItems(expandedItems.filter((id) => id !== itemId));
-    } else {
-      setExpandedItems([...expandedItems, itemId]);
-    }
-  };
-
-  const handleBranch = (product: BranchType) => {
-    reset({ fillial_id: product.id, fillial: product.name });
-    navigate("?");
-  };
-
-  const isItemExpanded = (itemId: string) => expandedItems.includes(itemId);
-
-  const navigate = useNavigate();
-  const goBack = () => navigate(-1);
+  const back = useNavigate();
+  const navigate = useNavigateParams();
+  const goBack = () => back(-1);
 
   const handleFilesSelected = (data: FileItem[]) => {
     const formData = new FormData();
@@ -61,24 +50,33 @@ const CreateDesignerRequest = () => {
     $files(formData);
   };
   const onSubmit = () => {
-    const { category_id, fillial_id, description, product } = getValues();
+    const { category_id, description, product } = getValues();
     mutate(
       {
         category_id,
         product,
         description,
-        fillial_id,
+        fillial_id: branch?.id,
         files,
       },
       {
         onSuccess: () => {
           // requestsRefetch();
           successToast("Заказ успешно создано");
-          navigate("/requests-apc");
+          back(
+            `/marketing-${MarketingSubDep[Number(sub_id)]}?sub_id=${sub_id}`
+          );
         },
       }
     );
   };
+  useEffect(() => {
+    reset({
+      fillial_id: branch?.name,
+    });
+  }, [branch?.name]);
+
+  if (isLoading) return <Loading />;
 
   return (
     <Card>
@@ -95,13 +93,14 @@ const CreateDesignerRequest = () => {
         <BaseInputs
           className="position-relative"
           label="ФИЛИАЛ"
-          error={errors.department}
+          error={errors.fillial}
         >
           <div
             className="pointer"
-            onClick={() => navigate("?choose_fillial=true")}
+            onClick={() => navigate({ choose_fillial: true })}
           >
             <MainInput
+              value={branch?.name || ""}
               register={register("fillial", { required: "Обязательное поле" })}
             />
           </div>
@@ -121,16 +120,8 @@ const CreateDesignerRequest = () => {
         </BaseInputs>
         <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
           <MainSelect
-            values={categories}
+            values={categories?.items || []}
             register={register("category_id", {
-              required: "Обязательное поле",
-            })}
-          />
-        </BaseInputs>
-        <BaseInputs label="ПОДКАТЕГОРИЕ" error={errors.department}>
-          <MainSelect
-            values={categories}
-            register={register("sub_category_id", {
               required: "Обязательное поле",
             })}
           />
@@ -167,4 +158,4 @@ const CreateDesignerRequest = () => {
   );
 };
 
-export default CreateDesignerRequest;
+export default AddMarketingRequest;

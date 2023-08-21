@@ -10,7 +10,11 @@ import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import { successToast } from "src/utils/toast";
 import { baseURL } from "src/main";
-import { detectFileType, handleStatus } from "src/utils/helpers";
+import {
+  detectFileType,
+  handleDepartment,
+  handleStatus,
+} from "src/utils/helpers";
 import { useForm } from "react-hook-form";
 import { FileType, MainPerm, Order, RequestStatus } from "src/utils/types";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
@@ -31,12 +35,10 @@ const enum ModalTypes {
   showPhoto = "showPhoto",
 }
 
-const ShowRequestApc = () => {
+const ShowMarketingRequest = () => {
   const { id } = useParams();
-  const tokenKey = useQueryString("key");
   const permissions = useAppSelector(permissionSelector);
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
   const { mutate: attach } = attachBrigadaMutation();
@@ -48,15 +50,8 @@ const ShowRequestApc = () => {
   const brigada = JSON.parse(brigadaJson!) as Order["brigada"];
   const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
-  const inputRef = useRef<any>(null);
-  const upladedFiles = useAppSelector(reportImgSelector);
-
-  const { mutate } = uploadFileMutation();
 
   const handleNavigate = (route: string) => () => navigate(route);
-
-  const handleFilesSelected = (data: FileItem[]) =>
-    dispatch(uploadReport(data));
 
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
@@ -86,24 +81,6 @@ const ShowRequestApc = () => {
       );
       removeParams(["modal"]);
     };
-
-  const handlerSubmitFile = () => {
-    if (upladedFiles?.length)
-      mutate(
-        {
-          request_id: Number(id),
-          files: upladedFiles,
-        },
-        {
-          onSuccess: () => {
-            orderRefetch();
-            successToast("Сохранено");
-            inputRef.current.value = null;
-            dispatch(uploadReport(null));
-          },
-        }
-      );
-  };
 
   const renderBtns = useMemo(() => {
     if (permissions?.[MainPerm.request_ettach] && isNew && !!brigada?.name)
@@ -183,10 +160,6 @@ const ShowRequestApc = () => {
   }, [permissions, order?.status, order?.brigada?.name]);
 
   useEffect(() => {
-    if (tokenKey) dispatch(loginHandler(tokenKey));
-  }, [tokenKey]);
-
-  useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
@@ -229,7 +202,7 @@ const ShowRequestApc = () => {
                   </tr>
                   <tr>
                     <th>Тип</th>
-                    <td>APC</td>
+                    <td>{handleDepartment(order?.category?.department)}</td>
                   </tr>
                   <tr>
                     <th>Группа проблем</th>
@@ -333,7 +306,9 @@ const ShowRequestApc = () => {
                   <tr>
                     <th>Дата изменение</th>
                     <td>
-                      {dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")}
+                      {order?.started_at
+                        ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
+                        : "Не задано"}
                     </td>
                   </tr>
                   <tr className="font-weight-bold">
@@ -349,34 +324,9 @@ const ShowRequestApc = () => {
         </div>
       </Card>
 
-      {permissions?.[MainPerm.request_add_expanditure] &&
-        order?.status !== 0 && (
-          <Card>
-            <Header title={"Добавить фотоотчёт"} />
-            <div className="m-3">
-              <UploadComponent
-                onFilesSelected={handleFilesSelected}
-                inputRef={inputRef}
-              />
-              <button
-                onClick={handlerSubmitFile}
-                type="button"
-                className="btn btn-success float-end btn-fill my-3"
-              >
-                Сохранить
-              </button>
-            </div>
-          </Card>
-        )}
-
-      {!isNew && (
-        <AddProduct>
-          <div className="p-2">{renderBtns}</div>
-        </AddProduct>
-      )}
       <ShowRequestModals />
     </>
   );
 };
 
-export default ShowRequestApc;
+export default ShowMarketingRequest;

@@ -3,6 +3,8 @@ import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import {
   loginHandler,
   logoutHandler,
+  permissionHandler,
+  permissionSelector,
   tokenSelector,
 } from "src/redux/reducers/auth";
 import CreateApcRequest from "src/pages/CreateApcRequest";
@@ -29,7 +31,7 @@ import EditAddRole from "src/pages/EditAddRole";
 import ShowRole from "src/pages/ShowRole";
 import BreadCrump from "../BreadCrump";
 import CreateBrigades from "src/pages/CreateBrigades";
-import { Screens } from "src/utils/types";
+import { MainPerm, MarketingSubDep } from "src/utils/types";
 import useQueriesPrefetch from "src/hooks/sync/useQueriesPrefetch";
 import CustomSidebar from "../CustomSidebar";
 import Logs from "src/pages/LogsScreen";
@@ -37,115 +39,209 @@ import RequestInventory from "src/pages/RequestInventory";
 import AddInventoryRequest from "src/pages/AddInventoryRequest";
 import RequestsIT from "src/pages/RequestsIT";
 import CreateITRequest from "src/pages/CreateITRequest";
-import { permissioms as me } from "src/utils/helpers";
 import Loading from "../Loader";
 import ShowRemainsInStock from "src/pages/ShowRemainsInStock";
 import useQueryString from "src/hooks/useQueryString";
 import TelegramAddProduct from "src/pages/TelegramAddProduct";
-import RequestsIDesigners from "src/pages/RequestsIDesigners";
-import CreateDesignerRequest from "src/pages/CreateDesignerRequest";
+import RequestsMarketing from "src/pages/RequestsMarketing";
+import AddMarketingRequest from "src/pages/AddMarketingRequest";
+import ShowMarketingRequest from "src/pages/ShowMarketingRequest";
 
 export const routes = [
-  { element: <ControlPanel />, path: "/", screen: Screens.permitted },
+  { element: <ControlPanel />, path: "/", screen: MainPerm.add_brigada },
   {
     element: <CreateITRequest />,
     path: "/requests-it/add",
-    screen: Screens.requests_it,
+    screen: MainPerm.add_request_apc,
   },
   {
     element: <CreateApcRequest />,
     path: "/requests-apc/add",
-    screen: Screens.requests,
+    screen: MainPerm.add_request_apc,
   },
   {
     element: <ShowRequestApc />,
     path: "/requests-apc/:id",
-    screen: Screens.requests,
+    screen: MainPerm.edit_request_apc,
   },
   {
     element: <RequestsApc />,
     path: "/requests-apc",
-    screen: Screens.requests,
+    screen: MainPerm.get_requests_apc,
   },
   {
-    element: <ShowRequestApc />,
-    path: "/requests-designer/:id",
-    screen: Screens.requests_it,
+    element: <ShowMarketingRequest />,
+    path: `/marketing-${MarketingSubDep[1]}/:id`,
+    screen: MainPerm.edit_designers_requests,
   },
   {
-    element: <RequestsIDesigners />,
-    path: "/requests-designer",
-    screen: Screens.requests,
+    element: <ShowMarketingRequest />,
+    path: `/marketing-${MarketingSubDep[2]}/:id`,
+    screen: MainPerm.edit_locmar_requests,
   },
   {
-    element: <CreateDesignerRequest />,
-    path: "/requests-designer/add",
-    screen: Screens.requests_it,
-  },
-  { element: <Logs />, path: "/logs/:id", screen: Screens.requests },
-  {
-    element: <RequestInventory />,
-    path: "/requests-inventory",
-    screen: Screens.requests_inventory,
+    element: <ShowMarketingRequest />,
+    path: `/marketing-${MarketingSubDep[3]}/:id`,
+    screen: MainPerm.edit_promo_requests,
   },
   {
-    element: <AddInventoryRequest />,
-    path: "/requests-inventory/add",
-    screen: Screens.requests_inventory,
+    element: <ShowMarketingRequest />,
+    path: `/marketing-${MarketingSubDep[4]}/:id`,
+    screen: MainPerm.edit_pos_requests,
   },
-  { element: <YandexMap />, path: "/map", screen: Screens.maps },
-  { element: <Statistics />, path: "/statistics", screen: Screens.statistics },
-  { element: <Categories />, path: "/categories", screen: Screens.category },
+  {
+    element: <ShowMarketingRequest />,
+    path: `/marketing-${MarketingSubDep[5]}/:id`,
+    screen: MainPerm.edit_complect_requests,
+  },
+  {
+    element: <RequestsMarketing />,
+    path: `/marketing-${MarketingSubDep[1]}`,
+    screen: MainPerm.get_requests_apc,
+  },
+  {
+    element: <RequestsMarketing />,
+    path: `/marketing-${MarketingSubDep[2]}`,
+    screen: MainPerm.get_locmar_requests,
+  },
+  {
+    element: <RequestsMarketing />,
+    path: `/marketing-${MarketingSubDep[3]}`,
+    screen: MainPerm.get_promo_requests,
+  },
+  {
+    element: <RequestsMarketing />,
+    path: `/marketing-${MarketingSubDep[4]}`,
+    screen: MainPerm.get_pos_requests,
+  },
+  {
+    element: <RequestsMarketing />,
+    path: `/marketing-${MarketingSubDep[5]}`,
+    screen: MainPerm.get_complect_requests,
+  },
+  {
+    element: <AddMarketingRequest />,
+    path: `/marketing-${MarketingSubDep[1]}/add`,
+    screen: MainPerm.get_design_request,
+  },
+  {
+    element: <AddMarketingRequest />,
+    path: `/marketing-${MarketingSubDep[2]}/add`,
+    screen: MainPerm.get_locmar_requests,
+  },
+  {
+    element: <AddMarketingRequest />,
+    path: `/marketing-${MarketingSubDep[3]}/add`,
+    screen: MainPerm.get_promo_requests,
+  },
+  {
+    element: <AddMarketingRequest />,
+    path: `/marketing-${MarketingSubDep[4]}/add`,
+    screen: MainPerm.get_pos_requests,
+  },
+  {
+    element: <AddMarketingRequest />,
+    path: `/marketing-${MarketingSubDep[5]}/add`,
+    screen: MainPerm.get_complect_requests,
+  },
+  { element: <Logs />, path: "/logs/:id", screen: MainPerm.edit_request_apc },
+  // {
+  //   element: <RequestInventory />,
+  //   path: "/requests-inventory",
+  //   screen: MainPerm.requests_inventory,
+  // },
+  // {
+  //   element: <AddInventoryRequest />,
+  //   path: "/requests-inventory/add",
+  //   screen: MainPerm.requests_inventory,
+  // },
+  { element: <YandexMap />, path: "/map", screen: MainPerm.get_map },
+  {
+    element: <Statistics />,
+    path: "/statistics",
+    screen: MainPerm.get_statistics,
+  },
+  {
+    element: <Categories />,
+    path: "/categories",
+    screen: MainPerm.get_category,
+  },
+  {
+    element: <Categories />,
+    path: "/categories-marketing",
+    screen: MainPerm.get_category,
+  },
   {
     element: <ShowCategory />,
     path: "/categories/:id",
-    screen: Screens.category,
+    screen: MainPerm.edit_category,
+  },
+  {
+    element: <ShowCategory />,
+    path: "/categories-marketing/add",
+    screen: MainPerm.add_category,
   },
   {
     element: <ShowCategory />,
     path: "/categories/add",
-    screen: Screens.category,
+    screen: MainPerm.add_category,
   },
-  { element: <EditAddRole />, path: "/roles/edit/:id", screen: Screens.roles },
-  { element: <EditAddRole />, path: "/roles/add", screen: Screens.roles },
-  { element: <Roles />, path: "/roles", screen: Screens.roles },
-  { element: <ShowRole />, path: "/roles/:id", screen: Screens.roles },
-  { element: <EditAddUser />, path: "/users/add", screen: Screens.users },
-  { element: <Users />, path: "/users", screen: Screens.users },
-  { element: <EditAddUser />, path: "/users/:id", screen: Screens.users },
-  { element: <Brigades />, path: "/brigades", screen: Screens.brigada },
+  {
+    element: <EditAddRole />,
+    path: "/roles/edit/:id",
+    screen: MainPerm.edit_roles,
+  },
+  { element: <EditAddRole />, path: "/roles/add", screen: MainPerm.add_role },
+  { element: <Roles />, path: "/roles", screen: MainPerm.get_roles },
+  { element: <ShowRole />, path: "/roles/:id", screen: MainPerm.edit_roles },
+  { element: <EditAddUser />, path: "/users/add", screen: MainPerm.add_users },
+  { element: <Users />, path: "/users", screen: MainPerm.get_users },
+  { element: <EditAddUser />, path: "/users/:id", screen: MainPerm.edit_users },
+  { element: <Brigades />, path: "/brigades", screen: MainPerm.get_brigadas },
   {
     element: <CreateBrigades />,
     path: "/brigades/add",
-    screen: Screens.brigada,
+    screen: MainPerm.add_brigada,
   },
   {
     element: <CreateBrigades />,
     path: "/brigades/:id",
-    screen: Screens.brigada,
+    screen: MainPerm.edit_brigada,
   },
-  { element: <Comments />, path: "/comments", screen: Screens.comments },
-  { element: <ShowComment />, path: "/comments/:id", screen: Screens.comments },
-  { element: <Branches />, path: "/branches", screen: Screens.fillials },
+  {
+    element: <Comments />,
+    path: "/comments",
+    screen: MainPerm.get_comments_list,
+  },
+  {
+    element: <ShowComment />,
+    path: "/comments/:id",
+    screen: MainPerm.edit_comment,
+  },
+  {
+    element: <Branches />,
+    path: "/branches",
+    screen: MainPerm.get_fillials_list,
+  },
   {
     element: <EditAddBranch />,
     path: "/branches/add",
-    screen: Screens.fillials,
+    screen: MainPerm.add_fillials,
   },
   {
     element: <EditAddBranch />,
     path: "/branches/:id",
-    screen: Screens.fillials,
+    screen: MainPerm.edit_fillials,
   },
   {
     element: <RemainsInStock />,
     path: "/items-in-stock",
-    screen: Screens.warehouse,
+    screen: MainPerm.get_warehouse,
   },
   {
     element: <ShowRemainsInStock />,
     path: "/items-in-stock/:id",
-    screen: Screens.warehouse,
+    screen: MainPerm.get_warehouse,
   },
 ];
 
@@ -156,29 +252,50 @@ const Navigation = () => {
   const { data: user, error, isLoading } = useToken({});
   const tokenKey = useQueryString("key");
   const { pathname, search } = useLocation();
-  //@ts-ignore
-  const isSuperAdmin = user?.permissions === "*";
   const { isLoading: appLoading } = useQueriesPrefetch();
+  const permission = useAppSelector(permissionSelector);
+
   useEffect(() => {
-    if (!token) navigate("/login");
-    if (!!error) dispatch(logoutHandler());
-    if (!!tokenKey) {
-      dispatch(loginHandler(tokenKey));
-      navigate(pathname + search);
-    }
-  }, [token, error, tokenKey]);
+    if (!!user?.permissions.length)
+      dispatch(permissionHandler(user?.permissions));
+  }, [user?.permissions]);
 
   const renderSidebar = useMemo(() => {
-    if (user?.permissions && token)
+    if (permission && token)
       return (
         <>
           <CustomSidebar />
           <BreadCrump />
         </>
       );
-  }, [user, me, token]);
+  }, [permission, token]);
 
-  if (appLoading || (isLoading && !!token)) return <Loading />;
+  const renderScreen = useMemo(() => {
+    if (!!permission)
+      return routes.map((route) => {
+        if (!!permission?.[route.screen]) {
+          return (
+            <Route key={route.path} element={route.element} path={route.path} />
+          );
+        }
+      });
+
+    return null;
+  }, []);
+
+  useEffect(() => {
+    if (!!tokenKey) {
+      dispatch(loginHandler(tokenKey));
+      navigate(pathname + search);
+    }
+  }, [tokenKey]);
+
+  useEffect(() => {
+    if (!token) navigate("/login");
+    if (!!error) dispatch(logoutHandler());
+  }, [token, error, tokenKey]);
+
+  if ((isLoading && token) || appLoading) return <Loading />;
 
   return (
     <>
@@ -188,18 +305,7 @@ const Navigation = () => {
         <Route element={<Login />} path={"/login"} />
         <Route element={<ControlPanel />} path={"/"} />
         <Route element={<TelegramAddProduct />} path={"/tg-add-product/:id"} />
-        {/* <Route element={<ControlPanel />} path={"*"} /> */}
-        {routes.map((route) => {
-          if (!!(isSuperAdmin ? me : user?.permissions)?.[route.screen]) {
-            return (
-              <Route
-                key={route.path}
-                element={route.element}
-                path={route.path}
-              />
-            );
-          }
-        })}
+        {renderScreen}
       </Routes>
     </>
   );

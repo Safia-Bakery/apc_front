@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { successToast } from "src/utils/toast";
 import Card from "src/components/Card";
@@ -29,10 +29,17 @@ const CreateApcRequest = () => {
     handleSubmit,
     formState: { errors },
     getValues,
+    reset,
   } = useForm();
 
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
+
+  useEffect(() => {
+    reset({
+      fillial_id: branch?.name,
+    });
+  }, [branch]);
 
   const handleFilesSelected = (data: FileItem[]) => {
     const formData = new FormData();
@@ -75,7 +82,7 @@ const CreateApcRequest = () => {
         <BaseInputs
           className="position-relative"
           label="ФИЛИАЛ"
-          error={errors.department}
+          error={errors.fillial_id}
         >
           <div
             className="pointer"
@@ -83,7 +90,9 @@ const CreateApcRequest = () => {
           >
             <MainInput
               value={branch?.name || ""}
-              register={register("fillial", { required: "Обязательное поле" })}
+              register={register("fillial_id", {
+                required: "Обязательное поле",
+              })}
             />
           </div>
           {!!choose_fillial && choose_fillial !== "false" && <BranchSelect />}

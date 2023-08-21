@@ -30,7 +30,6 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
   const [fillial_id, $fillial_id] = useState<number>();
   const [comment, $comment] = useState<string>();
   const [category_id, $category_id] = useState<number>();
-  const [startDate, $startDate] = useState<Date | null>();
   const [endDate, $endDate] = useState<Date | null>();
   const [request_status, $request_status] = useState<string>();
   const [user, $user] = useDebounce<string>("");
@@ -40,8 +39,6 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
     body: {
       finished_from: endDate?.toISOString(),
       finished_to: endDate?.toISOString(),
-      created_from: startDate?.toISOString(),
-      created_to: startDate?.toISOString(),
       ...(!!id && { id }),
       ...(!!executor && { executor }),
       ...(!!fillial_id && { fillial_id }),
@@ -69,14 +66,11 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
     fillial_id,
     category_id,
     comment,
-    startDate,
     endDate,
     request_status,
     user,
     currentPage,
   ]);
-
-  const startRange = (start: Date | null) => $startDate(start);
 
   const finishRange = (start: Date | null) => $endDate(start);
 

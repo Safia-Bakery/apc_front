@@ -2,7 +2,7 @@ import styles from "./index.module.scss";
 import { useForm } from "react-hook-form";
 import useTools from "src/hooks/useTools";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import usedItemsMutation from "src/hooks/mutation/usedItems";
 import { successToast } from "src/utils/toast";
 import useOrder from "src/hooks/useOrder";
@@ -20,6 +20,11 @@ import { RequestStatus } from "src/utils/types";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import cl from "classnames";
 import deleteExpenditureMutation from "src/hooks/mutation/deleteExpenditure";
+import Card from "src/components/Card";
+import UploadComponent, { FileItem } from "src/components/FileUpload";
+import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
+import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
+import uploadFileMutation from "src/hooks/mutation/uploadFile";
 
 const column = [{ name: "Наименование" }, { name: "Количество" }, { name: "" }];
 
@@ -28,10 +33,17 @@ const TelegramAddProduct = () => {
   const removeRoute = useRemoveParams();
   const navigate = useNavigateParams();
   const productJson = useQueryString("product");
+  const dispatch = useAppDispatch();
   const itemModal = useQueryString("itemModal");
   const product = JSON.parse(productJson!) as { id: number; name: string };
   const { mutate: attach } = attachBrigadaMutation();
   const { mutate: deleteExp } = deleteExpenditureMutation();
+  const inputRef = useRef<any>(null);
+  const upladedFiles = useAppSelector(reportImgSelector);
+
+  const { mutate: uploadFile } = uploadFileMutation();
+  const handleFilesSelected = (data: FileItem[]) =>
+    dispatch(uploadReport(data));
 
   const { mutate } = usedItemsMutation();
   const { data: order, refetch } = useOrder({
@@ -109,6 +121,23 @@ const TelegramAddProduct = () => {
       );
     };
 
+  const handlerSubmitFile = () => {
+    if (upladedFiles?.length)
+      uploadFile(
+        {
+          request_id: Number(id),
+          files: upladedFiles,
+        },
+        {
+          onSuccess: () => {
+            successToast("Сохранено");
+            inputRef.current.value = null;
+            dispatch(uploadReport(null));
+          },
+        }
+      );
+  };
+
   useEffect(() => {
     // if (!!modal && brigadir) iearchRefetch(); //todo
     iearchRefetch();
@@ -139,6 +168,23 @@ const TelegramAddProduct = () => {
           <BaseInput label="Примичание">
             <MainTextArea register={register("comment")} />
           </BaseInput>
+
+          <div className={styles.uploadPhoto}>
+            <Header title={"Добавить фотоотчёт"} />
+            <div className="m-3">
+              <UploadComponent
+                onFilesSelected={handleFilesSelected}
+                inputRef={inputRef}
+              />
+              <button
+                onClick={handlerSubmitFile}
+                type="button"
+                className="btn btn-success float-end btn-fill my-3"
+              >
+                Сохранить
+              </button>
+            </div>
+          </div>
 
           {!!order?.expanditure?.length && (
             <table className="table table-hover">

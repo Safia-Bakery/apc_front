@@ -1,5 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
-import { Order } from "src/utils/types";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { MarketingSubDep, Order } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
 import { useEffect, useState } from "react";
@@ -12,26 +12,28 @@ import TableHead from "src/components/TableHead";
 import InventoryFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import styles from "./index.module.scss";
+import useQueryString from "src/hooks/useQueryString";
 
 const column = [
   { name: "#", key: "" },
-  { name: "Номер", key: "id" },
-  { name: "Сотрудник", key: "type" },
-  { name: "Исполнитель", key: "fillial.name" },
+  { name: "Номер заявки", key: "id" },
+  { name: "Имя", key: "type" },
+  { name: "Номер телефона", key: "fillial.name" },
+  { name: "Подкатегория", key: "fillial.name" },
   { name: "Филиал", key: "fillial.name" },
-  { name: "Категория", key: "fillial.name" },
-  { name: "Комментарий", key: "fillial.name" },
+  { name: "Дата оформления", key: "fillial.name" },
   {
     name: "Статус",
     key: "status",
   },
-  { name: "Дата", key: "category.name" },
+  { name: "Изменил", key: "category.name" },
 ];
 
-const RequestsIDesigners = () => {
+const RequestsMarketing = () => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const sub_id = useQueryString("sub_id");
 
   const handleSort = (key: any) => {
     if (key === sortKey) {
@@ -47,9 +49,10 @@ const RequestsIDesigners = () => {
     refetch,
     isLoading: orderLoading,
   } = useOrders({
-    enabled: false,
+    enabled: true,
     size: itemsPerPage,
     page: currentPage,
+    sub_id: Number(sub_id),
   });
 
   const sortData = () => {
@@ -78,9 +81,9 @@ const RequestsIDesigners = () => {
 
   return (
     <Card>
-      <Header title={"Заявка на инвентарь"}>
+      <Header>
         <button
-          onClick={() => navigate("add")}
+          onClick={() => navigate(`add?sub_id=${sub_id}`)}
           className="btn btn-success btn-fill"
         >
           Добавить
@@ -106,22 +109,25 @@ const RequestsIDesigners = () => {
                   <tr className={requestRows(order.status)} key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
-                      <Link to={`/requests-designer/${order?.id}`}>
+                      <Link to={`${order?.id}?sub_id=${sub_id}`}>
                         {order?.id}
                       </Link>
                     </td>
                     <td>
                       <span className="not-set">{order?.user?.full_name}</span>
                     </td>
-                    <td>-------------</td>
-                    <td>{order?.fillial?.name}</td>
+                    <td>{order?.user?.phone_number}</td>
                     <td>{order?.category?.name}</td>
-                    <td width={100} className={styles.text}>
+                    <td>{order?.fillial?.name}</td>
+                    {/* <td width={100} className={styles.text}>
                       {order?.description}
+                    </td> */}
+                    <td>
+                      {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
                     </td>
                     <td>{handleStatus(order?.status)}</td>
                     <td>
-                      {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
+                      {order?.user_manager ? order?.user_manager : "Не задано"}
                     </td>
                   </tr>
                 )
@@ -147,4 +153,4 @@ const RequestsIDesigners = () => {
   );
 };
 
-export default RequestsIDesigners;
+export default RequestsMarketing;

@@ -9,10 +9,10 @@ import useBranches from "src/hooks/useBranches";
 import { successToast } from "src/utils/toast";
 import MainInput from "src/components/BaseInputs/MainInput";
 import BaseInputs from "src/components/BaseInputs";
-import { BranchDep } from "src/utils/helpers";
 import MainSelect from "src/components/BaseInputs/MainSelect";
 import branchDepartmentMutation from "src/hooks/mutation/branchDepartment";
 import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
+import { Departments } from "src/utils/types";
 
 const EditAddBranch = () => {
   const { id } = useParams();
@@ -49,12 +49,14 @@ const EditAddBranch = () => {
   } = useForm();
 
   const handleDep = (body: { origin: number; id: string }) => {
-    depMutation(body, {
-      onSuccess: () => {
-        refetch();
-        successToast("Успешно изменено");
-      },
-    });
+    if (!!body.origin) {
+      depMutation(body, {
+        onSuccess: () => {
+          refetch();
+          successToast("Успешно изменено");
+        },
+      });
+    }
   };
 
   const onSubmit = () => {
@@ -115,16 +117,12 @@ const EditAddBranch = () => {
           />
         </BaseInputs>
 
-        <BaseInputs label="ШИРОТА" error={errors.lat}>
-          <MainInput
-            register={register("lat", { required: "Обязательное поле" })}
-          />
+        <BaseInputs label="ШИРОТА">
+          <MainInput register={register("lat")} />
         </BaseInputs>
 
-        <BaseInputs label="ДОЛГОТА" error={errors.lng}>
-          <MainInput
-            register={register("lng", { required: "Обязательное поле" })}
-          />
+        <BaseInputs label="ДОЛГОТА">
+          <MainInput register={register("lng")} />
         </BaseInputs>
 
         <MainCheckBox label="Активный" register={register("status")} />
@@ -132,9 +130,9 @@ const EditAddBranch = () => {
         <BaseInputs label={"APC"}>
           <MainSelect
             onChange={(e) =>
-              handleDep({ origin: BranchDep.apc, id: e.target.value })
+              handleDep({ origin: Departments.apc, id: e.target.value })
             }
-            value={findName(BranchDep.apc)}
+            value={findName(Departments.apc)}
             values={branch?.fillial_department}
           />
         </BaseInputs>
@@ -142,11 +140,11 @@ const EditAddBranch = () => {
           <MainSelect
             onChange={(e) =>
               handleDep({
-                origin: BranchDep.inventory,
+                origin: Departments.inventory,
                 id: e.target.value,
               })
             }
-            value={findName(BranchDep.inventory)}
+            value={findName(Departments.inventory)}
             values={branch?.fillial_department}
           />
         </BaseInputs>

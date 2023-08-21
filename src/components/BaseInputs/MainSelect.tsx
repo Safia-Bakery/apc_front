@@ -11,6 +11,7 @@ interface Props {
   register?: UseFormRegisterReturn;
   values?: { id: number | string; name: string; status?: number }[];
   children?: ReactNode;
+  onFocus?: () => void;
 }
 
 const MainSelect: FC<Props> = ({
@@ -18,11 +19,13 @@ const MainSelect: FC<Props> = ({
   register,
   values,
   children,
+  onFocus,
   ...others
 }) => {
   return (
     <select
       className={cl("form-select form-control", styles.select)}
+      onFocus={onFocus}
       {...others}
       {...register}
     >

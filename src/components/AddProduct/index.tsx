@@ -12,6 +12,9 @@ import { useNavigateParams } from "src/hooks/useCustomNavigate";
 import deleteExpenditureMutation from "src/hooks/mutation/deleteExpenditure";
 import useToken from "src/hooks/useToken";
 import dayjs from "dayjs";
+import { MainPerm } from "src/utils/types";
+import { useAppSelector } from "src/redux/utils/types";
+import { permissionSelector } from "src/redux/reducers/auth";
 
 const column = [
   { name: "#" },
@@ -25,12 +28,8 @@ const column = [
 
 const AddProduct: FC<PropsWithChildren> = ({ children }) => {
   const { id } = useParams();
-
+  const permissions = useAppSelector(permissionSelector);
   const navigate = useNavigateParams();
-  const { data: me } = useToken({ enabled: false });
-  //@ts-ignore
-  const iikoBtn = me!.permissions.isbrigadir || me?.permissions === "*";
-
   const { mutate } = syncExpenditure();
   const { mutate: deleteExp } = deleteExpenditureMutation();
 
@@ -68,7 +67,7 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
   return (
     <Card>
       <Header title="Товары">
-        {iikoBtn && (
+        {permissions?.[MainPerm.synch_apc_iiko] && (
           <button
             onClick={handleSync}
             className="btn btn-primary btn-fill btn-sm mr-2"

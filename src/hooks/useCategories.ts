@@ -9,18 +9,22 @@ export const useCategories = ({
   size,
   page = 1,
   body,
+  department,
+  sub_id,
 }: {
   enabled?: boolean;
   size?: number;
   page?: number;
+  department?: number | string;
+  sub_id?: number | string;
   body?: { name?: string; category_status?: string };
 }) => {
   const dispatch = useAppDispatch();
   return useQuery({
-    queryKey: ["categories", page],
+    queryKey: ["categories", page, department, sub_id],
     queryFn: () =>
       apiClient
-        .get("/category", { size, page, ...body })
+        .get("/category", { size, page, department, sub_id, ...body })
         .then(({ data: response }) => {
           dispatch(cachedCategories(response as CategoryTypes));
           return response as CategoryTypes;

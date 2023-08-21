@@ -14,19 +14,6 @@ export interface BasePaginatedRes {
   pages: number;
 }
 
-export interface RoleList {
-  success: boolean;
-  listroles: {
-    musa: "Руководитель отдела закупа";
-    shakhzod: "Директор производства";
-    begzod: "Директор розницы";
-    fin: "Финансовый отдел";
-    accountant: "Бухгалтерия";
-    unconfirmed: "Роль не выбран";
-    purchasing: "Отдел закупа";
-  }[];
-}
-
 export interface UserTypes {
   username: string;
   full_name: string;
@@ -69,6 +56,7 @@ export interface Order {
   category: {
     name: string;
     description: string;
+    department: Departments;
     status: number;
     id: number | string;
     urgent: boolean;
@@ -151,16 +139,12 @@ export interface CreateOrderType {
   image_id?: string;
   payment_type: string;
 }
-
-export type BoolObj = {
-  [key in Screens]: boolean;
-};
 export interface MeTypes {
   id: number | string;
   username: string;
   role?: { descrition: string; name: string };
   full_name: string;
-  permissions: { [key in Screens]: boolean };
+  permissions: number[];
 }
 export enum Status {
   accepted = "accepted",
@@ -173,7 +157,10 @@ export interface RoleTypes {
 }
 export interface PermissionTypes {
   page_name: string;
-  id: number;
+  actions: {
+    id: number;
+    action_name: string;
+  }[];
 }
 
 export interface RolePermissions {
@@ -193,6 +180,7 @@ export interface Category {
   status: number;
   id: number | string;
   urgent: number;
+  sub_id?: number;
 }
 
 export interface CategoryTypes extends BasePaginatedRes {
@@ -225,27 +213,6 @@ export interface UsersType {
 
 export interface UsersTypes extends BasePaginatedRes {
   items: UsersType[];
-}
-
-export enum Screens {
-  requests = "requests",
-  requests_apc = "requests_apc",
-  requests_it = "requests_it",
-  requests_marketing = "requests_marketing",
-  requests_inventory = "requests_inventory",
-  brigada = "brigada",
-  warehouse = "warehouse",
-  users = "users",
-  category = "category",
-  maps = "maps",
-  statistics = "statistics",
-  fillials = "fillials",
-  permitted = "permitted",
-  roles = "roles",
-  comments = "comments",
-  permissions = "permissions",
-  ismanager = "ismanager",
-  isbrigadir = "isbrigadir",
 }
 
 export interface ValueLabel {
@@ -301,4 +268,82 @@ export interface CartProducts {
   count: number;
   comment: string;
   author: { name: string; id: number | string };
+}
+
+export enum MainPerm {
+  edit_roles = 2,
+  get_roles = 14,
+  add_role = 15,
+  get_comments_list = 1,
+  edit_comment = 13,
+  get_brigadas = 3,
+  add_brigada = 16,
+  edit_brigada = 17,
+  get_warehouse = 4,
+  get_users = 5,
+  add_users = 18,
+  edit_users = 19,
+  get_category = 6,
+  add_category = 20,
+  edit_category = 21,
+  get_statistics = 7,
+  get_map = 8,
+  synch_fillials_iiko = 9,
+  synch_tools_iiko = 30,
+  add_fillials = 22,
+  edit_fillials = 23,
+  get_fillials_list = 29,
+  get_requests_apc = 12,
+  edit_request_apc = 24,
+  add_request_apc = 25,
+  synch_apc_iiko = 26,
+  request_ettach = 27,
+  request_add_expanditure = 28,
+  get_design_request = 31,
+  edit_designers_requests = 32,
+  get_locmar_requests = 33,
+  edit_locmar_requests = 34,
+  get_promo_requests = 35,
+  edit_promo_requests = 36,
+  get_pos_requests = 37,
+  edit_pos_requests = 38,
+  get_complect_requests = 39,
+  edit_complect_requests = 40,
+}
+export enum MarketingSubDep {
+  designers = 1,
+  local_marketing = 2,
+  promo_production = 3,
+  pos = 4,
+  complects = 5,
+}
+
+export const MarketingSubDepRu = [
+  {
+    name: "Проектная работа для дизайнеров",
+    id: MarketingSubDep.designers,
+  },
+  {
+    name: "Локальный маркетинг",
+    id: MarketingSubDep.local_marketing,
+  },
+  {
+    name: "Промо-продукция",
+    id: MarketingSubDep.promo_production,
+  },
+  {
+    name: "POS-Материалы",
+    id: MarketingSubDep.pos,
+  },
+  {
+    name: "Комплекты",
+    id: MarketingSubDep.complects,
+  },
+];
+export enum Departments {
+  all = 0,
+  apc = 1,
+  inventory = 2,
+  marketing = 3,
+  it = 4,
 }

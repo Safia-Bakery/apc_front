@@ -54,10 +54,10 @@ const CreateBrigades = () => {
     mutate(
       {
         status,
-        users: [brigadir],
         description: brigada_description,
         name: brigada_name,
         ...(id && { id: Number(id) }),
+        ...(!!brigadir && { users: [brigadir] }),
       },
       {
         onSuccess: () => {
@@ -91,10 +91,8 @@ const CreateBrigades = () => {
         </div>
 
         {!!id && (
-          <BaseInputs label="Выберите бригадира" error={errors.brigadir}>
-            <MainSelect
-              register={register("brigadir", { required: "Обязательное поле" })}
-            >
+          <BaseInputs label="Выберите бригадира">
+            <MainSelect register={register("brigadir")}>
               <option value={undefined}></option>
               {users
                 ?.filter((item) => !!item.username)

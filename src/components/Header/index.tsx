@@ -4,7 +4,7 @@ import cl from "classnames";
 import { useLocation } from "react-router-dom";
 
 interface Props extends PropsWithChildren {
-  title: string;
+  title?: string;
   subTitle?: string;
 }
 

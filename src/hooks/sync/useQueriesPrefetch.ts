@@ -1,38 +1,35 @@
-import { tokenSelector } from "src/redux/reducers/auth";
+import { permissionSelector, tokenSelector } from "src/redux/reducers/auth";
 import { useAppSelector } from "src/redux/utils/types";
 import useBrigadas from "src/hooks/useBrigadas";
 import useRoles from "src/hooks/useRoles";
 import useCategories from "src/hooks/useCategories";
 import useBranches from "src/hooks/useBranches";
-import useToken from "../useToken";
-import { permissioms } from "src/utils/helpers";
+import { MainPerm } from "src/utils/types";
 
 const useQueriesPrefetch = () => {
   const token = useAppSelector(tokenSelector);
-  const { data: me } = useToken({});
-  //@ts-ignore
-  const user = me?.permissions === "*" ? permissioms : me?.permissions;
+  const permissions = useAppSelector(permissionSelector);
 
   const { isLoading: rolesLoading } = useRoles({
-    enabled: !!token && !!user?.roles,
+    enabled: !!token && permissions?.[MainPerm.get_roles],
   });
   const { isLoading: brigadaLoading } = useBrigadas({
-    enabled: !!token && !!user?.brigada,
+    enabled: !!token && permissions?.[MainPerm.get_brigadas],
   });
   const { isLoading: branchLoading } = useBranches({
-    enabled: !!token && !!user?.fillials,
+    enabled: !!token && permissions?.[MainPerm.get_fillials_list],
     origin: 0,
   });
   const { isLoading: categoryLoading } = useCategories({
-    enabled: !!token && !!user?.category,
+    enabled: !!token && permissions?.[MainPerm.get_category],
   });
 
   return {
     isLoading:
-      (!!user?.roles && rolesLoading) ||
-      (!!user?.brigada && brigadaLoading) ||
-      (!!user?.fillials && branchLoading) ||
-      (!!user?.category && categoryLoading),
+      (permissions?.[MainPerm.get_roles] && rolesLoading) ||
+      (permissions?.[MainPerm.get_brigadas] && brigadaLoading) ||
+      (permissions?.[MainPerm.get_fillials_list] && branchLoading) ||
+      (permissions?.[MainPerm.get_category] && categoryLoading),
   };
 };
 

@@ -28,10 +28,6 @@ const AddProductModal = () => {
   const itemModal = useQueryString("itemModal");
   const product = JSON.parse(productJson!) as { id: number; name: string };
 
-  const { data: me } = useToken({ enabled: false });
-  //@ts-ignore
-  // const brigadir = me!.permissions.isbrigadir; //todo
-
   const { mutate } = usedItemsMutation();
   const { refetch: orderRefetch } = useOrder({
     id: Number(id),

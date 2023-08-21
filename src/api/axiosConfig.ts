@@ -1,9 +1,11 @@
 import axios, {
+  AxiosError,
   AxiosInstance,
   AxiosRequestConfig,
   CancelTokenSource,
 } from "axios";
 import { Store } from "redux";
+import { logoutHandler } from "src/redux/reducers/auth";
 import { RootState } from "src/redux/rootConfig";
 
 interface BaseUrlParams {
@@ -47,8 +49,15 @@ class BaseAPIClient {
     return config;
   };
 
-  private handleRequestError = (e: Error): Promise<never> => {
-    return Promise.reject(e);
+  private handleRequestError = (error: AxiosError): Promise<never> => {
+    if (axios.isAxiosError(error) && error.response) {
+      if (error.response.status === 401) {
+        this.store?.dispatch(logoutHandler());
+      }
+    }
+
+    // Reject the promise with the error
+    return Promise.reject(error);
   };
 
   public get<T>(url: string, params?: object, config?: AxiosRequestConfig) {
