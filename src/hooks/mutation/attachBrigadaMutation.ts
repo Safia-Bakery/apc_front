@@ -8,8 +8,8 @@ const attachBrigadaMutation = () => {
     ["attach_brigada_to_request"],
     (body: {
       request_id: number;
-      brigada_id: number;
       status: RequestStatus;
+      brigada_id?: number;
       comment?: string;
     }) =>
       apiClient

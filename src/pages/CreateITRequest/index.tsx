@@ -19,13 +19,17 @@ import BaseInput from "src/components/BaseInputs";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import useUsers from "src/hooks/useUsers";
 import Loading from "src/components/Loader";
+import { Departments } from "src/utils/types";
 
 const CreateITRequest = () => {
   const [files, $files] = useState<FormData>();
   const branches = useAppSelector(branchSelector);
   const categories = useAppSelector(categorySelector);
   const { mutate } = requestMutation();
-  const { refetch: requestsRefetch } = useOrders({ enabled: false });
+  const { refetch: requestsRefetch } = useOrders({
+    enabled: false,
+    department: Departments.it,
+  });
   const { data: users, isLoading } = useUsers({});
 
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Subject, debounceTime, distinctUntilChanged } from "rxjs";
-const time = 500;
+const time = 800;
 const useDebounce = <T>(defaultValue: T): [T, (v: T) => void] => {
   const [value, setValue] = useState<T>(defaultValue);
   const [base$] = useState(() => new Subject<T>());

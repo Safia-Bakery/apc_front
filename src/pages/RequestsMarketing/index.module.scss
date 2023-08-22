@@ -1,6 +1,10 @@
-.text {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  max-width: 200px;
+.close {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  z-index: 10;
+  transform: translateY(-50%);
+}
+.fillial {
+  top: 0.5rem;
 }

@@ -88,7 +88,7 @@ const ShowRequestModals = () => {
       case ModalTypes.cancelRequest:
         return (
           <div className={styles.birgadesModal}>
-            <Header title="Выберите исполнителя">
+            <Header title="Причина отклонении">
               <button onClick={() => removeParams(["modal"])} className="close">
                 <span aria-hidden="true">&times;</span>
               </button>

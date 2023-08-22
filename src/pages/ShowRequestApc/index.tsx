@@ -10,7 +10,11 @@ import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import { successToast } from "src/utils/toast";
 import { baseURL } from "src/main";
-import { detectFileType, handleStatus } from "src/utils/helpers";
+import {
+  detectFileType,
+  handleDepartment,
+  handleStatus,
+} from "src/utils/helpers";
 import { useForm } from "react-hook-form";
 import { FileType, MainPerm, Order, RequestStatus } from "src/utils/types";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
@@ -114,6 +118,12 @@ const ShowRequestApc = () => {
             className="btn btn-danger btn-fill mr-2"
           >
             Отклонить
+          </button>
+          <button
+            onClick={handleBrigada({ status: RequestStatus.confirmed })}
+            className="btn btn-success btn-fill"
+          >
+            Принять
           </button>
         </div>
       );
@@ -229,7 +239,7 @@ const ShowRequestApc = () => {
                   </tr>
                   <tr>
                     <th>Тип</th>
-                    <td>APC</td>
+                    <td>{handleDepartment(order?.category?.department)}</td>
                   </tr>
                   <tr>
                     <th>Группа проблем</th>
@@ -301,7 +311,7 @@ const ShowRequestApc = () => {
                 <tbody>
                   <tr>
                     <th>Срочно</th>
-                    <td>{!order?.urgent ? "Нет" : "Да"}</td>
+                    <td>{!order?.category?.urgent ? "Нет" : "Да"}</td>
                   </tr>
                   <tr>
                     <th>Забрал для</th>

@@ -85,31 +85,31 @@ const routes = [
     subroutes: [
       {
         name: "Проектная работа для дизайнеров",
-        url: `/marketing-${MarketingSubDep[1]}?sub_id=${MarketingSubDep.designers}`,
+        url: `/marketing-${MarketingSubDep[1]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPerm.get_design_request,
       },
       {
         name: "Локальный маркетинг",
-        url: `/marketing-${MarketingSubDep[2]}?sub_id=${MarketingSubDep.local_marketing}`,
+        url: `/marketing-${MarketingSubDep[2]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPerm.get_locmar_requests,
       },
       {
         name: "Промо-продукция",
-        url: `/marketing-${MarketingSubDep[3]}?sub_id=${MarketingSubDep.promo_production}`,
+        url: `/marketing-${MarketingSubDep[3]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPerm.get_promo_requests,
       },
       {
         name: "POS-Материалы",
-        url: `/marketing-${MarketingSubDep[4]}?sub_id=${MarketingSubDep.pos}`,
+        url: `/marketing-${MarketingSubDep[4]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPerm.get_pos_requests,
       },
       {
         name: "Комплекты",
-        url: `/marketing-${MarketingSubDep[5]}?sub_id=${MarketingSubDep.complects}`,
+        url: `/marketing-${MarketingSubDep[5]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPerm.get_requests_apc,
       },

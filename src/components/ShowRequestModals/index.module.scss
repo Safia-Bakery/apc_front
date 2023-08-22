@@ -16,6 +16,7 @@
 .assignModal {
   width: min-content;
   padding: 5px;
+  overflow-y: auto;
 }
 .items {
   overflow-y: scroll;

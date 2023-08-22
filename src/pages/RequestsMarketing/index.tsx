@@ -1,8 +1,8 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { MarketingSubDep, Order } from "src/utils/types";
+import { Link, useNavigate } from "react-router-dom";
+import { Order } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
@@ -11,8 +11,6 @@ import { handleStatus, itemsPerPage, requestRows } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import InventoryFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
-import styles from "./index.module.scss";
-import useQueryString from "src/hooks/useQueryString";
 
 const column = [
   { name: "#", key: "" },
@@ -29,11 +27,15 @@ const column = [
   { name: "Изменил", key: "category.name" },
 ];
 
-const RequestsMarketing = () => {
+interface Props {
+  title?: string;
+  sub_id?: string | number;
+}
+
+const RequestsMarketing: FC<Props> = ({ title, sub_id }) => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const sub_id = useQueryString("sub_id");
 
   const handleSort = (key: any) => {
     if (key === sortKey) {
@@ -81,7 +83,7 @@ const RequestsMarketing = () => {
 
   return (
     <Card>
-      <Header>
+      <Header title={title}>
         <button
           onClick={() => navigate(`add?sub_id=${sub_id}`)}
           className="btn btn-success btn-fill"
@@ -99,7 +101,7 @@ const RequestsMarketing = () => {
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            <InventoryFilter currentPage={currentPage} />
+            <InventoryFilter sub_id={sub_id} currentPage={currentPage} />
           </TableHead>
 
           {!!requests?.items?.length && (

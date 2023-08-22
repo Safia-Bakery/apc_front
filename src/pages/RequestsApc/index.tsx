@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Order } from "src/utils/types";
+import { Departments, MainPerm, Order } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
 import { useEffect, useState } from "react";
@@ -12,6 +12,8 @@ import TableHead from "src/components/TableHead";
 import RequestsFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import cl from "classnames";
+import { useAppSelector } from "src/redux/utils/types";
+import { permissionSelector } from "src/redux/reducers/auth";
 
 const column = [
   { name: "#", key: "" },
@@ -30,6 +32,7 @@ const RequestsApc = () => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const permission = useAppSelector(permissionSelector);
 
   const handleSort = (key: any) => {
     if (key === sortKey) {
@@ -47,6 +50,7 @@ const RequestsApc = () => {
   } = useOrders({
     enabled: true,
     size: itemsPerPage,
+    department: Departments.apc,
     page: currentPage,
   });
   const sortData = () => {
@@ -77,12 +81,14 @@ const RequestsApc = () => {
     <Card>
       <Header title={"Заявки"}>
         <button className="btn btn-primary btn-fill mr-2">Экспорт</button>
-        <button
-          onClick={() => navigate("add")}
-          className="btn btn-success btn-fill"
-        >
-          Добавить
-        </button>
+        {permission?.[MainPerm.add_request_apc] && (
+          <button
+            onClick={() => navigate("add")}
+            className="btn btn-success btn-fill"
+          >
+            Добавить
+          </button>
+        )}
       </Header>
 
       <div className="table-responsive grid-view content">

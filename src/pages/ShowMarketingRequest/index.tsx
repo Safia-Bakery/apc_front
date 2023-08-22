@@ -1,12 +1,11 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import AddProduct from "src/components/AddProduct";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import styles from "./index.module.scss";
 import useOrder from "src/hooks/useOrder";
 import dayjs from "dayjs";
-import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
+import { useAppSelector } from "src/redux/utils/types";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import { successToast } from "src/utils/toast";
 import { baseURL } from "src/main";
@@ -15,18 +14,15 @@ import {
   handleDepartment,
   handleStatus,
 } from "src/utils/helpers";
+import { FileType, MainPerm, RequestStatus } from "src/utils/types";
 import { useForm } from "react-hook-form";
-import { FileType, MainPerm, Order, RequestStatus } from "src/utils/types";
-import UploadComponent, { FileItem } from "src/components/FileUpload";
 import ShowRequestModals from "src/components/ShowRequestModals";
-import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
-import useQueryString from "src/hooks/useQueryString";
+
 import {
   useNavigateParams,
   useRemoveParams,
 } from "src/hooks/useCustomNavigate";
-import uploadFileMutation from "src/hooks/mutation/uploadFile";
-import { loginHandler, permissionSelector } from "src/redux/reducers/auth";
+import { permissionSelector } from "src/redux/reducers/auth";
 
 const enum ModalTypes {
   closed = "closed",
@@ -46,8 +42,6 @@ const ShowMarketingRequest = () => {
     navigateParams({ modal: type });
   };
   const { getValues } = useForm();
-  const brigadaJson = useQueryString("brigada");
-  const brigada = JSON.parse(brigadaJson!) as Order["brigada"];
   const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
 
@@ -66,7 +60,6 @@ const ShowMarketingRequest = () => {
       attach(
         {
           request_id: Number(id),
-          brigada_id: Number(brigada?.id),
           status,
           comment: getValues("cancel_reason"),
         },
@@ -83,7 +76,7 @@ const ShowMarketingRequest = () => {
     };
 
   const renderBtns = useMemo(() => {
-    if (permissions?.[MainPerm.request_ettach] && isNew && !!brigada?.name)
+    if (permissions?.[MainPerm.edit_designers_requests] && isNew)
       return (
         <div className="float-end mb10">
           <button
@@ -92,72 +85,37 @@ const ShowMarketingRequest = () => {
           >
             Отклонить
           </button>
+          <button
+            onClick={handleBrigada({ status: RequestStatus.confirmed })}
+            className="btn btn-success btn-fill"
+          >
+            Принять
+          </button>
         </div>
       );
-    if (
-      !!order?.brigada?.name &&
-      permissions?.[MainPerm.request_add_expanditure]
-    )
+    if (permissions?.[MainPerm.edit_designers_requests])
       return (
-        <div className="d-flex justify-content-between mb10">
+        <div className="float-end mb10">
           {order?.status! < 3 && (
             <button
               onClick={handleModal(ModalTypes.cancelRequest)}
-              className="btn btn-danger btn-fill"
+              className="btn btn-danger btn-fill mr-2"
             >
               Отменить
             </button>
           )}
-          <div>
-            {order?.status! < 2 && (
-              <button
-                onClick={handleBrigada({
-                  status: RequestStatus.sendToRepair,
-                })}
-                className="btn btn-warning btn-fill mr-2"
-              >
-                Забрать для ремонта
-              </button>
-            )}
-            {order?.status! < 3 && (
-              <button
-                onClick={handleBrigada({ status: RequestStatus.done })}
-                className="btn btn-success btn-fill"
-              >
-                Починил
-              </button>
-            )}
-          </div>
+
+          {order?.status! < 3 && (
+            <button
+              onClick={handleBrigada({ status: RequestStatus.done })}
+              className="btn btn-success btn-fill"
+            >
+              Завершить
+            </button>
+          )}
         </div>
       );
   }, [permissions, order?.status]);
-
-  const renderAssignment = useMemo(() => {
-    if (permissions?.[MainPerm.request_ettach]) {
-      if (order?.brigada?.name) {
-        return (
-          <>
-            <span>{order?.brigada?.name}</span>
-            <button
-              onClick={handleModal(ModalTypes.assign)}
-              className="btn btn-primary btn-fill float-end"
-            >
-              Переназначить
-            </button>
-          </>
-        );
-      }
-      return (
-        <button
-          onClick={handleModal(ModalTypes.assign)}
-          className="btn btn-success btn-fill float-end"
-        >
-          Назначить
-        </button>
-      );
-    }
-    return <span>{order?.brigada?.name}</span>;
-  }, [permissions, order?.status, order?.brigada?.name]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -236,25 +194,6 @@ const ShowMarketingRequest = () => {
                     </td>
                   </tr>
                   <tr>
-                    <th>Фотоотчёт</th>
-                    <td className="d-flex flex-column">
-                      {order?.file?.map((item, index) => {
-                        if (item.status === 1)
-                          return (
-                            <div
-                              className={styles.imgUrl}
-                              onClick={handleShowPhoto(
-                                `${baseURL}/${item.url}`
-                              )}
-                              key={item.url + index}
-                            >
-                              {item.url}
-                            </div>
-                          );
-                      })}
-                    </td>
-                  </tr>
-                  <tr>
                     <th>Примичание</th>
                     <td>{order?.description}</td>
                   </tr>
@@ -274,11 +213,7 @@ const ShowMarketingRequest = () => {
                 <tbody>
                   <tr>
                     <th>Срочно</th>
-                    <td>{!order?.urgent ? "Нет" : "Да"}</td>
-                  </tr>
-                  <tr>
-                    <th>Забрал для</th>
-                    <td>---------</td>
+                    <td>{!order?.category?.urgent ? "Нет" : "Да"}</td>
                   </tr>
                   <tr>
                     <th>Дата выполнения</th>
@@ -311,16 +246,12 @@ const ShowMarketingRequest = () => {
                         : "Не задано"}
                     </td>
                   </tr>
-                  <tr className="font-weight-bold">
-                    <th>Ответственный</th>
-                    <td>{renderAssignment}</td>
-                  </tr>
                 </tbody>
               </table>
             </div>
           </div>
           <hr />
-          {isNew && renderBtns}
+          {true && renderBtns}
         </div>
       </Card>
 

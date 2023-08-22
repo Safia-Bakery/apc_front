@@ -15,6 +15,7 @@ import MainSelect from "src/components/BaseInputs/MainSelect";
 import BaseInput from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
+import { Departments } from "src/utils/types";
 
 interface Props {
   currentPage: number;
@@ -31,23 +32,18 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
   const [category_id, $category_id] = useState<number>();
   const [urgent, $urgent] = useState<boolean>();
   const [startDate, $startDate] = useState<Date | null>();
-  const [endDate, $endDate] = useState<Date | null>();
-  const [request_status, $request_status] = useState<string>();
+  const [created_at, $created_at] = useState<Date | null>();
   const [user, $user] = useDebounce<string>("");
 
   const { refetch } = useOrders({
     enabled: false,
+    department: Departments.inventory,
     body: {
-      finished_from: endDate?.toISOString(),
-      finished_to: endDate?.toISOString(),
-      created_from: startDate?.toISOString(),
-      created_to: startDate?.toISOString(),
+      created_at: created_at?.toISOString(),
       ...(!!id && { id }),
       ...(!!department && { department }),
       ...(!!fillial_id && { fillial_id }),
       ...(!!category_id && { category_id }),
-      ...(!!request_status && { request_status }),
-      ...(!!user && { user }),
       ...(!!urgent && { urgent }),
     },
   });
@@ -70,15 +66,14 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
     category_id,
     urgent,
     startDate,
-    endDate,
-    request_status,
+    created_at,
     user,
     currentPage,
   ]);
 
   const startRange = (start: Date | null) => $startDate(start);
 
-  const finishRange = (start: Date | null) => $endDate(start);
+  const finishRange = (start: Date | null) => $created_at(start);
 
   return (
     <>

@@ -95,28 +95,7 @@ const AddMarketingRequest = () => {
           label="ФИЛИАЛ"
           error={errors.fillial}
         >
-          <div
-            className="pointer"
-            onClick={() => navigate({ choose_fillial: true })}
-          >
-            <MainInput
-              value={branch?.name || ""}
-              register={register("fillial", { required: "Обязательное поле" })}
-            />
-          </div>
-          {!!choose_fillial && choose_fillial !== "false" && <BranchSelect />}
-          {/* {!!choose_fillial && (
-            <>
-              <div className={styles.overlay} onClick={() => navigate("?")} />
-              <SelectBranches
-                className={styles.fillialBlock}
-                data={branches}
-                isItemExpanded={isItemExpanded}
-                handleItemClick={handleItemClick}
-                handleBranch={handleBranch}
-              />
-            </>
-          )} */}
+          <BranchSelect />
         </BaseInputs>
         <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
           <MainSelect
@@ -141,10 +120,6 @@ const AddMarketingRequest = () => {
         >
           <UploadComponent onFilesSelected={handleFilesSelected} />
         </BaseInputs>
-        {/* <div className="form-group d-flex align-items-center form-control">
-          <label className="mb-0 mr-2">Срочно</label>
-          <input type="checkbox" {...register("urgent")} />
-        </div> */}
         <div>
           <button
             type="submit"

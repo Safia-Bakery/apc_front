@@ -84,18 +84,7 @@ const CreateApcRequest = () => {
           label="ФИЛИАЛ"
           error={errors.fillial_id}
         >
-          <div
-            className="pointer"
-            onClick={() => navigate("?choose_fillial=true")}
-          >
-            <MainInput
-              value={branch?.name || ""}
-              register={register("fillial_id", {
-                required: "Обязательное поле",
-              })}
-            />
-          </div>
-          {!!choose_fillial && choose_fillial !== "false" && <BranchSelect />}
+          <BranchSelect />
         </BaseInputs>
         <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
           <MainSelect

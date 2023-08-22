@@ -1,6 +1,7 @@
 .sidebar {
   width: 80px !important;
   min-width: 80px !important;
+  z-index: 200 !important;
 
   @media (max-width: 1200px) {
     width: 0 !important;

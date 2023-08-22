@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Order } from "src/utils/types";
+import { Departments, Order } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
 import { useEffect, useState } from "react";
@@ -47,6 +47,7 @@ const RequestInventory = () => {
     enabled: true,
     size: itemsPerPage,
     page: currentPage,
+    department: Departments.inventory,
   });
 
   const sortData = () => {

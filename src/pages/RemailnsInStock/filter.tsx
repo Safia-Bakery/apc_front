@@ -21,18 +21,15 @@ const StockFilter: FC<Props> = ({ currentPage }) => {
   const [category_id, $category_id] = useState<number>();
   const [urgent, $urgent] = useState<boolean>();
   const [startDate, $startDate] = useState<Date | null>();
-  const [endDate, $endDate] = useState<Date | null>();
+  const [created_at, $created_at] = useState<Date | null>();
   const [request_status, $request_status] = useState<string>();
   const [user, $user] = useDebounce<string>("");
 
   const { refetch } = useOrders({
     enabled: false,
     body: {
-      finished_from: endDate?.toISOString(),
-      finished_to: endDate?.toISOString(),
-      created_from: startDate?.toISOString(),
-      created_to: startDate?.toISOString(),
       ...(!!id && { id }),
+      ...(!!created_at && { created_at: created_at?.toISOString() }),
       ...(!!department && { department }),
       ...(!!fillial_id && { fillial_id }),
       ...(!!category_id && { category_id }),
@@ -60,7 +57,7 @@ const StockFilter: FC<Props> = ({ currentPage }) => {
     category_id,
     urgent,
     startDate,
-    endDate,
+    created_at,
     request_status,
     user,
     currentPage,

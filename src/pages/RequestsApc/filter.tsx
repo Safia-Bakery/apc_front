@@ -17,7 +17,11 @@ import MainInput from "src/components/BaseInputs/MainInput";
 import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
 import BranchSelect from "src/components/BranchSelect";
 import useQueryString from "src/hooks/useQueryString";
-import { useNavigate } from "react-router-dom";
+import styles from "./index.module.scss";
+import cl from "classnames";
+import { Departments } from "src/utils/types";
+import dayjs from "dayjs";
+import { useNavigateParams } from "src/hooks/useCustomNavigate";
 
 interface Props {
   currentPage: number;
@@ -25,7 +29,7 @@ interface Props {
 
 const InventoryFilter: FC<Props> = ({ currentPage }) => {
   const initialLoadRef = useRef(true);
-  const navigate = useNavigate();
+  const navigate = useNavigateParams();
   const categories = useAppSelector(categorySelector);
 
   const choose_fillial = useQueryString("choose_fillial");
@@ -36,18 +40,17 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
   const [department, $department] = useState<string>();
   const [category_id, $category_id] = useState<number>();
   const [urgent, $urgent] = useState<boolean>();
-  const [startDate, $startDate] = useState<Date | null>();
-  const [endDate, $endDate] = useState<Date | null>();
+  const [created_at, $created_at] = useState<Date | null>();
   const [request_status, $request_status] = useState<string>();
   const [user, $user] = useDebounce<string>("");
 
   const { refetch } = useOrders({
     enabled: false,
+    department: Departments.apc,
     body: {
-      finished_from: endDate?.toISOString(),
-      finished_to: endDate?.toISOString(),
-      created_from: startDate?.toISOString(),
-      created_to: startDate?.toISOString(),
+      ...(!!created_at && {
+        created_at: dayjs(created_at).format("YYYY-MM-DD"),
+      }),
       ...(!!id && { id }),
       ...(!!department && { department }),
       ...(!!branch?.id && { fillial_id: branch?.id }),
@@ -75,14 +78,13 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
     branch?.id,
     category_id,
     urgent,
-    startDate,
-    endDate,
+    created_at,
     request_status,
     user,
     currentPage,
   ]);
 
-  const startRange = (start: Date | null) => $startDate(start);
+  const startRange = (start: Date | null) => $created_at(start);
 
   return (
     <>
@@ -96,22 +98,14 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
         </BaseInput>
       </td>
       <td className="p-0">
-        <td className="p-0">
-          <BaseInput className="m-2">
-            <MainInput onChange={(e) => $user(e.target.value)} />
-          </BaseInput>
-        </td>
+        <BaseInput className="m-2">
+          <MainInput onChange={(e) => $user(e.target.value)} />
+        </BaseInput>
       </td>
-      <td className="p-0">
-        <BaseInputs className="m-2 position-relative">
-          <div
-            className="pointer"
-            onClick={() => navigate("?choose_fillial=true")}
-          >
-            <MainInput value={branch?.name || ""} />
-          </div>
-          {!!choose_fillial && choose_fillial !== "false" && <BranchSelect />}
-        </BaseInputs>
+      <td width={150} className="p-0 position-relative">
+        <div className={cl("position-absolute w-100 ", styles.fillial)}>
+          <BranchSelect />
+        </div>
       </td>
       <td className="p-0">
         <BaseInputs className="m-2">
@@ -136,7 +130,7 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
         </BaseInput>
       </td>
       <td className="p-0">
-        <MainDatePicker selected={startDate} onChange={startRange} />
+        <MainDatePicker selected={created_at} onChange={startRange} />
       </td>
       <td className="p-0">
         <BaseInputs className="m-2">
@@ -146,7 +140,7 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
           />
         </BaseInputs>
       </td>
-      <td>
+      <td className="p-0">
         <BaseInput className="m-2">
           <MainInput onChange={(e) => $user(e.target.value)} />
         </BaseInput>

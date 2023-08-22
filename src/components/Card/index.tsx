@@ -6,7 +6,7 @@ import cl from "classnames";
 const Card: FC<PropsWithChildren> = ({ children }) => {
   return (
     <Container>
-      <div className={cl(styles.card, "overflow-hidden")}>{children}</div>
+      <div className={cl(styles.card)}>{children}</div>
     </Container>
   );
 };

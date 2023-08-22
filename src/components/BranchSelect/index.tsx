@@ -11,13 +11,19 @@ import {
   useRemoveParams,
 } from "src/hooks/useCustomNavigate";
 import useBranches from "src/hooks/useBranches";
+import useQueryString from "src/hooks/useQueryString";
 
 const BranchSelect: FC = () => {
   const navigate = useNavigateParams();
   const removeParam = useRemoveParams();
   const initialLoadRef = useRef(true);
   const [query, $query] = useDebounce("");
+  const [search, $search] = useState("");
   const [page, $page] = useState(1);
+  const [focused, $focused] = useState(false);
+
+  const branchJson = useQueryString("branch");
+  const branch = branchJson && JSON.parse(branchJson);
 
   const { data, refetch, isFetching, isLoading } = useBranches({
     enabled: false,
@@ -41,15 +47,33 @@ const BranchSelect: FC = () => {
     [isFetching, isLoading]
   );
 
-  const onClose = () => removeParam(["choose_fillial"]);
+  const onClose = () => {
+    $focused(false);
+    removeParam(["choose_fillial"]);
+  };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     $query(e.target.value);
+    $search(e.target.value);
     $page(1);
   };
 
-  const handleProduct = (product: { id: string; name: string }) =>
+  const close = () => {
+    removeParam(["branch", "choose_fillial"]);
+    $search("");
+    $focused(false);
+  };
+
+  useEffect(() => {
+    if (branch?.name) {
+      $search(branch.name);
+    }
+  }, [branch?.name]);
+
+  const handleProduct = (product: { id: string; name: string }) => {
     navigate({ branch: JSON.stringify(product), choose_fillial: false });
+    $focused(false);
+  };
 
   useEffect(() => {
     if (initialLoadRef.current) {
@@ -75,46 +99,62 @@ const BranchSelect: FC = () => {
 
   return (
     <>
-      <div className={styles.overlay} onClick={onClose} />
+      {focused && <div className={styles.overlay} onClick={onClose} />}
       <div className={styles.drop}>
-        <div className="popover-title">
+        {/* <div className="popover-title">
           <button onClick={onClose} className="close">
-            <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true">&times;</span> 
           </button>
-          Выберите товар
-        </div>
-        <BaseInput>
-          <MainInput onChange={handleSearch} />
+          Выберите филиал
+        </div> */}
+        <BaseInput className="mb-0 position-relative">
+          {focused && (
+            <img
+              onClick={close}
+              src="/assets/icons/clear.svg"
+              alt="clear"
+              width={15}
+              height={15}
+              className={styles.close}
+            />
+          )}
+          <MainInput
+            onChange={handleSearch}
+            value={search}
+            onFocus={() => $focused(true)}
+          />
         </BaseInput>
-        <ul className={cl("list-group", styles.list)}>
-          {items?.map((item, idx) => {
-            if (items.length === idx + 1 && !query)
-              return (
-                <li
-                  key={item.id}
-                  ref={lastBookElementRef}
-                  onClick={() =>
-                    handleProduct({ id: item.id, name: item.name })
-                  }
-                  className={cl("list-group-item position-relative pointer")}
-                >
-                  {item.name}
-                </li>
-              );
-            else
-              return (
-                <li
-                  key={item.id}
-                  onClick={() =>
-                    handleProduct({ id: item.id, name: item.name })
-                  }
-                  className={cl("list-group-item position-relative pointer")}
-                >
-                  {item.name}
-                </li>
-              );
-          })}
-        </ul>
+        {focused && (
+          <ul className={cl("list-group", styles.list)}>
+            {items?.map((item, idx) => {
+              if (items.length === idx + 1 && !query)
+                return (
+                  <li
+                    key={item.id}
+                    ref={lastBookElementRef}
+                    onClick={() =>
+                      handleProduct({ id: item.id, name: item.name })
+                    }
+                    className={cl("list-group-item position-relative pointer")}
+                  >
+                    {item.name}
+                  </li>
+                );
+              else
+                return (
+                  <li
+                    key={item.id}
+                    onClick={() =>
+                      handleProduct({ id: item.id, name: item.name })
+                    }
+                    className={cl("list-group-item position-relative pointer")}
+                  >
+                    {item.name}
+                  </li>
+                );
+            })}
+          </ul>
+        )}
       </div>
     </>
   );

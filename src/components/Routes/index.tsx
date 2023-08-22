@@ -95,27 +95,49 @@ export const routes = [
     screen: MainPerm.edit_complect_requests,
   },
   {
-    element: <RequestsMarketing />,
+    element: (
+      <RequestsMarketing
+        title={"Проектная работа для дизайнеров"}
+        sub_id={MarketingSubDep.designers}
+      />
+    ),
     path: `/marketing-${MarketingSubDep[1]}`,
     screen: MainPerm.get_requests_apc,
   },
   {
-    element: <RequestsMarketing />,
+    element: (
+      <RequestsMarketing
+        title={"Локальный маркетинг"}
+        sub_id={MarketingSubDep.local_marketing}
+      />
+    ),
     path: `/marketing-${MarketingSubDep[2]}`,
     screen: MainPerm.get_locmar_requests,
   },
   {
-    element: <RequestsMarketing />,
+    element: (
+      <RequestsMarketing
+        title={"Промо-продукция"}
+        sub_id={MarketingSubDep.promo_production}
+      />
+    ),
     path: `/marketing-${MarketingSubDep[3]}`,
     screen: MainPerm.get_promo_requests,
   },
   {
-    element: <RequestsMarketing />,
+    element: (
+      <RequestsMarketing title={"POS-Материалы"} sub_id={MarketingSubDep.pos} />
+    ),
     path: `/marketing-${MarketingSubDep[4]}`,
     screen: MainPerm.get_pos_requests,
   },
   {
-    element: <RequestsMarketing />,
+    element: (
+      <RequestsMarketing
+        title={"Комплекты"}
+        sub_id={MarketingSubDep.complects}
+      />
+    ),
     path: `/marketing-${MarketingSubDep[5]}`,
     screen: MainPerm.get_complect_requests,
   },
@@ -281,7 +303,7 @@ const Navigation = () => {
       });
 
     return null;
-  }, []);
+  }, [permission, routes]);
 
   useEffect(() => {
     if (!!tokenKey) {

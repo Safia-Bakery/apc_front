@@ -232,10 +232,7 @@ export type RequestFilter = {
   fillial_id?: number;
   category_id?: number;
   urgent?: boolean;
-  created_from?: string;
-  created_to?: string;
-  finished_from?: string;
-  finished_to?: string;
+  created_at?: string;
   request_status?: string;
   user?: string;
   page?: number;
