@@ -14,7 +14,7 @@ import {
   handleDepartment,
   handleStatus,
 } from "src/utils/helpers";
-import { FileType, MainPerm, RequestStatus } from "src/utils/types";
+import { FileType, MainPermissions, RequestStatus } from "src/utils/types";
 import { useForm } from "react-hook-form";
 import ShowRequestModals from "src/components/ShowRequestModals";
 
@@ -76,7 +76,7 @@ const ShowMarketingRequest = () => {
     };
 
   const renderBtns = useMemo(() => {
-    if (permissions?.[MainPerm.edit_designers_requests] && isNew)
+    if (permissions?.[MainPermissions.edit_design_request] && isNew)
       return (
         <div className="float-end mb10">
           <button
@@ -93,7 +93,7 @@ const ShowMarketingRequest = () => {
           </button>
         </div>
       );
-    if (permissions?.[MainPerm.edit_designers_requests])
+    if (permissions?.[MainPermissions.edit_design_request])
       return (
         <div className="float-end mb10">
           {order?.status! < 3 && (

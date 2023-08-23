@@ -96,13 +96,19 @@ const Categories = () => {
                       <td>{category?.name}</td>
                       <td>{category?.department}</td>
                       <td>{category?.status ? "Активный" : "Неактивный"}</td>
-                      <TableViewBtn
-                        onClick={handleNavigate(
-                          `/categories/${category.id}?${
-                            category?.department ? `dep=${category.department}` : ""
-                          }`
-                        )}
-                      />
+                      <td width={40}>
+                        <TableViewBtn
+                          onClick={handleNavigate(
+                            `/categories/${category.id}?dep=${
+                              category?.department
+                            }${
+                              !!category?.sub_id
+                                ? `&sub_id=${category.sub_id}`
+                                : ""
+                            }`
+                          )}
+                        />
+                      </td>
                     </tr>
                   )
                 )}

@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { apiClient } from "src/main";
+import apiClient from "src/main";
 
 interface LoginTypes {
   access_token: string;

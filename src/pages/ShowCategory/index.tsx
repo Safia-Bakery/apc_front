@@ -61,7 +61,7 @@ const ShowCategory = () => {
         onSuccess: () => {
           categoryRefetch();
           successToast(!!id ? "successfully updated" : "successfully created");
-          navigate("/categories");
+          navigate(`/categories-${Departments[Number(dep)]}?dep=${dep}`);
           if (id) refetch();
         },
       }

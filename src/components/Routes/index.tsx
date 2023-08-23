@@ -31,7 +31,7 @@ import EditAddRole from "src/pages/EditAddRole";
 import ShowRole from "src/pages/ShowRole";
 import BreadCrump from "../BreadCrump";
 import CreateBrigades from "src/pages/CreateBrigades";
-import { MainPerm, MarketingSubDep } from "src/utils/types";
+import { Departments, MainPermissions, MarketingSubDep } from "src/utils/types";
 import useQueriesPrefetch from "src/hooks/sync/useQueriesPrefetch";
 import CustomSidebar from "../CustomSidebar";
 import Logs from "src/pages/LogsScreen";
@@ -48,125 +48,142 @@ import AddMarketingRequest from "src/pages/AddMarketingRequest";
 import ShowMarketingRequest from "src/pages/ShowMarketingRequest";
 
 export const routes = [
-  { element: <ControlPanel />, path: "/", screen: MainPerm.add_brigada },
+  { element: <ControlPanel />, path: "/", screen: MainPermissions.add_brigada },
   {
     element: <CreateITRequest />,
     path: "/requests-it/add",
-    screen: MainPerm.add_request_apc,
+    screen: MainPermissions.add_request_apc,
   },
   {
     element: <CreateApcRequest />,
     path: "/requests-apc/add",
-    screen: MainPerm.add_request_apc,
+    screen: MainPermissions.add_request_apc,
   },
   {
     element: <ShowRequestApc />,
     path: "/requests-apc/:id",
-    screen: MainPerm.edit_request_apc,
+    screen: MainPermissions.edit_request_apc,
   },
   {
     element: <RequestsApc />,
     path: "/requests-apc",
-    screen: MainPerm.get_requests_apc,
+    screen: MainPermissions.get_requests_apc,
   },
   {
     element: <ShowMarketingRequest />,
     path: `/marketing-${MarketingSubDep[1]}/:id`,
-    screen: MainPerm.edit_designers_requests,
+    screen: MainPermissions.edit_design_request,
   },
   {
     element: <ShowMarketingRequest />,
     path: `/marketing-${MarketingSubDep[2]}/:id`,
-    screen: MainPerm.edit_locmar_requests,
+    screen: MainPermissions.edit_locmar_requests,
   },
   {
     element: <ShowMarketingRequest />,
     path: `/marketing-${MarketingSubDep[3]}/:id`,
-    screen: MainPerm.edit_promo_requests,
+    screen: MainPermissions.edit_promo_requests,
   },
   {
     element: <ShowMarketingRequest />,
     path: `/marketing-${MarketingSubDep[4]}/:id`,
-    screen: MainPerm.edit_pos_requests,
+    screen: MainPermissions.edit_pos_requests,
   },
   {
     element: <ShowMarketingRequest />,
     path: `/marketing-${MarketingSubDep[5]}/:id`,
-    screen: MainPerm.edit_complect_requests,
+    screen: MainPermissions.edit_complect_requests,
   },
   {
     element: (
       <RequestsMarketing
+        add={MainPermissions.add_design_request}
+        edit={MainPermissions.edit_design_request}
         title={"Проектная работа для дизайнеров"}
         sub_id={MarketingSubDep.designers}
       />
     ),
     path: `/marketing-${MarketingSubDep[1]}`,
-    screen: MainPerm.get_requests_apc,
+    screen: MainPermissions.get_design_request,
   },
   {
     element: (
       <RequestsMarketing
+        add={MainPermissions.add_locmar_requests}
+        edit={MainPermissions.edit_locmar_requests}
         title={"Локальный маркетинг"}
         sub_id={MarketingSubDep.local_marketing}
       />
     ),
     path: `/marketing-${MarketingSubDep[2]}`,
-    screen: MainPerm.get_locmar_requests,
+    screen: MainPermissions.get_locmar_requests,
   },
   {
     element: (
       <RequestsMarketing
+        add={MainPermissions.add_promo_requests}
+        edit={MainPermissions.edit_promo_requests}
         title={"Промо-продукция"}
         sub_id={MarketingSubDep.promo_production}
       />
     ),
     path: `/marketing-${MarketingSubDep[3]}`,
-    screen: MainPerm.get_promo_requests,
-  },
-  {
-    element: (
-      <RequestsMarketing title={"POS-Материалы"} sub_id={MarketingSubDep.pos} />
-    ),
-    path: `/marketing-${MarketingSubDep[4]}`,
-    screen: MainPerm.get_pos_requests,
+    screen: MainPermissions.get_promo_requests,
   },
   {
     element: (
       <RequestsMarketing
+        add={MainPermissions.add_pos_requests}
+        edit={MainPermissions.edit_pos_requests}
+        title={"POS-Материалы"}
+        sub_id={MarketingSubDep.pos}
+      />
+    ),
+    path: `/marketing-${MarketingSubDep[4]}`,
+    screen: MainPermissions.get_pos_requests,
+  },
+  {
+    element: (
+      <RequestsMarketing
+        add={MainPermissions.add_complect_requests}
+        edit={MainPermissions.edit_complect_requests}
         title={"Комплекты"}
         sub_id={MarketingSubDep.complects}
       />
     ),
     path: `/marketing-${MarketingSubDep[5]}`,
-    screen: MainPerm.get_complect_requests,
+    screen: MainPermissions.get_complect_requests,
   },
   {
     element: <AddMarketingRequest />,
     path: `/marketing-${MarketingSubDep[1]}/add`,
-    screen: MainPerm.get_design_request,
+    screen: MainPermissions.get_design_request,
   },
   {
     element: <AddMarketingRequest />,
     path: `/marketing-${MarketingSubDep[2]}/add`,
-    screen: MainPerm.get_locmar_requests,
+    screen: MainPermissions.get_locmar_requests,
   },
   {
     element: <AddMarketingRequest />,
     path: `/marketing-${MarketingSubDep[3]}/add`,
-    screen: MainPerm.get_promo_requests,
+    screen: MainPermissions.get_promo_requests,
   },
   {
     element: <AddMarketingRequest />,
     path: `/marketing-${MarketingSubDep[4]}/add`,
-    screen: MainPerm.get_pos_requests,
+    screen: MainPermissions.get_pos_requests,
   },
   {
     element: <AddMarketingRequest />,
     path: `/marketing-${MarketingSubDep[5]}/add`,
-    screen: MainPerm.get_complect_requests,
+    screen: MainPermissions.get_complect_requests,
   },
-  { element: <Logs />, path: "/logs/:id", screen: MainPerm.edit_request_apc },
+  {
+    element: <Logs />,
+    path: "/logs/:id",
+    screen: MainPermissions.edit_request_apc,
+  },
   // {
   //   element: <RequestInventory />,
   //   path: "/requests-inventory",
@@ -177,93 +194,113 @@ export const routes = [
   //   path: "/requests-inventory/add",
   //   screen: MainPerm.requests_inventory,
   // },
-  { element: <YandexMap />, path: "/map", screen: MainPerm.get_map },
+  { element: <YandexMap />, path: "/map", screen: MainPermissions.get_map },
   {
     element: <Statistics />,
     path: "/statistics",
-    screen: MainPerm.get_statistics,
+    screen: MainPermissions.get_statistics,
   },
   {
     element: <Categories />,
-    path: "/categories",
-    screen: MainPerm.get_category,
+    path: `/categories-${Departments[1]}`,
+    screen: MainPermissions.get_apc_category,
   },
   {
     element: <Categories />,
-    path: "/categories-marketing",
-    screen: MainPerm.get_category,
+    path: `/categories-${Departments[3]}`,
+    screen: MainPermissions.get_mark_category,
   },
   {
     element: <ShowCategory />,
     path: "/categories/:id",
-    screen: MainPerm.edit_category,
+    screen: MainPermissions.edit_apc_category,
   },
   {
     element: <ShowCategory />,
-    path: "/categories-marketing/add",
-    screen: MainPerm.add_category,
+    path: `/categories-${Departments[3]}/add`,
+    screen: MainPermissions.add_mark_category,
   },
   {
     element: <ShowCategory />,
-    path: "/categories/add",
-    screen: MainPerm.add_category,
+    path: `/categories-${Departments[1]}/add`,
+    screen: MainPermissions.add_apc_category,
   },
   {
     element: <EditAddRole />,
     path: "/roles/edit/:id",
-    screen: MainPerm.edit_roles,
+    screen: MainPermissions.edit_roles,
   },
-  { element: <EditAddRole />, path: "/roles/add", screen: MainPerm.add_role },
-  { element: <Roles />, path: "/roles", screen: MainPerm.get_roles },
-  { element: <ShowRole />, path: "/roles/:id", screen: MainPerm.edit_roles },
-  { element: <EditAddUser />, path: "/users/add", screen: MainPerm.add_users },
-  { element: <Users />, path: "/users", screen: MainPerm.get_users },
-  { element: <EditAddUser />, path: "/users/:id", screen: MainPerm.edit_users },
-  { element: <Brigades />, path: "/brigades", screen: MainPerm.get_brigadas },
+  {
+    element: <EditAddRole />,
+    path: "/roles/add",
+    screen: MainPermissions.add_role,
+  },
+  { element: <Roles />, path: "/roles", screen: MainPermissions.get_roles },
+  {
+    element: <ShowRole />,
+    path: "/roles/:id",
+    screen: MainPermissions.edit_roles,
+  },
+  {
+    element: <EditAddUser />,
+    path: "/users/add",
+    screen: MainPermissions.add_users,
+  },
+  { element: <Users />, path: "/users", screen: MainPermissions.get_users },
+  {
+    element: <EditAddUser />,
+    path: "/users/:id",
+    screen: MainPermissions.edit_users,
+  },
+  {
+    element: <Brigades />,
+    path: "/brigades",
+    screen: MainPermissions.get_brigadas,
+  },
   {
     element: <CreateBrigades />,
     path: "/brigades/add",
-    screen: MainPerm.add_brigada,
+    screen: MainPermissions.add_brigada,
   },
   {
     element: <CreateBrigades />,
     path: "/brigades/:id",
-    screen: MainPerm.edit_brigada,
+    screen: MainPermissions.edit_brigada,
   },
   {
     element: <Comments />,
     path: "/comments",
-    screen: MainPerm.get_comments_list,
+    screen: MainPermissions.get_comments_list,
   },
   {
     element: <ShowComment />,
     path: "/comments/:id",
-    screen: MainPerm.edit_comment,
+    screen: MainPermissions.edit_comment,
   },
   {
     element: <Branches />,
     path: "/branches",
-    screen: MainPerm.get_fillials_list,
+    screen: MainPermissions.get_fillials_list,
   },
   {
     element: <EditAddBranch />,
     path: "/branches/add",
-    screen: MainPerm.add_fillials,
+    screen: MainPermissions.add_fillials,
   },
   {
     element: <EditAddBranch />,
     path: "/branches/:id",
-    screen: MainPerm.edit_fillials,
+    screen: MainPermissions.edit_fillials,
   },
   {
     element: <RemainsInStock />,
     path: "/items-in-stock",
-    screen: MainPerm.get_warehouse,
+    screen: MainPermissions.get_warehouse,
   },
   {
     element: <ShowRemainsInStock />,
     path: "/items-in-stock/:id",
-    screen: MainPerm.get_warehouse,
+    screen: MainPermissions.get_warehouse,
   },
 ];
 

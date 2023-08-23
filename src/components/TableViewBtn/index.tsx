@@ -7,15 +7,11 @@ interface Props {
 
 const TableViewBtn: FC<Props> = ({ onClick }) => {
   return (
-    <td width={40}>
-      <div onClick={onClick}>
-        <img
-          className={styles.viewImg}
-          src="/assets/icons/edit.svg"
-          alt="edit"
-        />
-      </div>
-    </td>
+    // <td width={40}>
+    <div onClick={onClick}>
+      <img className={styles.viewImg} src="/assets/icons/edit.svg" alt="edit" />
+    </div>
+    // </td>
   );
 };
 

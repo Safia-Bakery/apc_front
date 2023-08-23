@@ -16,7 +16,12 @@ import {
   handleStatus,
 } from "src/utils/helpers";
 import { useForm } from "react-hook-form";
-import { FileType, MainPerm, Order, RequestStatus } from "src/utils/types";
+import {
+  FileType,
+  MainPermissions,
+  Order,
+  RequestStatus,
+} from "src/utils/types";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import ShowRequestModals from "src/components/ShowRequestModals";
 import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
@@ -110,7 +115,11 @@ const ShowRequestApc = () => {
   };
 
   const renderBtns = useMemo(() => {
-    if (permissions?.[MainPerm.request_ettach] && isNew && !!brigada?.name)
+    if (
+      permissions?.[MainPermissions.edit_request_apc] &&
+      isNew &&
+      !!brigada?.name
+    )
       return (
         <div className="float-end mb10">
           <button
@@ -129,7 +138,7 @@ const ShowRequestApc = () => {
       );
     if (
       !!order?.brigada?.name &&
-      permissions?.[MainPerm.request_add_expanditure]
+      permissions?.[MainPermissions.edit_request_apc]
     )
       return (
         <div className="d-flex justify-content-between mb10">
@@ -166,7 +175,7 @@ const ShowRequestApc = () => {
   }, [permissions, order?.status]);
 
   const renderAssignment = useMemo(() => {
-    if (permissions?.[MainPerm.request_ettach]) {
+    if (permissions?.[MainPermissions.request_ettach]) {
       if (order?.brigada?.name) {
         return (
           <>
@@ -359,9 +368,9 @@ const ShowRequestApc = () => {
         </div>
       </Card>
 
-      {permissions?.[MainPerm.request_add_expanditure] &&
+      {permissions?.[MainPermissions.request_add_expanditure] &&
         order?.status !== 0 && (
-          <Card>
+          <Card className="overflow-hidden">
             <Header title={"Добавить фотоотчёт"} />
             <div className="m-3">
               <UploadComponent

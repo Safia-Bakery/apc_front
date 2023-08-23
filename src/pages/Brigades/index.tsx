@@ -1,7 +1,7 @@
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
-import { BrigadaType } from "src/utils/types";
+import { BrigadaType, MainPermissions } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
 import { useEffect, useState } from "react";
@@ -10,6 +10,8 @@ import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useBrigadas from "src/hooks/useBrigadas";
 import ItemsCount from "src/components/ItemsCount";
+import { useAppSelector } from "src/redux/utils/types";
+import { permissionSelector } from "src/redux/reducers/auth";
 
 const column = [
   { name: "#", key: "id" },
@@ -23,6 +25,7 @@ const column = [
 const Brigades = () => {
   const navigate = useNavigate();
   const handleNavigate = (id: number | string) => () => navigate(`${id}`);
+  const permission = useAppSelector(permissionSelector);
 
   const [currentPage, setCurrentPage] = useState(1);
   const {
@@ -74,12 +77,14 @@ const Brigades = () => {
   return (
     <Card>
       <Header title={"Бригады"}>
-        <button
-          className="btn btn-success btn-fill"
-          onClick={handleNavigate("add")}
-        >
-          Добавить
-        </button>
+        {permission?.[MainPermissions.add_brigada] && (
+          <button
+            className="btn btn-success btn-fill"
+            onClick={handleNavigate("add")}
+          >
+            Добавить
+          </button>
+        )}
       </Header>
 
       <div className="table-responsive grid-view content">
@@ -104,7 +109,11 @@ const Brigades = () => {
                     <td>{order.user?.[0]?.full_name}</td>
                     <td>{order.description}</td>
                     <td>{!!order.status ? "Активный" : "Неактивный"}</td>
-                    <TableViewBtn onClick={handleNavigate(`${order.id}`)} />
+                    <td width={40}>
+                      {permission?.[MainPermissions.edit_brigada] && (
+                        <TableViewBtn onClick={handleNavigate(`${order.id}`)} />
+                      )}
+                    </td>
                   </tr>
                 )
               )}

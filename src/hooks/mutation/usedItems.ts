@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { FileItem } from "src/components/FileUpload";
-import { apiClient } from "src/main";
+import apiClient from "src/main";
 import { errorToast } from "src/utils/toast";
 
 interface Body {

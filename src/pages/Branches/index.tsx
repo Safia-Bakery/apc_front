@@ -3,7 +3,7 @@ import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
 import Pagination from "src/components/Pagination";
 import { useEffect, useMemo, useState } from "react";
-import { BranchType, MainPerm } from "src/utils/types";
+import { BranchType, MainPermissions } from "src/utils/types";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
@@ -12,7 +12,6 @@ import BranchesFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import useBranchSync from "src/hooks/useBranchSync";
 import Loading from "src/components/Loader";
-import useToken from "src/hooks/useToken";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
 
@@ -40,7 +39,7 @@ const Branches = () => {
   const { refetch: branchSync, isFetching } = useBranchSync({ enabled: false });
   const permisisons = useAppSelector(permissionSelector);
 
-  const iikoBtn = permisisons?.[MainPerm.synch_fillials_iiko];
+  const iikoBtn = permisisons?.[MainPermissions.synch_fillials_iiko];
 
   const { data: branches, refetch } = useBranches({
     size: itemsPerPage,
@@ -104,12 +103,14 @@ const Branches = () => {
             Синхронизировать с iiko
           </button>
         )}
-        <button
-          className="btn btn-success btn-fill"
-          onClick={handleNavigate("add")}
-        >
-          Добавить
-        </button>
+        {permisisons?.[MainPermissions.add_fillials] && (
+          <button
+            className="btn btn-success btn-fill"
+            onClick={handleNavigate("add")}
+          >
+            Добавить
+          </button>
+        )}
       </Header>
 
       <div className="table-responsive grid-view content">
@@ -135,9 +136,13 @@ const Branches = () => {
                     <td>{branch.latitude}</td>
                     <td>{branch.longtitude}</td>
                     <td>{!branch.status ? "Не активный" : "Активный"}</td>
-                    <TableViewBtn
-                      onClick={handleNavigate(`/branches/${branch.id}`)}
-                    />
+                    <td width={40}>
+                      {permisisons?.[MainPermissions.edit_fillials] && (
+                        <TableViewBtn
+                          onClick={handleNavigate(`/branches/${branch.id}`)}
+                        />
+                      )}
+                    </td>
                   </tr>
                 )
               )}

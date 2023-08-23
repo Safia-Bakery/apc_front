@@ -267,7 +267,7 @@ export interface CartProducts {
   author: { name: string; id: number | string };
 }
 
-export enum MainPerm {
+export enum MainPermissions {
   edit_roles = 2,
   get_roles = 14,
   add_role = 15,
@@ -280,9 +280,13 @@ export enum MainPerm {
   get_users = 5,
   add_users = 18,
   edit_users = 19,
-  get_category = 6,
-  add_category = 20,
-  edit_category = 21,
+  // get_category = 6,
+  // add_category = 20,
+  // edit_category = 21,
+
+  get_mark_category = 6,
+  add_mark_category = 20,
+  edit_mark_category = 21,
   get_statistics = 7,
   get_map = 8,
   synch_fillials_iiko = 9,
@@ -297,15 +301,24 @@ export enum MainPerm {
   request_ettach = 27,
   request_add_expanditure = 28,
   get_design_request = 31,
-  edit_designers_requests = 32,
+  add_design_request = 44,
+  edit_design_request = 32,
   get_locmar_requests = 33,
+  add_locmar_requests = 45,
   edit_locmar_requests = 34,
   get_promo_requests = 35,
+  add_promo_requests = 43,
   edit_promo_requests = 36,
   get_pos_requests = 37,
+  add_pos_requests = 42,
   edit_pos_requests = 38,
   get_complect_requests = 39,
+  add_complect_requests = 41,
   edit_complect_requests = 40,
+
+  get_apc_category = 48,
+  add_apc_category = 46,
+  edit_apc_category = 47,
 }
 export enum MarketingSubDep {
   designers = 1,

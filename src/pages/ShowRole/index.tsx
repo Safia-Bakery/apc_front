@@ -12,7 +12,6 @@ import usePermissions from "src/hooks/usePermissions";
 const ShowRole = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const goBack = () => navigate("/users");
   const [ids, $ids] = useState<number[]>([]);
   const {
     data: rolePermission,
@@ -42,7 +41,7 @@ const ShowRole = () => {
         onSuccess: () => {
           successToast("successfully updated");
           refetch();
-          goBack();
+          navigate("/users");
         },
       }
     );
@@ -61,7 +60,10 @@ const ShowRole = () => {
   return (
     <Card>
       <Header title={`${rolePermission?.role_name}`}>
-        <button className="btn btn-primary btn-fill" onClick={goBack}>
+        <button
+          className="btn btn-primary btn-fill"
+          onClick={() => navigate(-1)}
+        >
           Назад
         </button>
       </Header>
@@ -82,7 +84,9 @@ const ShowRole = () => {
                   {item.actions.map((child) => {
                     return (
                       <tr key={child?.id}>
-                        <td>{child?.action_name}</td>
+                        <td>
+                          {child?.action_name} - {child?.id}
+                        </td>
                         <td width={50}>
                           <input
                             type="checkbox"

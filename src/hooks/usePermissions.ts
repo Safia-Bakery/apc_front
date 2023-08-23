@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { apiClient } from "src/main";
+import apiClient from "src/main";
 import { PermissionTypes } from "src/utils/types";
 
 export const usePermissions = ({ enabled = true }: { enabled?: boolean }) => {

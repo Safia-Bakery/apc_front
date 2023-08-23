@@ -2,51 +2,67 @@ import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import styles from "./index.module.scss";
 import { NavLink, useMatch } from "react-router-dom";
 import cl from "classnames";
-import { Departments, MainPerm, MarketingSubDep } from "src/utils/types";
+import { Departments, MainPermissions, MarketingSubDep } from "src/utils/types";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import Subroutes from "./CustomSubItems";
 import { sidebarHandler, toggleSidebar } from "src/redux/reducers/selects";
 import { isMobile } from "src/utils/helpers";
 import { permissionSelector } from "src/redux/reducers/auth";
 
+const marketingPerm =
+  MainPermissions.get_design_request ||
+  MainPermissions.get_locmar_requests ||
+  MainPermissions.get_promo_requests ||
+  MainPermissions.get_pos_requests ||
+  MainPermissions.get_complect_requests;
+
+const apcPerm =
+  MainPermissions.get_requests_apc ||
+  MainPermissions.get_brigadas ||
+  MainPermissions.get_warehouse ||
+  MainPermissions.get_apc_category;
+
 const routes = [
   {
     name: "Статистика",
     url: "/statistics",
     icon: "/assets/icons/statistics.svg",
-    screen: MainPerm.get_statistics,
+    screen: MainPermissions.get_statistics,
   },
   {
     name: "Тепловая карта",
     url: "/map",
     icon: "/assets/icons/map.svg",
-    screen: MainPerm.get_map,
+    screen: MainPermissions.get_map,
   },
   {
     name: "APC",
     icon: "/assets/icons/apc.svg",
-    screen:
-      MainPerm.get_requests_apc ||
-      MainPerm.get_brigadas ||
-      MainPerm.get_warehouse,
+    screen: apcPerm,
     subroutes: [
       {
         name: "Заявки",
         url: "/requests-apc",
         icon: "/assets/icons/subOrder.svg",
-        screen: MainPerm.get_requests_apc,
+        screen: MainPermissions.get_requests_apc,
       },
       {
         name: "Бригады",
         url: "/brigades",
         icon: "/assets/icons/brigades.svg",
-        screen: MainPerm.get_brigadas,
+        screen: MainPermissions.get_brigadas,
       },
       {
         name: "Остатки на складах",
         url: "/items-in-stock",
         icon: "/assets/icons/remains-in-stock.svg",
-        screen: MainPerm.get_warehouse,
+        screen: MainPermissions.get_warehouse,
+      },
+      {
+        name: "Категории",
+        url: `/categories-apc?dep=${Departments.apc}`,
+        icon: "/assets/icons/categories.svg",
+        screen: MainPermissions.get_apc_category,
       },
     ],
   },
@@ -81,80 +97,74 @@ const routes = [
   {
     name: "Маркетинг",
     icon: "/assets/icons/marketing.svg",
-    screen: MainPerm.get_locmar_requests,
+    screen: marketingPerm,
     subroutes: [
       {
         name: "Проектная работа для дизайнеров",
         url: `/marketing-${MarketingSubDep[1]}`,
         icon: "/assets/icons/subOrder.svg",
-        screen: MainPerm.get_design_request,
+        screen: MainPermissions.get_design_request,
       },
       {
         name: "Локальный маркетинг",
         url: `/marketing-${MarketingSubDep[2]}`,
         icon: "/assets/icons/subOrder.svg",
-        screen: MainPerm.get_locmar_requests,
+        screen: MainPermissions.get_locmar_requests,
       },
       {
         name: "Промо-продукция",
         url: `/marketing-${MarketingSubDep[3]}`,
         icon: "/assets/icons/subOrder.svg",
-        screen: MainPerm.get_promo_requests,
+        screen: MainPermissions.get_promo_requests,
       },
       {
         name: "POS-Материалы",
         url: `/marketing-${MarketingSubDep[4]}`,
         icon: "/assets/icons/subOrder.svg",
-        screen: MainPerm.get_pos_requests,
+        screen: MainPermissions.get_pos_requests,
       },
       {
         name: "Комплекты",
         url: `/marketing-${MarketingSubDep[5]}`,
         icon: "/assets/icons/subOrder.svg",
-        screen: MainPerm.get_requests_apc,
+        screen: MainPermissions.get_complect_requests,
       },
       {
         name: "Категории",
         url: `/categories-marketing?dep=${Departments.marketing}`,
         icon: "/assets/icons/categories.svg",
-        screen: MainPerm.get_category,
+        screen: MainPermissions.get_mark_category,
       },
     ],
-  },
-  {
-    name: "Категории",
-    url: "/categories",
-    icon: "/assets/icons/categories.svg",
-    screen: MainPerm.get_category,
   },
   {
     name: "Пользователи",
     url: "/users",
     icon: "/assets/icons/users.svg",
-    screen: MainPerm.get_users,
+    screen: MainPermissions.get_users,
   },
   {
     name: "Роли",
     url: "/roles",
     icon: "/assets/icons/roles.svg",
-    screen: MainPerm.get_roles,
+    screen: MainPermissions.get_roles,
   },
   {
     name: "Отзывы",
     url: "/comments",
     icon: "/assets/icons/comments.svg",
-    screen: MainPerm.get_comments_list,
+    screen: MainPermissions.get_comments_list,
   },
   {
     name: "Настройки",
     icon: "/assets/icons/settings.svg",
-    screen: MainPerm.get_fillials_list,
+    screen: MainPermissions.get_fillials_list,
     subroutes: [
       {
         name: "Филиалы",
         url: "/branches",
         icon: "/assets/icons/branch.svg",
-        screen: MainPerm.get_fillials_list,
+        screen: MainPermissions.get_fillials_list,
       },
     ],
   },

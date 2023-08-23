@@ -99,7 +99,9 @@ const ShowRemainsInStock = () => {
                     <td>
                       {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
                     </td>
-                    <TableViewBtn onClick={handleNavigate(`${order.id}`)} />
+                    <td width={40}>
+                      <TableViewBtn onClick={handleNavigate(`${order.id}`)} />
+                    </td>
                   </tr>
                 )
               )}

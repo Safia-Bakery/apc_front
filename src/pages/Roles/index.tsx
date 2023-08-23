@@ -1,13 +1,15 @@
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { Link, useNavigate } from "react-router-dom";
-import { RoleTypes } from "src/utils/types";
+import { MainPermissions, RoleTypes } from "src/utils/types";
 
 import Loading from "src/components/Loader";
 import { useState } from "react";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useRoles from "src/hooks/useRoles";
+import { useAppSelector } from "src/redux/utils/types";
+import { permissionSelector } from "src/redux/reducers/auth";
 
 const column = [
   { name: "#", key: "" },
@@ -19,6 +21,7 @@ const column = [
 const Roles = () => {
   const navigate = useNavigate();
   const handleNavigate = (route: string) => () => navigate(route);
+  const permission = useAppSelector(permissionSelector);
 
   const { data: roles, isLoading: orderLoading } = useRoles({ enabled: false });
 
@@ -50,12 +53,14 @@ const Roles = () => {
   return (
     <Card>
       <Header title={"Роли"}>
-        <button
-          className="btn btn-success btn-fill"
-          onClick={handleNavigate("add")}
-        >
-          Добавить
-        </button>
+        {permission?.[MainPermissions.add_role] && (
+          <button
+            className="btn btn-success btn-fill"
+            onClick={handleNavigate("add")}
+          >
+            Добавить
+          </button>
+        )}
       </Header>
 
       <div className="table-responsive grid-view content">
@@ -76,7 +81,13 @@ const Roles = () => {
                     <Link to={`/roles/${role.id}`}>{role.name}</Link>
                   </td>
                   <td>{!role.status ? "Не активный" : "Активный"}</td>
-                  <TableViewBtn onClick={handleNavigate(`edit/${role.id}`)} />
+                  <td width={40}>
+                    {permission?.[MainPermissions.edit_roles] && (
+                      <TableViewBtn
+                        onClick={handleNavigate(`edit/${role.id}`)}
+                      />
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>

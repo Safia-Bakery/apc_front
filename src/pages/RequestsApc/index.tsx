@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Departments, MainPerm, Order } from "src/utils/types";
+import { Departments, MainPermissions, Order } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
 import { useEffect, useState } from "react";
@@ -14,6 +14,7 @@ import ItemsCount from "src/components/ItemsCount";
 import cl from "classnames";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
+import styles from "./index.module.scss";
 
 const column = [
   { name: "#", key: "" },
@@ -81,7 +82,7 @@ const RequestsApc = () => {
     <Card>
       <Header title={"Заявки"}>
         <button className="btn btn-primary btn-fill mr-2">Экспорт</button>
-        {permission?.[MainPerm.add_request_apc] && (
+        {permission?.[MainPermissions.add_request_apc] && (
           <button
             onClick={() => navigate("add")}
             className="btn btn-success btn-fill"
@@ -110,7 +111,13 @@ const RequestsApc = () => {
                   <tr className={requestRows(order?.status)} key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
-                      <Link to={`/requests-apc/${order?.id}`}>{order?.id}</Link>
+                      {permission?.[MainPermissions.add_request_apc] ? (
+                        <Link to={`/requests-apc/${order?.id}`}>
+                          {order?.id}
+                        </Link>
+                      ) : (
+                        <span className={styles.link}>{order?.id}</span>
+                      )}
                     </td>
                     <td>{order?.user?.full_name}</td>
                     <td>

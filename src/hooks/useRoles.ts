@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { apiClient } from "src/main";
+import apiClient from "src/main";
 import { cachedRoles } from "src/redux/reducers/cache";
 import { useAppDispatch } from "src/redux/utils/types";
 import { RoleTypes } from "src/utils/types";

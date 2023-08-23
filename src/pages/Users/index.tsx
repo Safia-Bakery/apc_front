@@ -1,7 +1,7 @@
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import { Link, useNavigate } from "react-router-dom";
-import { UsersType } from "src/utils/types";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { MainPermissions, UsersType } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
 import { useEffect, useState } from "react";
@@ -11,6 +11,8 @@ import TableViewBtn from "src/components/TableViewBtn";
 import useUsers from "src/hooks/useUsers";
 import UsersFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
+import { useAppSelector } from "src/redux/utils/types";
+import { permissionSelector } from "src/redux/reducers/auth";
 
 const column = [
   { name: "#", key: "" },
@@ -25,6 +27,8 @@ const column = [
 const Users = () => {
   const navigate = useNavigate();
   const handleNavigate = (route: string) => () => navigate(route);
+  const permission = useAppSelector(permissionSelector);
+  const { pathname } = useLocation();
 
   const [currentPage, setCurrentPage] = useState(1);
   const {
@@ -80,12 +84,14 @@ const Users = () => {
   return (
     <Card>
       <Header title={"Пользователи"}>
-        <button
-          className="btn btn-success btn-fill"
-          onClick={handleNavigate("/users/add")}
-        >
-          Добавить
-        </button>
+        {permission?.[MainPermissions.add_users] && (
+          <button
+            className="btn btn-success btn-fill"
+            onClick={handleNavigate("/users/add")}
+          >
+            Добавить
+          </button>
+        )}
       </Header>
 
       <div className="table-responsive grid-view content">
@@ -112,13 +118,23 @@ const Users = () => {
                       <span className="not-set">{user?.username}</span>
                     </td>
                     <td width={250}>
-                      <Link to={`/roles/${user?.group?.id}`}>
+                      <Link
+                        to={
+                          permission?.[MainPermissions.edit_roles]
+                            ? `/roles/${user?.group?.id}`
+                            : pathname
+                        }
+                      >
                         {user.group?.name}
                       </Link>
                     </td>
                     <td>{user?.phone_number}</td>
                     <td>{userStatus(user?.status)}</td>
-                    <TableViewBtn onClick={handleNavigate(`${user?.id}`)} />
+                    <td width={40}>
+                      {permission?.[MainPermissions.edit_users] && (
+                        <TableViewBtn onClick={handleNavigate(`${user?.id}`)} />
+                      )}
+                    </td>
                   </tr>
                 ))}
             </tbody>

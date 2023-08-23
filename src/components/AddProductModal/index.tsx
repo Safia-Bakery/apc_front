@@ -18,6 +18,9 @@ import {
   useRemoveParams,
 } from "src/hooks/useCustomNavigate";
 import useToken from "src/hooks/useToken";
+import { permissionSelector } from "src/redux/reducers/auth";
+import { useAppSelector } from "src/redux/utils/types";
+import { MainPermissions } from "src/utils/types";
 
 const AddProductModal = () => {
   const { id } = useParams();
@@ -27,6 +30,7 @@ const AddProductModal = () => {
   const productJson = useQueryString("product");
   const itemModal = useQueryString("itemModal");
   const product = JSON.parse(productJson!) as { id: number; name: string };
+  const permissions = useAppSelector(permissionSelector);
 
   const { mutate } = usedItemsMutation();
   const { refetch: orderRefetch } = useOrder({
@@ -69,15 +73,16 @@ const AddProductModal = () => {
   };
 
   useEffect(() => {
-    // if (!!modal && brigadir) iearchRefetch(); //todo
-    if (!!modal) iearchRefetch();
-  }, [modal]);
+    if (!!modal && !!permissions?.[MainPermissions.request_add_expanditure])
+      iearchRefetch();
+  }, [modal, permissions?.[MainPermissions.request_add_expanditure]]);
 
   return (
     <Modal
       className={styles.modal}
-      isOpen={!!modal}
-      // isOpen={!!modal && brigadir}  //todo
+      isOpen={
+        !!modal && !!permissions?.[MainPermissions.request_add_expanditure]
+      }
       onClose={handleModal}
     >
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -93,8 +98,11 @@ const AddProductModal = () => {
               <div className="form-control" onClick={handleProducts}>
                 {!product?.name ? "Выберите продукт" : product.name}
               </div>
-              {/* {!!itemModal && itemModal !== "false" && brigadir && (  //todo*/}
-              {!!itemModal && itemModal !== "false" && <IearchSelect />}
+              {!!itemModal &&
+                itemModal !== "false" &&
+                permissions?.[MainPermissions.request_add_expanditure] && (
+                  <IearchSelect />
+                )}
             </div>
 
             <BaseInput label="Количество">

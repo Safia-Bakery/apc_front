@@ -3,10 +3,14 @@ import styles from "./index.module.scss";
 import Container from "../Container";
 import cl from "classnames";
 
-const Card: FC<PropsWithChildren> = ({ children }) => {
+interface Props extends PropsWithChildren {
+  className?: string;
+}
+
+const Card: FC<Props> = ({ children, className }) => {
   return (
     <Container>
-      <div className={cl(styles.card)}>{children}</div>
+      <div className={cl(className, styles.card)}>{children}</div>
     </Container>
   );
 };

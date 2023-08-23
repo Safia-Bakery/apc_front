@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Order } from "src/utils/types";
+import { MainPermissions, Order } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
 import { FC, useEffect, useState } from "react";
@@ -11,6 +11,9 @@ import { handleStatus, itemsPerPage, requestRows } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import InventoryFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
+import { useAppSelector } from "src/redux/utils/types";
+import { permissionSelector } from "src/redux/reducers/auth";
+import styles from "./index.module.scss";
 
 const column = [
   { name: "#", key: "" },
@@ -30,12 +33,15 @@ const column = [
 interface Props {
   title?: string;
   sub_id?: string | number;
+  add: MainPermissions;
+  edit: MainPermissions;
 }
 
-const RequestsMarketing: FC<Props> = ({ title, sub_id }) => {
+const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const permission = useAppSelector(permissionSelector);
 
   const handleSort = (key: any) => {
     if (key === sortKey) {
@@ -84,12 +90,14 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id }) => {
   return (
     <Card>
       <Header title={title}>
-        <button
-          onClick={() => navigate(`add?sub_id=${sub_id}`)}
-          className="btn btn-success btn-fill"
-        >
-          Добавить
-        </button>
+        {permission?.[add] && (
+          <button
+            onClick={() => navigate(`add?sub_id=${sub_id}`)}
+            className="btn btn-success btn-fill"
+          >
+            Добавить
+          </button>
+        )}
       </Header>
 
       <div className="table-responsive grid-view content">
@@ -111,9 +119,13 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id }) => {
                   <tr className={requestRows(order.status)} key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
-                      <Link to={`${order?.id}?sub_id=${sub_id}`}>
-                        {order?.id}
-                      </Link>
+                      {permission?.[edit] ? (
+                        <Link to={`/requests-apc/${order?.id}`}>
+                          {order?.id}
+                        </Link>
+                      ) : (
+                        <span className={styles.link}>{order?.id}</span>
+                      )}
                     </td>
                     <td>
                       <span className="not-set">{order?.user?.full_name}</span>

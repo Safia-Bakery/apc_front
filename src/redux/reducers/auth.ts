@@ -1,10 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../rootConfig";
-import { MainPerm } from "src/utils/types";
+import { MainPermissions } from "src/utils/types";
 
 interface State {
   token: string | null;
-  permissions?: { [key in MainPerm]: boolean };
+  permissions?: { [key in MainPermissions]: boolean };
 }
 
 const initialState: State = {

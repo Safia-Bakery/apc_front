@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { apiClient } from "src/main";
+import apiClient from "src/main";
 import { useAppDispatch } from "src/redux/utils/types";
 import { UsersType } from "src/utils/types";
 

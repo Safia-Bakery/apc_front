@@ -3,7 +3,7 @@ import styles from "./index.module.scss";
 import { Link, useMatch } from "react-router-dom";
 import cl from "classnames";
 import { FC } from "react";
-import { MainPerm, MarketingSubDep } from "src/utils/types";
+import { MainPermissions, MarketingSubDep } from "src/utils/types";
 import { isMobile } from "src/utils/helpers";
 import { sidebarHandler } from "src/redux/reducers/selects";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
@@ -13,7 +13,7 @@ interface Item {
   name: string;
   url: string;
   icon: string;
-  screen: MainPerm;
+  screen: MainPermissions;
   state?: string;
 }
 

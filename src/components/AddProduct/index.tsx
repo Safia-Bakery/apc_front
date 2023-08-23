@@ -12,7 +12,7 @@ import { useNavigateParams } from "src/hooks/useCustomNavigate";
 import deleteExpenditureMutation from "src/hooks/mutation/deleteExpenditure";
 import useToken from "src/hooks/useToken";
 import dayjs from "dayjs";
-import { MainPerm } from "src/utils/types";
+import { MainPermissions } from "src/utils/types";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
 
@@ -67,7 +67,7 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
   return (
     <Card>
       <Header title="Товары">
-        {permissions?.[MainPerm.synch_apc_iiko] && (
+        {permissions?.[MainPermissions.synch_apc_iiko] && (
           <button
             onClick={handleSync}
             className="btn btn-primary btn-fill btn-sm mr-2"
@@ -82,14 +82,15 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
             Синхронизировать с iiko
           </button>
         )}
-        {isFinished && (
-          <button
-            className="btn btn-success btn-fill btn-sm"
-            onClick={handleModal}
-          >
-            Добавить
-          </button>
-        )}
+        {isFinished &&
+          permissions?.[MainPermissions.request_add_expanditure] && (
+            <button
+              className="btn btn-success btn-fill btn-sm"
+              onClick={handleModal}
+            >
+              Добавить
+            </button>
+          )}
       </Header>
       <div className="content">
         <div className="content table-responsive table-full-width overflow-hidden">

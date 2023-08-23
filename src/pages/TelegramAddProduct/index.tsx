@@ -139,7 +139,6 @@ const TelegramAddProduct = () => {
   };
 
   useEffect(() => {
-    // if (!!modal && brigadir) iearchRefetch(); //todo
     iearchRefetch();
   }, []);
 
@@ -157,7 +156,6 @@ const TelegramAddProduct = () => {
             >
               {!product?.name ? "Выберите продукт" : product.name}
             </div>
-            {/* {!!itemModal && itemModal !== "false" && brigadir && (  //todo*/}
             {!!itemModal && itemModal !== "false" && <IearchSelect />}
           </div>
 
