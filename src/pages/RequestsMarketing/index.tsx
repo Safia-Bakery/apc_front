@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { MainPermissions, Order } from "src/utils/types";
+import { Departments, MainPermissions, Order } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
 import { FC, useEffect, useState } from "react";
@@ -59,6 +59,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
   } = useOrders({
     enabled: true,
     size: itemsPerPage,
+    department: Departments.marketing,
     page: currentPage,
     sub_id: Number(sub_id),
   });

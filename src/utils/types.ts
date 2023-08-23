@@ -53,14 +53,7 @@ export interface Order {
     url: string;
     status: number;
   }[];
-  category: {
-    name: string;
-    description: string;
-    department: Departments;
-    status: number;
-    id: number | string;
-    urgent: boolean;
-  };
+  category: Category;
   expanditure: {
     id: number;
     amount: number;

@@ -160,7 +160,13 @@ const ShowMarketingRequest = () => {
                   </tr>
                   <tr>
                     <th>Тип</th>
-                    <td>{handleDepartment(order?.category?.department)}</td>
+                    <td>
+                      {handleDepartment({
+                        ...(!!order?.category?.sub_id
+                          ? { sub: order?.category?.sub_id }
+                          : { dep: order?.category?.department }),
+                      })}
+                    </td>
                   </tr>
                   <tr>
                     <th>Группа проблем</th>
