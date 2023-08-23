@@ -1,6 +1,7 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import { reportImgSelector } from "src/redux/reducers/selects";
 import { useAppSelector } from "src/redux/utils/types";
+import styles from "./index.module.scss";
 
 export interface FileItem {
   file: File;
@@ -55,14 +56,33 @@ const UploadComponent: FC<FileUploaderProps> = ({
         multiple
         onChange={handleFileUpload}
       />
-      <div className="file-list">
-        {fileList.map((item) => (
-          <div key={item.id} className="file-item">
-            <span>{item.file.name}</span>
-            <button onClick={() => handleFileDelete(item.id)}>Delete</button>
-          </div>
-        ))}
-      </div>
+
+      {!!fileList?.length && (
+        <table className="table table-hover mt-3">
+          <thead>
+            <tr>
+              <th className={styles.tableHead}>Загруженные файлы</th>
+              <th className={styles.tableHead}></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {fileList.map((item) => (
+              <tr className="bg-blue" key={item.id}>
+                <td>{item.file.name}</td>
+                <td width={50}>
+                  <div
+                    className="d-flex justify-content-center pointer"
+                    onClick={() => handleFileDelete(item.id)}
+                  >
+                    <img src="/assets/icons/delete.svg" alt="delete" />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

@@ -116,7 +116,7 @@ const RequestsIT = () => {
                       <span className="not-set">{order?.user?.full_name}</span>
                     </td>
                     <td>-------------</td>
-                    <td>{order?.fillial?.name}</td>
+                    <td>{order?.fillial?.parentfillial?.name}</td>
                     <td>{order?.category?.name}</td>
                     <td width={100} className={styles.text}>
                       {order?.description}

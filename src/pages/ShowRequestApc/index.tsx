@@ -212,7 +212,7 @@ const ShowRequestApc = () => {
   return (
     <>
       <Card>
-        <Header title={`Заказ №${id}`}>
+        <Header title={`Заказ №${id}`} subTitle={handleStatus(order?.status)}>
           <button
             className="btn btn-warning btn-fill mr-2"
             onClick={handleNavigate(`/logs/${id}`)}
@@ -262,7 +262,7 @@ const ShowRequestApc = () => {
                   </tr>
                   <tr>
                     <th>Отдел</th>
-                    <td>{order?.fillial?.name}</td>
+                    <td>{order?.fillial?.parentfillial?.name}</td>
                   </tr>
                   <tr>
                     <th>Продукт</th>
@@ -310,10 +310,10 @@ const ShowRequestApc = () => {
                     <th>Примичание</th>
                     <td>{order?.description}</td>
                   </tr>
-                  <tr>
+                  {/* <tr>
                     <th>Статус</th>
                     <td>{handleStatus(order?.status)}</td>
-                  </tr>
+                  </tr> */}
                 </tbody>
               </table>
             </div>
@@ -333,19 +333,19 @@ const ShowRequestApc = () => {
                     <td>---------</td>
                   </tr>
                   <tr>
-                    <th>Дата выполнения</th>
-                    <td>
-                      {order?.finished_at
-                        ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
-                        : "В процессе"}
-                    </td>
-                  </tr>
-                  <tr>
                     <th>Изменил</th>
                     <td>
                       {!!order?.user_manager
                         ? order?.user_manager
                         : "Не задано"}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Дата выполнения</th>
+                    <td>
+                      {order?.finished_at
+                        ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
+                        : "В процессе"}
                     </td>
                   </tr>
 

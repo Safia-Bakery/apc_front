@@ -133,7 +133,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
                     </td>
                     <td>{order?.user?.phone_number}</td>
                     <td>{order?.category?.name}</td>
-                    <td>{order?.fillial?.name}</td>
+                    <td>{order?.fillial?.parentfillial?.name}</td>
                     {/* <td width={100} className={styles.text}>
                       {order?.description}
                     </td> */}

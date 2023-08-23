@@ -112,7 +112,7 @@ const RequestInventory = () => {
                     <td>
                       <span className="not-set">{order?.user.full_name}</span>
                     </td>
-                    <td>{order?.fillial?.name}</td>
+                    <td>{order?.fillial?.parentfillial?.name}</td>
                     <td>
                       {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
                     </td>

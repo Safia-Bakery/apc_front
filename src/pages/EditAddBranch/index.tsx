@@ -88,15 +88,7 @@ const EditAddBranch = () => {
   };
   return (
     <Card>
-      <Header title={!id ? "Добавить" : `Изменить филиал №${id}`}>
-        {/* <button
-          className={`btn-${
-            department ? "success" : "info"
-          } btn btn-success btn-fill mr-3`}
-          onClick={toggleDep}
-        >
-          Определить {!department ? "отдел" : "филлиал"}
-        </button> */}
+      <Header title={!id ? "Добавить" : `Изменить филиал ${branch?.name}`}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад
         </button>

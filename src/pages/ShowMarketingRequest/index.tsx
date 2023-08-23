@@ -98,15 +98,6 @@ const ShowMarketingRequest = () => {
         <div className="float-end mb10">
           {order?.status! < 3 && (
             <button
-              onClick={handleModal(ModalTypes.cancelRequest)}
-              className="btn btn-danger btn-fill mr-2"
-            >
-              Отменить
-            </button>
-          )}
-
-          {order?.status! < 3 && (
-            <button
               onClick={handleBrigada({ status: RequestStatus.done })}
               className="btn btn-success btn-fill"
             >
@@ -124,7 +115,7 @@ const ShowMarketingRequest = () => {
   return (
     <>
       <Card className="overflow-hidden">
-        <Header title={`Заказ №${id}`}>
+        <Header title={`Заказ №${id}`} subTitle={handleStatus(order?.status)}>
           <button
             className="btn btn-warning btn-fill mr-2"
             onClick={handleNavigate(`/logs/${id}`)}
@@ -174,7 +165,7 @@ const ShowMarketingRequest = () => {
                   </tr>
                   <tr>
                     <th>Отдел</th>
-                    <td>{order?.fillial?.name}</td>
+                    <td>{order?.fillial?.parentfillial?.name}</td>
                   </tr>
                   <tr>
                     <th>Продукт</th>
@@ -222,14 +213,6 @@ const ShowMarketingRequest = () => {
                     <td>{!order?.category?.urgent ? "Нет" : "Да"}</td>
                   </tr>
                   <tr>
-                    <th>Дата выполнения</th>
-                    <td>
-                      {order?.finished_at
-                        ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
-                        : "В процессе"}
-                    </td>
-                  </tr>
-                  <tr>
                     <th>Изменил</th>
                     <td>
                       {!!order?.user_manager
@@ -238,6 +221,14 @@ const ShowMarketingRequest = () => {
                     </td>
                   </tr>
 
+                  <tr>
+                    <th>Дата выполнения</th>
+                    <td>
+                      {order?.finished_at
+                        ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
+                        : "В процессе"}
+                    </td>
+                  </tr>
                   <tr>
                     <th>Дата</th>
                     <td>

@@ -12,22 +12,18 @@ import MainInput from "src/components/BaseInputs/MainInput";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
 import useQueryString from "src/hooks/useQueryString";
-import {
-  Departments,
-  MarketingSubDep,
-  MarketingSubDepRu,
-} from "src/utils/types";
+import { Departments, MarketingSubDepRu } from "src/utils/types";
 import MainSelect from "src/components/BaseInputs/MainSelect";
 
 const ShowCategory = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  // const sub_id = useQueryString("sub_id");
   const dep = useQueryString("dep");
   const goBack = () => navigate(-1);
   const { refetch: categoryRefetch } = useCategories({
     enabled: false,
     page: 1,
+    department: Number(dep),
   });
 
   const {

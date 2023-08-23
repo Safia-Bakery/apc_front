@@ -1,10 +1,5 @@
-.list {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  margin-bottom: 5px !important;
-
-  p {
-    margin-bottom: 0;
-  }
+.tableHead {
+  font-weight: 600;
+  background-color: #fb404b !important;
+  color: white !important;
 }

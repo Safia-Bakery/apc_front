@@ -20,7 +20,6 @@ import { RequestStatus } from "src/utils/types";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import cl from "classnames";
 import deleteExpenditureMutation from "src/hooks/mutation/deleteExpenditure";
-import Card from "src/components/Card";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
