@@ -37,8 +37,7 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
   const { refetch } = useOrders({
     enabled: false,
     body: {
-      finished_from: endDate?.toISOString(),
-      finished_to: endDate?.toISOString(),
+      created_at: endDate?.toISOString(),
       ...(!!id && { id }),
       ...(!!executor && { executor }),
       ...(!!fillial_id && { fillial_id }),
