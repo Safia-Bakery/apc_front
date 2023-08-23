@@ -1,5 +1,11 @@
 import { QueryClient } from "@tanstack/react-query";
-import { Departments, EPresetTimes, FileType, RequestStatus } from "./types";
+import {
+  Departments,
+  EPresetTimes,
+  FileType,
+  MarketingSubDep,
+  RequestStatus,
+} from "./types";
 
 export const itemsPerPage = 50;
 
@@ -121,15 +127,40 @@ export const detectFileType = (url: string) => {
 
 export const isMobile = window.innerWidth <= 1200;
 
-export const handleDepartment = (dep: Departments | undefined) => {
-  switch (dep) {
-    case Departments.apc:
-      return "APC";
-    case Departments.inventory:
-      return "Инвентарь";
-    case Departments.marketing:
-      return "Маркетинг";
-    case Departments.it:
-      return "IT";
-  }
+export const handleDepartment = ({
+  dep,
+  sub,
+}: {
+  dep?: Departments | undefined;
+  sub?: MarketingSubDep;
+}) => {
+  if (dep)
+    switch (dep) {
+      case Departments.apc:
+        return "APC";
+      case Departments.inventory:
+        return "Инвентарь";
+      case Departments.marketing:
+        return "Маркетинг";
+      case Departments.it:
+        return "IT";
+      default:
+        break;
+    }
+  else
+    switch (sub) {
+      case MarketingSubDep.designers:
+        return "Проектная работа для дизайнеров";
+      case MarketingSubDep.complects:
+        return "Комплекты";
+      case MarketingSubDep.local_marketing:
+        return "Локальный маркетинг";
+      case MarketingSubDep.promo_production:
+        return "Промо-продукция";
+      case MarketingSubDep.pos:
+        return "POS-Материалы";
+
+      default:
+        break;
+    }
 };

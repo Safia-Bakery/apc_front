@@ -94,7 +94,13 @@ const Categories = () => {
                     <tr key={idx} className="bg-blue">
                       <td width="40">{handleIdx(idx)}</td>
                       <td>{category?.name}</td>
-                      <td>{handleDepartment(category?.department)}</td>
+                      <td>
+                        {handleDepartment({
+                          ...(!!category?.sub_id
+                            ? { sub: category?.sub_id }
+                            : { dep: category?.department }),
+                        })}
+                      </td>
                       <td>{category?.status ? "Активный" : "Неактивный"}</td>
                       <td width={40}>
                         <TableViewBtn
