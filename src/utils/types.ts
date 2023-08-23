@@ -175,7 +175,7 @@ export interface RolePermissions {
 
 export interface Category {
   name: string;
-  department?: string;
+  department?: Departments;
   description: string;
   status: number;
   id: number | string;

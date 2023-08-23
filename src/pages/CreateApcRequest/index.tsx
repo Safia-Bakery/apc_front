@@ -21,7 +21,6 @@ const CreateApcRequest = () => {
   const [files, $files] = useState<FormData>();
   const categories = useAppSelector(categorySelector);
   const { mutate } = requestMutation();
-  const choose_fillial = useQueryString("choose_fillial");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
   const {
@@ -37,9 +36,9 @@ const CreateApcRequest = () => {
 
   useEffect(() => {
     reset({
-      fillial_id: branch?.name,
+      fillial_id: branch?.id,
     });
-  }, [branch]);
+  }, [branch?.id]);
 
   const handleFilesSelected = (data: FileItem[]) => {
     const formData = new FormData();

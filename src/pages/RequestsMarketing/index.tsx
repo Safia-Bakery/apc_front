@@ -88,7 +88,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
   if (orderLoading) return <Loading />;
 
   return (
-    <Card>
+    <Card className="overflow-hidden">
       <Header title={title}>
         {permission?.[add] && (
           <button
@@ -120,7 +120,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
                     <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
                       {permission?.[edit] ? (
-                        <Link to={`/requests-apc/${order?.id}`}>
+                        <Link to={`${order?.id}?sub_id=${sub_id}`}>
                           {order?.id}
                         </Link>
                       ) : (

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Category } from "src/utils/types";
 import Pagination from "src/components/Pagination";
 import { useEffect, useState } from "react";
-import { itemsPerPage } from "src/utils/helpers";
+import { handleDepartment, itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useCategories from "src/hooks/useCategories";
@@ -94,7 +94,7 @@ const Categories = () => {
                     <tr key={idx} className="bg-blue">
                       <td width="40">{handleIdx(idx)}</td>
                       <td>{category?.name}</td>
-                      <td>{category?.department}</td>
+                      <td>{handleDepartment(category?.department)}</td>
                       <td>{category?.status ? "Активный" : "Неактивный"}</td>
                       <td width={40}>
                         <TableViewBtn

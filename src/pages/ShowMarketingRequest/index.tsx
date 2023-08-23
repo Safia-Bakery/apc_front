@@ -123,7 +123,7 @@ const ShowMarketingRequest = () => {
 
   return (
     <>
-      <Card>
+      <Card className="overflow-hidden">
         <Header title={`Заказ №${id}`}>
           <button
             className="btn btn-warning btn-fill mr-2"
@@ -131,12 +131,12 @@ const ShowMarketingRequest = () => {
           >
             Логи
           </button>
-          <button
+          {/* <button
             className="btn btn-primary btn-fill"
-            onClick={handleNavigate("/requests-apc")}
+            onClick={() => navigate(-1)}
           >
             Назад
-          </button>
+          </button> */}
         </Header>
         <div className="content">
           <div className="row ">

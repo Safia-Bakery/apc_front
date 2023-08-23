@@ -60,7 +60,6 @@ const Breadcrumbs: FC = () => {
 
   return (
     <div className={styles.block}>
-      {/* <Container> */}
       <div className={styles.container}>
         <ul className={styles.breadcrump}>
           <button
@@ -93,7 +92,6 @@ const Breadcrumbs: FC = () => {
           Выйти ({me?.username})
         </span>
       </div>
-      {/* </Container> */}
     </div>
   );
 };
