@@ -24,17 +24,9 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
     getValues,
-    reset,
   } = useForm();
 
   const { mutate } = loginMutation();
-
-  useEffect(() => {
-    reset({
-      username: "test",
-      password: "111111",
-    });
-  }, []);
 
   useEffect(() => {
     if (token) navigate("/");

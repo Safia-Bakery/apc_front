@@ -57,7 +57,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
     refetch,
     isLoading: orderLoading,
   } = useOrders({
-    enabled: true,
+    enabled: false,
     size: itemsPerPage,
     department: Departments.marketing,
     page: currentPage,
@@ -84,7 +84,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
 
   useEffect(() => {
     refetch();
-  }, [currentPage]);
+  }, [currentPage, sub_id]);
 
   if (orderLoading) return <Loading />;
 

@@ -212,20 +212,10 @@ const ShowRequestApc = () => {
   return (
     <>
       <Card>
-        <Header title={`Заказ №${id}`} subTitle={handleStatus(order?.status)}>
-          <button
-            className="btn btn-warning btn-fill mr-2"
-            onClick={handleNavigate(`/logs/${id}`)}
-          >
-            Логи
-          </button>
-          <button
-            className="btn btn-primary btn-fill"
-            onClick={handleNavigate("/requests-apc")}
-          >
-            Назад
-          </button>
-        </Header>
+        <Header
+          title={`Заказ №${id}`}
+          subTitle={`Статус: ${handleStatus(order?.status)}`}
+        />
         <div className="content">
           <div className="row ">
             <div className="col-md-6">
@@ -310,10 +300,6 @@ const ShowRequestApc = () => {
                     <th>Примичание</th>
                     <td>{order?.description}</td>
                   </tr>
-                  {/* <tr>
-                    <th>Статус</th>
-                    <td>{handleStatus(order?.status)}</td>
-                  </tr> */}
                 </tbody>
               </table>
             </div>

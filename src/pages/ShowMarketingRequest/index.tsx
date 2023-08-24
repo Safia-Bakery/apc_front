@@ -115,22 +115,12 @@ const ShowMarketingRequest = () => {
   return (
     <>
       <Card className="overflow-hidden">
-        <Header title={`Заказ №${id}`} subTitle={handleStatus(order?.status)}>
-          <button
-            className="btn btn-warning btn-fill mr-2"
-            onClick={handleNavigate(`/logs/${id}`)}
-          >
-            Логи
-          </button>
-          {/* <button
-            className="btn btn-primary btn-fill"
-            onClick={() => navigate(-1)}
-          >
-            Назад
-          </button> */}
-        </Header>
+        <Header
+          title={`Заказ №${id}`}
+          subTitle={`Статус: ${handleStatus(order?.status)}`}
+        />
         <div className="content">
-          <div className="row ">
+          <div className="row">
             <div className="col-md-6">
               <table
                 id="w0"
@@ -144,8 +134,8 @@ const ShowMarketingRequest = () => {
                   <tr>
                     <th>Номер телефона</th>
                     <td>
-                      <a href={`tel:+${order?.user.phone_number}`}>
-                        +{order?.user.phone_number}
+                      <a href={`tel:+${order?.user?.phone_number}`}>
+                        +{order?.user?.phone_number}
                       </a>
                     </td>
                   </tr>
@@ -168,11 +158,7 @@ const ShowMarketingRequest = () => {
                     <td>{order?.fillial?.parentfillial?.name}</td>
                   </tr>
                   <tr>
-                    <th>Продукт</th>
-                    <td>{order?.product}</td>
-                  </tr>
-                  <tr>
-                    <th>file</th>
+                    <th>Фото</th>
                     <td className="d-flex flex-column">
                       {order?.file?.map((item, index) => {
                         if (item.status === 0)
@@ -193,10 +179,6 @@ const ShowMarketingRequest = () => {
                   <tr>
                     <th>Примичание</th>
                     <td>{order?.description}</td>
-                  </tr>
-                  <tr>
-                    <th>Статус</th>
-                    <td>{handleStatus(order?.status)}</td>
                   </tr>
                 </tbody>
               </table>
