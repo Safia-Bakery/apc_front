@@ -204,25 +204,23 @@ const ShowMarketingRequest = () => {
                   </tr>
 
                   <tr>
-                    <th>Дата выполнения</th>
-                    <td>
-                      {order?.finished_at
-                        ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
-                        : "В процессе"}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>Дата</th>
+                    <th>Дата поступления:</th>
                     <td>
                       {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата изменение</th>
+                    <th>Дата изменения:</th>
                     <td>
-                      {order?.started_at
-                        ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                      {dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Дата выполнения:</th>
+                    <td>
+                      {order?.finished_at
+                        ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
+                        : "В процессе"}
                     </td>
                   </tr>
                 </tbody>

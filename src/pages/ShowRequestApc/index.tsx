@@ -326,25 +326,25 @@ const ShowRequestApc = () => {
                         : "Не задано"}
                     </td>
                   </tr>
-                  <tr>
-                    <th>Дата выполнения</th>
-                    <td>
-                      {order?.finished_at
-                        ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
-                        : "В процессе"}
-                    </td>
-                  </tr>
 
                   <tr>
-                    <th>Дата</th>
+                    <th>Дата поступления:</th>
                     <td>
                       {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата изменение</th>
+                    <th>Дата изменения:</th>
                     <td>
                       {dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Дата выполнения:</th>
+                    <td>
+                      {order?.finished_at
+                        ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
+                        : "В процессе"}
                     </td>
                   </tr>
                   <tr className="font-weight-bold">

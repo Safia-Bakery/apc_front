@@ -10,7 +10,6 @@ import syncExpenditure from "src/hooks/mutation/syncExpenditure";
 import { successToast } from "src/utils/toast";
 import { useNavigateParams } from "src/hooks/useCustomNavigate";
 import deleteExpenditureMutation from "src/hooks/mutation/deleteExpenditure";
-import useToken from "src/hooks/useToken";
 import dayjs from "dayjs";
 import { MainPermissions } from "src/utils/types";
 import { useAppSelector } from "src/redux/utils/types";

@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 
 interface PaginationProps {
   totalItems: number;
@@ -21,10 +21,6 @@ const Pagination: FC<PaginationProps> = ({
     { length: totalPages },
     (_, index) => index + 1
   );
-
-  // useEffect(() => {
-  //   if (refetch) refetch();
-  // }, [currentPage]);
 
   return (
     <nav>

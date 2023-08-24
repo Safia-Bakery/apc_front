@@ -17,7 +17,6 @@ import {
   useNavigateParams,
   useRemoveParams,
 } from "src/hooks/useCustomNavigate";
-import useToken from "src/hooks/useToken";
 import { permissionSelector } from "src/redux/reducers/auth";
 import { useAppSelector } from "src/redux/utils/types";
 import { MainPermissions } from "src/utils/types";
