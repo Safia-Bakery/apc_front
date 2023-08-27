@@ -41,7 +41,7 @@ const ShowRole = () => {
         onSuccess: () => {
           successToast("successfully updated");
           refetch();
-          navigate("/users");
+          // navigate("/users");
         },
       }
     );

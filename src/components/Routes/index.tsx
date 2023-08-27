@@ -7,45 +7,48 @@ import {
   permissionSelector,
   tokenSelector,
 } from "src/redux/reducers/auth";
-import CreateApcRequest from "src/pages/CreateApcRequest";
 import Login from "pages/Login";
-import { useEffect, useMemo } from "react";
+import { Suspense, lazy, useEffect, useMemo } from "react";
 import useToken from "src/hooks/useToken";
-import ControlPanel from "src/pages/ControlPanel";
-import RequestsApc from "src/pages/RequestsApc";
-import ShowRequestApc from "src/pages/ShowRequestApc";
-import YandexMap from "src/pages/Map";
-import Categories from "src/pages/Categories";
-import RemainsInStock from "src/pages/RemailnsInStock";
-import Brigades from "src/pages/Brigades";
-import Users from "src/pages/Users";
-import Roles from "src/pages/Roles";
-import Comments from "src/pages/Comments";
-import Branches from "src/pages/Branches";
-import Statistics from "src/pages/Statistics";
-import ShowCategory from "src/pages/ShowCategory";
-import EditAddBranch from "src/pages/EditAddBranch";
-import EditAddUser from "src/pages/EditAddUser";
-import ShowComment from "src/pages/ShowComment";
-import EditAddRole from "src/pages/EditAddRole";
-import ShowRole from "src/pages/ShowRole";
 import BreadCrump from "../BreadCrump";
-import CreateBrigades from "src/pages/CreateBrigades";
 import { Departments, MainPermissions, MarketingSubDep } from "src/utils/types";
 import useQueriesPrefetch from "src/hooks/sync/useQueriesPrefetch";
 import CustomSidebar from "../CustomSidebar";
-import Logs from "src/pages/LogsScreen";
-import RequestInventory from "src/pages/RequestInventory";
-import AddInventoryRequest from "src/pages/AddInventoryRequest";
-import RequestsIT from "src/pages/RequestsIT";
-import CreateITRequest from "src/pages/CreateITRequest";
 import Loading from "../Loader";
-import ShowRemainsInStock from "src/pages/ShowRemainsInStock";
 import useQueryString from "src/hooks/useQueryString";
-import TelegramAddProduct from "src/pages/TelegramAddProduct";
-import RequestsMarketing from "src/pages/RequestsMarketing";
-import AddMarketingRequest from "src/pages/AddMarketingRequest";
-import ShowMarketingRequest from "src/pages/ShowMarketingRequest";
+
+const ControlPanel = lazy(() => import("src/pages/ControlPanel"));
+const TelegramAddProduct = lazy(() => import("src/pages/TelegramAddProduct"));
+const CreateITRequest = lazy(() => import("src/pages/CreateITRequest"));
+const CreateApcRequest = lazy(() => import("src/pages/CreateApcRequest"));
+const ShowRequestApc = lazy(() => import("src/pages/ShowRequestApc"));
+const RequestsApc = lazy(() => import("src/pages/RequestsApc"));
+const ShowMarketingRequest = lazy(
+  () => import("src/pages/ShowMarketingRequest")
+);
+const RequestsMarketing = lazy(() => import("src/pages/RequestsMarketing"));
+const AddMarketingRequest = lazy(() => import("src/pages/AddMarketingRequest"));
+
+const RequestInventory = lazy(() => import("src/pages/RequestInventory"));
+const RequestsIT = lazy(() => import("src/pages/RequestsIT"));
+const AddInventoryRequest = lazy(() => import("src/pages/AddInventoryRequest"));
+const YandexMap = lazy(() => import("src/pages/Map"));
+const Statistics = lazy(() => import("src/pages/Statistics"));
+const Categories = lazy(() => import("src/pages/Categories"));
+const ShowCategory = lazy(() => import("src/pages/ShowCategory"));
+const EditAddRole = lazy(() => import("src/pages/EditAddRole"));
+const Roles = lazy(() => import("src/pages/Roles"));
+const ShowRole = lazy(() => import("src/pages/ShowRole"));
+const EditAddUser = lazy(() => import("src/pages/EditAddUser"));
+const Users = lazy(() => import("src/pages/Users"));
+const Brigades = lazy(() => import("src/pages/Brigades"));
+const CreateBrigades = lazy(() => import("src/pages/CreateBrigades"));
+const Comments = lazy(() => import("src/pages/Comments"));
+const ShowComment = lazy(() => import("src/pages/ShowComment"));
+const Branches = lazy(() => import("src/pages/Branches"));
+const EditAddBranch = lazy(() => import("src/pages/EditAddBranch"));
+const RemainsInStock = lazy(() => import("src/pages/RemailnsInStock"));
+const ShowRemainsInStock = lazy(() => import("src/pages/ShowRemainsInStock"));
 
 export const routes = [
   { element: <ControlPanel />, path: "/", screen: MainPermissions.add_brigada },
@@ -178,11 +181,6 @@ export const routes = [
     element: <AddMarketingRequest />,
     path: `/marketing-${MarketingSubDep[5]}/add`,
     screen: MainPermissions.get_complect_requests,
-  },
-  {
-    element: <Logs />,
-    path: "/logs/:id",
-    screen: MainPermissions.edit_request_apc,
   },
   // {
   //   element: <RequestInventory />,
@@ -359,13 +357,17 @@ const Navigation = () => {
   return (
     <>
       {renderSidebar}
-
-      <Routes>
-        <Route element={<Login />} path={"/login"} />
-        <Route element={<ControlPanel />} path={"/"} />
-        <Route element={<TelegramAddProduct />} path={"/tg-add-product/:id"} />
-        {renderScreen}
-      </Routes>
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route element={<Login />} path={"/login"} />
+          <Route element={<ControlPanel />} path={"/"} />
+          <Route
+            element={<TelegramAddProduct />}
+            path={"/tg-add-product/:id"}
+          />
+          {renderScreen}
+        </Routes>
+      </Suspense>
     </>
   );
 };
