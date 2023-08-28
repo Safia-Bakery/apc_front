@@ -21,7 +21,7 @@ const column = [
   { name: "Номер заявки", key: "id" },
   { name: "Клиент", key: "user" },
   { name: "Филиал/Отдел", key: "name" },
-  { name: "Группа проблем", key: "category.name" },
+  { name: "Группа проблем", key: "category?.name" },
   { name: "Срочно", key: "urgent" },
   { name: "Бригада", key: "brigada" },
   { name: "Дата поступления", key: "created_at" },
@@ -34,6 +34,18 @@ const RequestsApc = () => {
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const permission = useAppSelector(permissionSelector);
+
+  const getValue = (obj: any, key: string) => {
+    const keys = key.split(".");
+    let value = obj;
+
+    for (const k of keys) {
+      if (!value) break;
+      value = value[k];
+    }
+
+    return value;
+  };
 
   const handleSort = (key: any) => {
     if (key === sortKey) {
@@ -56,10 +68,13 @@ const RequestsApc = () => {
   });
   const sortData = () => {
     if (requests?.items && sortKey) {
-      const sortedData = [...requests?.items].sort((a, b) => {
-        if (a[sortKey] < b[sortKey]) return sortOrder === "asc" ? -1 : 1;
-        if (a[sortKey] > b[sortKey]) return sortOrder === "asc" ? 1 : -1;
-        else return 0;
+      const sortedData = [...requests.items].sort((a, b) => {
+        const valueA = getValue(a, sortKey);
+        const valueB = getValue(b, sortKey);
+
+        if (valueA < valueB) return sortOrder === "asc" ? -1 : 1;
+        if (valueA > valueB) return sortOrder === "asc" ? 1 : -1;
+        return 0;
       });
       return sortedData;
     }

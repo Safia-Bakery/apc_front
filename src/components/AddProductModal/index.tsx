@@ -20,6 +20,7 @@ import {
 import { permissionSelector } from "src/redux/reducers/auth";
 import { useAppSelector } from "src/redux/utils/types";
 import { MainPermissions } from "src/utils/types";
+import useSyncExpanditure from "src/hooks/useSyncExpanditure";
 
 const AddProductModal = () => {
   const { id } = useParams();
@@ -30,6 +31,9 @@ const AddProductModal = () => {
   const itemModal = useQueryString("itemModal");
   const product = JSON.parse(productJson!) as { id: number; name: string };
   const permissions = useAppSelector(permissionSelector);
+  const { refetch: syncWithIiko, isFetching } = useSyncExpanditure({
+    enabled: false,
+  });
 
   const { mutate } = usedItemsMutation();
   const { refetch: orderRefetch } = useOrder({
@@ -86,17 +90,30 @@ const AddProductModal = () => {
     >
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <Header title="Добавить расходной товар">
-          <button onClick={handleModal} className="close">
+          <button onClick={handleModal} className="close ml-2">
             <span aria-hidden="true">&times;</span>
           </button>
         </Header>
         <div className={styles.block}>
+          <button
+            className="btn btn-primary float-end mr-3 z-3 position-relative"
+            onClick={() => syncWithIiko()}
+          >
+            {isFetching ? (
+              <div className="spinner-border text-warning" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+            ) : (
+              "Синхронизировать с iiko"
+            )}
+          </button>
           <div className={styles.modalBody}>
             <div className="form-group field-apcitems-product_id position-relative">
               <label className="control-label">Товар</label>
               <div className="form-control" onClick={handleProducts}>
                 {!product?.name ? "Выберите продукт" : product.name}
               </div>
+
               {!!itemModal &&
                 itemModal !== "false" &&
                 permissions?.[MainPermissions.request_add_expanditure] && (

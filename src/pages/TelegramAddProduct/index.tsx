@@ -24,6 +24,7 @@ import UploadComponent, { FileItem } from "src/components/FileUpload";
 import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import uploadFileMutation from "src/hooks/mutation/uploadFile";
+import useSyncExpanditure from "src/hooks/useSyncExpanditure";
 
 const column = [{ name: "Наименование" }, { name: "Количество" }, { name: "" }];
 
@@ -39,6 +40,10 @@ const TelegramAddProduct = () => {
   const { mutate: deleteExp } = deleteExpenditureMutation();
   const inputRef = useRef<any>(null);
   const upladedFiles = useAppSelector(reportImgSelector);
+
+  const { refetch: syncWithIiko, isFetching } = useSyncExpanditure({
+    enabled: false,
+  });
 
   const { mutate: uploadFile } = uploadFileMutation();
   const handleFilesSelected = (data: FileItem[]) =>
@@ -146,6 +151,18 @@ const TelegramAddProduct = () => {
       <Header title="Добавить расходной товар" />
 
       <div className={styles.block}>
+        <button
+          className="btn btn-primary float-end mr-3 z-3 position-relative"
+          onClick={() => syncWithIiko()}
+        >
+          {isFetching ? (
+            <div className="spinner-border text-warning" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          ) : (
+            "Синхронизировать с iiko"
+          )}
+        </button>
         <div className={styles.modalBody}>
           <div className="form-group field-apcitems-product_id position-relative">
             <label className="control-label">Товар</label>
