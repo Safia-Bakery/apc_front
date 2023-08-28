@@ -29,7 +29,7 @@ const routeNameMappings: { [key: string]: string } = {
   edit: "Изменить",
   branches: "Филлиалы",
   "requests-inventory": "Заявка на инвентарь",
-  "requests-apc": "Заявки APC",
+  "requests-apc": "Заявки АРС",
   "requests-designer": "Проектная работа для дизайнеров",
 };
 

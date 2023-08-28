@@ -119,7 +119,7 @@ const EditAddBranch = () => {
 
         <MainCheckBox label="Активный" register={register("status")} />
 
-        <BaseInputs label={"APC"}>
+        <BaseInputs label={"АРС"}>
           <MainSelect
             onChange={(e) =>
               handleDep({ origin: Departments.apc, id: e.target.value })

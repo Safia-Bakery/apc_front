@@ -14,7 +14,7 @@ export const StatusName = [
   { name: "Не активный", id: 0 },
 ];
 export const OrderTypeNames = [
-  { name: "APC", id: "APC" },
+  { name: "АРС", id: "АРС" },
   { name: "IT", id: "IT" },
 ];
 export const UrgentNames = [
@@ -137,7 +137,7 @@ export const handleDepartment = ({
   if (dep)
     switch (dep) {
       case Departments.apc:
-        return "APC";
+        return "АРС";
       case Departments.inventory:
         return "Инвентарь";
       case Departments.marketing:

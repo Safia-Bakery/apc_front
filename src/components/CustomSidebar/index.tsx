@@ -36,7 +36,7 @@ const routes = [
     screen: MainPermissions.get_map,
   },
   {
-    name: "APC",
+    name: "АРС",
     icon: "/assets/icons/apc.svg",
     screen: apcPerm,
     subroutes: [
