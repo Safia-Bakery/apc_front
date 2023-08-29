@@ -73,6 +73,11 @@ export const routes = [
     screen: MainPermissions.get_requests_apc,
   },
   {
+    element: <RequestsApc />,
+    path: "/requests-apc-fabric",
+    screen: MainPermissions.get_requests_apc,
+  },
+  {
     element: <ShowMarketingRequest />,
     path: `/marketing-${MarketingSubDep[1]}/:id`,
     screen: MainPermissions.edit_design_request,
