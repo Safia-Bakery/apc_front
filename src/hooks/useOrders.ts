@@ -9,6 +9,7 @@ export const useOrders = ({
   sub_id,
   body,
   department,
+  sphere_status,
 }: {
   enabled?: boolean;
   size?: number;
@@ -16,12 +17,20 @@ export const useOrders = ({
   sub_id?: number | string;
   department?: number | string;
   body?: RequestFilter;
+  sphere_status?: number;
 }) => {
   return useQuery({
-    queryKey: ["requests", page, sub_id, department],
+    queryKey: ["requests", page, sub_id, department, sphere_status],
     queryFn: () =>
       apiClient
-        .get("/request", { ...body, page, size, sub_id, department })
+        .get("/request", {
+          ...body,
+          page,
+          size,
+          sub_id,
+          department,
+          sphere_status,
+        })
         .then(({ data: response }) => (response as OrderType) || null),
     enabled,
     // refetchOnMount: true,

@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Departments, MainPermissions, Order } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
@@ -15,6 +15,10 @@ import cl from "classnames";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
 import styles from "./index.module.scss";
+
+interface Props {
+  sphere_status?: number;
+}
 
 const column = [
   { name: "#", key: "" },
@@ -29,7 +33,7 @@ const column = [
   { name: "Изменил", key: "user_manager" },
 ];
 
-const RequestsApc = () => {
+const RequestsApc: FC<Props> = ({ sphere_status }) => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -65,6 +69,7 @@ const RequestsApc = () => {
     size: itemsPerPage,
     department: Departments.apc,
     page: currentPage,
+    sphere_status,
   });
   const sortData = () => {
     if (requests?.items && sortKey) {

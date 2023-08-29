@@ -1,9 +1,9 @@
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
-import { Category } from "src/utils/types";
+import { Category, Departments } from "src/utils/types";
 import Pagination from "src/components/Pagination";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { handleDepartment, itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
@@ -11,6 +11,11 @@ import useCategories from "src/hooks/useCategories";
 import CategoriesFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import useQueryString from "src/hooks/useQueryString";
+
+interface Props {
+  sphere_status?: number;
+  dep?: Departments;
+}
 
 const column = [
   { name: "#", key: "" },
@@ -20,9 +25,8 @@ const column = [
   { name: "", key: "" },
 ];
 
-const Categories = () => {
+const Categories: FC<Props> = ({ sphere_status, dep }) => {
   const navigate = useNavigate();
-  const dep = useQueryString("dep");
   const [sortKey, setSortKey] = useState<keyof Category>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
@@ -39,6 +43,7 @@ const Categories = () => {
     size: itemsPerPage,
     page: currentPage,
     ...(dep && { department: +dep }),
+    ...(sphere_status && { sphere_status }),
   });
 
   const sortData = () => {

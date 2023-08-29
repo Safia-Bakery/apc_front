@@ -11,6 +11,7 @@ export const useCategories = ({
   body,
   department,
   sub_id,
+  sphere_status,
 }: {
   enabled?: boolean;
   size?: number;
@@ -18,13 +19,21 @@ export const useCategories = ({
   department?: number | string;
   sub_id?: number | string;
   body?: { name?: string; category_status?: string };
+  sphere_status?: number;
 }) => {
   const dispatch = useAppDispatch();
   return useQuery({
-    queryKey: ["categories", page, department, sub_id],
+    queryKey: ["categories", page, department, sub_id, sphere_status],
     queryFn: () =>
       apiClient
-        .get("/category", { size, page, department, sub_id, ...body })
+        .get("/category", {
+          size,
+          page,
+          department,
+          sub_id,
+          sphere_status,
+          ...body,
+        })
         .then(({ data: response }) => {
           dispatch(cachedCategories(response as CategoryTypes));
           return response as CategoryTypes;

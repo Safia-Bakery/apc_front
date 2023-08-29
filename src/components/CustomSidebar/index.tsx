@@ -29,7 +29,7 @@ const routes = [
     subroutes: [
       {
         name: "Заявки",
-        url: "/requests-apc",
+        url: "/requests-apc-retail",
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_requests_apc,
       },
@@ -47,7 +47,7 @@ const routes = [
       },
       {
         name: "Категории",
-        url: `/categories-apc?dep=${Departments.apc}`,
+        url: `/categories-apc-retail?dep=${Departments.apc}`,
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_apc_category,
       },
@@ -60,12 +60,12 @@ const routes = [
     subroutes: [
       {
         name: "Заявки",
-        url: "/requests-apc",
+        url: "/requests-apc-fabric",
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_requests_apc,
       },
       {
-        name: "Бригады",
+        name: "Клиенты",
         url: "/brigades",
         icon: "/assets/icons/brigades.svg",
         screen: MainPermissions.get_brigadas,
@@ -78,7 +78,7 @@ const routes = [
       },
       {
         name: "Категории",
-        url: `/categories-apc?dep=${Departments.apc}`,
+        url: `/categories-apc-fabric`,
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_apc_category,
       },
