@@ -10,8 +10,8 @@
 
   &:hover {
     @media (min-width: 1200px) {
-      width: 250px !important;
-      min-width: 250px !important;
+      width: 260px !important;
+      min-width: 260px !important;
     }
 
     .title,
@@ -22,8 +22,8 @@
 }
 
 .collapsed {
-  width: 250px !important;
-  min-width: 250px !important;
+  width: 260px !important;
+  min-width: 260px !important;
 
   .title,
   .subTitle {
@@ -37,7 +37,7 @@
 
 .title {
   transition: 0.2s;
-  width: 250px;
+  width: 260px;
   padding: 12px 0 0 20px;
   cursor: pointer;
   font-family: "Bruno Ace SC" !important;

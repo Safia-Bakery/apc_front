@@ -9,19 +9,6 @@ import { sidebarHandler, toggleSidebar } from "src/redux/reducers/selects";
 import { isMobile } from "src/utils/helpers";
 import { permissionSelector } from "src/redux/reducers/auth";
 
-const marketingPerm =
-  MainPermissions.get_design_request ||
-  MainPermissions.get_locmar_requests ||
-  MainPermissions.get_promo_requests ||
-  MainPermissions.get_pos_requests ||
-  MainPermissions.get_complect_requests;
-
-const apcPerm =
-  MainPermissions.get_requests_apc ||
-  MainPermissions.get_brigadas ||
-  MainPermissions.get_warehouse ||
-  MainPermissions.get_apc_category;
-
 const routes = [
   {
     name: "Статистика",
@@ -36,9 +23,40 @@ const routes = [
     screen: MainPermissions.get_map,
   },
   {
-    name: "АРС",
+    name: "АРС розница",
     icon: "/assets/icons/apc.svg",
-    screen: apcPerm,
+    screen: MainPermissions.get_requests_apc,
+    subroutes: [
+      {
+        name: "Заявки",
+        url: "/requests-apc",
+        icon: "/assets/icons/subOrder.svg",
+        screen: MainPermissions.get_requests_apc,
+      },
+      {
+        name: "Бригады",
+        url: "/brigades",
+        icon: "/assets/icons/brigades.svg",
+        screen: MainPermissions.get_brigadas,
+      },
+      {
+        name: "Остатки на складах",
+        url: "/items-in-stock",
+        icon: "/assets/icons/remains-in-stock.svg",
+        screen: MainPermissions.get_warehouse,
+      },
+      {
+        name: "Категории",
+        url: `/categories-apc?dep=${Departments.apc}`,
+        icon: "/assets/icons/categories.svg",
+        screen: MainPermissions.get_apc_category,
+      },
+    ],
+  },
+  {
+    name: "АРС фабрика",
+    icon: "/assets/icons/apc.svg",
+    screen: MainPermissions.get_requests_apc,
     subroutes: [
       {
         name: "Заявки",
@@ -97,7 +115,7 @@ const routes = [
   {
     name: "Маркетинг",
     icon: "/assets/icons/marketing.svg",
-    screen: marketingPerm,
+    screen: MainPermissions.get_design_request,
     subroutes: [
       {
         name: "Проектная работа для дизайнеров",
@@ -228,8 +246,12 @@ const CustomSidebar = () => {
           Панель управления
         </MenuItem>
         {routes.map((item) => {
-          if (permission?.[item.screen]) {
-            if (item.subroutes?.length)
+          if (
+            permission?.[item?.screen] ||
+            (item.subroutes &&
+              item.subroutes.some((subroute) => permission[subroute.screen]))
+          ) {
+            if (item?.subroutes?.length)
               return (
                 <Subroutes
                   key={item.name + item.url}

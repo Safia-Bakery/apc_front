@@ -273,10 +273,6 @@ export enum MainPermissions {
   get_users = 5,
   add_users = 18,
   edit_users = 19,
-  // get_category = 6,
-  // add_category = 20,
-  // edit_category = 21,
-
   get_mark_category = 6,
   add_mark_category = 20,
   edit_mark_category = 21,

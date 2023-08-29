@@ -38,7 +38,7 @@ const EditAddRole = () => {
           successToast(!id ? "role created" : "role updated");
           navigate("/roles");
           usersRefetch();
-          roleRefecth();
+          if (!!id) roleRefecth();
         },
       }
     );
