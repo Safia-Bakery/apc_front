@@ -12,6 +12,7 @@ const branchMutation = () => {
       latitude: number;
       country?: string;
       status: number;
+      is_fabrica?: boolean;
     }) => {
       if (!body.id)
         return apiClient

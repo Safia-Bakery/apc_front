@@ -10,6 +10,7 @@ export const useOrders = ({
   body,
   department,
   sphere_status,
+  is_bot,
 }: {
   enabled?: boolean;
   size?: number;
@@ -18,6 +19,7 @@ export const useOrders = ({
   department?: number | string;
   body?: RequestFilter;
   sphere_status?: number;
+  is_bot?: boolean;
 }) => {
   return useQuery({
     queryKey: ["requests", page, sub_id, department, sphere_status],
@@ -30,6 +32,7 @@ export const useOrders = ({
           sub_id,
           department,
           sphere_status,
+          is_bot,
         })
         .then(({ data: response }) => (response as OrderType) || null),
     enabled,

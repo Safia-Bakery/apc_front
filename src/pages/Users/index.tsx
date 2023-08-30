@@ -13,6 +13,7 @@ import UsersFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
+import useQueryString from "src/hooks/useQueryString";
 
 const column = [
   { name: "#", key: "" },
@@ -28,6 +29,7 @@ const Users = () => {
   const navigate = useNavigate();
   const handleNavigate = (route: string) => () => navigate(route);
   const permission = useAppSelector(permissionSelector);
+  const client = useQueryString("client");
   const { pathname } = useLocation();
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,6 +40,7 @@ const Users = () => {
   } = useUsers({
     size: itemsPerPage,
     page: currentPage,
+    ...(!!client && { position: false }),
   });
 
   const [sortKey, setSortKey] = useState<keyof UsersType>();

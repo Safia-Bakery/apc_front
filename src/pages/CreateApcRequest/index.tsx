@@ -15,7 +15,7 @@ import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import useQueryString from "src/hooks/useQueryString";
 import BranchSelect from "src/components/BranchSelect";
 import useCategories from "src/hooks/useCategories";
-import { Departments } from "src/utils/types";
+import { Departments, Sphere } from "src/utils/types";
 
 const CreateApcRequest = () => {
   const [files, $files] = useState<FormData>();
@@ -64,7 +64,11 @@ const CreateApcRequest = () => {
       {
         onSuccess: () => {
           successToast("Заказ успешно создано");
-          navigate("/requests-apc");
+          navigate(
+            `/requests-apc-${
+              Sphere[Number(sphere_status)]
+            }?sphere_status=${sphere_status}`
+          );
         },
       }
     );

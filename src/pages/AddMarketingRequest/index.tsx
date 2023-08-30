@@ -22,7 +22,11 @@ const AddMarketingRequest = () => {
   const { mutate } = requestMutation();
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
+
+  const title = useQueryString("title");
   const sub_id = useQueryString("sub_id");
+  const add = useQueryString("add") || 0;
+  const edit = useQueryString("edit") || "";
   const { data: categories, isLoading } = useCategories({
     sub_id: Number(sub_id),
   });
@@ -57,10 +61,11 @@ const AddMarketingRequest = () => {
       },
       {
         onSuccess: () => {
-          // requestsRefetch();
           successToast("Заказ успешно создано");
           back(
-            `/marketing-${MarketingSubDep[Number(sub_id)]}?sub_id=${sub_id}`
+            `/marketing-${
+              MarketingSubDep[Number(sub_id)]
+            }?sub_id=${sub_id}&add=${add}&edit=${edit}&title=${title}`
           );
         },
       }

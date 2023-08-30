@@ -2,7 +2,7 @@ import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import styles from "./index.module.scss";
 import { NavLink, useMatch } from "react-router-dom";
 import cl from "classnames";
-import { MainPermissions, MarketingSubDep } from "src/utils/types";
+import { MainPermissions, MarketingSubDep, Sphere } from "src/utils/types";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import Subroutes from "./CustomSubItems";
 import { sidebarHandler, toggleSidebar } from "src/redux/reducers/selects";
@@ -32,6 +32,7 @@ const routes = [
         url: "/requests-apc-retail",
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_requests_apc,
+        param: `?sphere_status=${Sphere.retail}`,
       },
       {
         name: "Бригады",
@@ -63,19 +64,14 @@ const routes = [
         url: "/requests-apc-fabric",
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_requests_apc,
+        param: `?sphere_status=${Sphere.fabric}`,
       },
       {
-        name: "Клиенты",
-        url: "/clients",
+        name: "Мастер",
+        url: "/masters",
         icon: "/assets/icons/brigades.svg",
         screen: MainPermissions.get_brigadas,
       },
-      // {
-      //   name: "Остатки на складах",
-      //   url: "/items-in-stock",
-      //   icon: "/assets/icons/remains-in-stock.svg",
-      //   screen: MainPermissions.get_warehouse,
-      // },
       {
         name: "Категории",
         url: `/categories-apc-fabric`,
@@ -121,6 +117,7 @@ const routes = [
         name: "Проектная работа для дизайнеров",
         url: `/marketing-${MarketingSubDep[1]}`,
         icon: "/assets/icons/subOrder.svg",
+        param: `?add=${MainPermissions.add_design_request}&edit=${MainPermissions.edit_design_request}&title=Проектная работа для дизайнеров&sub_id=${MarketingSubDep.designers}`,
         screen: MainPermissions.get_design_request,
       },
       {
@@ -128,24 +125,28 @@ const routes = [
         url: `/marketing-${MarketingSubDep[2]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_locmar_requests,
+        param: `?add=${MainPermissions.add_locmar_requests}&edit=${MainPermissions.edit_locmar_requests}&title=Локальный маркетинг&sub_id=${MarketingSubDep.local_marketing}`,
       },
       {
         name: "Промо-продукция",
         url: `/marketing-${MarketingSubDep[3]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_promo_requests,
+        param: `?add=${MainPermissions.add_promo_requests}&edit=${MainPermissions.edit_promo_requests}&title=Промо-продукция&sub_id=${MarketingSubDep.promo_production}`,
       },
       {
         name: "POS-Материалы",
         url: `/marketing-${MarketingSubDep[4]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_pos_requests,
+        param: `?add=${MainPermissions.add_pos_requests}&edit=${MainPermissions.edit_pos_requests}&title=POS-Материалы&sub_id=${MarketingSubDep.pos}`,
       },
       {
         name: "Комплекты",
         url: `/marketing-${MarketingSubDep[5]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_complect_requests,
+        param: `?add=${MainPermissions.add_complect_requests}&edit=${MainPermissions.edit_complect_requests}&title=Комплекты&sub_id=${MarketingSubDep.complects}`,
       },
       {
         name: "Категории",
@@ -160,6 +161,13 @@ const routes = [
     url: "/users",
     icon: "/assets/icons/users.svg",
     screen: MainPermissions.get_users,
+  },
+  {
+    name: "Клиенты",
+    url: "/clients",
+    icon: "/assets/icons/clients.svg",
+    screen: MainPermissions.get_brigadas,
+    param: "?client=true",
   },
   {
     name: "Роли",
@@ -276,7 +284,7 @@ const CustomSidebar = () => {
                       dispatch(sidebarHandler(false))
                     }
                     state={{ name: item.name }}
-                    to={item.url || ""}
+                    to={`${item.url}${!!item?.param ? item?.param : ""}`}
                   />
                 }
               >

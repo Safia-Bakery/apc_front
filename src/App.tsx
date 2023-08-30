@@ -1,4 +1,4 @@
-import { BrowserRouter, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import Layout from "src/components/Routes";
 import { ToastContainer } from "react-toastify";
@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import { useAppDispatch, useAppSelector } from "./redux/utils/types";
 import {
   logoutHandler,
+  permissionHandler,
   permissionSelector,
   tokenSelector,
 } from "./redux/reducers/auth";
@@ -79,12 +80,12 @@ export const routes = [
     screen: MainPermissions.edit_request_apc,
   },
   {
-    element: <RequestsApc sphere_status={Sphere.retail} />,
+    element: <RequestsApc />,
     path: "/requests-apc-retail",
     screen: MainPermissions.get_requests_apc,
   },
   {
-    element: <RequestsApc sphere_status={Sphere.fabric} />,
+    element: <RequestsApc />,
     path: "/requests-apc-fabric",
     screen: MainPermissions.get_requests_apc,
   },
@@ -114,24 +115,17 @@ export const routes = [
     screen: MainPermissions.edit_complect_requests,
   },
   {
-    element: (
-      <RequestsMarketing
-        add={MainPermissions.add_design_request}
-        edit={MainPermissions.edit_design_request}
-        title={"Проектная работа для дизайнеров"}
-        sub_id={MarketingSubDep.designers}
-      />
-    ),
+    element: <RequestsMarketing />,
     path: `/marketing-${MarketingSubDep[1]}`,
     screen: MainPermissions.get_design_request,
   },
   {
     element: (
       <RequestsMarketing
-        add={MainPermissions.add_locmar_requests}
-        edit={MainPermissions.edit_locmar_requests}
-        title={"Локальный маркетинг"}
-        sub_id={MarketingSubDep.local_marketing}
+      // add={MainPermissions.add_locmar_requests}
+      // edit={MainPermissions.edit_locmar_requests}
+      // title={"Локальный маркетинг"}
+      // sub_id={MarketingSubDep.local_marketing}
       />
     ),
     path: `/marketing-${MarketingSubDep[2]}`,
@@ -140,10 +134,10 @@ export const routes = [
   {
     element: (
       <RequestsMarketing
-        add={MainPermissions.add_promo_requests}
-        edit={MainPermissions.edit_promo_requests}
-        title={"Промо-продукция"}
-        sub_id={MarketingSubDep.promo_production}
+      // add={MainPermissions.add_promo_requests}
+      // edit={MainPermissions.edit_promo_requests}
+      // title={"Промо-продукция"}
+      // sub_id={MarketingSubDep.promo_production}
       />
     ),
     path: `/marketing-${MarketingSubDep[3]}`,
@@ -152,24 +146,17 @@ export const routes = [
   {
     element: (
       <RequestsMarketing
-        add={MainPermissions.add_pos_requests}
-        edit={MainPermissions.edit_pos_requests}
-        title={"POS-Материалы"}
-        sub_id={MarketingSubDep.pos}
+      // add={MainPermissions.add_pos_requests}
+      // edit={MainPermissions.edit_pos_requests}
+      // title={"POS-Материалы"}
+      // sub_id={MarketingSubDep.pos}
       />
     ),
     path: `/marketing-${MarketingSubDep[4]}`,
     screen: MainPermissions.get_pos_requests,
   },
   {
-    element: (
-      <RequestsMarketing
-        add={MainPermissions.add_complect_requests}
-        edit={MainPermissions.edit_complect_requests}
-        title={"Комплекты"}
-        sub_id={MarketingSubDep.complects}
-      />
-    ),
+    element: <RequestsMarketing />,
     path: `/marketing-${MarketingSubDep[5]}`,
     screen: MainPermissions.get_complect_requests,
   },
@@ -300,7 +287,7 @@ export const routes = [
     screen: MainPermissions.get_brigadas,
   },
   {
-    element: <Brigades />,
+    element: <Users />,
     path: "/clients",
     screen: MainPermissions.get_brigadas,
   },
@@ -359,10 +346,10 @@ const App = () => {
   const tokenKey = useQueryString("key");
   const dispatch = useAppDispatch();
   const permission = useAppSelector(permissionSelector);
-  const { data: user, error, isLoading } = useToken({});
+  const { error, data: user } = useToken({});
 
   const renderScreen = useMemo(() => {
-    if (!!permission)
+    if (!!permission && token)
       return routes.map((route) => {
         if (!!permission?.[route.screen]) {
           return (
@@ -372,11 +359,17 @@ const App = () => {
       });
 
     return null;
-  }, [permission, routes]);
+  }, [permission, routes, token]);
+
   useEffect(() => {
     if (!token) navigate("/login");
     if (!!error) dispatch(logoutHandler());
   }, [token, error, tokenKey]);
+
+  useEffect(() => {
+    if (!!user?.permissions.length)
+      dispatch(permissionHandler(user?.permissions));
+  }, [user?.permissions]);
 
   return (
     <>
@@ -389,6 +382,7 @@ const App = () => {
           <Route element={<Login />} path={"/login"} />
           <Route path="/" element={<Layout />}>
             <Route index element={<ControlPanel />} />
+            <Route path="*" element={<ControlPanel />} />
             {renderScreen}
           </Route>
         </Routes>

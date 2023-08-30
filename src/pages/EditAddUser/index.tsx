@@ -3,7 +3,7 @@ import Card from "src/components/Card";
 import Header from "src/components/Header";
 
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import userMutation from "src/hooks/mutation/userMutation";
 import { successToast } from "src/utils/toast";
 import useUsers from "src/hooks/useUsers";
@@ -17,6 +17,7 @@ import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import BaseInputs from "src/components/BaseInputs";
 import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
 import useRoles from "src/hooks/useRoles";
+import MainRadioBtns from "src/components/BaseInputs/MainRadioBtns";
 
 const EditAddUser = () => {
   const { id } = useParams();
@@ -26,6 +27,7 @@ const EditAddUser = () => {
   const { data: roles } = useRoles({});
   const { refetch: usersRefetch } = useUsers({ enabled: false, page: 1 });
   const { data: user, refetch: userRefetch } = useUser({ id: Number(id) });
+  const [sphere_status, $sphere_status] = useState<boolean>();
 
   const { mutate } = userMutation();
 
@@ -50,6 +52,7 @@ const EditAddUser = () => {
         password,
         status: !status ? 2 : 0,
         phone_number: fixedString(phone_number),
+        sphere_status: Number(sphere_status),
         ...(!!email && { email }),
         ...(brigada_id && { brigada_id }),
         ...(!!telegram_id && { telegram_id }),
@@ -79,6 +82,7 @@ const EditAddUser = () => {
 
   useEffect(() => {
     if (id && user) {
+      $sphere_status(!!user.sphere_status);
       reset({
         full_name: user.full_name,
         username: user.username,
@@ -126,6 +130,17 @@ const EditAddUser = () => {
                 {...register("phone_number", {
                   required: "required",
                 })}
+              />
+            </BaseInputs>
+
+            <BaseInputs label="Сфера">
+              <MainRadioBtns
+                onChange={(e) => $sphere_status(e)}
+                value={sphere_status}
+                values={[
+                  { id: 0, name: "Розница" },
+                  { id: 1, name: "Фабрика" },
+                ]}
               />
             </BaseInputs>
             {!!id && (

@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Departments, MainPermissions, Order } from "src/utils/types";
+import { Departments, MainPermissions, Order, Sphere } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
@@ -15,29 +15,35 @@ import cl from "classnames";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
 import styles from "./index.module.scss";
+import useQueryString from "src/hooks/useQueryString";
 
-interface Props {
-  sphere_status?: number;
-}
-
-const column = [
-  { name: "#", key: "" },
-  { name: "Номер заявки", key: "id" },
-  { name: "Клиент", key: "user" },
-  { name: "Филиал/Отдел", key: "name" },
-  { name: "Группа проблем", key: "category?.name" },
-  { name: "Срочно", key: "urgent" },
-  { name: "Бригада", key: "brigada" },
-  { name: "Дата поступления", key: "created_at" },
-  { name: "Статус", key: "status" },
-  { name: "Изменил", key: "user_manager" },
-];
-
-const RequestsApc: FC<Props> = ({ sphere_status }) => {
+const RequestsApc = () => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const permission = useAppSelector(permissionSelector);
+  const sphere_status = useQueryString("sphere_status");
+
+  const column = useMemo(() => {
+    const columns = [
+      { name: "#", key: "" },
+      { name: "Номер заявки", key: "id" },
+      { name: "Клиент", key: "user" },
+      { name: "Филиал/Отдел", key: "name" },
+      { name: "Группа проблем", key: "category?.name" },
+      { name: "Срочно", key: "urgent" },
+      { name: "Бригада", key: "brigada" },
+      { name: "Дата поступления", key: "created_at" },
+      { name: "Статус", key: "status" },
+      { name: "Изменил", key: "user_manager" },
+    ];
+
+    if (Number(sphere_status) === Sphere.fabric) {
+      columns.splice(2, 0, { name: "Система", key: "is_bot" });
+    }
+
+    return columns;
+  }, [sphere_status]);
 
   const getValue = (obj: any, key: string) => {
     const keys = key.split(".");
@@ -69,7 +75,7 @@ const RequestsApc: FC<Props> = ({ sphere_status }) => {
     size: itemsPerPage,
     department: Departments.apc,
     page: currentPage,
-    sphere_status,
+    sphere_status: Number(sphere_status),
   });
   const sortData = () => {
     if (requests?.items && sortKey) {
@@ -94,7 +100,7 @@ const RequestsApc: FC<Props> = ({ sphere_status }) => {
 
   useEffect(() => {
     refetch();
-  }, [currentPage]);
+  }, [currentPage, sphere_status]);
 
   if (orderLoading) return <Loading />;
 
@@ -104,7 +110,7 @@ const RequestsApc: FC<Props> = ({ sphere_status }) => {
         <button className="btn btn-primary btn-fill mr-2">Экспорт</button>
         {permission?.[MainPermissions.add_request_apc] && (
           <button
-            onClick={() => navigate("add")}
+            onClick={() => navigate(`add?sphere_status=${sphere_status}`)}
             className="btn btn-success btn-fill"
           >
             Добавить
@@ -139,6 +145,9 @@ const RequestsApc: FC<Props> = ({ sphere_status }) => {
                         <span className={styles.link}>{order?.id}</span>
                       )}
                     </td>
+                    {Number(sphere_status) === Sphere.fabric && (
+                      <td>{order?.is_bot ? "Телеграм-бот" : "Веб-сайт"}</td>
+                    )}
                     <td>{order?.user?.full_name}</td>
                     <td>
                       <span className={"not-set"}>

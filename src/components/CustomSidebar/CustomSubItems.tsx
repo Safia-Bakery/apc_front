@@ -15,6 +15,7 @@ interface Item {
   icon: string;
   screen: MainPermissions;
   state?: string;
+  param?: string;
 }
 
 interface Props {
@@ -50,7 +51,7 @@ const Subroutes: FC<Props> = ({ subroutes, routeIcon, routeName }) => {
               component={
                 <Link
                   onClick={() => isMobile && dispatch(sidebarHandler(false))}
-                  to={sub.url}
+                  to={`${sub.url}${!!sub?.param ? sub?.param : ""}`}
                   state={{ name: sub.name, screen: sub?.state }}
                 />
               }

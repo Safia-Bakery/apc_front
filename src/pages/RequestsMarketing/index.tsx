@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Departments, MainPermissions, Order } from "src/utils/types";
+import { Departments, Order } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
@@ -14,6 +14,7 @@ import ItemsCount from "src/components/ItemsCount";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
 import styles from "./index.module.scss";
+import useQueryString from "src/hooks/useQueryString";
 
 const column = [
   { name: "#", key: "" },
@@ -30,18 +31,16 @@ const column = [
   { name: "Изменил", key: "category.name" },
 ];
 
-interface Props {
-  title?: string;
-  sub_id?: string | number;
-  add: MainPermissions;
-  edit: MainPermissions;
-}
-
-const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
+const RequestsMarketing = () => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const permission = useAppSelector(permissionSelector);
+
+  const title = useQueryString("title");
+  const sub_id = useQueryString("sub_id");
+  const add = useQueryString("add") || 0;
+  const edit = useQueryString("edit") || "";
 
   const handleSort = (key: any) => {
     if (key === sortKey) {
@@ -86,14 +85,20 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
     refetch();
   }, [currentPage, sub_id]);
 
+  console.log(add, "permission?.[Number(add)");
   if (orderLoading) return <Loading />;
 
   return (
     <Card className="overflow-hidden">
-      <Header title={title}>
-        {permission?.[add] && (
+      <Header title={title?.toString()}>
+        {/* @ts-ignore */}
+        {permission?.[Number(add)] && (
           <button
-            onClick={() => navigate(`add?sub_id=${sub_id}`)}
+            onClick={() =>
+              navigate(
+                `add?sub_id=${sub_id}&add=${add}&edit=${edit}&title=${title}`
+              )
+            }
             className="btn btn-success btn-fill"
           >
             Добавить
@@ -110,7 +115,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            <InventoryFilter sub_id={sub_id} currentPage={currentPage} />
+            <InventoryFilter sub_id={sub_id!} currentPage={currentPage} />
           </TableHead>
 
           {!!requests?.items?.length && (
@@ -120,7 +125,8 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
                   <tr className={requestRows(order.status)} key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
-                      {permission?.[edit] ? (
+                      {/* @ts-ignore */}
+                      {permission?.[Number(edit)] ? (
                         <Link to={`${order?.id}?sub_id=${sub_id}`}>
                           {order?.id}
                         </Link>

@@ -1,4 +1,4 @@
-import { RequestStatusArr, UrgentNames } from "src/utils/helpers";
+import { RequestStatusArr, SystemArr, UrgentNames } from "src/utils/helpers";
 import { FC, useEffect, useRef, useState } from "react";
 import useOrders from "src/hooks/useOrders";
 import useDebounce from "src/hooks/useDebounce";
@@ -12,7 +12,7 @@ import BranchSelect from "src/components/BranchSelect";
 import useQueryString from "src/hooks/useQueryString";
 import styles from "./index.module.scss";
 import cl from "classnames";
-import { Departments } from "src/utils/types";
+import { Departments, Sphere } from "src/utils/types";
 import dayjs from "dayjs";
 import { useNavigateParams } from "src/hooks/useCustomNavigate";
 import useCategories from "src/hooks/useCategories";
@@ -29,13 +29,15 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
 
   const { data: categories, refetch: catRefetch } = useCategories({
     department: Departments.apc,
-    sphere_status: Number(sphere_status),
+    ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
+    enabled: false,
   });
 
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
 
   const [id, $id] = useDebounce<number>(0);
+  const [system, $system] = useState<number>(0);
   const [department, $department] = useState<string>();
   const [category_id, $category_id] = useState<number>();
   const [urgent, $urgent] = useState<boolean>();
@@ -46,6 +48,8 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
   const { refetch } = useOrders({
     enabled: false,
     department: Departments.apc,
+    ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
+    ...(!!system && { is_bot: !!system }),
     body: {
       ...(!!created_at && {
         created_at: dayjs(created_at).format("YYYY-MM-DD"),
@@ -81,6 +85,8 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
     request_status,
     user,
     currentPage,
+    sphere_status,
+    system,
   ]);
 
   const startRange = (start: Date | null) => $created_at(start);
@@ -96,6 +102,16 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
           />
         </BaseInput>
       </td>
+      {Number(sphere_status) === Sphere.fabric && (
+        <td className="p-0">
+          <BaseInput className="m-2">
+            <MainSelect
+              values={SystemArr}
+              onChange={(e) => $system(Number(e.target.value))}
+            />
+          </BaseInput>
+        </td>
+      )}
       <td className="p-0">
         <BaseInput className="m-2">
           <MainInput onChange={(e) => $user(e.target.value)} />

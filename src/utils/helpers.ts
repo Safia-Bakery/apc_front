@@ -84,6 +84,10 @@ export const RequestStatusArr = [
   { id: RequestStatus.done, name: "Закончен" },
   { id: RequestStatus.rejected, name: "Отклонён" },
 ];
+export const SystemArr = [
+  { id: 0, name: "Веб-сайт" },
+  { id: 1, name: "Телеграм-бот" },
+];
 
 export const requestRows = (status: RequestStatus) => {
   switch (status) {

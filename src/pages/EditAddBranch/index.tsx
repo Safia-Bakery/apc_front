@@ -2,7 +2,7 @@ import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useBranch from "src/hooks/useBranch";
 import branchMutation from "src/hooks/mutation/branchMutation";
 import useBranches from "src/hooks/useBranches";
@@ -13,6 +13,7 @@ import MainSelect from "src/components/BaseInputs/MainSelect";
 import branchDepartmentMutation from "src/hooks/mutation/branchDepartment";
 import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
 import { Departments } from "src/utils/types";
+import MainRadioBtns from "src/components/BaseInputs/MainRadioBtns";
 
 const EditAddBranch = () => {
   const { id } = useParams();
@@ -21,6 +22,7 @@ const EditAddBranch = () => {
 
   const { mutate } = branchMutation();
   const { mutate: depMutation } = branchDepartmentMutation();
+  const [is_fabrica, $is_fabrica] = useState<boolean>();
 
   const { data: branch, refetch } = useBranch({ id: id! });
   const { refetch: branchesRefetch } = useBranches({
@@ -30,6 +32,7 @@ const EditAddBranch = () => {
 
   useEffect(() => {
     if (!!id && branch) {
+      if (branch.is_fabrica !== null) $is_fabrica(!!branch.is_fabrica);
       reset({
         name: branch?.name,
         region: branch?.country,
@@ -69,6 +72,7 @@ const EditAddBranch = () => {
         country: region,
         name,
         status,
+        is_fabrica,
         ...(!!id && { id }),
       },
       {
@@ -117,8 +121,20 @@ const EditAddBranch = () => {
           <MainInput register={register("lng")} />
         </BaseInputs>
 
-        <MainCheckBox label="Активный" register={register("status")} />
+        <BaseInputs label="Статус">
+          <MainCheckBox label="Активный" register={register("status")} />
+        </BaseInputs>
 
+        <BaseInputs label="Сфера">
+          <MainRadioBtns
+            onChange={(e) => $is_fabrica(e)}
+            value={is_fabrica}
+            values={[
+              { id: 0, name: "Розница" },
+              { id: 1, name: "Фабрика" },
+            ]}
+          />
+        </BaseInputs>
         <BaseInputs label={"АРС"}>
           <MainSelect
             onChange={(e) =>

@@ -15,17 +15,19 @@ export const useUsers = ({
   size,
   page,
   body,
+  position,
 }: {
   enabled?: boolean;
   size?: number;
   page?: number;
+  position?: boolean;
   body?: BodyTypes;
 }) => {
   return useQuery({
-    queryKey: ["users", page],
+    queryKey: ["users", page, position],
     queryFn: () =>
       apiClient
-        .get(`/users`, { page, size, ...body })
+        .get(`/users`, { page, size, ...body, position })
         .then(({ data: response }) => {
           return response as UsersTypes;
         }),

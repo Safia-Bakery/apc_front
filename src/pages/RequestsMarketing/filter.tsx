@@ -18,6 +18,7 @@ import {
   useRemoveParams,
 } from "src/hooks/useCustomNavigate";
 import cl from "classnames";
+import { Departments } from "src/utils/types";
 
 interface Props {
   currentPage: number;
@@ -48,6 +49,7 @@ const InventoryFilter: FC<Props> = ({ currentPage, sub_id }) => {
   const { refetch } = useOrders({
     enabled: false,
     sub_id: Number(sub_id),
+    department: Departments.marketing,
     body: {
       ...(!!created_at && {
         created_at: dayjs(created_at).format("YYYY-MM-DD"),

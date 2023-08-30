@@ -5,7 +5,7 @@ import storage from "redux-persist/lib/storage";
 import reducer from "./reducers/reducers";
 
 const persistConfig = {
-  key: "apc",
+  key: "service",
   storage,
   whitelist: ["auth", "cache"],
 };

@@ -25,6 +25,7 @@ export interface UserTypes {
   id?: number;
   brigader?: BrigadaType;
   telegram_id: number | null;
+  sphere_status: number;
   group?: {
     name: string;
     id: number | string;
@@ -42,6 +43,7 @@ export interface Order {
   urgent: boolean;
   user: UserTypes;
   user_manager: string;
+  is_bot: boolean;
   brigada: {
     id: number | string;
     name: string;
@@ -94,6 +96,7 @@ export interface BranchType {
   status: number;
   origin: number;
   fillial_department: BranchType[];
+  is_fabrica: boolean;
 }
 export interface BranchTypes extends BasePaginatedRes {
   items: BranchType[];

@@ -209,7 +209,7 @@ const ShowRequestApc = () => {
 
   return (
     <>
-      <Card>
+      <Card className="overflow-hidden">
         <Header
           title={`Заказ №${id}`}
           subTitle={`Статус: ${handleStatus(order?.status)}`}
