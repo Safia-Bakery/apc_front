@@ -3,7 +3,7 @@ import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useCategory from "src/hooks/useCategory";
-import { useEffect, useMemo } from "react";
+import { FC, useEffect, useMemo } from "react";
 import categoryMutation from "src/hooks/mutation/categoryMutation";
 import useCategories from "src/hooks/useCategories";
 import { successToast } from "src/utils/toast";
@@ -11,19 +11,24 @@ import BaseInput from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
-import useQueryString from "src/hooks/useQueryString";
-import { Departments, MarketingSubDepRu } from "src/utils/types";
+import { Departments, MarketingSubDepRu, Sphere } from "src/utils/types";
 import MainSelect from "src/components/BaseInputs/MainSelect";
 
-const ShowCategory = () => {
+interface Props {
+  sphere_status?: Sphere;
+  dep?: Departments;
+}
+
+const ShowCategory: FC<Props> = ({ sphere_status, dep }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const dep = useQueryString("dep");
+
   const goBack = () => navigate(-1);
   const { refetch: categoryRefetch } = useCategories({
     enabled: false,
     page: 1,
-    department: Number(dep),
+    department: dep,
+    ...(sphere_status && { sphere_status }),
   });
 
   const {
@@ -49,15 +54,20 @@ const ShowCategory = () => {
         description,
         status,
         urgent,
-        department: Number(dep),
+        department: dep,
         ...(id && { id: +id }),
         ...(!!sub_id && { sub_id: +sub_id }),
+        ...(!!sphere_status && { sphere_status }),
       },
       {
         onSuccess: () => {
           categoryRefetch();
           successToast(!!id ? "successfully updated" : "successfully created");
-          navigate(`/categories-${Departments[Number(dep)]}?dep=${dep}`);
+          navigate(
+            `/categories-${Departments[Number(dep)]}${
+              !!sphere_status ? `-${Sphere[sphere_status]}` : ""
+            }`
+          );
           if (id) refetch();
         },
       }
@@ -116,12 +126,8 @@ const ShowCategory = () => {
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
         {renderDepartment}
 
-        <BaseInput label="ОПИСАНИЕ" error={errors.description}>
-          <MainTextArea
-            register={register("description", {
-              required: "Обязательное поле",
-            })}
-          />
+        <BaseInput label="ОПИСАНИЕ">
+          <MainTextArea register={register("description")} />
         </BaseInput>
 
         <MainCheckBox

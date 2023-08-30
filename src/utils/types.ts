@@ -346,3 +346,7 @@ export enum Departments {
   marketing = 3,
   it = 4,
 }
+export enum Sphere {
+  retail = 1,
+  fabric = 2,
+}

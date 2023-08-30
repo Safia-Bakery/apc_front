@@ -1,16 +1,27 @@
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import Layout from "src/components/Routes";
 import { ToastContainer } from "react-toastify";
 import "dayjs/locale/ru";
 import dayjs from "dayjs";
-import { Suspense, lazy, useMemo } from "react";
+import { Suspense, lazy, useEffect, useMemo } from "react";
 import Loading from "./components/Loader";
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
-import { useAppSelector } from "./redux/utils/types";
-import { permissionSelector } from "./redux/reducers/auth";
-import { Departments, MainPermissions, MarketingSubDep } from "./utils/types";
+import { useAppDispatch, useAppSelector } from "./redux/utils/types";
+import {
+  logoutHandler,
+  permissionSelector,
+  tokenSelector,
+} from "./redux/reducers/auth";
+import {
+  Departments,
+  MainPermissions,
+  MarketingSubDep,
+  Sphere,
+} from "./utils/types";
+import useToken from "./hooks/useToken";
+import useQueryString from "./hooks/useQueryString";
 
 const ControlPanel = lazy(() => import("src/pages/ControlPanel"));
 const TelegramAddProduct = lazy(() => import("src/pages/TelegramAddProduct"));
@@ -54,7 +65,12 @@ export const routes = [
   },
   {
     element: <CreateApcRequest />,
-    path: "/requests-apc/add",
+    path: "/requests-apc-retail/add",
+    screen: MainPermissions.add_request_apc,
+  },
+  {
+    element: <CreateApcRequest />,
+    path: "/requests-apc-fabric/add",
     screen: MainPermissions.add_request_apc,
   },
   {
@@ -63,12 +79,12 @@ export const routes = [
     screen: MainPermissions.edit_request_apc,
   },
   {
-    element: <RequestsApc sphere_status={1} />,
+    element: <RequestsApc sphere_status={Sphere.retail} />,
     path: "/requests-apc-retail",
     screen: MainPermissions.get_requests_apc,
   },
   {
-    element: <RequestsApc sphere_status={2} />,
+    element: <RequestsApc sphere_status={Sphere.fabric} />,
     path: "/requests-apc-fabric",
     screen: MainPermissions.get_requests_apc,
   },
@@ -199,12 +215,12 @@ export const routes = [
     screen: MainPermissions.get_statistics,
   },
   {
-    element: <Categories sphere_status={1} dep={Departments.apc} />,
+    element: <Categories sphere_status={Sphere.retail} dep={Departments.apc} />,
     path: `/categories-${Departments[1]}-retail`,
     screen: MainPermissions.get_apc_category,
   },
   {
-    element: <Categories sphere_status={1} dep={Departments.apc} />,
+    element: <Categories sphere_status={Sphere.fabric} dep={Departments.apc} />,
     path: `/categories-${Departments[1]}-fabric`,
     screen: MainPermissions.get_apc_category,
   },
@@ -214,18 +230,41 @@ export const routes = [
     screen: MainPermissions.get_mark_category,
   },
   {
-    element: <ShowCategory />,
-    path: "/categories/:id",
+    element: <ShowCategory dep={Departments.marketing} />,
+    path: `/categories-${Departments[3]}/:id`,
     screen: MainPermissions.edit_apc_category,
   },
   {
-    element: <ShowCategory />,
+    element: (
+      <ShowCategory dep={Departments.apc} sphere_status={Sphere.retail} />
+    ),
+    path: `/categories-${Departments[1]}-retail/:id`,
+    screen: MainPermissions.edit_apc_category,
+  },
+  {
+    element: (
+      <ShowCategory dep={Departments.apc} sphere_status={Sphere.fabric} />
+    ),
+    path: `/categories-${Departments[1]}-fabric/:id`,
+    screen: MainPermissions.edit_apc_category,
+  },
+  {
+    element: <ShowCategory dep={Departments.marketing} />,
     path: `/categories-${Departments[3]}/add`,
     screen: MainPermissions.add_mark_category,
   },
   {
-    element: <ShowCategory />,
-    path: `/categories-${Departments[1]}/add`,
+    element: (
+      <ShowCategory dep={Departments.apc} sphere_status={Sphere.retail} />
+    ),
+    path: `/categories-${Departments[1]}-retail/add`,
+    screen: MainPermissions.add_apc_category,
+  },
+  {
+    element: (
+      <ShowCategory dep={Departments.apc} sphere_status={Sphere.fabric} />
+    ),
+    path: `/categories-${Departments[1]}-fabric/add`,
     screen: MainPermissions.add_apc_category,
   },
   {
@@ -258,6 +297,11 @@ export const routes = [
   {
     element: <Brigades />,
     path: "/brigades",
+    screen: MainPermissions.get_brigadas,
+  },
+  {
+    element: <Brigades />,
+    path: "/clients",
     screen: MainPermissions.get_brigadas,
   },
   {
@@ -310,7 +354,12 @@ export const routes = [
 dayjs.locale("ru");
 
 const App = () => {
+  const token = useAppSelector(tokenSelector);
+  const navigate = useNavigate();
+  const tokenKey = useQueryString("key");
+  const dispatch = useAppDispatch();
   const permission = useAppSelector(permissionSelector);
+  const { data: user, error, isLoading } = useToken({});
 
   const renderScreen = useMemo(() => {
     if (!!permission)
@@ -324,24 +373,27 @@ const App = () => {
 
     return null;
   }, [permission, routes]);
+  useEffect(() => {
+    if (!token) navigate("/login");
+    if (!!error) dispatch(logoutHandler());
+  }, [token, error, tokenKey]);
 
   return (
     <>
-      <BrowserRouter>
-        <Suspense fallback={<Loading />}>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route element={<Login />} path={"/login"} />
-              <Route index element={<ControlPanel />} />
-              <Route
-                element={<TelegramAddProduct />}
-                path={"/tg-add-product/:id"}
-              />
-              {renderScreen}
-            </Route>
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route
+            element={<TelegramAddProduct />}
+            path={"/tg-add-product/:id"}
+          />
+          <Route element={<Login />} path={"/login"} />
+          <Route path="/" element={<Layout />}>
+            <Route index element={<ControlPanel />} />
+            {renderScreen}
+          </Route>
+        </Routes>
+      </Suspense>
+
       <ToastContainer />
     </>
   );

@@ -32,6 +32,7 @@ import {
 } from "src/hooks/useCustomNavigate";
 import uploadFileMutation from "src/hooks/mutation/uploadFile";
 import { loginHandler, permissionSelector } from "src/redux/reducers/auth";
+import useBrigadas from "src/hooks/useBrigadas";
 
 const enum ModalTypes {
   closed = "closed",
@@ -44,25 +45,21 @@ const ShowRequestApc = () => {
   const { id } = useParams();
   const tokenKey = useQueryString("key");
   const permissions = useAppSelector(permissionSelector);
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
   const { mutate: attach } = attachBrigadaMutation();
+  const { refetch: brigadasRefetch } = useBrigadas({ enabled: false });
   const handleModal = (type: ModalTypes) => () => {
     navigateParams({ modal: type });
   };
   const { getValues } = useForm();
-  const brigadaJson = useQueryString("brigada");
-  const brigada = JSON.parse(brigadaJson!) as Order["brigada"];
   const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
   const inputRef = useRef<any>(null);
   const upladedFiles = useAppSelector(reportImgSelector);
 
   const { mutate } = uploadFileMutation();
-
-  const handleNavigate = (route: string) => () => navigate(route);
 
   const handleFilesSelected = (data: FileItem[]) =>
     dispatch(uploadReport(data));
@@ -80,7 +77,6 @@ const ShowRequestApc = () => {
       attach(
         {
           request_id: Number(id),
-          brigada_id: Number(brigada?.id),
           status,
           comment: getValues("cancel_reason"),
         },
@@ -115,11 +111,7 @@ const ShowRequestApc = () => {
   };
 
   const renderBtns = useMemo(() => {
-    if (
-      permissions?.[MainPermissions.edit_request_apc] &&
-      isNew &&
-      !!brigada?.name
-    )
+    if (permissions?.[MainPermissions.edit_request_apc] && isNew)
       return (
         <div className="float-end mb10">
           <button
@@ -175,7 +167,7 @@ const ShowRequestApc = () => {
   }, [permissions, order?.status]);
 
   const renderAssignment = useMemo(() => {
-    if (permissions?.[MainPermissions.request_ettach]) {
+    if (permissions?.[MainPermissions.request_ettach] && order?.status! <= 1) {
       if (order?.brigada?.name) {
         return (
           <>
@@ -208,6 +200,12 @@ const ShowRequestApc = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    if (order?.status! <= 1) {
+      brigadasRefetch();
+    }
+  }, [order?.status]);
 
   return (
     <>

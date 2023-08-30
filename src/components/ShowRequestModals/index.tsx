@@ -1,7 +1,5 @@
 import { useMemo } from "react";
 import Modal from "../Modal";
-import { brigadaSelector } from "src/redux/reducers/cache";
-import { useAppSelector } from "src/redux/utils/types";
 import { BrigadaType, FileType, RequestStatus } from "src/utils/types";
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -17,6 +15,8 @@ import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import cl from "classnames";
 import useQueryString from "src/hooks/useQueryString";
 import { useRemoveParams } from "src/hooks/useCustomNavigate";
+import useBrigadas from "src/hooks/useBrigadas";
+import Loading from "../Loader";
 
 const enum ModalTypes {
   closed = "closed",
@@ -34,7 +34,8 @@ const ShowRequestModals = () => {
   const { mutate: attach } = attachBrigadaMutation();
   const { register, getValues } = useForm();
 
-  const brigades = useAppSelector(brigadaSelector);
+  const { data: brigades, isLoading } = useBrigadas({ enabled: false });
+
   const { refetch: orderRefetch } = useOrder({ id: Number(id) });
 
   const handleBrigada =
@@ -68,20 +69,24 @@ const ShowRequestModals = () => {
               </button>
             </Header>
             <div className={styles.items}>
-              {brigades.map((item, idx) => (
-                <div key={idx} className={styles.item}>
-                  <h6>{item?.name}</h6>
-                  <button
-                    onClick={handleBrigada({
-                      status: RequestStatus.confirmed,
-                      item,
-                    })}
-                    className="btn btn-success btn-fill btn-sm"
-                  >
-                    Назначить
-                  </button>
-                </div>
-              ))}
+              {isLoading ? (
+                <Loading />
+              ) : (
+                brigades?.items.map((item, idx) => (
+                  <div key={idx} className={styles.item}>
+                    <h6>{item?.name}</h6>
+                    <button
+                      onClick={handleBrigada({
+                        status: RequestStatus.confirmed,
+                        item,
+                      })}
+                      className="btn btn-success btn-fill btn-sm"
+                    >
+                      Назначить
+                    </button>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         );

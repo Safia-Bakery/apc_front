@@ -1,11 +1,4 @@
-import {
-  OrderTypeNames,
-  RequestStatusArr,
-  UrgentNames,
-} from "src/utils/helpers";
-
-import { useAppSelector } from "src/redux/utils/types";
-import { categorySelector } from "src/redux/reducers/cache";
+import { RequestStatusArr, UrgentNames } from "src/utils/helpers";
 import { FC, useEffect, useRef, useState } from "react";
 import useOrders from "src/hooks/useOrders";
 import useDebounce from "src/hooks/useDebounce";
@@ -22,6 +15,7 @@ import cl from "classnames";
 import { Departments } from "src/utils/types";
 import dayjs from "dayjs";
 import { useNavigateParams } from "src/hooks/useCustomNavigate";
+import useCategories from "src/hooks/useCategories";
 
 interface Props {
   currentPage: number;
@@ -30,9 +24,14 @@ interface Props {
 const InventoryFilter: FC<Props> = ({ currentPage }) => {
   const initialLoadRef = useRef(true);
   const navigate = useNavigateParams();
-  const categories = useAppSelector(categorySelector);
-
   const choose_fillial = useQueryString("choose_fillial");
+  const sphere_status = useQueryString("sphere_status");
+
+  const { data: categories, refetch: catRefetch } = useCategories({
+    department: Departments.apc,
+    sphere_status: Number(sphere_status),
+  });
+
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
 
@@ -110,7 +109,8 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
       <td className="p-0">
         <BaseInputs className="m-2">
           <MainSelect
-            values={categories}
+            values={categories?.items}
+            onFocus={() => catRefetch()}
             onChange={(e) => $category_id(Number(e.target.value))}
           />
         </BaseInputs>

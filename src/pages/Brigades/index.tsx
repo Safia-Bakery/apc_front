@@ -35,7 +35,7 @@ const Brigades = () => {
   } = useBrigadas({
     size: itemsPerPage,
     page: currentPage,
-    enabled: false,
+    enabled: true,
   });
 
   const [sortKey, setSortKey] = useState<keyof BrigadaType>();
@@ -95,9 +95,7 @@ const Brigades = () => {
             sort={handleSort}
             sortKey={sortKey}
             sortOrder={sortOrder}
-          >
-            {/* <BrigadesFilter currentPage={currentPage} /> */}
-          </TableHead>
+          ></TableHead>
 
           {!!brigadas?.items?.length && (
             <tbody>

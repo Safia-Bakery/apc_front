@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "src/main";
-import { brigadaHandler } from "src/redux/reducers/cache";
+
 import { useAppDispatch } from "src/redux/utils/types";
 import { BrigadaTypes } from "src/utils/types";
 
@@ -20,7 +20,6 @@ export const useBrigadas = ({
       apiClient
         .get("/brigadas", { page, size })
         .then(({ data: response }: { data: any }) => {
-          dispatch(brigadaHandler(response.items as BrigadaTypes["items"]));
           return response as BrigadaTypes;
         }),
     enabled,

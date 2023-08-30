@@ -1,11 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import styles from "./index.module.scss";
+
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import { useAppSelector } from "src/redux/utils/types";
-import { rolesSelector } from "src/redux/reducers/cache";
 import userMutation from "src/hooks/mutation/userMutation";
 import { successToast } from "src/utils/toast";
 import useUsers from "src/hooks/useUsers";
@@ -18,13 +16,14 @@ import MainInput from "src/components/BaseInputs/MainInput";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import BaseInputs from "src/components/BaseInputs";
 import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
+import useRoles from "src/hooks/useRoles";
 
 const EditAddUser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
 
-  const roles = useAppSelector(rolesSelector);
+  const { data: roles } = useRoles({});
   const { refetch: usersRefetch } = useUsers({ enabled: false, page: 1 });
   const { data: user, refetch: userRefetch } = useUser({ id: Number(id) });
 
@@ -53,7 +52,7 @@ const EditAddUser = () => {
         phone_number: fixedString(phone_number),
         ...(!!email && { email }),
         ...(brigada_id && { brigada_id }),
-        ...(telegram_id && { telegram_id }),
+        ...(!!telegram_id && { telegram_id }),
         ...(!!id && { user_id: Number(id) }),
       },
       {

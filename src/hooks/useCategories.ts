@@ -1,7 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "src/main";
-import { cachedCategories } from "src/redux/reducers/cache";
-import { useAppDispatch } from "src/redux/utils/types";
 import { CategoryTypes } from "src/utils/types";
 
 export const useCategories = ({
@@ -21,7 +19,6 @@ export const useCategories = ({
   body?: { name?: string; category_status?: string };
   sphere_status?: number;
 }) => {
-  const dispatch = useAppDispatch();
   return useQuery({
     queryKey: ["categories", page, department, sub_id, sphere_status],
     queryFn: () =>
@@ -35,7 +32,6 @@ export const useCategories = ({
           ...body,
         })
         .then(({ data: response }) => {
-          dispatch(cachedCategories(response as CategoryTypes));
           return response as CategoryTypes;
         }),
     enabled,

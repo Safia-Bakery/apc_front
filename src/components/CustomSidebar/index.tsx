@@ -2,7 +2,7 @@ import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import styles from "./index.module.scss";
 import { NavLink, useMatch } from "react-router-dom";
 import cl from "classnames";
-import { Departments, MainPermissions, MarketingSubDep } from "src/utils/types";
+import { MainPermissions, MarketingSubDep } from "src/utils/types";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import Subroutes from "./CustomSubItems";
 import { sidebarHandler, toggleSidebar } from "src/redux/reducers/selects";
@@ -47,7 +47,7 @@ const routes = [
       },
       {
         name: "Категории",
-        url: `/categories-apc-retail?dep=${Departments.apc}`,
+        url: `/categories-apc-retail`,
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_apc_category,
       },
@@ -66,16 +66,16 @@ const routes = [
       },
       {
         name: "Клиенты",
-        url: "/brigades",
+        url: "/clients",
         icon: "/assets/icons/brigades.svg",
         screen: MainPermissions.get_brigadas,
       },
-      {
-        name: "Остатки на складах",
-        url: "/items-in-stock",
-        icon: "/assets/icons/remains-in-stock.svg",
-        screen: MainPermissions.get_warehouse,
-      },
+      // {
+      //   name: "Остатки на складах",
+      //   url: "/items-in-stock",
+      //   icon: "/assets/icons/remains-in-stock.svg",
+      //   screen: MainPermissions.get_warehouse,
+      // },
       {
         name: "Категории",
         url: `/categories-apc-fabric`,
@@ -149,7 +149,7 @@ const routes = [
       },
       {
         name: "Категории",
-        url: `/categories-marketing?dep=${Departments.marketing}`,
+        url: `/categories-marketing`,
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_mark_category,
       },

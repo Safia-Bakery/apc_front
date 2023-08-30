@@ -1,11 +1,7 @@
-import {
-  OrderTypeNames,
-  RequestStatusArr,
-  UrgentNames,
-} from "src/utils/helpers";
+import { RequestStatusArr } from "src/utils/helpers";
 
 import { useAppSelector } from "src/redux/utils/types";
-import { branchSelector, categorySelector } from "src/redux/reducers/cache";
+import { branchSelector } from "src/redux/reducers/cache";
 import { FC, useEffect, useRef, useState } from "react";
 import useOrders from "src/hooks/useOrders";
 import useDebounce from "src/hooks/useDebounce";
@@ -15,6 +11,8 @@ import MainSelect from "src/components/BaseInputs/MainSelect";
 import BaseInput from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
+import { Departments } from "src/utils/types";
+import useCategories from "src/hooks/useCategories";
 
 interface Props {
   currentPage: number;
@@ -23,7 +21,10 @@ interface Props {
 const InventoryFilter: FC<Props> = ({ currentPage }) => {
   const initialLoadRef = useRef(true);
   const branches = useAppSelector(branchSelector);
-  const categories = useAppSelector(categorySelector);
+
+  const { data: categories, refetch: catRefetch } = useCategories({
+    department: Departments.it,
+  });
 
   const [id, $id] = useDebounce<number>(0);
   const [executor, $executor] = useState<string>();
@@ -105,7 +106,8 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
       <td className="p-0">
         <BaseInputs className="m-2">
           <MainSelect
-            values={categories}
+            values={categories?.items}
+            onFocus={() => catRefetch()}
             onChange={(e) => $category_id(Number(e.target.value))}
           />
         </BaseInputs>

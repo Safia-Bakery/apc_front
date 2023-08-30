@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import cl from "classnames";
 import requestMutation from "src/hooks/mutation/orderMutation";
 import { useAppSelector } from "src/redux/utils/types";
-import { branchSelector, categorySelector } from "src/redux/reducers/cache";
+import { branchSelector } from "src/redux/reducers/cache";
 import useOrders from "src/hooks/useOrders";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import styles from "./index.module.scss";
@@ -20,11 +20,14 @@ import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import useUsers from "src/hooks/useUsers";
 import Loading from "src/components/Loader";
 import { Departments } from "src/utils/types";
+import useCategories from "src/hooks/useCategories";
 
 const CreateITRequest = () => {
   const [files, $files] = useState<FormData>();
   const branches = useAppSelector(branchSelector);
-  const categories = useAppSelector(categorySelector);
+  const { data: categories } = useCategories({
+    department: Departments.it,
+  });
   const { mutate } = requestMutation();
   const { refetch: requestsRefetch } = useOrders({
     enabled: false,
@@ -99,7 +102,10 @@ const CreateITRequest = () => {
           <MainSelect values={branches} register={register("fillial_id")} />
         </BaseInput>
         <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
-          <MainSelect values={categories} register={register("category_id")} />
+          <MainSelect
+            values={categories?.items}
+            register={register("category_id")}
+          />
         </BaseInputs>
 
         <BaseInputs label="Продукт">

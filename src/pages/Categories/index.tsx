@@ -1,7 +1,7 @@
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
-import { Category, Departments } from "src/utils/types";
+import { Category, Departments, Sphere } from "src/utils/types";
 import Pagination from "src/components/Pagination";
 import { FC, useEffect, useState } from "react";
 import { handleDepartment, itemsPerPage } from "src/utils/helpers";
@@ -38,6 +38,7 @@ const Categories: FC<Props> = ({ sphere_status, dep }) => {
       setSortOrder("asc");
     }
   };
+
   const [currentPage, setCurrentPage] = useState(1);
   const { data: categories, refetch } = useCategories({
     size: itemsPerPage,
@@ -73,7 +74,7 @@ const Categories: FC<Props> = ({ sphere_status, dep }) => {
       <Header title={"Категории"}>
         <button
           className="btn btn-success btn-fill"
-          onClick={handleNavigate(`add${!!dep ? `?dep=${dep}` : ""}`)}
+          onClick={handleNavigate(`add`)}
         >
           Добавить
         </button>
@@ -110,9 +111,9 @@ const Categories: FC<Props> = ({ sphere_status, dep }) => {
                       <td width={40}>
                         <TableViewBtn
                           onClick={handleNavigate(
-                            `/categories/${category.id}?dep=${
-                              category?.department
-                            }${
+                            `/categories-${Departments[Number(dep)]}${
+                              !!sphere_status ? `-${Sphere[sphere_status]}` : ""
+                            }/${category.id}?dep=${category?.department}${
                               !!category?.sub_id
                                 ? `&sub_id=${category.sub_id}`
                                 : ""

@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import apiClient from "src/main";
-import { Departments } from "src/utils/types";
+import { Departments, Sphere } from "src/utils/types";
 
 interface Body {
   name: string;
@@ -9,6 +9,7 @@ interface Body {
   id?: number;
   urgent: number;
   department?: Departments;
+  sphere_status?: Sphere;
 }
 
 const categoryMutation = () => {

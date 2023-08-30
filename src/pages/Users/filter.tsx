@@ -3,11 +3,9 @@ import BaseInput from "src/components/BaseInputs";
 import BaseInputs from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainSelect from "src/components/BaseInputs/MainSelect";
-
 import useDebounce from "src/hooks/useDebounce";
+import useRoles from "src/hooks/useRoles";
 import useUsers from "src/hooks/useUsers";
-import { rolesSelector } from "src/redux/reducers/cache";
-import { useAppSelector } from "src/redux/utils/types";
 import { itemsPerPage } from "src/utils/helpers";
 
 interface Props {
@@ -21,12 +19,12 @@ const StatusName = [
 
 const UsersFilter: FC<Props> = ({ currentPage }) => {
   const initialLoadRef = useRef(true);
-  const roles = useAppSelector(rolesSelector);
   const [full_name, $full_name] = useDebounce("");
   const [username, $username] = useDebounce("");
   const [phone_number, $phone_number] = useDebounce("");
   const [role_id, $role_id] = useState<number>();
   const [user_status, $user_status] = useState<number>();
+  const { data: roles, refetch: rolesRefetch } = useRoles({ enabled: false });
 
   const { refetch } = useUsers({
     size: itemsPerPage,
@@ -70,6 +68,7 @@ const UsersFilter: FC<Props> = ({ currentPage }) => {
         <BaseInputs className="mb-0">
           <MainSelect
             values={roles}
+            onFocus={() => rolesRefetch()}
             onChange={(e) => $role_id(Number(e.target.value))}
           />
         </BaseInputs>

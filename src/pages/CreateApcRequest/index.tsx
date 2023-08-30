@@ -6,8 +6,6 @@ import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
 import cl from "classnames";
 import requestMutation from "src/hooks/mutation/orderMutation";
-import { useAppSelector } from "src/redux/utils/types";
-import { categorySelector } from "src/redux/reducers/cache";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import styles from "./index.module.scss";
 import BaseInputs from "src/components/BaseInputs";
@@ -16,13 +14,19 @@ import MainInput from "src/components/BaseInputs/MainInput";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import useQueryString from "src/hooks/useQueryString";
 import BranchSelect from "src/components/BranchSelect";
+import useCategories from "src/hooks/useCategories";
+import { Departments } from "src/utils/types";
 
 const CreateApcRequest = () => {
   const [files, $files] = useState<FormData>();
-  const categories = useAppSelector(categorySelector);
   const { mutate } = requestMutation();
   const branchJson = useQueryString("branch");
+  const sphere_status = useQueryString("sphere_status");
   const branch = branchJson && JSON.parse(branchJson);
+  const { data: categories } = useCategories({
+    department: Departments.apc,
+    sphere_status: Number(sphere_status),
+  });
   const {
     register,
     handleSubmit,
@@ -87,7 +91,7 @@ const CreateApcRequest = () => {
         </BaseInputs>
         <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
           <MainSelect
-            values={categories}
+            values={categories?.items}
             register={register("category_id", {
               required: "Обязательное поле",
             })}

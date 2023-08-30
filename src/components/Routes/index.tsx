@@ -35,11 +35,6 @@ const Navigation = () => {
     }
   }, [tokenKey]);
 
-  useEffect(() => {
-    if (!token) navigate("/login");
-    if (!!error) dispatch(logoutHandler());
-  }, [token, error, tokenKey]);
-
   if ((isLoading && token) || appLoading) return <Loading />;
 
   return (
