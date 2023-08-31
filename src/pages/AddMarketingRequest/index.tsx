@@ -22,6 +22,7 @@ const AddMarketingRequest = () => {
   const { mutate } = requestMutation();
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
+  const [filemsg, $filemsg] = useState<string>();
 
   const title = useQueryString("title");
   const sub_id = useQueryString("sub_id");
@@ -44,6 +45,8 @@ const AddMarketingRequest = () => {
 
   const handleFilesSelected = (data: FileItem[]) => {
     const formData = new FormData();
+    if (data.length < 2) $filemsg("Добавьте минимум два файла");
+    if (data.length >= 2) $filemsg(undefined);
     data.forEach((item) => {
       formData.append("files", item.file, item.file.name);
     });
@@ -51,26 +54,28 @@ const AddMarketingRequest = () => {
   };
   const onSubmit = () => {
     const { category_id, description, product } = getValues();
-    mutate(
-      {
-        category_id,
-        product,
-        description,
-        fillial_id: branch?.id,
-        files,
-      },
-      {
-        onSuccess: () => {
-          successToast("Заказ успешно создано");
-          back(
-            `/marketing-${
-              MarketingSubDep[Number(sub_id)]
-            }?sub_id=${sub_id}&add=${add}&edit=${edit}&title=${title}`
-          );
+    if (!filemsg)
+      mutate(
+        {
+          category_id,
+          product,
+          description,
+          fillial_id: branch?.id,
+          files,
         },
-      }
-    );
+        {
+          onSuccess: () => {
+            successToast("Заказ успешно создано");
+            back(
+              `/marketing-${
+                MarketingSubDep[Number(sub_id)]
+              }?sub_id=${sub_id}&add=${add}&edit=${edit}&title=${title}`
+            );
+          },
+        }
+      );
   };
+
   useEffect(() => {
     reset({
       fillial_id: branch?.name,
@@ -120,9 +125,13 @@ const AddMarketingRequest = () => {
         <BaseInputs
           className={`mb-4 ${styles.uploadImage}`}
           label="Добавить файл"
-          error={errors.image}
         >
           <UploadComponent onFilesSelected={handleFilesSelected} />
+          {filemsg && (
+            <div className="alert alert-danger p-2" role="alert">
+              {filemsg}
+            </div>
+          )}
         </BaseInputs>
         <div>
           <button
