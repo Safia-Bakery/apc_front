@@ -312,8 +312,23 @@ export enum MainPermissions {
   add_apc_category = 46,
   edit_apc_category = 47,
 
-  get_clients = 3,
-  get_master = 3,
+  get_clients = 58,
+  add_clients = 59,
+  edit_clients = 60,
+
+  get_master = 61,
+  add_master = 62,
+  edit_master = 63,
+
+  get_fabric_requests = 49,
+  edit_fabric_requests = 50,
+  add_fabric_requests = 51,
+  sync_fab_req_iiko = 52,
+  fabric_req_attach_master = 53,
+  add_expen_fab = 54,
+  add_categ_fab = 55,
+  get_categ_fab = 57,
+  edit_categ_fab = 56,
 }
 export enum MarketingSubDep {
   designers = 1,

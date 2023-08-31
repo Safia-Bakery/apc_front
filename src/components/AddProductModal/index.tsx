@@ -26,6 +26,7 @@ const AddProductModal = () => {
   const { id } = useParams();
   const removeRoute = useRemoveParams();
   const navigate = useNavigateParams();
+  const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const modal = useQueryString("add_product_modal");
   const productJson = useQueryString("product");
   const itemModal = useQueryString("itemModal");
@@ -76,16 +77,13 @@ const AddProductModal = () => {
   };
 
   useEffect(() => {
-    if (!!modal && !!permissions?.[MainPermissions.request_add_expanditure])
-      iearchRefetch();
-  }, [modal, permissions?.[MainPermissions.request_add_expanditure]]);
+    if (!!modal && !!permissions?.[addExp]) iearchRefetch();
+  }, [modal, permissions?.[addExp]]);
 
   return (
     <Modal
       className={styles.modal}
-      isOpen={
-        !!modal && !!permissions?.[MainPermissions.request_add_expanditure]
-      }
+      isOpen={!!modal && !!permissions?.[addExp]}
       onClose={handleModal}
     >
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -116,9 +114,7 @@ const AddProductModal = () => {
 
               {!!itemModal &&
                 itemModal !== "false" &&
-                permissions?.[MainPermissions.request_add_expanditure] && (
-                  <IearchSelect />
-                )}
+                permissions?.[addExp] && <IearchSelect />}
             </div>
 
             <BaseInput label="Количество">

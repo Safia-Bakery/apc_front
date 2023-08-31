@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { BrigadaType, MainPermissions, Sphere } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
@@ -12,21 +12,31 @@ import useBrigadas from "src/hooks/useBrigadas";
 import ItemsCount from "src/components/ItemsCount";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
+import useQueryString from "src/hooks/useQueryString";
 
-const column = [
-  { name: "#", key: "id" },
-  { name: "Название", key: "name" },
-  { name: "Мастер", key: "description" },
-  { name: "Описание", key: "description" },
-  { name: "Статус", key: "status" },
-  { name: "", key: "" },
-];
+interface Props {
+  add: MainPermissions;
+  edit: MainPermissions;
+  isMaster?: boolean;
+}
 
-const Masters = () => {
+const Masters: FC<Props> = ({ add, edit, isMaster = false }) => {
   const navigate = useNavigate();
   const handleNavigate = (id: number | string) => () => navigate(`${id}`);
   const permission = useAppSelector(permissionSelector);
   const [currentPage, setCurrentPage] = useState(1);
+  const sphere_status = useQueryString("sphere_status");
+
+  const column = useMemo(() => {
+    return [
+      { name: "#", key: "id" },
+      { name: "Название", key: "name" },
+      { name: isMaster ? "Мастер" : "Бригадир", key: "description" },
+      { name: "Описание", key: "description" },
+      { name: "Статус", key: "status" },
+      { name: "", key: "" },
+    ];
+  }, [isMaster]);
   const {
     data: brigadas,
     isLoading: orderLoading,
@@ -34,7 +44,7 @@ const Masters = () => {
   } = useBrigadas({
     size: itemsPerPage,
     page: currentPage,
-    sphere_status: Sphere.fabric,
+    sphere_status: Number(sphere_status),
     enabled: true,
   });
 
@@ -76,11 +86,11 @@ const Masters = () => {
   if (orderLoading) return <Loading />;
   return (
     <Card>
-      <Header title={"Мастера"}>
-        {permission?.[MainPermissions.add_brigada] && (
+      <Header title={isMaster ? "Мастера" : "Бригады"}>
+        {permission?.[add] && (
           <button
             className="btn btn-success btn-fill"
-            onClick={handleNavigate(`add?sphere_status=${Sphere.fabric}`)}
+            onClick={handleNavigate(`add?sphere_status=${sphere_status}`)}
           >
             Добавить
           </button>
@@ -112,7 +122,7 @@ const Masters = () => {
                     <td>{order.description}</td>
                     <td>{!!order.status ? "Активный" : "Неактивный"}</td>
                     <td width={40}>
-                      {permission?.[MainPermissions.edit_brigada] && (
+                      {permission?.[edit] && (
                         <TableViewBtn
                           onClick={handleNavigate(
                             `${order.id}?sphere_status=${order.sphere_status}`

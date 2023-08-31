@@ -14,6 +14,7 @@ import dayjs from "dayjs";
 import { MainPermissions } from "src/utils/types";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
+import useQueryString from "src/hooks/useQueryString";
 
 const column = [
   { name: "#" },
@@ -25,9 +26,14 @@ const column = [
   { name: "" },
 ];
 
-const AddProduct: FC<PropsWithChildren> = ({ children }) => {
+interface Props extends PropsWithChildren {
+  synciiko: MainPermissions;
+}
+
+const AddProduct: FC<Props> = ({ children, synciiko }) => {
   const { id } = useParams();
   const permissions = useAppSelector(permissionSelector);
+  const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const navigate = useNavigateParams();
   const { mutate } = syncExpenditure();
   const { mutate: deleteExp } = deleteExpenditureMutation();
@@ -66,7 +72,7 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
   return (
     <Card>
       <Header title="Товары">
-        {permissions?.[MainPermissions.synch_apc_iiko] && (
+        {permissions?.[synciiko] && (
           <button
             onClick={handleSync}
             className="btn btn-primary btn-fill btn-sm mr-2"
@@ -81,15 +87,14 @@ const AddProduct: FC<PropsWithChildren> = ({ children }) => {
             Синхронизировать с iiko
           </button>
         )}
-        {isFinished &&
-          permissions?.[MainPermissions.request_add_expanditure] && (
-            <button
-              className="btn btn-success btn-fill btn-sm"
-              onClick={handleModal}
-            >
-              Добавить
-            </button>
-          )}
+        {isFinished && permissions?.[addExp] && (
+          <button
+            className="btn btn-success btn-fill btn-sm"
+            onClick={handleModal}
+          >
+            Добавить
+          </button>
+        )}
       </Header>
       <div className="content">
         <div className="content table-responsive table-full-width overflow-hidden">

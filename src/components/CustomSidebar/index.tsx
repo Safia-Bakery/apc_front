@@ -32,13 +32,14 @@ const routes = [
         url: "/requests-apc-retail",
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_requests_apc,
-        param: `?sphere_status=${Sphere.retail}`,
+        param: `?sphere_status=${Sphere.retail}&addExp=${MainPermissions.request_add_expanditure}`,
       },
       {
         name: "Бригады",
         url: "/brigades",
         icon: "/assets/icons/brigades.svg",
         screen: MainPermissions.get_brigadas,
+        param: `?sphere_status=${Sphere.retail}`,
       },
       {
         name: "Остатки на складах",
@@ -57,26 +58,27 @@ const routes = [
   {
     name: "АРС фабрика",
     icon: "/assets/icons/apc.svg",
-    screen: MainPermissions.get_requests_apc,
+    screen: MainPermissions.get_fabric_requests,
     subroutes: [
       {
         name: "Заявки",
         url: "/requests-apc-fabric",
         icon: "/assets/icons/subOrder.svg",
-        screen: MainPermissions.get_requests_apc,
-        param: `?sphere_status=${Sphere.fabric}`,
+        screen: MainPermissions.get_fabric_requests,
+        param: `?sphere_status=${Sphere.fabric}&addExp=${MainPermissions.add_expen_fab}`,
       },
       {
         name: "Мастера",
         url: "/masters",
         icon: "/assets/icons/brigades.svg",
         screen: MainPermissions.get_master,
+        param: `?sphere_status=${Sphere.fabric}`,
       },
       {
         name: "Категории",
         url: `/categories-apc-fabric`,
         icon: "/assets/icons/categories.svg",
-        screen: MainPermissions.get_apc_category,
+        screen: MainPermissions.get_categ_fab,
       },
     ],
   },
@@ -166,7 +168,7 @@ const routes = [
     name: "Клиенты",
     url: "/clients",
     icon: "/assets/icons/clients.svg",
-    screen: MainPermissions.get_brigadas,
+    screen: MainPermissions.get_clients,
     param: "?client=true",
   },
   {

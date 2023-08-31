@@ -1,7 +1,12 @@
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
-import { Category, Departments, Sphere } from "src/utils/types";
+import {
+  Category,
+  Departments,
+  MainPermissions,
+  Sphere,
+} from "src/utils/types";
 import Pagination from "src/components/Pagination";
 import { FC, useEffect, useState } from "react";
 import { handleDepartment, itemsPerPage } from "src/utils/helpers";
@@ -11,10 +16,14 @@ import useCategories from "src/hooks/useCategories";
 import CategoriesFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import useQueryString from "src/hooks/useQueryString";
+import { useAppSelector } from "src/redux/utils/types";
+import { permissionSelector } from "src/redux/reducers/auth";
 
 interface Props {
   sphere_status?: number;
   dep?: Departments;
+  add: MainPermissions;
+  edit: MainPermissions;
 }
 
 const column = [
@@ -25,10 +34,11 @@ const column = [
   { name: "", key: "" },
 ];
 
-const Categories: FC<Props> = ({ sphere_status, dep }) => {
+const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Category>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const permission = useAppSelector(permissionSelector);
 
   const handleSort = (key: keyof Category) => {
     if (key === sortKey) {
@@ -72,12 +82,14 @@ const Categories: FC<Props> = ({ sphere_status, dep }) => {
   return (
     <Card>
       <Header title={"Категории"}>
-        <button
-          className="btn btn-success btn-fill"
-          onClick={handleNavigate(`add`)}
-        >
-          Добавить
-        </button>
+        {permission?.[add] && (
+          <button
+            className="btn btn-success btn-fill"
+            onClick={handleNavigate(`add`)}
+          >
+            Добавить
+          </button>
+        )}
       </Header>
 
       <div className="content">
@@ -109,17 +121,21 @@ const Categories: FC<Props> = ({ sphere_status, dep }) => {
                       </td>
                       <td>{category?.status ? "Активный" : "Неактивный"}</td>
                       <td width={40}>
-                        <TableViewBtn
-                          onClick={handleNavigate(
-                            `/categories-${Departments[Number(dep)]}${
-                              !!sphere_status ? `-${Sphere[sphere_status]}` : ""
-                            }/${category.id}?dep=${category?.department}${
-                              !!category?.sub_id
-                                ? `&sub_id=${category.sub_id}`
-                                : ""
-                            }`
-                          )}
-                        />
+                        {permission?.[edit] && (
+                          <TableViewBtn
+                            onClick={handleNavigate(
+                              `/categories-${Departments[Number(dep)]}${
+                                !!sphere_status
+                                  ? `-${Sphere[sphere_status]}`
+                                  : ""
+                              }/${category.id}?dep=${category?.department}${
+                                !!category?.sub_id
+                                  ? `&sub_id=${category.sub_id}`
+                                  : ""
+                              }`
+                            )}
+                          />
+                        )}
                       </td>
                     </tr>
                   )

@@ -24,6 +24,7 @@ const CreateBrigades = () => {
   const { refetch: brigadasRefetch } = useBrigadas({
     enabled: false,
     sphere_status: Number(sphere_status),
+    size: 50,
   });
   const { mutate } = brigadaMutation();
   const { refetch: usersRefetch, data: users } = useUsersForBrigada({
@@ -62,8 +63,8 @@ const CreateBrigades = () => {
         status,
         description: brigada_description,
         name: brigada_name,
+        sphere_status: Number(sphere_status),
         ...(id && { id: Number(id) }),
-        ...(sphere_status && { sphere_status: Number(sphere_status) }),
         ...(!!brigadir && { users: [brigadir] }),
       },
       {
@@ -71,7 +72,9 @@ const CreateBrigades = () => {
           brigadasRefetch();
           successToast(!!id ? "successfully updated" : "successfully created");
           navigate(
-            Number(sphere_status) === Sphere.retail ? "/brigades" : "/masters"
+            Number(sphere_status) === Sphere.retail
+              ? `/brigades?sphere_status=${sphere_status}`
+              : `/masters?sphere_status=${sphere_status}`
           );
           if (!!id) {
             brigadaRefetch();

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { FC, useEffect, useMemo, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AddProduct from "src/components/AddProduct";
 import Card from "src/components/Card";
@@ -41,10 +41,17 @@ const enum ModalTypes {
   showPhoto = "showPhoto",
 }
 
-const ShowRequestApc = () => {
+interface Props {
+  edit: MainPermissions;
+  attaching: MainPermissions;
+  synciiko: MainPermissions;
+}
+
+const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
   const { id } = useParams();
   const tokenKey = useQueryString("key");
   const sphere_status = useQueryString("sphere_status");
+  const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const permissions = useAppSelector(permissionSelector);
   const dispatch = useAppDispatch();
   const navigateParams = useNavigateParams();
@@ -115,27 +122,24 @@ const ShowRequestApc = () => {
   };
 
   const renderBtns = useMemo(() => {
-    if (permissions?.[MainPermissions.edit_request_apc] && isNew)
-      return (
-        <div className="float-end mb10">
-          <button
-            onClick={handleModal(ModalTypes.cancelRequest)}
-            className="btn btn-danger btn-fill mr-2"
-          >
-            Отклонить
-          </button>
-          <button
-            onClick={handleBrigada({ status: RequestStatus.confirmed })}
-            className="btn btn-success btn-fill"
-          >
-            Принять
-          </button>
-        </div>
-      );
-    if (
-      !!order?.brigada?.name &&
-      permissions?.[MainPermissions.edit_request_apc]
-    )
+    // if (permissions?.[edit] && isNew && permissions?.[attaching])
+    //   return (
+    //     <div className="float-end mb10">
+    //       <button
+    //         onClick={handleModal(ModalTypes.cancelRequest)}
+    //         className="btn btn-danger btn-fill mr-2"
+    //       >
+    //         Отклонить
+    //       </button>
+    //       <button
+    //         onClick={handleBrigada({ status: RequestStatus.confirmed })}
+    //         className="btn btn-success btn-fill"
+    //       >
+    //         Принять
+    //       </button>
+    //     </div>
+    //   );
+    if (!!order?.brigada?.name && permissions?.[edit])
       return (
         <div className="d-flex justify-content-between mb10">
           {order?.status! < 3 && (
@@ -171,7 +175,7 @@ const ShowRequestApc = () => {
   }, [permissions, order?.status]);
 
   const renderAssignment = useMemo(() => {
-    if (permissions?.[MainPermissions.request_ettach] && order?.status! <= 1) {
+    if (permissions?.[attaching] && order?.status! <= 1) {
       if (order?.brigada?.name) {
         return (
           <>
@@ -362,28 +366,27 @@ const ShowRequestApc = () => {
         </div>
       </Card>
 
-      {permissions?.[MainPermissions.request_add_expanditure] &&
-        order?.status !== 0 && (
-          <Card className="overflow-hidden">
-            <Header title={"Добавить фотоотчёт"} />
-            <div className="m-3">
-              <UploadComponent
-                onFilesSelected={handleFilesSelected}
-                inputRef={inputRef}
-              />
-              <button
-                onClick={handlerSubmitFile}
-                type="button"
-                className="btn btn-success float-end btn-fill my-3"
-              >
-                Сохранить
-              </button>
-            </div>
-          </Card>
-        )}
+      {permissions?.[addExp] && order?.status !== 0 && (
+        <Card className="overflow-hidden">
+          <Header title={"Добавить фотоотчёт"} />
+          <div className="m-3">
+            <UploadComponent
+              onFilesSelected={handleFilesSelected}
+              inputRef={inputRef}
+            />
+            <button
+              onClick={handlerSubmitFile}
+              type="button"
+              className="btn btn-success float-end btn-fill my-3"
+            >
+              Сохранить
+            </button>
+          </div>
+        </Card>
+      )}
 
       {!isNew && (
-        <AddProduct>
+        <AddProduct synciiko={synciiko}>
           <div className="p-2">{renderBtns}</div>
         </AddProduct>
       )}

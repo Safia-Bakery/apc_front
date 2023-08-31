@@ -4,16 +4,17 @@ import { errorToast } from "src/utils/toast";
 import { UserTypes } from "src/utils/types";
 
 interface Body {
-  password: string;
-  username: string;
-  full_name: string;
+  password?: string;
+  username?: string;
+  full_name?: string;
   email?: string;
-  status: number;
-  phone_number: number;
-  group_id: number;
+  status?: number;
+  phone_number?: number;
+  group_id?: number;
   brigada_id?: number;
   telegram_id?: number;
   user_id?: number;
+  sphere_status?: number;
 }
 
 const userMutation = () => {

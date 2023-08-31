@@ -39,7 +39,7 @@ const InventoryFilter: FC<Props> = ({ currentPage, sub_id }) => {
   const removeParam = useRemoveParams();
 
   const [id, $id] = useDebounce<number>(0);
-  const [phone, $phone] = useState<number>();
+  const [phone, $phone] = useDebounce("");
   const [changed, $changed] = useState<string>();
   const [category_id, $category_id] = useState<number>();
   const [request_status, $request_status] = useState<string>();
@@ -50,6 +50,8 @@ const InventoryFilter: FC<Props> = ({ currentPage, sub_id }) => {
     enabled: false,
     sub_id: Number(sub_id),
     department: Departments.marketing,
+    page: currentPage,
+
     body: {
       ...(!!created_at && {
         created_at: dayjs(created_at).format("YYYY-MM-DD"),
@@ -105,7 +107,7 @@ const InventoryFilter: FC<Props> = ({ currentPage, sub_id }) => {
       </td>
       <td className="p-0">
         <BaseInputs className="m-2">
-          <MainInput onChange={(e) => $phone(Number(e.target.value))} />
+          <MainInput onChange={(e) => $phone(e.target.value)} />
         </BaseInputs>
       </td>
       <td className="p-0">

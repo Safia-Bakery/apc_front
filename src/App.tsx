@@ -26,6 +26,7 @@ import useQueryString from "./hooks/useQueryString";
 
 const ControlPanel = lazy(() => import("src/pages/ControlPanel"));
 const Masters = lazy(() => import("src/pages/Masters"));
+const EditClient = lazy(() => import("src/pages/EditClient"));
 const TelegramAddProduct = lazy(() => import("src/pages/TelegramAddProduct"));
 const CreateITRequest = lazy(() => import("src/pages/CreateITRequest"));
 const CreateApcRequest = lazy(() => import("src/pages/CreateApcRequest"));
@@ -49,7 +50,6 @@ const Roles = lazy(() => import("src/pages/Roles"));
 const ShowRole = lazy(() => import("src/pages/ShowRole"));
 const EditAddUser = lazy(() => import("src/pages/EditAddUser"));
 const Users = lazy(() => import("src/pages/Users"));
-const Brigades = lazy(() => import("src/pages/Brigades"));
 const CreateBrigades = lazy(() => import("src/pages/CreateBrigades"));
 const Comments = lazy(() => import("src/pages/Comments"));
 const ShowComment = lazy(() => import("src/pages/ShowComment"));
@@ -73,22 +73,49 @@ export const routes = [
   {
     element: <CreateApcRequest />,
     path: "/requests-apc-fabric/add",
-    screen: MainPermissions.add_request_apc,
+    screen: MainPermissions.add_fabric_requests,
   },
   {
-    element: <ShowRequestApc />,
-    path: "/requests-apc/:id",
+    element: (
+      <ShowRequestApc
+        synciiko={MainPermissions.sync_fab_req_iiko}
+        edit={MainPermissions.edit_fabric_requests}
+        attaching={MainPermissions.fabric_req_attach_master}
+      />
+    ),
+    path: "/requests-apc-fabric/:id",
+    screen: MainPermissions.edit_fabric_requests,
+  },
+  {
+    element: (
+      <ShowRequestApc
+        synciiko={MainPermissions.synch_apc_iiko}
+        edit={MainPermissions.edit_request_apc}
+        attaching={MainPermissions.request_ettach}
+      />
+    ),
+    path: "/requests-apc-retail/:id",
     screen: MainPermissions.edit_request_apc,
   },
   {
-    element: <RequestsApc />,
+    element: (
+      <RequestsApc
+        add={MainPermissions.add_request_apc}
+        edit={MainPermissions.edit_request_apc}
+      />
+    ),
     path: "/requests-apc-retail",
     screen: MainPermissions.get_requests_apc,
   },
   {
-    element: <RequestsApc />,
+    element: (
+      <RequestsApc
+        add={MainPermissions.add_fabric_requests}
+        edit={MainPermissions.edit_fabric_requests}
+      />
+    ),
     path: "/requests-apc-fabric",
-    screen: MainPermissions.get_requests_apc,
+    screen: MainPermissions.get_fabric_requests,
   },
   {
     element: <ShowMarketingRequest />,
@@ -203,24 +230,44 @@ export const routes = [
     screen: MainPermissions.get_statistics,
   },
   {
-    element: <Categories sphere_status={Sphere.retail} dep={Departments.apc} />,
+    element: (
+      <Categories
+        add={MainPermissions.add_apc_category}
+        edit={MainPermissions.edit_apc_category}
+        sphere_status={Sphere.retail}
+        dep={Departments.apc}
+      />
+    ),
     path: `/categories-${Departments[1]}-retail`,
     screen: MainPermissions.get_apc_category,
   },
   {
-    element: <Categories sphere_status={Sphere.fabric} dep={Departments.apc} />,
+    element: (
+      <Categories
+        add={MainPermissions.add_categ_fab}
+        edit={MainPermissions.edit_categ_fab}
+        sphere_status={Sphere.fabric}
+        dep={Departments.apc}
+      />
+    ),
     path: `/categories-${Departments[1]}-fabric`,
-    screen: MainPermissions.get_apc_category,
+    screen: MainPermissions.get_categ_fab,
   },
   {
-    element: <Categories dep={Departments.marketing} />,
+    element: (
+      <Categories
+        add={MainPermissions.add_mark_category}
+        edit={MainPermissions.edit_mark_category}
+        dep={Departments.marketing}
+      />
+    ),
     path: `/categories-${Departments[3]}`,
     screen: MainPermissions.get_mark_category,
   },
   {
     element: <ShowCategory dep={Departments.marketing} />,
     path: `/categories-${Departments[3]}/:id`,
-    screen: MainPermissions.edit_apc_category,
+    screen: MainPermissions.edit_mark_category,
   },
   {
     element: (
@@ -234,7 +281,7 @@ export const routes = [
       <ShowCategory dep={Departments.apc} sphere_status={Sphere.fabric} />
     ),
     path: `/categories-${Departments[1]}-fabric/:id`,
-    screen: MainPermissions.edit_apc_category,
+    screen: MainPermissions.edit_categ_fab,
   },
   {
     element: <ShowCategory dep={Departments.marketing} />,
@@ -253,7 +300,7 @@ export const routes = [
       <ShowCategory dep={Departments.apc} sphere_status={Sphere.fabric} />
     ),
     path: `/categories-${Departments[1]}-fabric/add`,
-    screen: MainPermissions.add_apc_category,
+    screen: MainPermissions.add_categ_fab,
   },
   {
     element: <EditAddRole />,
@@ -276,36 +323,71 @@ export const routes = [
     path: "/users/add",
     screen: MainPermissions.add_users,
   },
-  { element: <Users />, path: "/users", screen: MainPermissions.get_users },
+  {
+    element: (
+      <Users
+        add={MainPermissions.add_users}
+        edit={MainPermissions.edit_users}
+      />
+    ),
+    path: "/users",
+    screen: MainPermissions.get_users,
+  },
   {
     element: <EditAddUser />,
     path: "/users/:id",
     screen: MainPermissions.edit_users,
   },
   {
-    element: <Brigades />,
+    element: <EditAddUser />,
+    path: "/clients/add",
+    screen: MainPermissions.edit_clients,
+  },
+  {
+    element: (
+      <Masters
+        add={MainPermissions.add_brigada}
+        edit={MainPermissions.edit_brigada}
+      />
+    ),
     path: "/brigades",
     screen: MainPermissions.get_brigadas,
   },
   {
-    element: <Masters />,
+    element: (
+      <Masters
+        add={MainPermissions.add_master}
+        edit={MainPermissions.edit_master}
+        isMaster
+      />
+    ),
     path: "/masters",
     screen: MainPermissions.get_master,
   },
   {
-    element: <Users />,
+    element: (
+      <Users
+        add={MainPermissions.add_clients}
+        edit={MainPermissions.edit_clients}
+      />
+    ),
     path: "/clients",
     screen: MainPermissions.get_clients,
   },
   {
+    element: <EditClient />,
+    path: "/clients/:id",
+    screen: MainPermissions.edit_clients,
+  },
+  {
     element: <CreateBrigades />,
     path: "/masters/add",
-    screen: MainPermissions.add_brigada,
+    screen: MainPermissions.add_master,
   },
   {
     element: <CreateBrigades />,
     path: "/masters/:id",
-    screen: MainPermissions.add_brigada,
+    screen: MainPermissions.edit_master,
   },
   {
     element: <CreateBrigades />,

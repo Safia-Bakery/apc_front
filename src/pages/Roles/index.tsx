@@ -78,7 +78,11 @@ const Roles = () => {
                 <tr className="bg-blue" key={role.id}>
                   <td width="40">{idx + 1}</td>
                   <td>
-                    <Link to={`/roles/${role.id}`}>{role.name}</Link>
+                    {permission?.[MainPermissions.edit_roles] ? (
+                      <Link to={`/roles/${role.id}`}>{role.name}</Link>
+                    ) : (
+                      <span>{role?.name}</span>
+                    )}
                   </td>
                   <td>{!role.status ? "Не активный" : "Активный"}</td>
                   <td width={40}>

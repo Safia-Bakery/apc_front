@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MainPermissions, UsersType } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
@@ -25,7 +25,12 @@ const column = [
   { name: "", key: "" },
 ];
 
-const Users = () => {
+interface Props {
+  add: MainPermissions;
+  edit: MainPermissions;
+}
+
+const Users: FC<Props> = ({ add, edit }) => {
   const navigate = useNavigate();
   const handleNavigate = (route: string) => () => navigate(route);
   const permission = useAppSelector(permissionSelector);
@@ -87,10 +92,10 @@ const Users = () => {
   return (
     <Card>
       <Header title={"Пользователи"}>
-        {permission?.[MainPermissions.add_users] && (
+        {permission?.[add] && (
           <button
             className="btn btn-success btn-fill"
-            onClick={handleNavigate("/users/add")}
+            onClick={handleNavigate("add")}
           >
             Добавить
           </button>
@@ -134,7 +139,7 @@ const Users = () => {
                     <td>{user?.phone_number}</td>
                     <td>{userStatus(user?.status)}</td>
                     <td width={40}>
-                      {permission?.[MainPermissions.edit_users] && (
+                      {permission?.[edit] && (
                         <TableViewBtn onClick={handleNavigate(`${user?.id}`)} />
                       )}
                     </td>

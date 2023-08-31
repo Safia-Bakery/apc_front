@@ -17,12 +17,18 @@ import { permissionSelector } from "src/redux/reducers/auth";
 import styles from "./index.module.scss";
 import useQueryString from "src/hooks/useQueryString";
 
-const RequestsApc = () => {
+interface Props {
+  add: MainPermissions;
+  edit: MainPermissions;
+}
+
+const RequestsApc: FC<Props> = ({ add, edit }) => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const permission = useAppSelector(permissionSelector);
   const sphere_status = useQueryString("sphere_status");
+  const addExp = useQueryString("addExp");
 
   const column = useMemo(() => {
     const columns = [
@@ -108,7 +114,7 @@ const RequestsApc = () => {
     <Card>
       <Header title={"Заявки"}>
         <button className="btn btn-primary btn-fill mr-2">Экспорт</button>
-        {permission?.[MainPermissions.add_request_apc] && (
+        {permission?.[add] && (
           <button
             onClick={() => navigate(`add?sphere_status=${sphere_status}`)}
             className="btn btn-success btn-fill"
@@ -137,9 +143,9 @@ const RequestsApc = () => {
                   <tr className={requestRows(order?.status)} key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
-                      {permission?.[MainPermissions.add_request_apc] ? (
+                      {permission?.[edit] ? (
                         <Link
-                          to={`/requests-apc/${order?.id}?sphere_status=${sphere_status}`}
+                          to={`${order?.id}?sphere_status=${sphere_status}&addExp=${addExp}`}
                         >
                           {order?.id}
                         </Link>
