@@ -106,6 +106,7 @@ export interface BrigadaType {
   name: string;
   description: string;
   status: number;
+  sphere_status: number;
   user?: {
     id: number | string;
     username: string;
@@ -307,10 +308,12 @@ export enum MainPermissions {
   get_complect_requests = 39,
   add_complect_requests = 41,
   edit_complect_requests = 40,
-
   get_apc_category = 48,
   add_apc_category = 46,
   edit_apc_category = 47,
+
+  get_clients = 3,
+  get_master = 3,
 }
 export enum MarketingSubDep {
   designers = 1,

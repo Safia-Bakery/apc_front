@@ -13,12 +13,18 @@ import MainSelect from "src/components/BaseInputs/MainSelect";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
+import { Sphere } from "src/utils/types";
+import useQueryString from "src/hooks/useQueryString";
 
 const CreateBrigades = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
-  const { refetch: brigadasRefetch } = useBrigadas({ enabled: false });
+  const sphere_status = useQueryString("sphere_status");
+  const { refetch: brigadasRefetch } = useBrigadas({
+    enabled: false,
+    sphere_status: Number(sphere_status),
+  });
   const { mutate } = brigadaMutation();
   const { refetch: usersRefetch, data: users } = useUsersForBrigada({
     id: Number(id),
@@ -57,17 +63,21 @@ const CreateBrigades = () => {
         description: brigada_description,
         name: brigada_name,
         ...(id && { id: Number(id) }),
+        ...(sphere_status && { sphere_status: Number(sphere_status) }),
         ...(!!brigadir && { users: [brigadir] }),
       },
       {
         onSuccess: () => {
           brigadasRefetch();
-          brigadaRefetch();
           successToast(!!id ? "successfully updated" : "successfully created");
-          navigate("/brigades");
-          if (!!id) usersRefetch();
+          navigate(
+            Number(sphere_status) === Sphere.retail ? "/brigades" : "/masters"
+          );
+          if (!!id) {
+            brigadaRefetch();
+            usersRefetch();
+          }
         },
-        onError: (e: Error) => errorToast(e.message),
       }
     );
   };

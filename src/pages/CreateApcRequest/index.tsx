@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { successToast } from "src/utils/toast";
 import Card from "src/components/Card";
@@ -16,6 +16,7 @@ import useQueryString from "src/hooks/useQueryString";
 import BranchSelect from "src/components/BranchSelect";
 import useCategories from "src/hooks/useCategories";
 import { Departments, Sphere } from "src/utils/types";
+import WarehouseSelect from "src/components/WarehouseSelect";
 
 const CreateApcRequest = () => {
   const [files, $files] = useState<FormData>();
@@ -74,6 +75,11 @@ const CreateApcRequest = () => {
     );
   };
 
+  const renderBranchSelect = useMemo(() => {
+    if (Number(sphere_status) === Sphere.fabric) return <WarehouseSelect />;
+    else return <BranchSelect />;
+  }, [sphere_status]);
+
   return (
     <Card>
       <Header title={"Создать заказ"}>
@@ -91,7 +97,7 @@ const CreateApcRequest = () => {
           label="ФИЛИАЛ"
           error={errors.fillial_id}
         >
-          <BranchSelect />
+          {renderBranchSelect}
         </BaseInputs>
         <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
           <MainSelect

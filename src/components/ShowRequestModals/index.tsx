@@ -29,12 +29,16 @@ const ShowRequestModals = () => {
   const { id } = useParams();
   const modal = useQueryString("modal");
   const photo = useQueryString("photo");
+  const sphere_status = useQueryString("sphere_status");
   const removeParams = useRemoveParams();
 
   const { mutate: attach } = attachBrigadaMutation();
   const { register, getValues } = useForm();
 
-  const { data: brigades, isLoading } = useBrigadas({ enabled: false });
+  const { data: brigades, isLoading } = useBrigadas({
+    enabled: false,
+    sphere_status: Number(sphere_status),
+  });
 
   const { refetch: orderRefetch } = useOrder({ id: Number(id) });
 
@@ -72,20 +76,22 @@ const ShowRequestModals = () => {
               {isLoading ? (
                 <Loading />
               ) : (
-                brigades?.items.map((item, idx) => (
-                  <div key={idx} className={styles.item}>
-                    <h6>{item?.name}</h6>
-                    <button
-                      onClick={handleBrigada({
-                        status: RequestStatus.confirmed,
-                        item,
-                      })}
-                      className="btn btn-success btn-fill btn-sm"
-                    >
-                      Назначить
-                    </button>
-                  </div>
-                ))
+                brigades?.items
+                  .filter((item) => item.user!?.length > 0)
+                  .map((item, idx) => (
+                    <div key={idx} className={styles.item}>
+                      <h6>{item?.name}</h6>
+                      <button
+                        onClick={handleBrigada({
+                          status: RequestStatus.confirmed,
+                          item,
+                        })}
+                        className="btn btn-success btn-fill btn-sm"
+                      >
+                        Назначить
+                      </button>
+                    </div>
+                  ))
               )}
             </div>
           </div>

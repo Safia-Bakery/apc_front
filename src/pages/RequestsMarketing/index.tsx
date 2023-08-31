@@ -85,7 +85,6 @@ const RequestsMarketing = () => {
     refetch();
   }, [currentPage, sub_id]);
 
-  console.log(add, "permission?.[Number(add)");
   if (orderLoading) return <Loading />;
 
   return (
@@ -127,7 +126,7 @@ const RequestsMarketing = () => {
                     <td width="80">
                       {/* @ts-ignore */}
                       {permission?.[Number(edit)] ? (
-                        <Link to={`${order?.id}?sub_id=${sub_id}`}>
+                        <Link to={`${order?.id}?sub_id=${sub_id}&edit=${edit}`}>
                           {order?.id}
                         </Link>
                       ) : (

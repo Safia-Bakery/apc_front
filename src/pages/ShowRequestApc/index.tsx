@@ -44,12 +44,16 @@ const enum ModalTypes {
 const ShowRequestApc = () => {
   const { id } = useParams();
   const tokenKey = useQueryString("key");
+  const sphere_status = useQueryString("sphere_status");
   const permissions = useAppSelector(permissionSelector);
   const dispatch = useAppDispatch();
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
   const { mutate: attach } = attachBrigadaMutation();
-  const { refetch: brigadasRefetch } = useBrigadas({ enabled: false });
+  const { refetch: brigadasRefetch } = useBrigadas({
+    enabled: false,
+    sphere_status: Number(sphere_status),
+  });
   const handleModal = (type: ModalTypes) => () => {
     navigateParams({ modal: type });
   };

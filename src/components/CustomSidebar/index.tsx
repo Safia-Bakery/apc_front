@@ -67,10 +67,10 @@ const routes = [
         param: `?sphere_status=${Sphere.fabric}`,
       },
       {
-        name: "Мастер",
+        name: "Мастера",
         url: "/masters",
         icon: "/assets/icons/brigades.svg",
-        screen: MainPermissions.get_brigadas,
+        screen: MainPermissions.get_master,
       },
       {
         name: "Категории",

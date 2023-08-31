@@ -25,6 +25,7 @@ import useToken from "./hooks/useToken";
 import useQueryString from "./hooks/useQueryString";
 
 const ControlPanel = lazy(() => import("src/pages/ControlPanel"));
+const Masters = lazy(() => import("src/pages/Masters"));
 const TelegramAddProduct = lazy(() => import("src/pages/TelegramAddProduct"));
 const CreateITRequest = lazy(() => import("src/pages/CreateITRequest"));
 const CreateApcRequest = lazy(() => import("src/pages/CreateApcRequest"));
@@ -287,9 +288,24 @@ export const routes = [
     screen: MainPermissions.get_brigadas,
   },
   {
+    element: <Masters />,
+    path: "/masters",
+    screen: MainPermissions.get_master,
+  },
+  {
     element: <Users />,
     path: "/clients",
-    screen: MainPermissions.get_brigadas,
+    screen: MainPermissions.get_clients,
+  },
+  {
+    element: <CreateBrigades />,
+    path: "/masters/add",
+    screen: MainPermissions.add_brigada,
+  },
+  {
+    element: <CreateBrigades />,
+    path: "/masters/:id",
+    screen: MainPermissions.add_brigada,
   },
   {
     element: <CreateBrigades />,

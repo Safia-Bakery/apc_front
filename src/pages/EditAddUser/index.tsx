@@ -52,7 +52,7 @@ const EditAddUser = () => {
         password,
         status: !status ? 2 : 0,
         phone_number: fixedString(phone_number),
-        sphere_status: Number(sphere_status),
+        sphere_status: !sphere_status ? 2 : 1,
         ...(!!email && { email }),
         ...(brigada_id && { brigada_id }),
         ...(!!telegram_id && { telegram_id }),

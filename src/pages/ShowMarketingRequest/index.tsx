@@ -14,7 +14,7 @@ import {
   handleDepartment,
   handleStatus,
 } from "src/utils/helpers";
-import { FileType, MainPermissions, RequestStatus } from "src/utils/types";
+import { FileType, RequestStatus } from "src/utils/types";
 import { useForm } from "react-hook-form";
 import ShowRequestModals from "src/components/ShowRequestModals";
 
@@ -23,6 +23,7 @@ import {
   useRemoveParams,
 } from "src/hooks/useCustomNavigate";
 import { permissionSelector } from "src/redux/reducers/auth";
+import useQueryString from "src/hooks/useQueryString";
 
 const enum ModalTypes {
   closed = "closed",
@@ -44,6 +45,7 @@ const ShowMarketingRequest = () => {
   const { getValues } = useForm();
   const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
+  const edit = useQueryString("edit") || "";
 
   const handleNavigate = (route: string) => () => navigate(route);
 
@@ -76,7 +78,8 @@ const ShowMarketingRequest = () => {
     };
 
   const renderBtns = useMemo(() => {
-    if (permissions?.[MainPermissions.edit_design_request] && isNew)
+    //@ts-ignore
+    if (permissions?.[Number(edit)] && isNew)
       return (
         <div className="float-end mb10">
           <button
@@ -93,7 +96,9 @@ const ShowMarketingRequest = () => {
           </button>
         </div>
       );
-    if (permissions?.[MainPermissions.edit_design_request])
+
+    // @ts-ignore
+    if (permissions?.[Number(edit)])
       return (
         <div className="float-end mb10">
           {order?.status! < 3 && (

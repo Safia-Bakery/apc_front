@@ -138,7 +138,9 @@ const RequestsApc = () => {
                     <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
                       {permission?.[MainPermissions.add_request_apc] ? (
-                        <Link to={`/requests-apc/${order?.id}`}>
+                        <Link
+                          to={`/requests-apc/${order?.id}?sphere_status=${sphere_status}`}
+                        >
                           {order?.id}
                         </Link>
                       ) : (

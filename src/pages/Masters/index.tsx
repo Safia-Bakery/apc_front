@@ -15,18 +15,17 @@ import { permissionSelector } from "src/redux/reducers/auth";
 
 const column = [
   { name: "#", key: "id" },
-  { name: "Название бригады", key: "name" },
-  { name: "Бригадир", key: "description" },
+  { name: "Название", key: "name" },
+  { name: "Мастер", key: "description" },
   { name: "Описание", key: "description" },
   { name: "Статус", key: "status" },
   { name: "", key: "" },
 ];
 
-const Brigades = () => {
+const Masters = () => {
   const navigate = useNavigate();
   const handleNavigate = (id: number | string) => () => navigate(`${id}`);
   const permission = useAppSelector(permissionSelector);
-
   const [currentPage, setCurrentPage] = useState(1);
   const {
     data: brigadas,
@@ -35,7 +34,7 @@ const Brigades = () => {
   } = useBrigadas({
     size: itemsPerPage,
     page: currentPage,
-    sphere_status: Sphere.retail,
+    sphere_status: Sphere.fabric,
     enabled: true,
   });
 
@@ -77,11 +76,11 @@ const Brigades = () => {
   if (orderLoading) return <Loading />;
   return (
     <Card>
-      <Header title={"Бригады"}>
+      <Header title={"Мастера"}>
         {permission?.[MainPermissions.add_brigada] && (
           <button
             className="btn btn-success btn-fill"
-            onClick={handleNavigate(`add?sphere_status=${Sphere.retail}`)}
+            onClick={handleNavigate(`add?sphere_status=${Sphere.fabric}`)}
           >
             Добавить
           </button>
@@ -105,7 +104,11 @@ const Brigades = () => {
                   <tr className="bg-blue" key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td width={250}>{order.name}</td>
-                    <td>{order.user?.[0]?.full_name}</td>
+                    <td>
+                      {!!order.user?.length
+                        ? order.user?.[0]?.full_name
+                        : "Не задано"}
+                    </td>
                     <td>{order.description}</td>
                     <td>{!!order.status ? "Активный" : "Неактивный"}</td>
                     <td width={40}>
@@ -141,4 +144,4 @@ const Brigades = () => {
   );
 };
 
-export default Brigades;
+export default Masters;
