@@ -107,9 +107,12 @@ const AddMarketingRequest = () => {
           />
         </BaseInputs>
 
-        <BaseInputs label="Комментарии">
+        <BaseInputs label="Комментарии" error={errors.description}>
           <MainTextArea
-            register={register("description")}
+            register={register("description", {
+              required: "Обязательное поле",
+              minLength: { value: 60, message: "Минимум 60 символов" },
+            })}
             placeholder="Комментарии"
           />
         </BaseInputs>
