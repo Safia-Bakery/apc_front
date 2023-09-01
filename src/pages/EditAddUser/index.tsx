@@ -62,7 +62,7 @@ const EditAddUser = () => {
         onSuccess: (data: any) => {
           if (data.status === 200) {
             usersRefetch();
-            navigate(`/roles/${getValues("group_id")}`);
+            navigate("/users");
             successToast(
               !!id ? "successfully updated" : "successfully created"
             );
@@ -82,7 +82,7 @@ const EditAddUser = () => {
 
   useEffect(() => {
     if (id && user) {
-      $sphere_status(!!user.sphere_status);
+      $sphere_status(user.sphere_status === 1);
       reset({
         full_name: user.full_name,
         username: user.username,

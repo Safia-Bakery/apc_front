@@ -63,7 +63,7 @@ const EditClient = () => {
 
   useEffect(() => {
     if (id && user) {
-      $sphere_status(user.sphere_status === 2 ? false : true);
+      $sphere_status(user.sphere_status === 1);
       reset({
         full_name: user.full_name,
         group_id: user.group?.id,
