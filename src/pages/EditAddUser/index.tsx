@@ -24,7 +24,7 @@ const EditAddUser = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
 
-  const { data: roles } = useRoles({ enabled: !!id });
+  const { data: roles } = useRoles({});
   const { refetch: usersRefetch } = useUsers({ enabled: false, page: 1 });
   const { data: user, refetch: userRefetch } = useUser({ id: Number(id) });
   const [sphere_status, $sphere_status] = useState<boolean>();
