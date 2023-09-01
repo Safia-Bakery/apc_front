@@ -340,11 +340,11 @@ export const routes = [
     path: "/users/:id",
     screen: MainPermissions.edit_users,
   },
-  {
-    element: <EditAddUser />,
-    path: "/clients/add",
-    screen: MainPermissions.edit_clients,
-  },
+  // {
+  //   element: <EditAddUser />,
+  //   path: "/clients/add",
+  //   screen: MainPermissions.add_clients,
+  // },
   {
     element: (
       <Masters
@@ -477,7 +477,7 @@ const App = () => {
   useEffect(() => {
     if (!!user?.permissions.length)
       dispatch(permissionHandler(user?.permissions));
-  }, [user?.permissions]);
+  }, [user?.permissions, token]);
 
   return (
     <>

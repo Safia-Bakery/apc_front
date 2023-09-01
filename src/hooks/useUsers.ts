@@ -15,7 +15,7 @@ export const useUsers = ({
   size,
   page,
   body,
-  position = true,
+  position,
 }: {
   enabled?: boolean;
   size?: number;

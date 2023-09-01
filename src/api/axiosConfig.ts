@@ -45,13 +45,14 @@ class BaseAPIClient {
         Authorization: `Bearer ${token}`,
       };
     }
+    // this.store?.dispatch(logoutHandler());
     config.cancelToken = this.cancelTokenSource.token;
     return config;
   };
 
   private handleRequestError = (error: AxiosError): Promise<never> => {
     if (axios.isAxiosError(error) && error.response) {
-      if (error.response.status === 401) {
+      if (error.response.status === 403) {
         this.store?.dispatch(logoutHandler());
       }
     }
@@ -59,10 +60,42 @@ class BaseAPIClient {
     // Reject the promise with the error
     return Promise.reject(error);
   };
+  private addAuthorizationHeader(
+    config: AxiosRequestConfig
+  ): AxiosRequestConfig {
+    const state = this.store?.getState();
+    const token = state?.auth.token;
 
-  public get<T>(url: string, params?: object, config?: AxiosRequestConfig) {
-    const fullUrl = this.buildUrlWithParams(url, params);
-    return this.axiosInstance.get<T>(fullUrl, config);
+    if (token) {
+      config.headers = {
+        ...(config.headers || {}),
+        Authorization: `Bearer ${token}`,
+      };
+    }
+
+    return config;
+  }
+
+  public async get<T>(
+    url: string,
+    params?: object,
+    config?: AxiosRequestConfig
+  ) {
+    try {
+      const fullUrl = this.buildUrlWithParams(url, params);
+      config = config || {};
+      config = this.addAuthorizationHeader(config);
+
+      const response = await this.axiosInstance.get<T>(fullUrl, config);
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        if (error.response.status === 403) {
+          this.store?.dispatch(logoutHandler());
+        }
+      }
+      throw error; // Re-throw the error for further handling
+    }
   }
 
   public post<T>({

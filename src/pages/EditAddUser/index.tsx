@@ -19,6 +19,7 @@ import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
 import useRoles from "src/hooks/useRoles";
 import MainRadioBtns from "src/components/BaseInputs/MainRadioBtns";
 import { Sphere } from "src/utils/types";
+import useQueryString from "src/hooks/useQueryString";
 
 const EditAddUser = () => {
   const { id } = useParams();
@@ -29,6 +30,7 @@ const EditAddUser = () => {
   const { refetch: usersRefetch } = useUsers({ enabled: false, page: 1 });
   const { data: user, refetch: userRefetch } = useUser({ id: Number(id) });
   const [sphere_status, $sphere_status] = useState<boolean>();
+  const client = useQueryString("client");
 
   const { mutate } = userMutation();
 
@@ -63,7 +65,7 @@ const EditAddUser = () => {
         onSuccess: (data: any) => {
           if (data.status === 200) {
             usersRefetch();
-            navigate("/users");
+            navigate(!client ? "/users" : "/clients");
             successToast(
               !!id ? "successfully updated" : "successfully created"
             );
