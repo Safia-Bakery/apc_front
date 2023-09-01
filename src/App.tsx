@@ -471,7 +471,7 @@ const App = () => {
 
   return (
     <>
-      <Suspense fallback={<Loading />}>
+      <Suspense>
         <Routes>
           <Route
             element={<TelegramAddProduct />}
