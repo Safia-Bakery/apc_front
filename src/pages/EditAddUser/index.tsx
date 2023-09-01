@@ -18,13 +18,14 @@ import BaseInputs from "src/components/BaseInputs";
 import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
 import useRoles from "src/hooks/useRoles";
 import MainRadioBtns from "src/components/BaseInputs/MainRadioBtns";
+import { Sphere } from "src/utils/types";
 
 const EditAddUser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
 
-  const { data: roles } = useRoles({ enabled: !!id });
+  const { data: roles } = useRoles({});
   const { refetch: usersRefetch } = useUsers({ enabled: false, page: 1 });
   const { data: user, refetch: userRefetch } = useUser({ id: Number(id) });
   const [sphere_status, $sphere_status] = useState<boolean>();
@@ -52,7 +53,7 @@ const EditAddUser = () => {
         password,
         status: !status ? 2 : 0,
         phone_number: fixedString(phone_number),
-        sphere_status: !sphere_status ? 2 : 1,
+        sphere_status: sphere_status ? Sphere.fabric : Sphere.retail,
         ...(!!email && { email }),
         ...(brigada_id && { brigada_id }),
         ...(!!telegram_id && { telegram_id }),
@@ -82,7 +83,7 @@ const EditAddUser = () => {
 
   useEffect(() => {
     if (id && user) {
-      $sphere_status(user.sphere_status === 1);
+      $sphere_status(user.sphere_status === Sphere.fabric);
       reset({
         full_name: user.full_name,
         username: user.username,

@@ -14,6 +14,7 @@ import MainInput from "src/components/BaseInputs/MainInput";
 import BaseInputs from "src/components/BaseInputs";
 import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
 import MainRadioBtns from "src/components/BaseInputs/MainRadioBtns";
+import { Sphere } from "src/utils/types";
 
 const EditClient = () => {
   const { id } = useParams();
@@ -36,7 +37,7 @@ const EditClient = () => {
     mutate(
       {
         status: !status ? 2 : 0,
-        sphere_status: !sphere_status ? 2 : 1,
+        sphere_status: sphere_status ? Sphere.fabric : Sphere.retail,
         ...(!!id && { user_id: Number(id) }),
       },
       {
@@ -63,7 +64,7 @@ const EditClient = () => {
 
   useEffect(() => {
     if (id && user) {
-      $sphere_status(user.sphere_status === 1);
+      $sphere_status(user.sphere_status === Sphere.fabric);
       reset({
         full_name: user.full_name,
         group_id: user.group?.id,
