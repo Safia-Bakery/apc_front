@@ -80,25 +80,21 @@ const ShowRole = () => {
                 </thead>
 
                 <tbody>
-                  {item.actions.map((child) => {
-                    return (
-                      <tr key={child?.id}>
-                        <td>
-                          {child?.action_name} = {child.id}
-                        </td>
-                        <td width={50}>
-                          <input
-                            type="checkbox"
-                            value={child?.id}
-                            defaultChecked={rolePermission?.permissions?.includes(
-                              child?.id
-                            )}
-                            onChange={() => handlePermission(child?.id)}
-                          />
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  {item.actions.map((child) => (
+                    <tr key={child?.id}>
+                      <td>{child?.action_name}</td>
+                      <td width={50}>
+                        <input
+                          type="checkbox"
+                          value={child?.id}
+                          defaultChecked={rolePermission?.permissions?.includes(
+                            child?.id
+                          )}
+                          onChange={() => handlePermission(child?.id)}
+                        />
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </Fragment>
             );

@@ -8,6 +8,7 @@ interface Body {
   category_id: number;
   fillial_id: string;
   files: any;
+  factory?: boolean;
 }
 
 const requestMutation = () => {
@@ -17,7 +18,7 @@ const requestMutation = () => {
 
   return useMutation(
     ["create_order"],
-    ({ product, description, category_id, fillial_id, files }: Body) =>
+    ({ product, description, category_id, fillial_id, files, factory }: Body) =>
       apiClient
         .post({
           url: "/request",
@@ -27,6 +28,7 @@ const requestMutation = () => {
             description,
             category_id,
             fillial_id,
+            factory,
           },
           config,
           contentType,

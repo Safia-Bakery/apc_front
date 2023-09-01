@@ -61,6 +61,7 @@ const CreateApcRequest = () => {
         description,
         fillial_id: branch?.id,
         files,
+        factory: Number(sphere_status) === Sphere.fabric,
       },
       {
         onSuccess: () => {
