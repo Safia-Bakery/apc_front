@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import Layout from "src/components/Routes";
 import { ToastContainer } from "react-toastify";
@@ -10,6 +10,7 @@ import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import { useAppDispatch, useAppSelector } from "./redux/utils/types";
 import {
+  loginHandler,
   logoutHandler,
   permissionHandler,
   permissionSelector,
@@ -23,6 +24,7 @@ import {
 } from "./utils/types";
 import useToken from "./hooks/useToken";
 import useQueryString from "./hooks/useQueryString";
+import axios from "axios";
 
 const ControlPanel = lazy(() => import("src/pages/ControlPanel"));
 const Masters = lazy(() => import("src/pages/Masters"));
@@ -338,11 +340,11 @@ export const routes = [
     path: "/users/:id",
     screen: MainPermissions.edit_users,
   },
-  {
-    element: <EditAddUser />,
-    path: "/clients/add",
-    screen: MainPermissions.edit_clients,
-  },
+  // {
+  //   element: <EditAddUser />,
+  //   path: "/clients/add",
+  //   screen: MainPermissions.add_clients,
+  // },
   {
     element: (
       <Masters
@@ -445,6 +447,7 @@ const App = () => {
   const dispatch = useAppDispatch();
   const permission = useAppSelector(permissionSelector);
   const { error, data: user } = useToken({});
+  const { pathname, search } = useLocation();
 
   const renderScreen = useMemo(() => {
     if (!!permission && token)
@@ -462,12 +465,19 @@ const App = () => {
   useEffect(() => {
     if (!token) navigate("/login");
     if (!!error) dispatch(logoutHandler());
-  }, [token, error, tokenKey]);
+  }, [token, error]);
+
+  useEffect(() => {
+    if (!!tokenKey) {
+      dispatch(loginHandler(tokenKey));
+      navigate(pathname + search);
+    }
+  }, [tokenKey]);
 
   useEffect(() => {
     if (!!user?.permissions.length)
       dispatch(permissionHandler(user?.permissions));
-  }, [user?.permissions]);
+  }, [user?.permissions, token]);
 
   return (
     <>

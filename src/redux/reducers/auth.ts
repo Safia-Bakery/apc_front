@@ -17,8 +17,10 @@ export const authReducer = createSlice({
   initialState,
   reducers: {
     logoutHandler: (state) => {
-      state.permissions = undefined;
-      state.token = null;
+      // state.permissions = undefined;
+      // state.token = null;
+      localStorage.clear();
+      window.location.reload();
     },
     loginHandler: (state, { payload }) => {
       state.token = payload;
