@@ -24,6 +24,8 @@
       "assets/*": ["./src/assets/*"],
       "src/components/*": ["./src/components/*"]
     },
+    "types": ["cypress"],
+    "outDir": "./dist",
 
     /* Linting */
     "strict": true,
@@ -31,7 +33,12 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "custom.d.ts"],
+  "include": [
+    "src",
+    "custom.d.ts",
+    "cypress/**/*.ts",
+    "cypress/e2e/requestApcRetail.cy.js"
+  ],
   "exclude": ["node_modules"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
