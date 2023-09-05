@@ -10,8 +10,8 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./utils/helpers.ts";
 import { BrowserRouter } from "react-router-dom";
 
-// export const baseURL = "https://backend.service.safiabakery.uz";
-export const baseURL = "http://10.0.3.238:8000";
+export const baseURL = "https://backend.service.safiabakery.uz";
+// export const baseURL = "http://10.0.3.238:8000";
 // export const baseURL = "http://192.168.16.104:8000";
 export default new BaseAPIClient(baseURL, store);
 

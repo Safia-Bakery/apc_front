@@ -27,7 +27,7 @@ const column = [
 ];
 
 interface Props extends PropsWithChildren {
-  synciiko: MainPermissions;
+  synciiko?: MainPermissions;
 }
 
 const AddProduct: FC<Props> = ({ children, synciiko }) => {
@@ -72,7 +72,7 @@ const AddProduct: FC<Props> = ({ children, synciiko }) => {
   return (
     <Card>
       <Header title="Товары">
-        {permissions?.[synciiko] && (
+        {synciiko && permissions?.[synciiko] && (
           <button
             onClick={handleSync}
             className="btn btn-primary btn-fill btn-sm mr-2"

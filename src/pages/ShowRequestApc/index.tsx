@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import AddProduct from "src/components/AddProduct";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
@@ -33,6 +33,8 @@ import {
 import uploadFileMutation from "src/hooks/mutation/uploadFile";
 import { loginHandler, permissionSelector } from "src/redux/reducers/auth";
 import useBrigadas from "src/hooks/useBrigadas";
+import syncExpenditure from "src/hooks/mutation/syncExpenditure";
+import Loading from "src/components/Loader";
 
 const enum ModalTypes {
   closed = "closed",
@@ -56,7 +58,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
   const dispatch = useAppDispatch();
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
-  const { mutate: attach } = attachBrigadaMutation();
+  const { mutate: attach, isLoading: attachLoading } = attachBrigadaMutation();
   const { refetch: brigadasRefetch } = useBrigadas({
     enabled: false,
     sphere_status: Number(sphere_status),
@@ -69,8 +71,9 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
   const isNew = order?.status === RequestStatus.new;
   const inputRef = useRef<any>(null);
   const upladedFiles = useAppSelector(reportImgSelector);
+  const { mutate: synIIco, isLoading } = syncExpenditure();
 
-  const { mutate } = uploadFileMutation();
+  const { mutate, isLoading: uploadLoading } = uploadFileMutation();
 
   const handleFilesSelected = (data: FileItem[]) =>
     dispatch(uploadReport(data));
@@ -85,21 +88,50 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
   const handleBrigada =
     ({ status }: { status: RequestStatus }) =>
     () => {
-      attach(
-        {
-          request_id: Number(id),
-          status,
-          comment: getValues("cancel_reason"),
-        },
-        {
-          onSuccess: (data: any) => {
-            if (data.status === 200) {
-              orderRefetch();
-              successToast("assigned");
-            }
+      if (status === RequestStatus.done) {
+        synIIco(
+          {
+            request_id: Number(id),
           },
-        }
-      );
+          {
+            onSuccess: (data: any) => {
+              if (data.status == 200) {
+                successToast("Успешно синхронизировано");
+                attach(
+                  {
+                    request_id: Number(id),
+                    status,
+                    comment: getValues("cancel_reason"),
+                  },
+                  {
+                    onSuccess: (data: any) => {
+                      if (data.status === 200) {
+                        orderRefetch();
+                        successToast("assigned");
+                      }
+                    },
+                  }
+                );
+              }
+            },
+          }
+        );
+      } else
+        attach(
+          {
+            request_id: Number(id),
+            status,
+            comment: getValues("cancel_reason"),
+          },
+          {
+            onSuccess: (data: any) => {
+              if (data.status === 200) {
+                orderRefetch();
+                successToast("assigned");
+              }
+            },
+          }
+        );
       removeParams(["modal"]);
     };
 
@@ -122,23 +154,26 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
   };
 
   const renderBtns = useMemo(() => {
-    // if (permissions?.[edit] && isNew && permissions?.[attaching])
-    //   return (
-    //     <div className="float-end mb10">
-    //       <button
-    //         onClick={handleModal(ModalTypes.cancelRequest)}
-    //         className="btn btn-danger btn-fill mr-2"
-    //       >
-    //         Отклонить
-    //       </button>
-    //       <button
-    //         onClick={handleBrigada({ status: RequestStatus.confirmed })}
-    //         className="btn btn-success btn-fill"
-    //       >
-    //         Принять
-    //       </button>
-    //     </div>
-    //   );
+    if (permissions?.[edit] && isNew && permissions?.[attaching])
+      return (
+        <div className="float-end mb10">
+          <button
+            onClick={handleModal(ModalTypes.cancelRequest)}
+            className="btn btn-danger btn-fill"
+          >
+            Отклонить
+          </button>
+          {/* <button
+            onClick={handleBrigada({ status: RequestStatus.confirmed })}
+            className="btn btn-success btn-fill"
+          >
+            Принять
+          </button> */}
+        </div>
+      );
+  }, [permissions, order?.status]);
+
+  const renderSubmit = useMemo(() => {
     if (!!order?.brigada?.name && permissions?.[edit])
       return (
         <div className="d-flex justify-content-between mb10">
@@ -163,16 +198,18 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
             )}
             {order?.status! < 3 && (
               <button
-                onClick={handleBrigada({ status: RequestStatus.done })}
+                onClick={handleBrigada({
+                  status: RequestStatus.done,
+                })}
                 className="btn btn-success btn-fill"
               >
-                Починил
+                Починил {isLoading && <Loading />}
               </button>
             )}
           </div>
         </div>
       );
-  }, [permissions, order?.status]);
+  }, [permissions, order?.status, isLoading]);
 
   const renderAssignment = useMemo(() => {
     if (permissions?.[attaching] && order?.status! <= 1) {
@@ -214,6 +251,8 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
       brigadasRefetch();
     }
   }, [order?.status]);
+
+  if (isLoading || uploadLoading || attachLoading) return <Loading />;
 
   return (
     <>
@@ -362,11 +401,11 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
             </div>
           </div>
           <hr />
-          {isNew && renderBtns}
+          {renderBtns}
         </div>
       </Card>
 
-      {permissions?.[addExp] && order?.status !== 0 && (
+      {permissions?.[addExp] && !isNew && order?.status !== 4 && (
         <Card className="overflow-hidden">
           <Header title={"Добавить фотоотчёт"} />
           <div className="m-3">
@@ -385,9 +424,9 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
         </Card>
       )}
 
-      {!isNew && (
-        <AddProduct synciiko={synciiko}>
-          <div className="p-2">{renderBtns}</div>
+      {!isNew && order?.status !== 4 && (
+        <AddProduct>
+          <div className="p-2">{renderSubmit}</div>
         </AddProduct>
       )}
       <ShowRequestModals />

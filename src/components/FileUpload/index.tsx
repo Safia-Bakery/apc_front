@@ -51,6 +51,7 @@ const UploadComponent: FC<FileUploaderProps> = ({
     <div>
       <input
         className="form-control"
+        id="fileUploader"
         type="file"
         ref={inputRef}
         multiple
