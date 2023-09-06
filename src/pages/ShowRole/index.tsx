@@ -101,7 +101,11 @@ const ShowRole = () => {
           })}
         </table>
 
-        <button className="btn btn-success" onClick={handleSave}>
+        <button
+          className="btn btn-success"
+          onClick={handleSave}
+          id="save_permission"
+        >
           save
         </button>
       </div>

@@ -35,6 +35,7 @@ import { loginHandler, permissionSelector } from "src/redux/reducers/auth";
 import useBrigadas from "src/hooks/useBrigadas";
 import syncExpenditure from "src/hooks/mutation/syncExpenditure";
 import Loading from "src/components/Loader";
+import cl from "classnames";
 
 const enum ModalTypes {
   closed = "closed",
@@ -145,9 +146,9 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
         {
           onSuccess: () => {
             orderRefetch();
-            successToast("Сохранено");
+            dispatch(uploadReport([]));
             inputRef.current.value = null;
-            dispatch(uploadReport(null));
+            successToast("Сохранено");
           },
         }
       );
@@ -198,6 +199,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
             )}
             {order?.status! < 3 && (
               <button
+                id={"fixed"}
                 onClick={handleBrigada({
                   status: RequestStatus.done,
                 })}
@@ -228,6 +230,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
       }
       return (
         <button
+          id="assign"
           onClick={handleModal(ModalTypes.assign)}
           className="btn btn-success btn-fill float-end"
         >
@@ -237,6 +240,32 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
     }
     return <span>{order?.brigada?.name}</span>;
   }, [permissions, order?.status, order?.brigada?.name]);
+
+  const renderfileUploader = useMemo(() => {
+    console.log(upladedFiles, "upladedFiles?.length");
+    if (permissions?.[addExp] && !isNew && order?.status !== 4)
+      return (
+        <Card className="overflow-hidden">
+          <Header title={"Добавить фотоотчёт"} />
+          <div className="m-3">
+            <UploadComponent
+              onFilesSelected={handleFilesSelected}
+              inputRef={inputRef}
+            />
+            {!!upladedFiles?.length && (
+              <button
+                onClick={handlerSubmitFile}
+                type="button"
+                id={"save_report"}
+                className="btn btn-success float-end btn-fill my-3"
+              >
+                Сохранить
+              </button>
+            )}
+          </div>
+        </Card>
+      );
+  }, [upladedFiles, permissions, order?.status, order?.file]);
 
   useEffect(() => {
     if (tokenKey) dispatch(loginHandler(tokenKey));
@@ -310,7 +339,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
                         if (item.status === 0)
                           return (
                             <div
-                              className={styles.imgUrl}
+                              className={cl(styles.imgUrl, "text-truncate")}
                               onClick={handleShowPhoto(
                                 `${baseURL}/${item.url}`
                               )}
@@ -323,13 +352,13 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
                     </td>
                   </tr>
                   <tr>
-                    <th>Фотоотчёт</th>
+                    <th id="photo_report">Фотоотчёт</th>
                     <td className="d-flex flex-column">
                       {order?.file?.map((item, index) => {
                         if (item.status === 1)
                           return (
                             <div
-                              className={styles.imgUrl}
+                              className={cl(styles.imgUrl, "text-truncate")}
                               onClick={handleShowPhoto(
                                 `${baseURL}/${item.url}`
                               )}
@@ -375,13 +404,17 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
                   <tr>
                     <th>Дата поступления:</th>
                     <td>
-                      {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
+                      {order?.created_at
+                        ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
+                        : "Не задано"}
                     </td>
                   </tr>
                   <tr>
                     <th>Дата изменения:</th>
                     <td>
-                      {dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")}
+                      {order?.started_at
+                        ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
+                        : "Не задано"}
                     </td>
                   </tr>
                   <tr>
@@ -389,7 +422,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
                     <td>
                       {order?.finished_at
                         ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
-                        : "В процессе"}
+                        : "Не задано"}
                     </td>
                   </tr>
                   <tr className="font-weight-bold">
@@ -405,24 +438,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
         </div>
       </Card>
 
-      {permissions?.[addExp] && !isNew && order?.status !== 4 && (
-        <Card className="overflow-hidden">
-          <Header title={"Добавить фотоотчёт"} />
-          <div className="m-3">
-            <UploadComponent
-              onFilesSelected={handleFilesSelected}
-              inputRef={inputRef}
-            />
-            <button
-              onClick={handlerSubmitFile}
-              type="button"
-              className="btn btn-success float-end btn-fill my-3"
-            >
-              Сохранить
-            </button>
-          </div>
-        </Card>
-      )}
+      {renderfileUploader}
 
       {!isNew && order?.status !== 4 && (
         <AddProduct>

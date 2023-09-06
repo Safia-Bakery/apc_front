@@ -118,6 +118,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
           <button
             onClick={() => navigate(`add?sphere_status=${sphere_status}`)}
             className="btn btn-success btn-fill"
+            id="add_request"
           >
             Добавить
           </button>
@@ -137,7 +138,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
           </TableHead>
 
           {!!requests?.items?.length && (
-            <tbody>
+            <tbody id="requests_body">
               {(sortData()?.length ? sortData() : requests?.items)?.map(
                 (order, idx) => (
                   <tr className={requestRows(order?.status)} key={idx}>
@@ -145,6 +146,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
                     <td width="80">
                       {permission?.[edit] ? (
                         <Link
+                          id="request_id"
                           to={`${order?.id}?sphere_status=${sphere_status}&addExp=${addExp}`}
                         >
                           {order?.id}

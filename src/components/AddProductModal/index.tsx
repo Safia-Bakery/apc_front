@@ -108,7 +108,11 @@ const AddProductModal = () => {
           <div className={styles.modalBody}>
             <div className="form-group field-apcitems-product_id position-relative">
               <label className="control-label">Товар</label>
-              <div className="form-control" onClick={handleProducts}>
+              <div
+                className="form-control"
+                onClick={handleProducts}
+                id="choose_product"
+              >
                 {!product?.name ? "Выберите продукт" : product.name}
               </div>
 

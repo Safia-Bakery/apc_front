@@ -90,6 +90,7 @@ const Masters: FC<Props> = ({ add, edit, isMaster = false }) => {
         {permission?.[add] && (
           <button
             className="btn btn-success btn-fill"
+            id="add_master"
             onClick={handleNavigate(`add?sphere_status=${sphere_status}`)}
           >
             Добавить

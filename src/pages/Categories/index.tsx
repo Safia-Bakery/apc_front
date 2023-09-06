@@ -86,6 +86,7 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
           <button
             className="btn btn-success btn-fill"
             onClick={handleNavigate(`add`)}
+            id="add_category"
           >
             Добавить
           </button>

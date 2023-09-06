@@ -99,6 +99,7 @@ const RequestsMarketing = () => {
               )
             }
             className="btn btn-success btn-fill"
+            id="add_request"
           >
             Добавить
           </button>
@@ -126,7 +127,10 @@ const RequestsMarketing = () => {
                     <td width="80">
                       {/* @ts-ignore */}
                       {permission?.[Number(edit)] ? (
-                        <Link to={`${order?.id}?sub_id=${sub_id}&edit=${edit}`}>
+                        <Link
+                          id="request_id"
+                          to={`${order?.id}?sub_id=${sub_id}&edit=${edit}`}
+                        >
                           {order?.id}
                         </Link>
                       ) : (

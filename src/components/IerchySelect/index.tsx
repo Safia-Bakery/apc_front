@@ -50,11 +50,7 @@ const IearchSelect: React.FC = () => {
   };
 
   const handleProduct = (product: { id: number; name: string }) => {
-    // removeParam(["itemModal"]);
-    // setTimeout(() => {
-    // onClose();
     navigate({ product: JSON.stringify(product), itemModal: false });
-    // }, 700);
   };
 
   useEffect(() => {
@@ -92,7 +88,7 @@ const IearchSelect: React.FC = () => {
         <BaseInput>
           <MainInput onChange={handleSearch} />
         </BaseInput>
-        <ul className={cl("list-group", styles.list)}>
+        <ul id="expenditure_list" className={cl("list-group", styles.list)}>
           {items?.map((item, idx) => {
             if (items.length === idx + 1 && !query)
               return (

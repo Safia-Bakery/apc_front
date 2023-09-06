@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import styles from "./index.module.scss";
@@ -14,7 +14,7 @@ import {
   handleDepartment,
   handleStatus,
 } from "src/utils/helpers";
-import { FileType, RequestStatus } from "src/utils/types";
+import { FileType, MainPermissions, RequestStatus } from "src/utils/types";
 import { useForm } from "react-hook-form";
 import ShowRequestModals from "src/components/ShowRequestModals";
 
@@ -24,6 +24,7 @@ import {
 } from "src/hooks/useCustomNavigate";
 import { permissionSelector } from "src/redux/reducers/auth";
 import useQueryString from "src/hooks/useQueryString";
+import cl from "classnames";
 
 const enum ModalTypes {
   closed = "closed",
@@ -35,7 +36,7 @@ const enum ModalTypes {
 const ShowMarketingRequest = () => {
   const { id } = useParams();
   const permissions = useAppSelector(permissionSelector);
-  const navigate = useNavigate();
+
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
   const { mutate: attach } = attachBrigadaMutation();
@@ -45,9 +46,7 @@ const ShowMarketingRequest = () => {
   const { getValues } = useForm();
   const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
-  const edit = useQueryString("edit") || "";
-
-  const handleNavigate = (route: string) => () => navigate(route);
+  const edit = Number(useQueryString("edit")) as MainPermissions;
 
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
@@ -78,8 +77,7 @@ const ShowMarketingRequest = () => {
     };
 
   const renderBtns = useMemo(() => {
-    //@ts-ignore
-    if (permissions?.[Number(edit)] && isNew)
+    if (permissions?.[edit] && isNew)
       return (
         <div className="float-end mb10">
           <button
@@ -91,20 +89,21 @@ const ShowMarketingRequest = () => {
           <button
             onClick={handleBrigada({ status: RequestStatus.confirmed })}
             className="btn btn-success btn-fill"
+            id="recieve_request"
           >
             Принять
           </button>
         </div>
       );
 
-    // @ts-ignore
-    if (permissions?.[Number(edit)])
+    if (permissions?.[edit])
       return (
         <div className="float-end mb10">
           {order?.status! < 3 && (
             <button
               onClick={handleBrigada({ status: RequestStatus.done })}
               className="btn btn-success btn-fill"
+              id="finish_request"
             >
               Завершить
             </button>
@@ -164,12 +163,12 @@ const ShowMarketingRequest = () => {
                   </tr>
                   <tr>
                     <th>Фото</th>
-                    <td className="d-flex flex-column">
+                    <td className="d-flex flex-column ">
                       {order?.file?.map((item, index) => {
                         if (item.status === 0)
                           return (
                             <div
-                              className={styles.imgUrl}
+                              className={cl(styles.imgUrl, "text-truncate")}
                               onClick={handleShowPhoto(
                                 `${baseURL}/${item.url}`
                               )}
@@ -211,13 +210,17 @@ const ShowMarketingRequest = () => {
                   <tr>
                     <th>Дата поступления:</th>
                     <td>
-                      {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
+                      {order?.created_at
+                        ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
+                        : "Не задано"}
                     </td>
                   </tr>
                   <tr>
                     <th>Дата изменения:</th>
                     <td>
-                      {dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")}
+                      {order?.started_at
+                        ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
+                        : "Не задано"}
                     </td>
                   </tr>
                   <tr>
@@ -225,7 +228,7 @@ const ShowMarketingRequest = () => {
                     <td>
                       {order?.finished_at
                         ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
-                        : "В процессе"}
+                        : "Не задано"}
                     </td>
                   </tr>
                 </tbody>

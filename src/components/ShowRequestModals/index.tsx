@@ -82,6 +82,7 @@ const ShowRequestModals = () => {
                     <div key={idx} className={styles.item}>
                       <h6>{item?.name}</h6>
                       <button
+                        id="attach_to_bridaga"
                         onClick={handleBrigada({
                           status: RequestStatus.confirmed,
                           item,
@@ -146,7 +147,7 @@ const ShowRequestModals = () => {
       default:
         return;
     }
-  }, [modal]);
+  }, [modal, brigades?.items, photo, detectFileType]);
 
   return (
     <Modal

@@ -91,6 +91,7 @@ const AddProduct: FC<Props> = ({ children, synciiko }) => {
           <button
             className="btn btn-success btn-fill btn-sm"
             onClick={handleModal}
+            id={"add_expenditure"}
           >
             Добавить
           </button>

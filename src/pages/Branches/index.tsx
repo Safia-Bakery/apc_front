@@ -107,6 +107,7 @@ const Branches = () => {
           <button
             className="btn btn-success btn-fill"
             onClick={handleNavigate("add")}
+            id="add_branch"
           >
             Добавить
           </button>
@@ -126,7 +127,7 @@ const Branches = () => {
           </TableHead>
 
           {!!branches?.items?.length && (
-            <tbody>
+            <tbody id="branch_body">
               {(sortData?.length ? sortData : branches.items)?.map(
                 (branch, idx) => (
                   <tr key={idx} className="bg-blue">

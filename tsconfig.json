@@ -37,7 +37,8 @@
     "src",
     "custom.d.ts",
     "cypress/**/*.ts",
-    "cypress/e2e/requestApcRetail.cy.js"
+    "cypress/e2e/*.cy.ts",
+    "cypress/e2e/*.cy.js"
   ],
   "exclude": ["node_modules"],
   "references": [{ "path": "./tsconfig.node.json" }]
