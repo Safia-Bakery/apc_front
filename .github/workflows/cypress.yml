@@ -12,7 +12,6 @@ jobs:
   test:
     runs-on: macos-latest
 
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -24,6 +23,11 @@ jobs:
 
       - name: Install Dependencies
         run: yarn install
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          start: yarn start
 
       - name: Run Cypress Tests
         run: yarn cy
