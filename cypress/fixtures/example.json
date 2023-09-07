@@ -4,5 +4,7 @@
   "body": "Fixtures are a great way to mock data for responses to routes",
   "baseUrl": "http://localhost:5173",
   "username": "cy",
-  "password": "111111"
+  "password": "111111",
+  "defaultCommandTimeout": 10000,
+  "pageLoadTimeout": 30000
 }

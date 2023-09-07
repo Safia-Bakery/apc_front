@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
@@ -32,3 +32,14 @@ jobs:
         with:
           name: cypress-results
           path: cypress/videos
+
+      - name: Check Test Results
+        run: |
+          # Assuming your Cypress output folder contains a 'results' directory
+          if [[ -d cypress/results ]]; then
+            failed_tests=$(grep -rl "failed" cypress/results)
+            if [[ -n "$failed_tests" ]]; then
+              echo "Tests failed. Marking the pull request as failed."
+              exit 1
+            fi
+          fi
