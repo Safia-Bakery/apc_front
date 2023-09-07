@@ -12,6 +12,7 @@ jobs:
   test:
     runs-on: macos-latest
 
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -22,13 +23,24 @@ jobs:
           node-version: 18.17.1
 
       - name: Install Dependencies
-        run: npm install
+        run: yarn install
 
       - name: Run Cypress Tests
-        run: npx cypress run
+        run: yarn cy
 
       - name: Upload Test Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: cypress-results
           path: cypress/videos
+
+      - name: Check Test Results
+        run: |
+          # Assuming your Cypress output folder contains a 'results' directory
+          if [[ -d cypress/results ]]; then
+            failed_tests=$(grep -rl "failed" cypress/results)
+            if [[ -n "$failed_tests" ]]; then
+              echo "Tests failed. Marking the pull request as failed."
+              exit 1
+            fi
+          fi
