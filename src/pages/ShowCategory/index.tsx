@@ -55,9 +55,9 @@ const ShowCategory: FC<Props> = ({ sphere_status, dep }) => {
         status,
         urgent,
         department: dep,
+        sphere_status: sphere_status || Sphere.retail,
         ...(id && { id: +id }),
         ...(!!sub_id && { sub_id: +sub_id }),
-        ...(!!sphere_status && { sphere_status }),
       },
       {
         onSuccess: () => {

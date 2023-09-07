@@ -27,7 +27,7 @@ export const useBranches = ({
 }) => {
   const dispatch = useAppDispatch();
   return useQuery({
-    queryKey: ["branches"],
+    queryKey: ["branches", origin],
     queryFn: () =>
       apiClient
         .get("/fillials", { page, size, origin, ...body })

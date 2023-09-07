@@ -16,12 +16,7 @@ import {
   handleStatus,
 } from "src/utils/helpers";
 import { useForm } from "react-hook-form";
-import {
-  FileType,
-  MainPermissions,
-  Order,
-  RequestStatus,
-} from "src/utils/types";
+import { FileType, MainPermissions, RequestStatus } from "src/utils/types";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import ShowRequestModals from "src/components/ShowRequestModals";
 import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
@@ -429,6 +424,12 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
                     <th>Ответственный</th>
                     <td>{renderAssignment}</td>
                   </tr>
+                  {true && (
+                    <tr className="font-weight-bold">
+                      <th>Причина отмены</th>
+                      <td>deny reason</td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -440,7 +441,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
 
       {renderfileUploader}
 
-      {!isNew && order?.status !== 4 && (
+      {!isNew && order?.status !== RequestStatus.rejected && (
         <AddProduct>
           <div className="p-2">{renderSubmit}</div>
         </AddProduct>

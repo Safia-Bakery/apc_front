@@ -2,7 +2,6 @@ import Card from "src/components/Card";
 import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
-
 import { ChangeEvent, useState } from "react";
 import { Order } from "src/utils/types";
 import TableHead from "src/components/TableHead";
@@ -11,7 +10,35 @@ import { itemsPerPage } from "src/utils/helpers";
 import Pagination from "src/components/Pagination";
 import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
 import ItemsCount from "src/components/ItemsCount";
+import Chart from "react-apexcharts";
 
+const options = {
+  chart: {
+    type: "pie",
+  } as ApexChart,
+  labels: [
+    "Category A",
+    "Category B",
+    "Category C",
+    "Category D",
+    "Category E",
+  ],
+  responsive: [
+    {
+      breakpoint: 480,
+      options: {
+        chart: {
+          width: 200,
+        },
+        legend: {
+          position: "bottom",
+        },
+      },
+    },
+  ],
+};
+
+const series = [44, 55, 13, 43, 22];
 const column = [
   { name: "#", key: "id" as keyof Order["id"] },
   { name: "Время выполнения", key: "purchaser" as keyof Order["status"] },
@@ -72,6 +99,13 @@ const Statistics = () => {
           </button>
         </div>
 
+        <Chart
+          options={options}
+          series={series}
+          type="pie"
+          // width={380}
+          height={400}
+        />
         <div className="table-responsive grid-view">
           <ItemsCount data={requests} currentPage={currentPage} />
           <table className="table table-hover">
@@ -82,23 +116,23 @@ const Statistics = () => {
               sortOrder={sortOrder}
             />
 
-            {!!requests?.items.length && (
-              <tbody>
-                {[...Array(6)]?.map((order, idx) => (
-                  <tr key={idx} className="bg-blue">
-                    <td width="40">1</td>
-                    <td>test name</td>
-                    <td>Активный</td>
-                    <td>Активный</td>
-                    <td>Активный</td>
-                    <td>Активный</td>
-                    {/* <TableViewBtn
+            {/* {!!requests?.items.length && ( */}
+            <tbody>
+              {[...Array(6)]?.map((order, idx) => (
+                <tr key={idx} className="bg-blue">
+                  <td width="40">1</td>
+                  <td>test name</td>
+                  <td>Активный</td>
+                  <td>Активный</td>
+                  <td>Активный</td>
+                  <td>Активный</td>
+                  {/* <TableViewBtn
                       onClick={handleNavigate(`/categories/${1}`)}
                     /> */}
-                  </tr>
-                ))}
-              </tbody>
-            )}
+                </tr>
+              ))}
+            </tbody>
+            {/* // )} */}
           </table>
           {!!requests && (
             <Pagination

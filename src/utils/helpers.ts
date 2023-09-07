@@ -25,11 +25,15 @@ export const RegionNames = [
   { name: "Uzbekistan", id: "Uzbekistan" },
   { name: "Kazakhstan", id: "Kazakhstan" },
 ];
-export const CancelReason = [
-  { name: "Do not needed", id: 1 },
-  { name: "Exidently", id: 2 },
-  { name: "Other", id: 3 },
-];
+type CancelReasonType = {
+  [key: number]: string;
+};
+export const CancelReason: CancelReasonType = {
+  1: "Не правильная заявка",
+  2: "Повторная заявка",
+  3: "Тестовая заявка",
+  4: "Другое",
+};
 
 export const numberWithCommas = (val: number) => {
   return val

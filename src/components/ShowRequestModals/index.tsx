@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Modal from "../Modal";
 import { BrigadaType, FileType, RequestStatus } from "src/utils/types";
 import { useParams } from "react-router-dom";
@@ -31,6 +31,9 @@ const ShowRequestModals = () => {
   const photo = useQueryString("photo");
   const sphere_status = useQueryString("sphere_status");
   const removeParams = useRemoveParams();
+  const [fixedReason, $fixedReason] = useState<any>();
+
+  console.log(fixedReason, "fixedReason");
 
   const { mutate: attach } = attachBrigadaMutation();
   const { register, getValues } = useForm();
@@ -50,7 +53,12 @@ const ShowRequestModals = () => {
           request_id: Number(id),
           brigada_id: Number(item?.id),
           status,
-          comment: getValues("cancel_reason"),
+          ...(status === RequestStatus.rejected && {
+            comment:
+              fixedReason < 4
+                ? CancelReason[fixedReason]
+                : getValues("cancel_reason"),
+          }),
         },
         {
           onSuccess: () => {
@@ -107,15 +115,22 @@ const ShowRequestModals = () => {
             </Header>
             <div className="p-3">
               <BaseInput label="Выберите причину">
-                <MainSelect
-                  values={CancelReason}
-                  register={register("cancel_reason")}
-                />
+                <MainSelect onChange={(e) => $fixedReason(e.target.value)}>
+                  <option value={undefined} />
+
+                  {Object.keys(CancelReason).map((item) => (
+                    <option key={item} value={item}>
+                      {CancelReason[+item]}
+                    </option>
+                  ))}
+                </MainSelect>
               </BaseInput>
 
-              <BaseInput label="Комментарии">
-                <MainTextArea register={register("cancel_reason")} />
-              </BaseInput>
+              {fixedReason == 4 && (
+                <BaseInput label="Комментарии">
+                  <MainTextArea register={register("cancel_reason")} />
+                </BaseInput>
+              )}
 
               <button
                 className="btn btn-success"
@@ -147,7 +162,7 @@ const ShowRequestModals = () => {
       default:
         return;
     }
-  }, [modal, brigades?.items, photo, detectFileType]);
+  }, [modal, brigades?.items, photo, detectFileType, fixedReason]);
 
   return (
     <Modal

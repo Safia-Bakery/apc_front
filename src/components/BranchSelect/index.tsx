@@ -13,7 +13,12 @@ import {
 import useBranches from "src/hooks/useBranches";
 import useQueryString from "src/hooks/useQueryString";
 
-const BranchSelect: FC = () => {
+interface Props {
+  origin?: number;
+  enabled?: boolean;
+}
+
+const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
   const navigate = useNavigateParams();
   const removeParam = useRemoveParams();
   const initialLoadRef = useRef(true);
@@ -26,8 +31,9 @@ const BranchSelect: FC = () => {
   const branch = branchJson && JSON.parse(branchJson);
 
   const { data, refetch, isFetching, isLoading } = useBranches({
-    enabled: false,
+    origin,
     page,
+    enabled,
     ...(!!query && { body: { name: query } }),
   });
   const [items, $items] = useState<BranchTypes["items"]>([]);
@@ -75,6 +81,11 @@ const BranchSelect: FC = () => {
     $focused(false);
   };
 
+  const handleFocus = () => {
+    if (!enabled) refetch();
+    $focused(true);
+  };
+
   useEffect(() => {
     if (initialLoadRef.current) {
       initialLoadRef.current = false;
@@ -101,12 +112,6 @@ const BranchSelect: FC = () => {
     <>
       {focused && <div className={styles.overlay} onClick={onClose} />}
       <div className={styles.drop}>
-        {/* <div className="popover-title">
-          <button onClick={onClose} className="close">
-            <span aria-hidden="true">&times;</span> 
-          </button>
-          Выберите филиал
-        </div> */}
         <BaseInput className="mb-0 position-relative">
           {focused && (
             <img
@@ -121,7 +126,7 @@ const BranchSelect: FC = () => {
           <MainInput
             onChange={handleSearch}
             value={search}
-            onFocus={() => $focused(true)}
+            onFocus={handleFocus}
           />
         </BaseInput>
         {focused && (

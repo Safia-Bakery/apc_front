@@ -43,6 +43,7 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
   const [urgent, $urgent] = useState<boolean>();
   const [created_at, $created_at] = useState<Date | null>();
   const [request_status, $request_status] = useState<string>();
+  const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
 
   const { refetch } = useOrders({
@@ -118,8 +119,11 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
         </BaseInput>
       </td>
       <td width={150} className="p-0 position-relative">
-        <div className={cl("position-absolute w-100 ", styles.fillial)}>
-          <BranchSelect />
+        <div
+          onClick={() => $enabled(true)}
+          className={cl("position-absolute w-100 ", styles.fillial)}
+        >
+          <BranchSelect enabled={enabled} />
         </div>
       </td>
       <td className="p-0">

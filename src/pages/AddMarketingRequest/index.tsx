@@ -101,7 +101,7 @@ const AddMarketingRequest = () => {
           label="ФИЛИАЛ"
           error={errors.fillial}
         >
-          <BranchSelect />
+          <BranchSelect enabled />
         </BaseInputs>
         <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
           <MainSelect

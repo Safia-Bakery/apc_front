@@ -17,16 +17,22 @@ import BranchSelect from "src/components/BranchSelect";
 import useCategories from "src/hooks/useCategories";
 import { Departments, Sphere } from "src/utils/types";
 import WarehouseSelect from "src/components/WarehouseSelect";
+import Loading from "src/components/Loader";
+import useBranches from "src/hooks/useBranches";
 
 const CreateApcRequest = () => {
   const [files, $files] = useState<FormData>();
-  const { mutate } = requestMutation();
+  const { mutate, isLoading } = requestMutation();
+  // const { isLoading: branchLoading, refetch: branchRefetch } = useBranches({
+  //   origin: 1,
+  //   enabled: true,
+  // });
   const branchJson = useQueryString("branch");
-  const sphere_status = useQueryString("sphere_status");
+  const sphere_status = Number(useQueryString("sphere_status"));
   const branch = branchJson && JSON.parse(branchJson);
   const { data: categories } = useCategories({
     department: Departments.apc,
-    sphere_status: Number(sphere_status),
+    sphere_status,
   });
   const {
     register,
@@ -61,15 +67,13 @@ const CreateApcRequest = () => {
         description,
         fillial_id: branch?.id,
         files,
-        factory: Number(sphere_status) === Sphere.fabric,
+        factory: sphere_status === Sphere.fabric,
       },
       {
         onSuccess: () => {
           successToast("Заказ успешно создано");
           navigate(
-            `/requests-apc-${
-              Sphere[Number(sphere_status)]
-            }?sphere_status=${sphere_status}`
+            `/requests-apc-${Sphere[sphere_status]}?sphere_status=${sphere_status}`
           );
         },
       }
@@ -77,9 +81,11 @@ const CreateApcRequest = () => {
   };
 
   const renderBranchSelect = useMemo(() => {
-    if (Number(sphere_status) === Sphere.fabric) return <WarehouseSelect />;
-    else return <BranchSelect />;
+    if (sphere_status === Sphere.fabric) return <WarehouseSelect />;
+    else return <BranchSelect origin={1} enabled />;
   }, [sphere_status]);
+
+  if (isLoading) return <Loading />;
 
   return (
     <Card>

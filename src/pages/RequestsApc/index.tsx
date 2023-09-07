@@ -28,7 +28,6 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const permission = useAppSelector(permissionSelector);
   const sphere_status = useQueryString("sphere_status");
-  const addExp = useQueryString("addExp");
 
   const column = useMemo(() => {
     const columns = [
@@ -147,7 +146,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
                       {permission?.[edit] ? (
                         <Link
                           id="request_id"
-                          to={`${order?.id}?sphere_status=${sphere_status}&addExp=${addExp}`}
+                          to={`${order?.id}?sphere_status=${sphere_status}&addExp=${MainPermissions.request_add_expanditure}`}
                         >
                           {order?.id}
                         </Link>

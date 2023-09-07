@@ -8,7 +8,8 @@ const useQueriesPrefetch = () => {
   const permissions = useAppSelector(permissionSelector);
 
   const { isLoading: branchLoading } = useBranches({
-    enabled: !!token && !!permissions?.[MainPermissions.get_fillials_list],
+    enabled:
+      (!!token && !!permissions?.[MainPermissions.get_fillials_list]) || false,
     origin: 0,
   });
   return {
