@@ -22,10 +22,10 @@ jobs:
           node-version: 18.17.1
 
       - name: Install Dependencies
-        run: npm install
+        run: yarn install
 
       - name: Run Cypress Tests
-        run: npx cypress run
+        run: yarn cy
 
       - name: Upload Test Artifacts
         uses: actions/upload-artifact@v2
