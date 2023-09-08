@@ -15,7 +15,7 @@ import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import useQueryString from "src/hooks/useQueryString";
 import BranchSelect from "src/components/BranchSelect";
 import useCategories from "src/hooks/useCategories";
-import { Departments, Sphere } from "src/utils/types";
+import { Departments, MainPermissions, Sphere } from "src/utils/types";
 import WarehouseSelect from "src/components/WarehouseSelect";
 import Loading from "src/components/Loader";
 import useBranches from "src/hooks/useBranches";
@@ -30,6 +30,7 @@ const CreateApcRequest = () => {
   const branchJson = useQueryString("branch");
   const sphere_status = Number(useQueryString("sphere_status"));
   const branch = branchJson && JSON.parse(branchJson);
+  const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const { data: categories } = useCategories({
     department: Departments.apc,
     sphere_status,
@@ -73,7 +74,7 @@ const CreateApcRequest = () => {
         onSuccess: () => {
           successToast("Заказ успешно создано");
           navigate(
-            `/requests-apc-${Sphere[sphere_status]}?sphere_status=${sphere_status}`
+            `/requests-apc-${Sphere[sphere_status]}?sphere_status=${sphere_status}&addExp=${addExp}`
           );
         },
       }

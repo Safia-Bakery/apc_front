@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "src/main";
+import { permissionSelector } from "src/redux/reducers/auth";
 import { cachedBranches } from "src/redux/reducers/cache";
-import { useAppDispatch } from "src/redux/utils/types";
-import { BranchTypes } from "src/utils/types";
+import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
+import { BranchTypes, MainPermissions } from "src/utils/types";
 
 interface BodyTypes {
   name?: string;
@@ -26,6 +27,7 @@ export const useBranches = ({
   origin?: number;
 }) => {
   const dispatch = useAppDispatch();
+  const permmission = useAppSelector(permissionSelector);
   return useQuery({
     queryKey: ["branches", origin],
     queryFn: () =>
@@ -35,7 +37,7 @@ export const useBranches = ({
           dispatch(cachedBranches(response as BranchTypes));
           return response as BranchTypes;
         }),
-    enabled,
+    enabled: enabled && permmission?.[MainPermissions.get_fillials_list],
   });
 };
 export default useBranches;

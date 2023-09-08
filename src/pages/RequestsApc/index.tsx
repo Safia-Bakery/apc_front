@@ -28,6 +28,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const permission = useAppSelector(permissionSelector);
   const sphere_status = useQueryString("sphere_status");
+  const addExp = Number(useQueryString("addExp")) as MainPermissions;
 
   const column = useMemo(() => {
     const columns = [
@@ -115,7 +116,9 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
         <button className="btn btn-primary btn-fill mr-2">Экспорт</button>
         {permission?.[add] && (
           <button
-            onClick={() => navigate(`add?sphere_status=${sphere_status}`)}
+            onClick={() =>
+              navigate(`add?sphere_status=${sphere_status}&addExp=${addExp}`)
+            }
             className="btn btn-success btn-fill"
             id="add_request"
           >
@@ -146,7 +149,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
                       {permission?.[edit] ? (
                         <Link
                           id="request_id"
-                          to={`${order?.id}?sphere_status=${sphere_status}&addExp=${MainPermissions.request_add_expanditure}`}
+                          to={`${order?.id}?sphere_status=${sphere_status}&addExp=${addExp}`}
                         >
                           {order?.id}
                         </Link>

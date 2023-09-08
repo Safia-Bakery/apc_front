@@ -7,7 +7,7 @@ describe("Login", () => {
   });
 
   it("should show an error message with invalid credentials", () => {
-    cy.visit("/login");
+    cy.visit(baseUrl + "/login");
 
     cy.get('input[name="username"]').type("invalid-username");
     cy.get('input[name="password"]').type("invalid-password");

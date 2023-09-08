@@ -38,7 +38,7 @@ const options = {
   ],
 };
 
-const series = [44, 55, 13, 43, 22];
+const series = [44, 55, 13, 43, 55];
 const column = [
   { name: "#", key: "id" as keyof Order["id"] },
   { name: "Время выполнения", key: "purchaser" as keyof Order["status"] },
@@ -99,13 +99,6 @@ const Statistics = () => {
           </button>
         </div>
 
-        <Chart
-          options={options}
-          series={series}
-          type="pie"
-          // width={380}
-          height={400}
-        />
         <div className="table-responsive grid-view">
           <ItemsCount data={requests} currentPage={currentPage} />
           <table className="table table-hover">
@@ -134,6 +127,14 @@ const Statistics = () => {
             </tbody>
             {/* // )} */}
           </table>
+
+          <Chart
+            options={options}
+            series={series}
+            type="pie"
+            // width={380}
+            height={400}
+          />
           {!!requests && (
             <Pagination
               totalItems={requests?.total}

@@ -33,8 +33,6 @@ const ShowRequestModals = () => {
   const removeParams = useRemoveParams();
   const [fixedReason, $fixedReason] = useState<any>();
 
-  console.log(fixedReason, "fixedReason");
-
   const { mutate: attach } = attachBrigadaMutation();
   const { register, getValues } = useForm();
 

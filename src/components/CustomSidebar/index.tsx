@@ -10,12 +10,12 @@ import { isMobile } from "src/utils/helpers";
 import { permissionSelector } from "src/redux/reducers/auth";
 
 const routes = [
-  {
-    name: "Статистика",
-    url: "/statistics",
-    icon: "/assets/icons/statistics.svg",
-    screen: MainPermissions.get_statistics,
-  },
+  // {
+  //   name: "Статистика",
+  //   url: "/statistics",
+  //   icon: "/assets/icons/statistics.svg",
+  //   screen: MainPermissions.get_statistics,
+  // },
   {
     name: "Тепловая карта",
     url: "/map",
@@ -53,6 +53,12 @@ const routes = [
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_apc_category,
       },
+      {
+        name: "Статистика",
+        url: "/statistics-apc-retail",
+        icon: "/assets/icons/statistics.svg",
+        screen: MainPermissions.get_statistics,
+      },
     ],
   },
   {
@@ -79,6 +85,12 @@ const routes = [
         url: `/categories-apc-fabric`,
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_categ_fab,
+      },
+      {
+        name: "Статистика",
+        url: "/statistics-apc-fabric",
+        icon: "/assets/icons/statistics.svg",
+        screen: MainPermissions.get_statistics,
       },
     ],
   },
@@ -155,6 +167,12 @@ const routes = [
         url: `/categories-marketing`,
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_mark_category,
+      },
+      {
+        name: "Статистика",
+        url: "/statistics-marketing",
+        icon: "/assets/icons/statistics.svg",
+        screen: MainPermissions.get_statistics,
       },
     ],
   },

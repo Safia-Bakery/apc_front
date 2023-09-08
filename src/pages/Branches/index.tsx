@@ -44,7 +44,7 @@ const Branches = () => {
   const { data: branches, refetch } = useBranches({
     size: itemsPerPage,
     page: currentPage,
-    enabled: false,
+    enabled: true,
     origin: 0,
   });
 

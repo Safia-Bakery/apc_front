@@ -237,7 +237,6 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
   }, [permissions, order?.status, order?.brigada?.name]);
 
   const renderfileUploader = useMemo(() => {
-    console.log(upladedFiles, "upladedFiles?.length");
     if (permissions?.[addExp] && !isNew && order?.status !== 4)
       return (
         <Card className="overflow-hidden">
