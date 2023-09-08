@@ -15,7 +15,7 @@ const App = () => {
       <BrowserRouter>
         <Routes />
       </BrowserRouter>
-      <ToastContainer />
+      <ToastContainer autoClose={1000} />
     </QueryClientProvider>
   );
 };

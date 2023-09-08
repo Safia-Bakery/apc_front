@@ -117,7 +117,7 @@ const ShowCategory: FC<Props> = ({ sphere_status, dep }) => {
   if (isLoading && !!id) return;
 
   return (
-    <Card>
+    <Card className="overflow-hidden pb-3">
       <Header title={!id ? "Добавить" : `Изменить категорие №${id}`}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад
@@ -138,7 +138,7 @@ const ShowCategory: FC<Props> = ({ sphere_status, dep }) => {
 
         <MainCheckBox label="Активный" register={register("status")} />
 
-        <button type="submit" className="btn btn-success btn-fill">
+        <button type="submit" className="btn btn-success btn-fill float-end">
           Сохранить
         </button>
       </form>
