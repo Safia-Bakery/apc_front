@@ -56,6 +56,7 @@ const routes = [
       {
         name: "Статистика",
         url: "/statistics-apc-retail",
+        param: "/category",
         icon: "/assets/icons/statistics.svg",
         screen: MainPermissions.get_statistics,
       },

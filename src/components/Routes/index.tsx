@@ -57,6 +57,12 @@ const Branches = lazy(() => import("src/pages/Branches"));
 const EditAddBranch = lazy(() => import("src/pages/EditAddBranch"));
 const RemainsInStock = lazy(() => import("src/pages/RemailnsInStock"));
 const ShowRemainsInStock = lazy(() => import("src/pages/ShowRemainsInStock"));
+const CategoryStat = lazy(() => import("src/pages/Statistics/CategoryStat"));
+const FillialStat = lazy(() => import("src/pages/Statistics/FillialStat"));
+const BrigadaCategStat = lazy(
+  () => import("src/pages/Statistics/BrigadaCategStat")
+);
+const BrigadaStat = lazy(() => import("src/pages/Statistics/BrigadaStat"));
 
 export const routes = [
   { element: <ControlPanel />, path: "/", screen: MainPermissions.add_brigada },
@@ -78,7 +84,6 @@ export const routes = [
   {
     element: (
       <ShowRequestApc
-        synciiko={MainPermissions.sync_fab_req_iiko}
         edit={MainPermissions.edit_fabric_requests}
         attaching={MainPermissions.fabric_req_attach_master}
       />
@@ -89,7 +94,6 @@ export const routes = [
   {
     element: (
       <ShowRequestApc
-        synciiko={MainPermissions.synch_apc_iiko}
         edit={MainPermissions.edit_request_apc}
         attaching={MainPermissions.request_ettach}
       />
@@ -229,11 +233,11 @@ export const routes = [
     path: "/statistics",
     screen: MainPermissions.get_statistics,
   },
-  {
-    element: <Statistics />,
-    path: "/statistics-apc-retail",
-    screen: MainPermissions.get_statistics,
-  },
+  // {
+  //   element: <Statistics />,
+  //   path: "/statistics-apc-retail",
+  //   screen: MainPermissions.get_statistics,
+  // },
   {
     element: <Statistics />,
     path: "/statistics-apc-fabric",
@@ -511,6 +515,16 @@ const Navigation = () => {
             element={<TelegramAddProduct />}
             path={"/tg-add-product/:id"}
           />
+
+          {permission?.[MainPermissions.get_statistics] && (
+            <Route path="/statistics-apc-retail" element={<Statistics />}>
+              <Route index path="category" element={<CategoryStat />} />
+              <Route path="fillial" element={<FillialStat />} />
+              <Route path="brigada" element={<BrigadaStat />} />
+              <Route path="brigade_categ" element={<BrigadaCategStat />} />
+            </Route>
+          )}
+
           {renderScreen}
         </Routes>
       </Suspense>

@@ -338,6 +338,13 @@ export enum MarketingSubDep {
   complects = 5,
 }
 
+export enum ApcStatisticsTypes {
+  category = 1,
+  fillial = 2,
+  brigade = 3,
+  brigadaCateg = 4,
+}
+
 export const MarketingSubDepRu = [
   {
     name: "Проектная работа для дизайнеров",

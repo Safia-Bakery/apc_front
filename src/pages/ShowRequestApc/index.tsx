@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AddProduct from "src/components/AddProduct";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
@@ -16,7 +16,12 @@ import {
   handleStatus,
 } from "src/utils/helpers";
 import { useForm } from "react-hook-form";
-import { FileType, MainPermissions, RequestStatus } from "src/utils/types";
+import {
+  FileType,
+  MainPermissions,
+  RequestStatus,
+  Sphere,
+} from "src/utils/types";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import ShowRequestModals from "src/components/ShowRequestModals";
 import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
@@ -42,13 +47,15 @@ const enum ModalTypes {
 interface Props {
   edit: MainPermissions;
   attaching: MainPermissions;
-  synciiko: MainPermissions;
+  // synciiko: MainPermissions;
 }
 
-const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
+const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const tokenKey = useQueryString("key");
-  const sphere_status = useQueryString("sphere_status");
+  const { search } = useLocation();
+  const sphere_status = Number(useQueryString("sphere_status"));
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const permissions = useAppSelector(permissionSelector);
   const dispatch = useAppDispatch();
@@ -57,7 +64,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
   const { mutate: attach, isLoading: attachLoading } = attachBrigadaMutation();
   const { refetch: brigadasRefetch } = useBrigadas({
     enabled: false,
-    sphere_status: Number(sphere_status),
+    sphere_status: sphere_status,
   });
   const handleModal = (type: ModalTypes) => () => {
     navigateParams({ modal: type });
@@ -70,6 +77,13 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
   const { mutate: synIIco, isLoading } = syncExpenditure();
 
   const { mutate, isLoading: uploadLoading } = uploadFileMutation();
+
+  const handleBack = () => {
+    if (sphere_status === Sphere.fabric)
+      navigate(`/requests-apc-fabric${search}`);
+    if (sphere_status === Sphere.retail)
+      navigate(`/requests-apc-retail${search}`);
+  };
 
   const handleFilesSelected = (data: FileItem[]) =>
     dispatch(uploadReport(data));
@@ -283,7 +297,11 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
         <Header
           title={`Заказ №${id}`}
           subTitle={`Статус: ${handleStatus(order?.status)}`}
-        />
+        >
+          <button onClick={handleBack} className="btn btn-primary btn-fill">
+            Назад
+          </button>
+        </Header>
         <div className="content">
           <div className="row ">
             <div className="col-md-6">
@@ -423,7 +441,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, synciiko }) => {
                     <th>Ответственный</th>
                     <td>{renderAssignment}</td>
                   </tr>
-                  {true && (
+                  {false && (
                     <tr className="font-weight-bold">
                       <th>Причина отмены</th>
                       <td>deny reason</td>

@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import styles from "./index.module.scss";
@@ -47,6 +47,8 @@ const ShowMarketingRequest = () => {
   const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
   const edit = Number(useQueryString("edit")) as MainPermissions;
+  const navigate = useNavigate();
+  const { search } = useLocation();
 
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
@@ -54,6 +56,8 @@ const ShowMarketingRequest = () => {
       navigateParams({ modal: ModalTypes.showPhoto, photo: file });
     }
   };
+
+  const handleBack = () => navigate(`/marketing-designers${search}`);
 
   const handleBrigada =
     ({ status }: { status: RequestStatus }) =>
@@ -122,7 +126,11 @@ const ShowMarketingRequest = () => {
         <Header
           title={`Заказ №${id}`}
           subTitle={`Статус: ${handleStatus(order?.status)}`}
-        />
+        >
+          <button onClick={handleBack} className="btn btn-primary btn-fill">
+            Назад
+          </button>
+        </Header>
         <div className="content">
           <div className="row">
             <div className="col-md-6">

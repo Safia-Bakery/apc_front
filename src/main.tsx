@@ -7,8 +7,8 @@ import { persistor, store } from "./redux/rootConfig";
 import "bootstrap/dist/css/bootstrap.min.css";
 import BaseAPIClient from "./api/axiosConfig.ts";
 
-export const baseURL = "https://backend.service.safiabakery.uz";
-// export const baseURL = "http://10.0.3.238:8000";
+// export const baseURL = "https://backend.service.safiabakery.uz";
+export const baseURL = "http://10.0.0.118:8000";
 
 export default new BaseAPIClient(baseURL, store);
 

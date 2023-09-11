@@ -1,7 +1,7 @@
 import Card from "src/components/Card";
 import styles from "./index.module.scss";
 import Header from "src/components/Header";
-import { useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { ChangeEvent, useState } from "react";
 import { Order } from "src/utils/types";
 import TableHead from "src/components/TableHead";
@@ -11,46 +11,9 @@ import Pagination from "src/components/Pagination";
 import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
 import ItemsCount from "src/components/ItemsCount";
 import Chart from "react-apexcharts";
-
-const options = {
-  chart: {
-    type: "pie",
-  } as ApexChart,
-  labels: [
-    "Category A",
-    "Category B",
-    "Category C",
-    "Category D",
-    "Category E",
-  ],
-  responsive: [
-    {
-      breakpoint: 480,
-      options: {
-        chart: {
-          width: 200,
-        },
-        legend: {
-          position: "bottom",
-        },
-      },
-    },
-  ],
-};
-
-const series = [44, 55, 13, 43, 55];
-const column = [
-  { name: "#", key: "id" as keyof Order["id"] },
-  { name: "Время выполнения", key: "purchaser" as keyof Order["status"] },
-  { name: "Статус заявок", key: "status" as keyof Order["status"] },
-  {
-    name: "Время обработки по бригадам",
-    key: "status" as keyof Order["status"],
-  },
-  { name: "По филиалам", key: "status" as keyof Order["status"] },
-  { name: "По категориям", key: "status" as keyof Order["status"] },
-  { name: "", key: "" },
-];
+import ApcStatBar from "src/components/ApcStatBar";
+import CategoryStat from "./CategoryStat";
+import FillialStat from "./FillialStat";
 
 const Statistics = () => {
   const navigate = useNavigate();
@@ -58,18 +21,6 @@ const Statistics = () => {
 
   const [selectedDate, setSelectedDate] = useState<string>("");
 
-  const [sortKey, setSortKey] = useState<any>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const handleNavigate = (route: string) => () => navigate(route);
-
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
   const [currentPage, setCurrentPage] = useState(1);
   const { data: requests } = useOrders({
     size: itemsPerPage,
@@ -77,7 +28,6 @@ const Statistics = () => {
     enabled: false,
   });
 
-  const handlePageChange = (page: number) => setCurrentPage(page);
   const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(event.target.value);
   };
@@ -101,53 +51,13 @@ const Statistics = () => {
 
         <div className="table-responsive grid-view">
           <ItemsCount data={requests} currentPage={currentPage} />
-          <table className="table table-hover">
-            <TableHead
-              column={column}
-              sort={handleSort}
-              sortKey={sortKey}
-              sortOrder={sortOrder}
-            />
-
-            {/* {!!requests?.items.length && ( */}
-            <tbody>
-              {[...Array(6)]?.map((order, idx) => (
-                <tr key={idx} className="bg-blue">
-                  <td width="40">1</td>
-                  <td>test name</td>
-                  <td>Активный</td>
-                  <td>Активный</td>
-                  <td>Активный</td>
-                  <td>Активный</td>
-                  {/* <TableViewBtn
-                      onClick={handleNavigate(`/categories/${1}`)}
-                    /> */}
-                </tr>
-              ))}
-            </tbody>
-            {/* // )} */}
-          </table>
-
-          <Chart
-            options={options}
-            series={series}
-            type="pie"
-            // width={380}
-            height={400}
-          />
-          {!!requests && (
-            <Pagination
-              totalItems={requests?.total}
-              itemsPerPage={itemsPerPage}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
-            />
-          )}
-          {!requests?.items?.length && (
-            <div className="w-100">
-              <p className="text-center w-100 ">Спосок пуст</p>
-            </div>
-          )}
+          <ApcStatBar />
+          {/* <Routes>
+            <Route path="/" element={<ApcStatBar />}>
+              <Route index element={<CategoryStat />} />
+              <Route path="fillial" element={<FillialStat />} />
+            </Route>
+          </Routes> */}
         </div>
       </div>
     </Card>
