@@ -10,7 +10,7 @@ const attachBrigadaMutation = () => {
       request_id: number;
       status: RequestStatus;
       brigada_id?: number;
-      comment?: string;
+      deny_reason?: string;
     }) =>
       apiClient
         .put({ url: "/request/attach/brigada", body })

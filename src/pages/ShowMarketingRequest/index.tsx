@@ -66,7 +66,7 @@ const ShowMarketingRequest = () => {
         {
           request_id: Number(id),
           status,
-          comment: getValues("cancel_reason"),
+          deny_reason: getValues("cancel_reason"),
         },
         {
           onSuccess: (data: any) => {

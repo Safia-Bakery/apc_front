@@ -111,7 +111,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
                   {
                     request_id: Number(id),
                     status,
-                    comment: getValues("cancel_reason"),
+                    deny_reason: getValues("cancel_reason"),
                   },
                   {
                     onSuccess: (data: any) => {
@@ -131,7 +131,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
           {
             request_id: Number(id),
             status,
-            comment: getValues("cancel_reason"),
+            deny_reason: getValues("cancel_reason"),
           },
           {
             onSuccess: (data: any) => {
@@ -441,10 +441,10 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
                     <th>Ответственный</th>
                     <td>{renderAssignment}</td>
                   </tr>
-                  {false && (
+                  {order?.deny_reason && (
                     <tr className="font-weight-bold">
                       <th>Причина отмены</th>
-                      <td>deny reason</td>
+                      <td>{order?.deny_reason}</td>
                     </tr>
                   )}
                 </tbody>

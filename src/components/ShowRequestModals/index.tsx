@@ -52,7 +52,7 @@ const ShowRequestModals = () => {
           brigada_id: Number(item?.id),
           status,
           ...(status === RequestStatus.rejected && {
-            comment:
+            deny_reason:
               fixedReason < 4
                 ? CancelReason[fixedReason]
                 : getValues("cancel_reason"),

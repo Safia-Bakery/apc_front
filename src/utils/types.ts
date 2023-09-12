@@ -39,6 +39,7 @@ export interface Order {
   rating: number;
   created_at: Date;
   started_at: Date;
+  deny_reason: string | null;
   status: number;
   urgent: boolean;
   user: UserTypes;
