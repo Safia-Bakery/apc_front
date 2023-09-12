@@ -1,88 +1,48 @@
-import styles from "./index.module.scss";
-import Header from "src/components/Header";
-import { useNavigate } from "react-router-dom";
-import { ChangeEvent, useState } from "react";
-import { Order } from "src/utils/types";
-import TableHead from "src/components/TableHead";
-import useOrders from "src/hooks/useOrders";
-import { itemsPerPage } from "src/utils/helpers";
-import Pagination from "src/components/Pagination";
-import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
-import ItemsCount from "src/components/ItemsCount";
-import Chart from "react-apexcharts";
+import { Departments, Order, Sphere } from "src/utils/types";
+import useStatsBrigadaCateg from "src/hooks/useStatsBrigadaCateg";
+import dayjs from "dayjs";
+import useQueryString from "src/hooks/useQueryString";
+import Loading from "src/components/Loader";
 
-const options = {
-  chart: {
-    type: "pie",
-  } as ApexChart,
-  labels: [
-    "Category A",
-    "Category B",
-    "Category C",
-    "Category D",
-    "Category E",
-  ],
-  responsive: [
-    {
-      breakpoint: 480,
-      options: {
-        chart: {
-          width: 200,
-        },
-        legend: {
-          position: "bottom",
-        },
-      },
-    },
-  ],
-};
-
-const series = [44, 55, 13, 43, 55];
 const column = [
   { name: "№", key: "id" as keyof Order["id"] },
   { name: "Бригада", key: "purchaser" as keyof Order["status"] },
-  { name: "Категория", key: "status" as keyof Order["status"] },
+  { name: "Категория", key: "category" as keyof Order["status"] },
   {
     name: "Кол-во",
-    key: "status" as keyof Order["status"],
+    key: "qnt" as keyof Order["status"],
   },
   {
     name: "Среднее обработка заявков (мин)",
-    key: "status" as keyof Order["status"],
+    key: "duration" as keyof Order["status"],
   },
 ];
 
 const BrigadaCategStat = () => {
-  const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1);
-  const { data: requests } = useOrders({
-    size: itemsPerPage,
-    page: currentPage,
-    enabled: false,
+  const start = useQueryString("start");
+  const end = useQueryString("end");
+  const { isLoading, data } = useStatsBrigadaCateg({
+    department: Departments.apc,
+    sphere_status: Sphere.retail,
+    ...(!!start && { started_at: start }),
+    ...(!!end && { finished_at: end }),
   });
 
-  console.log("fillials");
+  const calculator = (idx: number, arr: any[]) => {
+    const sumWithInitial = arr.reduce(
+      (accumulator, currentValue) => accumulator + currentValue[idx],
+      0
+    );
 
-  const [sortKey, setSortKey] = useState<any>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const handleNavigate = (route: string) => () => navigate(route);
-  const handlePageChange = (page: number) => setCurrentPage(page);
-
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
+    return sumWithInitial;
   };
   return (
     <>
-      <table className="table table-bordered w-100">
+      <table className="table table-bordered w-100 border-dark">
         <thead>
           <tr>
             {column.map(({ name, key }) => (
-              <th key={key} className={styles.tableHead}>
+              <th key={key} className={"border-dark"}>
                 {name}
               </th>
             ))}
@@ -90,59 +50,81 @@ const BrigadaCategStat = () => {
         </thead>
 
         <tbody>
-          {/* {[...Array(6)]?.map((order, idx) => ( */}
-          <tr className="bg-blue">
-            <td width="40" className="border-left border-right">
-              1
-            </td>
+          {isLoading && (
+            <tr>
+              <td>
+                <Loading />
+              </td>
+            </tr>
+          )}
+          {data &&
+            Object.keys(data)?.map((mainKey: string, idx) => (
+              <tr key={mainKey} className="bg-blue mb-2 ">
+                <td className="border-dark" width="40">
+                  {idx + 1}
+                </td>
 
-            <td className="border-left border-right">
-              <tr>Арс-Команда №1 (01|536 REA)</tr>
-            </td>
-            <td className="p-0 text-center">
-              {[...Array(6)]?.map((order, idx) => (
-                <tr
-                  style={{ width: "100%" }}
-                  className="border-bottom text-center m-auto"
-                >
-                  <td className="border-0">test name BrigadaCategStat</td>
-                </tr>
-              ))}
-            </td>
-            <td className="p-0">
-              {[...Array(6)]?.map((order, idx) => (
-                <div className="border-bottom">
-                  <td className="border-top-0">{(idx + 1) * 2}</td>
-                </div>
-              ))}
-            </td>
-            <td className="p-0">
-              {[...Array(6)]?.map((order, idx) => (
-                <div className="border-bottom">
-                  <td className="border-top-0">{(idx + 1) * 4}</td>
-                </div>
-              ))}
-            </td>
-          </tr>
+                <td className="border-dark">{mainKey}</td>
+                <td className="p-0 border-dark">
+                  <div className="d-flex flex-column">
+                    {data?.[mainKey]?.map((categ, idx) => (
+                      <span
+                        key={idx}
+                        className="border-bottom py-2 px-1 border-dark"
+                      >
+                        {categ[1]}
+                      </span>
+                    ))}
+                    <span className="border-bottom py-2 px-1 text-center font-weight-bold">
+                      Общее
+                    </span>
+                  </div>
+                </td>
+
+                <td className="p-0 border-dark">
+                  <div className="d-flex flex-column border-dark">
+                    {data[mainKey]?.map((qnt, idx) => (
+                      <span
+                        key={idx}
+                        className="border-bottom text-center py-2 px-1 border-dark"
+                      >
+                        {qnt[2]}
+                      </span>
+                    ))}
+                    <span className=" py-2 px-1 text-center font-weight-bold ">
+                      {calculator(2, data[mainKey])}
+                    </span>
+                  </div>
+                </td>
+
+                <td className="p-0 border-dark">
+                  <div className="d-flex flex-column">
+                    {data[mainKey]?.map((timer, idx) => (
+                      <span
+                        key={idx}
+                        className="border-bottom py-2 px-1 text-center border-dark"
+                      >
+                        {timer[3]}
+                      </span>
+                    ))}
+                    <span className="border-bottom py-2 px-1 text-center font-weight-bold">
+                      {calculator(3, data[mainKey])}
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
 
-      <Chart
+      {/* <Chart
         options={options}
         series={series}
         type="pie"
         // width={380}
         height={400}
-      />
-      {!!requests && (
-        <Pagination
-          totalItems={requests?.total}
-          itemsPerPage={itemsPerPage}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-        />
-      )}
-      {!requests?.items?.length && (
+      /> */}
+      {!data && (
         <div className="w-100">
           <p className="text-center w-100 ">Спосок пуст</p>
         </div>

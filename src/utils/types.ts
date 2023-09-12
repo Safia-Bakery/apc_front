@@ -378,3 +378,25 @@ export enum Sphere {
   retail = 1,
   fabric = 2,
 }
+export interface CategoryStatTypes {
+  success: boolean;
+  piechart: {
+    category_name: string;
+    request_count: number;
+    percentage: number;
+  }[];
+  table: {
+    category: string;
+    amount: number;
+    time: number;
+  }[];
+}
+
+export interface DepartmentStatTypes {
+  name: string;
+  amount: number;
+  time: number;
+}
+export interface BrigadaCategStatTypes {
+  [key: string]: (string | number)[][];
+}

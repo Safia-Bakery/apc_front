@@ -15,7 +15,7 @@ describe("Permissions", () => {
   });
 
   it("fillial permissions", () => {
-    cy.visit(baseUrl + "/roles/10");
+    cy.visit(baseUrl + "/roles/14");
     checkInput({ values: [9, 22, 23, 29], check: true });
     cy.get("#save_permission").click();
     cy.get("div").should("contain", "successfully updated").should("exist");
@@ -31,7 +31,7 @@ describe("Permissions", () => {
   });
 
   it("request APC retail permissions", () => {
-    cy.visit(baseUrl + "/roles/10");
+    cy.visit(baseUrl + "/roles/14");
     checkInput({ values: [9, 22, 23], check: false });
     checkInput({
       values: [12, 24, 25, 26, 27, 28, 46, 47, 48, 29],
@@ -79,7 +79,7 @@ describe("Permissions", () => {
   });
 
   it("request APC fabric permissions", () => {
-    cy.visit(baseUrl + "/roles/10");
+    cy.visit(baseUrl + "/roles/14");
     checkInput({ values: [12, 24, 25, 26, 27, 46, 47, 48], check: false });
     checkInput({
       values: [49, 50, 51, 52, 53, 54, 55, 56, 57],
@@ -131,7 +131,7 @@ describe("Permissions", () => {
   });
 
   // it("marketing designers requests", () => {
-  //   cy.visit(baseUrl + "/roles/10");
+  //   cy.visit(baseUrl + "/roles/14");
   //   checkInput({ values: [12, 24, 25, 26, 27, 28, 46, 47, 48], check: false });
   //   checkInput({ values: [31, 32, 44], check: true });
   //   cy.get("#save_permission").click();
@@ -169,7 +169,7 @@ describe("Permissions", () => {
 });
 
 it("local marketing requests", () => {
-  cy.visit(baseUrl + "/roles/10");
+  cy.visit(baseUrl + "/roles/14");
 
   checkInput({ values: [31, 32, 44], check: false });
   checkInput({ values: [33, 34, 45], check: true });
@@ -187,7 +187,7 @@ it("local marketing requests", () => {
   cy.get("h2").should("contain", "Заказ №");
 });
 it("Promo production requests", () => {
-  cy.visit(baseUrl + "/roles/10");
+  cy.visit(baseUrl + "/roles/14");
   checkInput({ values: [33, 34, 45], check: false });
   checkInput({ values: [35, 36, 43], check: true });
   cy.get("#save_permission").click();
@@ -204,7 +204,7 @@ it("Promo production requests", () => {
   cy.get("h2").should("contain", "Заказ №");
 });
 it("Pos materials requests", () => {
-  cy.visit(baseUrl + "/roles/10");
+  cy.visit(baseUrl + "/roles/14");
   checkInput({ values: [35, 36, 43], check: false });
   checkInput({ values: [37, 38, 42], check: true });
   cy.get("#save_permission").click();
@@ -221,7 +221,7 @@ it("Pos materials requests", () => {
   cy.get("h2").should("contain", "Заказ №");
 });
 it("Complects requests", () => {
-  cy.visit(baseUrl + "/roles/10");
+  cy.visit(baseUrl + "/roles/14");
   checkInput({ values: [37, 38, 42], check: false });
   checkInput({ values: [39, 40, 41], check: true });
   cy.get("#save_permission").click();
@@ -239,7 +239,7 @@ it("Complects requests", () => {
 });
 
 // it("comments permission", () => {
-//   cy.visit(baseUrl + "/roles/10");
+//   cy.visit(baseUrl + "/roles/14");
 //   checkInput({ values: [39, 40, 41], check: false });
 //   checkInput({ values: [1], check: true });
 //   cy.get("#save_permission").click();
@@ -253,7 +253,7 @@ it("Complects requests", () => {
 
 it("Brigades permisions", () => {
   //brigades?sphere_status=1
-  cy.visit(baseUrl + "/roles/10");
+  cy.visit(baseUrl + "/roles/14");
   checkInput({ values: [1], check: false });
   checkInput({ values: [3, 16, 17], check: true });
   cy.get("#save_permission").click();

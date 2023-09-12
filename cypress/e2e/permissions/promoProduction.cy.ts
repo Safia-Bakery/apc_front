@@ -14,7 +14,7 @@ describe("Promo Production Marketing", () => {
   });
 
   it("Promo Production requests", () => {
-    cy.visit(baseUrl + "/roles/10");
+    cy.visit(baseUrl + "/roles/14");
     checkInput({ values: [33, 34, 45], check: false });
     checkInput({ values: [35, 36, 43], check: true });
     cy.get("#save_permission").click();

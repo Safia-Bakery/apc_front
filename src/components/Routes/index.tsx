@@ -10,8 +10,6 @@ import useToken from "src/hooks/useToken";
 import BreadCrump from "../BreadCrump";
 import CustomSidebar from "../CustomSidebar";
 import { useLocation, useNavigate } from "react-router-dom";
-import "react-toastify/dist/ReactToastify.css";
-import "dayjs/locale/ru";
 import { Suspense, lazy, useEffect, useMemo } from "react";
 import { Route, Routes } from "react-router-dom";
 import Loading from "../Loader";

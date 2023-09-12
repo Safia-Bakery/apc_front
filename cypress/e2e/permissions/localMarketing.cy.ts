@@ -14,7 +14,7 @@ describe("Local Marketing", () => {
   });
 
   it("marketing designers requests", () => {
-    cy.visit(baseUrl + "/roles/10");
+    cy.visit(baseUrl + "/roles/14");
     checkInput({ values: [31, 32, 44], check: false });
     checkInput({ values: [33, 34, 45], check: true });
     cy.get("#save_permission").click();

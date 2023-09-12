@@ -9,10 +9,10 @@ describe("APC retail", () => {
   });
   it("attach to brigada", () => {
     createRequest({
-      url: "/requests-apc-retail/add?sphere_status=1",
+      url: "/requests-apc-retail/add?sphere_status=1&addExp=28",
       sphere: Sphere.apc,
     });
-    cy.visit(baseUrl + "/requests-apc-retail?sphere_status=1&addExp=28");
+    // cy.visit(baseUrl + "/requests-apc-retail?sphere_status=1&addExp=28");
     cy.get("td")
       .should("contain", "cypress testing")
       .siblings("td")

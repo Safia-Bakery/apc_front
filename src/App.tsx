@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import { queryClient } from "src/utils/helpers";
 import "dayjs/locale/ru";
 import dayjs from "dayjs";
+import "react-datepicker/dist/react-datepicker.css";
 
 dayjs.locale("ru");
 

@@ -1,6 +1,7 @@
 import cl from "classnames";
 import { FC } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
+import styles from "./index.module.scss";
 
 interface Props {
   data?: { label: string; url: string }[];
@@ -8,11 +9,11 @@ interface Props {
 
 const routesArr = [
   {
-    name: "по категориям",
+    name: "По категориям",
     url: "category",
   },
   {
-    name: "по филиалам",
+    name: "По филиалам",
     url: "fillial",
   },
   {
@@ -36,7 +37,7 @@ const ApcStatBar: FC<Props> = ({ data }) => {
             <Link
               key={route.name}
               className={cl("nav-item nav-link", {
-                ["active"]: pathname.includes(route.url),
+                [styles.active]: pathname.includes(route.url),
               })}
               to={route.url}
             >

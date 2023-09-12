@@ -1,35 +1,25 @@
 import Card from "src/components/Card";
 import styles from "./index.module.scss";
 import Header from "src/components/Header";
-import { Route, Routes, useNavigate } from "react-router-dom";
-import { ChangeEvent, useState } from "react";
-import { Order } from "src/utils/types";
-import TableHead from "src/components/TableHead";
-import useOrders from "src/hooks/useOrders";
-import { itemsPerPage } from "src/utils/helpers";
-import Pagination from "src/components/Pagination";
+import { useNavigate } from "react-router-dom";
 import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
-import ItemsCount from "src/components/ItemsCount";
-import Chart from "react-apexcharts";
 import ApcStatBar from "src/components/ApcStatBar";
-import CategoryStat from "./CategoryStat";
-import FillialStat from "./FillialStat";
+import { useNavigateParams } from "src/hooks/useCustomNavigate";
+import dayjs from "dayjs";
+import { useState } from "react";
+import useQueryString from "src/hooks/useQueryString";
 
 const Statistics = () => {
   const navigate = useNavigate();
+  const start = useQueryString("start");
+  const end = useQueryString("end");
   const goBack = () => navigate(-1);
-
-  const [selectedDate, setSelectedDate] = useState<string>("");
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const { data: requests } = useOrders({
-    size: itemsPerPage,
-    page: currentPage,
-    enabled: false,
-  });
-
-  const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSelectedDate(event.target.value);
+  const navigateParams = useNavigateParams();
+  const handleDateStart = (event: Date) => {
+    navigateParams({ start: dayjs(event).format("YYYY-MM-DD") });
+  };
+  const handleDateEnd = (event: Date) => {
+    navigateParams({ end: dayjs(event).format("YYYY-MM-DD") });
   };
 
   return (
@@ -42,22 +32,25 @@ const Statistics = () => {
 
       <div className="content">
         <div className={styles.dateBlock}>
-          <MainDatePicker selected={new Date()} onChange={handleDateChange} />
-          <MainDatePicker selected={new Date()} onChange={handleDateChange} />
-          <button type="submit" className={`btn btn-primary my-2`}>
+          <MainDatePicker
+            selected={
+              !!start
+                ? dayjs(start || undefined).toDate()
+                : dayjs().startOf("month").toDate()
+            }
+            onChange={handleDateStart}
+          />
+          <MainDatePicker
+            selected={dayjs(end || undefined).toDate()}
+            onChange={handleDateEnd}
+          />
+          {/* <button type="submit" className={`btn btn-primary my-2`}>
             Создать
-          </button>
+          </button> */}
         </div>
 
         <div className="table-responsive grid-view">
-          <ItemsCount data={requests} currentPage={currentPage} />
           <ApcStatBar />
-          {/* <Routes>
-            <Route path="/" element={<ApcStatBar />}>
-              <Route index element={<CategoryStat />} />
-              <Route path="fillial" element={<FillialStat />} />
-            </Route>
-          </Routes> */}
         </div>
       </div>
     </Card>

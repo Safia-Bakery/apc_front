@@ -14,7 +14,7 @@ describe("Marketing Designers", () => {
   });
 
   it("marketing designers requests", () => {
-    cy.visit(baseUrl + "/roles/10");
+    cy.visit(baseUrl + "/roles/14");
     checkInput({ values: [12, 24, 25, 26, 27, 28, 46, 47, 48], check: false });
     checkInput({ values: [31, 32, 44, 29, 6, 20, 21], check: true });
     cy.get("#save_permission").click();
