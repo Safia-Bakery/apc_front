@@ -86,8 +86,6 @@ const InventoryFilter: FC<Props> = ({ sub_id }) => {
     navigateAsync();
   }, [phone]);
 
-  console.log(request_status, "request_status");
-
   return (
     <>
       <td></td>
