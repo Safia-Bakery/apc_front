@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { Departments, Sphere } from "src/utils/types";
 import TableHead from "src/components/TableHead";
 import Chart from "react-apexcharts";
@@ -7,6 +7,10 @@ import { ApexOptions } from "apexcharts";
 import useStatsBrigada from "src/hooks/useStatsBrigada";
 import useQueryString from "src/hooks/useQueryString";
 import Loading from "src/components/Loader";
+
+interface Props {
+  sphere_status: Sphere;
+}
 
 const options = {
   options: {
@@ -45,13 +49,13 @@ const column = [
   },
 ];
 
-const BrigadaStat = () => {
+const BrigadaStat: FC<Props> = ({ sphere_status }) => {
   const start = useQueryString("start");
   const end = useQueryString("end");
 
   const { isLoading, data } = useStatsBrigada({
     department: Departments.apc,
-    sphere_status: Sphere.retail,
+    sphere_status,
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),
   });

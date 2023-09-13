@@ -1,37 +1,20 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef } from "react";
 import BaseInputs from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainSelect from "src/components/BaseInputs/MainSelect";
-
-import useBranches from "src/hooks/useBranches";
+import { useNavigateParams } from "src/hooks/useCustomNavigate";
 import useDebounce from "src/hooks/useDebounce";
-import { RegionNames, StatusName, itemsPerPage } from "src/utils/helpers";
+import useQueryString from "src/hooks/useQueryString";
+import { RegionNames, StatusName } from "src/utils/helpers";
 
-interface Props {
-  currentPage: number;
-}
-
-const BranchesFilter: FC<Props> = ({ currentPage }) => {
+const BranchesFilter: FC = () => {
+  const navigate = useNavigateParams();
   const initialLoadRef = useRef(true);
   const [name, $name] = useDebounce("");
-  const [country, $country] = useState("");
   const [latitude, $latitude] = useDebounce<number>(0);
   const [longitude, $longitude] = useDebounce<number>(0);
-  const [fillial_status, $fillial_status] = useState<string | undefined>();
-
-  const { refetch } = useBranches({
-    size: itemsPerPage,
-    page: currentPage,
-    origin: 0,
-    enabled: false,
-    body: {
-      ...(!!name && { name }),
-      ...(!!country && { country }),
-      ...(!!latitude && { latitude }),
-      ...(!!longitude && { longitude }),
-      ...(!!fillial_status && { fillial_status }),
-    },
-  });
+  const fillial_status = useQueryString("fillial_status");
+  const country = useQueryString("country");
 
   useEffect(() => {
     if (initialLoadRef.current) {
@@ -39,12 +22,13 @@ const BranchesFilter: FC<Props> = ({ currentPage }) => {
       return;
     }
 
-    const fetchData = async () => {
-      await refetch();
+    const navigateAsync = async () => {
+      await navigate({ name });
     };
 
-    fetchData();
-  }, [name, country, latitude, longitude, fillial_status]);
+    navigateAsync();
+  }, [name]);
+
   return (
     <>
       <td></td>
@@ -57,7 +41,8 @@ const BranchesFilter: FC<Props> = ({ currentPage }) => {
         <BaseInputs className="mb-0">
           <MainSelect
             values={RegionNames}
-            onChange={(e) => $country(e.target.value)}
+            value={country?.toString()}
+            onChange={(e) => navigate({ country: e.target.value })}
           />
         </BaseInputs>
       </td>
@@ -81,7 +66,8 @@ const BranchesFilter: FC<Props> = ({ currentPage }) => {
         <BaseInputs className="mb-0">
           <MainSelect
             values={StatusName}
-            onChange={(e) => $fillial_status(e.target.value)}
+            value={fillial_status?.toString()}
+            onChange={(e) => navigate({ fillial_status: e.target.value })}
           />
         </BaseInputs>
       </td>

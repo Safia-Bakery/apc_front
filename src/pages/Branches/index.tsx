@@ -2,7 +2,7 @@ import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
 import Pagination from "src/components/Pagination";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { BranchType, MainPermissions } from "src/utils/types";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
@@ -14,6 +14,7 @@ import useBranchSync from "src/hooks/useBranchSync";
 import Loading from "src/components/Loader";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
+import useQueryString from "src/hooks/useQueryString";
 
 const column = [
   { name: "#", key: "id" },
@@ -34,18 +35,26 @@ const column = [
 const Branches = () => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof BranchType>();
-  const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const { refetch: branchSync, isFetching } = useBranchSync({ enabled: false });
   const permisisons = useAppSelector(permissionSelector);
+  const currentPage = Number(useQueryString("page")) || 1;
+  const fillial_status = useQueryString("fillial_status");
+  const country = useQueryString("country");
+  const name = useQueryString("name");
 
   const iikoBtn = permisisons?.[MainPermissions.synch_fillials_iiko];
 
-  const { data: branches, refetch } = useBranches({
+  const { data: branches } = useBranches({
     size: itemsPerPage,
     page: currentPage,
     enabled: true,
     origin: 0,
+    body: {
+      ...(!!name && { name }),
+      ...(!!country && { country }),
+      ...(!!fillial_status && { fillial_status }),
+    },
   });
 
   const handleSort = (key: keyof BranchType) => {
@@ -67,9 +76,6 @@ const Branches = () => {
     return [];
   }, [branches?.items, sortKey, sortOrder]);
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
   const handleNavigate = (route: string) => () => navigate(route);
 
   const handleSync = () => branchSync();
@@ -79,11 +85,9 @@ const Branches = () => {
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
 
-  useEffect(() => {
-    if (currentPage > 1) refetch();
-  }, [currentPage]);
-
-  if (isFetching) return <Loading />;
+  const renderFilter = useMemo(() => {
+    return <BranchesFilter />;
+  }, [name, country, fillial_status]);
 
   return (
     <Card>
@@ -123,12 +127,13 @@ const Branches = () => {
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            <BranchesFilter currentPage={currentPage} />
+            {renderFilter}
           </TableHead>
 
-          {!!branches?.items?.length && (
-            <tbody id="branch_body">
-              {(sortData?.length ? sortData : branches.items)?.map(
+          <tbody id="branch_body">
+            {!!branches?.items?.length &&
+              !isFetching &&
+              (sortData?.length ? sortData : branches.items)?.map(
                 (branch, idx) => (
                   <tr key={idx} className="bg-blue">
                     <td width="40">{handleIdx(idx)}</td>
@@ -147,16 +152,20 @@ const Branches = () => {
                   </tr>
                 )
               )}
-            </tbody>
-          )}
+
+            {isFetching && (
+              <tr>
+                <td>
+                  <Loading />
+                </td>
+              </tr>
+            )}
+          </tbody>
         </table>
         {!!branches && (
           <Pagination
             totalItems={branches?.total}
             itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-            // refetch={refetch}
           />
         )}
         {!branches?.items?.length && (

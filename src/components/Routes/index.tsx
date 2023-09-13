@@ -516,10 +516,44 @@ const Navigation = () => {
 
           {permission?.[MainPermissions.get_statistics] && (
             <Route path="/statistics-apc-retail" element={<Statistics />}>
-              <Route index path="category" element={<CategoryStat />} />
-              <Route path="fillial" element={<FillialStat />} />
-              <Route path="brigada" element={<BrigadaStat />} />
-              <Route path="brigade_categ" element={<BrigadaCategStat />} />
+              <Route
+                index
+                path="category"
+                element={<CategoryStat sphere_status={Sphere.retail} />}
+              />
+              <Route
+                path="fillial"
+                element={<FillialStat sphere_status={Sphere.retail} />}
+              />
+              <Route
+                path="brigada"
+                element={<BrigadaStat sphere_status={Sphere.retail} />}
+              />
+              <Route
+                path="brigade_categ"
+                element={<BrigadaCategStat sphere_status={Sphere.retail} />}
+              />
+            </Route>
+          )}
+          {permission?.[MainPermissions.get_statistics] && (
+            <Route path="/statistics-apc-fabric" element={<Statistics />}>
+              <Route
+                index
+                path="category"
+                element={<CategoryStat sphere_status={Sphere.fabric} />}
+              />
+              <Route
+                path="fillial"
+                element={<FillialStat sphere_status={Sphere.fabric} />}
+              />
+              <Route
+                path="brigada"
+                element={<BrigadaStat sphere_status={Sphere.fabric} />}
+              />
+              <Route
+                path="brigade_categ"
+                element={<BrigadaCategStat sphere_status={Sphere.fabric} />}
+              />
             </Route>
           )}
 

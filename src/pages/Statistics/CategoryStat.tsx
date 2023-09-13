@@ -1,14 +1,14 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { useMemo, useState } from "react";
-import { Departments, Order, Sphere } from "src/utils/types";
+import { FC, useMemo, useState } from "react";
+import { Departments, Sphere } from "src/utils/types";
 import TableHead from "src/components/TableHead";
-import useOrders from "src/hooks/useOrders";
-import { itemsPerPage } from "src/utils/helpers";
-import Pagination from "src/components/Pagination";
 import Chart from "react-apexcharts";
 import useStatsCategory from "src/hooks/useStatsCategory";
 import Loading from "src/components/Loader";
 import useQueryString from "src/hooks/useQueryString";
+
+interface Props {
+  sphere_status: Sphere;
+}
 
 const options = {
   chart: {
@@ -39,17 +39,16 @@ const column = [
   },
 ];
 
-const CategoryStat = () => {
+const CategoryStat: FC<Props> = ({ sphere_status }) => {
   const start = useQueryString("start");
   const end = useQueryString("end");
-  const [currentPage, setCurrentPage] = useState(1);
+
   const [sortKey, setSortKey] = useState<any>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const handlePageChange = (page: number) => setCurrentPage(page);
 
   const { data, isLoading } = useStatsCategory({
     department: Departments.apc,
-    sphere_status: Sphere.retail,
+    sphere_status,
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),
   });

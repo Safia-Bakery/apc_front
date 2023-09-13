@@ -24,8 +24,8 @@ const Masters: FC<Props> = ({ add, edit, isMaster = false }) => {
   const navigate = useNavigate();
   const handleNavigate = (id: number | string) => () => navigate(`${id}`);
   const permission = useAppSelector(permissionSelector);
-  const [currentPage, setCurrentPage] = useState(1);
   const sphere_status = useQueryString("sphere_status");
+  const currentPage = Number(useQueryString("page")) || 1;
 
   const column = useMemo(() => {
     return [
@@ -69,10 +69,6 @@ const Masters: FC<Props> = ({ add, edit, isMaster = false }) => {
       });
       return sortedData;
     }
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
   };
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
@@ -141,8 +137,6 @@ const Masters: FC<Props> = ({ add, edit, isMaster = false }) => {
           <Pagination
             totalItems={brigadas?.total}
             itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
           />
         )}
         {!brigadas?.items?.length && (

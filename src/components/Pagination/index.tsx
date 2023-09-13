@@ -1,21 +1,18 @@
 import { FC } from "react";
+import { useNavigateParams } from "src/hooks/useCustomNavigate";
+import useQueryString from "src/hooks/useQueryString";
 
 interface PaginationProps {
   totalItems: number;
   itemsPerPage: number;
-  currentPage: number;
-  onPageChange: (page: number) => void;
   refetch?: () => void;
 }
 
-const Pagination: FC<PaginationProps> = ({
-  totalItems,
-  itemsPerPage,
-  currentPage,
-  onPageChange,
-  refetch,
-}) => {
+const Pagination: FC<PaginationProps> = ({ totalItems, itemsPerPage }) => {
+  const navigate = useNavigateParams();
+  const currentPage = Number(useQueryString("page")) || 1;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const handleChange = (page: number) => navigate({ page });
 
   const pageNumbers = Array.from(
     { length: totalPages },
@@ -34,7 +31,7 @@ const Pagination: FC<PaginationProps> = ({
           >
             <button
               className="page-link"
-              onClick={() => onPageChange(pageNumber)}
+              onClick={() => handleChange(pageNumber)}
             >
               {pageNumber}
             </button>

@@ -38,14 +38,14 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
   const { refetch } = useOrders({
     enabled: false,
     department: Departments.inventory,
-    body: {
-      created_at: created_at?.toISOString(),
-      ...(!!id && { id }),
-      ...(!!department && { department }),
-      ...(!!fillial_id && { fillial_id }),
-      ...(!!category_id && { category_id }),
-      ...(!!urgent && { urgent }),
-    },
+    // body: {
+    //   created_at: created_at?.toISOString(),
+    //   ...(!!id && { id }),
+    //   ...(!!department && { department }),
+    //   ...(!!fillial_id && { fillial_id }),
+    //   ...(!!category_id && { category_id }),
+    //   ...(!!urgent && { urgent }),
+    // },
   });
 
   useEffect(() => {

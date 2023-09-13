@@ -225,11 +225,11 @@ export enum RequestStatus {
   rejected,
 }
 export type RequestFilter = {
-  id?: number;
+  id?: number | string;
   department?: string;
-  fillial_id?: number;
+  fillial_id?: string;
   category_id?: number;
-  urgent?: boolean;
+  urgent?: string | null;
   created_at?: string;
   request_status?: string;
   user?: string;

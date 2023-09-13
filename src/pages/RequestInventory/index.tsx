@@ -11,6 +11,7 @@ import { handleStatus, itemsPerPage, requestRows } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import InventoryFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
+import useQueryString from "src/hooks/useQueryString";
 
 const column = [
   { name: "#", key: "" },
@@ -29,6 +30,7 @@ const RequestInventory = () => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const currentPage = Number(useQueryString("page")) || 1;
 
   const handleSort = (key: any) => {
     if (key === sortKey) {
@@ -38,7 +40,7 @@ const RequestInventory = () => {
       setSortOrder("asc");
     }
   };
-  const [currentPage, setCurrentPage] = useState(1);
+
   const {
     data: requests,
     refetch,
@@ -60,8 +62,6 @@ const RequestInventory = () => {
       return sortedData;
     }
   };
-
-  const handlePageChange = (page: number) => setCurrentPage(page);
 
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
@@ -128,8 +128,6 @@ const RequestInventory = () => {
           <Pagination
             totalItems={requests?.total}
             itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
           />
         )}
         {!requests?.items?.length && (

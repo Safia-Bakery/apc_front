@@ -1,12 +1,12 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef } from "react";
 import BaseInput from "src/components/BaseInputs";
 import BaseInputs from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainSelect from "src/components/BaseInputs/MainSelect";
+import { useNavigateParams } from "src/hooks/useCustomNavigate";
 import useDebounce from "src/hooks/useDebounce";
+import useQueryString from "src/hooks/useQueryString";
 import useRoles from "src/hooks/useRoles";
-import useUsers from "src/hooks/useUsers";
-import { itemsPerPage } from "src/utils/helpers";
 
 interface Props {
   currentPage: number;
@@ -17,27 +17,15 @@ const StatusName = [
   { name: "Не активный", id: 2 },
 ];
 
-const UsersFilter: FC<Props> = ({ currentPage }) => {
+const UsersFilter: FC<Props> = () => {
   const initialLoadRef = useRef(true);
+  const navigate = useNavigateParams();
   const [full_name, $full_name] = useDebounce("");
   const [username, $username] = useDebounce("");
   const [phone_number, $phone_number] = useDebounce("");
-  const [role_id, $role_id] = useState<number>();
-  const [user_status, $user_status] = useState<number>();
   const { data: roles, refetch: rolesRefetch } = useRoles({ enabled: false });
-
-  const { refetch } = useUsers({
-    size: itemsPerPage,
-    page: currentPage,
-
-    body: {
-      user_status,
-      ...(!!full_name && { full_name }),
-      ...(!!role_id && { role_id }),
-      ...(!!username && { username }),
-      ...(!!phone_number && { phone_number }),
-    },
-  });
+  const user_status = useQueryString("user_status");
+  const role_id = useQueryString("role_id");
 
   useEffect(() => {
     if (initialLoadRef.current) {
@@ -45,12 +33,37 @@ const UsersFilter: FC<Props> = ({ currentPage }) => {
       return;
     }
 
-    const fetchData = async () => {
-      await refetch();
+    const navigateAsync = async () => {
+      await navigate({ full_name });
     };
 
-    fetchData();
-  }, [full_name, username, phone_number, role_id, user_status]);
+    navigateAsync();
+  }, [full_name]);
+  useEffect(() => {
+    if (initialLoadRef.current) {
+      initialLoadRef.current = false;
+      return;
+    }
+
+    const navigateAsync = async () => {
+      await navigate({ username });
+    };
+
+    navigateAsync();
+  }, [username]);
+  useEffect(() => {
+    if (initialLoadRef.current) {
+      initialLoadRef.current = false;
+      return;
+    }
+
+    const navigateAsync = async () => {
+      await navigate({ phone_number });
+    };
+
+    navigateAsync();
+  }, [phone_number]);
+
   return (
     <>
       <td></td>
@@ -69,7 +82,8 @@ const UsersFilter: FC<Props> = ({ currentPage }) => {
           <MainSelect
             values={roles}
             onFocus={() => rolesRefetch()}
-            onChange={(e) => $role_id(Number(e.target.value))}
+            value={role_id?.toString()}
+            onChange={(e) => navigate({ role_id: e.target.value })}
           />
         </BaseInputs>
       </td>
@@ -82,7 +96,8 @@ const UsersFilter: FC<Props> = ({ currentPage }) => {
         <BaseInputs className="mb-0">
           <MainSelect
             values={StatusName}
-            onChange={(e) => $user_status(Number(e.target.value))}
+            value={user_status?.toString()}
+            onChange={(e) => navigate({ user_status: e.target.value })}
           />
         </BaseInputs>
       </td>

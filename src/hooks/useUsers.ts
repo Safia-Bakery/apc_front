@@ -6,8 +6,8 @@ interface BodyTypes {
   full_name?: string;
   username?: string;
   phone_number?: string;
-  role_id?: number;
-  user_status?: number;
+  role_id?: string;
+  user_status?: string;
 }
 
 export const useUsers = ({
@@ -24,7 +24,7 @@ export const useUsers = ({
   body?: BodyTypes;
 }) => {
   return useQuery({
-    queryKey: ["users", page, position],
+    queryKey: ["users", page, position, body],
     queryFn: () =>
       apiClient
         .get(`/users`, { page, size, ...body, position })

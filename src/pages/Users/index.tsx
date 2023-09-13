@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MainPermissions, UsersType } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
@@ -33,11 +33,15 @@ interface Props {
 const Users: FC<Props> = ({ add, edit }) => {
   const navigate = useNavigate();
   const handleNavigate = (route: string) => () => navigate(route);
+  const { pathname } = useLocation();
   const permission = useAppSelector(permissionSelector);
   const client = useQueryString("client");
-  const { pathname } = useLocation();
-
-  const [currentPage, setCurrentPage] = useState(1);
+  const currentPage = Number(useQueryString("currentPage")) || 1;
+  const user_status = useQueryString("user_status");
+  const full_name = useQueryString("full_name");
+  const role_id = useQueryString("role_id");
+  const username = useQueryString("username");
+  const phone_number = useQueryString("phone_number");
   const {
     data: users,
     isLoading: orderLoading,
@@ -45,6 +49,13 @@ const Users: FC<Props> = ({ add, edit }) => {
   } = useUsers({
     size: itemsPerPage,
     page: currentPage,
+    body: {
+      ...(!!full_name && { full_name }),
+      ...(!!user_status && { user_status }),
+      ...(!!role_id && { role_id }),
+      ...(!!username && { username }),
+      ...(!!phone_number && { phone_number }),
+    },
     ...(!!client && { position: false }),
   });
 
@@ -71,7 +82,6 @@ const Users: FC<Props> = ({ add, edit }) => {
     }
   };
 
-  const handlePageChange = (page: number) => setCurrentPage(page);
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
     else return index + 1 + itemsPerPage * (currentPage - 1);
@@ -83,11 +93,13 @@ const Users: FC<Props> = ({ add, edit }) => {
     if (item === 0) return "Активный";
   };
 
+  const renderFilter = useMemo(() => {
+    return <UsersFilter currentPage={currentPage} />;
+  }, [full_name, user_status, role_id, username, phone_number]);
+
   useEffect(() => {
     if (currentPage > 1) refetch();
   }, [currentPage]);
-
-  if (orderLoading) return <Loading />;
 
   return (
     <Card>
@@ -111,12 +123,13 @@ const Users: FC<Props> = ({ add, edit }) => {
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            <UsersFilter currentPage={currentPage} />
+            {renderFilter}
           </TableHead>
 
-          {!!users?.items?.length && (
-            <tbody>
-              {(sortData()?.length ? sortData() : users?.items)
+          <tbody>
+            {!!users?.items?.length &&
+              !orderLoading &&
+              (sortData()?.length ? sortData() : users?.items)
                 ?.filter((user) => user.status !== 1)
                 .map((user, idx) => (
                   <tr className="bg-blue" key={idx}>
@@ -144,17 +157,18 @@ const Users: FC<Props> = ({ add, edit }) => {
                       )}
                     </td>
                   </tr>
-                ))}
-            </tbody>
-          )}
+                ))}{" "}
+            {orderLoading && (
+              <tr>
+                <td>
+                  <Loading />
+                </td>
+              </tr>
+            )}
+          </tbody>
         </table>
         {!!users && (
-          <Pagination
-            totalItems={users?.total}
-            itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-          />
+          <Pagination totalItems={users?.total} itemsPerPage={itemsPerPage} />
         )}
         {!users?.items?.length && (
           <div className="w-100">

@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Departments, Order } from "src/utils/types";
+import { Departments, MainPermissions, Order } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
@@ -36,11 +36,21 @@ const RequestsMarketing = () => {
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const permission = useAppSelector(permissionSelector);
+  const currentPage = Number(useQueryString("page")) || 1;
 
   const title = useQueryString("title");
-  const sub_id = useQueryString("sub_id");
-  const add = useQueryString("add") || 0;
-  const edit = useQueryString("edit") || "";
+  const sub_id = Number(useQueryString("sub_id"));
+  const add = Number(useQueryString("add")) as MainPermissions;
+  const edit = Number(useQueryString("edit")) as MainPermissions;
+
+  const request_status = useQueryString("request_status");
+  const category_id = Number(useQueryString("category_id"));
+  const created_at = useQueryString("created_at");
+  const id = useQueryString("id");
+  const phone = useQueryString("phone");
+  const user = useQueryString("user");
+  const branchJson = useQueryString("branch");
+  const branch = branchJson && JSON.parse(branchJson);
 
   const handleSort = (key: any) => {
     if (key === sortKey) {
@@ -50,17 +60,23 @@ const RequestsMarketing = () => {
       setSortOrder("asc");
     }
   };
-  const [currentPage, setCurrentPage] = useState(1);
-  const {
-    data: requests,
-    refetch,
-    isLoading: orderLoading,
-  } = useOrders({
-    enabled: false,
+  const { data: requests, isLoading: orderLoading } = useOrders({
     size: itemsPerPage,
     department: Departments.marketing,
     page: currentPage,
-    sub_id: Number(sub_id),
+    sub_id: sub_id,
+
+    body: {
+      ...(!!created_at && {
+        created_at: dayjs(created_at).format("YYYY-MM-DD"),
+      }),
+      ...(!!id && { id }),
+      ...(!!phone && { executor: phone }),
+      ...(!!branch?.id && { fillial_id: branch?.id }),
+      ...(!!category_id && { category_id }),
+      ...(!!request_status && { request_status }),
+      ...(!!user && { user }),
+    },
   });
 
   const sortData = () => {
@@ -74,24 +90,18 @@ const RequestsMarketing = () => {
     }
   };
 
-  const handlePageChange = (page: number) => setCurrentPage(page);
-
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
-
-  useEffect(() => {
-    refetch();
-  }, [currentPage, sub_id]);
-
-  if (orderLoading) return <Loading />;
+  const renderFilter = useMemo(() => {
+    return <InventoryFilter sub_id={sub_id} />;
+  }, [request_status, category_id, created_at, id, phone, user, branch]);
 
   return (
     <Card className="overflow-hidden">
       <Header title={title?.toString()}>
-        {/* @ts-ignore */}
-        {permission?.[Number(add)] && (
+        {permission?.[add] && (
           <button
             onClick={() =>
               navigate(
@@ -115,18 +125,19 @@ const RequestsMarketing = () => {
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            <InventoryFilter sub_id={sub_id!} currentPage={currentPage} />
+            {renderFilter}
+            {/* <InventoryFilter sub_id={sub_id!} currentPage={currentPage} /> */}
           </TableHead>
 
-          {!!requests?.items?.length && (
-            <tbody>
-              {(sortData()?.length ? sortData() : requests?.items)?.map(
+          <tbody>
+            {!!requests?.items?.length &&
+              !orderLoading &&
+              (sortData()?.length ? sortData() : requests?.items)?.map(
                 (order, idx) => (
                   <tr className={requestRows(order.status)} key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
-                      {/* @ts-ignore */}
-                      {permission?.[Number(edit)] ? (
+                      {permission?.[edit] ? (
                         <Link
                           id="request_id"
                           to={`${order?.id}?sub_id=${sub_id}&edit=${edit}`}
@@ -156,15 +167,20 @@ const RequestsMarketing = () => {
                   </tr>
                 )
               )}
-            </tbody>
-          )}
+
+            {orderLoading && (
+              <tr>
+                <td>
+                  <Loading />
+                </td>
+              </tr>
+            )}
+          </tbody>
         </table>
         {!!requests && (
           <Pagination
             totalItems={requests?.total}
             itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
           />
         )}
         {!requests?.items?.length && (

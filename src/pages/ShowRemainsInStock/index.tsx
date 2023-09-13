@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import TableViewBtn from "src/components/TableViewBtn";
 import MainInput from "src/components/BaseInputs/MainInput";
+import useQueryString from "src/hooks/useQueryString";
 
 const column = [
   { name: "#", key: "" },
@@ -23,6 +24,7 @@ const ShowRemainsInStock = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
   const handleNavigate = (route: string) => () => navigate(route);
+  const currentPage = Number(useQueryString("page")) || 1;
 
   const [sortKey, setSortKey] = useState();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -35,7 +37,7 @@ const ShowRemainsInStock = () => {
       setSortOrder("asc");
     }
   };
-  const [currentPage, setCurrentPage] = useState(1);
+
   const {
     data: requests,
     refetch,
@@ -55,8 +57,6 @@ const ShowRemainsInStock = () => {
       return sortedData;
     }
   };
-
-  const handlePageChange = (page: number) => setCurrentPage(page);
 
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
@@ -112,8 +112,6 @@ const ShowRemainsInStock = () => {
           <Pagination
             totalItems={requests?.total}
             itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
           />
         )}
         {!requests?.items?.length && (

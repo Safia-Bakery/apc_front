@@ -1,6 +1,5 @@
 import { RequestStatusArr, SystemArr, UrgentNames } from "src/utils/helpers";
-import { FC, useEffect, useRef, useState } from "react";
-import useOrders from "src/hooks/useOrders";
+import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import useDebounce from "src/hooks/useDebounce";
 import "react-datepicker/dist/react-datepicker.css";
 import BaseInputs from "src/components/BaseInputs";
@@ -14,7 +13,10 @@ import styles from "./index.module.scss";
 import cl from "classnames";
 import { Departments, Sphere } from "src/utils/types";
 import dayjs from "dayjs";
-import { useNavigateParams } from "src/hooks/useCustomNavigate";
+import {
+  useNavigateParams,
+  useRemoveParams,
+} from "src/hooks/useCustomNavigate";
 import useCategories from "src/hooks/useCategories";
 
 interface Props {
@@ -22,9 +24,9 @@ interface Props {
 }
 
 const InventoryFilter: FC<Props> = ({ currentPage }) => {
-  const initialLoadRef = useRef(true);
   const navigate = useNavigateParams();
-  const choose_fillial = useQueryString("choose_fillial");
+  const initialLoadRef = useRef(true);
+  const deleteParam = useRemoveParams();
   const sphere_status = useQueryString("sphere_status");
 
   const { data: categories, refetch: catRefetch } = useCategories({
@@ -33,37 +35,27 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
     enabled: false,
   });
 
-  const branchJson = useQueryString("branch");
-  const branch = branchJson && JSON.parse(branchJson);
-
-  const [id, $id] = useDebounce<number>(0);
-  const [system, $system] = useState<number>(0);
-  const [department, $department] = useState<string>();
-  const [category_id, $category_id] = useState<number>();
-  const [urgent, $urgent] = useState<boolean>();
-  const [created_at, $created_at] = useState<Date | null>();
-  const [request_status, $request_status] = useState<string>();
+  const [id, $id] = useDebounce<string>("");
   const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
+  const system = useQueryString("system");
+  const request_status = useQueryString("request_status");
+  const category_id = Number(useQueryString("category_id"));
+  const urgent = useQueryString("urgent");
+  const created_at = useQueryString("created_at");
 
-  const { refetch } = useOrders({
-    enabled: false,
-    department: Departments.apc,
-    ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
-    ...(!!system && { is_bot: !!system }),
-    body: {
-      ...(!!created_at && {
-        created_at: dayjs(created_at).format("YYYY-MM-DD"),
-      }),
-      ...(!!id && { id }),
-      ...(!!department && { department }),
-      ...(!!branch?.id && { fillial_id: branch?.id }),
-      ...(!!category_id && { category_id }),
-      ...(!!request_status && { request_status }),
-      ...(!!user && { user }),
-      ...(!!urgent && { urgent }),
-    },
-  });
+  const startRange = (start: Date | null) => {
+    if (start === undefined) deleteParam(["created_at"]);
+    if (!!start) navigate({ created_at: start });
+  };
+  const handleName = (user: string) => $user(user);
+
+  const handleID = (id: string) => $id(id);
+
+  const handleUrgent = (e: ChangeEvent<HTMLSelectElement>) => {
+    if (!!e.target.value) navigate({ urgent: !!+e.target.value });
+    else deleteParam(["urgent"]);
+  };
 
   useEffect(() => {
     if (initialLoadRef.current) {
@@ -71,51 +63,47 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
       return;
     }
 
-    const fetchData = async () => {
-      await refetch();
+    const navigateAsync = async () => {
+      await navigate({ user });
     };
 
-    fetchData();
-  }, [
-    id,
-    department,
-    branch?.id,
-    category_id,
-    urgent,
-    created_at,
-    request_status,
-    user,
-    currentPage,
-    sphere_status,
-    system,
-  ]);
+    navigateAsync();
+  }, [user]);
+  useEffect(() => {
+    if (initialLoadRef.current) {
+      initialLoadRef.current = false;
+      return;
+    }
 
-  const startRange = (start: Date | null) => $created_at(start);
+    const navigateAsync = async () => {
+      await navigate({ id });
+    };
+
+    navigateAsync();
+  }, [id]);
 
   return (
     <>
       <td></td>
       <td className="p-0">
         <BaseInput className="m-2">
-          <MainInput
-            type="number"
-            onChange={(e) => $id(Number(e.target.value))}
-          />
+          <MainInput type="number" onChange={(e) => handleID(e.target.value)} />
         </BaseInput>
       </td>
       {Number(sphere_status) === Sphere.fabric && (
         <td className="p-0">
           <BaseInput className="m-2">
             <MainSelect
+              value={system?.toString()}
               values={SystemArr}
-              onChange={(e) => $system(Number(e.target.value))}
+              onChange={(e) => navigate({ system: e.target.value })}
             />
           </BaseInput>
         </td>
       )}
       <td className="p-0">
         <BaseInput className="m-2">
-          <MainInput onChange={(e) => $user(e.target.value)} />
+          <MainInput onChange={(e) => handleName(e.target.value)} />
         </BaseInput>
       </td>
       <td width={150} className="p-0 position-relative">
@@ -131,7 +119,8 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
           <MainSelect
             values={categories?.items}
             onFocus={() => catRefetch()}
-            onChange={(e) => $category_id(Number(e.target.value))}
+            value={category_id.toString()}
+            onChange={(e) => navigate({ category_id: e.target.value })}
           />
         </BaseInputs>
       </td>
@@ -139,30 +128,39 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
         <BaseInputs className="m-2">
           <MainSelect
             values={UrgentNames}
-            onChange={(e) => $urgent(!!Number(e.target.value))}
+            value={urgent?.toString()}
+            onChange={handleUrgent}
           />
         </BaseInputs>
       </td>
-
       <td className="p-0">
         <BaseInput className="m-2">
-          <MainInput onChange={(e) => $user(e.target.value)} />
+          <MainInput onChange={(e) => navigate({ user: e.target.value })} />
         </BaseInput>
       </td>
       <td className="p-0">
-        <MainDatePicker selected={created_at} onChange={startRange} />
+        <MainDatePicker
+          selected={
+            !!created_at && created_at !== "undefined"
+              ? dayjs(created_at).toDate()
+              : undefined
+          }
+          onChange={startRange}
+        />
       </td>
+
       <td className="p-0">
         <BaseInputs className="m-2">
           <MainSelect
             values={RequestStatusArr}
-            onChange={(e) => $request_status(e.target.value)}
+            value={request_status?.toString()}
+            onChange={(e) => navigate({ request_status: e.target.value })}
           />
         </BaseInputs>
       </td>
       <td className="p-0">
         <BaseInput className="m-2">
-          <MainInput onChange={(e) => $user(e.target.value)} />
+          <MainInput onChange={(e) => navigate({ user: e.target.value })} />
         </BaseInput>
       </td>
     </>

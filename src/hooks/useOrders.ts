@@ -22,7 +22,7 @@ export const useOrders = ({
   is_bot?: boolean;
 }) => {
   return useQuery({
-    queryKey: ["requests", page, sub_id, department, sphere_status],
+    queryKey: ["requests", page, sub_id, department, sphere_status, body],
     queryFn: () =>
       apiClient
         .get("/request", {

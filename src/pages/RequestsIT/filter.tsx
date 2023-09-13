@@ -37,16 +37,16 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
 
   const { refetch } = useOrders({
     enabled: false,
-    body: {
-      created_at: endDate?.toISOString(),
-      ...(!!id && { id }),
-      ...(!!executor && { executor }),
-      ...(!!fillial_id && { fillial_id }),
-      ...(!!category_id && { category_id }),
-      ...(!!request_status && { request_status }),
-      ...(!!user && { user }),
-      ...(!!comment && { comment }),
-    },
+    // body: {
+    //   created_at: endDate?.toISOString(),
+    //   ...(!!id && { id }),
+    //   ...(!!executor && { executor }),
+    //   ...(!!fillial_id && { fillial_id }),
+    //   ...(!!category_id && { category_id }),
+    //   ...(!!request_status && { request_status }),
+    //   ...(!!user && { user }),
+    //   ...(!!comment && { comment }),
+    // },
   });
 
   useEffect(() => {

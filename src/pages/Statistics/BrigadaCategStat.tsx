@@ -1,8 +1,8 @@
 import { Departments, Order, Sphere } from "src/utils/types";
 import useStatsBrigadaCateg from "src/hooks/useStatsBrigadaCateg";
-import dayjs from "dayjs";
 import useQueryString from "src/hooks/useQueryString";
 import Loading from "src/components/Loader";
+import { FC } from "react";
 
 const column = [
   { name: "№", key: "id" as keyof Order["id"] },
@@ -17,13 +17,16 @@ const column = [
     key: "duration" as keyof Order["status"],
   },
 ];
+interface Props {
+  sphere_status: Sphere;
+}
 
-const BrigadaCategStat = () => {
+const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
   const start = useQueryString("start");
   const end = useQueryString("end");
   const { isLoading, data } = useStatsBrigadaCateg({
     department: Departments.apc,
-    sphere_status: Sphere.retail,
+    sphere_status,
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),
   });

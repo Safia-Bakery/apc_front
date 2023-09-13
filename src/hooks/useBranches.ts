@@ -29,7 +29,7 @@ export const useBranches = ({
   const dispatch = useAppDispatch();
   const permmission = useAppSelector(permissionSelector);
   return useQuery({
-    queryKey: ["branches", origin],
+    queryKey: ["branches", origin, body, page],
     queryFn: () =>
       apiClient
         .get("/fillials", { page, size, origin, ...body })

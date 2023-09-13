@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Departments, MainPermissions, Order, Sphere } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
@@ -29,6 +29,18 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
   const permission = useAppSelector(permissionSelector);
   const sphere_status = useQueryString("sphere_status");
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
+  const currentPage = Number(useQueryString("page")) || 1;
+
+  const user = useQueryString("user");
+  const id = Number(useQueryString("id"));
+  const system = useQueryString("system");
+  const department = useQueryString("department");
+  const category_id = Number(useQueryString("category_id"));
+  const urgent = useQueryString("urgent");
+  const created_at = useQueryString("created_at");
+  const request_status = useQueryString("request_status");
+  const branchJson = useQueryString("branch");
+  const branch = branchJson && JSON.parse(branchJson);
 
   const column = useMemo(() => {
     const columns = [
@@ -63,6 +75,20 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
     return value;
   };
 
+  const renderFilter = useMemo(() => {
+    return <RequestsFilter currentPage={currentPage} />;
+  }, [
+    user,
+    id,
+    system,
+    department,
+    category_id,
+    urgent,
+    created_at,
+    request_status,
+    branch,
+  ]);
+
   const handleSort = (key: any) => {
     if (key === sortKey) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
@@ -71,17 +97,27 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
       setSortOrder("asc");
     }
   };
-  const [currentPage, setCurrentPage] = useState(1);
-  const {
-    data: requests,
-    refetch,
-    isLoading: orderLoading,
-  } = useOrders({
+  const { data: requests, isLoading: orderLoading } = useOrders({
     enabled: true,
     size: itemsPerPage,
     department: Departments.apc,
     page: currentPage,
     sphere_status: Number(sphere_status),
+
+    ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
+    ...(!!system && { is_bot: !!system }),
+    body: {
+      ...(!!created_at && {
+        created_at: dayjs(created_at).format("YYYY-MM-DD"),
+      }),
+      ...(!!id && { id }),
+      ...(!!department && { department }),
+      ...(!!branch?.id && { fillial_id: branch?.id }),
+      ...(!!category_id && { category_id }),
+      ...(!!request_status && { request_status }),
+      ...(!!user && { user: user }),
+      ...(!!urgent && { urgent }),
+    },
   });
   const sortData = () => {
     if (requests?.items && sortKey) {
@@ -97,18 +133,10 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
     }
   };
 
-  const handlePageChange = (page: number) => setCurrentPage(page);
-
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
-
-  useEffect(() => {
-    refetch();
-  }, [currentPage, sphere_status]);
-
-  if (orderLoading) return <Loading />;
 
   return (
     <Card>
@@ -136,12 +164,13 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            <RequestsFilter currentPage={currentPage} />
+            {/* <RequestsFilter currentPage={currentPage} /> */}
+            {renderFilter}
           </TableHead>
-
-          {!!requests?.items?.length && (
-            <tbody id="requests_body">
-              {(sortData()?.length ? sortData() : requests?.items)?.map(
+          <tbody id="requests_body">
+            {!!requests?.items?.length &&
+              !orderLoading &&
+              (sortData()?.length ? sortData() : requests?.items)?.map(
                 (order, idx) => (
                   <tr className={requestRows(order?.status)} key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
@@ -193,15 +222,19 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
                   </tr>
                 )
               )}
-            </tbody>
-          )}
+            {orderLoading && (
+              <tr>
+                <td>
+                  <Loading />
+                </td>
+              </tr>
+            )}
+          </tbody>
         </table>
         {!!requests && (
           <Pagination
             totalItems={requests?.total}
             itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
           />
         )}
         {!requests?.items?.length && (

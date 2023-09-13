@@ -19,7 +19,7 @@ export const OrderTypeNames = [
 ];
 export const UrgentNames = [
   { name: "Срочный", id: 1 },
-  { name: "Несрочный", id: 2 },
+  { name: "Несрочный", id: 0 },
 ];
 export const RegionNames = [
   { name: "Uzbekistan", id: "Uzbekistan" },

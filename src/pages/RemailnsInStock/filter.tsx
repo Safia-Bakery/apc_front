@@ -27,16 +27,16 @@ const StockFilter: FC<Props> = ({ currentPage }) => {
 
   const { refetch } = useOrders({
     enabled: false,
-    body: {
-      ...(!!id && { id }),
-      ...(!!created_at && { created_at: created_at?.toISOString() }),
-      ...(!!department && { department }),
-      ...(!!fillial_id && { fillial_id }),
-      ...(!!category_id && { category_id }),
-      ...(!!request_status && { request_status }),
-      ...(!!user && { user }),
-      ...(!!urgent && { urgent }),
-    },
+    // body: {
+    //   ...(!!id && { id }),
+    //   ...(!!created_at && { created_at: created_at?.toISOString() }),
+    //   ...(!!department && { department }),
+    //   ...(!!fillial_id && { fillial_id }),
+    //   ...(!!category_id && { category_id }),
+    //   ...(!!request_status && { request_status }),
+    //   ...(!!user && { user }),
+    //   ...(!!urgent && { urgent }),
+    // },
   });
 
   useEffect(() => {

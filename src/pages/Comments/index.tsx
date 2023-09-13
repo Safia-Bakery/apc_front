@@ -1,5 +1,4 @@
 import Card from "src/components/Card";
-import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { Link, useNavigate } from "react-router-dom";
 import Pagination from "src/components/Pagination";
@@ -9,6 +8,7 @@ import TableHead from "src/components/TableHead";
 import dayjs from "dayjs";
 import ItemsCount from "src/components/ItemsCount";
 import useComments from "src/hooks/useComments";
+import useQueryString from "src/hooks/useQueryString";
 
 const column = [
   { name: "#", key: "id" },
@@ -22,6 +22,7 @@ const column = [
 const Comments = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
+  const currentPage = Number(useQueryString("page")) || 1;
 
   const [sortKey, setSortKey] = useState<any>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -34,14 +35,10 @@ const Comments = () => {
       setSortOrder("asc");
     }
   };
-  const [currentPage, setCurrentPage] = useState(1);
   const { data: comments } = useComments({
     size: itemsPerPage,
     page: currentPage,
   });
-
-  const handlePageChange = (page: number) => setCurrentPage(page);
-  const handleNavigate = (route: string) => () => navigate(route);
 
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
@@ -93,8 +90,6 @@ const Comments = () => {
             <Pagination
               totalItems={comments?.total}
               itemsPerPage={itemsPerPage}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
             />
           )}
           {!comments?.items?.length && (

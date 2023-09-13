@@ -39,6 +39,7 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
   const [sortKey, setSortKey] = useState<keyof Category>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const permission = useAppSelector(permissionSelector);
+  const currentPage = Number(useQueryString("page")) || 1;
 
   const handleSort = (key: keyof Category) => {
     if (key === sortKey) {
@@ -49,7 +50,6 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
     }
   };
 
-  const [currentPage, setCurrentPage] = useState(1);
   const { data: categories, refetch } = useCategories({
     size: itemsPerPage,
     page: currentPage,
@@ -68,7 +68,6 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
     }
   };
 
-  const handlePageChange = (page: number) => setCurrentPage(page);
   const handleNavigate = (route: string) => () => navigate(route);
 
   const handleIdx = (index: number) => {
@@ -148,8 +147,6 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
             <Pagination
               totalItems={categories?.total}
               itemsPerPage={itemsPerPage}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
             />
           )}
           {!categories?.items?.length && (

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { Departments, Sphere } from "src/utils/types";
 import TableHead from "src/components/TableHead";
 import useStatsDepartment from "src/hooks/useStatsDepartment";
@@ -10,7 +10,11 @@ const column = [
   { name: "Количество (шт)", key: "amount" },
 ];
 
-const FillialStat = () => {
+interface Props {
+  sphere_status: Sphere;
+}
+
+const FillialStat: FC<Props> = ({ sphere_status }) => {
   const start = useQueryString("start");
   const end = useQueryString("end");
   const [sortKey, setSortKey] = useState<any>();
@@ -18,7 +22,7 @@ const FillialStat = () => {
 
   const { data, isLoading } = useStatsDepartment({
     department: Departments.apc,
-    sphere_status: Sphere.retail,
+    sphere_status,
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),
   });
