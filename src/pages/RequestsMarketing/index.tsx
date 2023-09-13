@@ -66,8 +66,8 @@ const RequestsMarketing = () => {
   const sortData = () => {
     if (requests?.items && sortKey) {
       const sortedData = [...requests?.items].sort((a, b) => {
-        if (a[sortKey] < b[sortKey]) return sortOrder === "asc" ? -1 : 1;
-        if (a[sortKey] > b[sortKey]) return sortOrder === "asc" ? 1 : -1;
+        if (a[sortKey]! < b[sortKey]!) return sortOrder === "asc" ? -1 : 1;
+        if (a[sortKey]! > b[sortKey]!) return sortOrder === "asc" ? 1 : -1;
         else return 0;
       });
       return sortedData;
