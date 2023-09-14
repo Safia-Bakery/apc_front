@@ -31,10 +31,15 @@ const ShowRequestModals = () => {
   const photo = useQueryString("photo");
   const sphere_status = useQueryString("sphere_status");
   const removeParams = useRemoveParams();
-  const [fixedReason, $fixedReason] = useState<any>();
 
   const { mutate: attach } = attachBrigadaMutation();
-  const { register, getValues } = useForm();
+  const {
+    register,
+    getValues,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const { data: brigades, isLoading } = useBrigadas({
     enabled: false,
@@ -46,6 +51,7 @@ const ShowRequestModals = () => {
   const handleBrigada =
     ({ status, item }: { status: RequestStatus; item?: BrigadaType }) =>
     () => {
+      const { fixedReason } = getValues();
       attach(
         {
           request_id: Number(id),
@@ -105,7 +111,12 @@ const ShowRequestModals = () => {
         );
       case ModalTypes.cancelRequest:
         return (
-          <div className={styles.birgadesModal}>
+          <form
+            onSubmit={handleSubmit(
+              handleBrigada({ status: RequestStatus.rejected })
+            )}
+            className={styles.birgadesModal}
+          >
             <Header title="Причина отклонении">
               <button onClick={() => removeParams(["modal"])} className="close">
                 <span aria-hidden="true">&times;</span>
@@ -113,7 +124,11 @@ const ShowRequestModals = () => {
             </Header>
             <div className="p-3">
               <BaseInput label="Выберите причину">
-                <MainSelect onChange={(e) => $fixedReason(e.target.value)}>
+                <MainSelect
+                  register={register("fixedReason", {
+                    required: "Обязательное поле",
+                  })}
+                >
                   <option value={undefined} />
 
                   {Object.keys(CancelReason).map((item) => (
@@ -124,20 +139,17 @@ const ShowRequestModals = () => {
                 </MainSelect>
               </BaseInput>
 
-              {fixedReason == 4 && (
+              {getValues("fixedReason") == 4 && (
                 <BaseInput label="Комментарии">
                   <MainTextArea register={register("cancel_reason")} />
                 </BaseInput>
               )}
 
-              <button
-                className="btn btn-success"
-                onClick={handleBrigada({ status: RequestStatus.rejected })}
-              >
+              <button className="btn btn-success" type="submit">
                 Отправить
               </button>
             </div>
-          </div>
+          </form>
         );
 
       case ModalTypes.showPhoto:
@@ -160,7 +172,7 @@ const ShowRequestModals = () => {
       default:
         return;
     }
-  }, [modal, brigades?.items, photo, detectFileType, fixedReason]);
+  }, [modal, brigades?.items, photo, detectFileType, watch("fixedReason")]);
 
   return (
     <Modal

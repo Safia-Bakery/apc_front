@@ -125,3 +125,16 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+.table > :not(caption) > * > :not(th) {
+  background-color: transparent !important;
+}
+
+.table-success {
+  background-color: #87cb16 !important;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 0.6 !important;
+    --bs-table-hover-bg: #87cb16 !important;
+  }
+}

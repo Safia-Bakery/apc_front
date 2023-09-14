@@ -103,7 +103,7 @@ const Users: FC<Props> = ({ add, edit }) => {
 
   return (
     <Card>
-      <Header title={"Пользователи"}>
+      <Header title={!client ? "Пользователи" : "Клиенты"}>
         {permission?.[add] && (
           <button
             className="btn btn-success btn-fill"
@@ -157,7 +157,7 @@ const Users: FC<Props> = ({ add, edit }) => {
                       )}
                     </td>
                   </tr>
-                ))}{" "}
+                ))}
             {orderLoading && (
               <tr>
                 <td>
@@ -170,7 +170,7 @@ const Users: FC<Props> = ({ add, edit }) => {
         {!!users && (
           <Pagination totalItems={users?.total} itemsPerPage={itemsPerPage} />
         )}
-        {!users?.items?.length && (
+        {!users?.items?.length && !orderLoading && (
           <div className="w-100">
             <p className="text-center w-100 ">Спосок пуст</p>
           </div>

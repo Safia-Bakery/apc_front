@@ -31,6 +31,14 @@ const routeNameMappings: { [key: string]: string } = {
   "requests-inventory": "Заявка на инвентарь",
   "requests-apc": "Заявки АРС",
   "requests-designer": "Проектная работа для дизайнеров",
+  "requests-apc-retail": "Заявки на APC розница",
+  "requests-apc-fabric": "Заявки на APC фабрика",
+  "marketing-local_marketing": "Локальный маркетинг",
+  "marketing-promo_production": "Промо-продукция",
+  "marketing-pos": "POS-Материалы",
+  "marketing-complects": "Комплекты",
+  "marketing-designers": "Проектная работа для дизайнеров",
+  clients: "Клиенты",
 };
 
 const Breadcrumbs: FC = () => {

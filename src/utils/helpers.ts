@@ -92,7 +92,6 @@ export const SystemArr = [
   { id: 0, name: "Веб-сайт" },
   { id: 1, name: "Телеграм-бот" },
 ];
-
 export const requestRows = (status: RequestStatus) => {
   switch (status) {
     case RequestStatus.done:

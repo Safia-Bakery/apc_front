@@ -6,7 +6,6 @@ import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
 import ApcStatBar from "src/components/ApcStatBar";
 import { useNavigateParams } from "src/hooks/useCustomNavigate";
 import dayjs from "dayjs";
-import { useState } from "react";
 import useQueryString from "src/hooks/useQueryString";
 
 const Statistics = () => {

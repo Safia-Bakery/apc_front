@@ -119,7 +119,7 @@ const BrigadaStat: FC<Props> = ({ sphere_status }) => {
           height={400}
         />
       )}
-      {!data?.length && (
+      {!data?.length && !isLoading && (
         <div className="w-100">
           <p className="text-center w-100 ">Спосок пуст</p>
         </div>

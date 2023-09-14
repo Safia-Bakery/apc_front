@@ -18,15 +18,10 @@ import useCategories from "src/hooks/useCategories";
 import { Departments, MainPermissions, Sphere } from "src/utils/types";
 import WarehouseSelect from "src/components/WarehouseSelect";
 import Loading from "src/components/Loader";
-import useBranches from "src/hooks/useBranches";
 
 const CreateApcRequest = () => {
   const [files, $files] = useState<FormData>();
   const { mutate, isLoading } = requestMutation();
-  // const { isLoading: branchLoading, refetch: branchRefetch } = useBranches({
-  //   origin: 1,
-  //   enabled: true,
-  // });
   const branchJson = useQueryString("branch");
   const sphere_status = Number(useQueryString("sphere_status"));
   const branch = branchJson && JSON.parse(branchJson);

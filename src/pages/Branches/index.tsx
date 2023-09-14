@@ -168,7 +168,7 @@ const Branches = () => {
             itemsPerPage={itemsPerPage}
           />
         )}
-        {!branches?.items?.length && (
+        {!branches?.items?.length && !isFetching && (
           <div className="w-100">
             <p className="text-center w-100 ">Спосок пуст</p>
           </div>

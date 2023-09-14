@@ -63,7 +63,7 @@ const FillialStat: FC<Props> = ({ sphere_status }) => {
         </tbody>
       </table>
 
-      {!data?.length && (
+      {!data?.length && !isLoading && (
         <div className="w-100">
           <p className="text-center w-100 ">Спосок пуст</p>
         </div>

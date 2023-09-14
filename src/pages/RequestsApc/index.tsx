@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Departments, MainPermissions, Order, Sphere } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
@@ -97,7 +97,11 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
       setSortOrder("asc");
     }
   };
-  const { data: requests, isLoading: orderLoading } = useOrders({
+  const {
+    data: requests,
+    isLoading: orderLoading,
+    refetch,
+  } = useOrders({
     enabled: true,
     size: itemsPerPage,
     department: Departments.apc,
@@ -137,6 +141,10 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
     if (currentPage === 1) return index + 1;
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
+
+  useEffect(() => {
+    refetch();
+  }, [currentPage, sphere_status]);
 
   return (
     <Card>
@@ -237,7 +245,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
             itemsPerPage={itemsPerPage}
           />
         )}
-        {!requests?.items?.length && (
+        {!requests?.items?.length && !orderLoading && (
           <div className="w-100">
             <p className="text-center w-100">Спосок пуст</p>
           </div>

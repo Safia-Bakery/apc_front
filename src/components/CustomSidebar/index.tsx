@@ -304,7 +304,7 @@ const CustomSidebar = () => {
                       isMobile &&
                       dispatch(sidebarHandler(false))
                     }
-                    state={{ name: item.name }}
+                    state={{ name: item?.name }}
                     to={`${item.url}${!!item?.param ? item?.param : ""}`}
                   />
                 }

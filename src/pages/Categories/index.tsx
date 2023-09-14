@@ -50,7 +50,11 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
     }
   };
 
-  const { data: categories, refetch } = useCategories({
+  const {
+    data: categories,
+    refetch,
+    isLoading,
+  } = useCategories({
     size: itemsPerPage,
     page: currentPage,
     ...(dep && { department: +dep }),
@@ -149,7 +153,7 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
               itemsPerPage={itemsPerPage}
             />
           )}
-          {!categories?.items?.length && (
+          {!categories?.items?.length && !isLoading && (
             <div className="w-100">
               <p className="text-center w-100 ">Спосок пуст</p>
             </div>

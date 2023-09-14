@@ -107,7 +107,7 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
           height={400}
         />
       )}
-      {!data?.table.length && (
+      {!data?.table.length && !isLoading && (
         <div className="w-100">
           <p className="text-center w-100">Спосок пуст</p>
         </div>

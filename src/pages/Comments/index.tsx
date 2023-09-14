@@ -35,7 +35,7 @@ const Comments = () => {
       setSortOrder("asc");
     }
   };
-  const { data: comments } = useComments({
+  const { data: comments, isLoading } = useComments({
     size: itemsPerPage,
     page: currentPage,
   });
@@ -92,7 +92,7 @@ const Comments = () => {
               itemsPerPage={itemsPerPage}
             />
           )}
-          {!comments?.items?.length && (
+          {!comments?.items?.length && !isLoading && (
             <div className="w-100">
               <p className="text-center w-100 ">Спосок пуст</p>
             </div>

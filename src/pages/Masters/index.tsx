@@ -139,7 +139,7 @@ const Masters: FC<Props> = ({ add, edit, isMaster = false }) => {
             itemsPerPage={itemsPerPage}
           />
         )}
-        {!brigadas?.items?.length && (
+        {!brigadas?.items?.length && !orderLoading && (
           <div className="w-100">
             <p className="text-center w-100">Спосок пуст</p>
           </div>

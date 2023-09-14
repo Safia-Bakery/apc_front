@@ -127,7 +127,7 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
         // width={380}
         height={400}
       /> */}
-      {!data && (
+      {!data && !isLoading && (
         <div className="w-100">
           <p className="text-center w-100 ">Спосок пуст</p>
         </div>
