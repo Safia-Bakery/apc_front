@@ -11,7 +11,7 @@ import BranchSelect from "src/components/BranchSelect";
 import useQueryString from "src/hooks/useQueryString";
 import styles from "./index.module.scss";
 import cl from "classnames";
-import { Departments, Sphere } from "src/utils/types";
+import { Departments, MainPermissions, Sphere } from "src/utils/types";
 import dayjs from "dayjs";
 import {
   useNavigateParams,
@@ -19,16 +19,19 @@ import {
 } from "src/hooks/useCustomNavigate";
 import useCategories from "src/hooks/useCategories";
 import { useForm } from "react-hook-form";
+import { permissionSelector } from "src/redux/reducers/auth";
+import { useAppSelector } from "src/redux/utils/types";
 
 const ApcFilter: FC = () => {
   const navigate = useNavigateParams();
   const initialLoadRef = useRef(true);
   const deleteParam = useRemoveParams();
-  const sphere_status = useQueryString("sphere_status");
+  const perm = useAppSelector(permissionSelector);
+  const sphere_status = Number(useQueryString("sphere_status"));
 
   const { data: categories, refetch: catRefetch } = useCategories({
     department: Departments.apc,
-    ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
+    ...(!!sphere_status && { sphere_status }),
     enabled: false,
   });
 
@@ -103,7 +106,7 @@ const ApcFilter: FC = () => {
           />
         </BaseInput>
       </td>
-      {Number(sphere_status) === Sphere.fabric && (
+      {sphere_status === Sphere.fabric && (
         <td className="p-0">
           <BaseInput className="m-2">
             <MainSelect
@@ -127,7 +130,9 @@ const ApcFilter: FC = () => {
           onClick={() => $enabled(true)}
           className={cl("position-absolute w-100 ", styles.fillial)}
         >
-          <BranchSelect enabled={enabled} />
+          {perm?.[MainPermissions.get_fillials_list] && (
+            <BranchSelect enabled={enabled} />
+          )}
         </div>
       </td>
       <td className="p-0">

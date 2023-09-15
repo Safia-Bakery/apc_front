@@ -18,6 +18,8 @@ import useCategories from "src/hooks/useCategories";
 import { Departments, MainPermissions, Sphere } from "src/utils/types";
 import WarehouseSelect from "src/components/WarehouseSelect";
 import Loading from "src/components/Loader";
+import { useAppSelector } from "src/redux/utils/types";
+import { permissionSelector } from "src/redux/reducers/auth";
 
 const CreateApcRequest = () => {
   const [files, $files] = useState<FormData>();
@@ -26,6 +28,7 @@ const CreateApcRequest = () => {
   const sphere_status = Number(useQueryString("sphere_status"));
   const branch = branchJson && JSON.parse(branchJson);
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
+  const perm = useAppSelector(permissionSelector);
   const { data: categories } = useCategories({
     department: Departments.apc,
     sphere_status,
@@ -77,8 +80,10 @@ const CreateApcRequest = () => {
   };
 
   const renderBranchSelect = useMemo(() => {
-    if (sphere_status === Sphere.fabric) return <WarehouseSelect />;
-    else return <BranchSelect origin={1} enabled />;
+    if (perm?.[MainPermissions.get_fillials_list]) {
+      if (sphere_status === Sphere.fabric) return <WarehouseSelect />;
+      else return <BranchSelect origin={1} enabled />;
+    }
   }, [sphere_status]);
 
   if (isLoading) return <Loading />;

@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "src/main";
-import { BranchType } from "src/utils/types";
+import { permissionSelector } from "src/redux/reducers/auth";
+import { useAppSelector } from "src/redux/utils/types";
+import { BranchType, MainPermissions } from "src/utils/types";
 
 export const useBranch = ({
   id,
@@ -9,13 +11,14 @@ export const useBranch = ({
   enabled?: boolean;
   id: number | string;
 }) => {
+  const perm = useAppSelector(permissionSelector);
   return useQuery({
     queryKey: ["branch", id],
     queryFn: () =>
       apiClient
         .get(`/fillials/${id}`)
         .then(({ data: response }) => (response as BranchType) || null),
-    enabled: !!id && enabled,
+    enabled: !!id && enabled && perm?.[MainPermissions.get_fillials_list],
     refetchOnMount: true,
   });
 };

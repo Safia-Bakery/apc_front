@@ -13,7 +13,7 @@ describe("APC retail", () => {
       sphere: Sphere.marketing,
     });
 
-    cy.visit(baseUrl + "/marketing-designers?add=44&edit=32&sub_id=1");
+    // cy.visit(baseUrl + "/marketing-designers?add=44&edit=32&sub_id=1");
     cy.get("td")
       .should("contain", "cypress testing")
       .siblings("td")

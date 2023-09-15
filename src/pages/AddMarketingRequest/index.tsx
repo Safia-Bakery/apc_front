@@ -15,7 +15,9 @@ import useQueryString from "src/hooks/useQueryString";
 import BranchSelect from "src/components/BranchSelect";
 import useCategories from "src/hooks/useCategories";
 import Loading from "src/components/Loader";
-import { MarketingSubDep } from "src/utils/types";
+import { MainPermissions, MarketingSubDep } from "src/utils/types";
+import { useAppSelector } from "src/redux/utils/types";
+import { permissionSelector } from "src/redux/reducers/auth";
 
 const AddMarketingRequest = () => {
   const [files, $files] = useState<FormData>();
@@ -23,6 +25,7 @@ const AddMarketingRequest = () => {
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
   const [filemsg, $filemsg] = useState<string>();
+  const perm = useAppSelector(permissionSelector);
 
   const title = useQueryString("title");
   const sub_id = useQueryString("sub_id");
@@ -101,7 +104,9 @@ const AddMarketingRequest = () => {
           label="ФИЛИАЛ"
           error={errors.fillial}
         >
-          <BranchSelect enabled />
+          {perm?.[MainPermissions.get_fillials_list] && (
+            <BranchSelect enabled />
+          )}
         </BaseInputs>
         <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
           <MainSelect

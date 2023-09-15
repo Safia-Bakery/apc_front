@@ -17,6 +17,9 @@ import {
   useRemoveParams,
 } from "src/hooks/useCustomNavigate";
 import cl from "classnames";
+import { useAppSelector } from "src/redux/utils/types";
+import { permissionSelector } from "src/redux/reducers/auth";
+import { MainPermissions } from "src/utils/types";
 
 interface Props {
   sub_id?: number | string;
@@ -29,6 +32,7 @@ const InventoryFilter: FC<Props> = ({ sub_id }) => {
     sub_id: Number(sub_id),
     enabled: false,
   });
+  const perm = useAppSelector(permissionSelector);
 
   const navigate = useNavigateParams();
 
@@ -119,7 +123,9 @@ const InventoryFilter: FC<Props> = ({ sub_id }) => {
           onClick={() => $enabled(true)}
           className={cl("position-absolute w-100", styles.fillial)}
         >
-          <BranchSelect enabled={enabled} />
+          {perm?.[MainPermissions.get_fillials_list] && (
+            <BranchSelect enabled={enabled} />
+          )}
         </div>
       </td>
       <td className="p-0">

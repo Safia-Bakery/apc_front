@@ -70,7 +70,11 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
     navigateParams({ modal: type });
   };
   const { getValues } = useForm();
-  const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
+  const {
+    data: order,
+    refetch: orderRefetch,
+    isLoading: orderLoading,
+  } = useOrder({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
   const inputRef = useRef<any>(null);
   const upladedFiles = useAppSelector(reportImgSelector);
@@ -289,7 +293,8 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
     }
   }, [order?.status]);
 
-  if (isLoading || uploadLoading || attachLoading) return <Loading />;
+  if (isLoading || uploadLoading || attachLoading || orderLoading)
+    return <Loading />;
 
   return (
     <>

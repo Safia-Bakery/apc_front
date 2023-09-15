@@ -36,23 +36,6 @@ const Pagination: FC<PaginationProps> = ({ totalPages }) => {
         renderOnZeroPageCount={null}
         forcePage={currentPage - 1}
       />
-      {/* <ul className="pagination">
-        {pageNumbers.map((pageNumber) => (
-          <li
-            key={pageNumber}
-            className={`page-item ${
-              currentPage === pageNumber ? "active" : ""
-            }`}
-          >
-            <button
-              className="page-link"
-              onClick={() => handleChange(pageNumber)}
-            >
-              {pageNumber}
-            </button>
-          </li>
-        ))}
-      </ul> */}
     </nav>
   );
 };
