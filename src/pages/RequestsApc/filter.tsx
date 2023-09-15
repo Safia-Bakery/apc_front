@@ -18,12 +18,9 @@ import {
   useRemoveParams,
 } from "src/hooks/useCustomNavigate";
 import useCategories from "src/hooks/useCategories";
+import { useForm } from "react-hook-form";
 
-interface Props {
-  currentPage: number;
-}
-
-const InventoryFilter: FC<Props> = ({ currentPage }) => {
+const ApcFilter: FC = () => {
   const navigate = useNavigateParams();
   const initialLoadRef = useRef(true);
   const deleteParam = useRemoveParams();
@@ -35,6 +32,7 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
     enabled: false,
   });
 
+  const { register, reset } = useForm();
   const [id, $id] = useDebounce<string>("");
   const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
@@ -43,6 +41,8 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
   const category_id = Number(useQueryString("category_id"));
   const urgent = useQueryString("urgent");
   const created_at = useQueryString("created_at");
+  const userQ = useQueryString("user");
+  const idQ = useQueryString("id");
 
   const startRange = (start: Date | null) => {
     if (start === undefined) deleteParam(["created_at"]);
@@ -82,12 +82,25 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
     navigateAsync();
   }, [id]);
 
+  useEffect(() => {
+    if (!!userQ || !!idQ) {
+      reset({
+        userName: userQ,
+        id: Number(idQ),
+      });
+    }
+  }, []);
+
   return (
     <>
       <td></td>
       <td className="p-0">
         <BaseInput className="m-2">
-          <MainInput type="number" onChange={(e) => handleID(e.target.value)} />
+          <MainInput
+            register={register("idQ")}
+            type="number"
+            onChange={(e) => handleID(e.target.value)}
+          />
         </BaseInput>
       </td>
       {Number(sphere_status) === Sphere.fabric && (
@@ -103,7 +116,10 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
       )}
       <td className="p-0">
         <BaseInput className="m-2">
-          <MainInput onChange={(e) => handleName(e.target.value)} />
+          <MainInput
+            register={register("userName")}
+            onChange={(e) => handleName(e.target.value)}
+          />
         </BaseInput>
       </td>
       <td width={150} className="p-0 position-relative">
@@ -167,4 +183,4 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
   );
 };
 
-export default InventoryFilter;
+export default ApcFilter;

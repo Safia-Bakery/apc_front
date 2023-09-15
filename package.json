@@ -25,6 +25,7 @@
     "react-hook-form": "^7.45.0-next.1",
     "react-input-mask": "^2.0.4",
     "react-multilevel-dropdown": "^4.0.0",
+    "react-paginate": "^8.2.0",
     "react-pro-sidebar": "^1.1.0-alpha.1",
     "react-redux": "^8.1.0",
     "react-router-dom": "^6.14.1",

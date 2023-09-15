@@ -133,12 +133,7 @@ const Masters: FC<Props> = ({ add, edit, isMaster = false }) => {
             </tbody>
           )}
         </table>
-        {!!brigadas && (
-          <Pagination
-            totalItems={brigadas?.total}
-            itemsPerPage={itemsPerPage}
-          />
-        )}
+        {!!brigadas && <Pagination totalPages={brigadas.pages} />}
         {!brigadas?.items?.length && !orderLoading && (
           <div className="w-100">
             <p className="text-center w-100">Спосок пуст</p>

@@ -91,6 +91,7 @@ const routes = [
         name: "Статистика",
         url: "/statistics-apc-fabric",
         icon: "/assets/icons/statistics.svg",
+        param: "/category",
         screen: MainPermissions.get_statistics,
       },
     ],

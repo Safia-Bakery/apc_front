@@ -131,12 +131,7 @@ const RequestsIT = () => {
             </tbody>
           )}
         </table>
-        {!!requests && (
-          <Pagination
-            totalItems={requests?.total}
-            itemsPerPage={itemsPerPage}
-          />
-        )}
+        {!!requests && <Pagination totalPages={requests.pages} />}
         {!requests?.items?.length && !orderLoading && (
           <div className="w-100">
             <p className="text-center w-100">Спосок пуст</p>

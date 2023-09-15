@@ -86,12 +86,7 @@ const Comments = () => {
               </tbody>
             )}
           </table>
-          {!!comments && (
-            <Pagination
-              totalItems={comments?.total}
-              itemsPerPage={itemsPerPage}
-            />
-          )}
+          {!!comments && <Pagination totalPages={comments.pages} />}
           {!comments?.items?.length && !isLoading && (
             <div className="w-100">
               <p className="text-center w-100 ">Спосок пуст</p>

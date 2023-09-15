@@ -76,7 +76,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
   };
 
   const renderFilter = useMemo(() => {
-    return <RequestsFilter currentPage={currentPage} />;
+    return <RequestsFilter />;
   }, [
     user,
     id,
@@ -239,12 +239,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
             )}
           </tbody>
         </table>
-        {!!requests && (
-          <Pagination
-            totalItems={requests?.total}
-            itemsPerPage={itemsPerPage}
-          />
-        )}
+        {!!requests && <Pagination totalPages={requests.pages} />}
         {!requests?.items?.length && !orderLoading && (
           <div className="w-100">
             <p className="text-center w-100">Спосок пуст</p>

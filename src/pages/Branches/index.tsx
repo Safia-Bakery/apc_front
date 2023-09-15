@@ -162,12 +162,7 @@ const Branches = () => {
             )}
           </tbody>
         </table>
-        {!!branches && (
-          <Pagination
-            totalItems={branches?.total}
-            itemsPerPage={itemsPerPage}
-          />
-        )}
+        {!!branches && <Pagination totalPages={branches.pages} />}
         {!branches?.items?.length && !isFetching && (
           <div className="w-100">
             <p className="text-center w-100 ">Спосок пуст</p>
