@@ -24,7 +24,8 @@ export const authReducer = createSlice({
 
       // localStorage.clear();
       const { pathname, search } = window.location;
-      state.link = pathname + search;
+      if (pathname.includes("login")) state.link = "/";
+      else state.link = pathname + search;
       // window.location.reload();
     },
     loginHandler: (state, { payload }) => {
