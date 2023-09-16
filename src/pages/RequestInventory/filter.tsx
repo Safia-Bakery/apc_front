@@ -1,7 +1,4 @@
 import { OrderTypeNames, UrgentNames } from "src/utils/helpers";
-
-import { useAppSelector } from "src/redux/utils/types";
-import { branchSelector } from "src/redux/reducers/cache";
 import { FC, useEffect, useRef, useState } from "react";
 import useOrders from "src/hooks/useOrders";
 import useDebounce from "src/hooks/useDebounce";
@@ -13,6 +10,7 @@ import MainInput from "src/components/BaseInputs/MainInput";
 import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
 import { Departments } from "src/utils/types";
 import useCategories from "src/hooks/useCategories";
+import useBranches from "src/hooks/useBranches";
 
 interface Props {
   currentPage: number;
@@ -20,7 +18,7 @@ interface Props {
 
 const InventoryFilter: FC<Props> = ({ currentPage }) => {
   const initialLoadRef = useRef(true);
-  const branches = useAppSelector(branchSelector);
+  const { data: branches } = useBranches({});
   const { data: categories, refetch: catRefetch } = useCategories({
     department: Departments.inventory,
     enabled: false,
@@ -73,8 +71,6 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
 
   const startRange = (start: Date | null) => $startDate(start);
 
-  const finishRange = (start: Date | null) => $created_at(start);
-
   return (
     <>
       <td></td>
@@ -97,7 +93,7 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
       <td className="p-0">
         <BaseInputs className="m-2">
           <MainSelect
-            values={branches}
+            values={branches?.items}
             onChange={(e) => $fillial_id(Number(e.target.value))}
           />
         </BaseInputs>

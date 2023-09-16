@@ -1,7 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "src/main";
-import { cachedBranches } from "src/redux/reducers/cache";
-import { useAppDispatch } from "src/redux/utils/types";
 import { errorToast } from "src/utils/toast";
 import { BranchTypes } from "src/utils/types";
 
@@ -16,14 +14,12 @@ export const useBranchSync = ({
   size?: number;
   page?: number;
 }) => {
-  const dispatch = useAppDispatch();
   return useQuery({
     queryKey: ["branches_sync"],
     queryFn: () =>
       apiClient
         .get("/synch/department", { page, size }, config)
         .then(({ data: response }) => {
-          dispatch(cachedBranches(response as BranchTypes));
           return response as BranchTypes;
         })
         .catch((e) => errorToast(e.message)),

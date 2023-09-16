@@ -39,6 +39,7 @@ const routeNameMappings: { [key: string]: string } = {
   "marketing-complects": "Комплекты",
   "marketing-designers": "Проектная работа для дизайнеров",
   clients: "Клиенты",
+  logs: "Логи",
 };
 
 const Breadcrumbs: FC = () => {
@@ -47,7 +48,7 @@ const Breadcrumbs: FC = () => {
   const dispatch = useAppDispatch();
   const handleLogout = () => {
     dispatch(logoutHandler());
-    window.location.reload();
+    // window.location.reload();
   };
   const { data: me } = useToken({ enabled: false });
 
@@ -90,7 +91,9 @@ const Breadcrumbs: FC = () => {
               {index === breadcrumbs.length - 1 ? (
                 <span>{breadcrumb.name}</span>
               ) : (
-                <Link to={breadcrumb.path}>{breadcrumb.name}</Link>
+                <Link to={breadcrumb.path + location.search}>
+                  {breadcrumb.name}
+                </Link>
               )}
             </li>
           ))}

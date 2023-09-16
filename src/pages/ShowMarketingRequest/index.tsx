@@ -127,6 +127,12 @@ const ShowMarketingRequest = () => {
           title={`Заказ №${id}`}
           subTitle={`Статус: ${handleStatus(order?.status)}`}
         >
+          <button
+            className="btn btn-warning btn-fill mr-2"
+            onClick={() => navigate("logs")}
+          >
+            Логи
+          </button>
           <button onClick={handleBack} className="btn btn-primary btn-fill">
             Назад
           </button>

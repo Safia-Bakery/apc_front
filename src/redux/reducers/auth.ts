@@ -5,11 +5,13 @@ import { MainPermissions } from "src/utils/types";
 interface State {
   token: string | null;
   permissions?: { [key in MainPermissions]: boolean };
+  link: string;
 }
 
 const initialState: State = {
   token: null,
   permissions: undefined,
+  link: "/",
 };
 
 export const authReducer = createSlice({
@@ -17,10 +19,13 @@ export const authReducer = createSlice({
   initialState,
   reducers: {
     logoutHandler: (state) => {
-      // state.permissions = undefined;
-      // state.token = null;
-      localStorage.clear();
-      window.location.reload();
+      state.token = null;
+      state.permissions = undefined;
+
+      // localStorage.clear();
+      const { pathname, search } = window.location;
+      state.link = pathname + search;
+      // window.location.reload();
     },
     loginHandler: (state, { payload }) => {
       state.token = payload;
@@ -37,6 +42,7 @@ export const authReducer = createSlice({
 
 export const tokenSelector = (state: RootState) => state.auth.token;
 export const permissionSelector = (state: RootState) => state.auth.permissions;
+export const linkSelector = (state: RootState) => state.auth.link;
 
 export const { loginHandler, logoutHandler, permissionHandler } =
   authReducer.actions;

@@ -28,7 +28,7 @@ const routes = [
     screen: MainPermissions.get_requests_apc,
     subroutes: [
       {
-        name: "Заявки",
+        name: "Заявки на APC розница",
         url: "/requests-apc-retail",
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_requests_apc,
@@ -68,7 +68,7 @@ const routes = [
     screen: MainPermissions.get_fabric_requests,
     subroutes: [
       {
-        name: "Заявки",
+        name: "Заявки на APC фабрика",
         url: "/requests-apc-fabric",
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_fabric_requests,

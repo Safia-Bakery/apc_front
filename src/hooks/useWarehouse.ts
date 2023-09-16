@@ -1,7 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "src/main";
-import { cachedBranches } from "src/redux/reducers/cache";
-import { useAppDispatch } from "src/redux/utils/types";
 import { BranchTypes } from "src/utils/types";
 
 interface BodyTypes {

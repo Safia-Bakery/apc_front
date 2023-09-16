@@ -3,7 +3,12 @@ import styles from "./index.module.scss";
 import cl from "classnames";
 import loginMutation from "src/hooks/mutation/loginMutation";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
-import { loginHandler, tokenSelector } from "src/redux/reducers/auth";
+import {
+  linkSelector,
+  loginHandler,
+  permissionSelector,
+  tokenSelector,
+} from "src/redux/reducers/auth";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useToken from "src/hooks/useToken";
@@ -18,6 +23,8 @@ const Login = () => {
   const token = useAppSelector(tokenSelector);
   const { refetch } = useToken({});
   const [error, $error] = useState(false);
+  const savedLink = useAppSelector(linkSelector);
+  const perm = useAppSelector(permissionSelector);
 
   const {
     register,
@@ -29,8 +36,8 @@ const Login = () => {
   const { mutate } = loginMutation();
 
   useEffect(() => {
-    if (token) navigate("/");
-  }, [navigate, token]);
+    if (token && perm) navigate(savedLink);
+  }, [token, perm]);
 
   const onSubmit = () => {
     const { username, password } = getValues();

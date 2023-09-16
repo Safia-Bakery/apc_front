@@ -20,6 +20,7 @@ import {
   Sphere,
 } from "src/utils/types";
 import useQueryString from "src/hooks/useQueryString";
+import Logs from "src/pages/LogsScreen";
 
 const ControlPanel = lazy(() => import("src/pages/ControlPanel"));
 const Masters = lazy(() => import("src/pages/Masters"));
@@ -100,6 +101,16 @@ export const routes = [
     screen: MainPermissions.edit_request_apc,
   },
   {
+    element: <Logs />,
+    path: "/requests-apc-retail/:id/logs",
+    screen: MainPermissions.edit_request_apc,
+  },
+  {
+    element: <Logs />,
+    path: "/requests-apc-fabric/:id/logs",
+    screen: MainPermissions.edit_request_apc,
+  },
+  {
     element: (
       <RequestsApc
         add={MainPermissions.add_request_apc}
@@ -144,44 +155,49 @@ export const routes = [
     path: `/marketing-${MarketingSubDep[5]}/:id`,
     screen: MainPermissions.edit_complect_requests,
   },
+
+  {
+    element: <Logs />,
+    path: `/marketing-${MarketingSubDep[5]}/:id/logs`,
+    screen: MainPermissions.edit_complect_requests,
+  },
+  {
+    element: <Logs />,
+    path: `/marketing-${MarketingSubDep[4]}/:id/logs`,
+    screen: MainPermissions.edit_pos_requests,
+  },
+  {
+    element: <Logs />,
+    path: `/marketing-${MarketingSubDep[3]}/:id/logs`,
+    screen: MainPermissions.edit_promo_requests,
+  },
+  {
+    element: <Logs />,
+    path: `/marketing-${MarketingSubDep[2]}/:id/logs`,
+    screen: MainPermissions.edit_locmar_requests,
+  },
+  {
+    element: <Logs />,
+    path: `/marketing-${MarketingSubDep[1]}/:id/logs`,
+    screen: MainPermissions.edit_design_request,
+  },
   {
     element: <RequestsMarketing />,
     path: `/marketing-${MarketingSubDep[1]}`,
     screen: MainPermissions.get_design_request,
   },
   {
-    element: (
-      <RequestsMarketing
-      // add={MainPermissions.add_locmar_requests}
-      // edit={MainPermissions.edit_locmar_requests}
-      // title={"Локальный маркетинг"}
-      // sub_id={MarketingSubDep.local_marketing}
-      />
-    ),
+    element: <RequestsMarketing />,
     path: `/marketing-${MarketingSubDep[2]}`,
     screen: MainPermissions.get_locmar_requests,
   },
   {
-    element: (
-      <RequestsMarketing
-      // add={MainPermissions.add_promo_requests}
-      // edit={MainPermissions.edit_promo_requests}
-      // title={"Промо-продукция"}
-      // sub_id={MarketingSubDep.promo_production}
-      />
-    ),
+    element: <RequestsMarketing />,
     path: `/marketing-${MarketingSubDep[3]}`,
     screen: MainPermissions.get_promo_requests,
   },
   {
-    element: (
-      <RequestsMarketing
-      // add={MainPermissions.add_pos_requests}
-      // edit={MainPermissions.edit_pos_requests}
-      // title={"POS-Материалы"}
-      // sub_id={MarketingSubDep.pos}
-      />
-    ),
+    element: <RequestsMarketing />,
     path: `/marketing-${MarketingSubDep[4]}`,
     screen: MainPermissions.get_pos_requests,
   },
@@ -498,7 +514,7 @@ const Navigation = () => {
   }, [tokenKey]);
 
   useEffect(() => {
-    if (!!user?.permissions.length)
+    if (!!user?.permissions.length && !!token)
       dispatch(permissionHandler(user?.permissions));
   }, [user?.permissions, token]);
 

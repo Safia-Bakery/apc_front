@@ -6,8 +6,7 @@ import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
 import cl from "classnames";
 import requestMutation from "src/hooks/mutation/orderMutation";
-import { useAppSelector } from "src/redux/utils/types";
-import { branchSelector } from "src/redux/reducers/cache";
+
 import useOrders from "src/hooks/useOrders";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import styles from "./index.module.scss";
@@ -21,10 +20,11 @@ import useUsers from "src/hooks/useUsers";
 import Loading from "src/components/Loader";
 import { Departments } from "src/utils/types";
 import useCategories from "src/hooks/useCategories";
+import useBranches from "src/hooks/useBranches";
 
 const CreateITRequest = () => {
   const [files, $files] = useState<FormData>();
-  const branches = useAppSelector(branchSelector);
+  const { data: branches } = useBranches({});
   const { data: categories } = useCategories({
     department: Departments.it,
   });
@@ -99,7 +99,10 @@ const CreateITRequest = () => {
           </MainSelect>
         </BaseInput>
         <BaseInput label="ФИЛИАЛ" error={errors.department}>
-          <MainSelect values={branches} register={register("fillial_id")} />
+          <MainSelect
+            values={branches?.items}
+            register={register("fillial_id")}
+          />
         </BaseInput>
         <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
           <MainSelect
