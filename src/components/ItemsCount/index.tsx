@@ -1,11 +1,12 @@
+import useQueryString from "src/hooks/useQueryString";
 import { itemsPerPage } from "src/utils/helpers";
 
 interface ItemsTypes {
   data: { items: any[]; total: number } | undefined;
-  currentPage: number;
 }
 
-const ItemsCount = ({ currentPage, data }: ItemsTypes) => {
+const ItemsCount = ({ data }: ItemsTypes) => {
+  const currentPage = Number(useQueryString("page")) || 1;
   if (!data) {
     return null;
   }

@@ -8,36 +8,21 @@ import MainSelect from "src/components/BaseInputs/MainSelect";
 import BaseInput from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
+import {
+  useNavigateParams,
+  useRemoveParams,
+} from "src/hooks/useCustomNavigate";
+import useQueryString from "src/hooks/useQueryString";
+import dayjs from "dayjs";
 
-interface Props {
-  currentPage: number;
-}
-
-const StockFilter: FC<Props> = ({ currentPage }) => {
+const StockFilter: FC = () => {
   const initialLoadRef = useRef(true);
-  const [id, $id] = useDebounce<number>(0);
-  const [department, $department] = useState<string>();
-  const [fillial_id, $fillial_id] = useState<number>();
-  const [category_id, $category_id] = useState<number>();
-  const [urgent, $urgent] = useState<boolean>();
-  const [startDate, $startDate] = useState<Date | null>();
-  const [created_at, $created_at] = useState<Date | null>();
-  const [request_status, $request_status] = useState<string>();
-  const [user, $user] = useDebounce<string>("");
-
-  const { refetch } = useOrders({
-    enabled: false,
-    // body: {
-    //   ...(!!id && { id }),
-    //   ...(!!created_at && { created_at: created_at?.toISOString() }),
-    //   ...(!!department && { department }),
-    //   ...(!!fillial_id && { fillial_id }),
-    //   ...(!!category_id && { category_id }),
-    //   ...(!!request_status && { request_status }),
-    //   ...(!!user && { user }),
-    //   ...(!!urgent && { urgent }),
-    // },
-  });
+  const navigate = useNavigateParams();
+  const [count, $count] = useDebounce("");
+  const [name, $name] = useDebounce<string>("");
+  const [price, $price] = useDebounce<string>("");
+  const syncDate = useQueryString("syncDate");
+  const deleteParam = useRemoveParams();
 
   useEffect(() => {
     if (initialLoadRef.current) {
@@ -46,46 +31,71 @@ const StockFilter: FC<Props> = ({ currentPage }) => {
     }
 
     const fetchData = async () => {
-      await refetch();
+      await navigate({ name });
     };
 
     fetchData();
-  }, [
-    id,
-    department,
-    fillial_id,
-    category_id,
-    urgent,
-    startDate,
-    created_at,
-    request_status,
-    user,
-    currentPage,
-  ]);
+  }, [name]);
+  useEffect(() => {
+    if (initialLoadRef.current) {
+      initialLoadRef.current = false;
+      return;
+    }
 
-  const startRange = (start: Date | null) => $startDate(start);
+    const fetchData = async () => {
+      await navigate({ count });
+    };
+
+    fetchData();
+  }, [count]);
+  useEffect(() => {
+    if (initialLoadRef.current) {
+      initialLoadRef.current = false;
+      return;
+    }
+
+    const fetchData = async () => {
+      await navigate({ price });
+    };
+
+    fetchData();
+  }, [price]);
+
+  const startRange = (start: Date | null) => {
+    if (start === undefined) deleteParam(["syncDate"]);
+    if (!!start) navigate({ syncDate: start });
+  };
 
   return (
     <>
       <td></td>
       <td className="p-0">
         <BaseInput className="m-2">
-          <MainInput onChange={(e) => $user(e.target.value)} />
+          <MainInput onChange={(e) => $name(e.target.value)} />
         </BaseInput>
       </td>
 
       <td className="p-0">
-        <MainDatePicker selected={startDate} onChange={startRange} />
+        <MainDatePicker
+          wrapperClassName="w-100 pr-3"
+          selected={
+            !!syncDate && syncDate !== "undefined"
+              ? dayjs(syncDate).toDate()
+              : undefined
+          }
+          onChange={startRange}
+        />
       </td>
       <td className="p-0">
-        <BaseInputs className="m-2">
-          <MainSelect
-            values={StatusName}
-            onChange={(e) => $request_status(e.target.value)}
-          />
-        </BaseInputs>
+        <BaseInput className="m-2">
+          <MainInput onChange={(e) => $count(e.target.value)} />
+        </BaseInput>
       </td>
-      <td></td>
+      <td className="p-0">
+        <BaseInput className="m-2">
+          <MainInput onChange={(e) => $price(e.target.value)} />
+        </BaseInput>
+      </td>
     </>
   );
 };

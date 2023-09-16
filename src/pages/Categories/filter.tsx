@@ -5,13 +5,12 @@ import MainSelect from "src/components/BaseInputs/MainSelect";
 
 import useCategories from "src/hooks/useCategories";
 import useDebounce from "src/hooks/useDebounce";
+import useQueryString from "src/hooks/useQueryString";
 import { StatusName, itemsPerPage } from "src/utils/helpers";
 
-interface Props {
-  currentPage: number;
-}
-const CategoriesFilter: FC<Props> = ({ currentPage }) => {
+const CategoriesFilter: FC = () => {
   const initialLoadRef = useRef(true);
+  const currentPage = Number(useQueryString("page")) || 1;
   const [name, $name] = useDebounce("");
   const [department, $department] = useDebounce("");
   const [category_status, $category_status] = useState<string>();

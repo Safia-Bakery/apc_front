@@ -87,7 +87,7 @@ const RequestInventory = () => {
       </Header>
 
       <div className="table-responsive grid-view content">
-        <ItemsCount data={requests} currentPage={currentPage} />
+        <ItemsCount data={requests} />
         <table className="table table-hover">
           <TableHead
             column={column}
@@ -95,7 +95,7 @@ const RequestInventory = () => {
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            <InventoryFilter currentPage={currentPage} />
+            <InventoryFilter />
           </TableHead>
 
           {!!requests?.items?.length && (

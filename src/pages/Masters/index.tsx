@@ -95,7 +95,7 @@ const Masters: FC<Props> = ({ add, edit, isMaster = false }) => {
       </Header>
 
       <div className="table-responsive grid-view content">
-        <ItemsCount data={brigadas} currentPage={currentPage} />
+        <ItemsCount data={brigadas} />
         <table className="table table-hover">
           <TableHead
             column={column}

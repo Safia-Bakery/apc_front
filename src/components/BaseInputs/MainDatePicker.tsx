@@ -7,6 +7,7 @@ import styles from "./index.module.scss";
 interface Props {
   onChange?: any;
   className?: string;
+  wrapperClassName?: string;
   value?: string;
   disabled?: boolean;
   register?: UseFormRegisterReturn;
@@ -19,6 +20,7 @@ const MainDatePicker: FC<Props> = ({
   selected,
   register,
   onChange,
+  wrapperClassName,
 }) => {
   const handleClear = () => onChange(undefined);
 
@@ -27,7 +29,7 @@ const MainDatePicker: FC<Props> = ({
       <DatePicker
         selected={selected}
         onChange={onChange}
-        wrapperClassName="form-group m-2"
+        wrapperClassName={cl("form-group m-2", wrapperClassName)}
         className={cl("form-control", className)}
         {...register}
       />

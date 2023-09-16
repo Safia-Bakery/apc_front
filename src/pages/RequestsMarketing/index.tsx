@@ -117,7 +117,7 @@ const RequestsMarketing = () => {
       </Header>
 
       <div className="table-responsive grid-view content">
-        <ItemsCount data={requests} currentPage={currentPage} />
+        <ItemsCount data={requests} />
         <table className="table table-hover">
           <TableHead
             column={column}
@@ -126,7 +126,6 @@ const RequestsMarketing = () => {
             sortOrder={sortOrder}
           >
             {renderFilter}
-            {/* <InventoryFilter sub_id={sub_id!} currentPage={currentPage} /> */}
           </TableHead>
 
           <tbody>

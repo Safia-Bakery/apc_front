@@ -88,6 +88,17 @@ export interface OrderType extends BasePaginatedRes {
   items: Order[];
 }
 
+export interface StockItem {
+  name: string;
+  amount_left: number;
+  last_update: string;
+  total_price: number;
+}
+
+export interface RemainsInStockType extends BasePaginatedRes {
+  items: StockItem[];
+}
+
 export interface BranchType {
   id: string;
   name: string;

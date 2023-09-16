@@ -457,13 +457,13 @@ export const routes = [
     path: "/branches/:id",
     screen: MainPermissions.edit_fillials,
   },
+  // {
+  //   element: <RemainsInStock />,
+  //   path: "/items-in-stock",
+  //   screen: MainPermissions.get_warehouse,
+  // },
   {
     element: <RemainsInStock />,
-    path: "/items-in-stock",
-    screen: MainPermissions.get_warehouse,
-  },
-  {
-    element: <ShowRemainsInStock />,
     path: "/items-in-stock/:id",
     screen: MainPermissions.get_warehouse,
   },

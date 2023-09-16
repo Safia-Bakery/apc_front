@@ -6,7 +6,7 @@ import { MainPermissions, MarketingSubDep, Sphere } from "src/utils/types";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import Subroutes from "./CustomSubItems";
 import { sidebarHandler, toggleSidebar } from "src/redux/reducers/selects";
-import { isMobile } from "src/utils/helpers";
+import { isMobile, stockStores } from "src/utils/helpers";
 import { permissionSelector } from "src/redux/reducers/auth";
 
 const routes = [
@@ -45,6 +45,7 @@ const routes = [
         name: "Остатки на складах",
         url: "/items-in-stock",
         icon: "/assets/icons/remains-in-stock.svg",
+        param: `/${stockStores.retail}`,
         screen: MainPermissions.get_warehouse,
       },
       {
@@ -86,6 +87,14 @@ const routes = [
         url: `/categories-apc-fabric`,
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_categ_fab,
+      },
+
+      {
+        name: "Остатки на складах",
+        url: "/items-in-stock",
+        icon: "/assets/icons/remains-in-stock.svg",
+        param: `/${stockStores.fabric}`,
+        screen: MainPermissions.get_warehouse,
       },
       {
         name: "Статистика",

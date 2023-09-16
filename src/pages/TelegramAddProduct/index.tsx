@@ -24,7 +24,7 @@ import UploadComponent, { FileItem } from "src/components/FileUpload";
 import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import uploadFileMutation from "src/hooks/mutation/uploadFile";
-import useSyncExpanditure from "src/hooks/useSyncExpanditure";
+import useSyncExpanditure from "src/hooks/sync/useSyncExpanditure";
 
 const column = [{ name: "Наименование" }, { name: "Количество" }, { name: "" }];
 

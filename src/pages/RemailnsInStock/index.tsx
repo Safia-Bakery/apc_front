@@ -1,31 +1,32 @@
 import Card from "src/components/Card";
 import styles from "./index.module.scss";
 import Header from "src/components/Header";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Pagination from "src/components/Pagination";
 import ItemsCount from "src/components/ItemsCount";
 import TableHead from "src/components/TableHead";
-import { itemsPerPage, requestRows } from "src/utils/helpers";
-import useOrders from "src/hooks/useOrders";
+import { itemsPerPage } from "src/utils/helpers";
 import { useEffect, useState } from "react";
 import StockFilter from "./filter";
 import dayjs from "dayjs";
-import TableViewBtn from "src/components/TableViewBtn";
 import useQueryString from "src/hooks/useQueryString";
+import useRemainsInStock from "src/hooks/useRemainsInStock";
+import useStockSync from "src/hooks/sync/useStockSync";
+import Loading from "src/components/Loader";
 
 const column = [
   { name: "#", key: "" },
   { name: "Наименование", key: "name" },
-  { name: "Синх.", key: "fillial.name" },
-  { name: "Актив", key: "category.name" },
-  { name: "", key: "" },
+  { name: "Синх.", key: "last_update" },
+  { name: "Остались на складе", key: "amount_left" },
+  { name: "Общая цена", key: "total_price" },
 ];
 
 const RemainsInStock = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
-  const handleNavigate = (route: string) => () => navigate(route);
   const currentPage = Number(useQueryString("page")) || 1;
+  const { id } = useParams();
 
   const [sortKey, setSortKey] = useState();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -40,17 +41,20 @@ const RemainsInStock = () => {
   };
 
   const {
-    data: requests,
-    refetch,
-    isLoading: orderLoading,
-  } = useOrders({
+    refetch: syncIIKO,
+    isSuccess,
+    isLoading: syncLoading,
+  } = useStockSync({ store_id: id!, enabled: false });
+
+  const { data: items, isLoading: itemsLoading } = useRemainsInStock({
     enabled: true,
     size: itemsPerPage,
     page: currentPage,
+    store_id: id!,
   });
   const sortData = () => {
-    if (requests?.items && sortKey) {
-      const sortedData = [...requests?.items].sort((a, b) => {
+    if (items?.items && sortKey) {
+      const sortedData = [...items?.items].sort((a, b) => {
         if (a[sortKey] < b[sortKey]) return sortOrder === "asc" ? -1 : 1;
         if (a[sortKey] > b[sortKey]) return sortOrder === "asc" ? 1 : -1;
         else return 0;
@@ -64,20 +68,28 @@ const RemainsInStock = () => {
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
 
-  useEffect(() => {
-    refetch();
-  }, [currentPage]);
+  const handleSync = () => syncIIKO();
 
   return (
     <Card>
       <Header title={"Остатки на складах"}>
+        <button onClick={handleSync} className="btn btn-primary btn-fill mr-2">
+          <img
+            src="/assets/icons/sync.svg"
+            height={20}
+            width={20}
+            alt="sync"
+            className="mr-2"
+          />
+          Синхронизировать с iiko
+        </button>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад
         </button>
       </Header>
 
       <div className="table-responsive grid-view content">
-        <ItemsCount data={requests} currentPage={currentPage} />
+        <ItemsCount data={items} />
         <table className="table table-hover">
           <TableHead
             column={column}
@@ -85,33 +97,36 @@ const RemainsInStock = () => {
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            <StockFilter currentPage={currentPage} />
+            <StockFilter />
           </TableHead>
 
-          {!!requests?.items?.length && (
+          {!!items?.items?.length && !itemsLoading && (
             <tbody>
-              {(sortData()?.length ? sortData() : requests?.items)?.map(
-                (order, idx) => (
+              {(sortData()?.length ? sortData() : items?.items)?.map(
+                (item, idx) => (
                   <tr key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
+                    <td>{item?.name}</td>
                     <td>
-                      <Link to={`${order?.id}`}>{order?.id}</Link>
+                      {dayjs(item?.last_update).format("DD.MM.YYYY HH:mm")}
                     </td>
-                    <td>
-                      {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
-                    </td>
-                    <td>{order?.user?.full_name}</td>
-                    <td width={40}>
-                      <TableViewBtn onClick={handleNavigate(`${order.id}`)} />
-                    </td>
+                    <td>{item?.amount_left}</td>
+                    <td>{item?.total_price}</td>
                   </tr>
                 )
+              )}
+              {(syncLoading || itemsLoading) && (
+                <tr>
+                  <td>
+                    <Loading />
+                  </td>
+                </tr>
               )}
             </tbody>
           )}
         </table>
-        {!!requests && <Pagination totalPages={requests.pages} />}
-        {!requests?.items?.length && !orderLoading && (
+        {!!items && <Pagination totalPages={items.pages} />}
+        {!items?.items?.length && !itemsLoading && (
           <div className="w-100">
             <p className="text-center w-100">Спосок пуст</p>
           </div>

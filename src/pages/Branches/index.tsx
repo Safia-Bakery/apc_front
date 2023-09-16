@@ -10,7 +10,7 @@ import TableViewBtn from "src/components/TableViewBtn";
 import useBranches from "src/hooks/useBranches";
 import BranchesFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
-import useBranchSync from "src/hooks/useBranchSync";
+import useBranchSync from "src/hooks/sync/useBranchSync";
 import Loading from "src/components/Loader";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
@@ -119,7 +119,7 @@ const Branches = () => {
       </Header>
 
       <div className="table-responsive grid-view content">
-        <ItemsCount data={branches} currentPage={currentPage} />
+        <ItemsCount data={branches} />
         <table className="table table-hover">
           <TableHead
             column={column}

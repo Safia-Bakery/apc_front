@@ -20,7 +20,7 @@ import {
 import { permissionSelector } from "src/redux/reducers/auth";
 import { useAppSelector } from "src/redux/utils/types";
 import { MainPermissions } from "src/utils/types";
-import useSyncExpanditure from "src/hooks/useSyncExpanditure";
+import useSyncExpanditure from "src/hooks/sync/useSyncExpanditure";
 
 const AddProductModal = () => {
   const { id } = useParams();

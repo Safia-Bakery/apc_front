@@ -98,7 +98,7 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
 
       <div className="content">
         <div className="table-responsive grid-view">
-          <ItemsCount data={categories} currentPage={currentPage} />
+          <ItemsCount data={categories} />
           <table className="table table-hover">
             <TableHead
               column={column}
@@ -106,7 +106,7 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
               sortKey={sortKey}
               sortOrder={sortOrder}
             >
-              <CategoriesFilter currentPage={currentPage} />
+              <CategoriesFilter />
             </TableHead>
 
             {!!categories?.items?.length && (

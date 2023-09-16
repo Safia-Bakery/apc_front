@@ -12,11 +12,7 @@ import { Departments } from "src/utils/types";
 import useCategories from "src/hooks/useCategories";
 import useBranches from "src/hooks/useBranches";
 
-interface Props {
-  currentPage: number;
-}
-
-const InventoryFilter: FC<Props> = ({ currentPage }) => {
+const InventoryFilter: FC = () => {
   const initialLoadRef = useRef(true);
   const { data: branches } = useBranches({});
   const { data: categories, refetch: catRefetch } = useCategories({
@@ -66,7 +62,6 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
     startDate,
     created_at,
     user,
-    currentPage,
   ]);
 
   const startRange = (start: Date | null) => $startDate(start);

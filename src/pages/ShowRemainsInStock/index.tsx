@@ -77,7 +77,7 @@ const ShowRemainsInStock = () => {
 
       <div className="table-responsive grid-view content">
         <MainInput placeholder="Поиск..." />
-        <ItemsCount data={requests} currentPage={currentPage} />
+        <ItemsCount data={requests} />
         <table className="table table-hover">
           <TableHead
             column={column}

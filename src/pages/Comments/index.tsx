@@ -54,7 +54,7 @@ const Comments = () => {
 
       <div className="content">
         <div className="table-responsive grid-view">
-          <ItemsCount data={comments} currentPage={currentPage} />
+          <ItemsCount data={comments} />
           <table className="table table-hover">
             <TableHead
               column={column}

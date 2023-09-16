@@ -115,7 +115,7 @@ const Users: FC<Props> = ({ add, edit }) => {
       </Header>
 
       <div className="table-responsive grid-view content">
-        <ItemsCount data={users} currentPage={currentPage} />
+        <ItemsCount data={users} />
         <table className="table table-hover">
           <TableHead
             column={column}
