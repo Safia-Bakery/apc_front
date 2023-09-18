@@ -52,8 +52,8 @@ class BaseAPIClient {
 
   private handleRequestError = (error: AxiosError): Promise<never> => {
     if (axios.isAxiosError(error) && error.response) {
-      if (error.response.status === 403) {
-        // this.store?.dispatch(logoutHandler());
+      if (error.response.status === 403 || error.response.status === 401) {
+        this.store?.dispatch(logoutHandler());
       }
     }
 
@@ -90,11 +90,11 @@ class BaseAPIClient {
       return response;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        if (error.response.status === 403) {
-          // this.store?.dispatch(logoutHandler());
+        if (error.response.status === 403 || error.response.status === 401) {
+          this.store?.dispatch(logoutHandler());
         }
       }
-      throw error; // Re-throw the error for further handling
+      throw error;
     }
   }
 
