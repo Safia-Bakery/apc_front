@@ -36,17 +36,13 @@ const Users: FC<Props> = ({ add, edit }) => {
   const { pathname } = useLocation();
   const permission = useAppSelector(permissionSelector);
   const client = useQueryString("client");
-  const currentPage = Number(useQueryString("currentPage")) || 1;
+  const currentPage = Number(useQueryString("page")) || 1;
   const user_status = useQueryString("user_status");
   const full_name = useQueryString("full_name");
   const role_id = useQueryString("role_id");
   const username = useQueryString("username");
   const phone_number = useQueryString("phone_number");
-  const {
-    data: users,
-    isLoading: orderLoading,
-    refetch,
-  } = useUsers({
+  const { data: users, isLoading: orderLoading } = useUsers({
     size: itemsPerPage,
     page: currentPage,
     body: {
@@ -97,9 +93,9 @@ const Users: FC<Props> = ({ add, edit }) => {
     return <UsersFilter currentPage={currentPage} />;
   }, [full_name, user_status, role_id, username, phone_number]);
 
-  useEffect(() => {
-    if (currentPage > 1) refetch();
-  }, [currentPage]);
+  // useEffect(() => {
+  //   if (currentPage > 1) refetch();
+  // }, [currentPage]);
 
   return (
     <Card>
