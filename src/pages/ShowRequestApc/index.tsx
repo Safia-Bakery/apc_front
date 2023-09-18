@@ -54,7 +54,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const tokenKey = useQueryString("key");
-  const { search } = useLocation();
+  const { search, state } = useLocation();
   const sphere_status = Number(useQueryString("sphere_status"));
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const permissions = useAppSelector(permissionSelector);
@@ -83,10 +83,10 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
   const { mutate, isLoading: uploadLoading } = uploadFileMutation();
 
   const handleBack = () => {
-    if (sphere_status === Sphere.fabric)
-      navigate(`/requests-apc-fabric${search}`);
-    if (sphere_status === Sphere.retail)
-      navigate(`/requests-apc-retail${search}`);
+    // if (sphere_status === Sphere.fabric)
+    //   navigate(`/requests-apc-fabric${search}`);
+    // if (sphere_status === Sphere.retail)
+    navigate(state?.prevPath);
   };
 
   const handleFilesSelected = (data: FileItem[]) =>

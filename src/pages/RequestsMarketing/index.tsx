@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Departments, MainPermissions, Order } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
@@ -37,6 +37,7 @@ const RequestsMarketing = () => {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const permission = useAppSelector(permissionSelector);
   const currentPage = Number(useQueryString("page")) || 1;
+  const { pathname, search } = useLocation();
 
   const title = useQueryString("title");
   const sub_id = Number(useQueryString("sub_id"));
@@ -140,6 +141,7 @@ const RequestsMarketing = () => {
                         <Link
                           id="request_id"
                           to={`${order?.id}?sub_id=${sub_id}&edit=${edit}`}
+                          state={{ prevPath: pathname + search }}
                         >
                           {order?.id}
                         </Link>

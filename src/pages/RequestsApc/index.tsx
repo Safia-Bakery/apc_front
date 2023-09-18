@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Departments, MainPermissions, Order, Sphere } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
@@ -30,6 +30,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
   const sphere_status = useQueryString("sphere_status");
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const currentPage = Number(useQueryString("page")) || 1;
+  const { pathname, search } = useLocation();
 
   const user = useQueryString("user");
   const id = Number(useQueryString("id"));
@@ -187,6 +188,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
                         <Link
                           id="request_id"
                           to={`${order?.id}?sphere_status=${sphere_status}&addExp=${addExp}`}
+                          state={{ prevPath: pathname + search }}
                         >
                           {order?.id}
                         </Link>

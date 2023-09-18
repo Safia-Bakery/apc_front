@@ -48,7 +48,7 @@ const ShowMarketingRequest = () => {
   const isNew = order?.status === RequestStatus.new;
   const edit = Number(useQueryString("edit")) as MainPermissions;
   const navigate = useNavigate();
-  const { search } = useLocation();
+  const { search, state } = useLocation();
 
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
@@ -57,7 +57,7 @@ const ShowMarketingRequest = () => {
     }
   };
 
-  const handleBack = () => navigate(`/marketing-designers${search}`);
+  const handleBack = () => navigate(state?.prevPath);
 
   const handleBrigada =
     ({ status }: { status: RequestStatus }) =>
