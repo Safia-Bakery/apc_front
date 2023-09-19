@@ -43,7 +43,7 @@ const RemainsInStock = () => {
   const {
     refetch: syncIIKO,
     isSuccess,
-    isLoading: syncLoading,
+    isFetching: syncLoading,
   } = useStockSync({ store_id: id!, enabled: false });
 
   const { data: items, isLoading: itemsLoading } = useRemainsInStock({
@@ -52,6 +52,7 @@ const RemainsInStock = () => {
     page: currentPage,
     store_id: id!,
   });
+
   const sortData = () => {
     if (items?.items && sortKey) {
       const sortedData = [...items?.items].sort((a, b) => {

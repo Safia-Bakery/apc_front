@@ -44,10 +44,10 @@ describe("Permissions", () => {
 
     loginDevelop();
     createRequest({
-      url: "/requests-apc-retail/add?sphere_status=1",
+      url: "/requests-apc/add?sphere_status=1",
       sphere: Sphere.apc,
     });
-    cy.visit(baseUrl + "/requests-apc-retail?sphere_status=1&addExp=28");
+    cy.visit(baseUrl + "/requests-apc?sphere_status=1&addExp=28");
     cy.get("td")
       .should("contain", "cypress testing")
       .siblings("td")

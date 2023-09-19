@@ -43,9 +43,6 @@ const Statistics = () => {
             selected={dayjs(end || undefined).toDate()}
             onChange={handleDateEnd}
           />
-          {/* <button type="submit" className={`btn btn-primary my-2`}>
-            Создать
-          </button> */}
         </div>
 
         <div className="table-responsive grid-view">

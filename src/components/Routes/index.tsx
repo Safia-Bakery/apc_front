@@ -20,10 +20,14 @@ import {
   Sphere,
 } from "src/utils/types";
 import useQueryString from "src/hooks/useQueryString";
-import Logs from "src/pages/LogsScreen";
 
 const ControlPanel = lazy(() => import("src/pages/ControlPanel"));
 const Masters = lazy(() => import("src/pages/Masters"));
+const ShowConsumption = lazy(() => import("src/pages/ShowConsumption"));
+const Logs = lazy(() => import("src/pages/LogsScreen"));
+const ConsumptionStat = lazy(
+  () => import("src/pages/Statistics/ConsumptionStat")
+);
 const Login = lazy(() => import("src/pages/Login"));
 const EditClient = lazy(() => import("src/pages/EditClient"));
 const TelegramAddProduct = lazy(() => import("src/pages/TelegramAddProduct"));
@@ -87,7 +91,7 @@ export const routes = [
         attaching={MainPermissions.fabric_req_attach_master}
       />
     ),
-    path: "/requests-apc-fabric/:id",
+    path: "/requests-apc/:id",
     screen: MainPermissions.edit_fabric_requests,
   },
   {
@@ -97,17 +101,17 @@ export const routes = [
         attaching={MainPermissions.request_ettach}
       />
     ),
-    path: "/requests-apc-retail/:id",
+    path: "/requests-apc/:id",
     screen: MainPermissions.edit_request_apc,
   },
   {
     element: <Logs />,
-    path: "/requests-apc-retail/:id/logs",
+    path: "/requests-apc/:id/logs",
     screen: MainPermissions.edit_request_apc,
   },
   {
     element: <Logs />,
-    path: "/requests-apc-fabric/:id/logs",
+    path: "/requests-apc/:id/logs",
     screen: MainPermissions.edit_request_apc,
   },
   {
@@ -549,6 +553,8 @@ const Navigation = () => {
                 path="brigade_categ"
                 element={<BrigadaCategStat sphere_status={Sphere.retail} />}
               />
+              <Route path="consumptions" element={<ConsumptionStat />} />
+              <Route path="consumptions/:id" element={<ShowConsumption />} />
             </Route>
           )}
           {permission?.[MainPermissions.get_statistics] && (
@@ -570,6 +576,8 @@ const Navigation = () => {
                 path="brigade_categ"
                 element={<BrigadaCategStat sphere_status={Sphere.fabric} />}
               />
+              <Route path="consumptions" element={<ConsumptionStat />} />
+              <Route path="consumptions/:id" element={<ShowConsumption />} />
             </Route>
           )}
 

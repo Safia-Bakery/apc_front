@@ -196,6 +196,24 @@ export interface CategoryTypes extends BasePaginatedRes {
   items: Category[];
 }
 
+export interface ExpenditureType {
+  id: number;
+  created_at: string;
+  request_id: number;
+  amount: number;
+}
+export interface ExpendituresTypes extends BasePaginatedRes {
+  items: ExpenditureType[];
+}
+
+export interface DistinctTypes {
+  tests: {
+    amount: number;
+    name: string;
+    id: number;
+  }[];
+}
+
 export interface Comments {
   id: number;
   request: Order;

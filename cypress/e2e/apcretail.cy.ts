@@ -9,7 +9,7 @@ describe("APC retail", () => {
   });
   it("attach to brigada", () => {
     createRequest({
-      url: "/requests-apc-retail/add?sphere_status=1&addExp=28",
+      url: "/requests-apc/add?sphere_status=1&addExp=28",
       sphere: Sphere.apc,
     });
     // cy.visit(baseUrl + "/requests-apc-retail?sphere_status=1&addExp=28");

@@ -24,6 +24,10 @@ const routesArr = [
     name: "Бригады по категориям",
     url: "brigade_categ",
   },
+  {
+    name: "По расходам",
+    url: "consumptions",
+  },
 ];
 
 const ApcStatBar: FC<Props> = ({ data }) => {

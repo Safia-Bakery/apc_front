@@ -187,7 +187,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
                       {permission?.[edit] ? (
                         <Link
                           id="request_id"
-                          to={`${order?.id}?sphere_status=${sphere_status}&addExp=${addExp}`}
+                          to={`/requests-apc/${order?.id}?sphere_status=${sphere_status}&addExp=${addExp}`}
                           state={{ prevPath: pathname + search }}
                         >
                           {order?.id}
