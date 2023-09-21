@@ -1,5 +1,5 @@
 import { RequestStatusArr, SystemArr, UrgentNames } from "src/utils/helpers";
-import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import useDebounce from "src/hooks/useDebounce";
 import "react-datepicker/dist/react-datepicker.css";
 import BaseInputs from "src/components/BaseInputs";
@@ -21,10 +21,10 @@ import useCategories from "src/hooks/useCategories";
 import { useForm } from "react-hook-form";
 import { permissionSelector } from "src/redux/reducers/auth";
 import { useAppSelector } from "src/redux/utils/types";
+import useUpdateEffect from "src/hooks/useUpdateEffect";
 
 const ApcFilter: FC = () => {
   const navigate = useNavigateParams();
-  const initialLoadRef = useRef(true);
   const deleteParam = useRemoveParams();
   const perm = useAppSelector(permissionSelector);
   const sphere_status = Number(useQueryString("sphere_status"));
@@ -51,38 +51,22 @@ const ApcFilter: FC = () => {
     if (start === undefined) deleteParam(["created_at"]);
     if (!!start) navigate({ created_at: start });
   };
-  const handleName = (user: string) => $user(user);
+  const handleName = (e: ChangeEvent<HTMLInputElement>) =>
+    $user(e.target.value);
 
-  const handleID = (id: string) => $id(id);
+  const handleID = (e: ChangeEvent<HTMLInputElement>) => $id(e.target.value);
 
   const handleUrgent = (e: ChangeEvent<HTMLSelectElement>) => {
     if (!!e.target.value) navigate({ urgent: !!+e.target.value });
     else deleteParam(["urgent"]);
   };
 
-  useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
-      return;
-    }
-
-    const navigateAsync = async () => {
-      await navigate({ user });
-    };
-
-    navigateAsync();
+  useUpdateEffect(() => {
+    navigate({ user });
   }, [user]);
-  useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
-      return;
-    }
 
-    const navigateAsync = async () => {
-      await navigate({ id });
-    };
-
-    navigateAsync();
+  useUpdateEffect(() => {
+    navigate({ id });
   }, [id]);
 
   useEffect(() => {
@@ -102,7 +86,7 @@ const ApcFilter: FC = () => {
           <MainInput
             register={register("idQ")}
             type="number"
-            onChange={(e) => handleID(e.target.value)}
+            onChange={handleID}
           />
         </BaseInput>
       </td>
@@ -119,10 +103,7 @@ const ApcFilter: FC = () => {
       )}
       <td className="p-0">
         <BaseInput className="m-2">
-          <MainInput
-            register={register("userName")}
-            onChange={(e) => handleName(e.target.value)}
-          />
+          <MainInput register={register("userName")} onChange={handleName} />
         </BaseInput>
       </td>
       <td width={150} className="p-0 position-relative">

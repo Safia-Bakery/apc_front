@@ -12,11 +12,11 @@ import {
 } from "src/hooks/useCustomNavigate";
 import useQueryString from "src/hooks/useQueryString";
 import useWarehouse from "src/hooks/useWarehouse";
+import useUpdateEffect from "src/hooks/useUpdateEffect";
 
 const WarehouseSelect: FC = () => {
   const navigate = useNavigateParams();
   const removeParam = useRemoveParams();
-  const initialLoadRef = useRef(true);
   const [query, $query] = useDebounce("");
   const [search, $search] = useState("");
   const [page, $page] = useState(1);
@@ -74,17 +74,8 @@ const WarehouseSelect: FC = () => {
     $focused(false);
   };
 
-  useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
-      return;
-    }
-
-    const fetchData = async () => {
-      await refetch();
-    };
-
-    fetchData();
+  useUpdateEffect(() => {
+    refetch();
   }, [query]);
 
   useEffect(() => {

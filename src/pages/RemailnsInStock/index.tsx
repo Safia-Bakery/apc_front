@@ -15,7 +15,7 @@ import useStockSync from "src/hooks/sync/useStockSync";
 import Loading from "src/components/Loader";
 
 const column = [
-  { name: "#", key: "" },
+  { name: "№", key: "" },
   { name: "Наименование", key: "name" },
   { name: "Синх.", key: "last_update" },
   { name: "Остались на складе", key: "amount_left" },

@@ -45,7 +45,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
 
   const column = useMemo(() => {
     const columns = [
-      { name: "#", key: "" },
+      { name: "№", key: "" },
       { name: "Номер заявки", key: "id" },
       { name: "Клиент", key: "user" },
       { name: "Филиал/Отдел", key: "name" },

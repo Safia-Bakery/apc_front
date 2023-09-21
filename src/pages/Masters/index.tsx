@@ -29,7 +29,7 @@ const Masters: FC<Props> = ({ add, edit, isMaster = false }) => {
 
   const column = useMemo(() => {
     return [
-      { name: "#", key: "id" },
+      { name: "№", key: "id" },
       { name: "Название", key: "name" },
       { name: isMaster ? "Мастер" : "Бригадир", key: "description" },
       { name: "Описание", key: "description" },

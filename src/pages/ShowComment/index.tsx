@@ -10,7 +10,7 @@ import useOrders from "src/hooks/useOrders";
 import { Order } from "src/utils/types";
 
 const column = [
-  { name: "#", key: "id" as keyof Order["id"] },
+  { name: "№", key: "id" as keyof Order["id"] },
   { name: "Сотрудник", key: "purchaser" as keyof Order["product"] },
   { name: "Оценка", key: "type" as keyof Order["product"] },
   { name: "Текст", key: "category.name" as keyof Order["category"] },

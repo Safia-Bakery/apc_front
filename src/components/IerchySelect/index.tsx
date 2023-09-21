@@ -11,12 +11,12 @@ import {
   useNavigateParams,
   useRemoveParams,
 } from "src/hooks/useCustomNavigate";
+import useUpdateEffect from "src/hooks/useUpdateEffect";
 
 const IearchSelect: React.FC = () => {
-  // const navigate = useNavigate();
   const navigate = useNavigateParams();
   const removeParam = useRemoveParams();
-  const initialLoadRef = useRef(true);
+
   const [query, $query] = useDebounce("");
   const [page, $page] = useState(1);
 
@@ -53,17 +53,8 @@ const IearchSelect: React.FC = () => {
     navigate({ product: JSON.stringify(product), itemModal: false });
   };
 
-  useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
-      return;
-    }
-
-    const fetchData = async () => {
-      await refetch();
-    };
-
-    fetchData();
+  useUpdateEffect(() => {
+    refetch();
   }, [query]);
 
   useEffect(() => {

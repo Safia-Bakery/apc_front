@@ -17,7 +17,7 @@ import { permissionSelector } from "src/redux/reducers/auth";
 import useQueryString from "src/hooks/useQueryString";
 
 const column = [
-  { name: "#", key: "id" },
+  { name: "№", key: "id" },
   { name: "Название", key: "name" },
   { name: "Регион", key: "country" },
   {

@@ -14,7 +14,7 @@ import ItemsCount from "src/components/ItemsCount";
 import useQueryString from "src/hooks/useQueryString";
 
 const column = [
-  { name: "#", key: "" },
+  { name: "№", key: "" },
   { name: "Номер", key: "id" },
   { name: "ОТПРАВИТЕЛЬ", key: "type" },
   { name: "ПОЛУЧАТЕЛЬ", key: "fillial.name" },

@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import { Order } from "src/utils/types";
 
 const column = [
-  { name: "#" },
+  { name: "№" },
   { name: "Действие" },
   { name: "Сотрудник" },
   { name: "Дата" },
