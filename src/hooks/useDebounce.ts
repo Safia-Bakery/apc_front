@@ -1,19 +1,26 @@
-import { useState, useEffect } from "react";
-import { Subject, debounceTime, distinctUntilChanged } from "rxjs";
-const time = 800;
-const useDebounce = <T>(defaultValue: T): [T, (v: T) => void] => {
-  const [value, setValue] = useState<T>(defaultValue);
-  const [base$] = useState(() => new Subject<T>());
+import { useState, useEffect, useCallback } from "react";
 
-  useEffect(() => {
-    const sub = base$
-      .pipe(debounceTime(time), distinctUntilChanged())
-      .subscribe(setValue);
+const delay = 500;
 
-    return () => sub.unsubscribe();
+function useDebounce<T>(initialValue: T): [T, (value: T) => void] {
+  const [debouncedValue, setDebouncedValue] = useState<T>(initialValue);
+  const [value, setValue] = useState<T>(initialValue);
+
+  const debouncedSetValue = useCallback((nextValue: T) => {
+    setValue(nextValue);
   }, []);
 
-  return [value, (v) => base$.next(v)];
-};
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [value, delay]);
+
+  return [debouncedValue, debouncedSetValue];
+}
 
 export default useDebounce;
