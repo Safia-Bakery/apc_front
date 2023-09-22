@@ -94,7 +94,7 @@ const routes = [
         url: "/items-in-stock",
         icon: "/assets/icons/remains-in-stock.svg",
         param: `/${stockStores.fabric}`,
-        screen: MainPermissions.get_warehouse,
+        screen: MainPermissions.get_warehouse_fabric,
       },
       {
         name: "Статистика",
@@ -177,15 +177,15 @@ const routes = [
         name: "Нестандартные рекламные решения",
         url: `/marketing-${MarketingSubDep[6]}`,
         icon: "/assets/icons/subOrder.svg",
-        screen: MainPermissions.get_complect_requests,
-        param: `?add=${MainPermissions.add_complect_requests}&edit=${MainPermissions.edit_complect_requests}&title=Нестандартные рекламные решения&sub_id=${MarketingSubDep.unstandartAdv}`,
+        screen: MainPermissions.get_nostandard_requests,
+        param: `?add=${MainPermissions.add_nostandard_requests}&edit=${MainPermissions.edit_nostandard_requests}&title=Нестандартные рекламные решения&sub_id=${MarketingSubDep.unstandartAdv}`,
       },
       {
         name: "Внешний вид филиала",
         url: `/marketing-${MarketingSubDep[7]}`,
         icon: "/assets/icons/subOrder.svg",
-        screen: MainPermissions.get_complect_requests,
-        param: `?add=${MainPermissions.add_complect_requests}&edit=${MainPermissions.edit_complect_requests}&title=Внешний вид филиала&sub_id=${MarketingSubDep.branchEnv}`,
+        screen: MainPermissions.get_stock_env_requests,
+        param: `?add=${MainPermissions.add_stock_env_requests}&edit=${MainPermissions.edit_stock_env_requests}&title=Внешний вид филиала&sub_id=${MarketingSubDep.branchEnv}`,
       },
       {
         name: "Категории",

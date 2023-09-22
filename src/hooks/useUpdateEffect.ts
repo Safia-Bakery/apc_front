@@ -16,6 +16,3 @@ const useUpdateEffect = (callback: () => void, dependencies: any[]) => {
 };
 
 export default useUpdateEffect;
-
-// 121 12
-1;

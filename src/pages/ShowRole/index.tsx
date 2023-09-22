@@ -82,7 +82,9 @@ const ShowRole = () => {
                 <tbody>
                   {item.actions.map((child) => (
                     <tr key={child?.id}>
-                      <td>{child?.action_name}</td>
+                      <td>
+                        {child?.action_name} - {child.id}
+                      </td>
                       <td width={50}>
                         <input
                           type="checkbox"
