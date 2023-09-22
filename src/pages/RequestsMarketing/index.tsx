@@ -61,7 +61,11 @@ const RequestsMarketing = () => {
       setSortOrder("asc");
     }
   };
-  const { data: requests, isLoading: orderLoading } = useOrders({
+  const {
+    data: requests,
+    isLoading: orderLoading,
+    refetch,
+  } = useOrders({
     size: itemsPerPage,
     department: Departments.marketing,
     page: currentPage,
@@ -98,6 +102,10 @@ const RequestsMarketing = () => {
   const renderFilter = useMemo(() => {
     return <InventoryFilter sub_id={sub_id} />;
   }, [request_status, category_id, created_at, id, phone, user, branch]);
+
+  useEffect(() => {
+    refetch();
+  }, [currentPage, sub_id]);
 
   return (
     <Card className="overflow-hidden">

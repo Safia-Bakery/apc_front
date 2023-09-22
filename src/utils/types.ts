@@ -398,6 +398,14 @@ export const MarketingSubDepRu = [
     name: "Комплекты",
     id: MarketingSubDep.complects,
   },
+  {
+    name: "Нестандартные рекламные решения",
+    id: MarketingSubDep.unstandartAdv,
+  },
+  {
+    name: "Внешний вид филиала",
+    id: MarketingSubDep.branchEnv,
+  },
 ];
 export enum Departments {
   all = 0,
