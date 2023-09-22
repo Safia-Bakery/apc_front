@@ -174,6 +174,20 @@ const routes = [
         param: `?add=${MainPermissions.add_complect_requests}&edit=${MainPermissions.edit_complect_requests}&title=Комплекты&sub_id=${MarketingSubDep.complects}`,
       },
       {
+        name: "Нестандартные рекламные решения",
+        url: `/marketing-${MarketingSubDep[6]}`,
+        icon: "/assets/icons/subOrder.svg",
+        screen: MainPermissions.get_complect_requests,
+        param: `?add=${MainPermissions.add_complect_requests}&edit=${MainPermissions.edit_complect_requests}&title=Нестандартные рекламные решения&sub_id=${MarketingSubDep.unstandartAdv}`,
+      },
+      {
+        name: "Внешний вид филиала",
+        url: `/marketing-${MarketingSubDep[7]}`,
+        icon: "/assets/icons/subOrder.svg",
+        screen: MainPermissions.get_complect_requests,
+        param: `?add=${MainPermissions.add_complect_requests}&edit=${MainPermissions.edit_complect_requests}&title=Внешний вид филиала&sub_id=${MarketingSubDep.branchEnv}`,
+      },
+      {
         name: "Категории",
         url: `/categories-marketing`,
         icon: "/assets/icons/categories.svg",

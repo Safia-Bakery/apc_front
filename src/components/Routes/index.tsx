@@ -159,6 +159,28 @@ export const routes = [
     path: `/marketing-${MarketingSubDep[5]}/:id`,
     screen: MainPermissions.edit_complect_requests,
   },
+  {
+    element: <ShowMarketingRequest />,
+    path: `/marketing-${MarketingSubDep[6]}/:id`,
+    screen: MainPermissions.edit_complect_requests,
+  },
+  {
+    element: <ShowMarketingRequest />,
+    path: `/marketing-${MarketingSubDep[7]}/:id`,
+    screen: MainPermissions.edit_complect_requests,
+  },
+
+  {
+    element: <Logs />,
+    path: `/marketing-${MarketingSubDep[7]}/:id/logs`,
+    screen: MainPermissions.edit_complect_requests,
+  },
+
+  {
+    element: <Logs />,
+    path: `/marketing-${MarketingSubDep[6]}/:id/logs`,
+    screen: MainPermissions.edit_complect_requests,
+  },
 
   {
     element: <Logs />,
@@ -211,6 +233,16 @@ export const routes = [
     screen: MainPermissions.get_complect_requests,
   },
   {
+    element: <RequestsMarketing />,
+    path: `/marketing-${MarketingSubDep[6]}`,
+    screen: MainPermissions.get_complect_requests,
+  },
+  {
+    element: <RequestsMarketing />,
+    path: `/marketing-${MarketingSubDep[7]}`,
+    screen: MainPermissions.get_complect_requests,
+  },
+  {
     element: <AddMarketingRequest />,
     path: `/marketing-${MarketingSubDep[1]}/add`,
     screen: MainPermissions.get_design_request,
@@ -233,6 +265,16 @@ export const routes = [
   {
     element: <AddMarketingRequest />,
     path: `/marketing-${MarketingSubDep[5]}/add`,
+    screen: MainPermissions.get_complect_requests,
+  },
+  {
+    element: <AddMarketingRequest />,
+    path: `/marketing-${MarketingSubDep[6]}/add`,
+    screen: MainPermissions.get_complect_requests,
+  },
+  {
+    element: <AddMarketingRequest />,
+    path: `/marketing-${MarketingSubDep[7]}/add`,
     screen: MainPermissions.get_complect_requests,
   },
   // {

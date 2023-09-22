@@ -38,6 +38,8 @@ const routeNameMappings: { [key: string]: string } = {
   "marketing-pos": "POS-Материалы",
   "marketing-complects": "Комплекты",
   "marketing-designers": "Проектная работа для дизайнеров",
+  "marketing-branchEnv": "Внешний вид филиала",
+  "marketing-unstandartAdv": "Нестандартные рекламные решения",
   clients: "Клиенты",
   logs: "Логи",
 };
