@@ -178,7 +178,7 @@ const routes = [
         url: `/marketing-${MarketingSubDep[6]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_nostandard_requests,
-        param: `?add=${MainPermissions.add_nostandard_requests}&edit=${MainPermissions.edit_nostandard_requests}&title=Нестандартные рекламные решения&sub_id=${MarketingSubDep.unstandartAdv}`,
+        param: `?add=${MainPermissions.add_nostandard_requests}&edit=${MainPermissions.edit_nostandard_requests}&title=Нестандартные рекламные решения&sub_id=${MarketingSubDep.nonstandartAdv}`,
       },
       {
         name: "Внешний вид филиала",

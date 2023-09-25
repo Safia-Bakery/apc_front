@@ -375,7 +375,7 @@ export enum MarketingSubDep {
   promo_production = 3,
   pos = 4,
   complects = 5,
-  unstandartAdv = 6,
+  nonstandartAdv = 6,
   branchEnv = 7,
 }
 
@@ -409,7 +409,7 @@ export const MarketingSubDepRu = [
   },
   {
     name: "Нестандартные рекламные решения",
-    id: MarketingSubDep.unstandartAdv,
+    id: MarketingSubDep.nonstandartAdv,
   },
   {
     name: "Внешний вид филиала",
