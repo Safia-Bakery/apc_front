@@ -20,7 +20,7 @@ export const useStockSync = ({
         .get("/v1/synch/left", { store_id }, config)
         .then(({ data: response }) => {
           successToast("Синхронизировано");
-          return response as BranchTypes;
+          response as BranchTypes;
         })
         .catch((e) => errorToast(e.message)),
     enabled,

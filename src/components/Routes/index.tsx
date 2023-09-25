@@ -511,7 +511,7 @@ export const routes = [
   {
     element: <RemainsInStock />,
     path: "/items-in-stock/:id",
-    screen: MainPermissions.get_warehouse,
+    screen: MainPermissions.get_warehouse_retail,
   },
 ];
 

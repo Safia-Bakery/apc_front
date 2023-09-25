@@ -18,9 +18,7 @@ export const useBrigadas = ({
     queryFn: () =>
       apiClient
         .get("/brigadas", { page, size, sphere_status })
-        .then(({ data: response }: { data: any }) => {
-          return response as BrigadaTypes;
-        }),
+        .then(({ data: response }: { data: any }) => response as BrigadaTypes),
     enabled,
   });
 };

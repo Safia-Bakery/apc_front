@@ -303,7 +303,7 @@ export enum MainPermissions {
   get_brigadas = 3,
   add_brigada = 16,
   edit_brigada = 17,
-  get_warehouse = 4,
+  get_warehouse_retail = 4,
   get_warehouse_fabric = 70,
   get_users = 5,
   add_users = 18,

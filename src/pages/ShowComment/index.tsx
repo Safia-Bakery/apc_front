@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import styles from "./index.module.scss";
 import dayjs from "dayjs";
 import TableHead from "src/components/TableHead";
 import { itemsPerPage } from "src/utils/helpers";

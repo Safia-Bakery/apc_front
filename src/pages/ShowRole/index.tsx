@@ -75,16 +75,14 @@ const ShowRole = () => {
                 <thead>
                   <tr>
                     <th className={styles.tableHead}>{item?.page_name}</th>
-                    <th className={styles.tableHead}></th>
+                    <th className={styles.tableHead} />
                   </tr>
                 </thead>
 
                 <tbody>
                   {item.actions.map((child) => (
                     <tr key={child?.id}>
-                      <td>
-                        {child?.action_name} - {child.id}
-                      </td>
+                      <td>{child?.action_name}</td>
                       <td width={50}>
                         <input
                           type="checkbox"

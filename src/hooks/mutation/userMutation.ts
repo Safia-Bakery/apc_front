@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import apiClient from "src/main";
 import { errorToast } from "src/utils/toast";
-import { UserTypes } from "src/utils/types";
 
 interface Body {
   password?: string;
@@ -36,7 +35,6 @@ const userMutation = () => {
         .then((res) => {
           if (res.status === 200) return res;
         });
-      // .catch((e: Error) => errorToast(e.message));
     },
     {
       onError: (e: any) =>

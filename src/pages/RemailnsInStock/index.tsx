@@ -1,12 +1,11 @@
 import Card from "src/components/Card";
-import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import Pagination from "src/components/Pagination";
 import ItemsCount from "src/components/ItemsCount";
 import TableHead from "src/components/TableHead";
 import { itemsPerPage } from "src/utils/helpers";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import StockFilter from "./filter";
 import dayjs from "dayjs";
 import useQueryString from "src/hooks/useQueryString";
@@ -40,11 +39,10 @@ const RemainsInStock = () => {
     }
   };
 
-  const {
-    refetch: syncIIKO,
-    isSuccess,
-    isFetching: syncLoading,
-  } = useStockSync({ store_id: id!, enabled: false });
+  const { refetch: syncIIKO, isFetching: syncLoading } = useStockSync({
+    store_id: id!,
+    enabled: false,
+  });
 
   const { data: items, isLoading: itemsLoading } = useRemainsInStock({
     enabled: true,

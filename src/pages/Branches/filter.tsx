@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useRef } from "react";
+import { ChangeEvent, FC } from "react";
 import BaseInputs from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainSelect from "src/components/BaseInputs/MainSelect";

@@ -1,7 +1,7 @@
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
-import { BrigadaType, MainPermissions, Sphere } from "src/utils/types";
+import { BrigadaType, MainPermissions } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
 import { FC, useEffect, useMemo, useState } from "react";

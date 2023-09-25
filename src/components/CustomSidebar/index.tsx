@@ -46,7 +46,7 @@ const routes = [
         url: "/items-in-stock",
         icon: "/assets/icons/remains-in-stock.svg",
         param: `/${stockStores.retail}`,
-        screen: MainPermissions.get_warehouse,
+        screen: MainPermissions.get_warehouse_retail,
       },
       {
         name: "Категории",

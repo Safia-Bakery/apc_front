@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import styles from "./index.module.scss";
 import useOrder from "src/hooks/useOrder";
 import dayjs from "dayjs";
-import { Order } from "src/utils/types";
 
 const column = [
   { name: "№" },
