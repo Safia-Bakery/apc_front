@@ -525,7 +525,7 @@ const Navigation = () => {
   const { pathname, search } = useLocation();
 
   const renderSidebar = useMemo(() => {
-    if (permission && token)
+    if (!!permission && !!token)
       return (
         <>
           <CustomSidebar />
@@ -535,7 +535,7 @@ const Navigation = () => {
   }, [permission, token]);
 
   const renderScreen = useMemo(() => {
-    if (!!permission && token)
+    if (!!permission && !!token)
       return routes.map((route) => {
         if (!!permission?.[route.screen]) {
           return (

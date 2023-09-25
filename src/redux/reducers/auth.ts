@@ -21,12 +21,12 @@ export const authReducer = createSlice({
     logoutHandler: (state) => {
       state.token = null;
       state.permissions = undefined;
+      window.location.reload();
 
       // localStorage.clear();
       const { pathname, search } = window.location;
       if (pathname.includes("login")) state.link = "/";
       else state.link = pathname + search;
-      // window.location.reload();
     },
     loginHandler: (state, { payload }) => {
       state.token = payload;
