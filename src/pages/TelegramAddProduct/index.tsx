@@ -2,7 +2,7 @@ import styles from "./index.module.scss";
 import { useForm } from "react-hook-form";
 import useTools from "src/hooks/useTools";
 import { useParams } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import usedItemsMutation from "src/hooks/mutation/usedItems";
 import { successToast } from "src/utils/toast";
 import useOrder from "src/hooks/useOrder";
@@ -11,14 +11,12 @@ import {
   useNavigateParams,
   useRemoveParams,
 } from "src/hooks/useCustomNavigate";
-import IearchSelect from "src/components/IerchySelect";
+import ToolsSelect from "src/components/ToolsSelect";
 import BaseInput from "src/components/BaseInputs";
-import MainInput from "src/components/BaseInputs/MainInput";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import Header from "src/components/Header";
 import { RequestStatus } from "src/utils/types";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
-import cl from "classnames";
 import deleteExpenditureMutation from "src/hooks/mutation/deleteExpenditure";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
@@ -40,6 +38,7 @@ const TelegramAddProduct = () => {
   const { mutate: deleteExp } = deleteExpenditureMutation();
   const inputRef = useRef<any>(null);
   const upladedFiles = useAppSelector(reportImgSelector);
+  const [count, $count] = useState(1);
 
   const { refetch: syncWithIiko, isFetching } = useSyncExpanditure({
     enabled: false,
@@ -60,12 +59,8 @@ const TelegramAddProduct = () => {
 
   const { register, handleSubmit, getValues, reset } = useForm();
 
-  const handleProducts = () => {
-    navigate({ itemModal: true });
-  };
-
   const onSubmit = () => {
-    const { count, comment } = getValues();
+    const { comment } = getValues();
     mutate(
       {
         amount: count,
@@ -142,6 +137,11 @@ const TelegramAddProduct = () => {
       );
   };
 
+  const handleCount = (val: number) => $count(val);
+
+  const handleIncrement = () => $count((prev) => prev + 1);
+  const handleDecrement = () => $count((prev) => prev - 1);
+
   useEffect(() => {
     iearchRefetch();
   }, []);
@@ -151,57 +151,57 @@ const TelegramAddProduct = () => {
       <Header title="Добавить расходной товар" />
 
       <div className={styles.block}>
-        <button
-          className="btn btn-primary float-end mr-3 z-3 position-relative"
-          onClick={() => syncWithIiko()}
-        >
-          {isFetching ? (
-            <div className="spinner-border text-warning" role="status">
-              <span className="sr-only">Loading...</span>
-            </div>
-          ) : (
-            "Синхронизировать с iiko"
-          )}
-        </button>
         <div className={styles.modalBody}>
-          <div className="form-group field-apcitems-product_id position-relative">
-            <label className="control-label">Товар</label>
-            <div
-              className={cl("form-control", styles.input)}
-              onClick={handleProducts}
+          <div className="d-flex justify-content-end">
+            <button
+              className="btn btn-primary z-3 position-relative"
+              onClick={() => syncWithIiko()}
             >
-              {!product?.name ? "Выберите продукт" : product.name}
-            </div>
-            {!!itemModal && itemModal !== "false" && <IearchSelect />}
+              {isFetching ? (
+                <div className="spinner-border text-warning" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              ) : (
+                "Обновить"
+              )}
+            </button>
           </div>
-
-          <BaseInput label="Количество">
-            <MainInput type="number" register={register("count")} />
+          <BaseInput label="Выберите продукт">
+            <ToolsSelect />
           </BaseInput>
 
-          <BaseInput label="Примичание">
-            <MainTextArea register={register("comment")} />
-          </BaseInput>
+          {/* <BaseInput label="Количество"> */}
+          <div className="d-flex gap-2 my-4">
+            <span className={styles.label}>Количество</span>
+            <button
+              type="button"
+              className={styles.increment}
+              disabled={count <= 1}
+              onClick={handleDecrement}
+            >
+              -
+            </button>
+            <input
+              type="number"
+              className={styles.count}
+              value={count}
+              onChange={(e) => handleCount(+e.target.value)}
+            />
+            <button
+              className={styles.increment}
+              type="button"
+              onClick={handleIncrement}
+            >
+              +
+            </button>
 
-          <div className={styles.uploadPhoto}>
-            <Header title={"Добавить фотоотчёт"} />
-            <div className="m-3">
-              <UploadComponent
-                onFilesSelected={handleFilesSelected}
-                inputRef={inputRef}
-              />
-              <button
-                onClick={handlerSubmitFile}
-                type="button"
-                className="btn btn-success float-end btn-fill my-3"
-              >
-                Сохранить
-              </button>
-            </div>
+            <button type="submit" className="btn btn-primary mb-0 float-end">
+              Добавить
+            </button>
           </div>
 
           {!!order?.expanditure?.length && (
-            <table className="table table-hover">
+            <table className="table table-hover mt-4 table-bordered">
               <thead>
                 <tr>
                   {column.map(({ name }) => {
@@ -218,7 +218,7 @@ const TelegramAddProduct = () => {
                 {order?.expanditure?.map((item) => (
                   <tr className="bg-blue" key={item.id}>
                     <td>{item?.tool?.name}</td>
-                    <td>{item?.amount}</td>
+                    <td>x{item?.amount}</td>
                     <td width={50}>
                       <div
                         className="d-flex justify-content-center pointer"
@@ -236,6 +236,29 @@ const TelegramAddProduct = () => {
 
         <hr />
 
+        <div className={styles.uploadPhoto}>
+          <Header title={"Добавить фотоотчёт"} />
+          <div className="m-3">
+            <UploadComponent
+              tableHead={styles.tableHead}
+              onFilesSelected={handleFilesSelected}
+              inputRef={inputRef}
+            />
+            <button
+              onClick={handlerSubmitFile}
+              type="button"
+              className="btn btn-success float-end btn-fill my-3"
+            >
+              Сохранить
+            </button>
+          </div>
+        </div>
+        <hr />
+
+        <BaseInput className="mx-2">
+          <MainTextArea register={register("comment")} />
+        </BaseInput>
+
         <div className={styles.footer}>
           <button
             type="button"
@@ -243,9 +266,6 @@ const TelegramAddProduct = () => {
             className="btn btn-success btn-fill"
           >
             Починил
-          </button>
-          <button type="submit" className="btn btn-info btn-primary">
-            Добавить
           </button>
         </div>
       </div>

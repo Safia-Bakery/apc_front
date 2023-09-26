@@ -2,6 +2,7 @@ import { ChangeEvent, FC, useEffect, useState } from "react";
 import { reportImgSelector } from "src/redux/reducers/selects";
 import { useAppSelector } from "src/redux/utils/types";
 import styles from "./index.module.scss";
+import cl from "classnames";
 
 export interface FileItem {
   file: File;
@@ -10,11 +11,13 @@ export interface FileItem {
 interface FileUploaderProps {
   onFilesSelected: (formData: FileItem[]) => void;
   inputRef?: any;
+  tableHead?: string;
 }
 
 const UploadComponent: FC<FileUploaderProps> = ({
   onFilesSelected,
   inputRef,
+  tableHead,
 }) => {
   const [fileList, setFileList] = useState<FileItem[]>([]);
   const [fileIdCounter, setFileIdCounter] = useState(0);
@@ -62,8 +65,10 @@ const UploadComponent: FC<FileUploaderProps> = ({
         <table className="table table-hover mt-3">
           <thead>
             <tr>
-              <th className={styles.tableHead}>Загруженные файлы</th>
-              <th className={styles.tableHead}></th>
+              <th className={cl(styles.tableHead, tableHead)}>
+                Загруженные файлы
+              </th>
+              <th className={cl(styles.tableHead, tableHead)}></th>
             </tr>
           </thead>
 

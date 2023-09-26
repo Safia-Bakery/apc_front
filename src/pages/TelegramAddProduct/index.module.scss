@@ -1,6 +1,9 @@
 .modalBody {
   padding: 20px 30px;
   position: relative;
+  border: 1px solid #d9d9d9;
+  margin: 10px;
+  border-radius: 10px;
 
   @media (max-width: 1200px) {
     padding: 10px;
@@ -33,7 +36,7 @@
 }
 .tableHead {
   font-weight: 600;
-  background-color: #fb404b !important;
+  background-color: #2b2b6a !important;
   color: white !important;
 }
 .uploadPhoto {
@@ -43,4 +46,35 @@
   margin-bottom: 30px;
   position: relative;
   overflow: hidden;
+}
+
+.increment {
+  cursor: pointer;
+}
+
+.increment,
+.count {
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  display: flex;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(63, 63, 68, 0.1);
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+.count {
+  width: 50px;
+  border: none;
+  outline: none;
+  text-align: center;
+  // padding: 5px;
+}
+
+.label {
+  font-size: 12px;
+  color: #888888;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
 }
