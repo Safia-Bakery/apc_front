@@ -263,7 +263,7 @@ const TelegramAddProduct = () => {
           <button
             type="button"
             onClick={handleFinishOrder({ status: RequestStatus.done })}
-            className="btn btn-success btn-fill"
+            className="btn btn-success btn-fill w-100"
           >
             Починил
           </button>
