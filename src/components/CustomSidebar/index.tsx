@@ -1,6 +1,6 @@
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import styles from "./index.module.scss";
-import { NavLink, useMatch } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import cl from "classnames";
 import { MainPermissions, MarketingSubDep, Sphere } from "src/utils/types";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
@@ -246,6 +246,7 @@ const CustomSidebar = () => {
   const dispatch = useAppDispatch();
   const handleOverlay = () => dispatch(sidebarHandler(!collapsed));
   const permission = useAppSelector(permissionSelector);
+  const { pathname } = useLocation();
 
   if (!permission) return;
   return (
@@ -287,11 +288,11 @@ const CustomSidebar = () => {
             />
           }
           className={cl(styles.menuItem, {
-            [styles.active]: useMatch("/"),
+            [styles.active]: pathname.includes("/home"),
           })}
           component={
             <NavLink
-              to={"/"}
+              to={"/home"}
               onClick={() => isMobile && dispatch(sidebarHandler(false))}
             />
           }
@@ -319,7 +320,7 @@ const CustomSidebar = () => {
                 key={item.name + item.url}
                 icon={<img height={30} width={30} src={item.icon || ""} />}
                 className={cl(styles.menuItem, {
-                  [styles.active]: item.url && useMatch(item.url),
+                  [styles.active]: item.url && pathname.includes(item.url),
                 })}
                 component={
                   <NavLink

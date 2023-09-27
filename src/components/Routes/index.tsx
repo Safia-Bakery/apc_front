@@ -68,7 +68,11 @@ const BrigadaCategStat = lazy(
 const BrigadaStat = lazy(() => import("src/pages/Statistics/BrigadaStat"));
 
 export const routes = [
-  { element: <ControlPanel />, path: "/", screen: MainPermissions.add_brigada },
+  {
+    element: <ControlPanel />,
+    path: "/home",
+    screen: MainPermissions.add_brigada,
+  },
   {
     element: <CreateITRequest />,
     path: "/requests-it/add",
@@ -570,7 +574,7 @@ const Navigation = () => {
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route element={<Login />} path={"/login"} />
-          <Route element={<ControlPanel />} path={"/"} />
+          <Route element={<ControlPanel />} path={"/home"} />
           <Route
             element={<TelegramAddProduct />}
             path={"/tg-add-product/:id"}

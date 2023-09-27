@@ -1,6 +1,6 @@
 import { MenuItem, SubMenu } from "react-pro-sidebar";
 import styles from "./index.module.scss";
-import { Link, useMatch } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import cl from "classnames";
 import { FC } from "react";
 import { MainPermissions } from "src/utils/types";
@@ -27,6 +27,7 @@ interface Props {
 const Subroutes: FC<Props> = ({ subroutes, routeIcon, routeName }) => {
   const dispatch = useAppDispatch();
   const permission = useAppSelector(permissionSelector);
+  const { pathname } = useLocation();
 
   return (
     <SubMenu
@@ -46,7 +47,7 @@ const Subroutes: FC<Props> = ({ subroutes, routeIcon, routeName }) => {
               rootStyles={{ margin: 10 }}
               icon={<img height={30} width={30} src={sub.icon} />}
               className={cl(styles.submenu, {
-                [styles.active]: useMatch(sub.url),
+                [styles.active]: pathname.includes(sub.url),
               })}
               component={
                 <Link

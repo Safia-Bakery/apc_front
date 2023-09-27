@@ -86,7 +86,7 @@ const Breadcrumbs: FC = () => {
             />
           </button>
           <li className="ml-3">
-            <Link to="/">Главная</Link>
+            <Link to="/home">Главная</Link>
           </li>
           {breadcrumbs.map((breadcrumb, index) => (
             <li key={breadcrumb.path}>
