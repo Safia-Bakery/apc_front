@@ -86,7 +86,7 @@ const Breadcrumbs: FC = () => {
             />
           </button>
           {window.location.pathname !== "/home" && (
-            <li className="ml-3">
+            <li>
               <Link to="/home">Главная</Link>
             </li>
           )}
