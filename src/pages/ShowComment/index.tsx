@@ -57,7 +57,7 @@ const ShowComment = () => {
   return (
     <>
       <Card>
-        <Header title={`#${id}`}>
+        <Header title={`№${id}`}>
           <button className="btn btn-primary btn-fill" onClick={goBack}>
             Назад
           </button>

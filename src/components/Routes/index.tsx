@@ -20,6 +20,7 @@ import {
   Sphere,
 } from "src/utils/types";
 import useQueryString from "src/hooks/useQueryString";
+import Suspend from "../Suspend";
 
 const ControlPanel = lazy(() => import("src/pages/ControlPanel"));
 const Masters = lazy(() => import("src/pages/Masters"));
@@ -68,11 +69,11 @@ const BrigadaCategStat = lazy(
 const BrigadaStat = lazy(() => import("src/pages/Statistics/BrigadaStat"));
 
 export const routes = [
-  {
-    element: <ControlPanel />,
-    path: "/home",
-    screen: MainPermissions.add_brigada,
-  },
+  // {
+  //   element: <ControlPanel />,
+  //   path: "/home",
+  //   screen: MainPermissions.add_brigada,
+  // },
   {
     element: <CreateITRequest />,
     path: "/requests-it/add",
@@ -543,7 +544,11 @@ const Navigation = () => {
       return routes.map((route) => {
         if (!!permission?.[route.screen]) {
           return (
-            <Route key={route.path} element={route.element} path={route.path} />
+            <Route
+              key={route.path}
+              element={<Suspend>{route.element}</Suspend>}
+              path={route.path}
+            />
           );
         }
       });
@@ -571,65 +576,163 @@ const Navigation = () => {
   return (
     <>
       {renderSidebar}
-      <Suspense fallback={<Loading />}>
-        <Routes>
-          <Route element={<Login />} path={"/login"} />
-          <Route element={<ControlPanel />} path={"/home"} />
+      <Routes>
+        <Route
+          element={
+            <Suspend>
+              <Login />
+            </Suspend>
+          }
+          path={"/login"}
+        />
+        <Route
+          element={
+            <Suspend>
+              <ControlPanel />
+            </Suspend>
+          }
+          path={"/home"}
+        />
+        <Route
+          element={
+            <Suspend>
+              <ControlPanel />
+            </Suspend>
+          }
+          path={"*"}
+        />
+        <Route
+          element={
+            <Suspend>
+              <TelegramAddProduct />
+            </Suspend>
+          }
+          path={"/tg-add-product/:id"}
+        />
+
+        {permission?.[MainPermissions.get_statistics] && (
           <Route
-            element={<TelegramAddProduct />}
-            path={"/tg-add-product/:id"}
-          />
+            path="/statistics-apc-retail"
+            element={
+              <Suspend>
+                <Statistics />
+              </Suspend>
+            }
+          >
+            <Route
+              index
+              path="category"
+              element={
+                <Suspend>
+                  <CategoryStat sphere_status={Sphere.retail} />
+                </Suspend>
+              }
+            />
+            <Route
+              path="fillial"
+              element={
+                <Suspend>
+                  <FillialStat sphere_status={Sphere.retail} />
+                </Suspend>
+              }
+            />
+            <Route
+              path="brigada"
+              element={
+                <Suspend>
+                  <BrigadaStat sphere_status={Sphere.retail} />
+                </Suspend>
+              }
+            />
+            <Route
+              path="brigade_categ"
+              element={
+                <Suspend>
+                  <BrigadaCategStat sphere_status={Sphere.retail} />
+                </Suspend>
+              }
+            />
+            <Route
+              path="consumptions"
+              element={
+                <Suspend>
+                  <ConsumptionStat />
+                </Suspend>
+              }
+            />
+            <Route
+              path="consumptions/:id"
+              element={
+                <Suspend>
+                  <ShowConsumption />
+                </Suspend>
+              }
+            />
+          </Route>
+        )}
+        {permission?.[MainPermissions.get_statistics] && (
+          <Route
+            path="/statistics-apc-fabric"
+            element={
+              <Suspend>
+                <Statistics />
+              </Suspend>
+            }
+          >
+            <Route
+              index
+              path="category"
+              element={
+                <Suspend>
+                  <CategoryStat sphere_status={Sphere.fabric} />
+                </Suspend>
+              }
+            />
+            <Route
+              path="fillial"
+              element={
+                <Suspend>
+                  <FillialStat sphere_status={Sphere.fabric} />
+                </Suspend>
+              }
+            />
+            <Route
+              path="brigada"
+              element={
+                <Suspend>
+                  <BrigadaStat sphere_status={Sphere.fabric} />
+                </Suspend>
+              }
+            />
+            <Route
+              path="brigade_categ"
+              element={
+                <Suspend>
+                  <BrigadaCategStat sphere_status={Sphere.fabric} />
+                </Suspend>
+              }
+            />
+            <Route
+              path="consumptions"
+              element={
+                <Suspend>
+                  <ConsumptionStat />
+                </Suspend>
+              }
+            />
+            <Route
+              path="consumptions/:id"
+              element={
+                <Suspend>
+                  <ShowConsumption />
+                </Suspend>
+              }
+            />
+          </Route>
+        )}
 
-          {permission?.[MainPermissions.get_statistics] && (
-            <Route path="/statistics-apc-retail" element={<Statistics />}>
-              <Route
-                index
-                path="category"
-                element={<CategoryStat sphere_status={Sphere.retail} />}
-              />
-              <Route
-                path="fillial"
-                element={<FillialStat sphere_status={Sphere.retail} />}
-              />
-              <Route
-                path="brigada"
-                element={<BrigadaStat sphere_status={Sphere.retail} />}
-              />
-              <Route
-                path="brigade_categ"
-                element={<BrigadaCategStat sphere_status={Sphere.retail} />}
-              />
-              <Route path="consumptions" element={<ConsumptionStat />} />
-              <Route path="consumptions/:id" element={<ShowConsumption />} />
-            </Route>
-          )}
-          {permission?.[MainPermissions.get_statistics] && (
-            <Route path="/statistics-apc-fabric" element={<Statistics />}>
-              <Route
-                index
-                path="category"
-                element={<CategoryStat sphere_status={Sphere.fabric} />}
-              />
-              <Route
-                path="fillial"
-                element={<FillialStat sphere_status={Sphere.fabric} />}
-              />
-              <Route
-                path="brigada"
-                element={<BrigadaStat sphere_status={Sphere.fabric} />}
-              />
-              <Route
-                path="brigade_categ"
-                element={<BrigadaCategStat sphere_status={Sphere.fabric} />}
-              />
-              <Route path="consumptions" element={<ConsumptionStat />} />
-              <Route path="consumptions/:id" element={<ShowConsumption />} />
-            </Route>
-          )}
-
-          {renderScreen}
-        </Routes>
-      </Suspense>
+        {renderScreen}
+      </Routes>
     </>
   );
 };

@@ -7,7 +7,8 @@ import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
 import Subroutes from "./CustomSubItems";
 import { sidebarHandler, toggleSidebar } from "src/redux/reducers/selects";
 import { isMobile, stockStores } from "src/utils/helpers";
-import { permissionSelector } from "src/redux/reducers/auth";
+import { logoutHandler, permissionSelector } from "src/redux/reducers/auth";
+import useToken from "src/hooks/useToken";
 
 const routes = [
   // {
@@ -248,101 +249,117 @@ const CustomSidebar = () => {
   const permission = useAppSelector(permissionSelector);
   const { pathname } = useLocation();
 
+  const handleLogout = () => {
+    dispatch(logoutHandler());
+  };
+  const { data: me } = useToken({ enabled: false });
+
   if (!permission) return;
   return (
-    <Sidebar
-      backgroundColor="#FB404B"
-      className={cl(styles.sidebar, "customSidebar", {
-        [cl(styles.collapsed, "collapsed")]: collapsed,
-      })}
-      rootStyles={{
-        color: "white",
-        height: "100lvh",
-        position: "fixed",
-        top: 0,
-        zIndex: 100,
-      }}
-    >
-      <div className={styles.logo}>
-        <h3 className={styles.title}>Service</h3>
-        <p className={styles.subTitle}>АРС / Inventory / IT / Marketing</p>
-      </div>
-      <Menu
-        className={styles.menu}
-        menuItemStyles={{
-          subMenuContent: ({ level }) => ({
-            zIndex: 100,
-            backgroundColor: level === 0 ? "rgba(0, 0, 0, .15)" : "transparent",
-          }),
+    <>
+      {collapsed && <div className={styles.overlay} onClick={handleOverlay} />}
+      <Sidebar
+        backgroundColor="#FB404B"
+        className={cl(styles.sidebar, "customSidebar", {
+          [cl(styles.collapsed, "collapsed")]: collapsed,
+        })}
+        rootStyles={{
+          color: "white",
+          height: "100%",
+          // maxHeight: "100%",
+          minHeight: "100lvh",
+          position: "fixed",
+          top: 0,
+          zIndex: 100,
         }}
       >
-        {collapsed && (
-          <div className={styles.overlay} onClick={handleOverlay} />
-        )}
-        <MenuItem
-          icon={
-            <img
-              height={30}
-              width={30}
-              src={"/assets/icons/controlPanel.svg"}
-            />
-          }
-          className={cl(styles.menuItem, {
-            [styles.active]: pathname.includes("/home"),
-          })}
-          component={
-            <NavLink
-              to={"/home"}
-              onClick={() => isMobile && dispatch(sidebarHandler(false))}
-            />
-          }
-        >
-          Панель управления
-        </MenuItem>
-        {routes.map((item) => {
-          if (
-            permission?.[item?.screen] ||
-            (item.subroutes &&
-              item.subroutes.some((subroute) => permission[subroute.screen]))
-          ) {
-            if (item?.subroutes?.length)
-              return (
-                <Subroutes
-                  key={item.name + item.url}
-                  subroutes={item.subroutes}
-                  routeIcon={item.icon}
-                  routeName={item.name}
+        <div className="d-flex flex-column justify-content-between">
+          <div className={styles.logo}>
+            <h3 className={styles.title}>Service</h3>
+            <p className={styles.subTitle}>АРС / Inventory / IT / Marketing</p>
+          </div>
+          <Menu
+            className={styles.menu}
+            menuItemStyles={{
+              subMenuContent: ({ level }) => ({
+                zIndex: 100,
+                backgroundColor:
+                  level === 0 ? "rgba(0, 0, 0, .15)" : "transparent",
+              }),
+            }}
+          >
+            <MenuItem
+              icon={
+                <img
+                  height={30}
+                  width={30}
+                  src={"/assets/icons/controlPanel.svg"}
                 />
-              );
+              }
+              className={cl(styles.menuItem, {
+                [styles.active]: pathname.includes("/home"),
+              })}
+              component={
+                <NavLink
+                  to={"/home"}
+                  onClick={() => isMobile && dispatch(sidebarHandler(false))}
+                />
+              }
+            >
+              Панель управления
+            </MenuItem>
+            {routes.map((item) => {
+              if (
+                permission?.[item?.screen] ||
+                (item.subroutes &&
+                  item.subroutes.some(
+                    (subroute) => permission[subroute.screen]
+                  ))
+              ) {
+                if (item?.subroutes?.length)
+                  return (
+                    <Subroutes
+                      key={item.name + item.url}
+                      subroutes={item.subroutes}
+                      routeIcon={item.icon}
+                      routeName={item.name}
+                    />
+                  );
 
-            return (
-              <MenuItem
-                key={item.name + item.url}
-                icon={<img height={30} width={30} src={item.icon || ""} />}
-                className={cl(styles.menuItem, {
-                  [styles.active]: item.url && pathname.includes(item.url),
-                })}
-                component={
-                  <NavLink
-                    onClick={() =>
-                      !item.subroutes?.length &&
-                      isMobile &&
-                      dispatch(sidebarHandler(false))
+                return (
+                  <MenuItem
+                    key={item.name + item.url}
+                    icon={<img height={30} width={30} src={item.icon || ""} />}
+                    className={cl(styles.menuItem, {
+                      [styles.active]: item.url && pathname.includes(item.url),
+                    })}
+                    component={
+                      <NavLink
+                        onClick={() =>
+                          !item.subroutes?.length &&
+                          isMobile &&
+                          dispatch(sidebarHandler(false))
+                        }
+                        state={{ name: item?.name }}
+                        to={`${item.url}${!!item?.param ? item?.param : ""}`}
+                      />
                     }
-                    state={{ name: item?.name }}
-                    to={`${item.url}${!!item?.param ? item?.param : ""}`}
-                  />
-                }
-              >
-                {item.name}
-              </MenuItem>
-            );
-          }
+                  >
+                    {item.name}
+                  </MenuItem>
+                );
+              }
 
-          return null;
-        })}
-      </Menu>
-    </Sidebar>
+              return null;
+            })}
+          </Menu>
+
+          <span onClick={handleLogout} className={styles.logout}>
+            Выйти ({me?.username})
+          </span>
+        </div>
+      </Sidebar>
+    </>
   );
 };
 

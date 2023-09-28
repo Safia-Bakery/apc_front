@@ -12,6 +12,9 @@
   font-weight: 400;
   color: #333;
   margin: 0;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
 
   @media (max-width: 1200px) {
     font-size: 22px;
