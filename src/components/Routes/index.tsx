@@ -10,9 +10,8 @@ import useToken from "src/hooks/useToken";
 import BreadCrump from "../BreadCrump";
 import CustomSidebar from "../CustomSidebar";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Suspense, lazy, useEffect, useMemo } from "react";
+import { lazy, useEffect, useMemo } from "react";
 import { Route, Routes } from "react-router-dom";
-import Loading from "../Loader";
 import {
   Departments,
   MainPermissions,

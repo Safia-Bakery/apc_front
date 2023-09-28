@@ -85,9 +85,11 @@ const Breadcrumbs: FC = () => {
               alt="burger"
             />
           </button>
-          {/* <li className="ml-3">
-            <Link to="/home">Главная</Link>
-          </li> */}
+          {window.location.pathname !== "/home" && (
+            <li className="ml-3">
+              <Link to="/home">Главная</Link>
+            </li>
+          )}
           {breadcrumbs.map((breadcrumb, index) => (
             <li key={breadcrumb.path}>
               {index === breadcrumbs.length - 1 ? (

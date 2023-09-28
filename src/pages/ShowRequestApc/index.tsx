@@ -363,7 +363,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
                               )}
                               key={item.url + index}
                             >
-                              {item.url}
+                              файл - {index + 1}
                             </div>
                           );
                       })}
