@@ -1,6 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Departments, MainPermissions, Order } from "src/utils/types";
-import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
 import { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
@@ -15,6 +14,7 @@ import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
 import styles from "./index.module.scss";
 import useQueryString from "src/hooks/useQueryString";
+import TableLoading from "src/components/TableLoading";
 
 const column = [
   { name: "№", key: "" },
@@ -177,13 +177,7 @@ const RequestsMarketing = () => {
                 )
               )}
 
-            {orderLoading && (
-              <tr>
-                <td>
-                  <Loading />
-                </td>
-              </tr>
-            )}
+            {orderLoading && <TableLoading />}
           </tbody>
         </table>
         {!!requests && <Pagination totalPages={requests.pages} />}

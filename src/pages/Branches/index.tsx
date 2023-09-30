@@ -11,10 +11,10 @@ import useBranches from "src/hooks/useBranches";
 import BranchesFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import useBranchSync from "src/hooks/sync/useBranchSync";
-import Loading from "src/components/Loader";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
 import useQueryString from "src/hooks/useQueryString";
+import TableLoading from "src/components/TableLoading";
 
 const column = [
   { name: "№", key: "id" },
@@ -153,13 +153,7 @@ const Branches = () => {
                 )
               )}
 
-            {isFetching && (
-              <tr>
-                <td>
-                  <Loading />
-                </td>
-              </tr>
-            )}
+            {isFetching && <TableLoading />}
           </tbody>
         </table>
         {!!branches && <Pagination totalPages={branches.pages} />}

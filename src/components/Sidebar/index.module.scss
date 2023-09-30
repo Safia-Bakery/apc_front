@@ -1,0 +1,199 @@
+.sidebar {
+  width: 80px;
+  min-width: 80px;
+  z-index: 200;
+  transition: 0.3s all ease-in-out;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  min-height: 100lvh;
+  height: 100%;
+
+  @media (max-width: 1200px) {
+    width: 0;
+    min-width: 0;
+  }
+
+  &:hover {
+    @media (min-width: 1200px) {
+      width: 260px;
+      min-width: 260px;
+    }
+
+    .content {
+      opacity: 1;
+      transform: translate3d(0px, 0, 0);
+    }
+    .menuText {
+      opacity: 1;
+      display: flex;
+    }
+
+    .menuItem,
+    .submenu,
+    .arrow {
+      opacity: 1;
+    }
+
+    .title,
+    .subTitle {
+      opacity: 1;
+    }
+  }
+}
+
+.collapsed {
+  width: 260px;
+  min-width: 260px;
+
+  .title,
+  .subTitle,
+  .arrow {
+    opacity: 1;
+  }
+  .content {
+    opacity: 1;
+    transform: translate3d(0px, 0, 0);
+  }
+}
+.title,
+.subTitle {
+  opacity: 0;
+}
+
+.title {
+  transition: 0.2s;
+  width: 260px;
+  padding: 12px 0 0 20px;
+  cursor: pointer;
+  font-family: "Bruno Ace SC" !important;
+  font-size: 28px;
+}
+.subTitle {
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: initial;
+  white-space: nowrap;
+}
+.overlay {
+  z-index: 110;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.logo {
+  position: relative;
+  display: flex;
+  z-index: 10;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+
+  .logoimg {
+    display: block;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0px;
+    right: 15px;
+    width: calc(100% - 30px);
+    height: 1px;
+    background-color: #fff;
+    opacity: 0.8;
+  }
+}
+
+.subMenuItem {
+  display: flex;
+  flex: 1;
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.submenu {
+  background-color: rgba(0, 0, 0, 0.15);
+  padding: 5px;
+
+  .link {
+    margin-right: 0 !important;
+  }
+}
+.link {
+  display: flex;
+  flex: 4;
+  align-items: center;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.23) !important;
+  }
+}
+.active {
+  background: rgba(255, 255, 255, 0.23) !important;
+}
+
+.menuItem {
+  display: flex;
+  flex: 1;
+  overflow-x: hidden;
+  flex-wrap: nowrap;
+  opacity: 0;
+  transition: 0.3s;
+  min-width: max-content;
+}
+.logout {
+  display: none;
+
+  @media (max-width: 1200px) {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    margin-top: 30px;
+    width: 100%;
+  }
+}
+.itemImg {
+  display: flex;
+  flex: 1;
+}
+.menuText {
+  display: flex;
+  flex: 3;
+  transition: 0.6s;
+  opacity: 0;
+  display: none;
+  width: 158px;
+}
+.arrow {
+  display: flex;
+  flex: 0.5;
+  opacity: 0;
+}
+.activeImage {
+  transform: rotate(180deg);
+}
+.content {
+  transform: translate3d(-25px, 0, 0);
+  opacity: 0;
+  transition: all 150ms linear;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  flex: 1;
+}
+.routeIcon {
+  height: 30px;
+  width: 30px;
+  margin-left: 8px;
+  margin-right: 16px;
+
+  @media (max-width: 960px) {
+    height: 20px;
+    width: 20px;
+  }
+}
