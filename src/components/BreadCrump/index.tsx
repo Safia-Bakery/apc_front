@@ -75,7 +75,7 @@ const Breadcrumbs: FC = () => {
         <ul className={styles.breadcrump}>
           <button
             onClick={() => dispatch(sidebarHandler(true))}
-            className="btn btn-danger p-2 btn-fill btn-round btn-icon mr-3"
+            className="btn btn-primary p-2 btn-fill btn-round btn-icon mr-3"
           >
             <img
               width={22}
