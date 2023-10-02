@@ -282,7 +282,6 @@ const CustomSidebar = () => {
                     (subroute) => permission[subroute.screen]
                   )
                 ) {
-                  console.log("permission[subroute.screen]");
                   const activeRoute = menuItem === route.screen;
                   return (
                     <li className="nav-item" key={route.url + route.name}>
