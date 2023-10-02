@@ -8,7 +8,7 @@ import {
 } from "src/redux/reducers/auth";
 import useToken from "src/hooks/useToken";
 import BreadCrump from "../BreadCrump";
-import CustomSidebar from "../CustomSidebar";
+import CustomSidebar from "../Sidebar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { lazy, useEffect, useMemo } from "react";
 import { Route, Routes } from "react-router-dom";

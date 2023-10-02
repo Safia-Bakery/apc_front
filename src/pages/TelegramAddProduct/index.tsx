@@ -148,7 +148,9 @@ const TelegramAddProduct = () => {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <Header title="Добавить расходной товар" />
+      <div className={styles.header}>
+        <h2 className={styles.title}>Добавить расходной товар</h2>
+      </div>
 
       <div className={styles.block}>
         <div className={styles.modalBody}>
@@ -234,7 +236,7 @@ const TelegramAddProduct = () => {
           )}
         </div>
 
-        <hr />
+        <hr className={styles.hr} />
 
         <div className={styles.uploadPhoto}>
           <Header title={"Добавить фотоотчёт"} />
@@ -253,7 +255,7 @@ const TelegramAddProduct = () => {
             </button>
           </div>
         </div>
-        <hr />
+        <hr className={styles.hr} />
 
         <BaseInput className="mx-2">
           <MainTextArea register={register("comment")} />

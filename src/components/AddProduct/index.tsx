@@ -120,11 +120,11 @@ const AddProduct: FC<Props> = ({ children, synciiko }) => {
                   <td>{item?.amount}</td>
                   <td>{item?.comment}</td>
                   <td>{dayjs(item?.created_at).format("DD.MM.YYYY HH:mm")}</td>
-                  <td>{item.user.full_name}</td>
+                  <td>{item?.user?.full_name}</td>
                   <td width={50}>
                     <div
                       className="d-flex justify-content-center pointer"
-                      onClick={handleDelete(item.id)}
+                      onClick={handleDelete(item?.id)}
                     >
                       <img src="/assets/icons/delete.svg" alt="delete" />
                     </div>
