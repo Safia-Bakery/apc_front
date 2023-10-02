@@ -27,7 +27,7 @@ interface Props {
 }
 
 const column = [
-  { name: "#", key: "" },
+  { name: "№", key: "" },
   { name: "Наименование", key: "name" },
   { name: "Отдел", key: "department" },
   { name: "Статус", key: "status" },

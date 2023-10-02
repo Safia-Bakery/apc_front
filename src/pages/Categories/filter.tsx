@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useState } from "react";
 import BaseInputs from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainSelect from "src/components/BaseInputs/MainSelect";
@@ -6,10 +6,10 @@ import MainSelect from "src/components/BaseInputs/MainSelect";
 import useCategories from "src/hooks/useCategories";
 import useDebounce from "src/hooks/useDebounce";
 import useQueryString from "src/hooks/useQueryString";
+import useUpdateEffect from "src/hooks/useUpdateEffect";
 import { StatusName, itemsPerPage } from "src/utils/helpers";
 
 const CategoriesFilter: FC = () => {
-  const initialLoadRef = useRef(true);
   const currentPage = Number(useQueryString("page")) || 1;
   const [name, $name] = useDebounce("");
   const [department, $department] = useDebounce("");
@@ -26,18 +26,10 @@ const CategoriesFilter: FC = () => {
     },
   });
 
-  useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
-      return;
-    }
-
-    const fetchData = async () => {
-      await refetch();
-    };
-
-    fetchData();
+  useUpdateEffect(() => {
+    refetch();
   }, [category_status, name]);
+
   return (
     <>
       <td></td>

@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "src/main";
-import { useAppDispatch } from "src/redux/utils/types";
 import { UsersType } from "src/utils/types";
 
 export const useUsersForBrigada = ({
@@ -10,13 +9,12 @@ export const useUsersForBrigada = ({
   enabled?: boolean;
   id: number | string;
 }) => {
-  const dispatch = useAppDispatch();
   return useQuery({
     queryKey: ["users_for_brigada", id],
     queryFn: () =>
-      apiClient.get(`/users/for/brigada/${id}`).then(({ data: response }) => {
-        return response as UsersType[];
-      }),
+      apiClient
+        .get(`/users/for/brigada/${id}`)
+        .then(({ data: response }) => response as UsersType[]),
     enabled,
     refetchOnMount: true,
   });

@@ -51,7 +51,6 @@ const ShowConsumption = () => {
                 <td width="50">{idx + 1}</td>
 
                 <td width={150}>
-                  {/* todo */}
                   <Link
                     to={`/requests-apc/${item?.request_id.toString()}`}
                     state={{ prevPath: window.location.pathname }}

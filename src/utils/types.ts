@@ -303,7 +303,8 @@ export enum MainPermissions {
   get_brigadas = 3,
   add_brigada = 16,
   edit_brigada = 17,
-  get_warehouse = 4,
+  get_warehouse_retail = 4,
+  get_warehouse_fabric = 70,
   get_users = 5,
   add_users = 18,
   edit_users = 19,
@@ -359,6 +360,14 @@ export enum MainPermissions {
   add_categ_fab = 55,
   get_categ_fab = 57,
   edit_categ_fab = 56,
+
+  get_stock_env_requests = 67,
+  edit_stock_env_requests = 68,
+  add_stock_env_requests = 69,
+
+  get_nostandard_requests = 64,
+  edit_nostandard_requests = 65,
+  add_nostandard_requests = 66,
 }
 export enum MarketingSubDep {
   designers = 1,
@@ -366,6 +375,8 @@ export enum MarketingSubDep {
   promo_production = 3,
   pos = 4,
   complects = 5,
+  nonstandartAdv = 6,
+  branchEnv = 7,
 }
 
 export enum ApcStatisticsTypes {
@@ -395,6 +406,14 @@ export const MarketingSubDepRu = [
   {
     name: "Комплекты",
     id: MarketingSubDep.complects,
+  },
+  {
+    name: "Нестандартные рекламные решения",
+    id: MarketingSubDep.nonstandartAdv,
+  },
+  {
+    name: "Внешний вид филиала",
+    id: MarketingSubDep.branchEnv,
   },
 ];
 export enum Departments {

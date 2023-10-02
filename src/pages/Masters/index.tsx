@@ -1,7 +1,7 @@
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
-import { BrigadaType, MainPermissions, Sphere } from "src/utils/types";
+import { BrigadaType, MainPermissions } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
 import { FC, useEffect, useMemo, useState } from "react";
@@ -29,7 +29,7 @@ const Masters: FC<Props> = ({ add, edit, isMaster = false }) => {
 
   const column = useMemo(() => {
     return [
-      { name: "#", key: "id" },
+      { name: "№", key: "id" },
       { name: "Название", key: "name" },
       { name: isMaster ? "Мастер" : "Бригадир", key: "description" },
       { name: "Описание", key: "description" },

@@ -27,7 +27,6 @@ body {
   font-family: "Rubik" !important;
   -webkit-font-smoothing: antialiased;
 }
-
 .pointer {
   cursor: pointer;
 }
@@ -96,20 +95,6 @@ input {
 .table-success {
   background-color: #e7ffcbd4 !important;
 }
-.customSidebar {
-  &:hover .ps-submenu-expand-icon.css-1cuxlhl {
-    display: block !important;
-  }
-}
-.ps-submenu-expand-icon.css-1cuxlhl {
-  display: none !important;
-}
-
-.collapsed {
-  .ps-submenu-expand-icon.css-1cuxlhl {
-    display: block !important;
-  }
-}
 .table-responsive {
   overflow-x: initial !important;
 }
@@ -136,5 +121,66 @@ input[type="number"] {
   &:hover {
     opacity: 0.6 !important;
     --bs-table-hover-bg: #87cb16 !important;
+  }
+}
+.sidebar {
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #447df7;
+  transform: none !important;
+  left: 0;
+  .nav {
+    margin-top: 0;
+  }
+
+  .nav li .nav-link {
+    padding: 10px;
+    margin: 5px;
+  }
+
+  &::before,
+  &::after {
+    content: none !important;
+  }
+
+  li {
+    z-index: 10;
+  }
+}
+.collapse {
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.7s;
+
+  &:not(.show) {
+    display: block !important;
+  }
+}
+
+.collapse.show {
+  max-height: 500px;
+}
+
+.sidebar .nav li:hover .nav-link {
+  background: transparent;
+}
+.sidebar .nav .nav-link {
+  line-height: 15px;
+  padding: 10px;
+  margin: 5px;
+
+  @media (max-width: 960px) {
+    padding: 2px 5px !important;
+    margin: 2px 5px !important;
+  }
+}
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  a {
+    @media (max-width: 960px) {
+      height: 40px;
+    }
   }
 }

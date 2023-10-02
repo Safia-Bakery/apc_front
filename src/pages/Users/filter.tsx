@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from "react";
+import { FC } from "react";
 import BaseInput from "src/components/BaseInputs";
 import BaseInputs from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
@@ -7,6 +7,7 @@ import { useNavigateParams } from "src/hooks/useCustomNavigate";
 import useDebounce from "src/hooks/useDebounce";
 import useQueryString from "src/hooks/useQueryString";
 import useRoles from "src/hooks/useRoles";
+import useUpdateEffect from "src/hooks/useUpdateEffect";
 
 interface Props {
   currentPage: number;
@@ -18,7 +19,6 @@ const StatusName = [
 ];
 
 const UsersFilter: FC<Props> = () => {
-  const initialLoadRef = useRef(true);
   const navigate = useNavigateParams();
   const [full_name, $full_name] = useDebounce("");
   const [username, $username] = useDebounce("");
@@ -27,41 +27,16 @@ const UsersFilter: FC<Props> = () => {
   const user_status = useQueryString("user_status");
   const role_id = useQueryString("role_id");
 
-  useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
-      return;
-    }
-
-    const navigateAsync = async () => {
-      await navigate({ full_name });
-    };
-
-    navigateAsync();
+  useUpdateEffect(() => {
+    navigate({ full_name });
   }, [full_name]);
-  useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
-      return;
-    }
 
-    const navigateAsync = async () => {
-      await navigate({ username });
-    };
-
-    navigateAsync();
+  useUpdateEffect(() => {
+    navigate({ username });
   }, [username]);
-  useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
-      return;
-    }
 
-    const navigateAsync = async () => {
-      await navigate({ phone_number });
-    };
-
-    navigateAsync();
+  useUpdateEffect(() => {
+    navigate({ phone_number });
   }, [phone_number]);
 
   return (

@@ -6,7 +6,7 @@ import MainTextArea from "../BaseInputs/MainTextArea";
 import { useForm } from "react-hook-form";
 import MainInput from "../BaseInputs/MainInput";
 import useTools from "src/hooks/useTools";
-import IearchSelect from "../IerchySelect";
+import ToolsSelect from "../ToolsSelect";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import usedItemsMutation from "src/hooks/mutation/usedItems";
@@ -118,7 +118,7 @@ const AddProductModal = () => {
 
               {!!itemModal &&
                 itemModal !== "false" &&
-                permissions?.[addExp] && <IearchSelect />}
+                permissions?.[addExp] && <ToolsSelect />}
             </div>
 
             <BaseInput label="Количество">

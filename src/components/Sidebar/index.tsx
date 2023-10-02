@@ -1,13 +1,13 @@
-import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import styles from "./index.module.scss";
-import { NavLink, useMatch } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import cl from "classnames";
 import { MainPermissions, MarketingSubDep, Sphere } from "src/utils/types";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
-import Subroutes from "./CustomSubItems";
 import { sidebarHandler, toggleSidebar } from "src/redux/reducers/selects";
 import { isMobile, stockStores } from "src/utils/helpers";
-import { permissionSelector } from "src/redux/reducers/auth";
+import { logoutHandler, permissionSelector } from "src/redux/reducers/auth";
+import useToken from "src/hooks/useToken";
+import { useState } from "react";
 
 const routes = [
   // {
@@ -46,7 +46,7 @@ const routes = [
         url: "/items-in-stock",
         icon: "/assets/icons/remains-in-stock.svg",
         param: `/${stockStores.retail}`,
-        screen: MainPermissions.get_warehouse,
+        screen: MainPermissions.get_warehouse_retail,
       },
       {
         name: "Категории",
@@ -94,7 +94,7 @@ const routes = [
         url: "/items-in-stock",
         icon: "/assets/icons/remains-in-stock.svg",
         param: `/${stockStores.fabric}`,
-        screen: MainPermissions.get_warehouse,
+        screen: MainPermissions.get_warehouse_fabric,
       },
       {
         name: "Статистика",
@@ -174,6 +174,20 @@ const routes = [
         param: `?add=${MainPermissions.add_complect_requests}&edit=${MainPermissions.edit_complect_requests}&title=Комплекты&sub_id=${MarketingSubDep.complects}`,
       },
       {
+        name: "Нестандартные рекламные решения",
+        url: `/marketing-${MarketingSubDep[6]}`,
+        icon: "/assets/icons/subOrder.svg",
+        screen: MainPermissions.get_nostandard_requests,
+        param: `?add=${MainPermissions.add_nostandard_requests}&edit=${MainPermissions.edit_nostandard_requests}&title=Нестандартные рекламные решения&sub_id=${MarketingSubDep.nonstandartAdv}`,
+      },
+      {
+        name: "Внешний вид филиала",
+        url: `/marketing-${MarketingSubDep[7]}`,
+        icon: "/assets/icons/subOrder.svg",
+        screen: MainPermissions.get_stock_env_requests,
+        param: `?add=${MainPermissions.add_stock_env_requests}&edit=${MainPermissions.edit_stock_env_requests}&title=Внешний вид филиала&sub_id=${MarketingSubDep.branchEnv}`,
+      },
+      {
         name: "Категории",
         url: `/categories-marketing`,
         icon: "/assets/icons/categories.svg",
@@ -232,102 +246,160 @@ const CustomSidebar = () => {
   const dispatch = useAppDispatch();
   const handleOverlay = () => dispatch(sidebarHandler(!collapsed));
   const permission = useAppSelector(permissionSelector);
+  const { pathname } = useLocation();
+
+  const [menuItem, $menuItem] = useState<MainPermissions>();
+
+  const toggleSubItems = (item: MainPermissions) => {
+    if (item === menuItem) $menuItem(undefined);
+    else $menuItem(item);
+  };
+
+  const handleLogout = () => dispatch(logoutHandler());
+
+  const { data: me } = useToken({ enabled: false });
 
   if (!permission) return;
   return (
-    <Sidebar
-      backgroundColor="#FB404B"
-      className={cl(styles.sidebar, "customSidebar", {
-        [cl(styles.collapsed, "collapsed")]: collapsed,
-      })}
-      rootStyles={{
-        color: "white",
-        height: "100lvh",
-        position: "fixed",
-        top: 0,
-        zIndex: 100,
-      }}
-    >
-      <div className={styles.logo}>
-        <h3 className={styles.title}>Service</h3>
-        <p className={styles.subTitle}>АРС / Inventory / IT / Marketing</p>
-      </div>
-      <Menu
-        className={styles.menu}
-        menuItemStyles={{
-          subMenuContent: ({ level }) => ({
-            zIndex: 100,
-            backgroundColor: level === 0 ? "rgba(0, 0, 0, .15)" : "transparent",
-          }),
-        }}
-      >
-        {collapsed && (
-          <div className={styles.overlay} onClick={handleOverlay} />
-        )}
-        <MenuItem
-          icon={
-            <img
-              height={30}
-              width={30}
-              src={"/assets/icons/controlPanel.svg"}
-            />
-          }
-          className={cl(styles.menuItem, {
-            [styles.active]: useMatch("/"),
-          })}
-          component={
-            <NavLink
-              to={"/"}
-              onClick={() => isMobile && dispatch(sidebarHandler(false))}
-            />
-          }
-        >
-          Панель управления
-        </MenuItem>
-        {routes.map((item) => {
-          if (
-            permission?.[item?.screen] ||
-            (item.subroutes &&
-              item.subroutes.some((subroute) => permission[subroute.screen]))
-          ) {
-            if (item?.subroutes?.length)
-              return (
-                <Subroutes
-                  key={item.name + item.url}
-                  subroutes={item.subroutes}
-                  routeIcon={item.icon}
-                  routeName={item.name}
-                />
-              );
-
-            return (
-              <MenuItem
-                key={item.name + item.url}
-                icon={<img height={30} width={30} src={item.icon || ""} />}
-                className={cl(styles.menuItem, {
-                  [styles.active]: item.url && useMatch(item.url),
-                })}
-                component={
-                  <NavLink
-                    onClick={() =>
-                      !item.subroutes?.length &&
-                      isMobile &&
-                      dispatch(sidebarHandler(false))
-                    }
-                    state={{ name: item?.name }}
-                    to={`${item.url}${!!item?.param ? item?.param : ""}`}
-                  />
-                }
-              >
-                {item.name}
-              </MenuItem>
-            );
-          }
-
-          return null;
+    <>
+      {collapsed && <div className={styles.overlay} onClick={handleOverlay} />}
+      <div
+        className={cl(styles.sidebar, "sidebar", {
+          [styles.collapsed]: collapsed,
         })}
-      </Menu>
-    </Sidebar>
+      >
+        <div className="d-flex flex-column justify-content-between position-relative z-3">
+          <div className={styles.logo}>
+            <h3 className={styles.title}>Service</h3>
+            <p className={styles.subTitle}>АРС / Inventory / IT / Marketing</p>
+          </div>
+          <ul className="nav flex-column d-flex">
+            {routes.map((route) => {
+              if (permission?.[route?.screen]) {
+                if (
+                  route?.subroutes?.length &&
+                  route.subroutes.some(
+                    (subroute) => permission[subroute.screen]
+                  )
+                ) {
+                  const activeRoute = menuItem === route.screen;
+                  return (
+                    <li className="nav-item" key={route.url + route.name}>
+                      <a
+                        className={cl("nav-link d-flex", styles.link, {
+                          ["show"]: activeRoute,
+                        })}
+                        onClick={() => toggleSubItems(route.screen)}
+                        href={`#${route.screen}`}
+                      >
+                        <img
+                          height={20}
+                          width={20}
+                          src={route.icon || ""}
+                          className={styles.routeIcon}
+                        />
+                        <p className={styles.content}>
+                          {route.name}
+                          <img
+                            src="/assets/icons/arrow.svg"
+                            alt="arrow"
+                            className={cl({
+                              [styles.activeImage]: activeRoute,
+                            })}
+                            width={15}
+                            height={15}
+                          />
+                        </p>
+                      </a>
+                      <div
+                        className={cl("collapse", {
+                          ["show"]: activeRoute,
+                        })}
+                        id="subItems"
+                      >
+                        <ul className={cl("nav flex-column", styles.submenu)}>
+                          {route.subroutes.map((subroute) => {
+                            if (permission?.[subroute.screen])
+                              return (
+                                <li
+                                  className={cl("nav-item")}
+                                  key={subroute.url + subroute.name}
+                                >
+                                  <Link
+                                    className={cl(
+                                      "nav-link d-flex align-items-center",
+                                      styles.link,
+                                      {
+                                        [styles.active]: pathname.includes(
+                                          subroute.url
+                                        ),
+                                      }
+                                    )}
+                                    onClick={() =>
+                                      isMobile &&
+                                      dispatch(sidebarHandler(false))
+                                    }
+                                    to={`${subroute.url}${
+                                      !!subroute?.param ? subroute?.param : ""
+                                    }`}
+                                    state={{ name: subroute.name }}
+                                  >
+                                    <img
+                                      height={20}
+                                      width={20}
+                                      src={subroute.icon || ""}
+                                      className={styles.routeIcon}
+                                    />
+                                    <p className={styles.content}>
+                                      {subroute.name}
+                                    </p>
+                                  </Link>
+                                </li>
+                              );
+                          })}
+                        </ul>
+                      </div>
+                    </li>
+                  );
+                } else {
+                  return (
+                    <li className={cl("nav-item")} key={route.url + route.name}>
+                      <Link
+                        className={cl(
+                          "nav-link d-flex align-items-center",
+                          styles.link,
+                          {
+                            [styles.active]: pathname.includes(route.url!),
+                          }
+                        )}
+                        onClick={() =>
+                          isMobile && dispatch(sidebarHandler(false))
+                        }
+                        to={`${route.url}${!!route?.param ? route?.param : ""}`}
+                        state={{ name: route.name }}
+                      >
+                        <img
+                          height={20}
+                          width={20}
+                          src={route.icon || ""}
+                          className={styles.routeIcon}
+                        />
+                        <p className={styles.content}>{route.name}</p>
+                        {/* <span className={styles.menuItem}>{route.name}</span> */}
+                      </Link>
+                    </li>
+                  );
+                }
+              }
+              return null;
+            })}
+          </ul>
+        </div>
+        <span onClick={handleLogout} className={styles.logout}>
+          Выйти ({me?.username})
+        </span>
+      </div>
+    </>
   );
 };
 

@@ -38,6 +38,8 @@ const routeNameMappings: { [key: string]: string } = {
   "marketing-pos": "POS-Материалы",
   "marketing-complects": "Комплекты",
   "marketing-designers": "Проектная работа для дизайнеров",
+  "marketing-branchEnv": "Внешний вид филиала",
+  "marketing-unstandartAdv": "Нестандартные рекламные решения",
   clients: "Клиенты",
   logs: "Логи",
 };
@@ -73,7 +75,7 @@ const Breadcrumbs: FC = () => {
         <ul className={styles.breadcrump}>
           <button
             onClick={() => dispatch(sidebarHandler(true))}
-            className="btn btn-danger p-2 btn-fill btn-round btn-icon"
+            className="btn btn-primary p-2 btn-fill btn-round btn-icon mr-3"
           >
             <img
               width={22}
@@ -83,9 +85,11 @@ const Breadcrumbs: FC = () => {
               alt="burger"
             />
           </button>
-          <li className="ml-3">
-            <Link to="/">Главная</Link>
-          </li>
+          {window.location.pathname !== "/home" && (
+            <li>
+              <Link to="/home">Главная</Link>
+            </li>
+          )}
           {breadcrumbs.map((breadcrumb, index) => (
             <li key={breadcrumb.path}>
               {index === breadcrumbs.length - 1 ? (

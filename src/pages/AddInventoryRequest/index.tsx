@@ -30,7 +30,7 @@ const initialInventory: InventoryFields = {
 };
 
 const column = [
-  { name: "#", key: "" },
+  { name: "№", key: "" },
   { name: "ТОВАР", key: "id" },
   { name: "ЕД. ИЗМ.", key: "type" },
   { name: "КОЛИЧЕСТВО", key: "fillial.name" },

@@ -12,6 +12,7 @@ import {
 } from "src/hooks/useCustomNavigate";
 import useBranches from "src/hooks/useBranches";
 import useQueryString from "src/hooks/useQueryString";
+import useUpdateEffect from "src/hooks/useUpdateEffect";
 
 interface Props {
   origin?: number;
@@ -21,7 +22,6 @@ interface Props {
 const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
   const navigate = useNavigateParams();
   const removeParam = useRemoveParams();
-  const initialLoadRef = useRef(true);
   const [query, $query] = useDebounce("");
   const [search, $search] = useState("");
   const [page, $page] = useState(1);
@@ -86,17 +86,8 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
     $focused(true);
   };
 
-  useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
-      return;
-    }
-
-    const fetchData = async () => {
-      await refetch();
-    };
-
-    fetchData();
+  useUpdateEffect(() => {
+    refetch();
   }, [query]);
 
   useEffect(() => {

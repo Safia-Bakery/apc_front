@@ -2,9 +2,8 @@ import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MainPermissions, UsersType } from "src/utils/types";
-import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
@@ -14,9 +13,10 @@ import ItemsCount from "src/components/ItemsCount";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
 import useQueryString from "src/hooks/useQueryString";
+import TableLoading from "src/components/TableLoading";
 
 const column = [
-  { name: "#", key: "" },
+  { name: "№", key: "" },
   { name: "ФИО", key: "full_name" },
   { name: "Логин", key: "username" },
   { name: "Роль", key: "group.name" },
@@ -154,19 +154,13 @@ const Users: FC<Props> = ({ add, edit }) => {
                     </td>
                   </tr>
                 ))}
-            {orderLoading && (
-              <tr>
-                <td>
-                  <Loading />
-                </td>
-              </tr>
-            )}
+            {orderLoading && <TableLoading />}
           </tbody>
         </table>
         {!!users && <Pagination totalPages={users.pages} />}
         {!users?.items?.length && !orderLoading && (
           <div className="w-100">
-            <p className="text-center w-100 ">Спосок пуст</p>
+            <p className="text-center w-100">Спосок пуст</p>
           </div>
         )}
       </div>

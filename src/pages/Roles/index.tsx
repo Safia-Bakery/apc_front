@@ -12,7 +12,7 @@ import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
 
 const column = [
-  { name: "#", key: "" },
+  { name: "№", key: "" },
   { name: "Название", key: "name" },
   { name: "Статус", key: "status" },
   { name: "", key: "" },

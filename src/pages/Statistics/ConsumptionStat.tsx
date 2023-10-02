@@ -6,9 +6,8 @@ import useDistinct from "src/hooks/useDistinct";
 import { Link } from "react-router-dom";
 
 const column = [
-  { name: "№", key: "name" },
-  { name: "Номер расхода", key: "name" },
-  { name: "Филиалы", key: "name" },
+  { name: "№", key: "" },
+  { name: "Материал", key: "name" },
   { name: "Количество (шт)", key: "amount" },
 ];
 
@@ -49,10 +48,9 @@ const ConsumptionStat = () => {
               <tr key={idx} className="bg-blue">
                 <td width="50">{idx + 1}</td>
 
-                <td width={150}>
-                  <Link to={item?.id.toString()}>{item?.id}</Link>
+                <td>
+                  <Link to={item?.id.toString()}>{item?.name}</Link>
                 </td>
-                <td>{item?.name}</td>
                 <td>{item?.amount}</td>
               </tr>
             ))

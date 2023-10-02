@@ -11,7 +11,7 @@ import useComments from "src/hooks/useComments";
 import useQueryString from "src/hooks/useQueryString";
 
 const column = [
-  { name: "#", key: "id" },
+  { name: "№", key: "id" },
   { name: "Сотрудник", key: "purchaser" },
   { name: "Заявка", key: "status" },
   { name: "Оценка", key: "status" },

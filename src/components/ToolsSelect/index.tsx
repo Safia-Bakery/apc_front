@@ -1,20 +1,20 @@
-import { ChangeEvent, FC, useCallback, useEffect, useRef } from "react";
+import React, { ChangeEvent, useCallback, useEffect, useRef } from "react";
 import styles from "./index.module.scss";
 import { useState } from "react";
+import useTools from "src/hooks/useTools";
 import BaseInput from "../BaseInputs";
 import MainInput from "../BaseInputs/MainInput";
 import useDebounce from "src/hooks/useDebounce";
 import cl from "classnames";
-import { BranchTypes } from "src/utils/types";
+import { ToolTypes } from "src/utils/types";
 import {
   useNavigateParams,
   useRemoveParams,
 } from "src/hooks/useCustomNavigate";
 import useQueryString from "src/hooks/useQueryString";
-import useWarehouse from "src/hooks/useWarehouse";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
 
-const WarehouseSelect: FC = () => {
+const ToolsSelect: React.FC = () => {
   const navigate = useNavigateParams();
   const removeParam = useRemoveParams();
   const [query, $query] = useDebounce("");
@@ -22,14 +22,15 @@ const WarehouseSelect: FC = () => {
   const [page, $page] = useState(1);
   const [focused, $focused] = useState(false);
 
-  const branchJson = useQueryString("branch");
-  const branch = branchJson && JSON.parse(branchJson);
+  const productJson = useQueryString("product");
+  const product = productJson && JSON.parse(productJson);
 
-  const { data, refetch, isFetching, isLoading } = useWarehouse({
-    enabled: true,
+  const { data, refetch, isFetching, isLoading } = useTools({
     page,
+    enabled: false,
+    ...(!!query && { query }),
   });
-  const [items, $items] = useState<BranchTypes["items"]>([]);
+  const [items, $items] = useState<ToolTypes["items"]>([]);
   const observer: any = useRef();
   const lastBookElementRef = useCallback(
     (node: any) => {
@@ -48,7 +49,7 @@ const WarehouseSelect: FC = () => {
 
   const onClose = () => {
     $focused(false);
-    removeParam(["choose_fillial"]);
+    removeParam(["itemModal"]);
   };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -58,20 +59,25 @@ const WarehouseSelect: FC = () => {
   };
 
   const close = () => {
-    removeParam(["branch", "choose_fillial"]);
+    removeParam(["itemModal"]);
     $search("");
     $focused(false);
   };
 
   useEffect(() => {
-    if (branch?.name) {
-      $search(branch.name);
+    if (product?.name) {
+      $search(product.name);
     }
-  }, [branch?.name]);
+  }, [product?.name]);
 
-  const handleProduct = (product: { id: string; name: string }) => {
-    navigate({ branch: JSON.stringify(product), choose_fillial: false });
+  const handleProduct = (product: { id: number; name: string }) => {
+    navigate({ product: JSON.stringify(product), itemModal: false });
     $focused(false);
+  };
+
+  const handleFocus = () => {
+    // if (!enabled) refetch();
+    $focused(true);
   };
 
   useUpdateEffect(() => {
@@ -103,9 +109,9 @@ const WarehouseSelect: FC = () => {
             />
           )}
           <MainInput
+            onFocus={handleFocus}
             onChange={handleSearch}
             value={search}
-            onFocus={() => $focused(true)}
           />
         </BaseInput>
         {focused && (
@@ -116,9 +122,7 @@ const WarehouseSelect: FC = () => {
                   <li
                     key={item.id}
                     ref={lastBookElementRef}
-                    onClick={() =>
-                      handleProduct({ id: item.id, name: item.name })
-                    }
+                    onClick={() => handleProduct(item)}
                     className={cl("list-group-item position-relative pointer")}
                   >
                     {item.name}
@@ -144,4 +148,4 @@ const WarehouseSelect: FC = () => {
   );
 };
 
-export default WarehouseSelect;
+export default ToolsSelect;

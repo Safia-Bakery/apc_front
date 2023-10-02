@@ -13,7 +13,7 @@ import MainInput from "src/components/BaseInputs/MainInput";
 import useQueryString from "src/hooks/useQueryString";
 
 const column = [
-  { name: "#", key: "" },
+  { name: "№", key: "" },
   { name: "Продукт", key: "name" },
   { name: "Колчество", key: "fillial.name" },
   { name: "Дата синх.", key: "category.name" },

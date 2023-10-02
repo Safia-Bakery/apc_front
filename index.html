@@ -5,19 +5,11 @@
     <meta name="referrer" content="no-referrer" />
     <link rel="icon" type="image/svg+xml" href="/assets/images/safia.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"
-    />
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
     <link
       href="../assets/css/light-bootstrap-dashboard.css?v=2.0.1"
       rel="stylesheet"
     />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Montserrat:wght@300;400;500;600;700;800&family=Rubik:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
@@ -28,7 +20,19 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+    <script>
+      if (window.location.search.includes("key")) {
+        let telegramScript = document.createElement("script");
+        telegramScript.src = "https://telegram.org/js/telegram-web-app.js";
+
+        // Create a new script element for the Iro.js script
+        let iroScript = document.createElement("script");
+        iroScript.src = "https://cdn.jsdelivr.net/npm/@jaames/iro@5";
+
+        // Append both script elements to the document's body
+        document.body.appendChild(telegramScript);
+        document.body.appendChild(iroScript);
+      }
+    </script>
   </body>
 </html>

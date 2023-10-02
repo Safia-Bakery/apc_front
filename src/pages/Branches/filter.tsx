@@ -1,40 +1,34 @@
-import { FC, useEffect, useRef } from "react";
+import { ChangeEvent, FC } from "react";
 import BaseInputs from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainSelect from "src/components/BaseInputs/MainSelect";
 import { useNavigateParams } from "src/hooks/useCustomNavigate";
 import useDebounce from "src/hooks/useDebounce";
 import useQueryString from "src/hooks/useQueryString";
+import useUpdateEffect from "src/hooks/useUpdateEffect";
 import { RegionNames, StatusName } from "src/utils/helpers";
 
 const BranchesFilter: FC = () => {
   const navigate = useNavigateParams();
-  const initialLoadRef = useRef(true);
   const [name, $name] = useDebounce("");
   const [latitude, $latitude] = useDebounce<number>(0);
   const [longitude, $longitude] = useDebounce<number>(0);
   const fillial_status = useQueryString("fillial_status");
   const country = useQueryString("country");
 
-  useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
-      return;
-    }
-
-    const navigateAsync = async () => {
-      await navigate({ name });
-    };
-
-    navigateAsync();
+  useUpdateEffect(() => {
+    navigate({ name });
   }, [name]);
+
+  const handleName = (e: ChangeEvent<HTMLInputElement>) =>
+    $name(e.target.value);
 
   return (
     <>
       <td></td>
       <td className="p-0">
         <BaseInputs className="m-2">
-          <MainInput onChange={(e) => $name(e.target.value)} />
+          <MainInput onChange={handleName} />
         </BaseInputs>
       </td>
       <td className="p-0">

@@ -1,10 +1,6 @@
-import { StatusName } from "src/utils/helpers";
-import { FC, useEffect, useRef, useState } from "react";
-import useOrders from "src/hooks/useOrders";
 import useDebounce from "src/hooks/useDebounce";
 import "react-datepicker/dist/react-datepicker.css";
-import BaseInputs from "src/components/BaseInputs";
-import MainSelect from "src/components/BaseInputs/MainSelect";
+
 import BaseInput from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
@@ -14,9 +10,9 @@ import {
 } from "src/hooks/useCustomNavigate";
 import useQueryString from "src/hooks/useQueryString";
 import dayjs from "dayjs";
+import useUpdateEffect from "src/hooks/useUpdateEffect";
 
-const StockFilter: FC = () => {
-  const initialLoadRef = useRef(true);
+const StockFilter = () => {
   const navigate = useNavigateParams();
   const [count, $count] = useDebounce("");
   const [name, $name] = useDebounce<string>("");
@@ -24,41 +20,16 @@ const StockFilter: FC = () => {
   const syncDate = useQueryString("syncDate");
   const deleteParam = useRemoveParams();
 
-  useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
-      return;
-    }
-
-    const fetchData = async () => {
-      await navigate({ name });
-    };
-
-    fetchData();
+  useUpdateEffect(() => {
+    navigate({ name });
   }, [name]);
-  useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
-      return;
-    }
 
-    const fetchData = async () => {
-      await navigate({ count });
-    };
-
-    fetchData();
+  useUpdateEffect(() => {
+    navigate({ count });
   }, [count]);
-  useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
-      return;
-    }
 
-    const fetchData = async () => {
-      await navigate({ price });
-    };
-
-    fetchData();
+  useUpdateEffect(() => {
+    navigate({ price });
   }, [price]);
 
   const startRange = (start: Date | null) => {

@@ -31,9 +31,7 @@ export const useBranches = ({
     queryFn: () =>
       apiClient
         .get("/fillials", { page, size, origin, ...body })
-        .then(({ data: response }) => {
-          return response as BranchTypes;
-        }),
+        .then(({ data: response }) => response as BranchTypes),
     enabled: enabled && permmission?.[MainPermissions.get_fillials_list],
   });
 };

@@ -75,7 +75,7 @@ const ShowRole = () => {
                 <thead>
                   <tr>
                     <th className={styles.tableHead}>{item?.page_name}</th>
-                    <th className={styles.tableHead}></th>
+                    <th className={styles.tableHead} />
                   </tr>
                 </thead>
 

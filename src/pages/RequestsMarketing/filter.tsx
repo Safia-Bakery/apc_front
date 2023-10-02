@@ -1,6 +1,6 @@
 import { RequestStatusArr } from "src/utils/helpers";
 import styles from "./index.module.scss";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useState } from "react";
 import useDebounce from "src/hooks/useDebounce";
 import "react-datepicker/dist/react-datepicker.css";
 import BaseInputs from "src/components/BaseInputs";
@@ -20,6 +20,7 @@ import cl from "classnames";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
 import { MainPermissions } from "src/utils/types";
+import useUpdateEffect from "src/hooks/useUpdateEffect";
 
 interface Props {
   sub_id?: number | string;
@@ -27,7 +28,6 @@ interface Props {
 
 const InventoryFilter: FC<Props> = ({ sub_id }) => {
   const deleteParam = useRemoveParams();
-  const initialLoadRef = useRef(true);
   const { data: categories, refetch: categoryRefetch } = useCategories({
     sub_id: Number(sub_id),
     enabled: false,
@@ -53,41 +53,16 @@ const InventoryFilter: FC<Props> = ({ sub_id }) => {
     if (!!start) navigate({ created_at: start });
   };
 
-  useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
-      return;
-    }
-
-    const navigateAsync = async () => {
-      await navigate({ user });
-    };
-
-    navigateAsync();
+  useUpdateEffect(() => {
+    navigate({ user });
   }, [user]);
-  useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
-      return;
-    }
 
-    const navigateAsync = async () => {
-      await navigate({ id });
-    };
-
-    navigateAsync();
+  useUpdateEffect(() => {
+    navigate({ id });
   }, [id]);
-  useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
-      return;
-    }
 
-    const navigateAsync = async () => {
-      await navigate({ phone });
-    };
-
-    navigateAsync();
+  useUpdateEffect(() => {
+    navigate({ phone });
   }, [phone]);
 
   return (

@@ -31,9 +31,7 @@ export const useCategories = ({
           sphere_status,
           ...body,
         })
-        .then(({ data: response }) => {
-          return response as CategoryTypes;
-        }),
+        .then(({ data: response }) => response as CategoryTypes),
     enabled,
     refetchOnMount: true,
   });

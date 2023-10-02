@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import userMutation from "src/hooks/mutation/userMutation";

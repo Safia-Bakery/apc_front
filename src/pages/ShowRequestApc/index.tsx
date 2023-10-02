@@ -16,12 +16,7 @@ import {
   handleStatus,
 } from "src/utils/helpers";
 import { useForm } from "react-hook-form";
-import {
-  FileType,
-  MainPermissions,
-  RequestStatus,
-  Sphere,
-} from "src/utils/types";
+import { FileType, MainPermissions, RequestStatus } from "src/utils/types";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import ShowRequestModals from "src/components/ShowRequestModals";
 import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
@@ -368,7 +363,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
                               )}
                               key={item.url + index}
                             >
-                              {item.url}
+                              файл - {index + 1}
                             </div>
                           );
                       })}

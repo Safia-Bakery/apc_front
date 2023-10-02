@@ -13,7 +13,6 @@ import useCategories from "src/hooks/useCategories";
 import useBranches from "src/hooks/useBranches";
 
 const InventoryFilter: FC = () => {
-  const initialLoadRef = useRef(true);
   const { data: branches } = useBranches({});
   const { data: categories, refetch: catRefetch } = useCategories({
     department: Departments.inventory,
@@ -32,37 +31,7 @@ const InventoryFilter: FC = () => {
   const { refetch } = useOrders({
     enabled: false,
     department: Departments.inventory,
-    // body: {
-    //   created_at: created_at?.toISOString(),
-    //   ...(!!id && { id }),
-    //   ...(!!department && { department }),
-    //   ...(!!fillial_id && { fillial_id }),
-    //   ...(!!category_id && { category_id }),
-    //   ...(!!urgent && { urgent }),
-    // },
   });
-
-  useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
-      return;
-    }
-
-    const fetchData = async () => {
-      await refetch();
-    };
-
-    fetchData();
-  }, [
-    id,
-    department,
-    fillial_id,
-    category_id,
-    urgent,
-    startDate,
-    created_at,
-    user,
-  ]);
 
   const startRange = (start: Date | null) => $startDate(start);
 

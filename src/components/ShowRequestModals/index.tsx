@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import Modal from "../Modal";
 import { BrigadaType, FileType, RequestStatus } from "src/utils/types";
 import { useParams } from "react-router-dom";

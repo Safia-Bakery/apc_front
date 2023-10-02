@@ -1,6 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Departments, MainPermissions, Order } from "src/utils/types";
-import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
 import { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
@@ -15,9 +14,10 @@ import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
 import styles from "./index.module.scss";
 import useQueryString from "src/hooks/useQueryString";
+import TableLoading from "src/components/TableLoading";
 
 const column = [
-  { name: "#", key: "" },
+  { name: "№", key: "" },
   { name: "Номер заявки", key: "id" },
   { name: "Имя", key: "type" },
   { name: "Номер телефона", key: "fillial.name" },
@@ -61,7 +61,11 @@ const RequestsMarketing = () => {
       setSortOrder("asc");
     }
   };
-  const { data: requests, isLoading: orderLoading } = useOrders({
+  const {
+    data: requests,
+    isLoading: orderLoading,
+    refetch,
+  } = useOrders({
     size: itemsPerPage,
     department: Departments.marketing,
     page: currentPage,
@@ -98,6 +102,10 @@ const RequestsMarketing = () => {
   const renderFilter = useMemo(() => {
     return <InventoryFilter sub_id={sub_id} />;
   }, [request_status, category_id, created_at, id, phone, user, branch]);
+
+  useEffect(() => {
+    refetch();
+  }, [currentPage, sub_id]);
 
   return (
     <Card className="overflow-hidden">
@@ -169,13 +177,7 @@ const RequestsMarketing = () => {
                 )
               )}
 
-            {orderLoading && (
-              <tr>
-                <td>
-                  <Loading />
-                </td>
-              </tr>
-            )}
+            {orderLoading && <TableLoading />}
           </tbody>
         </table>
         {!!requests && <Pagination totalPages={requests.pages} />}

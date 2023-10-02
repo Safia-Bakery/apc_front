@@ -3,7 +3,7 @@ import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import { errorToast, successToast } from "src/utils/toast";
+import { successToast } from "src/utils/toast";
 import useBrigadas from "src/hooks/useBrigadas";
 import useBrigada from "src/hooks/useBrigada";
 import brigadaMutation from "src/hooks/mutation/brigadaMutation";

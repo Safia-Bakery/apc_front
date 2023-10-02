@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import styles from "./index.module.scss";
 import dayjs from "dayjs";
 import TableHead from "src/components/TableHead";
 import { itemsPerPage } from "src/utils/helpers";
@@ -10,7 +9,7 @@ import useOrders from "src/hooks/useOrders";
 import { Order } from "src/utils/types";
 
 const column = [
-  { name: "#", key: "id" as keyof Order["id"] },
+  { name: "№", key: "id" as keyof Order["id"] },
   { name: "Сотрудник", key: "purchaser" as keyof Order["product"] },
   { name: "Оценка", key: "type" as keyof Order["product"] },
   { name: "Текст", key: "category.name" as keyof Order["category"] },
@@ -58,7 +57,7 @@ const ShowComment = () => {
   return (
     <>
       <Card>
-        <Header title={`#${id}`}>
+        <Header title={`№${id}`}>
           <button className="btn btn-primary btn-fill" onClick={goBack}>
             Назад
           </button>

@@ -15,7 +15,7 @@ import styles from "./index.module.scss";
 import useQueryString from "src/hooks/useQueryString";
 
 const column = [
-  { name: "#", key: "" },
+  { name: "№", key: "" },
   { name: "Номер", key: "id" },
   { name: "Сотрудник", key: "type" },
   { name: "Исполнитель", key: "fillial.name" },
