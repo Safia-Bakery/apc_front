@@ -274,14 +274,37 @@ const CustomSidebar = () => {
             <p className={styles.subTitle}>АРС / Inventory / IT / Marketing</p>
           </div>
           <ul className="nav flex-column d-flex">
+            <li className={cl("nav-item")}>
+              <Link
+                className={cl(
+                  "nav-link d-flex align-items-center",
+                  styles.link,
+                  {
+                    [styles.active]: pathname === "/home",
+                  }
+                )}
+                onClick={() => isMobile && dispatch(sidebarHandler(false))}
+                to={"/home"}
+              >
+                <img
+                  height={20}
+                  width={20}
+                  src={"/assets/icons/controlPanel.svg"}
+                  className={styles.routeIcon}
+                />
+                <p className={styles.content}>Панель управления</p>
+              </Link>
+            </li>
             {routes.map((route) => {
-              if (permission?.[route?.screen]) {
-                if (
-                  route?.subroutes?.length &&
+              // if (permission?.[route?.screen]) {
+              if (
+                permission?.[route?.screen] ||
+                (route?.subroutes &&
                   route.subroutes.some(
                     (subroute) => permission[subroute.screen]
-                  )
-                ) {
+                  ))
+              ) {
+                if (route?.subroutes?.length) {
                   const activeRoute = menuItem === route.screen;
                   return (
                     <li className="nav-item" key={route.url + route.name}>
@@ -318,8 +341,8 @@ const CustomSidebar = () => {
                         id="subItems"
                       >
                         <ul className={cl("nav flex-column", styles.submenu)}>
-                          {route.subroutes.map((subroute) => {
-                            if (permission?.[subroute.screen])
+                          {route?.subroutes?.map((subroute) => {
+                            if (permission?.[subroute?.screen])
                               return (
                                 <li
                                   className={cl("nav-item")}
@@ -361,37 +384,38 @@ const CustomSidebar = () => {
                       </div>
                     </li>
                   );
-                } else {
-                  return (
-                    <li className={cl("nav-item")} key={route.url + route.name}>
-                      <Link
-                        className={cl(
-                          "nav-link d-flex align-items-center",
-                          styles.link,
-                          {
-                            [styles.active]: pathname.includes(route.url!),
-                          }
-                        )}
-                        onClick={() =>
-                          isMobile && dispatch(sidebarHandler(false))
-                        }
-                        to={`${route.url}${!!route?.param ? route?.param : ""}`}
-                        state={{ name: route.name }}
-                      >
-                        <img
-                          height={20}
-                          width={20}
-                          src={route.icon || ""}
-                          className={styles.routeIcon}
-                        />
-                        <p className={styles.content}>{route.name}</p>
-                        {/* <span className={styles.menuItem}>{route.name}</span> */}
-                      </Link>
-                    </li>
-                  );
                 }
+
+                return (
+                  <li className={cl("nav-item")} key={route.url + route.name}>
+                    <Link
+                      className={cl(
+                        "nav-link d-flex align-items-center",
+                        styles.link,
+                        {
+                          [styles.active]: pathname.includes(route.url!),
+                        }
+                      )}
+                      onClick={() =>
+                        isMobile && dispatch(sidebarHandler(false))
+                      }
+                      to={`${route.url}${!!route?.param ? route?.param : ""}`}
+                      state={{ name: route.name }}
+                    >
+                      <img
+                        height={20}
+                        width={20}
+                        src={route.icon || ""}
+                        className={styles.routeIcon}
+                      />
+                      <p className={styles.content}>{route.name}</p>
+                      {/* <span className={styles.menuItem}>{route.name}</span> */}
+                    </Link>
+                  </li>
+                );
               }
-              return null;
+              // }
+              // return null;
             })}
           </ul>
         </div>
