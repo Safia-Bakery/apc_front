@@ -36,7 +36,7 @@ const ApcStatBar: FC<Props> = ({ data }) => {
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="collapse navbar-collapse navbar-nav">
+        <div className="navbar-collapse navbar-nav">
           {routesArr.map((route) => (
             <Link
               key={route.name}
