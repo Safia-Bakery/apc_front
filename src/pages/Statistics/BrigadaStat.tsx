@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { Departments, Sphere } from "src/utils/types";
 import TableHead from "src/components/TableHead";
 import Chart from "react-apexcharts";
@@ -7,6 +7,7 @@ import { ApexOptions } from "apexcharts";
 import useStatsBrigada from "src/hooks/useStatsBrigada";
 import useQueryString from "src/hooks/useQueryString";
 import Loading from "src/components/Loader";
+import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 
 interface Props {
   sphere_status: Sphere;
@@ -53,6 +54,24 @@ const BrigadaStat: FC<Props> = ({ sphere_status }) => {
   const start = useQueryString("start");
   const end = useQueryString("end");
 
+  const tableRef = useRef(null);
+  const btnAction = document.getElementById("export_to_excell");
+
+  const { onDownload } = useDownloadExcel({
+    currentTableRef: tableRef.current,
+    filename: "статистика по бригадам",
+    sheet: "categories",
+  });
+
+  useEffect(() => {
+    if (btnAction)
+      btnAction.addEventListener("click", () => {
+        document.getElementById("brigada_stat")?.click();
+      });
+  }, [btnAction]);
+
+  const downloadAsPdf = () => onDownload();
+
   const { isLoading, data } = useStatsBrigada({
     department: Departments.apc,
     sphere_status,
@@ -82,7 +101,7 @@ const BrigadaStat: FC<Props> = ({ sphere_status }) => {
   };
   return (
     <>
-      <table className="table table-hover">
+      <table ref={tableRef} className="table table-hover">
         <TableHead
           column={column}
           sort={handleSort}
@@ -124,6 +143,9 @@ const BrigadaStat: FC<Props> = ({ sphere_status }) => {
           <p className="text-center w-100 ">Спосок пуст</p>
         </div>
       )}
+      <button id={"brigada_stat"} className="d-none" onClick={downloadAsPdf}>
+        download
+      </button>
     </>
   );
 };

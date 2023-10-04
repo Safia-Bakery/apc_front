@@ -1,10 +1,11 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { Departments, Sphere } from "src/utils/types";
 import TableHead from "src/components/TableHead";
 import Chart from "react-apexcharts";
 import useStatsCategory from "src/hooks/useStatsCategory";
 import Loading from "src/components/Loader";
 import useQueryString from "src/hooks/useQueryString";
+import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 
 interface Props {
   sphere_status: Sphere;
@@ -42,6 +43,14 @@ const column = [
 const CategoryStat: FC<Props> = ({ sphere_status }) => {
   const start = useQueryString("start");
   const end = useQueryString("end");
+  const tableRef = useRef(null);
+  const btnAction = document.getElementById("export_to_excell");
+
+  const { onDownload } = useDownloadExcel({
+    currentTableRef: tableRef.current,
+    filename: "статистика по категориям",
+    sheet: "categories",
+  });
 
   const [sortKey, setSortKey] = useState<any>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -69,9 +78,18 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
     }
   };
 
+  useEffect(() => {
+    if (btnAction)
+      btnAction.addEventListener("click", () => {
+        document.getElementById("category_stat")?.click();
+      });
+  }, [btnAction]);
+
+  const downloadAsPdf = () => onDownload();
+
   return (
     <>
-      <table className="table table-hover table-bordered">
+      <table className="table table-hover table-bordered" ref={tableRef}>
         <TableHead
           column={column}
           sort={handleSort}
@@ -112,6 +130,9 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
           <p className="text-center w-100">Спосок пуст</p>
         </div>
       )}
+      <button id={"category_stat"} className="d-none" onClick={downloadAsPdf}>
+        download
+      </button>
     </>
   );
 };

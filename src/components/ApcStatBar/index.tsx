@@ -3,10 +3,6 @@ import { FC } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import styles from "./index.module.scss";
 
-interface Props {
-  data?: { label: string; url: string }[];
-}
-
 const routesArr = [
   {
     name: "По категориям",
@@ -30,29 +26,25 @@ const routesArr = [
   },
 ];
 
-const ApcStatBar: FC<Props> = ({ data }) => {
+const ApcStatBar: FC = () => {
   const { pathname } = useLocation();
 
   return (
-    <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="navbar-collapse navbar-nav">
-          {routesArr.map((route) => (
-            <Link
-              key={route.name}
-              className={cl("nav-item nav-link", {
-                [styles.active]: pathname.includes(route.url),
-              })}
-              to={route.url}
-            >
-              {route.name}
-            </Link>
-          ))}
-        </div>
-      </nav>
-
-      <Outlet />
-    </>
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div className="navbar-collapse navbar-nav">
+        {routesArr.map((route) => (
+          <Link
+            key={route.name}
+            className={cl("nav-item nav-link", {
+              [styles.active]: pathname.includes(route.url),
+            })}
+            to={route.url}
+          >
+            {route.name}
+          </Link>
+        ))}
+      </div>
+    </nav>
   );
 };
 
