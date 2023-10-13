@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TableHead from "src/components/TableHead";
 
 import Loading from "src/components/Loader";
 import useDistinct from "src/hooks/useDistinct";
 import { Link } from "react-router-dom";
+import { useDownloadExcel } from "react-export-table-to-excel";
 
 const column = [
   { name: "№", key: "" },
@@ -14,6 +15,24 @@ const column = [
 const ConsumptionStat = () => {
   const [sortKey, setSortKey] = useState<any>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+
+  const tableRef = useRef(null);
+  const btnAction = document.getElementById("export_to_excell");
+
+  const { onDownload } = useDownloadExcel({
+    currentTableRef: tableRef.current,
+    filename: "статистика по расходам",
+    sheet: "categories",
+  });
+
+  useEffect(() => {
+    if (btnAction)
+      btnAction.addEventListener("click", () => {
+        document.getElementById("consumption_stat")?.click();
+      });
+  }, [btnAction]);
+
+  const downloadAsPdf = () => onDownload();
 
   const { data, isLoading } = useDistinct({});
 
@@ -28,7 +47,7 @@ const ConsumptionStat = () => {
 
   return (
     <>
-      <table className="table table-hover">
+      <table className="table table-hover" ref={tableRef}>
         <TableHead
           column={column}
           sort={handleSort}
@@ -63,6 +82,13 @@ const ConsumptionStat = () => {
           <p className="text-center w-100 ">Спосок пуст</p>
         </div>
       )}
+      <button
+        id={"consumption_stat"}
+        className="d-none"
+        onClick={downloadAsPdf}
+      >
+        download
+      </button>
     </>
   );
 };

@@ -56,9 +56,7 @@ const AddInventoryRequest = () => {
     console.log(data);
   };
 
-  const addInputFields = () => {
-    append(initialInventory);
-  };
+  const addInputFields = () => append(initialInventory);
 
   const handleSort = (key: any) => {
     if (key === sortKey) {

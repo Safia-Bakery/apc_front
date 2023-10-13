@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useToken from "src/hooks/useToken";
 import { successToast } from "src/utils/toast";
-
 import BaseInput from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 

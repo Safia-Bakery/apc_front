@@ -1,7 +1,7 @@
 import Card from "src/components/Card";
 import styles from "./index.module.scss";
 import Header from "src/components/Header";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
 import ApcStatBar from "src/components/ApcStatBar";
 import { useNavigateParams } from "src/hooks/useCustomNavigate";
@@ -27,6 +27,10 @@ const Statistics = () => {
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад
         </button>
+
+        <button className="btn btn-success btn-fill ml-2" id="export_to_excell">
+          Экспорт в Excel
+        </button>
       </Header>
 
       <div className="content">
@@ -47,6 +51,7 @@ const Statistics = () => {
 
         <div className="table-responsive grid-view">
           <ApcStatBar />
+          <Outlet />
         </div>
       </div>
     </Card>

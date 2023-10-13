@@ -2,7 +2,8 @@ import { Departments, Order, Sphere } from "src/utils/types";
 import useStatsBrigadaCateg from "src/hooks/useStatsBrigadaCateg";
 import useQueryString from "src/hooks/useQueryString";
 import Loading from "src/components/Loader";
-import { FC } from "react";
+import { FC, useEffect, useRef } from "react";
+import { useDownloadExcel } from "react-export-table-to-excel";
 
 const column = [
   { name: "№", key: "id" as keyof Order["id"] },
@@ -24,6 +25,25 @@ interface Props {
 const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
   const start = useQueryString("start");
   const end = useQueryString("end");
+
+  const tableRef = useRef(null);
+  const btnAction = document.getElementById("export_to_excell");
+
+  const { onDownload } = useDownloadExcel({
+    currentTableRef: tableRef.current,
+    filename: "статистика бригады по категориям",
+    sheet: "categories",
+  });
+
+  useEffect(() => {
+    if (btnAction)
+      btnAction.addEventListener("click", () => {
+        document.getElementById("brigada_categ_stat")?.click();
+      });
+  }, [btnAction]);
+
+  const downloadAsPdf = () => onDownload();
+
   const { isLoading, data } = useStatsBrigadaCateg({
     department: Departments.apc,
     sphere_status,
@@ -41,7 +61,7 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
   };
   return (
     <>
-      <table className="table table-bordered w-100 border-dark">
+      <table className="table table-bordered w-100 border-dark" ref={tableRef}>
         <thead>
           <tr>
             {column.map(({ name, key }) => (
@@ -132,6 +152,13 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
           <p className="text-center w-100 ">Спосок пуст</p>
         </div>
       )}
+      <button
+        id={"brigada_categ_stat"}
+        className="d-none"
+        onClick={downloadAsPdf}
+      >
+        download
+      </button>
     </>
   );
 };
