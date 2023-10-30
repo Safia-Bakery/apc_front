@@ -65,14 +65,17 @@ export const queryClient = new QueryClient({
   },
 });
 
-export const handleStatus = (status: RequestStatus | undefined) => {
+export const handleStatus = (
+  status: RequestStatus | undefined,
+  isMarketing?: boolean
+) => {
   switch (status) {
     case RequestStatus.confirmed:
       return "Принят";
     case RequestStatus.done:
       return "Закончен";
     case RequestStatus.sendToRepair:
-      return "Отправлен для ремонта";
+      return isMarketing ? "Отправлен заказчику" : "Отправлен для ремонта";
     case RequestStatus.rejected:
       return "Отклонён";
 
@@ -85,6 +88,14 @@ export const RequestStatusArr = [
   { id: RequestStatus.confirmed, name: "Принят" },
   { id: RequestStatus.new, name: "Новый" },
   { id: RequestStatus.sendToRepair, name: "Отправлен для ремонта" },
+  { id: RequestStatus.done, name: "Закончен" },
+  { id: RequestStatus.rejected, name: "Отклонён" },
+];
+
+export const RequestMarkStatusArr = [
+  { id: RequestStatus.confirmed, name: "Принят" },
+  { id: RequestStatus.new, name: "Новый" },
+  { id: RequestStatus.sendToRepair, name: "Отправлен заказчику" },
   { id: RequestStatus.done, name: "Закончен" },
   { id: RequestStatus.rejected, name: "Отклонён" },
 ];

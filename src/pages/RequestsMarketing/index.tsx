@@ -169,7 +169,7 @@ const RequestsMarketing = () => {
                     <td>
                       {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
                     </td>
-                    <td>{handleStatus(order?.status)}</td>
+                    <td>{handleStatus(order?.status, true)}</td>
                     <td>
                       {order?.user_manager ? order?.user_manager : "Не задано"}
                     </td>
