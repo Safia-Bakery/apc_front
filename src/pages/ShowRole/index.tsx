@@ -4,15 +4,15 @@ import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import permissionMutation from "src/hooks/mutation/permissionMutation";
 import useRolePermission from "src/hooks/useRolePermission";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect } from "react";
 import Loading from "src/components/Loader";
-import { successToast } from "src/utils/toast";
 import usePermissions from "src/hooks/usePermissions";
+import { useForm } from "react-hook-form";
+import { errorToast, successToast } from "src/utils/toast";
 
 const ShowRole = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [ids, $ids] = useState<number[]>([]);
   const {
     data: rolePermission,
     refetch,
@@ -21,38 +21,46 @@ const ShowRole = () => {
     id: Number(id),
     enabled: !!id,
   });
+
   const { mutate } = permissionMutation();
   const { data: permissions } = usePermissions({});
 
-  const handlePermission = (val: number) => {
-    let numbers = ids || [];
-    const index = numbers.indexOf(val);
-    if (index === -1) {
-      $ids([...ids, val]);
-    } else {
-      const updatedArray = ids.filter((n) => n !== val);
-      $ids(updatedArray);
-    }
-  };
-  const handleSave = () => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    getValues,
+    reset,
+  } = useForm();
+
+  const onSubmit = () => {
+    const ids = Object.values(getValues())
+      .filter((val) => !!val)
+      .map((item) => +item);
+
+    console.log(ids, "ids");
+
     mutate(
       { ids, id: Number(id) },
       {
         onSuccess: () => {
-          successToast("successfully updated");
           refetch();
+          successToast("successfully updated");
         },
+        onError: (e: any) => errorToast(e.message),
       }
     );
   };
 
   useEffect(() => {
-    $ids(rolePermission?.permissions || []);
-  }, [rolePermission]);
-
-  useEffect(() => {
-    if (id) refetch();
-  }, [id]);
+    if (rolePermission?.permissions) {
+      const init = rolePermission?.permissions.reduce((acc: any, item) => {
+        acc[item] = item;
+        return acc;
+      }, {});
+      reset(init);
+    }
+  }, [rolePermission?.permissions]);
 
   if (isLoading) return <Loading />;
 
@@ -67,7 +75,7 @@ const ShowRole = () => {
         </button>
       </Header>
 
-      <div className="content">
+      <form className="content" onSubmit={handleSubmit(onSubmit)}>
         <table className="table table-striped table-hover report-table">
           {permissions?.map((item) => {
             return (
@@ -87,10 +95,11 @@ const ShowRole = () => {
                         <input
                           type="checkbox"
                           value={child?.id}
-                          defaultChecked={rolePermission?.permissions?.includes(
-                            child?.id
-                          )}
-                          onChange={() => handlePermission(child?.id)}
+                          {...register(`${child?.id}`)}
+                          // defaultChecked={rolePermission?.permissions?.includes(
+                          //   child?.id
+                          // )}
+                          // onChange={() => handlePermission(child?.id)}
                         />
                       </td>
                     </tr>
@@ -101,14 +110,10 @@ const ShowRole = () => {
           })}
         </table>
 
-        <button
-          className="btn btn-success"
-          onClick={handleSave}
-          id="save_permission"
-        >
+        <button className="btn btn-success" type="submit" id="save_permission">
           save
         </button>
-      </div>
+      </form>
     </Card>
   );
 };

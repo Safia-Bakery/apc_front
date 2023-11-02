@@ -1,11 +1,14 @@
 .content {
-  max-width: 350px;
+  max-width: 440px;
   width: 100%;
+  z-index: 10;
+  padding: 30px 100px 70px 100px;
+  background: rgba(255, 255, 255, 0.68);
 }
 .loginForm {
   flex: 1;
   display: flex;
-  gap: 25px;
+  // gap: 15px;
   flex-direction: column;
 }
 .login_wrap {
@@ -13,15 +16,28 @@
   width: 100%;
   display: flex;
   align-items: center;
+  position: relative;
   justify-content: center;
   background-image: url("/assets/images/bg.JPG");
   background-size: cover;
   background-position: center;
 }
 .error {
-  // margin-top: 10px;
   font-size: 12px;
   display: block;
   margin-bottom: 10px;
   color: #a94442;
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1f1e1e47;
+}
+.input {
+  height: 33px;
+  border-radius: 5px !important;
+  border: 0.5px solid #5b5b5b !important;
 }
