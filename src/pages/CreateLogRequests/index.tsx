@@ -15,23 +15,20 @@ import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import useQueryString from "src/hooks/useQueryString";
 import BranchSelect from "src/components/BranchSelect";
 import useCategories from "src/hooks/useCategories";
-import { Departments, MainPermissions, Sphere } from "src/utils/types";
-import WarehouseSelect from "src/components/WarehouseSelect";
+import { Departments } from "src/utils/types";
 import Loading from "src/components/Loader";
-import { useAppSelector } from "src/redux/utils/types";
-import { permissionSelector } from "src/redux/reducers/auth";
+import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
+import dayjs from "dayjs";
 
-const CreateApcRequest = () => {
+const CreateLogRequests = () => {
   const [files, $files] = useState<FormData>();
   const { mutate, isLoading } = requestMutation();
   const branchJson = useQueryString("branch");
-  const sphere_status = Number(useQueryString("sphere_status"));
+  const [start, $start] = useState<Date>();
   const branch = branchJson && JSON.parse(branchJson);
-  const addExp = Number(useQueryString("addExp")) as MainPermissions;
-  const perm = useAppSelector(permissionSelector);
-  const { data: categories } = useCategories({
-    department: Departments.apc,
-    sphere_status,
+  const [error, $error] = useState<string>();
+  const { data: categories, isLoading: categoryLoading } = useCategories({
+    department: Departments.logystics,
   });
   const {
     register,
@@ -43,6 +40,10 @@ const CreateApcRequest = () => {
 
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
+
+  const handleDateStart = (event: Date) => {
+    $start(event);
+  };
 
   useEffect(() => {
     reset({
@@ -58,49 +59,29 @@ const CreateApcRequest = () => {
     $files(formData);
   };
   const onSubmit = () => {
-    const { category_id, description, product } = getValues();
-    mutate(
-      {
-        category_id,
-        product,
-        description,
-        fillial_id: branch?.id,
-        files,
-        factory: sphere_status === Sphere.fabric,
-      },
-      {
-        onSuccess: () => {
-          successToast("Заказ успешно создано");
-          navigate(
-            `/requests-apc-${Sphere[sphere_status]}?sphere_status=${sphere_status}&addExp=${addExp}`
-          );
+    const { category_id, description, size } = getValues();
+    if (!start) $error("Обязательное поле");
+    else {
+      mutate(
+        {
+          category_id,
+          size,
+          description,
+          fillial_id: branch?.id,
+          arrival_date: start?.toISOString(),
+          files,
         },
-      }
-    );
+        {
+          onSuccess: () => {
+            successToast("Заказ успешно создано");
+            navigate("/requests-logystics");
+          },
+        }
+      );
+    }
   };
 
-  const renderBranchSelect = useMemo(() => {
-    if (perm?.[MainPermissions.get_fillials_list]) {
-      if (sphere_status === Sphere.fabric) return <WarehouseSelect />;
-      else return <BranchSelect origin={1} enabled />;
-    }
-  }, [sphere_status]);
-
-  if (isLoading) return <Loading />;
-
-  const renderCategories = useMemo(() => {
-    return (
-      <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
-        <MainSelect
-          values={categories?.items}
-          register={register("category_id", {
-            required: "Обязательное поле",
-          })}
-        />
-      </BaseInputs>
-    );
-  }, [categories]);
-
+  if (isLoading || categoryLoading) return <Loading />;
   return (
     <Card>
       <Header title={"Создать заказ"}>
@@ -118,12 +99,39 @@ const CreateApcRequest = () => {
           label="ФИЛИАЛ"
           error={errors.fillial_id}
         >
-          {renderBranchSelect}
+          <BranchSelect origin={1} enabled />
         </BaseInputs>
-        {renderCategories}
 
-        <BaseInputs label="Продукт">
-          <MainInput register={register("product")} />
+        <BaseInputs label="КАТЕГОРИЕ" error={errors.category_id}>
+          <MainSelect
+            values={categories?.items}
+            register={register("category_id", {
+              required: "Обязательное поле",
+            })}
+          />
+        </BaseInputs>
+
+        <BaseInputs error={errors.size} label="Укажите вес/размер">
+          <MainInput
+            register={register("size", {
+              required: "Обязательное поле",
+            })}
+          />
+        </BaseInputs>
+        <BaseInputs
+          label="Укажите в какое время вам нужна машина"
+          className="position-relative"
+        >
+          <MainDatePicker
+            showTimeSelect
+            selected={!!start ? dayjs(start || undefined).toDate() : undefined}
+            onChange={handleDateStart}
+          />
+          {error && (
+            <div className="alert alert-danger p-2" role="alert">
+              {error}
+            </div>
+          )}
         </BaseInputs>
 
         <BaseInputs label="Комментарии">
@@ -153,4 +161,4 @@ const CreateApcRequest = () => {
   );
 };
 
-export default CreateApcRequest;
+export default CreateLogRequests;

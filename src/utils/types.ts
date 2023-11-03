@@ -82,6 +82,7 @@ export interface Order {
     status: number;
   };
   finished_at: Date;
+  arrival_date: Date;
 }
 
 export interface OrderType extends BasePaginatedRes {
@@ -368,6 +369,10 @@ export enum MainPermissions {
   get_nostandard_requests = 64,
   edit_nostandard_requests = 65,
   add_nostandard_requests = 66,
+
+  get_log_requests = 71,
+  edit_log_requests = 73,
+  add_log_requests = 75,
 }
 export enum MarketingSubDep {
   designers = 1,

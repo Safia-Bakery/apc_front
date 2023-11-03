@@ -13,6 +13,7 @@ interface Props {
   register?: UseFormRegisterReturn;
   selected?: Date | null | undefined;
   filter?: boolean;
+  showTimeSelect?: boolean;
 }
 
 const MainDatePicker: FC<Props> = ({
@@ -21,6 +22,7 @@ const MainDatePicker: FC<Props> = ({
   register,
   onChange,
   wrapperClassName,
+  showTimeSelect,
 }) => {
   const handleClear = () => onChange(undefined);
 
@@ -29,7 +31,15 @@ const MainDatePicker: FC<Props> = ({
       <DatePicker
         selected={selected}
         onChange={onChange}
-        wrapperClassName={cl("form-group m-2", wrapperClassName)}
+        timeCaption="Time"
+        dateFormat="MM.d.yyyy h:mm aa"
+        timeIntervals={30}
+        showTimeSelect={showTimeSelect}
+        wrapperClassName={cl(
+          "form-group w-100 mb-0",
+          styles.inputBox,
+          wrapperClassName
+        )}
         className={cl("form-control", className)}
         {...register}
       />

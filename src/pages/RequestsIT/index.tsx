@@ -121,7 +121,12 @@ const RequestsIT = () => {
                     <td width={100} className={styles.text}>
                       {order?.description}
                     </td>
-                    <td>{handleStatus(order?.status)}</td>
+                    <td>
+                      {handleStatus({
+                        status: order?.status,
+                        dep: Departments.it,
+                      })}
+                    </td>
                     <td>
                       {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
                     </td>

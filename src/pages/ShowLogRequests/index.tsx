@@ -34,11 +34,10 @@ import cl from "classnames";
 const enum ModalTypes {
   closed = "closed",
   cancelRequest = "cancelRequest",
-  assign = "assign",
   showPhoto = "showPhoto",
 }
 
-const ShowMarketingRequest = () => {
+const ShowLogRequests = () => {
   const { id } = useParams();
   const permissions = useAppSelector(permissionSelector);
 
@@ -53,7 +52,7 @@ const ShowMarketingRequest = () => {
   const isNew = order?.status === RequestStatus.new;
   const edit = Number(useQueryString("edit")) as MainPermissions;
   const navigate = useNavigate();
-  const { search, state } = useLocation();
+  const { state } = useLocation();
 
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
@@ -86,7 +85,7 @@ const ShowMarketingRequest = () => {
     };
 
   const renderBtns = useMemo(() => {
-    if (permissions?.[edit] && isNew)
+    if (isNew)
       return (
         <div className="float-end mb10">
           <button
@@ -100,12 +99,11 @@ const ShowMarketingRequest = () => {
             className="btn btn-success btn-fill"
             id="recieve_request"
           >
-            Принять
+            Принять в работу
           </button>
         </div>
       );
-
-    if (permissions?.[edit])
+    else
       return (
         <div className="float-end mb10">
           {order?.status! < 2 && (
@@ -129,7 +127,7 @@ const ShowMarketingRequest = () => {
           )}
         </div>
       );
-  }, [permissions, order?.status]);
+  }, [order?.status]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -263,6 +261,14 @@ const ShowMarketingRequest = () => {
                         : "Не задано"}
                     </td>
                   </tr>
+                  <tr>
+                    <th>Дата поставки:</th>
+                    <td>
+                      {order?.arrival_date
+                        ? dayjs(order?.arrival_date).format("DD.MM.YYYY HH:mm")
+                        : "Не задано"}
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -277,4 +283,4 @@ const ShowMarketingRequest = () => {
   );
 };
 
-export default ShowMarketingRequest;
+export default ShowLogRequests;

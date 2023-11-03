@@ -56,16 +56,16 @@ a:hover {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #fff;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 10px;
 }
 
@@ -183,4 +183,13 @@ input[type="number"] {
       height: 40px;
     }
   }
+}
+.react-datepicker-popper[data-placement^="bottom"]
+  .react-datepicker__triangle::after {
+  display: none !important;
+  opacity: 0;
+}
+.react-datepicker-popper[data-placement^="bottom"]
+  .react-datepicker__triangle::before {
+  display: none !important;
 }

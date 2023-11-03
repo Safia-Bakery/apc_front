@@ -16,7 +16,12 @@ import {
   handleStatus,
 } from "src/utils/helpers";
 import { useForm } from "react-hook-form";
-import { FileType, MainPermissions, RequestStatus } from "src/utils/types";
+import {
+  Departments,
+  FileType,
+  MainPermissions,
+  RequestStatus,
+} from "src/utils/types";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import ShowRequestModals from "src/components/ShowRequestModals";
 import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
@@ -296,7 +301,10 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
       <Card className="overflow-hidden">
         <Header
           title={`Заказ №${id}`}
-          subTitle={`Статус: ${handleStatus(order?.status)}`}
+          subTitle={`Статус: ${handleStatus({
+            status: order?.status,
+            dep: Departments.apc,
+          })}`}
         >
           <button
             className="btn btn-warning btn-fill mr-2"

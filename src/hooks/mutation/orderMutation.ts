@@ -3,12 +3,14 @@ import apiClient from "src/main";
 import { errorToast } from "src/utils/toast";
 
 interface Body {
-  product: string;
+  product?: string;
   description: string;
+  size?: string;
   category_id: number;
   fillial_id: string;
   files: any;
   factory?: boolean;
+  arrival_date?: string;
 }
 
 const requestMutation = () => {
@@ -18,7 +20,16 @@ const requestMutation = () => {
 
   return useMutation(
     ["create_order"],
-    ({ product, description, category_id, fillial_id, files, factory }: Body) =>
+    ({
+      product,
+      description,
+      category_id,
+      fillial_id,
+      files,
+      factory,
+      size,
+      arrival_date,
+    }: Body) =>
       apiClient
         .post({
           url: "/request",
@@ -29,6 +40,8 @@ const requestMutation = () => {
             category_id,
             fillial_id,
             factory,
+            size,
+            arrival_date,
           },
           config,
           contentType,

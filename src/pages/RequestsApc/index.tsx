@@ -177,7 +177,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
             {renderFilter}
           </TableHead>
           <tbody id="requests_body">
-            {requests?.items?.length &&
+            {!!requests?.items?.length &&
               !orderLoading &&
               (sortData()?.length ? sortData() : requests?.items)?.map(
                 (order, idx) => (
@@ -224,7 +224,12 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
                     <td>
                       {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
                     </td>
-                    <td>{handleStatus(order?.status)}</td>
+                    <td>
+                      {handleStatus({
+                        status: order?.status,
+                        dep: Departments.apc,
+                      })}
+                    </td>
                     <td>
                       {!!order?.user_manager
                         ? order?.user_manager

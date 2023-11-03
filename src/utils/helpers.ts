@@ -65,17 +65,25 @@ export const queryClient = new QueryClient({
   },
 });
 
-export const handleStatus = (
-  status: RequestStatus | undefined,
-  isMarketing?: boolean
-) => {
+export const handleStatus = ({
+  status,
+  dep,
+}: {
+  status: RequestStatus | undefined;
+  dep?: Departments;
+}) => {
   switch (status) {
-    case RequestStatus.confirmed:
-      return "Принят";
+    case RequestStatus.confirmed: {
+      if (dep === Departments.logystics) return "Принят в работу";
+      else return "Принят";
+    }
     case RequestStatus.done:
       return "Закончен";
-    case RequestStatus.sendToRepair:
-      return isMarketing ? "Отправлен заказчику" : "Отправлен для ремонта";
+    case RequestStatus.sendToRepair: {
+      if (dep === Departments.logystics) return "В пути";
+      if (dep === Departments.marketing) return "Отправлен заказчику";
+      else return "Отправлен для ремонта";
+    }
     case RequestStatus.rejected:
       return "Отклонён";
 
@@ -85,17 +93,25 @@ export const handleStatus = (
 };
 
 export const RequestStatusArr = [
-  { id: RequestStatus.confirmed, name: "Принят" },
   { id: RequestStatus.new, name: "Новый" },
+  { id: RequestStatus.confirmed, name: "Принят" },
   { id: RequestStatus.sendToRepair, name: "Отправлен для ремонта" },
   { id: RequestStatus.done, name: "Закончен" },
   { id: RequestStatus.rejected, name: "Отклонён" },
 ];
 
 export const RequestMarkStatusArr = [
-  { id: RequestStatus.confirmed, name: "Принят" },
   { id: RequestStatus.new, name: "Новый" },
+  { id: RequestStatus.confirmed, name: "Принят" },
   { id: RequestStatus.sendToRepair, name: "Отправлен заказчику" },
+  { id: RequestStatus.done, name: "Закончен" },
+  { id: RequestStatus.rejected, name: "Отклонён" },
+];
+
+export const RequestLogStatusArr = [
+  { id: RequestStatus.new, name: "Новый" },
+  { id: RequestStatus.confirmed, name: "Принят в работу" },
+  { id: RequestStatus.sendToRepair, name: "В пути" },
   { id: RequestStatus.done, name: "Закончен" },
   { id: RequestStatus.rejected, name: "Отклонён" },
 ];

@@ -1,57 +1,72 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Departments, MainPermissions, Order } from "src/utils/types";
+import { Departments, MainPermissions, Order, Sphere } from "src/utils/types";
 import Pagination from "src/components/Pagination";
-import { useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { handleStatus, itemsPerPage, requestRows } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
-import InventoryFilter from "./filter";
+import RequestsFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
+import cl from "classnames";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
 import styles from "./index.module.scss";
 import useQueryString from "src/hooks/useQueryString";
 import TableLoading from "src/components/TableLoading";
+import LogFilter from "./filter";
+
+interface Props {
+  add: MainPermissions;
+  edit: MainPermissions;
+}
 
 const column = [
   { name: "№", key: "" },
   { name: "Номер заявки", key: "id" },
-  { name: "Имя", key: "type" },
-  { name: "Номер телефона", key: "fillial.name" },
-  { name: "Подкатегория", key: "fillial.name" },
-  { name: "Филиал", key: "fillial.name" },
-  { name: "Дата оформления", key: "fillial.name" },
-  {
-    name: "Статус",
-    key: "status",
-  },
-  { name: "Изменил", key: "category.name" },
+  { name: "Клиент", key: "user" },
+  { name: "Филиал/Отдел", key: "name" },
+  { name: "Группа проблем", key: "category?.name" },
+  { name: "Срочно", key: "urgent" },
+  { name: "Время поставки", key: "arrival_date" },
+  { name: "Дата поступления", key: "created_at" },
+  { name: "Статус", key: "status" },
+  { name: "Изменил", key: "user_manager" },
 ];
 
-const RequestsMarketing = () => {
+const RequestsLogystics: FC<Props> = ({ add, edit }) => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const permission = useAppSelector(permissionSelector);
+
   const currentPage = Number(useQueryString("page")) || 1;
   const { pathname, search } = useLocation();
 
-  const title = useQueryString("title");
-  const sub_id = Number(useQueryString("sub_id"));
-  const add = Number(useQueryString("add")) as MainPermissions;
-  const edit = Number(useQueryString("edit")) as MainPermissions;
-
-  const request_status = useQueryString("request_status");
-  const category_id = Number(useQueryString("category_id"));
-  const created_at = useQueryString("created_at");
-  const id = useQueryString("id");
-  const phone = useQueryString("phone");
   const user = useQueryString("user");
+  const id = Number(useQueryString("id"));
+  const system = useQueryString("system");
+  const department = useQueryString("department");
+  const category_id = Number(useQueryString("category_id"));
+  const urgent = useQueryString("urgent");
+  const created_at = useQueryString("created_at");
+  const request_status = useQueryString("request_status");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
+
+  const getValue = (obj: any, key: string) => {
+    const keys = key.split(".");
+    let value = obj;
+
+    for (const k of keys) {
+      if (!value) break;
+      value = value[k];
+    }
+
+    return value;
+  };
 
   const handleSort = (key: any) => {
     if (key === sortKey) {
@@ -66,30 +81,34 @@ const RequestsMarketing = () => {
     isLoading: orderLoading,
     refetch,
   } = useOrders({
+    enabled: true,
     size: itemsPerPage,
-    department: Departments.marketing,
+    department: Departments.logystics,
     page: currentPage,
-    sub_id: sub_id,
 
+    ...(!!system && { is_bot: !!system }),
     body: {
       ...(!!created_at && {
         created_at: dayjs(created_at).format("YYYY-MM-DD"),
       }),
       ...(!!id && { id }),
-      ...(!!phone && { executor: phone }),
+      ...(!!department && { department }),
       ...(!!branch?.id && { fillial_id: branch?.id }),
       ...(!!category_id && { category_id }),
       ...(!!request_status && { request_status }),
-      ...(!!user && { user }),
+      ...(!!user && { user: user }),
+      ...(!!urgent && { urgent }),
     },
   });
-
   const sortData = () => {
     if (requests?.items && sortKey) {
-      const sortedData = [...requests?.items].sort((a, b) => {
-        if (a[sortKey]! < b[sortKey]!) return sortOrder === "asc" ? -1 : 1;
-        if (a[sortKey]! > b[sortKey]!) return sortOrder === "asc" ? 1 : -1;
-        else return 0;
+      const sortedData = [...requests.items].sort((a, b) => {
+        const valueA = getValue(a, sortKey);
+        const valueB = getValue(b, sortKey);
+
+        if (valueA < valueB) return sortOrder === "asc" ? -1 : 1;
+        if (valueA > valueB) return sortOrder === "asc" ? 1 : -1;
+        return 0;
       });
       return sortedData;
     }
@@ -99,24 +118,18 @@ const RequestsMarketing = () => {
     if (currentPage === 1) return index + 1;
     else return index + 1 + itemsPerPage * (currentPage - 1);
   };
-  const renderFilter = useMemo(() => {
-    return <InventoryFilter sub_id={sub_id} />;
-  }, [request_status, category_id, created_at, id, phone, user, branch]);
 
   useEffect(() => {
     refetch();
-  }, [currentPage, sub_id]);
+  }, [currentPage]);
 
   return (
-    <Card className="overflow-hidden">
-      <Header title={title?.toString()}>
+    <Card>
+      <Header title={"Заявки"}>
+        <button className="btn btn-primary btn-fill mr-2">Экспорт</button>
         {permission?.[add] && (
           <button
-            onClick={() =>
-              navigate(
-                `add?sub_id=${sub_id}&add=${add}&edit=${edit}&title=${title}`
-              )
-            }
+            onClick={() => navigate("add")}
             className="btn btn-success btn-fill"
             id="add_request"
           >
@@ -134,21 +147,20 @@ const RequestsMarketing = () => {
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            {renderFilter}
+            <LogFilter />
           </TableHead>
-
-          <tbody>
+          <tbody id="requests_body">
             {!!requests?.items?.length &&
               !orderLoading &&
               (sortData()?.length ? sortData() : requests?.items)?.map(
                 (order, idx) => (
-                  <tr className={requestRows(order.status)} key={idx}>
+                  <tr className={requestRows(order?.status)} key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
                       {permission?.[edit] ? (
                         <Link
                           id="request_id"
-                          to={`${order?.id}?sub_id=${sub_id}&edit=${edit}`}
+                          to={`/requests-logystics/${order?.id}`}
                           state={{ prevPath: pathname + search }}
                         >
                           {order?.id}
@@ -157,31 +169,43 @@ const RequestsMarketing = () => {
                         <span className={styles.link}>{order?.id}</span>
                       )}
                     </td>
+
+                    <td>{order?.user?.full_name}</td>
                     <td>
-                      <span className="not-set">{order?.user?.full_name}</span>
+                      <span className={"not-set"}>
+                        {order?.fillial?.parentfillial?.name}
+                      </span>
                     </td>
-                    <td>{order?.user?.phone_number}</td>
-                    <td>{order?.category?.name}</td>
-                    <td>{order?.fillial?.parentfillial?.name}</td>
-                    {/* <td width={100} className={styles.text}>
-                      {order?.description}
-                    </td> */}
+                    <td
+                      className={cl({
+                        ["font-weight-bold"]: order?.category?.urgent,
+                      })}
+                    >
+                      {order?.category?.name}
+                    </td>
+                    <td>
+                      {!order?.category?.urgent ? "Несрочный" : "Срочный"}
+                    </td>
+                    <td>
+                      {dayjs(order?.arrival_date).format("DD.MM.YYYY HH:mm")}
+                    </td>
                     <td>
                       {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
                     </td>
                     <td>
                       {handleStatus({
                         status: order?.status,
-                        dep: Departments.marketing,
+                        dep: Departments.logystics,
                       })}
                     </td>
                     <td>
-                      {order?.user_manager ? order?.user_manager : "Не задано"}
+                      {!!order?.user_manager
+                        ? order?.user_manager
+                        : "Не задано"}
                     </td>
                   </tr>
                 )
               )}
-
             {orderLoading && <TableLoading />}
           </tbody>
         </table>
@@ -196,4 +220,4 @@ const RequestsMarketing = () => {
   );
 };
 
-export default RequestsMarketing;
+export default RequestsLogystics;

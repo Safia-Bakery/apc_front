@@ -22,6 +22,10 @@ import useQueryString from "src/hooks/useQueryString";
 import Suspend from "../Suspend";
 
 const ControlPanel = lazy(() => import("src/pages/ControlPanel"));
+const LogysticsLogs = lazy(() => import("src/pages/LogysticsLogs"));
+const RequestsLogystics = lazy(() => import("src/pages/RequestsLogystics"));
+const CreateLogRequests = lazy(() => import("src/pages/CreateLogRequests"));
+const ShowLogRequests = lazy(() => import("src/pages/ShowLogRequests"));
 const Masters = lazy(() => import("src/pages/Masters"));
 const ShowConsumption = lazy(() => import("src/pages/ShowConsumption"));
 const Logs = lazy(() => import("src/pages/LogsScreen"));
@@ -297,11 +301,6 @@ export const routes = [
     path: "/statistics",
     screen: MainPermissions.get_statistics,
   },
-  // {
-  //   element: <Statistics />,
-  //   path: "/statistics-apc-retail",
-  //   screen: MainPermissions.get_statistics,
-  // },
   {
     element: <Statistics />,
     path: "/statistics-apc-fabric",
@@ -540,10 +539,24 @@ export const routes = [
     path: `/categories-logystics/add`,
     screen: MainPermissions.add_apc_category,
   },
-
+  {
+    element: <ShowLogRequests />,
+    path: "/requests-logystics/:id",
+    screen: MainPermissions.edit_fabric_requests,
+  },
+  {
+    element: <CreateLogRequests />,
+    path: "/requests-logystics/add",
+    screen: MainPermissions.add_request_apc,
+  },
+  {
+    element: <LogysticsLogs />,
+    path: "/requests-logystics/:id/logs",
+    screen: MainPermissions.add_request_apc,
+  },
   {
     element: (
-      <RequestsApc
+      <RequestsLogystics
         add={MainPermissions.add_request_apc}
         edit={MainPermissions.edit_request_apc}
       />

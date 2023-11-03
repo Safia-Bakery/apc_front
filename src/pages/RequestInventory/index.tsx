@@ -116,7 +116,12 @@ const RequestInventory = () => {
                     <td>
                       {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
                     </td>
-                    <td>{handleStatus(order?.status)}</td>
+                    <td>
+                      {handleStatus({
+                        status: order?.status,
+                        dep: Departments.inventory,
+                      })}
+                    </td>
                     <td>{order?.user?.full_name}</td>
                   </tr>
                 )

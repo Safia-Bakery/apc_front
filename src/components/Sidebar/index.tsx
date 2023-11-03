@@ -204,14 +204,13 @@ const routes = [
   {
     name: "Запрос машин",
     icon: "/assets/icons/apc.svg",
-    screen: MainPermissions.get_fabric_requests,
+    screen: MainPermissions.get_log_requests,
     subroutes: [
       {
-        name: "Заявки на APC розница",
-        url: "/requests-apc-retail",
+        name: "Заявки на Запрос машин",
+        url: "/requests-logystics",
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_requests_apc,
-        param: `?sphere_status=${Sphere.retail}&addExp=${MainPermissions.request_add_expanditure}`,
       },
       {
         name: "Категории",
