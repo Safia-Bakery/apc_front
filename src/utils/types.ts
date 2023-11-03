@@ -422,6 +422,7 @@ export enum Departments {
   inventory = 2,
   marketing = 3,
   it = 4,
+  logystics = 5, // zakaz mawin
 }
 export enum Sphere {
   retail = 1,
