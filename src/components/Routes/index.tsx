@@ -321,7 +321,7 @@ export const routes = [
         dep={Departments.apc}
       />
     ),
-    path: `/categories-${Departments[1]}-retail`,
+    path: `/categories-apc-retail`,
     screen: MainPermissions.get_apc_category,
   },
   {
@@ -333,7 +333,7 @@ export const routes = [
         dep={Departments.apc}
       />
     ),
-    path: `/categories-${Departments[1]}-fabric`,
+    path: `/categories-apc-fabric`,
     screen: MainPermissions.get_categ_fab,
   },
   {
@@ -344,45 +344,45 @@ export const routes = [
         dep={Departments.marketing}
       />
     ),
-    path: `/categories-${Departments[3]}`,
+    path: `/categories-marketing`,
     screen: MainPermissions.get_mark_category,
   },
   {
     element: <ShowCategory dep={Departments.marketing} />,
-    path: `/categories-${Departments[3]}/:id`,
+    path: `/categories-marketing/:id`,
     screen: MainPermissions.edit_mark_category,
   },
   {
     element: (
       <ShowCategory dep={Departments.apc} sphere_status={Sphere.retail} />
     ),
-    path: `/categories-${Departments[1]}-retail/:id`,
+    path: `/categories-apc-retail/:id`,
     screen: MainPermissions.edit_apc_category,
   },
   {
     element: (
       <ShowCategory dep={Departments.apc} sphere_status={Sphere.fabric} />
     ),
-    path: `/categories-${Departments[1]}-fabric/:id`,
+    path: `/categories-apc-fabric/:id`,
     screen: MainPermissions.edit_categ_fab,
   },
   {
     element: <ShowCategory dep={Departments.marketing} />,
-    path: `/categories-${Departments[3]}/add`,
+    path: `/categories-marketing/add`,
     screen: MainPermissions.add_mark_category,
   },
   {
     element: (
       <ShowCategory dep={Departments.apc} sphere_status={Sphere.retail} />
     ),
-    path: `/categories-${Departments[1]}-retail/add`,
+    path: `/categories-apc-retail/add`,
     screen: MainPermissions.add_apc_category,
   },
   {
     element: (
       <ShowCategory dep={Departments.apc} sphere_status={Sphere.fabric} />
     ),
-    path: `/categories-${Departments[1]}-fabric/add`,
+    path: `/categories-apc-fabric/add`,
     screen: MainPermissions.add_categ_fab,
   },
   {
@@ -516,6 +516,40 @@ export const routes = [
     element: <RemainsInStock />,
     path: "/items-in-stock/:id",
     screen: MainPermissions.get_warehouse_retail,
+  },
+
+  {
+    element: (
+      <Categories
+        add={MainPermissions.add_apc_category}
+        edit={MainPermissions.edit_apc_category}
+        dep={Departments.logystics}
+      />
+    ),
+    path: `/categories-logystics`,
+    screen: MainPermissions.get_apc_category,
+  },
+  {
+    element: <ShowCategory dep={Departments.logystics} />,
+    path: `/categories-logystics/:id`,
+    screen: MainPermissions.edit_apc_category,
+  },
+
+  {
+    element: <ShowCategory dep={Departments.logystics} />,
+    path: `/categories-logystics/add`,
+    screen: MainPermissions.add_apc_category,
+  },
+
+  {
+    element: (
+      <RequestsApc
+        add={MainPermissions.add_request_apc}
+        edit={MainPermissions.edit_request_apc}
+      />
+    ),
+    path: "/requests-logystics",
+    screen: MainPermissions.get_requests_apc,
   },
 ];
 
