@@ -57,13 +57,15 @@ const Login = () => {
   };
   return (
     <div className={styles.login_wrap}>
-      <div className={cl(styles.content, "p-5 shadow bg-white rounded")}>
-        <h2 className="text-center mb-3">Авторизация</h2>
+      <div className={styles.overlay} />
+      <div className={cl(styles.content, "shadow rounded")}>
+        <h3 className="text-center mb-3">Авторизация</h3>
         <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
           <BaseInput className="mb-0" error={errors.username}>
             <MainInput
               register={register("username", { required: "required" })}
               autoFocus
+              className={styles.input}
               placeholder={"Логин"}
             />
           </BaseInput>
@@ -71,6 +73,7 @@ const Login = () => {
             <MainInput
               register={register("password", { required: "required" })}
               type="password"
+              className={cl(styles.input, "mb-4")}
               placeholder={"Пароль"}
             />
             {error && (

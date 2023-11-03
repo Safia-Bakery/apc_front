@@ -103,6 +103,16 @@ const ShowMarketingRequest = () => {
     if (permissions?.[edit])
       return (
         <div className="float-end mb10">
+          {order?.status! < 2 && (
+            <button
+              onClick={handleBrigada({
+                status: RequestStatus.sendToRepair,
+              })}
+              className="btn btn-warning btn-fill mr-2"
+            >
+              Отправить заказчику
+            </button>
+          )}
           {order?.status! < 3 && (
             <button
               onClick={handleBrigada({ status: RequestStatus.done })}
@@ -125,7 +135,7 @@ const ShowMarketingRequest = () => {
       <Card className="overflow-hidden">
         <Header
           title={`Заказ №${id}`}
-          subTitle={`Статус: ${handleStatus(order?.status)}`}
+          subTitle={`Статус: ${handleStatus(order?.status, true)}`}
         >
           <button
             className="btn btn-warning btn-fill mr-2"
@@ -250,7 +260,7 @@ const ShowMarketingRequest = () => {
             </div>
           </div>
           <hr />
-          {true && renderBtns}
+          {renderBtns}
         </div>
       </Card>
 

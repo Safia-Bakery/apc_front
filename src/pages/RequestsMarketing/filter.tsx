@@ -1,4 +1,4 @@
-import { RequestStatusArr } from "src/utils/helpers";
+import { RequestMarkStatusArr } from "src/utils/helpers";
 import styles from "./index.module.scss";
 import { FC, useState } from "react";
 import useDebounce from "src/hooks/useDebounce";
@@ -116,7 +116,7 @@ const InventoryFilter: FC<Props> = ({ sub_id }) => {
       <td className="p-0">
         <BaseInputs className="m-2">
           <MainSelect
-            values={RequestStatusArr}
+            values={RequestMarkStatusArr}
             value={request_status?.toString()}
             onChange={(e) => navigate({ request_status: e.target.value })}
           />
