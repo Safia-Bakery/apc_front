@@ -372,7 +372,11 @@ export enum MainPermissions {
 
   get_log_requests = 71,
   edit_log_requests = 73,
-  add_log_requests = 75,
+  add_log_requests = 72,
+
+  get_log_categs = 74,
+  add_log_categs = 75,
+  edit_log_categs = 76,
 }
 export enum MarketingSubDep {
   designers = 1,

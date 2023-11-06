@@ -5,7 +5,6 @@ import Header from "src/components/Header";
 import styles from "./index.module.scss";
 import useOrder from "src/hooks/useOrder";
 import dayjs from "dayjs";
-import { useAppSelector } from "src/redux/utils/types";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import { successToast } from "src/utils/toast";
 import { baseURL } from "src/main";
@@ -14,12 +13,7 @@ import {
   handleDepartment,
   handleStatus,
 } from "src/utils/helpers";
-import {
-  Departments,
-  FileType,
-  MainPermissions,
-  RequestStatus,
-} from "src/utils/types";
+import { Departments, FileType, RequestStatus } from "src/utils/types";
 import { useForm } from "react-hook-form";
 import ShowRequestModals from "src/components/ShowRequestModals";
 
@@ -27,8 +21,6 @@ import {
   useNavigateParams,
   useRemoveParams,
 } from "src/hooks/useCustomNavigate";
-import { permissionSelector } from "src/redux/reducers/auth";
-import useQueryString from "src/hooks/useQueryString";
 import cl from "classnames";
 
 const enum ModalTypes {
@@ -39,7 +31,6 @@ const enum ModalTypes {
 
 const ShowLogRequests = () => {
   const { id } = useParams();
-  const permissions = useAppSelector(permissionSelector);
 
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
@@ -50,7 +41,6 @@ const ShowLogRequests = () => {
   const { getValues } = useForm();
   const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
-  const edit = Number(useQueryString("edit")) as MainPermissions;
   const navigate = useNavigate();
   const { state } = useLocation();
 

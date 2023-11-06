@@ -520,49 +520,49 @@ export const routes = [
   {
     element: (
       <Categories
-        add={MainPermissions.add_apc_category}
-        edit={MainPermissions.edit_apc_category}
+        add={MainPermissions.add_log_categs}
+        edit={MainPermissions.edit_log_categs}
         dep={Departments.logystics}
       />
     ),
     path: `/categories-logystics`,
-    screen: MainPermissions.get_apc_category,
+    screen: MainPermissions.get_log_categs,
   },
   {
     element: <ShowCategory dep={Departments.logystics} />,
     path: `/categories-logystics/:id`,
-    screen: MainPermissions.edit_apc_category,
+    screen: MainPermissions.edit_log_categs,
   },
 
   {
     element: <ShowCategory dep={Departments.logystics} />,
     path: `/categories-logystics/add`,
-    screen: MainPermissions.add_apc_category,
+    screen: MainPermissions.add_log_categs,
   },
   {
     element: <ShowLogRequests />,
     path: "/requests-logystics/:id",
-    screen: MainPermissions.edit_fabric_requests,
+    screen: MainPermissions.edit_log_requests,
   },
   {
     element: <CreateLogRequests />,
     path: "/requests-logystics/add",
-    screen: MainPermissions.add_request_apc,
+    screen: MainPermissions.add_log_requests,
   },
   {
     element: <LogysticsLogs />,
     path: "/requests-logystics/:id/logs",
-    screen: MainPermissions.add_request_apc,
+    screen: MainPermissions.edit_log_requests,
   },
   {
     element: (
       <RequestsLogystics
-        add={MainPermissions.add_request_apc}
-        edit={MainPermissions.edit_request_apc}
+        add={MainPermissions.add_log_requests}
+        edit={MainPermissions.edit_log_requests}
       />
     ),
     path: "/requests-logystics",
-    screen: MainPermissions.get_requests_apc,
+    screen: MainPermissions.get_log_requests,
   },
 ];
 

@@ -65,7 +65,7 @@ const ShowRole = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <Card>
+    <Card className={styles.card}>
       <Header title={`${rolePermission?.role_name}`}>
         <button
           className="btn btn-primary btn-fill"
@@ -110,8 +110,12 @@ const ShowRole = () => {
           })}
         </table>
 
-        <button className="btn btn-success" type="submit" id="save_permission">
-          save
+        <button
+          className="btn btn-success float-end"
+          type="submit"
+          id="save_permission"
+        >
+          Сохранить
         </button>
       </form>
     </Card>
