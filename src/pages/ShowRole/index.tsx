@@ -38,8 +38,6 @@ const ShowRole = () => {
       .filter((val) => !!val)
       .map((item) => +item);
 
-    console.log(ids, "ids");
-
     mutate(
       { ids, id: Number(id) },
       {

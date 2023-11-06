@@ -52,9 +52,7 @@ const AddInventoryRequest = () => {
     name: "inputFields",
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
-  };
+  const onSubmit = (data: FormData) => {};
 
   const addInputFields = () => append(initialInventory);
 
