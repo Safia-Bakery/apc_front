@@ -702,7 +702,7 @@ const Navigation = () => {
               path="consumptions"
               element={
                 <Suspend>
-                  <ConsumptionStat />
+                  <ConsumptionStat sphere_status={Sphere.retail} />
                 </Suspend>
               }
             />
@@ -762,7 +762,7 @@ const Navigation = () => {
               path="consumptions"
               element={
                 <Suspend>
-                  <ConsumptionStat />
+                  <ConsumptionStat sphere_status={Sphere.fabric} />
                 </Suspend>
               }
             />

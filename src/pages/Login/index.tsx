@@ -47,7 +47,6 @@ const Login = () => {
         onSuccess: (data) => {
           dispatch(loginHandler(data.access_token));
           refetch();
-          navigate("/home");
           successToast("Добро пожаловать");
           if (error) $error(false);
         },

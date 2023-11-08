@@ -103,7 +103,7 @@ const ShowLogRequests = () => {
               })}
               className="btn btn-warning btn-fill mr-2"
             >
-              Отправить заказчику
+              Отправить в путь
             </button>
           )}
           {order?.status! < 3 && (

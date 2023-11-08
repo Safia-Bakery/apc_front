@@ -1,20 +1,27 @@
 import { useEffect, useRef, useState } from "react";
 import TableHead from "src/components/TableHead";
-
 import Loading from "src/components/Loader";
 import useDistinct from "src/hooks/useDistinct";
 import { Link } from "react-router-dom";
 import { useDownloadExcel } from "react-export-table-to-excel";
+import { Departments, Sphere } from "src/utils/types";
+import useQueryString from "src/hooks/useQueryString";
 
 const column = [
   { name: "№", key: "" },
   { name: "Материал", key: "name" },
   { name: "Количество (шт)", key: "amount" },
 ];
+interface Props {
+  sphere_status: Sphere;
+}
 
-const ConsumptionStat = () => {
+const ConsumptionStat = ({ sphere_status }: Props) => {
   const [sortKey, setSortKey] = useState<any>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+
+  const start = useQueryString("start");
+  const end = useQueryString("end");
 
   const tableRef = useRef(null);
   const btnAction = document.getElementById("export_to_excell");
@@ -34,7 +41,12 @@ const ConsumptionStat = () => {
 
   const downloadAsPdf = () => onDownload();
 
-  const { data, isLoading } = useDistinct({});
+  const { data, isLoading } = useDistinct({
+    department: Departments.apc,
+    sphere_status,
+    ...(!!start && { started_at: start }),
+    ...(!!end && { finished_at: end }),
+  });
 
   const handleSort = (key: any) => {
     if (key === sortKey) {
