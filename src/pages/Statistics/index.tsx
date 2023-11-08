@@ -2,11 +2,13 @@ import Card from "src/components/Card";
 import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { Outlet, useNavigate } from "react-router-dom";
-import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
 import ApcStatBar from "src/components/ApcStatBar";
 import { useNavigateParams } from "src/hooks/useCustomNavigate";
 import dayjs from "dayjs";
 import useQueryString from "src/hooks/useQueryString";
+import { useForm } from "react-hook-form";
+import cl from "classnames";
+import { useEffect } from "react";
 
 const Statistics = () => {
   const navigate = useNavigate();
@@ -14,12 +16,27 @@ const Statistics = () => {
   const end = useQueryString("end");
   const goBack = () => navigate(-1);
   const navigateParams = useNavigateParams();
-  const handleDateStart = (event: Date) => {
-    navigateParams({ start: dayjs(event).format("YYYY-MM-DD") });
+  const { register, getValues, reset, setValue } = useForm();
+
+  const handleDate = () => {
+    const { end, start } = getValues();
+    navigateParams({
+      end: dayjs(end).format("YYYY-MM-DD"),
+      start: dayjs(start).format("YYYY-MM-DD"),
+    });
   };
-  const handleDateEnd = (event: Date) => {
-    navigateParams({ end: dayjs(event).format("YYYY-MM-DD") });
-  };
+
+  useEffect(() => {
+    if (end || start)
+      reset({
+        end,
+        start,
+      });
+    else {
+      setValue("end", undefined);
+      setValue("start", undefined);
+    }
+  }, [end, start]);
 
   return (
     <Card>
@@ -35,18 +52,22 @@ const Statistics = () => {
 
       <div className="content">
         <div className={styles.dateBlock}>
-          <MainDatePicker
-            selected={
-              !!start
-                ? dayjs(start || undefined).toDate()
-                : dayjs().startOf("month").toDate()
-            }
-            onChange={handleDateStart}
+          <input
+            type="date"
+            className="form-group form-control"
+            {...register("start")}
           />
-          <MainDatePicker
-            selected={dayjs(end || undefined).toDate()}
-            onChange={handleDateEnd}
+          <input
+            type="date"
+            className="form-group form-control"
+            {...register("end")}
           />
+          <button
+            className={cl("btn btn-primary btn-fill", styles.btn)}
+            onClick={handleDate}
+          >
+            Показать
+          </button>
         </div>
 
         <div className="table-responsive grid-view">

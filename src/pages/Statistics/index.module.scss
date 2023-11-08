@@ -2,4 +2,12 @@
   display: flex;
   gap: 10px;
   margin-bottom: 15px;
+  width: min-content;
+}
+.iconClassName {
+  top: 44% !important;
+  right: 10px !important;
+}
+.btn {
+  height: 40px;
 }

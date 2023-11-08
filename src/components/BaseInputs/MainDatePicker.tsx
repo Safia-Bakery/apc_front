@@ -14,6 +14,8 @@ interface Props {
   selected?: Date | null | undefined;
   filter?: boolean;
   showTimeSelect?: boolean;
+  iconClassName?: string;
+  dateFormat?: string;
 }
 
 const MainDatePicker: FC<Props> = ({
@@ -23,6 +25,8 @@ const MainDatePicker: FC<Props> = ({
   onChange,
   wrapperClassName,
   showTimeSelect,
+  iconClassName,
+  dateFormat = "MM.d.yyyy h:mm aa",
 }) => {
   const handleClear = () => onChange(undefined);
 
@@ -32,7 +36,7 @@ const MainDatePicker: FC<Props> = ({
         selected={selected}
         onChange={onChange}
         timeCaption="Time"
-        dateFormat="MM.d.yyyy h:mm aa"
+        dateFormat={dateFormat}
         timeIntervals={30}
         showTimeSelect={showTimeSelect}
         wrapperClassName={cl(
@@ -51,7 +55,7 @@ const MainDatePicker: FC<Props> = ({
           alt="clear"
           width={15}
           height={15}
-          className={styles.close}
+          className={cl(iconClassName, styles.close)}
         />
       )}
     </div>
