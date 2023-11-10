@@ -22,6 +22,8 @@ import useQueryString from "src/hooks/useQueryString";
 import Suspend from "../Suspend";
 
 const ControlPanel = lazy(() => import("src/pages/ControlPanel"));
+const RequestsStaff = lazy(() => import("src/pages/RequestsStaff"));
+const AddStaffOrder = lazy(() => import("src/pages/AddStaffOrder"));
 const LogysticsLogs = lazy(() => import("src/pages/LogysticsLogs"));
 const RequestsLogystics = lazy(() => import("src/pages/RequestsLogystics"));
 const CreateLogRequests = lazy(() => import("src/pages/CreateLogRequests"));
@@ -563,6 +565,21 @@ export const routes = [
     ),
     path: "/requests-logystics",
     screen: MainPermissions.get_log_requests,
+  },
+  {
+    element: <RequestsStaff />,
+    path: "/requests-staff",
+    screen: MainPermissions.get_staff_requests,
+  },
+  {
+    element: <ShowLogRequests />,
+    path: "/requests-staff/:id",
+    screen: MainPermissions.edit_log_requests,
+  },
+  {
+    element: <AddStaffOrder />,
+    path: "/requests-staff/add",
+    screen: MainPermissions.add_log_requests,
   },
 ];
 

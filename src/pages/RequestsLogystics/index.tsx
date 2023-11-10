@@ -6,7 +6,12 @@ import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import { handleStatus, itemsPerPage, requestRows } from "src/utils/helpers";
+import {
+  getValue,
+  handleStatus,
+  itemsPerPage,
+  requestRows,
+} from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import RequestsFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
@@ -35,18 +40,6 @@ const column = [
   { name: "Статус", key: "status" },
   { name: "Изменил", key: "user_manager" },
 ];
-
-const getValue = (obj: any, key: string) => {
-  const keys = key.split(".");
-  let value = obj;
-
-  for (const k of keys) {
-    if (!value) break;
-    value = value[k];
-  }
-
-  return value;
-};
 
 const RequestsLogystics: FC<Props> = ({ add, edit }) => {
   const navigate = useNavigate();

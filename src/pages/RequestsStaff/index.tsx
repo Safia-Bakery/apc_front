@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Departments, MainPermissions, Order, Sphere } from "src/utils/types";
 import Pagination from "src/components/Pagination";
-import { FC, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
@@ -13,7 +13,6 @@ import {
   requestRows,
 } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
-import RequestsFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import cl from "classnames";
 import { useAppSelector } from "src/redux/utils/types";
@@ -21,21 +20,29 @@ import { permissionSelector } from "src/redux/reducers/auth";
 import styles from "./index.module.scss";
 import useQueryString from "src/hooks/useQueryString";
 import TableLoading from "src/components/TableLoading";
+import BotTimeModal from "src/components/BotTimeModal";
+import { useNavigateParams } from "src/hooks/useCustomNavigate";
 
-interface Props {
-  add: MainPermissions;
-  edit: MainPermissions;
-}
+const column = [
+  { name: "№", key: "" },
+  { name: "Номер заявки", key: "id" },
+  { name: "Клиент", key: "user" },
+  { name: "Филиал", key: "name" },
+  { name: "Порция еды", key: "category?.name" },
+  { name: "Порции хлеба", key: "urgent" },
+  { name: "Дата поставки", key: "brigada" },
+  { name: "Статус", key: "status" },
+];
 
-const RequestsApc: FC<Props> = ({ add, edit }) => {
+const RequestsStaff = () => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const permission = useAppSelector(permissionSelector);
   const sphere_status = useQueryString("sphere_status");
-  const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const currentPage = Number(useQueryString("page")) || 1;
   const { pathname, search } = useLocation();
+  const navigateParams = useNavigateParams();
 
   const user = useQueryString("user");
   const id = Number(useQueryString("id"));
@@ -47,41 +54,6 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
   const request_status = useQueryString("request_status");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
-
-  const column = useMemo(() => {
-    const columns = [
-      { name: "№", key: "" },
-      { name: "Номер заявки", key: "id" },
-      { name: "Клиент", key: "user" },
-      { name: "Филиал/Отдел", key: "name" },
-      { name: "Группа проблем", key: "category?.name" },
-      { name: "Срочно", key: "urgent" },
-      { name: "Бригада", key: "brigada" },
-      { name: "Дата поступления", key: "created_at" },
-      { name: "Статус", key: "status" },
-      { name: "Изменил", key: "user_manager" },
-    ];
-
-    if (Number(sphere_status) === Sphere.fabric) {
-      columns.splice(2, 0, { name: "Система", key: "is_bot" });
-    }
-
-    return columns;
-  }, [sphere_status]);
-
-  const renderFilter = useMemo(() => {
-    return <RequestsFilter />;
-  }, [
-    user,
-    id,
-    system,
-    department,
-    category_id,
-    urgent,
-    created_at,
-    request_status,
-    branch,
-  ]);
 
   const handleSort = (key: any) => {
     if (key === sortKey) {
@@ -97,10 +69,8 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
     refetch,
   } = useOrders({
     enabled: true,
-    size: itemsPerPage,
-    department: Departments.apc,
+    department: Departments.staff,
     page: currentPage,
-    sphere_status: Number(sphere_status),
 
     ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
     ...(!!system && { is_bot: !!system }),
@@ -140,21 +110,49 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
     refetch();
   }, [currentPage, sphere_status]);
 
+  const renderProductCount = useMemo(() => {
+    return requests?.items.reduce((acc, item) => acc + Number(item.product), 0);
+  }, [requests]);
+
+  const renderBreadCount = useMemo(() => {
+    return requests?.items.reduce(
+      (acc, item) => acc + Number(item.bread_size),
+      0
+    );
+  }, [requests]);
+
   return (
     <Card>
       <Header title={"Заявки"}>
-        <button className="btn btn-primary btn-fill mr-2">Экспорт</button>
-        {permission?.[add] && (
-          <button
-            onClick={() =>
-              navigate(`add?sphere_status=${sphere_status}&addExp=${addExp}`)
-            }
-            className="btn btn-success btn-fill"
-            id="add_request"
-          >
-            Добавить
-          </button>
-        )}
+        <div className="d-flex gap-2">
+          <div className="p-2 btn btn-warning">
+            <div>Количество еды</div>
+            <div className={styles.count}>{renderProductCount}</div>
+          </div>
+          <div className="p-2 btn btn-primary">
+            <div>Количество хлеба</div>
+            <div className={styles.count}>{renderBreadCount}</div>
+          </div>
+          <div className="d-flex flex-column gap-2 justify-content-between">
+            {permission?.[MainPermissions.staff_modal_time] && (
+              <button
+                onClick={() => navigateParams({ time_modal: 1 })}
+                className="btn btn-primary btn-fill"
+              >
+                Настройки бота
+              </button>
+            )}
+            {permission?.[MainPermissions.add_staff_requests] && (
+              <button
+                onClick={() => navigate("add")}
+                className="btn btn-success btn-fill"
+                id="add_request"
+              >
+                Добавить
+              </button>
+            )}
+          </div>
+        </div>
       </Header>
 
       <div className="table-responsive grid-view content">
@@ -166,8 +164,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            {/* <RequestsFilter currentPage={currentPage} /> */}
-            {renderFilter}
+            {/* <RequestsFilter /> */}
           </TableHead>
           <tbody id="requests_body">
             {!!requests?.items?.length &&
@@ -177,10 +174,10 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
                   <tr className={requestRows(order?.status)} key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
-                      {permission?.[edit] ? (
+                      {permission?.[MainPermissions.edit_staff_requests] ? (
                         <Link
                           id="request_id"
-                          to={`/requests-apc/${order?.id}?sphere_status=${sphere_status}&addExp=${addExp}`}
+                          to={`/requests-staff/${order?.id}`}
                           state={{ prevPath: pathname + search }}
                         >
                           {order?.id}
@@ -241,8 +238,9 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
           </div>
         )}
       </div>
+      <BotTimeModal />
     </Card>
   );
 };
 
-export default RequestsApc;
+export default RequestsStaff;

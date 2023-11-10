@@ -9,6 +9,7 @@ import BaseAPIClient from "./api/axiosConfig.ts";
 import Loading from "./components/Loader/index.tsx";
 
 export const baseURL = "https://backend.service.safiabakery.uz";
+// export const baseURL = "https://193d-185-203-238-5.ngrok-free.app";
 
 export default new BaseAPIClient(baseURL, store);
 

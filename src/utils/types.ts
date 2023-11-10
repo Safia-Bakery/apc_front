@@ -83,6 +83,7 @@ export interface Order {
   };
   finished_at: Date;
   arrival_date: Date;
+  bread_size?: string;
 }
 
 export interface OrderType extends BasePaginatedRes {
@@ -377,6 +378,15 @@ export enum MainPermissions {
   get_log_categs = 74,
   add_log_categs = 75,
   edit_log_categs = 76,
+
+  // get_staff_requests = 77,
+  // add_staff_requests = 78,
+  // edit_staff_requests = 79,
+
+  get_staff_requests = 74,
+  add_staff_requests = 75,
+  edit_staff_requests = 76,
+  staff_modal_time = 76,
 }
 export enum MarketingSubDep {
   designers = 1,
@@ -432,6 +442,7 @@ export enum Departments {
   marketing = 3,
   it = 4,
   logystics = 5, // zakaz mawin
+  staff = 6, // zakaz edi
 }
 export enum Sphere {
   retail = 1,
@@ -458,4 +469,8 @@ export interface DepartmentStatTypes {
 }
 export interface BrigadaCategStatTypes {
   [key: string]: (string | number)[][];
+}
+export interface BotWorkTimeType {
+  from_time: string;
+  to_time: string;
 }

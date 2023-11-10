@@ -14,6 +14,7 @@ interface Props {
   register?: UseFormRegisterReturn;
   onFocus?: () => void;
   ref?: any;
+  defaultValue?: any;
 }
 
 const MainInput: FC<Props> = ({
@@ -21,6 +22,7 @@ const MainInput: FC<Props> = ({
   placeholder = "",
   register,
   ref,
+  defaultValue,
   ...others
 }) => {
   return (
@@ -28,6 +30,7 @@ const MainInput: FC<Props> = ({
       className={cl(className, "form-control mb-2", styles.inputBox)}
       placeholder={placeholder || ""}
       ref={ref}
+      defaultValue={defaultValue}
       {...register}
       {...others}
     />

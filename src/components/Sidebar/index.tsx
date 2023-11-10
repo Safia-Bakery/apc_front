@@ -221,6 +221,12 @@ const routes = [
     ],
   },
   {
+    name: "Заявки на еду",
+    url: "/requests-staff",
+    icon: "/assets/icons/users.svg",
+    screen: MainPermissions.get_staff_requests,
+  },
+  {
     name: "Пользователи",
     url: "/users",
     icon: "/assets/icons/users.svg",

@@ -39,6 +39,8 @@ const ApcFilter: FC = () => {
   const [id, $id] = useDebounce<string>("");
   const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
+  const [portion, $portion] = useDebounce<string>("");
+  const [bread, $bread] = useDebounce<string>("");
   const system = useQueryString("system");
   const request_status = useQueryString("request_status");
   const category_id = Number(useQueryString("category_id"));
@@ -53,6 +55,10 @@ const ApcFilter: FC = () => {
   };
   const handleName = (e: ChangeEvent<HTMLInputElement>) =>
     $user(e.target.value);
+  const handlePortion = (e: ChangeEvent<HTMLInputElement>) =>
+    $portion(e.target.value);
+  const handleBread = (e: ChangeEvent<HTMLInputElement>) =>
+    $bread(e.target.value);
 
   const handleID = (e: ChangeEvent<HTMLInputElement>) => $id(e.target.value);
 
@@ -82,28 +88,13 @@ const ApcFilter: FC = () => {
     <>
       <td></td>
       <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput
-            register={register("idQ")}
-            type="number"
-            onChange={handleID}
-          />
+        <BaseInput className="my-2 mx-1">
+          <MainInput type="number" onChange={handleID} />
         </BaseInput>
       </td>
-      {sphere_status === Sphere.fabric && (
-        <td className="p-0">
-          <BaseInput className="m-2">
-            <MainSelect
-              value={system?.toString()}
-              values={SystemArr}
-              onChange={(e) => navigate({ system: e.target.value })}
-            />
-          </BaseInput>
-        </td>
-      )}
       <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput register={register("userName")} onChange={handleName} />
+        <BaseInput className="my-2 mx-1">
+          <MainInput onChange={handleName} />
         </BaseInput>
       </td>
       <td width={150} className="p-0 position-relative">
@@ -117,29 +108,16 @@ const ApcFilter: FC = () => {
         </div>
       </td>
       <td className="p-0">
-        <BaseInputs className="m-2">
-          <MainSelect
-            values={categories?.items}
-            onFocus={() => catRefetch()}
-            value={category_id.toString()}
-            onChange={(e) => navigate({ category_id: e.target.value })}
-          />
-        </BaseInputs>
-      </td>
-      <td className="p-0">
-        <BaseInputs className="m-2">
-          <MainSelect
-            values={UrgentNames}
-            value={urgent?.toString()}
-            onChange={handleUrgent}
-          />
-        </BaseInputs>
-      </td>
-      <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput onChange={(e) => navigate({ user: e.target.value })} />
+        <BaseInput className="my-2 mx-1">
+          <MainInput onChange={handlePortion} />
         </BaseInput>
       </td>
+      <td className="p-0">
+        <BaseInput className="my-2 mx-1">
+          <MainInput onChange={handleBread} />
+        </BaseInput>
+      </td>
+
       <td className="p-0">
         <MainDatePicker
           selected={
@@ -149,9 +127,9 @@ const ApcFilter: FC = () => {
           }
           onChange={startRange}
           className="mt-1"
+          dateFormat="MM.d.yyyy"
         />
       </td>
-
       <td className="p-0">
         <BaseInputs className="m-2">
           <MainSelect
@@ -160,11 +138,6 @@ const ApcFilter: FC = () => {
             onChange={(e) => navigate({ request_status: e.target.value })}
           />
         </BaseInputs>
-      </td>
-      <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput onChange={(e) => navigate({ user: e.target.value })} />
-        </BaseInput>
       </td>
     </>
   );

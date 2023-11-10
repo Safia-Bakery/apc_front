@@ -1,0 +1,15 @@
+.btn {
+  @media (max-width: 720px) {
+    width: 100% !important;
+  }
+}
+.form {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-size: 12px;
+    text-transform: uppercase;
+    padding-left: 0;
+  }
+}

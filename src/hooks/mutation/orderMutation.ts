@@ -8,9 +8,10 @@ interface Body {
   size?: string;
   category_id: number;
   fillial_id: string;
-  files: any;
+  files?: any;
   factory?: boolean;
   arrival_date?: string;
+  bread_size?: number;
 }
 
 const requestMutation = () => {
@@ -29,6 +30,7 @@ const requestMutation = () => {
       factory,
       size,
       arrival_date,
+      bread_size,
     }: Body) =>
       apiClient
         .post({
@@ -42,6 +44,7 @@ const requestMutation = () => {
             factory,
             size,
             arrival_date,
+            bread_size,
           },
           config,
           contentType,
