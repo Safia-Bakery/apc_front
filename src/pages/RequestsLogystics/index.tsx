@@ -36,6 +36,18 @@ const column = [
   { name: "Изменил", key: "user_manager" },
 ];
 
+const getValue = (obj: any, key: string) => {
+  const keys = key.split(".");
+  let value = obj;
+
+  for (const k of keys) {
+    if (!value) break;
+    value = value[k];
+  }
+
+  return value;
+};
+
 const RequestsLogystics: FC<Props> = ({ add, edit }) => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
@@ -55,18 +67,6 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
   const request_status = useQueryString("request_status");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
-
-  const getValue = (obj: any, key: string) => {
-    const keys = key.split(".");
-    let value = obj;
-
-    for (const k of keys) {
-      if (!value) break;
-      value = value[k];
-    }
-
-    return value;
-  };
 
   const handleSort = (key: any) => {
     if (key === sortKey) {
