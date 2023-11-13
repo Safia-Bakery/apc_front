@@ -11,13 +11,12 @@ import BranchSelect from "src/components/BranchSelect";
 import useQueryString from "src/hooks/useQueryString";
 import styles from "./index.module.scss";
 import cl from "classnames";
-import { Departments, MainPermissions, Sphere } from "src/utils/types";
+import { MainPermissions } from "src/utils/types";
 import dayjs from "dayjs";
 import {
   useNavigateParams,
   useRemoveParams,
 } from "src/hooks/useCustomNavigate";
-import useCategories from "src/hooks/useCategories";
 import { useForm } from "react-hook-form";
 import { permissionSelector } from "src/redux/reducers/auth";
 import { useAppSelector } from "src/redux/utils/types";
@@ -29,19 +28,12 @@ const StaffFilter: FC = () => {
   const perm = useAppSelector(permissionSelector);
   const sphere_status = Number(useQueryString("sphere_status"));
 
-  const { data: categories, refetch: catRefetch } = useCategories({
-    department: Departments.apc,
-    ...(!!sphere_status && { sphere_status }),
-    enabled: false,
-  });
-
   const { register, reset } = useForm();
   const [id, $id] = useDebounce<string>("");
   const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
   const [portion, $portion] = useDebounce<string>("");
   const [bread, $bread] = useDebounce<string>("");
-  const request_status = useQueryString("request_status");
   const created_at = useQueryString("created_at");
   const userQ = useQueryString("user");
   const idQ = useQueryString("id");
@@ -115,7 +107,7 @@ const StaffFilter: FC = () => {
           selected={
             !!created_at && created_at !== "undefined"
               ? dayjs(created_at).toDate()
-              : undefined
+              : dayjs().toDate()
           }
           onChange={startRange}
           className="mt-1"
