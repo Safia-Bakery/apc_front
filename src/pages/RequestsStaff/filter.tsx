@@ -23,7 +23,7 @@ import { permissionSelector } from "src/redux/reducers/auth";
 import { useAppSelector } from "src/redux/utils/types";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
 
-const ApcFilter: FC = () => {
+const StaffFilter: FC = () => {
   const navigate = useNavigateParams();
   const deleteParam = useRemoveParams();
   const perm = useAppSelector(permissionSelector);
@@ -41,10 +41,7 @@ const ApcFilter: FC = () => {
   const [user, $user] = useDebounce<string>("");
   const [portion, $portion] = useDebounce<string>("");
   const [bread, $bread] = useDebounce<string>("");
-  const system = useQueryString("system");
   const request_status = useQueryString("request_status");
-  const category_id = Number(useQueryString("category_id"));
-  const urgent = useQueryString("urgent");
   const created_at = useQueryString("created_at");
   const userQ = useQueryString("user");
   const idQ = useQueryString("id");
@@ -61,11 +58,6 @@ const ApcFilter: FC = () => {
     $bread(e.target.value);
 
   const handleID = (e: ChangeEvent<HTMLInputElement>) => $id(e.target.value);
-
-  const handleUrgent = (e: ChangeEvent<HTMLSelectElement>) => {
-    if (!!e.target.value) navigate({ urgent: !!+e.target.value });
-    else deleteParam(["urgent"]);
-  };
 
   useUpdateEffect(() => {
     navigate({ user });
@@ -130,17 +122,9 @@ const ApcFilter: FC = () => {
           dateFormat="MM.d.yyyy"
         />
       </td>
-      <td className="p-0">
-        <BaseInputs className="m-2">
-          <MainSelect
-            values={RequestStatusArr}
-            value={request_status?.toString()}
-            onChange={(e) => navigate({ request_status: e.target.value })}
-          />
-        </BaseInputs>
-      </td>
+      <td className="p-0"></td>
     </>
   );
 };
 
-export default ApcFilter;
+export default StaffFilter;

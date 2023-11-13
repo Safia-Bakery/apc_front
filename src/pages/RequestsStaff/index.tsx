@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Departments, MainPermissions, Order, Sphere } from "src/utils/types";
+import { Departments, MainPermissions, Order } from "src/utils/types";
 import Pagination from "src/components/Pagination";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
@@ -11,10 +11,10 @@ import {
   handleStatus,
   itemsPerPage,
   requestRows,
+  staffCategoryId,
 } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import ItemsCount from "src/components/ItemsCount";
-import cl from "classnames";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
 import styles from "./index.module.scss";
@@ -22,6 +22,8 @@ import useQueryString from "src/hooks/useQueryString";
 import TableLoading from "src/components/TableLoading";
 import BotTimeModal from "src/components/BotTimeModal";
 import { useNavigateParams } from "src/hooks/useCustomNavigate";
+import StaffFilter from "./filter";
+import { useDownloadExcel } from "react-export-table-to-excel";
 
 const column = [
   { name: "№", key: "" },
@@ -33,7 +35,7 @@ const column = [
   { name: "Дата поставки", key: "brigada" },
   { name: "Статус", key: "status" },
 ];
-const today = new Date();
+
 const RequestsStaff = () => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
@@ -43,6 +45,15 @@ const RequestsStaff = () => {
   const currentPage = Number(useQueryString("page")) || 1;
   const { pathname, search } = useLocation();
   const navigateParams = useNavigateParams();
+  const tableRef = useRef(null);
+
+  const { onDownload } = useDownloadExcel({
+    currentTableRef: tableRef.current,
+    filename: "Заявки на еду",
+    sheet: "staff",
+  });
+
+  const downloadAsPdf = () => onDownload();
 
   const user = useQueryString("user");
   const id = Number(useQueryString("id"));
@@ -69,23 +80,22 @@ const RequestsStaff = () => {
     refetch,
   } = useOrders({
     enabled: true,
-    department: Departments.staff,
     page: currentPage,
-    arrival_date: today.toISOString(),
-    // ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
-    // ...(!!system && { is_bot: !!system }),
-    // body: {
-    //   ...(!!created_at && {
-    //     created_at: dayjs(created_at).format("YYYY-MM-DD"),
-    //   }),
-    //   ...(!!id && { id }),
-    //   ...(!!department && { department }),
-    //   ...(!!branch?.id && { fillial_id: branch?.id }),
-    //   ...(!!category_id && { category_id }),
-    //   ...(!!request_status && { request_status }),
-    //   ...(!!user && { user: user }),
-    //   ...(!!urgent && { urgent }),
-    // },
+    arrival_date: dayjs(!!created_at ? created_at : undefined).format(
+      "YYYY-MM-DD"
+    ),
+    category_id: staffCategoryId,
+    ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
+    ...(!!system && { is_bot: !!system }),
+    body: {
+      ...(!!id && { id }),
+      ...(!!department && { department }),
+      ...(!!branch?.id && { fillial_id: branch?.id }),
+      ...(!!category_id && { category_id }),
+      ...(!!request_status && { request_status }),
+      ...(!!user && { user: user }),
+      ...(!!urgent && { urgent }),
+    },
   });
   const sortData = () => {
     if (requests?.items && sortKey) {
@@ -129,15 +139,21 @@ const RequestsStaff = () => {
     <Card>
       <Header title={"Заявки"}>
         <div className="d-flex gap-2">
-          <div className="p-2 btn btn-warning">
-            <div>Количество еды</div>
-            <div className={styles.count}>{renderProductCount}</div>
+          <div className="p-2 btn btn-warning d-flex flex-column justify-content-between">
+            <h4>Количество еды</h4>
+            <h2 className={styles.count}>{renderProductCount}</h2>
           </div>
-          <div className="p-2 btn btn-primary">
-            <div>Количество хлеба</div>
-            <div className={styles.count}>{renderBreadCount}</div>
+          <div className="p-2 btn btn-primary d-flex flex-column justify-content-between">
+            <h4>Количество хлеба</h4>
+            <h2 className={styles.count}>{renderBreadCount}</h2>
           </div>
           <div className="d-flex flex-column gap-2 justify-content-between">
+            <button
+              className="btn btn-success btn-fill"
+              onClick={downloadAsPdf}
+            >
+              Экспорт в Excel
+            </button>
             {permission?.[MainPermissions.staff_modal_time] && (
               <button
                 onClick={() => navigateParams({ time_modal: 1 })}
@@ -161,14 +177,14 @@ const RequestsStaff = () => {
 
       <div className="table-responsive grid-view content">
         <ItemsCount data={requests} />
-        <table className="table table-hover">
+        <table className="table table-hover" ref={tableRef}>
           <TableHead
             column={column}
             sort={handleSort}
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            {/* <RequestsFilter /> */}
+            <StaffFilter />
           </TableHead>
           <tbody id="requests_body">
             {!!requests?.items?.length &&

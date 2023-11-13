@@ -12,6 +12,7 @@ export const useOrders = ({
   sphere_status,
   is_bot,
   arrival_date,
+  category_id,
 }: {
   enabled?: boolean;
   size?: number;
@@ -22,6 +23,7 @@ export const useOrders = ({
   sphere_status?: number;
   is_bot?: boolean;
   arrival_date?: string;
+  category_id?: number;
 }) => {
   return useQuery({
     queryKey: [
@@ -32,6 +34,7 @@ export const useOrders = ({
       sphere_status,
       body,
       arrival_date,
+      category_id,
     ],
     queryFn: () =>
       apiClient
@@ -44,6 +47,7 @@ export const useOrders = ({
           sphere_status,
           is_bot,
           arrival_date,
+          category_id,
         })
         .then(({ data: response }) => (response as OrderType) || null),
     enabled,
