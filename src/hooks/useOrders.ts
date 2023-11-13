@@ -21,7 +21,7 @@ export const useOrders = ({
   body?: RequestFilter;
   sphere_status?: number;
   is_bot?: boolean;
-  arrival_date: string;
+  arrival_date?: string;
 }) => {
   return useQuery({
     queryKey: [

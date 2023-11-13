@@ -34,24 +34,30 @@ const BotTimeModal = () => {
       reset({ from_time: work_time.from_time, to_time: work_time.to_time });
   }, [work_time]);
 
+  const closeModal = () => removeParams(["time_modal"]);
+
   const onSubmit = () => {
     const { from_time, to_time } = getValues();
-    mutate({
-      from_time: timeConverter(from_time),
-      to_time: timeConverter(to_time),
-    });
+    mutate(
+      {
+        from_time: timeConverter(from_time),
+        to_time: timeConverter(to_time),
+      },
+      {
+        onSuccess: () => {
+          closeModal();
+        },
+      }
+    );
   };
 
   if (!permission?.[MainPermissions.staff_modal_time]) return;
 
   return (
-    <Modal onClose={() => removeParams(["time_modal"])} isOpen={!!modal}>
+    <Modal onClose={closeModal} isOpen={!!modal}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Header title="Изменить время работы бота">
-          <button
-            onClick={() => removeParams(["time_modal"])}
-            className="close"
-          >
+          <button onClick={closeModal} className="close">
             <span aria-hidden="true">&times;</span>
           </button>
         </Header>
