@@ -1,9 +1,6 @@
-import { RequestStatusArr, SystemArr, UrgentNames } from "src/utils/helpers";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import useDebounce from "src/hooks/useDebounce";
 import "react-datepicker/dist/react-datepicker.css";
-import BaseInputs from "src/components/BaseInputs";
-import MainSelect from "src/components/BaseInputs/MainSelect";
 import BaseInput from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
@@ -26,21 +23,20 @@ const StaffFilter: FC = () => {
   const navigate = useNavigateParams();
   const deleteParam = useRemoveParams();
   const perm = useAppSelector(permissionSelector);
-  const sphere_status = Number(useQueryString("sphere_status"));
 
-  const { register, reset } = useForm();
+  const { reset } = useForm();
   const [id, $id] = useDebounce<string>("");
   const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
   const [portion, $portion] = useDebounce<string>("");
   const [bread, $bread] = useDebounce<string>("");
-  const created_at = useQueryString("created_at");
+  const arrival_date = useQueryString("arrival_date");
   const userQ = useQueryString("user");
   const idQ = useQueryString("id");
 
   const startRange = (start: Date | null) => {
-    if (start === undefined) deleteParam(["created_at"]);
-    if (!!start) navigate({ created_at: start });
+    if (start === undefined) deleteParam(["arrival_date"]);
+    if (!!start) navigate({ arrival_date: start });
   };
   const handleName = (e: ChangeEvent<HTMLInputElement>) =>
     $user(e.target.value);
@@ -105,8 +101,8 @@ const StaffFilter: FC = () => {
       <td className="p-0">
         <MainDatePicker
           selected={
-            !!created_at && created_at !== "undefined"
-              ? dayjs(created_at).toDate()
+            !!arrival_date && arrival_date !== "undefined"
+              ? dayjs(arrival_date).toDate()
               : dayjs().toDate()
           }
           onChange={startRange}

@@ -35,6 +35,7 @@ export interface UserTypes {
 export interface Order {
   product: string;
   description: string;
+  size: string;
   id: number | string;
   rating: number;
   created_at: Date;

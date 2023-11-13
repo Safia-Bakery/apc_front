@@ -30,9 +30,9 @@ const column = [
   { name: "Номер заявки", key: "id" },
   { name: "Клиент", key: "user" },
   { name: "Филиал", key: "name" },
-  { name: "Порция еды", key: "category?.name" },
-  { name: "Порции хлеба", key: "urgent" },
-  { name: "Дата поставки", key: "brigada" },
+  { name: "Порция еды", key: "size" },
+  { name: "Порции хлеба", key: "bread_size" },
+  { name: "Дата поставки", key: "arrival_date" },
   { name: "Статус", key: "status" },
 ];
 
@@ -46,10 +46,15 @@ const RequestsStaff = () => {
   const { pathname, search } = useLocation();
   const navigateParams = useNavigateParams();
   const tableRef = useRef(null);
+  const arrival_date = useQueryString("arrival_date");
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "Заявки на еду",
+    filename: `Заявки на еду ${
+      !!arrival_date && arrival_date !== "undefined"
+        ? dayjs(arrival_date).format("MM.DD.YYYY")
+        : dayjs().format("MM.DD.YYYY")
+    }`,
     sheet: "staff",
   });
 
@@ -61,7 +66,6 @@ const RequestsStaff = () => {
   const department = useQueryString("department");
   const category_id = Number(useQueryString("category_id"));
   const urgent = useQueryString("urgent");
-  const created_at = useQueryString("created_at");
   const request_status = useQueryString("request_status");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
@@ -81,7 +85,7 @@ const RequestsStaff = () => {
   } = useOrders({
     enabled: true,
     page: currentPage,
-    arrival_date: dayjs(!!created_at ? created_at : undefined).format(
+    arrival_date: dayjs(!!arrival_date ? arrival_date : undefined).format(
       "YYYY-MM-DD"
     ),
     category_id: staffCategoryId,
@@ -97,6 +101,7 @@ const RequestsStaff = () => {
       ...(!!urgent && { urgent }),
     },
   });
+
   const sortData = () => {
     if (requests?.items && sortKey) {
       const sortedData = [...requests.items].sort((a, b) => {
@@ -122,7 +127,7 @@ const RequestsStaff = () => {
 
   const renderProductCount = useMemo(() => {
     return requests?.items.reduce(
-      (acc, item) => acc + (!isNaN(+item.product) ? Number(item.product) : 0),
+      (acc, item) => acc + (!isNaN(+item.size) ? Number(item.size) : 0),
       0
     );
   }, [requests]);
@@ -212,11 +217,9 @@ const RequestsStaff = () => {
                         {order?.fillial?.parentfillial?.name}
                       </span>
                     </td>
-                    <td>{order?.product}</td>
+                    <td>{order?.size}</td>
                     <td>{order?.bread_size}</td>
-                    <td>
-                      {dayjs(order?.arrival_date).format("DD.MM.YYYY HH:mm")}
-                    </td>
+                    <td>{dayjs(order?.arrival_date).format("DD.MM.YYYY")}</td>
                     <td>
                       {handleStatus({
                         status: order?.status,

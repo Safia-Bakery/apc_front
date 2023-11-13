@@ -20,7 +20,7 @@ import { permissionSelector } from "src/redux/reducers/auth";
 import dayjs from "dayjs";
 import { staffCategoryId } from "src/utils/helpers";
 
-const AddStaffOrder = () => {
+const AddStaffRequest = () => {
   const { mutate, isLoading } = requestMutation();
   const branchJson = useQueryString("branch");
   const sphere_status = Number(useQueryString("sphere_status"));
@@ -44,7 +44,7 @@ const AddStaffOrder = () => {
     mutate(
       {
         category_id: staffCategoryId,
-        product,
+        size: product,
         description,
         bread_size: bread,
         fillial_id: branch?.id,
@@ -129,4 +129,4 @@ const AddStaffOrder = () => {
   );
 };
 
-export default AddStaffOrder;
+export default AddStaffRequest;

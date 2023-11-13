@@ -10,23 +10,14 @@ import useQueryString from "src/hooks/useQueryString";
 import { MainPermissions } from "src/utils/types";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
-
-const timeConverter = (time: string) => {
-  const currentDate = new Date();
-  const combinedDateTimeString = `${
-    currentDate.toISOString().split("T")[0]
-  }T${time}`;
-  const combinedDateTime = new Date(combinedDateTimeString);
-  const formattedTime = combinedDateTime.toISOString().split("T")[1];
-  return formattedTime;
-};
+import Loading from "../Loader";
 
 const BotTimeModal = () => {
   const { mutate } = botWorkingTime();
   const modal = useQueryString("time_modal");
   const removeParams = useRemoveParams();
   const { register, getValues, handleSubmit, reset } = useForm();
-  const { data: work_time } = useBotWorkTime({ enabled: !!modal });
+  const { data: work_time, isLoading } = useBotWorkTime({ enabled: !!modal });
   const permission = useAppSelector(permissionSelector);
 
   useEffect(() => {
@@ -38,10 +29,11 @@ const BotTimeModal = () => {
 
   const onSubmit = () => {
     const { from_time, to_time } = getValues();
+
     mutate(
       {
-        from_time: timeConverter(from_time),
-        to_time: timeConverter(to_time),
+        from_time: from_time + ":00.000Z",
+        to_time: to_time + ":00.000Z",
       },
       {
         onSuccess: () => {
@@ -61,23 +53,27 @@ const BotTimeModal = () => {
             <span aria-hidden="true">&times;</span>
           </button>
         </Header>
-        <div className="p-4 d-flex gap-3">
-          <BaseInput>
-            <input
-              type="time"
-              className="form-control"
-              {...register("from_time")}
-            />
-          </BaseInput>
-          <BaseInput>
-            <input
-              type="time"
-              className="form-control"
-              {...register("to_time")}
-            />
-          </BaseInput>
-          <button className="btn btn-fill h-40 btn-primary">Сохранить</button>
-        </div>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <div className="p-4 d-flex gap-3">
+            <BaseInput>
+              <input
+                type="time"
+                className="form-control"
+                {...register("from_time")}
+              />
+            </BaseInput>
+            <BaseInput>
+              <input
+                type="time"
+                className="form-control"
+                {...register("to_time")}
+              />
+            </BaseInput>
+            <button className="btn btn-fill h-40 btn-primary">Сохранить</button>
+          </div>
+        )}
       </form>
     </Modal>
   );

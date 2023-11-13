@@ -23,7 +23,7 @@ import Suspend from "../Suspend";
 
 const ControlPanel = lazy(() => import("src/pages/ControlPanel"));
 const RequestsStaff = lazy(() => import("src/pages/RequestsStaff"));
-const AddStaffOrder = lazy(() => import("src/pages/AddStaffOrder"));
+const AddStaffOrder = lazy(() => import("src/pages/AddStaffRequest"));
 const LogysticsLogs = lazy(() => import("src/pages/LogysticsLogs"));
 const RequestsLogystics = lazy(() => import("src/pages/RequestsLogystics"));
 const CreateLogRequests = lazy(() => import("src/pages/CreateLogRequests"));
