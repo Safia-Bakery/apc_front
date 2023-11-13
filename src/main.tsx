@@ -8,8 +8,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import BaseAPIClient from "./api/axiosConfig.ts";
 import Loading from "./components/Loader/index.tsx";
 
-export const baseURL = "https://backend.service.safiabakery.uz";
-// export const baseURL = "https://193d-185-203-238-5.ngrok-free.app";
+export const baseURL = "https://api.service.safiabakery.uz";
+// export const baseURL = "http://10.0.3.204:8000";
 
 export default new BaseAPIClient(baseURL, store);
 

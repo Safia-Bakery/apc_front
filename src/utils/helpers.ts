@@ -215,4 +215,5 @@ export const getValue = (obj: any, key: string) => {
   return value;
 };
 
+// export const staffCategoryId = 36;
 export const staffCategoryId = 42;

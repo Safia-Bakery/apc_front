@@ -574,12 +574,12 @@ export const routes = [
   {
     element: <ShowLogRequests />,
     path: "/requests-staff/:id",
-    screen: MainPermissions.edit_log_requests,
+    screen: MainPermissions.edit_staff_requests,
   },
   {
     element: <AddStaffOrder />,
     path: "/requests-staff/add",
-    screen: MainPermissions.add_log_requests,
+    screen: MainPermissions.add_staff_requests,
   },
 ];
 

@@ -11,6 +11,7 @@ export const useOrders = ({
   department,
   sphere_status,
   is_bot,
+  arrival_date,
 }: {
   enabled?: boolean;
   size?: number;
@@ -20,9 +21,18 @@ export const useOrders = ({
   body?: RequestFilter;
   sphere_status?: number;
   is_bot?: boolean;
+  arrival_date: string;
 }) => {
   return useQuery({
-    queryKey: ["requests", page, sub_id, department, sphere_status, body],
+    queryKey: [
+      "requests",
+      page,
+      sub_id,
+      department,
+      sphere_status,
+      body,
+      arrival_date,
+    ],
     queryFn: () =>
       apiClient
         .get("/request", {
@@ -33,6 +43,7 @@ export const useOrders = ({
           department,
           sphere_status,
           is_bot,
+          arrival_date,
         })
         .then(({ data: response }) => (response as OrderType) || null),
     enabled,

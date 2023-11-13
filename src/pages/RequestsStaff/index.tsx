@@ -33,7 +33,7 @@ const column = [
   { name: "Дата поставки", key: "brigada" },
   { name: "Статус", key: "status" },
 ];
-
+const today = new Date();
 const RequestsStaff = () => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
@@ -71,21 +71,21 @@ const RequestsStaff = () => {
     enabled: true,
     department: Departments.staff,
     page: currentPage,
-
-    ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
-    ...(!!system && { is_bot: !!system }),
-    body: {
-      ...(!!created_at && {
-        created_at: dayjs(created_at).format("YYYY-MM-DD"),
-      }),
-      ...(!!id && { id }),
-      ...(!!department && { department }),
-      ...(!!branch?.id && { fillial_id: branch?.id }),
-      ...(!!category_id && { category_id }),
-      ...(!!request_status && { request_status }),
-      ...(!!user && { user: user }),
-      ...(!!urgent && { urgent }),
-    },
+    arrival_date: today.toISOString(),
+    // ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
+    // ...(!!system && { is_bot: !!system }),
+    // body: {
+    //   ...(!!created_at && {
+    //     created_at: dayjs(created_at).format("YYYY-MM-DD"),
+    //   }),
+    //   ...(!!id && { id }),
+    //   ...(!!department && { department }),
+    //   ...(!!branch?.id && { fillial_id: branch?.id }),
+    //   ...(!!category_id && { category_id }),
+    //   ...(!!request_status && { request_status }),
+    //   ...(!!user && { user: user }),
+    //   ...(!!urgent && { urgent }),
+    // },
   });
   const sortData = () => {
     if (requests?.items && sortKey) {
@@ -111,12 +111,16 @@ const RequestsStaff = () => {
   }, [currentPage, sphere_status]);
 
   const renderProductCount = useMemo(() => {
-    return requests?.items.reduce((acc, item) => acc + Number(item.product), 0);
+    return requests?.items.reduce(
+      (acc, item) => acc + (!isNaN(+item.product) ? Number(item.product) : 0),
+      0
+    );
   }, [requests]);
 
   const renderBreadCount = useMemo(() => {
     return requests?.items.reduce(
-      (acc, item) => acc + Number(item.bread_size),
+      (acc, item) =>
+        acc + (!isNaN(+item.bread_size!) ? Number(item.bread_size) : 0),
       0
     );
   }, [requests]);
@@ -186,44 +190,22 @@ const RequestsStaff = () => {
                         <span className={styles.link}>{order?.id}</span>
                       )}
                     </td>
-                    {Number(sphere_status) === Sphere.fabric && (
-                      <td>{order?.is_bot ? "Телеграм-бот" : "Веб-сайт"}</td>
-                    )}
                     <td>{order?.user?.full_name}</td>
                     <td>
                       <span className={"not-set"}>
                         {order?.fillial?.parentfillial?.name}
-                        {/* {order?.fillial?.name} */}
                       </span>
                     </td>
-                    <td
-                      className={cl({
-                        ["font-weight-bold"]: order?.category?.urgent,
-                      })}
-                    >
-                      {order?.category?.name}
-                    </td>
+                    <td>{order?.product}</td>
+                    <td>{order?.bread_size}</td>
                     <td>
-                      {!order?.category?.urgent ? "Несрочный" : "Срочный"}
-                    </td>
-                    <td>
-                      {!!order?.brigada?.name
-                        ? order?.brigada?.name
-                        : "Не задано"}
-                    </td>
-                    <td>
-                      {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
+                      {dayjs(order?.arrival_date).format("DD.MM.YYYY HH:mm")}
                     </td>
                     <td>
                       {handleStatus({
                         status: order?.status,
                         dep: Departments.apc,
                       })}
-                    </td>
-                    <td>
-                      {!!order?.user_manager
-                        ? order?.user_manager
-                        : "Не задано"}
                     </td>
                   </tr>
                 )
