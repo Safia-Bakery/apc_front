@@ -72,19 +72,24 @@ const RemainsInStock = () => {
   return (
     <Card>
       <Header title={"Остатки на складах"}>
-        <button onClick={handleSync} className="btn btn-primary btn-fill mr-2">
-          <img
-            src="/assets/icons/sync.svg"
-            height={20}
-            width={20}
-            alt="sync"
-            className="mr-2"
-          />
-          Синхронизировать с iiko
-        </button>
-        <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
-        </button>
+        <div className="flex">
+          <button
+            onClick={handleSync}
+            className="btn btn-primary btn-fill mr-2 !flex"
+          >
+            <img
+              src="/assets/icons/sync.svg"
+              height={20}
+              width={20}
+              alt="sync"
+              className="mr-2"
+            />
+            Синхронизировать с iiko
+          </button>
+          <button className="btn btn-primary btn-fill " onClick={goBack}>
+            Назад
+          </button>
+        </div>
       </Header>
 
       <div className="table-responsive grid-view content">

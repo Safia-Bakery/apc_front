@@ -17,7 +17,6 @@ import TableHead from "src/components/TableHead";
 import ItemsCount from "src/components/ItemsCount";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
-import styles from "./index.module.scss";
 import useQueryString from "src/hooks/useQueryString";
 import TableLoading from "src/components/TableLoading";
 import BotTimeModal from "src/components/BotTimeModal";
@@ -146,11 +145,13 @@ const RequestsStaff = () => {
         <div className="flex gap-2">
           <div className="p-2 btn btn-warning flex flex-col justify-between">
             <h4>Количество еды</h4>
-            <h2 className={styles.count}>{renderProductCount}</h2>
+            <h2 className={"flex text-3xl justify-end"}>
+              {renderProductCount}
+            </h2>
           </div>
           <div className="p-2 btn btn-primary flex flex-col justify-between">
             <h4>Количество хлеба</h4>
-            <h2 className={styles.count}>{renderBreadCount}</h2>
+            <h2 className={"flex text-3xl justify-end"}>{renderBreadCount}</h2>
           </div>
           <div className="flex flex-col gap-2 justify-between">
             <button
@@ -208,7 +209,7 @@ const RequestsStaff = () => {
                           {order?.id}
                         </Link>
                       ) : (
-                        <span className={styles.link}>{order?.id}</span>
+                        <span className={"text-link"}>{order?.id}</span>
                       )}
                     </td>
                     <td>{order?.user?.full_name}</td>

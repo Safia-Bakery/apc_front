@@ -2,7 +2,6 @@ import { useEffect, useMemo } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import styles from "./index.module.scss";
 import useOrder from "src/hooks/useOrder";
 import dayjs from "dayjs";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
@@ -188,7 +187,9 @@ const ShowLogRequests = () => {
                         if (item.status === 0)
                           return (
                             <div
-                              className={cl(styles.imgUrl, "text-truncate")}
+                              className={cl(
+                                "text-link cursor-pointer max-w-[150px] w-full text-truncate"
+                              )}
                               onClick={handleShowPhoto(
                                 `${baseURL}/${item.url}`
                               )}

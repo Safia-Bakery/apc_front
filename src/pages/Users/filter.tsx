@@ -43,17 +43,23 @@ const UsersFilter: FC<Props> = () => {
     <>
       <td></td>
       <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput onChange={(e) => $full_name(e.target.value)} />
+        <BaseInput className="!m-1">
+          <MainInput
+            className="!m-0"
+            onChange={(e) => $full_name(e.target.value)}
+          />
         </BaseInput>
       </td>
       <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput onChange={(e) => $username(e.target.value)} />
+        <BaseInput className="!m-1">
+          <MainInput
+            className="!m-0"
+            onChange={(e) => $username(e.target.value)}
+          />
         </BaseInput>
       </td>
       <td className="p-0">
-        <BaseInputs className="mb-0">
+        <BaseInputs className="!m-1">
           <MainSelect
             values={roles}
             onFocus={() => rolesRefetch()}
@@ -63,12 +69,15 @@ const UsersFilter: FC<Props> = () => {
         </BaseInputs>
       </td>
       <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput onChange={(e) => $phone_number(e.target.value)} />
+        <BaseInput className="!m-1">
+          <MainInput
+            className="!m-0"
+            onChange={(e) => $phone_number(e.target.value)}
+          />
         </BaseInput>
       </td>
       <td className="p-0">
-        <BaseInputs className="mb-0">
+        <BaseInputs className="!m-1">
           <MainSelect
             values={StatusName}
             value={user_status?.toString()}

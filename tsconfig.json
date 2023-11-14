@@ -24,7 +24,6 @@
       "assets/*": ["./src/assets/*"],
       "src/components/*": ["./src/components/*"]
     },
-    "types": ["cypress"],
     "outDir": "./dist",
 
     /* Linting */

@@ -13,12 +13,10 @@ import {
   requestRows,
 } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
-import RequestsFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import cl from "classnames";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
-import styles from "./index.module.scss";
 import useQueryString from "src/hooks/useQueryString";
 import TableLoading from "src/components/TableLoading";
 import LogFilter from "./filter";
@@ -159,7 +157,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
                           {order?.id}
                         </Link>
                       ) : (
-                        <span className={styles.link}>{order?.id}</span>
+                        <span className={"text-link"}>{order?.id}</span>
                       )}
                     </td>
 

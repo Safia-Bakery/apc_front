@@ -1,5 +1,4 @@
 import { RequestMarkStatusArr } from "src/utils/helpers";
-import styles from "./index.module.scss";
 import { FC, useState } from "react";
 import useDebounce from "src/hooks/useDebounce";
 import "react-datepicker/dist/react-datepicker.css";
@@ -69,22 +68,32 @@ const InventoryFilter: FC<Props> = ({ sub_id }) => {
     <>
       <td></td>
       <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput type="number" onChange={(e) => handleID(e.target.value)} />
+        <BaseInput className="!m-1">
+          <MainInput
+            className="!mb-0"
+            type="number"
+            onChange={(e) => handleID(e.target.value)}
+          />
         </BaseInput>
       </td>
       <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput onChange={(e) => handleName(e.target.value)} />
+        <BaseInput className="!m-1">
+          <MainInput
+            className="!mb-0"
+            onChange={(e) => handleName(e.target.value)}
+          />
         </BaseInput>
       </td>
       <td className="p-0">
-        <BaseInputs className="m-2">
-          <MainInput onChange={(e) => handlePhone(e.target.value)} />
+        <BaseInputs className="!m-1">
+          <MainInput
+            className="!mb-0"
+            onChange={(e) => handlePhone(e.target.value)}
+          />
         </BaseInputs>
       </td>
       <td className="p-0">
-        <BaseInputs className="m-2">
+        <BaseInputs className="!m-1">
           <MainSelect
             onFocus={() => categoryRefetch()}
             values={categories?.items || []}
@@ -96,7 +105,7 @@ const InventoryFilter: FC<Props> = ({ sub_id }) => {
       <td width={150} className="p-0 relative">
         <div
           onClick={() => $enabled(true)}
-          className={cl("absolute w-full", styles.fillial)}
+          className={"absolute top-1 left-1 right-1"}
         >
           {perm?.[MainPermissions.get_fillials_list] && (
             <BranchSelect enabled={enabled} />
@@ -111,10 +120,12 @@ const InventoryFilter: FC<Props> = ({ sub_id }) => {
               : undefined
           }
           onChange={finishRange}
+          dateFormat="d.MM.yyyy"
+          wrapperClassName={"m-1"}
         />
       </td>
       <td className="p-0">
-        <BaseInputs className="m-2">
+        <BaseInputs className="!m-1">
           <MainSelect
             values={RequestMarkStatusArr}
             value={request_status?.toString()}
@@ -123,8 +134,11 @@ const InventoryFilter: FC<Props> = ({ sub_id }) => {
         </BaseInputs>
       </td>
       <td className="p-0">
-        <BaseInputs className="m-2">
-          <MainInput onChange={(e) => navigate({ changed: e.target.value })} />
+        <BaseInputs className="!m-1">
+          <MainInput
+            className="!mb-0"
+            onChange={(e) => navigate({ changed: e.target.value })}
+          />
         </BaseInputs>
       </td>
     </>

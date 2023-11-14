@@ -1,5 +1,4 @@
 import { FC } from "react";
-import styles from "./index.module.scss";
 
 interface Props {
   onClick: () => void;
@@ -8,7 +7,11 @@ interface Props {
 const TableViewBtn: FC<Props> = ({ onClick }) => {
   return (
     <div onClick={onClick} id="edit_item">
-      <img className={styles.viewImg} src="/assets/icons/edit.svg" alt="edit" />
+      <img
+        className={"h-4 w-4 cursor-pointer"}
+        src="/assets/icons/edit.svg"
+        alt="edit"
+      />
     </div>
   );
 };

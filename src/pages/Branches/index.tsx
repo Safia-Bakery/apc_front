@@ -92,30 +92,32 @@ const Branches = () => {
   return (
     <Card>
       <Header title={"Филиалы"}>
-        {iikoBtn && (
-          <button
-            onClick={handleSync}
-            className="btn btn-primary btn-fill mr-2"
-          >
-            <img
-              src="/assets/icons/sync.svg"
-              height={20}
-              width={20}
-              alt="sync"
-              className="mr-2"
-            />
-            Синхронизировать с iiko
-          </button>
-        )}
-        {permisisons?.[MainPermissions.add_fillials] && (
-          <button
-            className="btn btn-success btn-fill"
-            onClick={handleNavigate("add")}
-            id="add_branch"
-          >
-            Добавить
-          </button>
-        )}
+        <div className="flex">
+          {iikoBtn && (
+            <button
+              onClick={handleSync}
+              className="btn btn-primary btn-fill mr-2 !flex"
+            >
+              <img
+                src="/assets/icons/sync.svg"
+                height={20}
+                width={20}
+                alt="sync"
+                className="mr-2"
+              />
+              Синхронизировать с iiko
+            </button>
+          )}
+          {permisisons?.[MainPermissions.add_fillials] && (
+            <button
+              className="btn btn-success btn-fill"
+              onClick={handleNavigate("add")}
+              id="add_branch"
+            >
+              Добавить
+            </button>
+          )}
+        </div>
       </Header>
 
       <div className="table-responsive grid-view content">

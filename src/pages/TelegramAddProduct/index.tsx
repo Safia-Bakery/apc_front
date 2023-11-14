@@ -208,7 +208,7 @@ const TelegramAddProduct = () => {
                 <tr>
                   {column.map(({ name }) => {
                     return (
-                      <th className={styles.tableHead} key={name}>
+                      <th className={"bg-primary text-white"} key={name}>
                         {name}
                       </th>
                     );
@@ -242,7 +242,7 @@ const TelegramAddProduct = () => {
           <Header title={"Добавить фотоотчёт"} />
           <div className="m-3">
             <UploadComponent
-              tableHead={styles.tableHead}
+              tableHead={"bg-primary text-white"}
               onFilesSelected={handleFilesSelected}
               inputRef={inputRef}
             />

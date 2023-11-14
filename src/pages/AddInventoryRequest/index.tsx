@@ -145,7 +145,7 @@ const AddInventoryRequest = () => {
         </table>
         <button
           type="button"
-          className={cl("btn btn-primary m-2 btn-fill", styles.btn)}
+          className={cl("btn btn-primary m-2 btn-fill right-5 relative")}
           onClick={addInputFields}
         >
           Добавить

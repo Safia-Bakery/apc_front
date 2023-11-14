@@ -41,14 +41,15 @@ const StockFilter = () => {
     <>
       <td></td>
       <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput onChange={(e) => $name(e.target.value)} />
+        <BaseInput className="!m-1">
+          <MainInput className="!m-0" onChange={(e) => $name(e.target.value)} />
         </BaseInput>
       </td>
 
       <td className="p-0">
         <MainDatePicker
-          wrapperClassName="w-full pr-3"
+          wrapperClassName={"m-1"}
+          dateFormat="d.MM.yyyy"
           selected={
             !!syncDate && syncDate !== "undefined"
               ? dayjs(syncDate).toDate()
@@ -58,13 +59,19 @@ const StockFilter = () => {
         />
       </td>
       <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput onChange={(e) => $count(e.target.value)} />
+        <BaseInput className="!m-1">
+          <MainInput
+            className="!m-0"
+            onChange={(e) => $count(e.target.value)}
+          />
         </BaseInput>
       </td>
       <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput onChange={(e) => $price(e.target.value)} />
+        <BaseInput className="!m-1">
+          <MainInput
+            className="!m-0"
+            onChange={(e) => $price(e.target.value)}
+          />
         </BaseInput>
       </td>
     </>

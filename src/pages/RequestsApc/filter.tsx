@@ -9,7 +9,6 @@ import MainInput from "src/components/BaseInputs/MainInput";
 import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
 import BranchSelect from "src/components/BranchSelect";
 import useQueryString from "src/hooks/useQueryString";
-import styles from "./index.module.scss";
 import cl from "classnames";
 import { Departments, MainPermissions, Sphere } from "src/utils/types";
 import dayjs from "dayjs";
@@ -82,9 +81,10 @@ const ApcFilter: FC = () => {
     <>
       <td></td>
       <td className="p-0">
-        <BaseInput className="m-2">
+        <BaseInput className="!m-1">
           <MainInput
             register={register("idQ")}
+            className="!mb-0"
             type="number"
             onChange={handleID}
           />
@@ -92,7 +92,7 @@ const ApcFilter: FC = () => {
       </td>
       {sphere_status === Sphere.fabric && (
         <td className="p-0">
-          <BaseInput className="m-2">
+          <BaseInput className="!m-1">
             <MainSelect
               value={system?.toString()}
               values={SystemArr}
@@ -102,14 +102,18 @@ const ApcFilter: FC = () => {
         </td>
       )}
       <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput register={register("userName")} onChange={handleName} />
+        <BaseInput className="!m-1">
+          <MainInput
+            register={register("userName")}
+            className="!mb-0"
+            onChange={handleName}
+          />
         </BaseInput>
       </td>
       <td width={150} className="p-0 relative">
         <div
           onClick={() => $enabled(true)}
-          className={cl("absolute w-full ", styles.fillial)}
+          className={"absolute top-1 left-1 right-1"}
         >
           {perm?.[MainPermissions.get_fillials_list] && (
             <BranchSelect enabled={enabled} />
@@ -117,7 +121,7 @@ const ApcFilter: FC = () => {
         </div>
       </td>
       <td className="p-0">
-        <BaseInputs className="m-2">
+        <BaseInputs className="!m-1">
           <MainSelect
             values={categories?.items}
             onFocus={() => catRefetch()}
@@ -127,17 +131,21 @@ const ApcFilter: FC = () => {
         </BaseInputs>
       </td>
       <td className="p-0">
-        <BaseInputs className="m-2">
+        <BaseInputs className="!m-1">
           <MainSelect
             values={UrgentNames}
+            className="!mb-0"
             value={urgent?.toString()}
             onChange={handleUrgent}
           />
         </BaseInputs>
       </td>
       <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput onChange={(e) => navigate({ user: e.target.value })} />
+        <BaseInput className="!m-1">
+          <MainInput
+            className="!mb-0"
+            onChange={(e) => navigate({ user: e.target.value })}
+          />
         </BaseInput>
       </td>
       <td className="p-0">
@@ -148,12 +156,13 @@ const ApcFilter: FC = () => {
               : undefined
           }
           onChange={startRange}
-          className="mt-1"
+          dateFormat="d.MM.yyyy"
+          wrapperClassName={"m-1"}
         />
       </td>
 
       <td className="p-0">
-        <BaseInputs className="m-2">
+        <BaseInputs className="!m-1">
           <MainSelect
             values={RequestStatusArr}
             value={request_status?.toString()}
@@ -162,8 +171,11 @@ const ApcFilter: FC = () => {
         </BaseInputs>
       </td>
       <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput onChange={(e) => navigate({ user: e.target.value })} />
+        <BaseInput className="!m-1">
+          <MainInput
+            className="!mb-0"
+            onChange={(e) => navigate({ user: e.target.value })}
+          />
         </BaseInput>
       </td>
     </>

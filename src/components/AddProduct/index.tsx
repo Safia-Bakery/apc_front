@@ -1,7 +1,7 @@
 import { FC, PropsWithChildren } from "react";
 import Card from "../Card";
 import Header from "../Header";
-import styles from "./index.module.scss";
+
 import { useParams } from "react-router-dom";
 
 import AddProductModal from "../AddProductModal";
@@ -104,7 +104,7 @@ const AddProduct: FC<Props> = ({ children, synciiko }) => {
               <tr>
                 {column.map(({ name }) => {
                   return (
-                    <th className={styles.tableHead} key={name}>
+                    <th className={"bg-primary text-white"} key={name}>
                       {name}
                     </th>
                   );

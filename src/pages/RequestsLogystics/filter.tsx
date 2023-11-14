@@ -9,7 +9,6 @@ import MainInput from "src/components/BaseInputs/MainInput";
 import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
 import BranchSelect from "src/components/BranchSelect";
 import useQueryString from "src/hooks/useQueryString";
-import styles from "./index.module.scss";
 import cl from "classnames";
 import { Departments, MainPermissions } from "src/utils/types";
 import dayjs from "dayjs";
@@ -79,8 +78,9 @@ const LogFilter: FC = () => {
     <>
       <td></td>
       <td className="p-0">
-        <BaseInput className="m-2">
+        <BaseInput className="!m-1">
           <MainInput
+            className="!mb-0"
             register={register("idQ")}
             type="number"
             onChange={handleID}
@@ -89,7 +89,7 @@ const LogFilter: FC = () => {
       </td>
       {/* {sphere_status === Sphere.fabric && (
         <td className="p-0">
-          <BaseInput className="m-2">
+          <BaseInput className="!m-1">
             <MainSelect
               value={system?.toString()}
               values={SystemArr}
@@ -99,14 +99,18 @@ const LogFilter: FC = () => {
         </td>
       )} */}
       <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput register={register("userName")} onChange={handleName} />
+        <BaseInput className="!m-1">
+          <MainInput
+            className="!mb-0"
+            register={register("userName")}
+            onChange={handleName}
+          />
         </BaseInput>
       </td>
       <td width={150} className="p-0 relative">
         <div
           onClick={() => $enabled(true)}
-          className={cl("absolute w-full ", styles.fillial)}
+          className={"absolute top-1 left-1 right-1"}
         >
           {perm?.[MainPermissions.get_fillials_list] && (
             <BranchSelect enabled={enabled} />
@@ -114,7 +118,7 @@ const LogFilter: FC = () => {
         </div>
       </td>
       <td className="p-0">
-        <BaseInputs className="m-2">
+        <BaseInputs className="!m-1">
           <MainSelect
             values={categories?.items}
             onFocus={() => catRefetch()}
@@ -124,7 +128,7 @@ const LogFilter: FC = () => {
         </BaseInputs>
       </td>
       <td className="p-0">
-        <BaseInputs className="m-2">
+        <BaseInputs className="!m-1">
           <MainSelect
             values={UrgentNames}
             value={urgent?.toString()}
@@ -133,8 +137,11 @@ const LogFilter: FC = () => {
         </BaseInputs>
       </td>
       <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput onChange={(e) => navigate({ user: e.target.value })} />
+        <BaseInput className="!m-1">
+          <MainInput
+            className="!mb-0"
+            onChange={(e) => navigate({ user: e.target.value })}
+          />
         </BaseInput>
       </td>
       <td className="p-0">
@@ -145,11 +152,13 @@ const LogFilter: FC = () => {
               : undefined
           }
           onChange={startRange}
+          wrapperClassName={"m-1"}
+          dateFormat="d.MM.yyyy"
         />
       </td>
 
       <td className="p-0">
-        <BaseInputs className="m-2">
+        <BaseInputs className="!m-1">
           <MainSelect
             values={RequestLogStatusArr}
             value={request_status?.toString()}
@@ -158,8 +167,11 @@ const LogFilter: FC = () => {
         </BaseInputs>
       </td>
       <td className="p-0">
-        <BaseInput className="m-2">
-          <MainInput onChange={(e) => navigate({ user: e.target.value })} />
+        <BaseInput className="!m-1">
+          <MainInput
+            className="!mb-0"
+            onChange={(e) => navigate({ user: e.target.value })}
+          />
         </BaseInput>
       </td>
     </>

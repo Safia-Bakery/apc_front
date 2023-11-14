@@ -3,7 +3,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AddProduct from "src/components/AddProduct";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import styles from "./index.module.scss";
 import useOrder from "src/hooks/useOrder";
 import dayjs from "dayjs";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
@@ -365,7 +364,9 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
                         if (item.status === 0)
                           return (
                             <div
-                              className={cl(styles.imgUrl, "text-truncate")}
+                              className={cl(
+                                "text-link cursor-pointer max-w-[150px] w-full text-truncate"
+                              )}
                               onClick={handleShowPhoto(
                                 `${baseURL}/${item.url}`
                               )}
@@ -384,7 +385,9 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
                         if (item.status === 1)
                           return (
                             <div
-                              className={cl(styles.imgUrl, "text-truncate")}
+                              className={cl(
+                                "text-link cursor-pointer max-w-[150px] w-full text-truncate"
+                              )}
                               onClick={handleShowPhoto(
                                 `${baseURL}/${item.url}`
                               )}

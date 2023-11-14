@@ -1,7 +1,6 @@
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
-import styles from "./index.module.scss";
 import useOrder from "src/hooks/useOrder";
 import dayjs from "dayjs";
 
@@ -32,7 +31,7 @@ const Logs = () => {
           <thead>
             <tr>
               {column.map(({ name }) => (
-                <th className={styles.tableHead} key={name}>
+                <th className={"bg-primary  text-white"} key={name}>
                   {name}
                 </th>
               ))}

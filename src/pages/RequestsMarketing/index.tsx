@@ -12,7 +12,6 @@ import InventoryFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
-import styles from "./index.module.scss";
 import useQueryString from "src/hooks/useQueryString";
 import TableLoading from "src/components/TableLoading";
 
@@ -154,7 +153,7 @@ const RequestsMarketing = () => {
                           {order?.id}
                         </Link>
                       ) : (
-                        <span className={styles.link}>{order?.id}</span>
+                        <span className={"text-link"}>{order?.id}</span>
                       )}
                     </td>
                     <td>
