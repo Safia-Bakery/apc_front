@@ -106,10 +106,10 @@ const ApcFilter: FC = () => {
           <MainInput register={register("userName")} onChange={handleName} />
         </BaseInput>
       </td>
-      <td width={150} className="p-0 position-relative">
+      <td width={150} className="p-0 relative">
         <div
           onClick={() => $enabled(true)}
-          className={cl("position-absolute w-100 ", styles.fillial)}
+          className={cl("absolute w-full ", styles.fillial)}
         >
           {perm?.[MainPermissions.get_fillials_list] && (
             <BranchSelect enabled={enabled} />

@@ -97,7 +97,7 @@ const ToolsSelect: React.FC = () => {
     <>
       {focused && <div className={styles.overlay} onClick={onClose} />}
       <div className={styles.drop}>
-        <BaseInput className="mb-0 position-relative">
+        <BaseInput className="mb-0 relative">
           {focused && (
             <img
               onClick={close}
@@ -123,7 +123,7 @@ const ToolsSelect: React.FC = () => {
                     key={item.id}
                     ref={lastBookElementRef}
                     onClick={() => handleProduct(item)}
-                    className={cl("list-group-item position-relative pointer")}
+                    className={cl("list-group-item relative pointer")}
                   >
                     {item.name}
                   </li>
@@ -135,7 +135,7 @@ const ToolsSelect: React.FC = () => {
                     onClick={() =>
                       handleProduct({ id: item.id, name: item.name })
                     }
-                    className={cl("list-group-item position-relative pointer")}
+                    className={cl("list-group-item relative pointer")}
                   >
                     {item.name}
                   </li>

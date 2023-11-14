@@ -29,7 +29,7 @@ const SelectBranches: FC<NestedListItemsProps> = ({
                   ? handleItemClick(item.id)
                   : handleProduct(item)
               }
-              className={cl("list-group-item position-relative pointer")}
+              className={cl("list-group-item relative pointer")}
             >
               {item.name}
               {!!item.fillial_department?.length && (

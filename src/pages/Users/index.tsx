@@ -159,8 +159,8 @@ const Users: FC<Props> = ({ add, edit }) => {
         </table>
         {!!users && <Pagination totalPages={users.pages} />}
         {!users?.items?.length && !orderLoading && (
-          <div className="w-100">
-            <p className="text-center w-100">Спосок пуст</p>
+          <div className="w-full">
+            <p className="text-center w-full">Спосок пуст</p>
           </div>
         )}
       </div>

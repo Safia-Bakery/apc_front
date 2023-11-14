@@ -154,9 +154,9 @@ const TelegramAddProduct = () => {
 
       <div className={styles.block}>
         <div className={styles.modalBody}>
-          <div className="d-flex justify-content-end">
+          <div className="flex justify-content-end">
             <button
-              className="btn btn-primary z-3 position-relative"
+              className="btn btn-primary z-3 relative"
               onClick={() => syncWithIiko()}
             >
               {isFetching ? (
@@ -173,7 +173,7 @@ const TelegramAddProduct = () => {
           </BaseInput>
 
           {/* <BaseInput label="Количество"> */}
-          <div className="d-flex gap-2 my-4">
+          <div className="flex gap-2 my-4">
             <span className={styles.label}>Количество</span>
             <button
               type="button"
@@ -223,7 +223,7 @@ const TelegramAddProduct = () => {
                     <td>x{item?.amount}</td>
                     <td width={50}>
                       <div
-                        className="d-flex justify-content-center pointer"
+                        className="flex justify-content-center pointer"
                         onClick={handleDelete(item.id)}
                       >
                         <img src="/assets/icons/delete.svg" alt="delete" />
@@ -265,7 +265,7 @@ const TelegramAddProduct = () => {
           <button
             type="button"
             onClick={handleFinishOrder({ status: RequestStatus.done })}
-            className="btn btn-success btn-fill w-100"
+            className="btn btn-success btn-fill w-full"
           >
             Починил
           </button>

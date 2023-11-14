@@ -293,21 +293,17 @@ const CustomSidebar = () => {
           [styles.collapsed]: collapsed,
         })}
       >
-        <div className="d-flex flex-column justify-content-between position-relative z-3">
+        <div className="flex flex-col justify-between relative z-3">
           <div className={styles.logo}>
             <h3 className={styles.title}>Service</h3>
             <p className={styles.subTitle}>АРС / Inventory / IT / Marketing</p>
           </div>
-          <ul className="nav flex-column d-flex">
+          <ul className="nav flex-col flex">
             <li className={cl("nav-item")}>
               <Link
-                className={cl(
-                  "nav-link d-flex align-items-center",
-                  styles.link,
-                  {
-                    [styles.active]: pathname === "/home",
-                  }
-                )}
+                className={cl("nav-link flex align-center", styles.link, {
+                  [styles.active]: pathname === "/home",
+                })}
                 onClick={() => isMobile && dispatch(sidebarHandler(false))}
                 to={"/home"}
               >
@@ -334,7 +330,7 @@ const CustomSidebar = () => {
                   return (
                     <li className="nav-item" key={route.url + route.name}>
                       <a
-                        className={cl("nav-link d-flex", styles.link, {
+                        className={cl("nav-link flex", styles.link, {
                           ["show"]: activeRoute,
                         })}
                         onClick={() => toggleSubItems(route.screen)}
@@ -365,7 +361,7 @@ const CustomSidebar = () => {
                         })}
                         id="subItems"
                       >
-                        <ul className={cl("nav flex-column", styles.submenu)}>
+                        <ul className={cl("nav flex-col", styles.submenu)}>
                           {route?.subroutes?.map((subroute) => {
                             if (permission?.[subroute?.screen])
                               return (
@@ -375,7 +371,7 @@ const CustomSidebar = () => {
                                 >
                                   <Link
                                     className={cl(
-                                      "nav-link d-flex align-items-center",
+                                      "nav-link flex align-center",
                                       styles.link,
                                       {
                                         [styles.active]: pathname.includes(
@@ -414,13 +410,9 @@ const CustomSidebar = () => {
                 return (
                   <li className={cl("nav-item")} key={route.url + route.name}>
                     <Link
-                      className={cl(
-                        "nav-link d-flex align-items-center",
-                        styles.link,
-                        {
-                          [styles.active]: pathname.includes(route.url!),
-                        }
-                      )}
+                      className={cl("nav-link flex align-center", styles.link, {
+                        [styles.active]: pathname.includes(route.url!),
+                      })}
                       onClick={() =>
                         isMobile && dispatch(sidebarHandler(false))
                       }

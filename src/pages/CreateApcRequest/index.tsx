@@ -114,7 +114,7 @@ const CreateApcRequest = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <BaseInputs
-          className="position-relative"
+          className="relative"
           label="ФИЛИАЛ"
           error={errors.fillial_id}
         >

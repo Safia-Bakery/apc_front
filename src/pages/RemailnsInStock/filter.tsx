@@ -48,7 +48,7 @@ const StockFilter = () => {
 
       <td className="p-0">
         <MainDatePicker
-          wrapperClassName="w-100 pr-3"
+          wrapperClassName="w-full pr-3"
           selected={
             !!syncDate && syncDate !== "undefined"
               ? dayjs(syncDate).toDate()

@@ -129,7 +129,7 @@ const CreateITRequest = () => {
         >
           <UploadComponent onFilesSelected={handleFilesSelected} />
         </BaseInputs>
-        <div className="form-group d-flex align-items-center form-control">
+        <div className="form-group flex align-center form-control">
           <label className="mb-0 mr-2">Срочно</label>
           <input type="checkbox" {...register("urgent")} />
         </div>

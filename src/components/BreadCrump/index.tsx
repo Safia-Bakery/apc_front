@@ -80,7 +80,7 @@ const Breadcrumbs: FC = () => {
           >
             <img
               width={22}
-              className="d-flex"
+              className="flex"
               height={22}
               src="/assets/icons/burger.svg"
               alt="burger"

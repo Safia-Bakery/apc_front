@@ -94,7 +94,7 @@ const AddProductModal = () => {
         </Header>
         <div className={styles.block}>
           <button
-            className="btn btn-primary float-end mr-3 z-3 position-relative"
+            className="btn btn-primary float-end mr-3 z-3 relative"
             onClick={() => syncWithIiko()}
           >
             {isFetching ? (
@@ -106,7 +106,7 @@ const AddProductModal = () => {
             )}
           </button>
           <div className={styles.modalBody}>
-            <div className="form-group field-apcitems-product_id position-relative">
+            <div className="form-group field-apcitems-product_id relative">
               <label className="control-label">Товар</label>
               <div
                 className="form-control"

@@ -83,8 +83,8 @@ const BranchStat: FC<Props> = ({ sphere_status }) => {
       </table>
 
       {!data?.length && !isLoading && (
-        <div className="w-100">
-          <p className="text-center w-100 ">Спосок пуст</p>
+        <div className="w-full">
+          <p className="text-center w-full ">Спосок пуст</p>
         </div>
       )}
       <button id={"branch_stat"} className="d-none" onClick={downloadAsPdf}>

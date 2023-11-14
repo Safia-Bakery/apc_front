@@ -190,7 +190,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
   const renderSubmit = useMemo(() => {
     if (!!order?.brigada?.name && permissions?.[edit])
       return (
-        <div className="d-flex justify-content-between mb10">
+        <div className="flex justify-between mb10">
           {order?.status! < 3 && (
             <button
               onClick={handleModal(ModalTypes.cancelRequest)}
@@ -360,7 +360,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
                   </tr>
                   <tr>
                     <th>file</th>
-                    <td className="d-flex flex-column">
+                    <td className="flex flex-col">
                       {order?.file?.map((item, index) => {
                         if (item.status === 0)
                           return (
@@ -379,7 +379,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
                   </tr>
                   <tr>
                     <th id="photo_report">Фотоотчёт</th>
-                    <td className="d-flex flex-column">
+                    <td className="flex flex-col">
                       {order?.file?.map((item, index) => {
                         if (item.status === 1)
                           return (

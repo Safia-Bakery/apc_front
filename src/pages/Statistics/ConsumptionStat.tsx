@@ -90,8 +90,8 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
       </table>
 
       {!data?.tests?.length && !isLoading && (
-        <div className="w-100">
-          <p className="text-center w-100 ">Спосок пуст</p>
+        <div className="w-full">
+          <p className="text-center w-full ">Спосок пуст</p>
         </div>
       )}
       <button

@@ -61,7 +61,7 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
   };
   return (
     <>
-      <table className="table table-bordered w-100 border-dark" ref={tableRef}>
+      <table className="table table-bordered w-full border-dark" ref={tableRef}>
         <thead>
           <tr>
             {column.map(({ name, key }) => (
@@ -89,7 +89,7 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
 
                 <td className="border-dark">{mainKey}</td>
                 <td className="p-0 border-dark">
-                  <div className="d-flex flex-column">
+                  <div className="flex flex-col">
                     {data?.[mainKey]?.map((categ, idx) => (
                       <span
                         key={idx}
@@ -105,7 +105,7 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
                 </td>
 
                 <td className="p-0 border-dark">
-                  <div className="d-flex flex-column border-dark">
+                  <div className="flex flex-col border-dark">
                     {data[mainKey]?.map((qnt, idx) => (
                       <span
                         key={idx}
@@ -121,7 +121,7 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
                 </td>
 
                 <td className="p-0 border-dark">
-                  <div className="d-flex flex-column">
+                  <div className="flex flex-col">
                     {data[mainKey]?.map((timer, idx) => (
                       <span
                         key={idx}
@@ -148,8 +148,8 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
         height={400}
       /> */}
       {!data && !isLoading && (
-        <div className="w-100">
-          <p className="text-center w-100 ">Спосок пуст</p>
+        <div className="w-full">
+          <p className="text-center w-full ">Спосок пуст</p>
         </div>
       )}
       <button

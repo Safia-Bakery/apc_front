@@ -91,7 +91,7 @@ const WarehouseSelect: FC = () => {
     <>
       {focused && <div className={styles.overlay} onClick={onClose} />}
       <div className={styles.drop}>
-        <BaseInput className="mb-0 position-relative">
+        <BaseInput className="mb-0 relative">
           {focused && (
             <img
               onClick={close}
@@ -119,7 +119,7 @@ const WarehouseSelect: FC = () => {
                     onClick={() =>
                       handleProduct({ id: item.id, name: item.name })
                     }
-                    className={cl("list-group-item position-relative pointer")}
+                    className={cl("list-group-item relative pointer")}
                   >
                     {item.name}
                   </li>
@@ -131,7 +131,7 @@ const WarehouseSelect: FC = () => {
                     onClick={() =>
                       handleProduct({ id: item.id, name: item.name })
                     }
-                    className={cl("list-group-item position-relative pointer")}
+                    className={cl("list-group-item relative pointer")}
                   >
                     {item.name}
                   </li>

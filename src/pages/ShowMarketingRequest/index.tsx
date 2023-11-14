@@ -195,7 +195,7 @@ const ShowMarketingRequest = () => {
                   </tr>
                   <tr>
                     <th>Фото</th>
-                    <td className="d-flex flex-column ">
+                    <td className="flex flex-col ">
                       {order?.file?.map((item, index) => {
                         if (item.status === 0)
                           return (

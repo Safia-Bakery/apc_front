@@ -31,7 +31,7 @@ const MainDatePicker: FC<Props> = ({
   const handleClear = () => onChange(undefined);
 
   return (
-    <div className="position-relative">
+    <div className="relative">
       <DatePicker
         selected={selected}
         onChange={onChange}
@@ -40,7 +40,7 @@ const MainDatePicker: FC<Props> = ({
         timeIntervals={30}
         showTimeSelect={showTimeSelect}
         wrapperClassName={cl(
-          "form-group w-100 mb-0",
+          "form-group w-full mb-0",
           styles.inputBox,
           wrapperClassName
         )}

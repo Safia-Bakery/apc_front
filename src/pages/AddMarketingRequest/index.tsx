@@ -99,11 +99,7 @@ const AddMarketingRequest = () => {
         className={cl("content", styles.form)}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <BaseInputs
-          className="position-relative"
-          label="ФИЛИАЛ"
-          error={errors.fillial}
-        >
+        <BaseInputs className="relative" label="ФИЛИАЛ" error={errors.fillial}>
           {perm?.[MainPermissions.get_fillials_list] && (
             <BranchSelect enabled />
           )}

@@ -56,7 +56,7 @@ const BotTimeModal = () => {
         {isLoading ? (
           <Loading />
         ) : (
-          <div className="p-4 d-flex gap-3">
+          <div className="p-4 flex gap-3">
             <BaseInput>
               <input
                 type="time"
