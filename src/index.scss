@@ -88,6 +88,9 @@ input {
 .table-danger {
   background-color: #f5c6cb !important;
 }
+.table-primary {
+  background-color: #b8daff !important;
+}
 .table-warning {
   background-color: #fff49eb0 !important;
 }
@@ -262,4 +265,5 @@ body > .navbar-collapse .nav li .nav-link p {
 }
 table {
   width: 100%;
+  margin-bottom: 1rem;
 }
