@@ -380,14 +380,10 @@ export enum MainPermissions {
   add_log_categs = 75,
   edit_log_categs = 76,
 
-  // get_staff_requests = 77,
-  // add_staff_requests = 78,
-  // edit_staff_requests = 79,
-
-  get_staff_requests = 67,
-  add_staff_requests = 67,
-  edit_staff_requests = 67,
-  staff_modal_time = 67,
+  get_staff_requests = 80,
+  add_staff_requests = 79,
+  edit_staff_requests = 78,
+  staff_modal_time = 77,
 }
 export enum MarketingSubDep {
   designers = 1,
