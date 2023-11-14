@@ -121,7 +121,7 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
           />
         </BaseInput>
         {focused && (
-          <ul className={cl("list-group", styles.list)}>
+          <ul className={cl(styles.list)}>
             {items?.map((item, idx) => {
               if (items.length === idx + 1 && !query)
                 return (
@@ -131,7 +131,9 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
                     onClick={() =>
                       handleProduct({ id: item.id, name: item.name })
                     }
-                    className={cl("list-group-item relative pointer")}
+                    className={cl(
+                      "py-2 px-4 relative pointer hover:bg-hoverGray transition-colors"
+                    )}
                   >
                     {item.name}
                   </li>
@@ -143,7 +145,9 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
                     onClick={() =>
                       handleProduct({ id: item.id, name: item.name })
                     }
-                    className={cl("list-group-item relative pointer")}
+                    className={cl(
+                      "py-2 px-4 relative pointer hover:bg-hoverGray transition-colors"
+                    )}
                   >
                     {item.name}
                   </li>
