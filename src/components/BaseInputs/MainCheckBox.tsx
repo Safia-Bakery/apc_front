@@ -10,7 +10,7 @@ interface Props {
 }
 const MainCheckBox: FC<Props> = ({ value, register, label, ...others }) => {
   return (
-    <div className="form-group d-flex align-items-center form-control">
+    <div className="form-group flex align-center form-control">
       <label className="mb-0 mr-2">{label}</label>
       <input type="checkbox" defaultChecked={value} {...register} {...others} />
     </div>

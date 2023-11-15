@@ -2,9 +2,9 @@ import { ChangeEvent, FC } from "react";
 import BaseInputs from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainSelect from "src/components/BaseInputs/MainSelect";
-import { useNavigateParams } from "src/hooks/useCustomNavigate";
-import useDebounce from "src/hooks/useDebounce";
-import useQueryString from "src/hooks/useQueryString";
+import { useNavigateParams } from "src/hooks/custom/useCustomNavigate";
+import useDebounce from "src/hooks/custom/useDebounce";
+import useQueryString from "src/hooks/custom/useQueryString";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
 import { RegionNames, StatusName } from "src/utils/helpers";
 
@@ -27,12 +27,12 @@ const BranchesFilter: FC = () => {
     <>
       <td></td>
       <td className="p-0">
-        <BaseInputs className="m-2">
-          <MainInput onChange={handleName} />
+        <BaseInputs className="!m-1">
+          <MainInput className="!mb-0" onChange={handleName} />
         </BaseInputs>
       </td>
       <td className="p-0">
-        <BaseInputs className="mb-0">
+        <BaseInputs className="!m-1">
           <MainSelect
             values={RegionNames}
             value={country?.toString()}
@@ -41,23 +41,25 @@ const BranchesFilter: FC = () => {
         </BaseInputs>
       </td>
       <td className="p-0">
-        <BaseInputs className="m-2">
+        <BaseInputs className="!m-1">
           <MainInput
+            className="!mb-0"
             type="number"
             onChange={(e) => $latitude(Number(e.target.value))}
           />
         </BaseInputs>
       </td>
       <td className="p-0">
-        <BaseInputs className="m-2">
+        <BaseInputs className="!m-1">
           <MainInput
+            className="!mb-0"
             type="number"
             onChange={(e) => $longitude(Number(e.target.value))}
           />
         </BaseInputs>
       </td>
       <td className="p-0">
-        <BaseInputs className="mb-0">
+        <BaseInputs className="!m-1">
           <MainSelect
             values={StatusName}
             value={fillial_status?.toString()}

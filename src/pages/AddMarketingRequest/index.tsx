@@ -11,7 +11,7 @@ import styles from "./index.module.scss";
 import BaseInputs from "src/components/BaseInputs";
 import MainSelect from "src/components/BaseInputs/MainSelect";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import BranchSelect from "src/components/BranchSelect";
 import useCategories from "src/hooks/useCategories";
 import Loading from "src/components/Loader";
@@ -99,11 +99,7 @@ const AddMarketingRequest = () => {
         className={cl("content", styles.form)}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <BaseInputs
-          className="position-relative"
-          label="ФИЛИАЛ"
-          error={errors.fillial}
-        >
+        <BaseInputs className="relative" label="ФИЛИАЛ" error={errors.fillial}>
           {perm?.[MainPermissions.get_fillials_list] && (
             <BranchSelect enabled />
           )}

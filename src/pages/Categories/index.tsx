@@ -15,7 +15,7 @@ import TableViewBtn from "src/components/TableViewBtn";
 import useCategories from "src/hooks/useCategories";
 import CategoriesFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
 
@@ -149,8 +149,8 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
           </table>
           {!!categories && <Pagination totalPages={categories.pages} />}
           {!categories?.items?.length && !isLoading && (
-            <div className="w-100">
-              <p className="text-center w-100 ">Спосок пуст</p>
+            <div className="w-full">
+              <p className="text-center w-full ">Спосок пуст</p>
             </div>
           )}
         </div>

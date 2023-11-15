@@ -4,7 +4,6 @@ import "./index.scss";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/rootConfig";
-import "bootstrap/dist/css/bootstrap.min.css";
 import BaseAPIClient from "./api/axiosConfig.ts";
 import Loading from "./components/Loader/index.tsx";
 

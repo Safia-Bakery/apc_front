@@ -3,7 +3,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AddProduct from "src/components/AddProduct";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import styles from "./index.module.scss";
 import useOrder from "src/hooks/useOrder";
 import dayjs from "dayjs";
 import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
@@ -25,11 +24,11 @@ import {
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import ShowRequestModals from "src/components/ShowRequestModals";
 import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import {
   useNavigateParams,
   useRemoveParams,
-} from "src/hooks/useCustomNavigate";
+} from "src/hooks/custom/useCustomNavigate";
 import uploadFileMutation from "src/hooks/mutation/uploadFile";
 import { loginHandler, permissionSelector } from "src/redux/reducers/auth";
 import useBrigadas from "src/hooks/useBrigadas";
@@ -190,7 +189,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
   const renderSubmit = useMemo(() => {
     if (!!order?.brigada?.name && permissions?.[edit])
       return (
-        <div className="d-flex justify-content-between mb10">
+        <div className="flex justify-between mb10">
           {order?.status! < 3 && (
             <button
               onClick={handleModal(ModalTypes.cancelRequest)}
@@ -360,12 +359,14 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
                   </tr>
                   <tr>
                     <th>file</th>
-                    <td className="d-flex flex-column">
+                    <td className="flex flex-col">
                       {order?.file?.map((item, index) => {
                         if (item.status === 0)
                           return (
                             <div
-                              className={cl(styles.imgUrl, "text-truncate")}
+                              className={cl(
+                                "text-link cursor-pointer max-w-[150px] w-full text-truncate"
+                              )}
                               onClick={handleShowPhoto(
                                 `${baseURL}/${item.url}`
                               )}
@@ -379,12 +380,14 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
                   </tr>
                   <tr>
                     <th id="photo_report">Фотоотчёт</th>
-                    <td className="d-flex flex-column">
+                    <td className="flex flex-col">
                       {order?.file?.map((item, index) => {
                         if (item.status === 1)
                           return (
                             <div
-                              className={cl(styles.imgUrl, "text-truncate")}
+                              className={cl(
+                                "text-link cursor-pointer max-w-[150px] w-full text-truncate"
+                              )}
                               onClick={handleShowPhoto(
                                 `${baseURL}/${item.url}`
                               )}

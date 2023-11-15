@@ -8,7 +8,7 @@ import { itemsPerPage } from "src/utils/helpers";
 import { useState } from "react";
 import StockFilter from "./filter";
 import dayjs from "dayjs";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import useRemainsInStock from "src/hooks/useRemainsInStock";
 import useStockSync from "src/hooks/sync/useStockSync";
 import Loading from "src/components/Loader";
@@ -72,19 +72,24 @@ const RemainsInStock = () => {
   return (
     <Card>
       <Header title={"Остатки на складах"}>
-        <button onClick={handleSync} className="btn btn-primary btn-fill mr-2">
-          <img
-            src="/assets/icons/sync.svg"
-            height={20}
-            width={20}
-            alt="sync"
-            className="mr-2"
-          />
-          Синхронизировать с iiko
-        </button>
-        <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
-        </button>
+        <div className="flex">
+          <button
+            onClick={handleSync}
+            className="btn btn-primary btn-fill mr-2 !flex"
+          >
+            <img
+              src="/assets/icons/sync.svg"
+              height={20}
+              width={20}
+              alt="sync"
+              className="mr-2"
+            />
+            Синхронизировать с iiko
+          </button>
+          <button className="btn btn-primary btn-fill " onClick={goBack}>
+            Назад
+          </button>
+        </div>
       </Header>
 
       <div className="table-responsive grid-view content">
@@ -126,8 +131,8 @@ const RemainsInStock = () => {
         </table>
         {!!items && <Pagination totalPages={items.pages} />}
         {!items?.items?.length && !itemsLoading && (
-          <div className="w-100">
-            <p className="text-center w-100">Спосок пуст</p>
+          <div className="w-full">
+            <p className="text-center w-full">Спосок пуст</p>
           </div>
         )}
       </div>

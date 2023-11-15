@@ -6,11 +6,11 @@ import { useEffect, useRef, useState } from "react";
 import usedItemsMutation from "src/hooks/mutation/usedItems";
 import { successToast } from "src/utils/toast";
 import useOrder from "src/hooks/useOrder";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import {
   useNavigateParams,
   useRemoveParams,
-} from "src/hooks/useCustomNavigate";
+} from "src/hooks/custom/useCustomNavigate";
 import ToolsSelect from "src/components/ToolsSelect";
 import BaseInput from "src/components/BaseInputs";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
@@ -154,9 +154,9 @@ const TelegramAddProduct = () => {
 
       <div className={styles.block}>
         <div className={styles.modalBody}>
-          <div className="d-flex justify-content-end">
+          <div className="flex justify-content-end">
             <button
-              className="btn btn-primary z-3 position-relative"
+              className="btn btn-primary z-3 relative"
               onClick={() => syncWithIiko()}
             >
               {isFetching ? (
@@ -173,7 +173,7 @@ const TelegramAddProduct = () => {
           </BaseInput>
 
           {/* <BaseInput label="Количество"> */}
-          <div className="d-flex gap-2 my-4">
+          <div className="flex gap-2 my-4">
             <span className={styles.label}>Количество</span>
             <button
               type="button"
@@ -208,7 +208,7 @@ const TelegramAddProduct = () => {
                 <tr>
                   {column.map(({ name }) => {
                     return (
-                      <th className={styles.tableHead} key={name}>
+                      <th className={"bg-primary text-white"} key={name}>
                         {name}
                       </th>
                     );
@@ -223,7 +223,7 @@ const TelegramAddProduct = () => {
                     <td>x{item?.amount}</td>
                     <td width={50}>
                       <div
-                        className="d-flex justify-content-center pointer"
+                        className="flex justify-content-center pointer"
                         onClick={handleDelete(item.id)}
                       >
                         <img src="/assets/icons/delete.svg" alt="delete" />
@@ -242,7 +242,7 @@ const TelegramAddProduct = () => {
           <Header title={"Добавить фотоотчёт"} />
           <div className="m-3">
             <UploadComponent
-              tableHead={styles.tableHead}
+              tableHead={"bg-primary text-white"}
               onFilesSelected={handleFilesSelected}
               inputRef={inputRef}
             />
@@ -265,7 +265,7 @@ const TelegramAddProduct = () => {
           <button
             type="button"
             onClick={handleFinishOrder({ status: RequestStatus.done })}
-            className="btn btn-success btn-fill w-100"
+            className="btn btn-success btn-fill w-full"
           >
             Починил
           </button>

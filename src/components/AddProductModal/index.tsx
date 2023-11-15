@@ -12,11 +12,11 @@ import { useEffect } from "react";
 import usedItemsMutation from "src/hooks/mutation/usedItems";
 import { successToast } from "src/utils/toast";
 import useOrder from "src/hooks/useOrder";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import {
   useNavigateParams,
   useRemoveParams,
-} from "src/hooks/useCustomNavigate";
+} from "src/hooks/custom/useCustomNavigate";
 import { permissionSelector } from "src/redux/reducers/auth";
 import { useAppSelector } from "src/redux/utils/types";
 import { MainPermissions } from "src/utils/types";
@@ -94,7 +94,7 @@ const AddProductModal = () => {
         </Header>
         <div className={styles.block}>
           <button
-            className="btn btn-primary float-end mr-3 z-3 position-relative"
+            className="btn btn-primary float-end mr-3 z-3 relative"
             onClick={() => syncWithIiko()}
           >
             {isFetching ? (
@@ -106,7 +106,7 @@ const AddProductModal = () => {
             )}
           </button>
           <div className={styles.modalBody}>
-            <div className="form-group field-apcitems-product_id position-relative">
+            <div className="form-group field-apcitems-product_id relative">
               <label className="control-label">Товар</label>
               <div
                 className="form-control"

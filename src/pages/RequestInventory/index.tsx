@@ -11,7 +11,7 @@ import { handleStatus, itemsPerPage, requestRows } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import InventoryFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 
 const column = [
   { name: "№", key: "" },
@@ -131,8 +131,8 @@ const RequestInventory = () => {
         </table>
         {!!requests && <Pagination totalPages={requests.pages} />}
         {!requests?.items?.length && !orderLoading && (
-          <div className="w-100">
-            <p className="text-center w-100">Спосок пуст</p>
+          <div className="w-full">
+            <p className="text-center w-full">Спосок пуст</p>
           </div>
         )}
       </div>

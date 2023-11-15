@@ -12,7 +12,7 @@ import useBrigadas from "src/hooks/useBrigadas";
 import ItemsCount from "src/components/ItemsCount";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 
 interface Props {
   add: MainPermissions;
@@ -135,8 +135,8 @@ const Masters: FC<Props> = ({ add, edit, isMaster = false }) => {
         </table>
         {!!brigadas && <Pagination totalPages={brigadas.pages} />}
         {!brigadas?.items?.length && !orderLoading && (
-          <div className="w-100">
-            <p className="text-center w-100">Спосок пуст</p>
+          <div className="w-full">
+            <p className="text-center w-full">Спосок пуст</p>
           </div>
         )}
       </div>

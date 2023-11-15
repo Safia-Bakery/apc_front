@@ -4,7 +4,7 @@ import TableHead from "src/components/TableHead";
 import Chart from "react-apexcharts";
 import useStatsCategory from "src/hooks/useStatsCategory";
 import Loading from "src/components/Loader";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 
 interface Props {
@@ -126,8 +126,8 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
         />
       )}
       {!data?.table.length && !isLoading && (
-        <div className="w-100">
-          <p className="text-center w-100">Спосок пуст</p>
+        <div className="w-full">
+          <p className="text-center w-full">Спосок пуст</p>
         </div>
       )}
       <button id={"category_stat"} className="d-none" onClick={downloadAsPdf}>

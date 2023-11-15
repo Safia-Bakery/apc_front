@@ -13,13 +13,11 @@ import {
   requestRows,
 } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
-import RequestsFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import cl from "classnames";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
-import styles from "./index.module.scss";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import TableLoading from "src/components/TableLoading";
 import LogFilter from "./filter";
 
@@ -159,7 +157,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
                           {order?.id}
                         </Link>
                       ) : (
-                        <span className={styles.link}>{order?.id}</span>
+                        <span className={"text-link"}>{order?.id}</span>
                       )}
                     </td>
 
@@ -204,8 +202,8 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
         </table>
         {!!requests && <Pagination totalPages={requests.pages} />}
         {!requests?.items?.length && !orderLoading && (
-          <div className="w-100">
-            <p className="text-center w-100">Спосок пуст</p>
+          <div className="w-full">
+            <p className="text-center w-full">Спосок пуст</p>
           </div>
         )}
       </div>

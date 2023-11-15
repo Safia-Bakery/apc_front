@@ -11,7 +11,7 @@
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "jsx": "react-jsx",
-
+    "types": ["node"],
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "resolveJsonModule": true,
@@ -19,12 +19,8 @@
     "noEmit": true,
     "baseUrl": "./",
     "paths": {
-      "src/*": ["./src/*"],
-      "pages/*": ["./src/pages/*"],
-      "assets/*": ["./src/assets/*"],
-      "src/components/*": ["./src/components/*"]
+      "src/*": ["./src/*"]
     },
-    "types": ["cypress"],
     "outDir": "./dist",
 
     /* Linting */

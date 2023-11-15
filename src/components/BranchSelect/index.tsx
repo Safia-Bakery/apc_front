@@ -3,15 +3,15 @@ import styles from "./index.module.scss";
 import { useState } from "react";
 import BaseInput from "../BaseInputs";
 import MainInput from "../BaseInputs/MainInput";
-import useDebounce from "src/hooks/useDebounce";
+import useDebounce from "src/hooks/custom/useDebounce";
 import cl from "classnames";
 import { BranchTypes } from "src/utils/types";
 import {
   useNavigateParams,
   useRemoveParams,
-} from "src/hooks/useCustomNavigate";
+} from "src/hooks/custom/useCustomNavigate";
 import useBranches from "src/hooks/useBranches";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
 
 interface Props {
@@ -103,7 +103,7 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
     <>
       {focused && <div className={styles.overlay} onClick={onClose} />}
       <div className={styles.drop}>
-        <BaseInput className="mb-0 position-relative">
+        <BaseInput className="mb-0 relative">
           {focused && (
             <img
               onClick={close}
@@ -121,7 +121,7 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
           />
         </BaseInput>
         {focused && (
-          <ul className={cl("list-group", styles.list)}>
+          <ul className={cl(styles.list)}>
             {items?.map((item, idx) => {
               if (items.length === idx + 1 && !query)
                 return (
@@ -131,7 +131,9 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
                     onClick={() =>
                       handleProduct({ id: item.id, name: item.name })
                     }
-                    className={cl("list-group-item position-relative pointer")}
+                    className={cl(
+                      "py-2 px-4 relative pointer hover:bg-hoverGray transition-colors"
+                    )}
                   >
                     {item.name}
                   </li>
@@ -143,7 +145,9 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
                     onClick={() =>
                       handleProduct({ id: item.id, name: item.name })
                     }
-                    className={cl("list-group-item position-relative pointer")}
+                    className={cl(
+                      "py-2 px-4 relative pointer hover:bg-hoverGray transition-colors"
+                    )}
                   >
                     {item.name}
                   </li>

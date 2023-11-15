@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import TableViewBtn from "src/components/TableViewBtn";
 import MainInput from "src/components/BaseInputs/MainInput";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 
 const column = [
   { name: "№", key: "" },
@@ -110,8 +110,8 @@ const ShowRemainsInStock = () => {
         </table>
         {!!requests && <Pagination totalPages={requests.pages} />}
         {!requests?.items?.length && !orderLoading && (
-          <div className="w-100">
-            <p className="text-center w-100">Спосок пуст</p>
+          <div className="w-full">
+            <p className="text-center w-full">Спосок пуст</p>
           </div>
         )}
       </div>

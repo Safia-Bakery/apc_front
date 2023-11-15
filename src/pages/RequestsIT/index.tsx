@@ -11,8 +11,7 @@ import { handleStatus, itemsPerPage, requestRows } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import InventoryFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
-import styles from "./index.module.scss";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 
 const column = [
   { name: "№", key: "" },
@@ -80,7 +79,6 @@ const RequestsIT = () => {
   return (
     <Card>
       <Header title={"Заявка на инвентарь"}>
-        {/* <button className="btn btn-primary btn-fill mr-2">Экспорт</button> */}
         <button
           onClick={() => navigate("add")}
           className="btn btn-success btn-fill"
@@ -118,7 +116,10 @@ const RequestsIT = () => {
                     <td>-------------</td>
                     <td>{order?.fillial?.parentfillial?.name}</td>
                     <td>{order?.category?.name}</td>
-                    <td width={100} className={styles.text}>
+                    <td
+                      width={100}
+                      className={"overflow-ellipsis max-w-[200px] w-full"}
+                    >
                       {order?.description}
                     </td>
                     <td>
@@ -138,8 +139,8 @@ const RequestsIT = () => {
         </table>
         {!!requests && <Pagination totalPages={requests.pages} />}
         {!requests?.items?.length && !orderLoading && (
-          <div className="w-100">
-            <p className="text-center w-100">Спосок пуст</p>
+          <div className="w-full">
+            <p className="text-center w-full">Спосок пуст</p>
           </div>
         )}
       </div>

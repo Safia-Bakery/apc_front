@@ -1,20 +1,20 @@
 import { FC, PropsWithChildren } from "react";
 import Card from "../Card";
 import Header from "../Header";
-import styles from "./index.module.scss";
+
 import { useParams } from "react-router-dom";
 
 import AddProductModal from "../AddProductModal";
 import useOrder from "src/hooks/useOrder";
 import syncExpenditure from "src/hooks/mutation/syncExpenditure";
 import { successToast } from "src/utils/toast";
-import { useNavigateParams } from "src/hooks/useCustomNavigate";
+import { useNavigateParams } from "src/hooks/custom/useCustomNavigate";
 import deleteExpenditureMutation from "src/hooks/mutation/deleteExpenditure";
 import dayjs from "dayjs";
 import { MainPermissions } from "src/utils/types";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 
 const column = [
   { name: "№" },
@@ -104,7 +104,7 @@ const AddProduct: FC<Props> = ({ children, synciiko }) => {
               <tr>
                 {column.map(({ name }) => {
                   return (
-                    <th className={styles.tableHead} key={name}>
+                    <th className={"bg-primary text-white"} key={name}>
                       {name}
                     </th>
                   );
@@ -123,7 +123,7 @@ const AddProduct: FC<Props> = ({ children, synciiko }) => {
                   <td>{item?.user?.full_name}</td>
                   <td width={50}>
                     <div
-                      className="d-flex justify-content-center pointer"
+                      className="flex justify-content-center pointer"
                       onClick={handleDelete(item?.id)}
                     >
                       <img src="/assets/icons/delete.svg" alt="delete" />

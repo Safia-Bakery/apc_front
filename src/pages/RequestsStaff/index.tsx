@@ -17,11 +17,10 @@ import TableHead from "src/components/TableHead";
 import ItemsCount from "src/components/ItemsCount";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
-import styles from "./index.module.scss";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import TableLoading from "src/components/TableLoading";
 import BotTimeModal from "src/components/BotTimeModal";
-import { useNavigateParams } from "src/hooks/useCustomNavigate";
+import { useNavigateParams } from "src/hooks/custom/useCustomNavigate";
 import StaffFilter from "./filter";
 import { useDownloadExcel } from "react-export-table-to-excel";
 
@@ -35,6 +34,9 @@ const column = [
   { name: "Дата поставки", key: "arrival_date" },
   { name: "Статус", key: "status" },
 ];
+
+const today = new Date();
+const tomorrow = today.setDate(today.getDate() + 1);
 
 const RequestsStaff = () => {
   const navigate = useNavigate();
@@ -85,7 +87,7 @@ const RequestsStaff = () => {
   } = useOrders({
     enabled: true,
     page: currentPage,
-    arrival_date: dayjs(!!arrival_date ? arrival_date : undefined).format(
+    arrival_date: dayjs(!!arrival_date ? arrival_date : tomorrow).format(
       "YYYY-MM-DD"
     ),
     category_id: staffCategoryId,
@@ -143,16 +145,18 @@ const RequestsStaff = () => {
   return (
     <Card>
       <Header title={"Заявки"}>
-        <div className="d-flex gap-2">
-          <div className="p-2 btn btn-warning d-flex flex-column justify-content-between">
+        <div className="flex gap-2">
+          <div className="p-2 btn btn-warning flex flex-col justify-between">
             <h4>Количество еды</h4>
-            <h2 className={styles.count}>{renderProductCount}</h2>
+            <h2 className={"flex text-3xl justify-end"}>
+              {renderProductCount}
+            </h2>
           </div>
-          <div className="p-2 btn btn-primary d-flex flex-column justify-content-between">
+          <div className="p-2 btn btn-primary flex flex-col justify-between">
             <h4>Количество хлеба</h4>
-            <h2 className={styles.count}>{renderBreadCount}</h2>
+            <h2 className={"flex text-3xl justify-end"}>{renderBreadCount}</h2>
           </div>
-          <div className="d-flex flex-column gap-2 justify-content-between">
+          <div className="flex flex-col gap-2 justify-between">
             <button
               className="btn btn-success btn-fill"
               onClick={downloadAsPdf}
@@ -208,7 +212,7 @@ const RequestsStaff = () => {
                           {order?.id}
                         </Link>
                       ) : (
-                        <span className={styles.link}>{order?.id}</span>
+                        <span className={"text-link"}>{order?.id}</span>
                       )}
                     </td>
                     <td>{order?.user?.full_name}</td>
@@ -234,8 +238,8 @@ const RequestsStaff = () => {
         </table>
         {!!requests && <Pagination totalPages={requests.pages} />}
         {!requests?.items?.length && !orderLoading && (
-          <div className="w-100">
-            <p className="text-center w-100">Спосок пуст</p>
+          <div className="w-full">
+            <p className="text-center w-full">Спосок пуст</p>
           </div>
         )}
       </div>

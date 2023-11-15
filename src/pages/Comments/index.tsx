@@ -8,7 +8,7 @@ import TableHead from "src/components/TableHead";
 import dayjs from "dayjs";
 import ItemsCount from "src/components/ItemsCount";
 import useComments from "src/hooks/useComments";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 
 const column = [
   { name: "№", key: "id" },
@@ -88,8 +88,8 @@ const Comments = () => {
           </table>
           {!!comments && <Pagination totalPages={comments.pages} />}
           {!comments?.items?.length && !isLoading && (
-            <div className="w-100">
-              <p className="text-center w-100 ">Спосок пуст</p>
+            <div className="w-full">
+              <p className="text-center w-full ">Спосок пуст</p>
             </div>
           )}
         </div>

@@ -13,7 +13,7 @@ import ItemsCount from "src/components/ItemsCount";
 import useBranchSync from "src/hooks/sync/useBranchSync";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import TableLoading from "src/components/TableLoading";
 
 const column = [
@@ -92,30 +92,32 @@ const Branches = () => {
   return (
     <Card>
       <Header title={"Филиалы"}>
-        {iikoBtn && (
-          <button
-            onClick={handleSync}
-            className="btn btn-primary btn-fill mr-2"
-          >
-            <img
-              src="/assets/icons/sync.svg"
-              height={20}
-              width={20}
-              alt="sync"
-              className="mr-2"
-            />
-            Синхронизировать с iiko
-          </button>
-        )}
-        {permisisons?.[MainPermissions.add_fillials] && (
-          <button
-            className="btn btn-success btn-fill"
-            onClick={handleNavigate("add")}
-            id="add_branch"
-          >
-            Добавить
-          </button>
-        )}
+        <div className="flex">
+          {iikoBtn && (
+            <button
+              onClick={handleSync}
+              className="btn btn-primary btn-fill mr-2 !flex"
+            >
+              <img
+                src="/assets/icons/sync.svg"
+                height={20}
+                width={20}
+                alt="sync"
+                className="mr-2"
+              />
+              Синхронизировать с iiko
+            </button>
+          )}
+          {permisisons?.[MainPermissions.add_fillials] && (
+            <button
+              className="btn btn-success btn-fill"
+              onClick={handleNavigate("add")}
+              id="add_branch"
+            >
+              Добавить
+            </button>
+          )}
+        </div>
       </Header>
 
       <div className="table-responsive grid-view content">
@@ -158,8 +160,8 @@ const Branches = () => {
         </table>
         {!!branches && <Pagination totalPages={branches.pages} />}
         {!branches?.items?.length && !isFetching && (
-          <div className="w-100">
-            <p className="text-center w-100 ">Спосок пуст</p>
+          <div className="w-full">
+            <p className="text-center w-full ">Спосок пуст</p>
           </div>
         )}
       </div>

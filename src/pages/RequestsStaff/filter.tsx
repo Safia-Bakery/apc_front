@@ -1,23 +1,25 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
-import useDebounce from "src/hooks/useDebounce";
+import useDebounce from "src/hooks/custom/useDebounce";
 import "react-datepicker/dist/react-datepicker.css";
 import BaseInput from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
 import BranchSelect from "src/components/BranchSelect";
-import useQueryString from "src/hooks/useQueryString";
-import styles from "./index.module.scss";
+import useQueryString from "src/hooks/custom/useQueryString";
 import cl from "classnames";
 import { MainPermissions } from "src/utils/types";
 import dayjs from "dayjs";
 import {
   useNavigateParams,
   useRemoveParams,
-} from "src/hooks/useCustomNavigate";
+} from "src/hooks/custom/useCustomNavigate";
 import { useForm } from "react-hook-form";
 import { permissionSelector } from "src/redux/reducers/auth";
 import { useAppSelector } from "src/redux/utils/types";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
+
+const today = new Date();
+const tomorrow = today.setDate(today.getDate() + 1);
 
 const StaffFilter: FC = () => {
   const navigate = useNavigateParams();
@@ -68,19 +70,19 @@ const StaffFilter: FC = () => {
     <>
       <td></td>
       <td className="p-0">
-        <BaseInput className="my-2 mx-1">
-          <MainInput type="number" onChange={handleID} />
+        <BaseInput className="!m-1">
+          <MainInput className="!mb-0" type="number" onChange={handleID} />
         </BaseInput>
       </td>
       <td className="p-0">
-        <BaseInput className="my-2 mx-1">
-          <MainInput onChange={handleName} />
+        <BaseInput className="!m-1">
+          <MainInput className="!mb-0" onChange={handleName} />
         </BaseInput>
       </td>
-      <td width={150} className="p-0 position-relative">
+      <td width={150} className="p-0 relative">
         <div
           onClick={() => $enabled(true)}
-          className={cl("position-absolute w-100 ", styles.fillial)}
+          className={"absolute top-1 left-1 right-1"}
         >
           {perm?.[MainPermissions.get_fillials_list] && (
             <BranchSelect enabled={enabled} />
@@ -88,13 +90,13 @@ const StaffFilter: FC = () => {
         </div>
       </td>
       <td className="p-0">
-        <BaseInput className="my-2 mx-1">
-          <MainInput onChange={handlePortion} />
+        <BaseInput className="!m-1">
+          <MainInput className="!mb-0" onChange={handlePortion} />
         </BaseInput>
       </td>
       <td className="p-0">
-        <BaseInput className="my-2 mx-1">
-          <MainInput onChange={handleBread} />
+        <BaseInput className="!m-1">
+          <MainInput className="!mb-0" onChange={handleBread} />
         </BaseInput>
       </td>
 
@@ -103,11 +105,11 @@ const StaffFilter: FC = () => {
           selected={
             !!arrival_date && arrival_date !== "undefined"
               ? dayjs(arrival_date).toDate()
-              : dayjs().toDate()
+              : dayjs(tomorrow).toDate()
           }
           onChange={startRange}
-          className="mt-1"
-          dateFormat="MM.d.yyyy"
+          wrapperClassName={"m-1"}
+          dateFormat="d.MM.yyyy"
         />
       </td>
       <td className="p-0"></td>

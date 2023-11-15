@@ -4,8 +4,8 @@ import MainInput from "src/components/BaseInputs/MainInput";
 import MainSelect from "src/components/BaseInputs/MainSelect";
 
 import useCategories from "src/hooks/useCategories";
-import useDebounce from "src/hooks/useDebounce";
-import useQueryString from "src/hooks/useQueryString";
+import useDebounce from "src/hooks/custom/useDebounce";
+import useQueryString from "src/hooks/custom/useQueryString";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
 import { StatusName, itemsPerPage } from "src/utils/helpers";
 

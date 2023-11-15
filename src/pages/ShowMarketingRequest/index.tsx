@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import styles from "./index.module.scss";
+
 import useOrder from "src/hooks/useOrder";
 import dayjs from "dayjs";
 import { useAppSelector } from "src/redux/utils/types";
@@ -26,9 +26,9 @@ import ShowRequestModals from "src/components/ShowRequestModals";
 import {
   useNavigateParams,
   useRemoveParams,
-} from "src/hooks/useCustomNavigate";
+} from "src/hooks/custom/useCustomNavigate";
 import { permissionSelector } from "src/redux/reducers/auth";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import cl from "classnames";
 
 const enum ModalTypes {
@@ -195,12 +195,14 @@ const ShowMarketingRequest = () => {
                   </tr>
                   <tr>
                     <th>Фото</th>
-                    <td className="d-flex flex-column ">
+                    <td className="flex flex-col ">
                       {order?.file?.map((item, index) => {
                         if (item.status === 0)
                           return (
                             <div
-                              className={cl(styles.imgUrl, "text-truncate")}
+                              className={cl(
+                                "text-link cursor-pointer max-w-[150px] w-full text-truncate"
+                              )}
                               onClick={handleShowPhoto(
                                 `${baseURL}/${item.url}`
                               )}

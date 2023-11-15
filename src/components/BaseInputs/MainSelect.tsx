@@ -24,7 +24,7 @@ const MainSelect: FC<Props> = ({
 }) => {
   return (
     <select
-      className={cl("form-select form-control", styles.select)}
+      className={cl("form-select form-control", styles.select, styles.inputBox)}
       onFocus={onFocus}
       {...others}
       {...register}

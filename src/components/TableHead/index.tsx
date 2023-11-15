@@ -1,7 +1,5 @@
 import { FC, PropsWithChildren } from "react";
 
-import styles from "./index.module.scss";
-
 interface Props extends PropsWithChildren {
   column: { name: string; key: any }[];
   sort: (key: any) => void;
@@ -24,7 +22,7 @@ const TableHead: FC<Props> = ({
             return (
               <th
                 onClick={() => sort(key)}
-                className={styles.tableHead}
+                className={"bg-primary text-white"}
                 key={name}
               >
                 {name}{" "}

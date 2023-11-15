@@ -4,14 +4,14 @@ import { useState } from "react";
 import useTools from "src/hooks/useTools";
 import BaseInput from "../BaseInputs";
 import MainInput from "../BaseInputs/MainInput";
-import useDebounce from "src/hooks/useDebounce";
+import useDebounce from "src/hooks/custom/useDebounce";
 import cl from "classnames";
 import { ToolTypes } from "src/utils/types";
 import {
   useNavigateParams,
   useRemoveParams,
-} from "src/hooks/useCustomNavigate";
-import useQueryString from "src/hooks/useQueryString";
+} from "src/hooks/custom/useCustomNavigate";
+import useQueryString from "src/hooks/custom/useQueryString";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
 
 const ToolsSelect: React.FC = () => {
@@ -97,7 +97,7 @@ const ToolsSelect: React.FC = () => {
     <>
       {focused && <div className={styles.overlay} onClick={onClose} />}
       <div className={styles.drop}>
-        <BaseInput className="mb-0 position-relative">
+        <BaseInput className="mb-0 relative">
           {focused && (
             <img
               onClick={close}
@@ -123,7 +123,7 @@ const ToolsSelect: React.FC = () => {
                     key={item.id}
                     ref={lastBookElementRef}
                     onClick={() => handleProduct(item)}
-                    className={cl("list-group-item position-relative pointer")}
+                    className={cl("list-group-item relative pointer")}
                   >
                     {item.name}
                   </li>
@@ -135,7 +135,7 @@ const ToolsSelect: React.FC = () => {
                     onClick={() =>
                       handleProduct({ id: item.id, name: item.name })
                     }
-                    className={cl("list-group-item position-relative pointer")}
+                    className={cl("list-group-item relative pointer")}
                   >
                     {item.name}
                   </li>

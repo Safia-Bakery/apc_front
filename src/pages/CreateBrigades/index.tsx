@@ -14,7 +14,7 @@ import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
 import { Sphere } from "src/utils/types";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 
 const CreateBrigades = () => {
   const { id } = useParams();

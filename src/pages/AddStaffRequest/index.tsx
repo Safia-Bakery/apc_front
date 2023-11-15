@@ -10,7 +10,7 @@ import styles from "./index.module.scss";
 import BaseInputs from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import BranchSelect from "src/components/BranchSelect";
 import { MainPermissions, Sphere } from "src/utils/types";
 import WarehouseSelect from "src/components/WarehouseSelect";
@@ -87,7 +87,7 @@ const AddStaffRequest = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <BaseInputs
-          className="position-relative"
+          className="relative"
           label="ФИЛИАЛ"
           error={errors.fillial_id}
         >

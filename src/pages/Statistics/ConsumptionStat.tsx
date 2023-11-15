@@ -5,7 +5,7 @@ import useDistinct from "src/hooks/useDistinct";
 import { Link } from "react-router-dom";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import { Departments, Sphere } from "src/utils/types";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 
 const column = [
   { name: "№", key: "" },
@@ -90,8 +90,8 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
       </table>
 
       {!data?.tests?.length && !isLoading && (
-        <div className="w-100">
-          <p className="text-center w-100 ">Спосок пуст</p>
+        <div className="w-full">
+          <p className="text-center w-full ">Спосок пуст</p>
         </div>
       )}
       <button

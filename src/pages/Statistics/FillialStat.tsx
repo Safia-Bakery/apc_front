@@ -2,7 +2,7 @@ import { FC, useEffect, useRef, useState } from "react";
 import { Departments, Sphere } from "src/utils/types";
 import TableHead from "src/components/TableHead";
 import useStatsDepartment from "src/hooks/useStatsDepartment";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import Loading from "src/components/Loader";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 
@@ -83,8 +83,8 @@ const BranchStat: FC<Props> = ({ sphere_status }) => {
       </table>
 
       {!data?.length && !isLoading && (
-        <div className="w-100">
-          <p className="text-center w-100 ">Спосок пуст</p>
+        <div className="w-full">
+          <p className="text-center w-full ">Спосок пуст</p>
         </div>
       )}
       <button id={"branch_stat"} className="d-none" onClick={downloadAsPdf}>

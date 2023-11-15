@@ -1,5 +1,4 @@
 import Card from "src/components/Card";
-import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import permissionMutation from "src/hooks/mutation/permissionMutation";
@@ -25,13 +24,7 @@ const ShowRole = () => {
   const { mutate } = permissionMutation();
   const { data: permissions } = usePermissions({});
 
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-    getValues,
-    reset,
-  } = useForm();
+  const { register, handleSubmit, getValues, reset } = useForm();
 
   const onSubmit = () => {
     const ids = Object.values(getValues())
@@ -63,7 +56,7 @@ const ShowRole = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <Card className={styles.card}>
+    <Card className={"pb-11"}>
       <Header title={`${rolePermission?.role_name}`}>
         <button
           className="btn btn-primary btn-fill"
@@ -80,8 +73,10 @@ const ShowRole = () => {
               <Fragment key={item?.page_name}>
                 <thead>
                   <tr>
-                    <th className={styles.tableHead}>{item?.page_name}</th>
-                    <th className={styles.tableHead} />
+                    <th className={"bg-primary text-white"}>
+                      {item?.page_name}
+                    </th>
+                    <th className={"bg-primary text-white"} />
                   </tr>
                 </thead>
 
@@ -94,10 +89,6 @@ const ShowRole = () => {
                           type="checkbox"
                           value={child?.id}
                           {...register(`${child?.id}`)}
-                          // defaultChecked={rolePermission?.permissions?.includes(
-                          //   child?.id
-                          // )}
-                          // onChange={() => handlePermission(child?.id)}
                         />
                       </td>
                     </tr>

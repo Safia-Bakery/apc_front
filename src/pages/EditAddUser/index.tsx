@@ -18,7 +18,7 @@ import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
 import useRoles from "src/hooks/useRoles";
 import MainRadioBtns from "src/components/BaseInputs/MainRadioBtns";
 import { Sphere } from "src/utils/types";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 
 const EditAddUser = () => {
   const { id } = useParams();
