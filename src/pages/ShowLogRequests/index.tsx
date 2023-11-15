@@ -19,7 +19,7 @@ import ShowRequestModals from "src/components/ShowRequestModals";
 import {
   useNavigateParams,
   useRemoveParams,
-} from "src/hooks/useCustomNavigate";
+} from "src/hooks/custom/useCustomNavigate";
 import cl from "classnames";
 
 const enum ModalTypes {

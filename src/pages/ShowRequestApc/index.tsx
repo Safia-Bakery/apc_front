@@ -24,11 +24,11 @@ import {
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import ShowRequestModals from "src/components/ShowRequestModals";
 import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import {
   useNavigateParams,
   useRemoveParams,
-} from "src/hooks/useCustomNavigate";
+} from "src/hooks/custom/useCustomNavigate";
 import uploadFileMutation from "src/hooks/mutation/uploadFile";
 import { loginHandler, permissionSelector } from "src/redux/reducers/auth";
 import useBrigadas from "src/hooks/useBrigadas";

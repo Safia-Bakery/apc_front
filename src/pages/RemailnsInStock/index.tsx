@@ -8,7 +8,7 @@ import { itemsPerPage } from "src/utils/helpers";
 import { useState } from "react";
 import StockFilter from "./filter";
 import dayjs from "dayjs";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import useRemainsInStock from "src/hooks/useRemainsInStock";
 import useStockSync from "src/hooks/sync/useStockSync";
 import Loading from "src/components/Loader";

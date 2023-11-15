@@ -12,7 +12,7 @@ import useBrigadas from "src/hooks/useBrigadas";
 import ItemsCount from "src/components/ItemsCount";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 
 interface Props {
   add: MainPermissions;

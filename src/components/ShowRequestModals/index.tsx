@@ -13,8 +13,8 @@ import { successToast } from "src/utils/toast";
 import useOrder from "src/hooks/useOrder";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import cl from "classnames";
-import useQueryString from "src/hooks/useQueryString";
-import { useRemoveParams } from "src/hooks/useCustomNavigate";
+import useQueryString from "src/hooks/custom/useQueryString";
+import { useRemoveParams } from "src/hooks/custom/useCustomNavigate";
 import useBrigadas from "src/hooks/useBrigadas";
 import Loading from "../Loader";
 

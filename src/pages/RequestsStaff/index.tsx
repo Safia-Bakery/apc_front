@@ -17,10 +17,10 @@ import TableHead from "src/components/TableHead";
 import ItemsCount from "src/components/ItemsCount";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import TableLoading from "src/components/TableLoading";
 import BotTimeModal from "src/components/BotTimeModal";
-import { useNavigateParams } from "src/hooks/useCustomNavigate";
+import { useNavigateParams } from "src/hooks/custom/useCustomNavigate";
 import StaffFilter from "./filter";
 import { useDownloadExcel } from "react-export-table-to-excel";
 

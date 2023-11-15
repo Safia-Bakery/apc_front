@@ -2,9 +2,9 @@ import { ChangeEvent, FC } from "react";
 import BaseInputs from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainSelect from "src/components/BaseInputs/MainSelect";
-import { useNavigateParams } from "src/hooks/useCustomNavigate";
-import useDebounce from "src/hooks/useDebounce";
-import useQueryString from "src/hooks/useQueryString";
+import { useNavigateParams } from "src/hooks/custom/useCustomNavigate";
+import useDebounce from "src/hooks/custom/useDebounce";
+import useQueryString from "src/hooks/custom/useQueryString";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
 import { RegionNames, StatusName } from "src/utils/helpers";
 

@@ -5,7 +5,7 @@ import useDistinct from "src/hooks/useDistinct";
 import { Link } from "react-router-dom";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import { Departments, Sphere } from "src/utils/types";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 
 const column = [
   { name: "№", key: "" },

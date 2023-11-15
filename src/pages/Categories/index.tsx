@@ -15,7 +15,7 @@ import TableViewBtn from "src/components/TableViewBtn";
 import useCategories from "src/hooks/useCategories";
 import CategoriesFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
 

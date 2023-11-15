@@ -2,7 +2,7 @@ import { FC, useEffect, useRef, useState } from "react";
 import { Departments, Sphere } from "src/utils/types";
 import TableHead from "src/components/TableHead";
 import useStatsDepartment from "src/hooks/useStatsDepartment";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import Loading from "src/components/Loader";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 

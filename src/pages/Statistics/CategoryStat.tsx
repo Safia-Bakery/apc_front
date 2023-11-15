@@ -4,7 +4,7 @@ import TableHead from "src/components/TableHead";
 import Chart from "react-apexcharts";
 import useStatsCategory from "src/hooks/useStatsCategory";
 import Loading from "src/components/Loader";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 
 interface Props {

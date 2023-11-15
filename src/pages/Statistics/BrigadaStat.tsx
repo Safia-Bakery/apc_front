@@ -5,7 +5,7 @@ import Chart from "react-apexcharts";
 
 import { ApexOptions } from "apexcharts";
 import useStatsBrigada from "src/hooks/useStatsBrigada";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import Loading from "src/components/Loader";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 

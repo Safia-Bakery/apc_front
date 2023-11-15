@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import TableViewBtn from "src/components/TableViewBtn";
 import MainInput from "src/components/BaseInputs/MainInput";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 
 const column = [
   { name: "№", key: "" },

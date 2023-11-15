@@ -18,7 +18,7 @@ import {
   MarketingSubDep,
   Sphere,
 } from "src/utils/types";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import Suspend from "../Suspend";
 
 const ControlPanel = lazy(() => import("src/pages/ControlPanel"));

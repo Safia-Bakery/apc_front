@@ -8,13 +8,13 @@ import AddProductModal from "../AddProductModal";
 import useOrder from "src/hooks/useOrder";
 import syncExpenditure from "src/hooks/mutation/syncExpenditure";
 import { successToast } from "src/utils/toast";
-import { useNavigateParams } from "src/hooks/useCustomNavigate";
+import { useNavigateParams } from "src/hooks/custom/useCustomNavigate";
 import deleteExpenditureMutation from "src/hooks/mutation/deleteExpenditure";
 import dayjs from "dayjs";
 import { MainPermissions } from "src/utils/types";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 
 const column = [
   { name: "№" },

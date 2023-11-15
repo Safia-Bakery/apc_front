@@ -1,4 +1,4 @@
-import useDebounce from "src/hooks/useDebounce";
+import useDebounce from "src/hooks/custom/useDebounce";
 import "react-datepicker/dist/react-datepicker.css";
 
 import BaseInput from "src/components/BaseInputs";
@@ -7,8 +7,8 @@ import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
 import {
   useNavigateParams,
   useRemoveParams,
-} from "src/hooks/useCustomNavigate";
-import useQueryString from "src/hooks/useQueryString";
+} from "src/hooks/custom/useCustomNavigate";
+import useQueryString from "src/hooks/custom/useQueryString";
 import dayjs from "dayjs";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
 

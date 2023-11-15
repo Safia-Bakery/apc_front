@@ -4,14 +4,14 @@ import { useState } from "react";
 import useTools from "src/hooks/useTools";
 import BaseInput from "../BaseInputs";
 import MainInput from "../BaseInputs/MainInput";
-import useDebounce from "src/hooks/useDebounce";
+import useDebounce from "src/hooks/custom/useDebounce";
 import cl from "classnames";
 import { ToolTypes } from "src/utils/types";
 import {
   useNavigateParams,
   useRemoveParams,
-} from "src/hooks/useCustomNavigate";
-import useQueryString from "src/hooks/useQueryString";
+} from "src/hooks/custom/useCustomNavigate";
+import useQueryString from "src/hooks/custom/useQueryString";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
 
 const ToolsSelect: React.FC = () => {

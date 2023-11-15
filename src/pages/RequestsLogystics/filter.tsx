@@ -1,6 +1,6 @@
 import { RequestLogStatusArr, UrgentNames } from "src/utils/helpers";
 import { ChangeEvent, FC, useEffect, useState } from "react";
-import useDebounce from "src/hooks/useDebounce";
+import useDebounce from "src/hooks/custom/useDebounce";
 import "react-datepicker/dist/react-datepicker.css";
 import BaseInputs from "src/components/BaseInputs";
 import MainSelect from "src/components/BaseInputs/MainSelect";
@@ -8,14 +8,14 @@ import BaseInput from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
 import BranchSelect from "src/components/BranchSelect";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import cl from "classnames";
 import { Departments, MainPermissions } from "src/utils/types";
 import dayjs from "dayjs";
 import {
   useNavigateParams,
   useRemoveParams,
-} from "src/hooks/useCustomNavigate";
+} from "src/hooks/custom/useCustomNavigate";
 import useCategories from "src/hooks/useCategories";
 import { useForm } from "react-hook-form";
 import { permissionSelector } from "src/redux/reducers/auth";

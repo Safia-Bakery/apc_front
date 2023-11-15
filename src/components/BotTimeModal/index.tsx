@@ -1,12 +1,12 @@
 import botWorkingTime from "src/hooks/mutation/botWorkingTime";
 import Modal from "../Modal";
-import { useRemoveParams } from "src/hooks/useCustomNavigate";
+import { useRemoveParams } from "src/hooks/custom/useCustomNavigate";
 import Header from "../Header";
 import BaseInput from "../BaseInputs";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import useBotWorkTime from "src/hooks/useBotWorkTime";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import { MainPermissions } from "src/utils/types";
 import { useAppSelector } from "src/redux/utils/types";
 import { permissionSelector } from "src/redux/reducers/auth";

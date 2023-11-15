@@ -1,4 +1,4 @@
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 import { itemsPerPage } from "src/utils/helpers";
 
 interface ItemsTypes {

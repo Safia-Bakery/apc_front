@@ -8,7 +8,7 @@ import TableHead from "src/components/TableHead";
 import dayjs from "dayjs";
 import ItemsCount from "src/components/ItemsCount";
 import useComments from "src/hooks/useComments";
-import useQueryString from "src/hooks/useQueryString";
+import useQueryString from "src/hooks/custom/useQueryString";
 
 const column = [
   { name: "№", key: "id" },

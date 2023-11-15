@@ -1,7 +1,7 @@
 import { FC } from "react";
 import ReactPaginate from "react-paginate";
-import { useNavigateParams } from "src/hooks/useCustomNavigate";
-import useQueryString from "src/hooks/useQueryString";
+import { useNavigateParams } from "src/hooks/custom/useCustomNavigate";
+import useQueryString from "src/hooks/custom/useQueryString";
 import "./index.scss";
 
 interface PaginationProps {
