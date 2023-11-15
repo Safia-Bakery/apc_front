@@ -35,6 +35,9 @@ const column = [
   { name: "Статус", key: "status" },
 ];
 
+const today = new Date();
+const tomorrow = today.setDate(today.getDate() + 1);
+
 const RequestsStaff = () => {
   const navigate = useNavigate();
   const [sortKey, setSortKey] = useState<keyof Order>();
@@ -84,7 +87,7 @@ const RequestsStaff = () => {
   } = useOrders({
     enabled: true,
     page: currentPage,
-    arrival_date: dayjs(!!arrival_date ? arrival_date : undefined).format(
+    arrival_date: dayjs(!!arrival_date ? arrival_date : tomorrow).format(
       "YYYY-MM-DD"
     ),
     category_id: staffCategoryId,

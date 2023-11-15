@@ -18,6 +18,9 @@ import { permissionSelector } from "src/redux/reducers/auth";
 import { useAppSelector } from "src/redux/utils/types";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
 
+const today = new Date();
+const tomorrow = today.setDate(today.getDate() + 1);
+
 const StaffFilter: FC = () => {
   const navigate = useNavigateParams();
   const deleteParam = useRemoveParams();
@@ -102,7 +105,7 @@ const StaffFilter: FC = () => {
           selected={
             !!arrival_date && arrival_date !== "undefined"
               ? dayjs(arrival_date).toDate()
-              : dayjs().toDate()
+              : dayjs(tomorrow).toDate()
           }
           onChange={startRange}
           wrapperClassName={"m-1"}
