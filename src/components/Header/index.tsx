@@ -18,7 +18,7 @@ const Header: FC<Props> = ({ children, title, subTitle }) => {
           <h2 className={styles.title}>{title || location?.state?.name}</h2>
           {subTitle && <p className="mb-0">{subTitle}</p>}
         </div>
-        <div className="pull-right">{children}</div>
+        <div className="float-end">{children}</div>
       </div>
       <hr />
     </>

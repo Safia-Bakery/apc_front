@@ -181,8 +181,8 @@ const ShowLogRequests = () => {
                     <td>{order?.fillial?.parentfillial?.name}</td>
                   </tr>
                   <tr>
-                    <th>Фото</th>
-                    <td className="flex flex-col ">
+                    <th>Файл</th>
+                    <td className="flex flex-col">
                       {order?.file?.map((item, index) => {
                         if (item.status === 0)
                           return (
@@ -195,7 +195,7 @@ const ShowLogRequests = () => {
                               )}
                               key={item.url + index}
                             >
-                              {item.url}
+                              файл - {index + 1}
                             </div>
                           );
                       })}
@@ -260,6 +260,12 @@ const ShowLogRequests = () => {
                         : "Не задано"}
                     </td>
                   </tr>
+                  {order?.deny_reason && (
+                    <tr>
+                      <th className="font-bold">Причина отмены</th>
+                      <td>{order?.deny_reason}</td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>

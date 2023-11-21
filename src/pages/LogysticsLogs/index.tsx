@@ -71,7 +71,7 @@ const LogysticsLogs = () => {
             </tr>
             <tr className="bg-blue">
               <td width="40">3</td>
-              <td>Время поставки</td>
+              <td>Отправлен в путь</td>
               <td>{order?.user_manager}</td>
               <td>
                 {order?.arrival_date

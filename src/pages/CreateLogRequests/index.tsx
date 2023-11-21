@@ -118,6 +118,7 @@ const CreateLogRequests = () => {
             })}
           />
         </BaseInputs>
+
         <BaseInputs
           label="Укажите в какое время вам нужна машина"
           className="relative"
@@ -151,7 +152,7 @@ const CreateLogRequests = () => {
         <div>
           <button
             type="submit"
-            className={`btn btn-info btn-fill pull-right ${styles.btn}`}
+            className={`btn btn-info btn-fill float-end ${styles.btn}`}
           >
             Создать
           </button>

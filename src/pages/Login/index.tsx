@@ -82,7 +82,7 @@ const Login = () => {
             )}
           </BaseInput>
 
-          <button type="submit" className="btn btn-primary btn-fill pull-right">
+          <button type="submit" className="btn btn-primary btn-fill float-end">
             Логин
           </button>
         </form>

@@ -98,7 +98,7 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
                         {categ[1]}
                       </span>
                     ))}
-                    <span className="border-bottom py-2 px-1 text-center font-weight-bold">
+                    <span className="border-bottom py-2 px-1 text-center font-bold">
                       Общее
                     </span>
                   </div>
@@ -114,7 +114,7 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
                         {qnt[2]}
                       </span>
                     ))}
-                    <span className=" py-2 px-1 text-center font-weight-bold ">
+                    <span className=" py-2 px-1 text-center font-bold ">
                       {calculator(2, data[mainKey])}
                     </span>
                   </div>
@@ -130,7 +130,7 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
                         {timer[3]}
                       </span>
                     ))}
-                    <span className="border-bottom py-2 px-1 text-center font-weight-bold">
+                    <span className="border-bottom py-2 px-1 text-center font-bold">
                       {calculator(3, data[mainKey])}
                     </span>
                   </div>

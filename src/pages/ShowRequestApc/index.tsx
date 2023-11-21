@@ -454,13 +454,13 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
                         : "Не задано"}
                     </td>
                   </tr>
-                  <tr className="font-weight-bold">
-                    <th>Ответственный</th>
+                  <tr>
+                    <th className="font-bold">Ответственный</th>
                     <td>{renderAssignment}</td>
                   </tr>
                   {order?.deny_reason && (
-                    <tr className="font-weight-bold">
-                      <th>Причина отмены</th>
+                    <tr>
+                      <th className="font-bold">Причина отмены</th>
                       <td>{order?.deny_reason}</td>
                     </tr>
                   )}

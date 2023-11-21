@@ -265,6 +265,12 @@ const ShowMarketingRequest = () => {
                         : "Не задано"}
                     </td>
                   </tr>
+                  {order?.deny_reason && (
+                    <tr>
+                      <th className="font-bold">Причина отмены</th>
+                      <td>{order?.deny_reason}</td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>

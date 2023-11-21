@@ -137,7 +137,7 @@ const AddMarketingRequest = () => {
         <div>
           <button
             type="submit"
-            className={`btn btn-info btn-fill pull-right ${styles.btn}`}
+            className={`btn btn-info btn-fill float-end ${styles.btn}`}
           >
             Создать
           </button>

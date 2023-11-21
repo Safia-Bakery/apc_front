@@ -169,7 +169,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
                     </td>
                     <td
                       className={cl({
-                        ["font-weight-bold"]: order?.category?.urgent,
+                        ["font-bold"]: order?.category?.urgent,
                       })}
                     >
                       {order?.category?.name}
