@@ -33,7 +33,7 @@ const column = [
   { name: "Филиал/Отдел", key: "name" },
   { name: "Группа проблем", key: "category?.name" },
   { name: "Срочно", key: "urgent" },
-  { name: "Время поставки", key: "arrival_date" },
+  // { name: "Время поставки", key: "arrival_date" },
   { name: "Дата поступления", key: "created_at" },
   { name: "Статус", key: "status" },
   { name: "Изменил", key: "user_manager" },
@@ -177,9 +177,9 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
                     <td>
                       {!order?.category?.urgent ? "Несрочный" : "Срочный"}
                     </td>
-                    <td>
+                    {/* <td>
                       {dayjs(order?.arrival_date).format("DD.MM.YYYY HH:mm")}
-                    </td>
+                    </td> */}
                     <td>
                       {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
                     </td>

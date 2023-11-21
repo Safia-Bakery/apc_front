@@ -136,14 +136,14 @@ const LogFilter: FC = () => {
           />
         </BaseInputs>
       </td>
-      <td className="p-0">
+      {/* <td className="p-0">
         <BaseInput className="!m-1">
           <MainInput
             className="!mb-0"
             onChange={(e) => navigate({ user: e.target.value })}
           />
         </BaseInput>
-      </td>
+      </td> */}
       <td className="p-0">
         <MainDatePicker
           selected={

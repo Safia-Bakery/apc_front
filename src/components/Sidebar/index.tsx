@@ -203,13 +203,13 @@ const routes = [
   },
   {
     name: "Запрос машин",
-    icon: "/assets/icons/apc.svg",
+    icon: "/assets/icons/logystics.svg",
     screen: MainPermissions.get_log_requests,
     subroutes: [
       {
         name: "Заявки на Запрос машин",
         url: "/requests-logystics",
-        icon: "/assets/icons/subOrder.svg",
+        icon: "/assets/icons/logystics.svg",
         screen: MainPermissions.get_log_requests,
       },
       {
@@ -223,7 +223,7 @@ const routes = [
   {
     name: "Заявки на еду",
     url: "/requests-staff",
-    icon: "/assets/icons/users.svg",
+    icon: "/assets/icons/staff.svg",
     screen: MainPermissions.get_staff_requests,
   },
   {
