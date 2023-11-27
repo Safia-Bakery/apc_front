@@ -70,17 +70,15 @@ const RequestsMarketing = () => {
     page: currentPage,
     sub_id: sub_id,
 
-    body: {
-      ...(!!created_at && {
-        created_at: dayjs(created_at).format("YYYY-MM-DD"),
-      }),
-      ...(!!id && { id }),
-      ...(!!phone && { executor: phone }),
-      ...(!!branch?.id && { fillial_id: branch?.id }),
-      ...(!!category_id && { category_id }),
-      ...(!!request_status && { request_status }),
-      ...(!!user && { user }),
-    },
+    ...(!!created_at && {
+      created_at: dayjs(created_at).format("YYYY-MM-DD"),
+    }),
+    ...(!!id && { id }),
+    ...(!!phone && { executor: phone }),
+    ...(!!branch?.id && { fillial_id: branch?.id }),
+    ...(!!category_id && { category_id }),
+    ...(!!request_status && { request_status }),
+    ...(!!user && { user }),
   });
 
   const sortData = () => {

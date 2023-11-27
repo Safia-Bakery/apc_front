@@ -76,20 +76,17 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
     size: itemsPerPage,
     department: Departments.logystics,
     page: currentPage,
-
     ...(!!system && { is_bot: !!system }),
-    body: {
-      ...(!!created_at && {
-        created_at: dayjs(created_at).format("YYYY-MM-DD"),
-      }),
-      ...(!!id && { id }),
-      ...(!!department && { department }),
-      ...(!!branch?.id && { fillial_id: branch?.id }),
-      ...(!!category_id && { category_id }),
-      ...(!!request_status && { request_status }),
-      ...(!!user && { user: user }),
-      ...(!!urgent && { urgent }),
-    },
+    ...(!!created_at && {
+      created_at: dayjs(created_at).format("YYYY-MM-DD"),
+    }),
+    ...(!!id && { id }),
+    ...(!!department && { department }),
+    ...(!!branch?.id && { fillial_id: branch?.id }),
+    ...(!!category_id && { category_id }),
+    ...(!!request_status && { request_status }),
+    ...(!!user && { user: user }),
+    ...(!!urgent && { urgent: !!urgent }),
   });
   const sortData = () => {
     if (requests?.items && sortKey) {

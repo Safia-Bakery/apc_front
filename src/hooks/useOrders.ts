@@ -2,29 +2,39 @@ import { useQuery } from "@tanstack/react-query";
 import apiClient from "src/main";
 import { OrderType, RequestFilter } from "src/utils/types";
 
-export const useOrders = ({
-  enabled = true,
-  size,
-  page = 1,
-  sub_id,
-  body,
-  department,
-  sphere_status,
-  is_bot,
-  arrival_date,
-  category_id,
-}: {
+interface Body {
   enabled?: boolean;
   size?: number;
   page?: number;
   sub_id?: number | string;
   department?: number | string;
-  body?: RequestFilter;
   sphere_status?: number;
   is_bot?: boolean;
   arrival_date?: string;
   category_id?: number;
-}) => {
+  urgent?: boolean;
+  fillial_id?: string;
+  created_at?: string;
+  request_status?: string;
+  user?: string;
+}
+
+export const useOrders = ({
+  enabled = true,
+  size,
+  page = 1,
+  sub_id,
+  department,
+  sphere_status,
+  is_bot,
+  arrival_date,
+  category_id,
+  urgent,
+  fillial_id,
+  created_at,
+  request_status,
+  user,
+}: Body) => {
   return useQuery({
     queryKey: [
       "requests",
@@ -32,14 +42,17 @@ export const useOrders = ({
       sub_id,
       department,
       sphere_status,
-      body,
       arrival_date,
       category_id,
+      urgent,
+      fillial_id,
+      created_at,
+      request_status,
+      user,
     ],
     queryFn: () =>
       apiClient
         .get("/request", {
-          ...body,
           page,
           size,
           sub_id,
@@ -48,6 +61,11 @@ export const useOrders = ({
           is_bot,
           arrival_date,
           category_id,
+          urgent,
+          fillial_id,
+          created_at,
+          request_status,
+          user,
         })
         .then(({ data: response }) => (response as OrderType) || null),
     enabled,

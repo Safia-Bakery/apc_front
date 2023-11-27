@@ -39,7 +39,6 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
   const user = useQueryString("user");
   const id = Number(useQueryString("id"));
   const system = useQueryString("system");
-  const department = useQueryString("department");
   const category_id = Number(useQueryString("category_id"));
   const urgent = useQueryString("urgent");
   const created_at = useQueryString("created_at");
@@ -68,20 +67,6 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
     return columns;
   }, [sphere_status]);
 
-  const renderFilter = useMemo(() => {
-    return <RequestsFilter />;
-  }, [
-    user,
-    id,
-    system,
-    department,
-    category_id,
-    urgent,
-    created_at,
-    request_status,
-    branch,
-  ]);
-
   const handleSort = (key: any) => {
     if (key === sortKey) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
@@ -95,26 +80,19 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
     isLoading: orderLoading,
     refetch,
   } = useOrders({
-    enabled: true,
-    size: itemsPerPage,
     department: Departments.apc,
     page: currentPage,
     sphere_status: Number(sphere_status),
-
-    ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
     ...(!!system && { is_bot: !!system }),
-    body: {
-      ...(!!created_at && {
-        created_at: dayjs(created_at).format("YYYY-MM-DD"),
-      }),
-      ...(!!id && { id }),
-      ...(!!department && { department }),
-      ...(!!branch?.id && { fillial_id: branch?.id }),
-      ...(!!category_id && { category_id }),
-      ...(!!request_status && { request_status }),
-      ...(!!user && { user: user }),
-      ...(!!urgent && { urgent }),
-    },
+    ...(!!category_id && { category_id }),
+    ...(!!created_at && {
+      created_at: dayjs(created_at).format("YYYY-MM-DD"),
+    }),
+    ...(!!id && { id }),
+    ...(!!branch?.id && { fillial_id: branch?.id }),
+    ...(!!request_status && { request_status }),
+    ...(!!user && { user }),
+    ...(!!urgent?.toString() && { urgent: !!urgent }),
   });
   const sortData = () => {
     if (requests?.items && sortKey) {
@@ -165,8 +143,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
             sortKey={sortKey}
             sortOrder={sortOrder}
           >
-            {/* <RequestsFilter currentPage={currentPage} /> */}
-            {renderFilter}
+            <RequestsFilter />
           </TableHead>
           <tbody id="requests_body">
             {!!requests?.items?.length &&

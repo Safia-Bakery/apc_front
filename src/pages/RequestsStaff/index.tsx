@@ -93,15 +93,12 @@ const RequestsStaff = () => {
     category_id: staffCategoryId,
     ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
     ...(!!system && { is_bot: !!system }),
-    body: {
-      ...(!!id && { id }),
-      ...(!!department && { department }),
-      ...(!!branch?.id && { fillial_id: branch?.id }),
-      ...(!!category_id && { category_id }),
-      ...(!!request_status && { request_status }),
-      ...(!!user && { user: user }),
-      ...(!!urgent && { urgent }),
-    },
+    ...(!!id && { id }),
+    ...(!!department && { department }),
+    ...(!!branch?.id && { fillial_id: branch?.id }),
+    ...(!!category_id && { category_id }),
+    ...(!!request_status && { request_status }),
+    ...(!!user && { user: user }),
   });
 
   const sortData = () => {
