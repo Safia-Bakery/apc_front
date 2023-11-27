@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { MainPermissions } from "src/utils/types";
 import { useAppDispatch, useAppSelector } from "src/store/utils/types";
 import { sidebarHandler, toggleSidebar } from "src/store/reducers/selects";
-import { logoutHandler } from "src/store/reducers/auth";
+import { logoutHandler, tokenSelector } from "src/store/reducers/auth";
 import useToken from "src/hooks/useToken";
 import { sidebatItemsSelector } from "src/store/reducers/sidebar";
 import cl from "classnames";
@@ -16,6 +16,7 @@ const CustomSidebar = () => {
   const handleOverlay = () => dispatch(sidebarHandler(!collapsed));
   const routes = useAppSelector(sidebatItemsSelector);
   const { pathname } = useLocation();
+  const token = useAppSelector(tokenSelector);
 
   const [menuItem, $menuItem] = useState<MainPermissions>();
 
@@ -28,7 +29,7 @@ const CustomSidebar = () => {
 
   const { data: me } = useToken({ enabled: false });
 
-  if (!routes?.length) return;
+  // if (!routes?.length && !token) return;
 
   return (
     <>

@@ -647,7 +647,7 @@ const Navigation = () => {
     if (permission) dispatch(sidebarItemsHandler());
   }, [permission]);
 
-  if (!sidebarItems?.length) return;
+  if (!sidebarItems?.length && !!token) return;
 
   return (
     <>
