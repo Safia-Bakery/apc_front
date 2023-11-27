@@ -8,8 +8,8 @@ import { useState } from "react";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useRoles from "src/hooks/useRoles";
-import { useAppSelector } from "src/redux/utils/types";
-import { permissionSelector } from "src/redux/reducers/auth";
+import { useAppSelector } from "src/store/utils/types";
+import { permissionSelector } from "src/store/reducers/sidebar";
 
 const column = [
   { name: "№", key: "" },

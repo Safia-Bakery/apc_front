@@ -11,8 +11,8 @@ import useBranches from "src/hooks/useBranches";
 import BranchesFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import useBranchSync from "src/hooks/sync/useBranchSync";
-import { useAppSelector } from "src/redux/utils/types";
-import { permissionSelector } from "src/redux/reducers/auth";
+import { useAppSelector } from "src/store/utils/types";
+import { permissionSelector } from "src/store/reducers/sidebar";
 import useQueryString from "src/hooks/custom/useQueryString";
 import TableLoading from "src/components/TableLoading";
 

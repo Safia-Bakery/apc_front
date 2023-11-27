@@ -5,7 +5,7 @@ import Card from "src/components/Card";
 import Header from "src/components/Header";
 import useOrder from "src/hooks/useOrder";
 import dayjs from "dayjs";
-import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
+import { useAppDispatch, useAppSelector } from "src/store/utils/types";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import { successToast } from "src/utils/toast";
 import { baseURL } from "src/main";
@@ -23,18 +23,19 @@ import {
 } from "src/utils/types";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import ShowRequestModals from "src/components/ShowRequestModals";
-import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
+import { reportImgSelector, uploadReport } from "src/store/reducers/selects";
 import useQueryString from "src/hooks/custom/useQueryString";
 import {
   useNavigateParams,
   useRemoveParams,
 } from "src/hooks/custom/useCustomNavigate";
 import uploadFileMutation from "src/hooks/mutation/uploadFile";
-import { loginHandler, permissionSelector } from "src/redux/reducers/auth";
+import { loginHandler } from "src/store/reducers/auth";
 import useBrigadas from "src/hooks/useBrigadas";
 import syncExpenditure from "src/hooks/mutation/syncExpenditure";
 import Loading from "src/components/Loader";
 import cl from "classnames";
+import { permissionSelector } from "src/store/reducers/sidebar";
 
 const enum ModalTypes {
   closed = "closed",

@@ -1,6 +1,6 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
-import { reportImgSelector } from "src/redux/reducers/selects";
-import { useAppSelector } from "src/redux/utils/types";
+import { reportImgSelector } from "src/store/reducers/selects";
+import { useAppSelector } from "src/store/utils/types";
 import cl from "classnames";
 
 export interface FileItem {

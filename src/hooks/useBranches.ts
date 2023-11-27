@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "src/main";
-import { permissionSelector } from "src/redux/reducers/auth";
-import { useAppSelector } from "src/redux/utils/types";
+import { permissionSelector } from "src/store/reducers/sidebar";
+import { useAppSelector } from "src/store/utils/types";
 import { BranchTypes, MainPermissions } from "src/utils/types";
 
 interface BodyTypes {

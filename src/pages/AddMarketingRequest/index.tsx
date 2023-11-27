@@ -16,8 +16,8 @@ import BranchSelect from "src/components/BranchSelect";
 import useCategories from "src/hooks/useCategories";
 import Loading from "src/components/Loader";
 import { MainPermissions, MarketingSubDep } from "src/utils/types";
-import { useAppSelector } from "src/redux/utils/types";
-import { permissionSelector } from "src/redux/reducers/auth";
+import { useAppSelector } from "src/store/utils/types";
+import { permissionSelector } from "src/store/reducers/sidebar";
 
 const AddMarketingRequest = () => {
   const [files, $files] = useState<FormData>();

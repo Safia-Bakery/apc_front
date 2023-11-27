@@ -471,3 +471,15 @@ export interface BotWorkTimeType {
   from_time: string;
   to_time: string;
 }
+
+interface BaseSidebarTypes {
+  name: string;
+  icon: string;
+  screen: MainPermissions;
+  url?: string;
+  param?: string;
+}
+
+export interface SidebarType extends BaseSidebarTypes {
+  subroutes?: BaseSidebarTypes[];
+}

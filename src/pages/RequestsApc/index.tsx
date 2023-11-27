@@ -16,8 +16,8 @@ import TableHead from "src/components/TableHead";
 import RequestsFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import cl from "classnames";
-import { useAppSelector } from "src/redux/utils/types";
-import { permissionSelector } from "src/redux/reducers/auth";
+import { useAppSelector } from "src/store/utils/types";
+import { permissionSelector } from "src/store/reducers/sidebar";
 import useQueryString from "src/hooks/custom/useQueryString";
 import TableLoading from "src/components/TableLoading";
 

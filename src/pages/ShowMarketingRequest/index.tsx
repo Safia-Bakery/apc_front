@@ -5,7 +5,7 @@ import Header from "src/components/Header";
 
 import useOrder from "src/hooks/useOrder";
 import dayjs from "dayjs";
-import { useAppSelector } from "src/redux/utils/types";
+import { useAppSelector } from "src/store/utils/types";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import { successToast } from "src/utils/toast";
 import { baseURL } from "src/main";
@@ -27,7 +27,7 @@ import {
   useNavigateParams,
   useRemoveParams,
 } from "src/hooks/custom/useCustomNavigate";
-import { permissionSelector } from "src/redux/reducers/auth";
+import { permissionSelector } from "src/store/reducers/sidebar";
 import useQueryString from "src/hooks/custom/useQueryString";
 import cl from "classnames";
 

@@ -1,11 +1,9 @@
-import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
+import { useAppDispatch, useAppSelector } from "src/store/utils/types";
 import {
   loginHandler,
   logoutHandler,
-  permissionHandler,
-  permissionSelector,
   tokenSelector,
-} from "src/redux/reducers/auth";
+} from "src/store/reducers/auth";
 import useToken from "src/hooks/useToken";
 import BreadCrump from "../BreadCrump";
 import CustomSidebar from "../Sidebar";
@@ -20,6 +18,13 @@ import {
 } from "src/utils/types";
 import useQueryString from "src/hooks/custom/useQueryString";
 import Suspend from "../Suspend";
+import {
+  permissionHandler,
+  permissionSelector,
+  sidebarItemsHandler,
+  sidebatItemsSelector,
+} from "src/store/reducers/sidebar";
+import useUpdateEffect from "src/hooks/useUpdateEffect";
 
 const ControlPanel = lazy(() => import("src/pages/ControlPanel"));
 const RequestsStaff = lazy(() => import("src/pages/RequestsStaff"));
@@ -591,6 +596,7 @@ const Navigation = () => {
   const permission = useAppSelector(permissionSelector);
   const { error, data: user } = useToken({});
   const { pathname, search } = useLocation();
+  const sidebarItems = useAppSelector(sidebatItemsSelector);
 
   const renderSidebar = useMemo(() => {
     if (!!permission && !!token)
@@ -632,9 +638,16 @@ const Navigation = () => {
   }, [tokenKey]);
 
   useEffect(() => {
-    if (!!user?.permissions.length && !!token)
+    if (!!user?.permissions.length && !!token) {
       dispatch(permissionHandler(user?.permissions));
+    }
   }, [user?.permissions, token]);
+
+  useUpdateEffect(() => {
+    if (permission) dispatch(sidebarItemsHandler());
+  }, [permission]);
+
+  if (!sidebarItems?.length) return;
 
   return (
     <>

@@ -14,8 +14,8 @@ import {
   useRemoveParams,
 } from "src/hooks/custom/useCustomNavigate";
 import { useForm } from "react-hook-form";
-import { permissionSelector } from "src/redux/reducers/auth";
-import { useAppSelector } from "src/redux/utils/types";
+import { permissionSelector } from "src/store/reducers/sidebar";
+import { useAppSelector } from "src/store/utils/types";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
 
 const today = new Date();

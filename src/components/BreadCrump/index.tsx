@@ -1,9 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import styles from "./index.module.scss";
 import { FC } from "react";
-import { logoutHandler } from "src/redux/reducers/auth";
-import { useAppDispatch } from "src/redux/utils/types";
-import { sidebarHandler } from "src/redux/reducers/selects";
+import { logoutHandler } from "src/store/reducers/auth";
+import { useAppDispatch } from "src/store/utils/types";
+import { sidebarHandler } from "src/store/reducers/selects";
 import useToken from "src/hooks/useToken";
 
 interface Breadcrumb {

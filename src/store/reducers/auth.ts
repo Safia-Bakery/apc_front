@@ -1,16 +1,14 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../rootConfig";
-import { MainPermissions } from "src/utils/types";
+import { clearPermission } from "./sidebar";
 
 interface State {
   token: string | null;
-  permissions?: { [key in MainPermissions]: boolean };
   link: string;
 }
 
 const initialState: State = {
   token: null,
-  permissions: undefined,
   link: "/home",
 };
 
@@ -20,10 +18,9 @@ export const authReducer = createSlice({
   reducers: {
     logoutHandler: (state) => {
       state.token = null;
-      state.permissions = undefined;
+      clearPermission();
       window.location.reload();
 
-      // localStorage.clear();
       const { pathname, search } = window.location;
       if (pathname.includes("login")) state.link = "/home";
       else state.link = pathname + search;
@@ -31,21 +28,12 @@ export const authReducer = createSlice({
     loginHandler: (state, { payload }) => {
       state.token = payload;
     },
-    permissionHandler: (state, { payload }: PayloadAction<any[]>) => {
-      const permissions = payload.reduce((acc, number) => {
-        acc[number] = true;
-        return acc;
-      }, {});
-      state.permissions = permissions;
-    },
   },
 });
 
 export const tokenSelector = (state: RootState) => state.auth.token;
-export const permissionSelector = (state: RootState) => state.auth.permissions;
 export const linkSelector = (state: RootState) => state.auth.link;
 
-export const { loginHandler, logoutHandler, permissionHandler } =
-  authReducer.actions;
+export const { loginHandler, logoutHandler } = authReducer.actions;
 
 export default authReducer.reducer;

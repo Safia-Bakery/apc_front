@@ -71,7 +71,7 @@ const LogysticsLogs = () => {
             </tr>
             <tr className="bg-blue">
               <td width="40">3</td>
-              <td>Отправлен в путь</td>
+              <td>Время поставки</td>
               <td>{order?.user_manager}</td>
               <td>
                 {order?.arrival_date
@@ -87,6 +87,24 @@ const LogysticsLogs = () => {
                   : "Не задано"}
               </td>
             </tr>
+            {/* <tr className="bg-blue">
+              <td width="40">3</td>
+              <td>Отправлен в путь</td>
+              <td>{order?.user_manager}</td>
+              <td>
+                {order?.arrival_date
+                  ? dayjs(order?.arrival_date).format("DD.MM.YYYY HH:mm")
+                  : "Не задано"}
+              </td>
+              <td>
+                {!!dayjs(order?.arrival_date).diff(order?.started_at, "hours")
+                  ? dayjs(order?.arrival_date).diff(
+                      order?.started_at,
+                      "hours"
+                    ) + " часов"
+                  : "Не задано"}
+              </td>
+            </tr> */}
             <tr className="bg-blue">
               <td width="40">4</td>
               <td>Завершение</td>

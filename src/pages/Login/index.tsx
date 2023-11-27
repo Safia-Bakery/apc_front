@@ -2,19 +2,19 @@ import { useForm } from "react-hook-form";
 import styles from "./index.module.scss";
 import cl from "classnames";
 import loginMutation from "src/hooks/mutation/loginMutation";
-import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
+import { useAppDispatch, useAppSelector } from "src/store/utils/types";
 import {
   linkSelector,
   loginHandler,
-  permissionSelector,
   tokenSelector,
-} from "src/redux/reducers/auth";
+} from "src/store/reducers/auth";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useToken from "src/hooks/useToken";
 import { successToast } from "src/utils/toast";
 import BaseInput from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
+import { permissionSelector } from "src/store/reducers/sidebar";
 
 const Login = () => {
   const dispatch = useAppDispatch();

@@ -17,8 +17,8 @@ import {
   useNavigateParams,
   useRemoveParams,
 } from "src/hooks/custom/useCustomNavigate";
-import { permissionSelector } from "src/redux/reducers/auth";
-import { useAppSelector } from "src/redux/utils/types";
+import { permissionSelector } from "src/store/reducers/sidebar";
+import { useAppSelector } from "src/store/utils/types";
 import { MainPermissions } from "src/utils/types";
 import useSyncExpanditure from "src/hooks/sync/useSyncExpanditure";
 

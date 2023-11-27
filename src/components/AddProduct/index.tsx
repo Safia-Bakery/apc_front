@@ -12,8 +12,8 @@ import { useNavigateParams } from "src/hooks/custom/useCustomNavigate";
 import deleteExpenditureMutation from "src/hooks/mutation/deleteExpenditure";
 import dayjs from "dayjs";
 import { MainPermissions } from "src/utils/types";
-import { useAppSelector } from "src/redux/utils/types";
-import { permissionSelector } from "src/redux/reducers/auth";
+import { useAppSelector } from "src/store/utils/types";
+import { permissionSelector } from "src/store/reducers/sidebar";
 import useQueryString from "src/hooks/custom/useQueryString";
 
 const column = [

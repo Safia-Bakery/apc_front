@@ -5,8 +5,8 @@ import axios, {
   CancelTokenSource,
 } from "axios";
 import { Store } from "redux";
-import { logoutHandler } from "src/redux/reducers/auth";
-import { RootState } from "src/redux/rootConfig";
+import { logoutHandler } from "src/store/reducers/auth";
+import { RootState } from "src/store/rootConfig";
 
 interface BaseUrlParams {
   url: string;

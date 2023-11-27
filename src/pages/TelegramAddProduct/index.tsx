@@ -19,8 +19,8 @@ import { RequestStatus } from "src/utils/types";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import deleteExpenditureMutation from "src/hooks/mutation/deleteExpenditure";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
-import { reportImgSelector, uploadReport } from "src/redux/reducers/selects";
-import { useAppDispatch, useAppSelector } from "src/redux/utils/types";
+import { reportImgSelector, uploadReport } from "src/store/reducers/selects";
+import { useAppDispatch, useAppSelector } from "src/store/utils/types";
 import uploadFileMutation from "src/hooks/mutation/uploadFile";
 import useSyncExpanditure from "src/hooks/sync/useSyncExpanditure";
 

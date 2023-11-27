@@ -8,8 +8,8 @@ import { useEffect } from "react";
 import useBotWorkTime from "src/hooks/useBotWorkTime";
 import useQueryString from "src/hooks/custom/useQueryString";
 import { MainPermissions } from "src/utils/types";
-import { useAppSelector } from "src/redux/utils/types";
-import { permissionSelector } from "src/redux/reducers/auth";
+import { useAppSelector } from "src/store/utils/types";
+import { permissionSelector } from "src/store/reducers/sidebar";
 import Loading from "../Loader";
 
 const BotTimeModal = () => {

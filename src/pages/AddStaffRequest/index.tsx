@@ -15,8 +15,8 @@ import BranchSelect from "src/components/BranchSelect";
 import { MainPermissions, Sphere } from "src/utils/types";
 import WarehouseSelect from "src/components/WarehouseSelect";
 import Loading from "src/components/Loader";
-import { useAppSelector } from "src/redux/utils/types";
-import { permissionSelector } from "src/redux/reducers/auth";
+import { useAppSelector } from "src/store/utils/types";
+import { permissionSelector } from "src/store/reducers/sidebar";
 import dayjs from "dayjs";
 import { staffCategoryId } from "src/utils/helpers";
 

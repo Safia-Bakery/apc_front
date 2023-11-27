@@ -18,8 +18,8 @@ import useCategories from "src/hooks/useCategories";
 import { Departments, MainPermissions, Sphere } from "src/utils/types";
 import WarehouseSelect from "src/components/WarehouseSelect";
 import Loading from "src/components/Loader";
-import { useAppSelector } from "src/redux/utils/types";
-import { permissionSelector } from "src/redux/reducers/auth";
+import { useAppSelector } from "src/store/utils/types";
+import { permissionSelector } from "src/store/reducers/sidebar";
 
 const CreateApcRequest = () => {
   const [files, $files] = useState<FormData>();
