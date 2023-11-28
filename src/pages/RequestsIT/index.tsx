@@ -128,9 +128,7 @@ const RequestsIT = () => {
                         dep: Departments.it,
                       })}
                     </td>
-                    <td>
-                      {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
-                    </td>
+                    <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
                   </tr>
                 )
               )}

@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import useOrder from "src/hooks/useOrder";
@@ -11,6 +11,7 @@ import {
   detectFileType,
   handleDepartment,
   handleStatus,
+  isValidHttpUrl,
 } from "src/utils/helpers";
 import { Departments, FileType, RequestStatus } from "src/utils/types";
 import { useForm } from "react-hook-form";
@@ -205,6 +206,34 @@ const ShowLogRequests = () => {
                     <th>Примичание</th>
                     <td>{order?.description}</td>
                   </tr>
+                  {order?.location?.from_loc && (
+                    <tr>
+                      <th>Откуда</th>
+                      <td>
+                        {isValidHttpUrl(order?.location?.from_loc) ? (
+                          <Link to={order?.location?.from_loc} target="_blank">
+                            {order?.location?.from_loc}
+                          </Link>
+                        ) : (
+                          order?.location?.from_loc
+                        )}
+                      </td>
+                    </tr>
+                  )}
+                  {order?.location?.to_loc && (
+                    <tr>
+                      <th>Куда</th>
+                      <td>
+                        {isValidHttpUrl(order?.location?.to_loc) ? (
+                          <Link to={order?.location?.to_loc} target="_blank">
+                            {order?.location?.to_loc}
+                          </Link>
+                        ) : (
+                          order?.location?.to_loc
+                        )}
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>

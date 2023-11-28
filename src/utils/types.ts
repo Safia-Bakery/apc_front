@@ -58,6 +58,7 @@ export interface Order {
     status: number;
   }[];
   category: Category;
+  location?: { from_loc: string; to_loc: string } | null;
   expanditure: {
     id: number;
     amount: number;

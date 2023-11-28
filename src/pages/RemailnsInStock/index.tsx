@@ -111,9 +111,7 @@ const RemainsInStock = () => {
                   <tr key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td>{item?.name}</td>
-                    <td>
-                      {dayjs(item?.last_update).format("DD.MM.YYYY HH:mm")}
-                    </td>
+                    <td>{dayjs(item?.last_update).format("DD.MM.YYYY")}</td>
                     <td>{item?.amount_left}</td>
                     <td>{item?.total_price}</td>
                   </tr>

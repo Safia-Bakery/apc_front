@@ -189,9 +189,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
                         ? order?.brigada?.name
                         : "Не задано"}
                     </td>
-                    <td>
-                      {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
-                    </td>
+                    <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
                     <td>
                       {handleStatus({
                         status: order?.status,
