@@ -29,11 +29,11 @@ interface Props {
 const column = [
   { name: "№", key: "" },
   { name: "Номер заявки", key: "id" },
+  { name: "Тип", key: "type" },
   { name: "Клиент", key: "user" },
   { name: "Филиал/Отдел", key: "name" },
   { name: "Группа проблем", key: "category?.name" },
   { name: "Срочно", key: "urgent" },
-  // { name: "Время поставки", key: "arrival_date" },
   { name: "Дата поступления", key: "created_at" },
   { name: "Статус", key: "status" },
   { name: "Изменил", key: "user_manager" },
@@ -155,6 +155,17 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
                         </Link>
                       ) : (
                         <span className={"text-link"}>{order?.id}</span>
+                      )}
+                    </td>
+
+                    <td width={40}>
+                      {order?.fillial?.id ? (
+                        <img src="/assets/icons/home.svg" alt="from-fillial" />
+                      ) : (
+                        <img
+                          src="/assets/icons/marker.svg"
+                          alt="from-location"
+                        />
                       )}
                     </td>
 

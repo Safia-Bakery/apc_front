@@ -107,6 +107,9 @@ const LogFilter: FC = () => {
           />
         </BaseInput>
       </td>
+      <td>
+        <MainInput className="!mb-0" />
+      </td>
       <td width={150} className="p-0 relative">
         <div
           onClick={() => $enabled(true)}
