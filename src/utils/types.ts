@@ -86,6 +86,7 @@ export interface Order {
   finished_at: Date;
   arrival_date: Date;
   bread_size?: string;
+  update_time: { [key: number | string]: Date | string };
 }
 
 export interface OrderType extends BasePaginatedRes {

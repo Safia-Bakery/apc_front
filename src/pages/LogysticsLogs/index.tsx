@@ -3,6 +3,7 @@ import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import useOrder from "src/hooks/useOrder";
 import dayjs from "dayjs";
+import { RequestStatus } from "src/utils/types";
 
 const column = [
   { name: "№" },
@@ -45,8 +46,10 @@ const LogysticsLogs = () => {
               <td>Поступление заявки</td>
               <td>{order?.is_bot ? "Телеграм-бот" : "Веб-сайт"}</td>
               <td>
-                {order?.created_at
-                  ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
+                {order?.update_time?.[RequestStatus.new]
+                  ? dayjs(order?.update_time?.[RequestStatus.new]).format(
+                      "DD.MM.YYYY HH:mm"
+                    )
                   : "Не задано"}
               </td>
               <td>-------</td>
@@ -56,21 +59,98 @@ const LogysticsLogs = () => {
               <td>Принят в работу</td>
               <td>{order?.user_manager}</td>
               <td>
-                {order?.started_at
-                  ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
+                {order?.update_time?.[RequestStatus.confirmed]
+                  ? dayjs(order?.update_time?.[RequestStatus.confirmed]).format(
+                      "DD.MM.YYYY HH:mm"
+                    )
                   : "Не задано"}
               </td>
               <td>
-                {!!dayjs(order?.started_at).diff(order?.created_at, "minutes")
-                  ? dayjs(order?.started_at).diff(
-                      order?.created_at,
+                {!!dayjs(order?.update_time?.[RequestStatus.confirmed]).diff(
+                  order?.update_time?.[RequestStatus.new],
+                  "minutes"
+                )
+                  ? dayjs(order?.update_time?.[RequestStatus.confirmed]).diff(
+                      order?.update_time?.[RequestStatus.new],
                       "minutes"
                     ) + " минута"
                   : "Не задано"}
               </td>
             </tr>
+
             <tr className="bg-blue">
               <td width="40">3</td>
+              <td>Отправлен в путь</td>
+              <td>{order?.user_manager}</td>
+              <td>
+                {order?.update_time?.[RequestStatus.sendToRepair]
+                  ? dayjs(
+                      order?.update_time?.[RequestStatus.sendToRepair]
+                    ).format("DD.MM.YYYY HH:mm")
+                  : "Не задано"}
+              </td>
+              <td>
+                {!!dayjs(order?.update_time?.[RequestStatus.sendToRepair]).diff(
+                  order?.update_time?.[RequestStatus.confirmed],
+                  "hours"
+                )
+                  ? dayjs(
+                      order?.update_time?.[RequestStatus.sendToRepair]
+                    ).diff(
+                      order?.update_time?.[RequestStatus.confirmed],
+                      "hours"
+                    ) + " часов"
+                  : "Не задано"}
+              </td>
+            </tr>
+            <tr className="bg-blue">
+              <td width="40">4</td>
+              <td>Завершение</td>
+              <td>{order?.brigada?.name}</td>
+              <td>
+                {order?.update_time?.[RequestStatus.done]
+                  ? dayjs(order?.update_time?.[RequestStatus.done]).format(
+                      "DD.MM.YYYY HH:mm"
+                    )
+                  : "Не задано"}
+              </td>
+              <td>
+                {!!dayjs(order?.update_time?.[RequestStatus.done]).diff(
+                  order?.update_time?.[RequestStatus.sendToRepair],
+                  "hours"
+                )
+                  ? dayjs(order?.update_time?.[RequestStatus.done]).diff(
+                      order?.update_time?.[RequestStatus.sendToRepair],
+                      "hours"
+                    ) + " часов"
+                  : "Не задано"}
+              </td>
+            </tr>
+            <tr className="bg-blue">
+              <td width="40">5</td>
+              <td>Отмена</td>
+              <td>{order?.user_manager}</td>
+              <td>
+                {order?.update_time?.[RequestStatus.rejected]
+                  ? dayjs(order?.update_time?.[RequestStatus.rejected]).format(
+                      "DD.MM.YYYY HH:mm"
+                    )
+                  : "Не задано"}
+              </td>
+              <td>
+                {!!dayjs(order?.update_time?.[RequestStatus.confirmed]).diff(
+                  order?.update_time?.[RequestStatus.rejected],
+                  "minutes"
+                ) && order?.update_time?.[RequestStatus.rejected]
+                  ? dayjs(order?.update_time?.[RequestStatus.confirmed]).diff(
+                      order?.update_time?.[RequestStatus.rejected],
+                      "minutes"
+                    )
+                  : "Не задано"}
+              </td>
+            </tr>
+            <tr className="bg-blue">
+              <td width="40">6</td>
               <td>Время поставки</td>
               <td>{order?.user_manager}</td>
               <td>
@@ -78,48 +158,7 @@ const LogysticsLogs = () => {
                   ? dayjs(order?.arrival_date).format("DD.MM.YYYY HH:mm")
                   : "Не задано"}
               </td>
-              <td>
-                {!!dayjs(order?.arrival_date).diff(order?.started_at, "hours")
-                  ? dayjs(order?.arrival_date).diff(
-                      order?.started_at,
-                      "hours"
-                    ) + " часов"
-                  : "Не задано"}
-              </td>
-            </tr>
-            {/* <tr className="bg-blue">
-              <td width="40">3</td>
-              <td>Отправлен в путь</td>
-              <td>{order?.user_manager}</td>
-              <td>
-                {order?.arrival_date
-                  ? dayjs(order?.arrival_date).format("DD.MM.YYYY HH:mm")
-                  : "Не задано"}
-              </td>
-              <td>
-                {!!dayjs(order?.arrival_date).diff(order?.started_at, "hours")
-                  ? dayjs(order?.arrival_date).diff(
-                      order?.started_at,
-                      "hours"
-                    ) + " часов"
-                  : "Не задано"}
-              </td>
-            </tr> */}
-            <tr className="bg-blue">
-              <td width="40">4</td>
-              <td>Завершение</td>
-              <td>{order?.brigada?.name}</td>
-              <td>
-                {order?.finished_at
-                  ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
-                  : "Не задано"}
-              </td>
-              <td>
-                {!!dayjs(order?.finished_at).diff(order?.started_at, "hours")
-                  ? dayjs(order?.finished_at).diff(order?.started_at, "hours") +
-                    " часов"
-                  : "Не задано"}
-              </td>
+              <td>Не задано</td>
             </tr>
           </tbody>
         </table>
