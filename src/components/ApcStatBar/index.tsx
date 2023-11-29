@@ -31,11 +31,11 @@ const ApcStatBar: FC = () => {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <div className="navbar-collapse navbar-nav">
+      <div className="flex">
         {routesArr.map((route) => (
           <Link
             key={route.name}
-            className={cl("nav-item nav-link", {
+            className={cl("py-2 px-3 my-2", {
               [styles.active]: pathname.includes(route.url),
             })}
             to={route.url}

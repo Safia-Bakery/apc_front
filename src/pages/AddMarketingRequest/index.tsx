@@ -85,7 +85,7 @@ const AddMarketingRequest = () => {
     });
   }, [branch?.name]);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading absolute />;
 
   return (
     <Card>

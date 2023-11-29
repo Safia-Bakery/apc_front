@@ -72,7 +72,7 @@ const AddStaffRequest = () => {
     }
   }, [sphere_status]);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading absolute />;
 
   return (
     <Card>

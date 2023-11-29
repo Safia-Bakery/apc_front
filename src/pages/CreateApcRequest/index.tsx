@@ -29,7 +29,7 @@ const CreateApcRequest = () => {
   const branch = branchJson && JSON.parse(branchJson);
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const perm = useAppSelector(permissionSelector);
-  const { data: categories } = useCategories({
+  const { data: categories, isLoading: categoryLoading } = useCategories({
     department: Departments.apc,
     sphere_status,
   });
@@ -86,20 +86,7 @@ const CreateApcRequest = () => {
     }
   }, [sphere_status]);
 
-  if (isLoading) return <Loading />;
-
-  const renderCategories = useMemo(() => {
-    return (
-      <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
-        <MainSelect
-          values={categories?.items}
-          register={register("category_id", {
-            required: "Обязательное поле",
-          })}
-        />
-      </BaseInputs>
-    );
-  }, [categories]);
+  if (isLoading) return <Loading absolute />;
 
   return (
     <Card>
@@ -120,7 +107,14 @@ const CreateApcRequest = () => {
         >
           {renderBranchSelect}
         </BaseInputs>
-        {renderCategories}
+        <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
+          <MainSelect
+            values={categories?.items}
+            register={register("category_id", {
+              required: "Обязательное поле",
+            })}
+          />
+        </BaseInputs>
 
         <BaseInputs label="Продукт">
           <MainInput register={register("product")} />

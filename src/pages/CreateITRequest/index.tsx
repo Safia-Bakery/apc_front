@@ -74,7 +74,7 @@ const CreateITRequest = () => {
     );
   };
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading absolute />;
 
   return (
     <Card>

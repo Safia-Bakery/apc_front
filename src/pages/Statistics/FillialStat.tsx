@@ -54,6 +54,7 @@ const BranchStat: FC<Props> = ({ sphere_status }) => {
       setSortOrder("asc");
     }
   };
+  if (isLoading) return <Loading />;
   return (
     <>
       <table className="table table-hover" ref={tableRef}>
@@ -65,20 +66,12 @@ const BranchStat: FC<Props> = ({ sphere_status }) => {
         />
 
         <tbody>
-          {isLoading ? (
-            <tr>
-              <td>
-                <Loading />
-              </td>
+          {data?.map((item, idx) => (
+            <tr key={idx} className="bg-blue">
+              <td>{item.name}</td>
+              <td>{item.amount}</td>
             </tr>
-          ) : (
-            data?.map((item, idx) => (
-              <tr key={idx} className="bg-blue">
-                <td>{item.name}</td>
-                <td>{item.amount}</td>
-              </tr>
-            ))
-          )}
+          ))}
         </tbody>
       </table>
 
@@ -87,7 +80,7 @@ const BranchStat: FC<Props> = ({ sphere_status }) => {
           <p className="text-center w-full ">Спосок пуст</p>
         </div>
       )}
-      <button id={"branch_stat"} className="d-none" onClick={downloadAsPdf}>
+      <button id={"branch_stat"} className="hidden" onClick={downloadAsPdf}>
         download
       </button>
     </>

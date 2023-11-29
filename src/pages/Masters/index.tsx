@@ -79,7 +79,7 @@ const Masters: FC<Props> = ({ add, edit, isMaster = false }) => {
     if (currentPage > 1) refetch();
   }, [currentPage]);
 
-  if (orderLoading) return <Loading />;
+  if (orderLoading) return <Loading absolute />;
   return (
     <Card>
       <Header title={isMaster ? "Мастера" : "Бригады"}>

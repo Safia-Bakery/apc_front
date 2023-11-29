@@ -59,6 +59,8 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
 
     return sumWithInitial;
   };
+
+  if (isLoading) return <Loading />;
   return (
     <>
       <table className="table table-bordered w-full border-dark" ref={tableRef}>
@@ -73,13 +75,6 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
         </thead>
 
         <tbody>
-          {isLoading && (
-            <tr>
-              <td>
-                <Loading />
-              </td>
-            </tr>
-          )}
           {data &&
             Object.keys(data)?.map((mainKey: string, idx) => (
               <tr key={mainKey} className="bg-blue mb-2 ">
@@ -140,13 +135,6 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
         </tbody>
       </table>
 
-      {/* <Chart
-        options={options}
-        series={series}
-        type="pie"
-        // width={380}
-        height={400}
-      /> */}
       {!data && !isLoading && (
         <div className="w-full">
           <p className="text-center w-full ">Спосок пуст</p>
@@ -154,7 +142,7 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
       )}
       <button
         id={"brigada_categ_stat"}
-        className="d-none"
+        className="hidden"
         onClick={downloadAsPdf}
       >
         download

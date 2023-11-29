@@ -57,6 +57,8 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
     }
   };
 
+  if (isLoading) return <Loading />;
+
   return (
     <>
       <table className="table table-hover" ref={tableRef}>
@@ -68,24 +70,16 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
         />
 
         <tbody>
-          {isLoading ? (
-            <tr>
-              <td>
-                <Loading />
-              </td>
-            </tr>
-          ) : (
-            data?.tests?.map((item, idx) => (
-              <tr key={idx} className="bg-blue">
-                <td width="50">{idx + 1}</td>
+          {data?.tests?.map((item, idx) => (
+            <tr key={idx} className="bg-blue">
+              <td width="50">{idx + 1}</td>
 
-                <td>
-                  <Link to={item?.id.toString()}>{item?.name}</Link>
-                </td>
-                <td>{item?.amount}</td>
-              </tr>
-            ))
-          )}
+              <td>
+                <Link to={item?.id.toString()}>{item?.name}</Link>
+              </td>
+              <td>{item?.amount}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
 
@@ -96,7 +90,7 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
       )}
       <button
         id={"consumption_stat"}
-        className="d-none"
+        className="hidden"
         onClick={downloadAsPdf}
       >
         download

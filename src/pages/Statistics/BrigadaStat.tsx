@@ -99,6 +99,7 @@ const BrigadaStat: FC<Props> = ({ sphere_status }) => {
       setSortOrder("asc");
     }
   };
+  if (isLoading) return <Loading />;
   return (
     <>
       <table ref={tableRef} className="table table-hover">
@@ -110,22 +111,14 @@ const BrigadaStat: FC<Props> = ({ sphere_status }) => {
         />
 
         <tbody>
-          {isLoading ? (
-            <tr>
-              <td>
-                <Loading />
-              </td>
+          {data?.map((brigada, idx) => (
+            <tr key={idx} className="bg-blue">
+              <td width="40">{idx + 1}</td>
+              <td>{brigada.name}</td>
+              <td>{brigada.amount}</td>
+              <td>{idx * 3} </td>
             </tr>
-          ) : (
-            data?.map((brigada, idx) => (
-              <tr key={idx} className="bg-blue">
-                <td width="40">{idx + 1}</td>
-                <td>{brigada.name}</td>
-                <td>{brigada.amount}</td>
-                <td>{idx * 3} </td>
-              </tr>
-            ))
-          )}
+          ))}
         </tbody>
       </table>
 
@@ -143,7 +136,7 @@ const BrigadaStat: FC<Props> = ({ sphere_status }) => {
           <p className="text-center w-full ">Спосок пуст</p>
         </div>
       )}
-      <button id={"brigada_stat"} className="d-none" onClick={downloadAsPdf}>
+      <button id={"brigada_stat"} className="hidden" onClick={downloadAsPdf}>
         download
       </button>
     </>

@@ -294,7 +294,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
   }, [order?.status]);
 
   if (isLoading || uploadLoading || attachLoading || orderLoading)
-    return <Loading />;
+    return <Loading absolute />;
 
   return (
     <>

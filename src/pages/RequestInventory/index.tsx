@@ -72,7 +72,7 @@ const RequestInventory = () => {
     refetch();
   }, [currentPage]);
 
-  if (orderLoading) return <Loading />;
+  if (orderLoading) return <Loading absolute />;
 
   return (
     <Card>

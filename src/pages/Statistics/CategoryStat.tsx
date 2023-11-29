@@ -87,6 +87,8 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
 
   const downloadAsPdf = () => onDownload();
 
+  if (isLoading) return <Loading />;
+
   return (
     <>
       <table className="table table-hover table-bordered" ref={tableRef}>
@@ -98,22 +100,14 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
         />
 
         <tbody>
-          {isLoading ? (
-            <tr>
-              <td>
-                <Loading />
-              </td>
+          {data?.table?.map((item, idx) => (
+            <tr key={idx} className="bg-blue">
+              <td width="40">{idx + 1}</td>
+              <td>{item?.category}</td>
+              <td>{item?.amount}</td>
+              <td>{item?.time}</td>
             </tr>
-          ) : (
-            data?.table?.map((item, idx) => (
-              <tr key={idx} className="bg-blue">
-                <td width="40">{idx + 1}</td>
-                <td>{item?.category}</td>
-                <td>{item?.amount}</td>
-                <td>{item?.time}</td>
-              </tr>
-            ))
-          )}
+          ))}
         </tbody>
       </table>
 
@@ -130,7 +124,7 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
           <p className="text-center w-full">Спосок пуст</p>
         </div>
       )}
-      <button id={"category_stat"} className="d-none" onClick={downloadAsPdf}>
+      <button id={"category_stat"} className="hidden" onClick={downloadAsPdf}>
         download
       </button>
     </>

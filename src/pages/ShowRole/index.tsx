@@ -53,7 +53,7 @@ const ShowRole = () => {
     }
   }, [rolePermission?.permissions]);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading absolute />;
 
   return (
     <Card className={"pb-11"}>

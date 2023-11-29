@@ -1,4 +1,11 @@
 .wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.absolute {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -6,7 +13,4 @@
   right: 0;
   opacity: 0.5;
   z-index: 99;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
