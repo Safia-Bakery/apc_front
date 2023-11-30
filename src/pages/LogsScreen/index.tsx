@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useOrder from "src/hooks/useOrder";
 import dayjs from "dayjs";
 import { RequestStatus } from "src/utils/types";
+import Loading from "src/components/Loader";
 
 const column = [
   { name: "№" },
@@ -18,7 +19,10 @@ const Logs = () => {
   const navigate = useNavigate();
   const handleNavigate = () => navigate(-1);
 
-  const { data: order } = useOrder({ id: Number(id) });
+  const { data: order, isLoading } = useOrder({ id: Number(id) });
+
+  if (isLoading) return <Loading absolute />;
+
   return (
     <Card>
       <Header title={"Логи"}>
@@ -92,11 +96,14 @@ const Logs = () => {
                 {!!dayjs(order?.update_time?.[RequestStatus.done]).diff(
                   order?.update_time?.[RequestStatus.confirmed],
                   "minutes"
-                )
-                  ? dayjs(order?.update_time?.[RequestStatus.done]).diff(
+                ) && order?.update_time?.[RequestStatus.done]
+                  ? `${dayjs(order?.update_time?.[RequestStatus.done]).diff(
                       order?.update_time?.[RequestStatus.confirmed],
                       "minutes"
-                    )
+                    )} (${dayjs(order?.update_time?.[RequestStatus.done]).diff(
+                      order?.update_time?.[RequestStatus.confirmed],
+                      "hours"
+                    )} часов)`
                   : "Не задано"}
               </td>
             </tr>

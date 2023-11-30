@@ -177,12 +177,6 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
           >
             Отклонить
           </button>
-          {/* <button
-            onClick={handleBrigada({ status: RequestStatus.confirmed })}
-            className="btn btn-success btn-fill"
-          >
-            Принять
-          </button> */}
         </div>
       );
   }, [permissions, order?.status]);
