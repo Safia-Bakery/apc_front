@@ -27,6 +27,7 @@ import {
 import useUpdateEffect from "src/hooks/useUpdateEffect";
 
 const ControlPanel = lazy(() => import("src/pages/ControlPanel"));
+const TgRating = lazy(() => import("src/pages/TgRating"));
 const RequestsStaff = lazy(() => import("src/pages/RequestsStaff"));
 const AddStaffOrder = lazy(() => import("src/pages/AddStaffRequest"));
 const LogysticsLogs = lazy(() => import("src/pages/LogysticsLogs"));
@@ -684,6 +685,14 @@ const Navigation = () => {
             </Suspend>
           }
           path={"/tg-add-product/:id"}
+        />
+        <Route
+          element={
+            <Suspend>
+              <TgRating />
+            </Suspend>
+          }
+          path={"/tg-order-rating/:id"}
         />
 
         {permission?.[MainPermissions.get_statistics] && (
