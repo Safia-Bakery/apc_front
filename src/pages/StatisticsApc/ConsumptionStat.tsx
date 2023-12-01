@@ -57,8 +57,6 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
     }
   };
 
-  if (isLoading) return <Loading />;
-
   return (
     <>
       <table className="table table-hover" ref={tableRef}>

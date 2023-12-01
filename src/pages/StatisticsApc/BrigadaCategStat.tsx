@@ -1,7 +1,6 @@
 import { Departments, Order, Sphere } from "src/utils/types";
 import useStatsBrigadaCateg from "src/hooks/useStatsBrigadaCateg";
 import useQueryString from "src/hooks/custom/useQueryString";
-import Loading from "src/components/Loader";
 import { FC, useEffect, useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
 
@@ -60,7 +59,7 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
     return sumWithInitial;
   };
 
-  if (isLoading) return <Loading />;
+  // if (isLoading) return <Loading />;
   return (
     <>
       <table className="table table-bordered w-full border-dark" ref={tableRef}>

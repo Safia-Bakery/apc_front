@@ -196,6 +196,10 @@ export const handleDepartment = ({
         return "Промо-продукция";
       case MarketingSubDep.pos:
         return "POS-Материалы";
+      case MarketingSubDep.branchEnv:
+        return "Внешний вид филиала";
+      case MarketingSubDep.nonstandartAdv:
+        return "Нестандартные рекламные решения";
 
       default:
         break;
@@ -401,7 +405,7 @@ export const routes: SidebarType[] = [
       },
       {
         name: "Статистика",
-        url: "/statistics-marketing",
+        url: "/statistics-marketing/department",
         icon: "/assets/icons/statistics.svg",
         screen: MainPermissions.get_statistics,
       },

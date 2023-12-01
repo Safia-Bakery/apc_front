@@ -3,7 +3,7 @@ import { Departments, Sphere } from "src/utils/types";
 import TableHead from "src/components/TableHead";
 import useStatsDepartment from "src/hooks/useStatsDepartment";
 import useQueryString from "src/hooks/custom/useQueryString";
-import Loading from "src/components/Loader";
+
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 
 const column = [
@@ -54,7 +54,7 @@ const BranchStat: FC<Props> = ({ sphere_status }) => {
       setSortOrder("asc");
     }
   };
-  if (isLoading) return <Loading />;
+  // if (isLoading) return <Loading />;
   return (
     <>
       <table className="table table-hover" ref={tableRef}>

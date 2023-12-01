@@ -6,7 +6,6 @@ import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import useStatsBrigada from "src/hooks/useStatsBrigada";
 import useQueryString from "src/hooks/custom/useQueryString";
-import Loading from "src/components/Loader";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 
 interface Props {
@@ -99,7 +98,7 @@ const BrigadaStat: FC<Props> = ({ sphere_status }) => {
       setSortOrder("asc");
     }
   };
-  if (isLoading) return <Loading />;
+  // if (isLoading) return <Loading />;
   return (
     <>
       <table ref={tableRef} className="table table-hover">

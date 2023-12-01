@@ -1,15 +1,14 @@
-import { FC, useEffect, useMemo, useRef, useState } from "react";
-import { Departments, Sphere } from "src/utils/types";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Departments, MarketingSubDep } from "src/utils/types";
 import TableHead from "src/components/TableHead";
 import Chart from "react-apexcharts";
 import useStatsCategory from "src/hooks/useStatsCategory";
 import Loading from "src/components/Loader";
 import useQueryString from "src/hooks/custom/useQueryString";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
-
-interface Props {
-  sphere_status: Sphere;
-}
+import useMarketingStatDep from "src/hooks/useMarketingStatDep";
+import { handleDepartment } from "src/utils/helpers";
+import useUpdateEffect from "src/hooks/useUpdateEffect";
 
 const options = {
   chart: {
@@ -35,12 +34,12 @@ const column = [
   { name: "Категория", key: "category" },
   { name: "Количество (шт)", key: "amount" },
   {
-    name: "Время обработки (м)",
+    name: "Время обработки (ч)",
     key: "time",
   },
 ];
 
-const CategoryStat: FC<Props> = ({ sphere_status }) => {
+const DepartmentStat = () => {
   const start = useQueryString("start");
   const end = useQueryString("end");
   const tableRef = useRef(null);
@@ -48,26 +47,28 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "статистика по категориям",
+    filename: "Отчёт по отделам",
     sheet: "categories",
   });
-
   const [sortKey, setSortKey] = useState<any>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
-  const { data, isLoading } = useStatsCategory({
-    department: Departments.apc,
-    sphere_status,
+  const { data, isLoading } = useMarketingStatDep({
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),
   });
 
   const series = useMemo(() => {
-    return {
-      serie: data?.piechart.map((item) => Math.round(item.percentage)),
-      labels: data?.piechart.map((item) => item.category_name),
-    };
-  }, [data?.piechart]);
+    if (data?.pie)
+      return {
+        serie: Object.keys(data?.pie).map((item) =>
+          Math.round(data.pie[item][1])
+        ),
+        labels: Object.keys(data?.pie).map((item) =>
+          handleDepartment({ sub: +item as unknown as MarketingSubDep })
+        ),
+      };
+  }, [data?.pie]);
 
   const handleSort = (key: any) => {
     if (key === sortKey) {
@@ -78,16 +79,42 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
     }
   };
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (btnAction)
       btnAction.addEventListener("click", () => {
-        document.getElementById("category_stat")?.click();
+        document.getElementById("department_stat")?.click();
       });
   }, [btnAction]);
 
   const downloadAsPdf = () => onDownload();
 
-  if (isLoading) return <Loading />;
+  const renderTable = useMemo(() => {
+    if (data?.table)
+      return Object.entries(data?.table)?.map((item, idx) => (
+        <tr key={idx} className="bg-blue">
+          <td width="40">{idx + 1}</td>
+          <td>
+            {handleDepartment({
+              sub: +item[0] as unknown as MarketingSubDep,
+            })}
+          </td>
+          <td>{item[1][0]}</td>
+          <td>{item[1][1]}</td>
+        </tr>
+      ));
+  }, [data?.table]);
+
+  const renderChart = useMemo(() => {
+    if (!!series?.labels && !!series?.serie?.length)
+      return (
+        <Chart
+          options={{ ...options, labels: series.labels as string[] }}
+          series={series.serie}
+          type="pie"
+          height={400}
+        />
+      );
+  }, [series]);
 
   return (
     <>
@@ -99,36 +126,19 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
           sortOrder={sortOrder}
         />
 
-        <tbody>
-          {data?.table?.map((item, idx) => (
-            <tr key={idx} className="bg-blue">
-              <td width="40">{idx + 1}</td>
-              <td>{item?.category}</td>
-              <td>{item?.amount}</td>
-              <td>{item?.time}</td>
-            </tr>
-          ))}
-        </tbody>
+        <tbody>{renderTable}</tbody>
       </table>
-
-      {!!series?.labels && !!series?.serie?.length && (
-        <Chart
-          options={{ ...options, labels: series.labels }}
-          series={series.serie}
-          type="pie"
-          height={400}
-        />
-      )}
-      {!data?.table.length && !isLoading && (
+      {renderChart}
+      {data?.table && !Object.values(data?.table).length && !isLoading && (
         <div className="w-full">
           <p className="text-center w-full">Спосок пуст</p>
         </div>
       )}
-      <button id={"category_stat"} className="hidden" onClick={downloadAsPdf}>
+      <button id={"department_stat"} className="hidden" onClick={downloadAsPdf}>
         download
       </button>
     </>
   );
 };
 
-export default CategoryStat;
+export default DepartmentStat;
