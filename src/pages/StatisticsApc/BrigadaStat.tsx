@@ -2,8 +2,6 @@ import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { Departments, Sphere } from "src/utils/types";
 import TableHead from "src/components/TableHead";
 import Chart from "react-apexcharts";
-
-import { ApexOptions } from "apexcharts";
 import useStatsBrigada from "src/hooks/useStatsBrigada";
 import useQueryString from "src/hooks/custom/useQueryString";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
@@ -37,7 +35,7 @@ const options = {
       },
     },
   },
-} as ApexOptions;
+} as any;
 
 const column = [
   { name: "№", key: "" },

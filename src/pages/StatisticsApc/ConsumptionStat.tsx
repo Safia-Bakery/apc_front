@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import TableHead from "src/components/TableHead";
-import Loading from "src/components/Loader";
 import useDistinct from "src/hooks/useDistinct";
 import { Link } from "react-router-dom";
 import { useDownloadExcel } from "react-export-table-to-excel";

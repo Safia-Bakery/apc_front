@@ -5,7 +5,6 @@ import useQueryString from "src/hooks/custom/useQueryString";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
 import useMarketingStatCat from "src/hooks/useMarketingStatCat";
-import { ApexOptions } from "apexcharts";
 
 const optionsBar = {
   options: {
@@ -32,7 +31,7 @@ const optionsBar = {
       },
     },
   },
-} as ApexOptions;
+} as any;
 
 const options = {
   chart: {
