@@ -3,7 +3,6 @@ import { Departments, Sphere } from "src/utils/types";
 import TableHead from "src/components/TableHead";
 import Chart from "react-apexcharts";
 import useStatsCategory from "src/hooks/useStatsCategory";
-import Loading from "src/components/Loader";
 import useQueryString from "src/hooks/custom/useQueryString";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 
@@ -87,7 +86,7 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
 
   const downloadAsPdf = () => onDownload();
 
-  if (isLoading) return <Loading />;
+  // if (isLoading) return <Loading />;
 
   return (
     <>

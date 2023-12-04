@@ -25,6 +25,8 @@ import {
   sidebatItemsSelector,
 } from "src/store/reducers/sidebar";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
+import DepartmentStat from "src/pages/StatsMarketing/DepartmentStat";
+import MarketingStatCategory from "src/pages/StatsMarketing/StatCategory";
 
 const ControlPanel = lazy(() => import("src/pages/ControlPanel"));
 const TgRating = lazy(() => import("src/pages/TgRating"));
@@ -38,7 +40,7 @@ const Masters = lazy(() => import("src/pages/Masters"));
 const ShowConsumption = lazy(() => import("src/pages/ShowConsumption"));
 const Logs = lazy(() => import("src/pages/LogsScreen"));
 const ConsumptionStat = lazy(
-  () => import("src/pages/Statistics/ConsumptionStat")
+  () => import("src/pages/StatisticsApc/ConsumptionStat")
 );
 const Login = lazy(() => import("src/pages/Login"));
 const EditClient = lazy(() => import("src/pages/EditClient"));
@@ -57,7 +59,8 @@ const RequestInventory = lazy(() => import("src/pages/RequestInventory"));
 const RequestsIT = lazy(() => import("src/pages/RequestsIT"));
 const AddInventoryRequest = lazy(() => import("src/pages/AddInventoryRequest"));
 const YandexMap = lazy(() => import("src/pages/Map"));
-const Statistics = lazy(() => import("src/pages/Statistics"));
+const StatisticsApc = lazy(() => import("src/pages/StatisticsApc"));
+const StatsMarketing = lazy(() => import("src/pages/StatsMarketing"));
 const Categories = lazy(() => import("src/pages/Categories"));
 const ShowCategory = lazy(() => import("src/pages/ShowCategory"));
 const EditAddRole = lazy(() => import("src/pages/EditAddRole"));
@@ -72,12 +75,12 @@ const Branches = lazy(() => import("src/pages/Branches"));
 const EditAddBranch = lazy(() => import("src/pages/EditAddBranch"));
 const RemainsInStock = lazy(() => import("src/pages/RemailnsInStock"));
 const ShowRemainsInStock = lazy(() => import("src/pages/ShowRemainsInStock"));
-const CategoryStat = lazy(() => import("src/pages/Statistics/CategoryStat"));
-const FillialStat = lazy(() => import("src/pages/Statistics/FillialStat"));
+const CategoryStat = lazy(() => import("src/pages/StatisticsApc/CategoryStat"));
+const FillialStat = lazy(() => import("src/pages/StatisticsApc/FillialStat"));
 const BrigadaCategStat = lazy(
-  () => import("src/pages/Statistics/BrigadaCategStat")
+  () => import("src/pages/StatisticsApc/BrigadaCategStat")
 );
-const BrigadaStat = lazy(() => import("src/pages/Statistics/BrigadaStat"));
+const BrigadaStat = lazy(() => import("src/pages/StatisticsApc/BrigadaStat"));
 
 export const routes = [
   // {
@@ -305,20 +308,20 @@ export const routes = [
   // },
   { element: <YandexMap />, path: "/map", screen: MainPermissions.get_map },
   {
-    element: <Statistics />,
+    element: <StatisticsApc />,
     path: "/statistics",
     screen: MainPermissions.get_statistics,
   },
   {
-    element: <Statistics />,
+    element: <StatisticsApc />,
     path: "/statistics-apc-fabric",
     screen: MainPermissions.get_statistics,
   },
-  {
-    element: <Statistics />,
-    path: "/statistics-marketing",
-    screen: MainPermissions.get_statistics,
-  },
+  // {
+  //   element: <StatisticsApc />,
+  //   path: "/statistics-marketing",
+  //   screen: MainPermissions.get_statistics,
+  // },
   {
     element: (
       <Categories
@@ -700,7 +703,7 @@ const Navigation = () => {
             path="/statistics-apc-retail"
             element={
               <Suspend>
-                <Statistics />
+                <StatisticsApc />
               </Suspend>
             }
           >
@@ -760,7 +763,7 @@ const Navigation = () => {
             path="/statistics-apc-fabric"
             element={
               <Suspend>
-                <Statistics />
+                <StatisticsApc />
               </Suspend>
             }
           >
@@ -810,6 +813,35 @@ const Navigation = () => {
               element={
                 <Suspend>
                   <ShowConsumption />
+                </Suspend>
+              }
+            />
+          </Route>
+        )}
+
+        {permission?.[MainPermissions.get_statistics] && (
+          <Route
+            path="/statistics-marketing"
+            element={
+              <Suspend>
+                <StatsMarketing />
+              </Suspend>
+            }
+          >
+            <Route
+              index
+              path="department"
+              element={
+                <Suspend>
+                  <DepartmentStat />
+                </Suspend>
+              }
+            />
+            <Route
+              path="category"
+              element={
+                <Suspend>
+                  <MarketingStatCategory />
                 </Suspend>
               }
             />

@@ -461,6 +461,12 @@ export interface CategoryStatTypes {
   }[];
 }
 
+export interface MarketingDepartmentTypes {
+  pie: { [key: string]: number[] };
+  table: { [key: string]: number[] };
+  tables: { [key: string]: number[] };
+}
+
 export interface DepartmentStatTypes {
   name: string;
   amount: number;

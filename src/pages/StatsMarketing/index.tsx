@@ -1,16 +1,26 @@
 import Card from "src/components/Card";
-import styles from "./index.module.scss";
 import Header from "src/components/Header";
 import { Outlet, useNavigate } from "react-router-dom";
-import ApcStatBar from "src/components/ApcStatBar";
 import { useNavigateParams } from "src/hooks/custom/useCustomNavigate";
 import dayjs from "dayjs";
 import useQueryString from "src/hooks/custom/useQueryString";
 import { useForm } from "react-hook-form";
 import cl from "classnames";
 import { useEffect } from "react";
+import StatBar from "src/components/StatBar";
 
-const Statistics = () => {
+const routesArr = [
+  {
+    name: "Отчёт по отделам",
+    url: "department",
+  },
+  {
+    name: "По категориям",
+    url: "category",
+  },
+];
+
+const StatsMarketing = () => {
   const navigate = useNavigate();
   const start = useQueryString("start");
   const end = useQueryString("end");
@@ -40,7 +50,7 @@ const Statistics = () => {
 
   return (
     <Card>
-      <Header title={"Статистика"}>
+      <Header title={"Статистика Маркетинг"}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад
         </button>
@@ -51,7 +61,7 @@ const Statistics = () => {
       </Header>
 
       <div className="content">
-        <div className={styles.dateBlock}>
+        <div className={"flex w-min gap-3 mb-4"}>
           <input
             type="date"
             className="form-group form-control"
@@ -63,7 +73,7 @@ const Statistics = () => {
             {...register("end")}
           />
           <button
-            className={cl("btn btn-primary btn-fill", styles.btn)}
+            className={cl("btn btn-primary btn-fill h-[40px]")}
             onClick={handleDate}
           >
             Показать
@@ -71,7 +81,7 @@ const Statistics = () => {
         </div>
 
         <div className="table-responsive grid-view">
-          <ApcStatBar />
+          <StatBar arr={routesArr} />
           <Outlet />
         </div>
       </div>
@@ -79,4 +89,4 @@ const Statistics = () => {
   );
 };
 
-export default Statistics;
+export default StatsMarketing;
