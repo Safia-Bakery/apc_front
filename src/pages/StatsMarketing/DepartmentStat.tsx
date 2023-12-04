@@ -1,9 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Departments, MarketingSubDep } from "src/utils/types";
+import { useMemo, useRef, useState } from "react";
+import { MarketingSubDep } from "src/utils/types";
 import TableHead from "src/components/TableHead";
 import Chart from "react-apexcharts";
-import useStatsCategory from "src/hooks/useStatsCategory";
-import Loading from "src/components/Loader";
 import useQueryString from "src/hooks/custom/useQueryString";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 import useMarketingStatDep from "src/hooks/useMarketingStatDep";
@@ -31,8 +29,8 @@ const options = {
 
 const column = [
   { name: "№", key: "id" },
-  { name: "Категория", key: "category" },
-  { name: "Количество (шт)", key: "amount" },
+  { name: "Отдел", key: "category" },
+  { name: "Количество закрытых заявок", key: "amount" },
   {
     name: "Время обработки (ч)",
     key: "time",
@@ -48,7 +46,7 @@ const DepartmentStat = () => {
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
     filename: "Отчёт по отделам",
-    sheet: "categories",
+    sheet: "departments",
   });
   const [sortKey, setSortKey] = useState<any>();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
