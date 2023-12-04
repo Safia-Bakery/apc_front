@@ -68,9 +68,7 @@ const TgRating = () => {
 
         {rate > 0 && (
           <h4 className="font-bold text-xl justify-center items-center text-center flex flex-1 mb-5">
-            {rate < 5
-              ? "Что вас разочаровало?"
-              : "При желании можете добавить комментарии"}
+            {rate < 5 ? "Что вас разочаровало?" : "Что мы можем улучшить?"}
           </h4>
         )}
 
