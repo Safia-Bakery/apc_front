@@ -26,6 +26,7 @@ const Masters: FC<Props> = ({ add, edit, isMaster = false }) => {
   const permission = useAppSelector(permissionSelector);
   const sphere_status = useQueryString("sphere_status");
   const currentPage = Number(useQueryString("page")) || 1;
+  const [sort, $sort] = useState<BrigadaType[]>();
 
   const column = useMemo(() => {
     return [
@@ -48,28 +49,6 @@ const Masters: FC<Props> = ({ add, edit, isMaster = false }) => {
     enabled: true,
   });
 
-  const [sortKey, setSortKey] = useState<keyof BrigadaType>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
-
-  const sortData = () => {
-    if (brigadas?.items && sortKey) {
-      const sortedData = [...brigadas?.items].sort((a, b) => {
-        if (a[sortKey]! < b[sortKey]!) return sortOrder === "asc" ? -1 : 1;
-        if (a[sortKey]! > b[sortKey]!) return sortOrder === "asc" ? 1 : -1;
-        else return 0;
-      });
-      return sortedData;
-    }
-  };
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
     else return index + 1 + itemsPerPage * (currentPage - 1);
@@ -97,39 +76,32 @@ const Masters: FC<Props> = ({ add, edit, isMaster = false }) => {
       <div className="table-responsive grid-view content">
         <ItemsCount data={brigadas} />
         <table className="table table-hover">
-          <TableHead
-            column={column}
-            sort={handleSort}
-            sortKey={sortKey}
-            sortOrder={sortOrder}
-          />
+          <TableHead column={column} onSort={(data) => $sort(data)} />
 
           {!!brigadas?.items?.length && (
             <tbody>
-              {(sortData()?.length ? sortData() : brigadas?.items)?.map(
-                (order, idx) => (
-                  <tr className="bg-blue" key={idx}>
-                    <td width="40">{handleIdx(idx)}</td>
-                    <td width={250}>{order.name}</td>
-                    <td>
-                      {!!order.user?.length
-                        ? order.user?.[0]?.full_name
-                        : "Не задано"}
-                    </td>
-                    <td>{order.description}</td>
-                    <td>{!!order.status ? "Активный" : "Неактивный"}</td>
-                    <td width={40}>
-                      {permission?.[edit] && (
-                        <TableViewBtn
-                          onClick={handleNavigate(
-                            `${order.id}?sphere_status=${order.sphere_status}`
-                          )}
-                        />
-                      )}
-                    </td>
-                  </tr>
-                )
-              )}
+              {(sort?.length ? sort : brigadas?.items)?.map((order, idx) => (
+                <tr className="bg-blue" key={idx}>
+                  <td width="40">{handleIdx(idx)}</td>
+                  <td width={250}>{order.name}</td>
+                  <td>
+                    {!!order.user?.length
+                      ? order.user?.[0]?.full_name
+                      : "Не задано"}
+                  </td>
+                  <td>{order.description}</td>
+                  <td>{!!order.status ? "Активный" : "Неактивный"}</td>
+                  <td width={40}>
+                    {permission?.[edit] && (
+                      <TableViewBtn
+                        onClick={handleNavigate(
+                          `${order.id}?sphere_status=${order.sphere_status}`
+                        )}
+                      />
+                    )}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           )}
         </table>

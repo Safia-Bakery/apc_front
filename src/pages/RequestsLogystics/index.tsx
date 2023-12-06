@@ -41,8 +41,7 @@ const column = [
 
 const RequestsLogystics: FC<Props> = ({ add, edit }) => {
   const navigate = useNavigate();
-  const [sortKey, setSortKey] = useState<keyof Order>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sort, $sort] = useState<Order[]>();
   const permission = useAppSelector(permissionSelector);
 
   const currentPage = Number(useQueryString("page")) || 1;
@@ -59,14 +58,6 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
 
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
   const {
     data: requests,
     isLoading: orderLoading,
@@ -88,19 +79,6 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
     ...(!!user && { user: user }),
     ...(!!urgent && { urgent: !!urgent }),
   });
-  const sortData = () => {
-    if (requests?.items && sortKey) {
-      const sortedData = [...requests.items].sort((a, b) => {
-        const valueA = getValue(a, sortKey);
-        const valueB = getValue(b, sortKey);
-
-        if (valueA < valueB) return sortOrder === "asc" ? -1 : 1;
-        if (valueA > valueB) return sortOrder === "asc" ? 1 : -1;
-        return 0;
-      });
-      return sortedData;
-    }
-  };
 
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
@@ -131,80 +109,65 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
         <table className="table table-hover">
           <TableHead
             column={column}
-            sort={handleSort}
-            sortKey={sortKey}
-            sortOrder={sortOrder}
+            onSort={(data) => $sort(data)}
+            data={requests?.items}
           >
             <LogFilter />
           </TableHead>
           <tbody id="requests_body">
             {!!requests?.items?.length &&
               !orderLoading &&
-              (sortData()?.length ? sortData() : requests?.items)?.map(
-                (order, idx) => (
-                  <tr className={requestRows(order?.status)} key={idx}>
-                    <td width="40">{handleIdx(idx)}</td>
-                    <td width="80">
-                      {permission?.[edit] ? (
-                        <Link
-                          id="request_id"
-                          to={`/requests-logystics/${order?.id}`}
-                          state={{ prevPath: pathname + search }}
-                        >
-                          {order?.id}
-                        </Link>
-                      ) : (
-                        <span className={"text-link"}>{order?.id}</span>
-                      )}
-                    </td>
+              (sort?.length ? sort : requests?.items)?.map((order, idx) => (
+                <tr className={requestRows(order?.status)} key={idx}>
+                  <td width="40">{handleIdx(idx)}</td>
+                  <td width="80">
+                    {permission?.[edit] ? (
+                      <Link
+                        id="request_id"
+                        to={`/requests-logystics/${order?.id}`}
+                        state={{ prevPath: pathname + search }}
+                      >
+                        {order?.id}
+                      </Link>
+                    ) : (
+                      <span className={"text-link"}>{order?.id}</span>
+                    )}
+                  </td>
 
-                    <td width={40}>
-                      {order?.fillial?.id ? (
-                        <img src="/assets/icons/home.svg" alt="from-fillial" />
-                      ) : (
-                        <img
-                          src="/assets/icons/marker.svg"
-                          alt="from-location"
-                        />
-                      )}
-                    </td>
+                  <td width={40}>
+                    {order?.fillial?.id ? (
+                      <img src="/assets/icons/home.svg" alt="from-fillial" />
+                    ) : (
+                      <img src="/assets/icons/marker.svg" alt="from-location" />
+                    )}
+                  </td>
 
-                    <td>{order?.user?.full_name}</td>
-                    <td>
-                      <span className={"not-set"}>
-                        {order?.fillial?.parentfillial?.name}
-                      </span>
-                    </td>
-                    <td
-                      className={cl({
-                        ["font-bold"]: order?.category?.urgent,
-                      })}
-                    >
-                      {order?.category?.name}
-                    </td>
-                    <td>
-                      {!order?.category?.urgent ? "Несрочный" : "Срочный"}
-                    </td>
-                    {/* <td>
-                      {dayjs(order?.arrival_date).format("DD.MM.YYYY HH:mm")}
-                    </td> */}
-                    <td>
-                      {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
-                    </td>
-                    <td>
-                      {handleStatus({
-                        status: order?.status,
-                        dep: Departments.logystics,
-                      })}
-                    </td>
-                    <td>
-                      {!!order?.user_manager
-                        ? order?.user_manager
-                        : "Не задано"}
-                    </td>
-                  </tr>
-                )
-              )}
+                  <td>{order?.user?.full_name}</td>
+                  <td>
+                    <span className={"not-set"}>
+                      {order?.fillial?.parentfillial?.name}
+                    </span>
+                  </td>
+                  <td
+                    className={cl({
+                      ["font-bold"]: order?.category?.urgent,
+                    })}
+                  >
+                    {order?.category?.name}
+                  </td>
+                  <td>{!order?.category?.urgent ? "Несрочный" : "Срочный"}</td>
+                  <td>{dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}</td>
+                  <td>
+                    {handleStatus({
+                      status: order?.status,
+                      dep: Departments.logystics,
+                    })}
+                  </td>
+                  <td>
+                    {!!order?.user_manager ? order?.user_manager : "Не задано"}
+                  </td>
+                </tr>
+              ))}
             {orderLoading && <TableLoading />}
           </tbody>
         </table>

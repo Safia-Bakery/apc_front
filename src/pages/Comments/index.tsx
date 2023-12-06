@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import ItemsCount from "src/components/ItemsCount";
 import useComments from "src/hooks/useComments";
 import useQueryString from "src/hooks/custom/useQueryString";
+import { Comments as CommentsTypes } from "src/utils/types";
 
 const column = [
   { name: "№", key: "id" },
@@ -24,17 +25,6 @@ const Comments = () => {
   const goBack = () => navigate(-1);
   const currentPage = Number(useQueryString("page")) || 1;
 
-  const [sortKey, setSortKey] = useState<any>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
   const { data: comments, isLoading } = useComments({
     size: itemsPerPage,
     page: currentPage,
@@ -56,12 +46,7 @@ const Comments = () => {
         <div className="table-responsive grid-view">
           <ItemsCount data={comments} />
           <table className="table table-hover">
-            <TableHead
-              column={column}
-              sort={handleSort}
-              sortKey={sortKey}
-              sortOrder={sortOrder}
-            />
+            <TableHead column={column} />
 
             {!!comments?.items?.length && (
               <tbody>

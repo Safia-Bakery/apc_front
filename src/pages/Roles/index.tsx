@@ -22,32 +22,9 @@ const Roles = () => {
   const navigate = useNavigate();
   const handleNavigate = (route: string) => () => navigate(route);
   const permission = useAppSelector(permissionSelector);
+  const [sort, $sort] = useState<RoleTypes[]>();
 
   const { data: roles, isLoading: orderLoading } = useRoles({});
-
-  const [sortKey, setSortKey] = useState<keyof RoleTypes>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
-
-  const sortData = () => {
-    if (roles && sortKey) {
-      const sortedData = [...roles].sort((a, b) => {
-        if (a[sortKey]! < b[sortKey]!) return sortOrder === "asc" ? -1 : 1;
-        if (a[sortKey]! > b[sortKey]!) return sortOrder === "asc" ? 1 : -1;
-        else return 0;
-      });
-      return sortedData;
-    }
-  };
-
   if (orderLoading) return <Loading />;
 
   return (
@@ -67,14 +44,13 @@ const Roles = () => {
         <table className="table table-hover">
           <TableHead
             column={column}
-            sort={handleSort}
-            sortKey={sortKey}
-            sortOrder={sortOrder}
+            onSort={(data) => $sort(data)}
+            data={roles}
           />
 
           {!!roles?.length && (
             <tbody>
-              {(sortData()?.length ? sortData() : roles)?.map((role, idx) => (
+              {(sort?.length ? sort : roles)?.map((role, idx) => (
                 <tr className="bg-blue" key={role.id}>
                   <td width="40">{idx + 1}</td>
                   <td>

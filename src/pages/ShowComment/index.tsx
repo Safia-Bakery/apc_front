@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import TableHead from "src/components/TableHead";
 import { itemsPerPage } from "src/utils/helpers";
 import useOrders from "src/hooks/useOrders";
-import { Order } from "src/utils/types";
+import { Order, OrderType } from "src/utils/types";
 
 const column = [
   { name: "№", key: "id" as keyof Order["id"] },
@@ -19,41 +19,18 @@ const column = [
 const ShowComment = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [modal, $modal] = useState(false);
+  const [sort, $sort] = useState<OrderType[]>();
 
   const [currentPage, setCurrentPage] = useState(1);
+
   const { data: requests } = useOrders({
     size: itemsPerPage,
     page: currentPage,
     enabled: false,
   });
 
-  const [sortKey, setSortKey] = useState<keyof Order>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-
-  const handleModal = () => $modal((prev) => !prev);
-
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
-
-  const sortData = () => {
-    if (requests?.items && sortKey) {
-      const sortedData = [...requests?.items].sort((a, b) => {
-        if (a[sortKey]! < b[sortKey]!) return sortOrder === "asc" ? -1 : 1;
-        if (a[sortKey]! > b[sortKey]!) return sortOrder === "asc" ? 1 : -1;
-        else return 0;
-      });
-      return sortedData;
-    }
-  };
-
   const goBack = () => navigate(-1);
+
   return (
     <>
       <Card>
@@ -167,26 +144,23 @@ const ShowComment = () => {
           <table className="table table-hover">
             <TableHead
               column={column}
-              sort={handleSort}
-              sortKey={sortKey}
-              sortOrder={sortOrder}
+              onSort={(data) => $sort(data)}
+              data={requests?.items}
             />
 
             {!!requests?.items.length && (
               <tbody>
-                {(sortData()?.length ? sortData() : requests?.items)?.map(
-                  (order, idx) => (
-                    <tr className="bg-blue" key={idx}>
-                      <td width="40">1</td>
-                      <td>sotrudnit | (не задано)</td>
-                      <td>rate - 5</td>
-                      <td>text</td>
-                      <td>
-                        {dayjs("order.time_created").format("DD.MM.YYYY HH:mm")}
-                      </td>
-                    </tr>
-                  )
-                )}
+                {(sort?.length ? sort : requests?.items)?.map((order, idx) => (
+                  <tr className="bg-blue" key={idx}>
+                    <td width="40">1</td>
+                    <td>sotrudnit | (не задано)</td>
+                    <td>rate - 5</td>
+                    <td>text</td>
+                    <td>
+                      {dayjs("order.time_created").format("DD.MM.YYYY HH:mm")}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             )}
           </table>

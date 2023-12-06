@@ -40,8 +40,7 @@ const tomorrow = today.setDate(today.getDate() + 1);
 
 const RequestsStaff = () => {
   const navigate = useNavigate();
-  const [sortKey, setSortKey] = useState<keyof Order>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sort, $sort] = useState<Order[]>();
   const permission = useAppSelector(permissionSelector);
   const sphere_status = useQueryString("sphere_status");
   const currentPage = Number(useQueryString("page")) || 1;
@@ -67,19 +66,10 @@ const RequestsStaff = () => {
   const system = useQueryString("system");
   const department = useQueryString("department");
   const category_id = Number(useQueryString("category_id"));
-  const urgent = useQueryString("urgent");
   const request_status = useQueryString("request_status");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
 
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
   const {
     data: requests,
     isLoading: orderLoading,
@@ -100,20 +90,6 @@ const RequestsStaff = () => {
     ...(!!request_status && { request_status }),
     ...(!!user && { user: user }),
   });
-
-  const sortData = () => {
-    if (requests?.items && sortKey) {
-      const sortedData = [...requests.items].sort((a, b) => {
-        const valueA = getValue(a, sortKey);
-        const valueB = getValue(b, sortKey);
-
-        if (valueA < valueB) return sortOrder === "asc" ? -1 : 1;
-        if (valueA > valueB) return sortOrder === "asc" ? 1 : -1;
-        return 0;
-      });
-      return sortedData;
-    }
-  };
 
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
@@ -186,50 +162,47 @@ const RequestsStaff = () => {
         <table className="table table-hover" ref={tableRef}>
           <TableHead
             column={column}
-            sort={handleSort}
-            sortKey={sortKey}
-            sortOrder={sortOrder}
+            onSort={(data) => $sort(data)}
+            data={requests?.items}
           >
             <StaffFilter />
           </TableHead>
           <tbody id="requests_body">
             {!!requests?.items?.length &&
               !orderLoading &&
-              (sortData()?.length ? sortData() : requests?.items)?.map(
-                (order, idx) => (
-                  <tr className={requestRows(order?.status)} key={idx}>
-                    <td width="40">{handleIdx(idx)}</td>
-                    <td width="80">
-                      {permission?.[MainPermissions.edit_staff_requests] ? (
-                        <Link
-                          id="request_id"
-                          to={`/requests-staff/${order?.id}`}
-                          state={{ prevPath: pathname + search }}
-                        >
-                          {order?.id}
-                        </Link>
-                      ) : (
-                        <span className={"text-link"}>{order?.id}</span>
-                      )}
-                    </td>
-                    <td>{order?.user?.full_name}</td>
-                    <td>
-                      <span className={"not-set"}>
-                        {order?.fillial?.parentfillial?.name}
-                      </span>
-                    </td>
-                    <td>{order?.size}</td>
-                    <td>{order?.bread_size}</td>
-                    <td>{dayjs(order?.arrival_date).format("DD.MM.YYYY")}</td>
-                    <td>
-                      {handleStatus({
-                        status: order?.status,
-                        dep: Departments.apc,
-                      })}
-                    </td>
-                  </tr>
-                )
-              )}
+              (sort?.length ? sort : requests?.items)?.map((order, idx) => (
+                <tr className={requestRows(order?.status)} key={idx}>
+                  <td width="40">{handleIdx(idx)}</td>
+                  <td width="80">
+                    {permission?.[MainPermissions.edit_staff_requests] ? (
+                      <Link
+                        id="request_id"
+                        to={`/requests-staff/${order?.id}`}
+                        state={{ prevPath: pathname + search }}
+                      >
+                        {order?.id}
+                      </Link>
+                    ) : (
+                      <span className={"text-link"}>{order?.id}</span>
+                    )}
+                  </td>
+                  <td>{order?.user?.full_name}</td>
+                  <td>
+                    <span className={"not-set"}>
+                      {order?.fillial?.parentfillial?.name}
+                    </span>
+                  </td>
+                  <td>{order?.size}</td>
+                  <td>{order?.bread_size}</td>
+                  <td>{dayjs(order?.arrival_date).format("DD.MM.YYYY")}</td>
+                  <td>
+                    {handleStatus({
+                      status: order?.status,
+                      dep: Departments.apc,
+                    })}
+                  </td>
+                </tr>
+              ))}
             {orderLoading && <TableLoading />}
           </tbody>
         </table>

@@ -30,18 +30,8 @@ const column = [
 
 const RequestsIT = () => {
   const navigate = useNavigate();
-  const [sortKey, setSortKey] = useState<keyof Order>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sort, $sort] = useState<Order[]>();
   const currentPage = Number(useQueryString("page")) || 1;
-
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
 
   const {
     data: requests,
@@ -53,17 +43,6 @@ const RequestsIT = () => {
     page: currentPage,
     department: Departments.it,
   });
-
-  const sortData = () => {
-    if (requests?.items && sortKey) {
-      const sortedData = [...requests?.items].sort((a, b) => {
-        if (a[sortKey]! < b[sortKey]!) return sortOrder === "asc" ? -1 : 1;
-        if (a[sortKey]! > b[sortKey]!) return sortOrder === "asc" ? 1 : -1;
-        else return 0;
-      });
-      return sortedData;
-    }
-  };
 
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
@@ -92,46 +71,43 @@ const RequestsIT = () => {
         <table className="table table-hover">
           <TableHead
             column={column}
-            sort={handleSort}
-            sortKey={sortKey}
-            sortOrder={sortOrder}
+            onSort={(data) => $sort(data)}
+            data={requests?.items}
           >
             <InventoryFilter currentPage={currentPage} />
           </TableHead>
 
           {!!requests?.items?.length && (
             <tbody>
-              {(sortData()?.length ? sortData() : requests?.items)?.map(
-                (order, idx) => (
-                  <tr className={requestRows(order.status)} key={idx}>
-                    <td width="40">{handleIdx(idx)}</td>
-                    <td width="80">
-                      <Link to={`/requests-designer/${order?.id}`}>
-                        {order?.id}
-                      </Link>
-                    </td>
-                    <td>
-                      <span className="not-set">{order?.user?.full_name}</span>
-                    </td>
-                    <td>-------------</td>
-                    <td>{order?.fillial?.parentfillial?.name}</td>
-                    <td>{order?.category?.name}</td>
-                    <td
-                      width={100}
-                      className={"overflow-ellipsis max-w-[200px] w-full"}
-                    >
-                      {order?.description}
-                    </td>
-                    <td>
-                      {handleStatus({
-                        status: order?.status,
-                        dep: Departments.it,
-                      })}
-                    </td>
-                    <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
-                  </tr>
-                )
-              )}
+              {(sort?.length ? sort : requests?.items)?.map((order, idx) => (
+                <tr className={requestRows(order.status)} key={idx}>
+                  <td width="40">{handleIdx(idx)}</td>
+                  <td width="80">
+                    <Link to={`/requests-designer/${order?.id}`}>
+                      {order?.id}
+                    </Link>
+                  </td>
+                  <td>
+                    <span className="not-set">{order?.user?.full_name}</span>
+                  </td>
+                  <td>-------------</td>
+                  <td>{order?.fillial?.parentfillial?.name}</td>
+                  <td>{order?.category?.name}</td>
+                  <td
+                    width={100}
+                    className={"overflow-ellipsis max-w-[200px] w-full"}
+                  >
+                    {order?.description}
+                  </td>
+                  <td>
+                    {handleStatus({
+                      status: order?.status,
+                      dep: Departments.it,
+                    })}
+                  </td>
+                  <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
+                </tr>
+              ))}
             </tbody>
           )}
         </table>

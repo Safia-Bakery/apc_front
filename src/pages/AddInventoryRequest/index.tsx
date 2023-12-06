@@ -40,8 +40,6 @@ const column = [
 
 const AddInventoryRequest = () => {
   const navigate = useNavigate();
-  const [sortKey, setSortKey] = useState<keyof Order>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const { control, handleSubmit, register } = useForm<FormData>({
     defaultValues: { inputFields: [initialInventory], main_comment: "" },
@@ -55,15 +53,6 @@ const AddInventoryRequest = () => {
   const onSubmit = (data: FormData) => {};
 
   const addInputFields = () => append(initialInventory);
-
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
 
   const InputWrapper = forwardRef<
     HTMLInputElement,
@@ -92,12 +81,7 @@ const AddInventoryRequest = () => {
       >
         <h2 className="font-weight-normal">Товары</h2>
         <table className="table table-hover">
-          <TableHead
-            column={column}
-            sort={handleSort}
-            sortKey={sortKey}
-            sortOrder={sortOrder}
-          />
+          <TableHead column={column} />
           <tbody>
             {fields.map((field, index) => (
               <tr key={field.id}>
