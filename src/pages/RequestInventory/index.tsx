@@ -18,7 +18,7 @@ const column = [
   { name: "Номер", key: "id" },
   { name: "ОТПРАВИТЕЛЬ", key: "type" },
   { name: "ПОЛУЧАТЕЛЬ", key: "fillial.name" },
-  { name: "Дата", key: "category.name" },
+  { name: "Дата", key: "created_at" },
   {
     name: "Статус",
     key: "status",
@@ -28,18 +28,8 @@ const column = [
 
 const RequestInventory = () => {
   const navigate = useNavigate();
-  const [sortKey, setSortKey] = useState<keyof Order>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const currentPage = Number(useQueryString("page")) || 1;
-
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
+  const [sort, $sort] = useState<Order[]>();
 
   const {
     data: requests,
@@ -51,17 +41,6 @@ const RequestInventory = () => {
     page: currentPage,
     department: Departments.inventory,
   });
-
-  const sortData = () => {
-    if (requests?.items && sortKey) {
-      const sortedData = [...requests?.items].sort((a, b) => {
-        if (a[sortKey]! < b[sortKey]!) return sortOrder === "asc" ? -1 : 1;
-        if (a[sortKey]! > b[sortKey]!) return sortOrder === "asc" ? 1 : -1;
-        else return 0;
-      });
-      return sortedData;
-    }
-  };
 
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
@@ -77,7 +56,6 @@ const RequestInventory = () => {
   return (
     <Card>
       <Header title={"Заявка на инвентарь"}>
-        {/* <button className="btn btn-primary btn-fill mr-2">Экспорт</button> */}
         <button
           onClick={() => navigate("add")}
           className="btn btn-success btn-fill"
@@ -91,39 +69,36 @@ const RequestInventory = () => {
         <table className="table table-hover">
           <TableHead
             column={column}
-            sort={handleSort}
-            sortKey={sortKey}
-            sortOrder={sortOrder}
+            onSort={(data) => $sort(data)}
+            data={requests?.items}
           >
             <InventoryFilter />
           </TableHead>
 
           {!!requests?.items?.length && (
             <tbody>
-              {(sortData()?.length ? sortData() : requests?.items)?.map(
-                (order, idx) => (
-                  <tr className={requestRows(order.status)} key={idx}>
-                    <td width="40">{handleIdx(idx)}</td>
-                    <td width="80">
-                      <Link to={`/requests-inventory/${order?.id}`}>
-                        {order?.id}
-                      </Link>
-                    </td>
-                    <td>
-                      <span className="not-set">{order?.user.full_name}</span>
-                    </td>
-                    <td>{order?.fillial?.parentfillial?.name}</td>
-                    <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
-                    <td>
-                      {handleStatus({
-                        status: order?.status,
-                        dep: Departments.inventory,
-                      })}
-                    </td>
-                    <td>{order?.user?.full_name}</td>
-                  </tr>
-                )
-              )}
+              {(sort?.length ? sort : requests?.items)?.map((order, idx) => (
+                <tr className={requestRows(order.status)} key={idx}>
+                  <td width="40">{handleIdx(idx)}</td>
+                  <td width="80">
+                    <Link to={`/requests-inventory/${order?.id}`}>
+                      {order?.id}
+                    </Link>
+                  </td>
+                  <td>
+                    <span className="not-set">{order?.user.full_name}</span>
+                  </td>
+                  <td>{order?.fillial?.parentfillial?.name}</td>
+                  <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
+                  <td>
+                    {handleStatus({
+                      status: order?.status,
+                      dep: Departments.inventory,
+                    })}
+                  </td>
+                  <td>{order?.user?.full_name}</td>
+                </tr>
+              ))}
             </tbody>
           )}
         </table>

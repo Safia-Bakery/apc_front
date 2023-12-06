@@ -32,8 +32,7 @@ const column = [
 
 const RequestsMarketing = () => {
   const navigate = useNavigate();
-  const [sortKey, setSortKey] = useState<keyof Order>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sort, $sort] = useState<Order[]>();
   const permission = useAppSelector(permissionSelector);
   const currentPage = Number(useQueryString("page")) || 1;
   const { pathname, search } = useLocation();
@@ -52,14 +51,6 @@ const RequestsMarketing = () => {
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
 
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
   const {
     data: requests,
     isLoading: orderLoading,
@@ -80,17 +71,6 @@ const RequestsMarketing = () => {
     ...(!!request_status && { request_status }),
     ...(!!user && { user }),
   });
-
-  const sortData = () => {
-    if (requests?.items && sortKey) {
-      const sortedData = [...requests?.items].sort((a, b) => {
-        if (a[sortKey]! < b[sortKey]!) return sortOrder === "asc" ? -1 : 1;
-        if (a[sortKey]! > b[sortKey]!) return sortOrder === "asc" ? 1 : -1;
-        else return 0;
-      });
-      return sortedData;
-    }
-  };
 
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
@@ -127,9 +107,8 @@ const RequestsMarketing = () => {
         <table className="table table-hover">
           <TableHead
             column={column}
-            sort={handleSort}
-            sortKey={sortKey}
-            sortOrder={sortOrder}
+            onSort={(data) => $sort(data)}
+            data={requests?.items}
           >
             {renderFilter}
           </TableHead>
@@ -137,47 +116,43 @@ const RequestsMarketing = () => {
           <tbody>
             {!!requests?.items?.length &&
               !orderLoading &&
-              (sortData()?.length ? sortData() : requests?.items)?.map(
-                (order, idx) => (
-                  <tr className={requestRows(order.status)} key={idx}>
-                    <td width="40">{handleIdx(idx)}</td>
-                    <td width="80">
-                      {permission?.[edit] ? (
-                        <Link
-                          id="request_id"
-                          to={`${order?.id}?sub_id=${sub_id}&edit=${edit}`}
-                          state={{ prevPath: pathname + search }}
-                        >
-                          {order?.id}
-                        </Link>
-                      ) : (
-                        <span className={"text-link"}>{order?.id}</span>
-                      )}
-                    </td>
-                    <td>
-                      <span className="not-set">{order?.user?.full_name}</span>
-                    </td>
-                    <td>{order?.user?.phone_number}</td>
-                    <td>{order?.category?.name}</td>
-                    <td>{order?.fillial?.parentfillial?.name}</td>
-                    {/* <td width={100} className={styles.text}>
+              (sort?.length ? sort : requests?.items)?.map((order, idx) => (
+                <tr className={requestRows(order.status)} key={idx}>
+                  <td width="40">{handleIdx(idx)}</td>
+                  <td width="80">
+                    {permission?.[edit] ? (
+                      <Link
+                        id="request_id"
+                        to={`${order?.id}?sub_id=${sub_id}&edit=${edit}`}
+                        state={{ prevPath: pathname + search }}
+                      >
+                        {order?.id}
+                      </Link>
+                    ) : (
+                      <span className={"text-link"}>{order?.id}</span>
+                    )}
+                  </td>
+                  <td>
+                    <span className="not-set">{order?.user?.full_name}</span>
+                  </td>
+                  <td>{order?.user?.phone_number}</td>
+                  <td>{order?.category?.name}</td>
+                  <td>{order?.fillial?.parentfillial?.name}</td>
+                  {/* <td width={100} className={styles.text}>
                       {order?.description}
                     </td> */}
-                    <td>
-                      {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
-                    </td>
-                    <td>
-                      {handleStatus({
-                        status: order?.status,
-                        dep: Departments.marketing,
-                      })}
-                    </td>
-                    <td>
-                      {order?.user_manager ? order?.user_manager : "Не задано"}
-                    </td>
-                  </tr>
-                )
-              )}
+                  <td>{dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}</td>
+                  <td>
+                    {handleStatus({
+                      status: order?.status,
+                      dep: Departments.marketing,
+                    })}
+                  </td>
+                  <td>
+                    {order?.user_manager ? order?.user_manager : "Не задано"}
+                  </td>
+                </tr>
+              ))}
 
             {orderLoading && <TableLoading />}
           </tbody>

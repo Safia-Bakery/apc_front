@@ -34,8 +34,7 @@ const column = [
 
 const Branches = () => {
   const navigate = useNavigate();
-  const [sortKey, setSortKey] = useState<keyof BranchType>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sort, $sort] = useState<BranchType[]>();
   const { refetch: branchSync, isFetching } = useBranchSync({ enabled: false });
   const permisisons = useAppSelector(permissionSelector);
   const currentPage = Number(useQueryString("page")) || 1;
@@ -56,25 +55,6 @@ const Branches = () => {
       ...(!!fillial_status && { fillial_status }),
     },
   });
-
-  const handleSort = (key: keyof BranchType) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
-  const sortData = useMemo(() => {
-    if (branches?.items && sortKey) {
-      return [...branches?.items].sort((a, b) => {
-        if (a[sortKey]! < b[sortKey]!) return sortOrder === "asc" ? -1 : 1;
-        if (a[sortKey]! > b[sortKey]!) return sortOrder === "asc" ? 1 : -1;
-        else return 0;
-      });
-    }
-    return [];
-  }, [branches?.items, sortKey, sortOrder]);
 
   const handleNavigate = (route: string) => () => navigate(route);
 
@@ -125,9 +105,8 @@ const Branches = () => {
         <table className="table table-hover">
           <TableHead
             column={column}
-            sort={handleSort}
-            sortKey={sortKey}
-            sortOrder={sortOrder}
+            onSort={(data) => $sort(data)}
+            data={branches?.items}
           >
             {renderFilter}
           </TableHead>
@@ -135,25 +114,23 @@ const Branches = () => {
           <tbody id="branch_body">
             {!!branches?.items?.length &&
               !isFetching &&
-              (sortData?.length ? sortData : branches.items)?.map(
-                (branch, idx) => (
-                  <tr key={idx} className="bg-blue">
-                    <td width="40">{handleIdx(idx)}</td>
-                    <td>{branch?.name}</td>
-                    <td>{branch.country}</td>
-                    <td>{branch.latitude}</td>
-                    <td>{branch.longtitude}</td>
-                    <td>{!branch.status ? "Не активный" : "Активный"}</td>
-                    <td width={40}>
-                      {permisisons?.[MainPermissions.edit_fillials] && (
-                        <TableViewBtn
-                          onClick={handleNavigate(`/branches/${branch.id}`)}
-                        />
-                      )}
-                    </td>
-                  </tr>
-                )
-              )}
+              (sort?.length ? sort : branches.items)?.map((branch, idx) => (
+                <tr key={idx} className="bg-blue">
+                  <td width="40">{handleIdx(idx)}</td>
+                  <td>{branch?.name}</td>
+                  <td>{branch.country}</td>
+                  <td>{branch.latitude}</td>
+                  <td>{branch.longtitude}</td>
+                  <td>{!branch.status ? "Не активный" : "Активный"}</td>
+                  <td width={40}>
+                    {permisisons?.[MainPermissions.edit_fillials] && (
+                      <TableViewBtn
+                        onClick={handleNavigate(`/branches/${branch.id}`)}
+                      />
+                    )}
+                  </td>
+                </tr>
+              ))}
 
             {isFetching && <TableLoading />}
           </tbody>

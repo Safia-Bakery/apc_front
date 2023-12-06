@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo, useRef, useState } from "react";
-import { Departments, Sphere } from "src/utils/types";
+import { DepartmentStatTypes, Departments, Sphere } from "src/utils/types";
 import TableHead from "src/components/TableHead";
 import Chart from "react-apexcharts";
 import useStatsBrigada from "src/hooks/useStatsBrigada";
@@ -50,6 +50,7 @@ const column = [
 const BrigadaStat: FC<Props> = ({ sphere_status }) => {
   const start = useQueryString("start");
   const end = useQueryString("end");
+  const [sort, $sort] = useState<DepartmentStatTypes[]>();
 
   const tableRef = useRef(null);
   const btnAction = document.getElementById("export_to_excell");
@@ -85,30 +86,14 @@ const BrigadaStat: FC<Props> = ({ sphere_status }) => {
         categories: data?.map((item) => item.name),
       };
   }, [data]);
-  const [sortKey, setSortKey] = useState<any>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
-  // if (isLoading) return <Loading />;
   return (
     <>
       <table ref={tableRef} className="table table-hover">
-        <TableHead
-          column={column}
-          sort={handleSort}
-          sortKey={sortKey}
-          sortOrder={sortOrder}
-        />
+        <TableHead onSort={(data) => $sort(data)} data={data} column={column} />
 
         <tbody>
-          {data?.map((brigada, idx) => (
+          {(sort?.length ? sort : data)?.map((brigada, idx) => (
             <tr key={idx} className="bg-blue">
               <td width="40">{idx + 1}</td>
               <td>{brigada.name}</td>

@@ -44,15 +44,19 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
   const end = useQueryString("end");
   const tableRef = useRef(null);
   const btnAction = document.getElementById("export_to_excell");
+  const [sort, $sort] = useState<
+    {
+      category: string;
+      amount: number;
+      time: number;
+    }[]
+  >();
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
     filename: "статистика по категориям",
     sheet: "categories",
   });
-
-  const [sortKey, setSortKey] = useState<any>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const { data, isLoading } = useStatsCategory({
     department: Departments.apc,
@@ -67,15 +71,6 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
       labels: data?.piechart.map((item) => item.category_name),
     };
   }, [data?.piechart]);
-
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
 
   useEffect(() => {
     if (btnAction)
@@ -93,13 +88,12 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
       <table className="table table-hover table-bordered" ref={tableRef}>
         <TableHead
           column={column}
-          sort={handleSort}
-          sortKey={sortKey}
-          sortOrder={sortOrder}
+          onSort={(data) => $sort(data)}
+          data={data?.table}
         />
 
         <tbody>
-          {data?.table?.map((item, idx) => (
+          {(sort?.length ? sort : data?.table)?.map((item, idx) => (
             <tr key={idx} className="bg-blue">
               <td width="40">{idx + 1}</td>
               <td>{item?.category}</td>

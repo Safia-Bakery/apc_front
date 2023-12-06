@@ -28,8 +28,7 @@ interface Props {
 
 const RequestsApc: FC<Props> = ({ add, edit }) => {
   const navigate = useNavigate();
-  const [sortKey, setSortKey] = useState<keyof Order>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sort, $sort] = useState<Order[]>();
   const permission = useAppSelector(permissionSelector);
   const sphere_status = useQueryString("sphere_status");
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
@@ -67,14 +66,6 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
     return columns;
   }, [sphere_status]);
 
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
   const {
     data: requests,
     isLoading: orderLoading,
@@ -94,19 +85,6 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
     ...(!!user && { user }),
     ...(!!urgent?.toString() && { urgent: !!urgent }),
   });
-  const sortData = () => {
-    if (requests?.items && sortKey) {
-      const sortedData = [...requests.items].sort((a, b) => {
-        const valueA = getValue(a, sortKey);
-        const valueB = getValue(b, sortKey);
-
-        if (valueA < valueB) return sortOrder === "asc" ? -1 : 1;
-        if (valueA > valueB) return sortOrder === "asc" ? 1 : -1;
-        return 0;
-      });
-      return sortedData;
-    }
-  };
 
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
@@ -139,71 +117,64 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
         <table className="table table-hover">
           <TableHead
             column={column}
-            sort={handleSort}
-            sortKey={sortKey}
-            sortOrder={sortOrder}
+            onSort={(data) => $sort(data)}
+            data={requests?.items}
           >
             <RequestsFilter />
           </TableHead>
           <tbody id="requests_body">
             {!!requests?.items?.length &&
               !orderLoading &&
-              (sortData()?.length ? sortData() : requests?.items)?.map(
-                (order, idx) => (
-                  <tr className={requestRows(order?.status)} key={idx}>
-                    <td width="40">{handleIdx(idx)}</td>
-                    <td width="80">
-                      {permission?.[edit] ? (
-                        <Link
-                          id="request_id"
-                          to={`/requests-apc/${order?.id}?sphere_status=${sphere_status}&addExp=${addExp}`}
-                          state={{ prevPath: pathname + search }}
-                        >
-                          {order?.id}
-                        </Link>
-                      ) : (
-                        <span className={"text-link"}>{order?.id}</span>
-                      )}
-                    </td>
-                    {Number(sphere_status) === Sphere.fabric && (
-                      <td>{order?.is_bot ? "Телеграм-бот" : "Веб-сайт"}</td>
+              (sort?.length ? sort : requests?.items)?.map((order, idx) => (
+                <tr className={requestRows(order?.status)} key={idx}>
+                  <td width="40">{handleIdx(idx)}</td>
+                  <td width="80">
+                    {permission?.[edit] ? (
+                      <Link
+                        id="request_id"
+                        to={`/requests-apc/${order?.id}?sphere_status=${sphere_status}&addExp=${addExp}`}
+                        state={{ prevPath: pathname + search }}
+                      >
+                        {order?.id}
+                      </Link>
+                    ) : (
+                      <span className={"text-link"}>{order?.id}</span>
                     )}
-                    <td>{order?.user?.full_name}</td>
-                    <td>
-                      <span className={"not-set"}>
-                        {order?.fillial?.parentfillial?.name}
-                      </span>
-                    </td>
-                    <td
-                      className={cl({
-                        ["font-bold"]: order?.category?.urgent,
-                      })}
-                    >
-                      {order?.category?.name}
-                    </td>
-                    <td>
-                      {!order?.category?.urgent ? "Несрочный" : "Срочный"}
-                    </td>
-                    <td>
-                      {!!order?.brigada?.name
-                        ? order?.brigada?.name
-                        : "Не задано"}
-                    </td>
-                    <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
-                    <td>
-                      {handleStatus({
-                        status: order?.status,
-                        dep: Departments.apc,
-                      })}
-                    </td>
-                    <td>
-                      {!!order?.user_manager
-                        ? order?.user_manager
-                        : "Не задано"}
-                    </td>
-                  </tr>
-                )
-              )}
+                  </td>
+                  {Number(sphere_status) === Sphere.fabric && (
+                    <td>{order?.is_bot ? "Телеграм-бот" : "Веб-сайт"}</td>
+                  )}
+                  <td>{order?.user?.full_name}</td>
+                  <td>
+                    <span className={"not-set"}>
+                      {order?.fillial?.parentfillial?.name}
+                    </span>
+                  </td>
+                  <td
+                    className={cl({
+                      ["font-bold"]: order?.category?.urgent,
+                    })}
+                  >
+                    {order?.category?.name}
+                  </td>
+                  <td>{!order?.category?.urgent ? "Несрочный" : "Срочный"}</td>
+                  <td>
+                    {!!order?.brigada?.name
+                      ? order?.brigada?.name
+                      : "Не задано"}
+                  </td>
+                  <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
+                  <td>
+                    {handleStatus({
+                      status: order?.status,
+                      dep: Departments.apc,
+                    })}
+                  </td>
+                  <td>
+                    {!!order?.user_manager ? order?.user_manager : "Не задано"}
+                  </td>
+                </tr>
+              ))}
             {orderLoading && <TableLoading />}
           </tbody>
         </table>

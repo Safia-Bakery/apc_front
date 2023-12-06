@@ -77,8 +77,6 @@ const StatCategory = () => {
     filename: "Отчёт по категориям",
     sheet: "categories",
   });
-  const [sortKey, setSortKey] = useState<any>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const { data, isLoading } = useMarketingStatCat({
     ...(!!start && { created_at: start }),
@@ -106,15 +104,6 @@ const StatCategory = () => {
         categories: Object.keys(data?.tables).map((item) => item),
       };
   }, [data?.tables]);
-
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
 
   useUpdateEffect(() => {
     if (btnAction)
@@ -166,12 +155,7 @@ const StatCategory = () => {
   return (
     <>
       <table className="table hover table-bordered " ref={tableRef}>
-        <TableHead
-          column={column}
-          sort={handleSort}
-          sortKey={sortKey}
-          sortOrder={sortOrder}
-        />
+        <TableHead column={column} />
 
         <tbody>{renderTable}</tbody>
       </table>

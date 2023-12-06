@@ -36,20 +36,9 @@ const column = [
 
 const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
   const navigate = useNavigate();
-  const [sortKey, setSortKey] = useState<keyof Category>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sort, $sort] = useState<Category[]>();
   const permission = useAppSelector(permissionSelector);
   const currentPage = Number(useQueryString("page")) || 1;
-
-  const handleSort = (key: keyof Category) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
-
   const {
     data: categories,
     refetch,
@@ -60,18 +49,6 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
     ...(dep && { department: +dep }),
     ...(sphere_status && { sphere_status }),
   });
-
-  const sortData = () => {
-    if (categories?.items && sortKey) {
-      const sortedData = [...categories?.items].sort((a, b) => {
-        if (a[sortKey]! < b[sortKey]!) return sortOrder === "asc" ? -1 : 1;
-        if (a[sortKey]! > b[sortKey]!) return sortOrder === "asc" ? 1 : -1;
-        else return 0;
-      });
-      return sortedData;
-    }
-  };
-
   const handleNavigate = (route: string) => () => navigate(route);
 
   const handleIdx = (index: number) => {
@@ -102,16 +79,15 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
           <table className="table table-hover">
             <TableHead
               column={column}
-              sort={handleSort}
-              sortKey={sortKey}
-              sortOrder={sortOrder}
+              onSort={(data) => $sort(data)}
+              data={categories?.items}
             >
               <CategoriesFilter />
             </TableHead>
 
             {!!categories?.items?.length && (
               <tbody>
-                {(sortData()?.length ? sortData() : categories?.items)?.map(
+                {(sort?.length ? sort : categories?.items)?.map(
                   (category, idx) => (
                     <tr key={idx} className="bg-blue">
                       <td width="40">{handleIdx(idx)}</td>

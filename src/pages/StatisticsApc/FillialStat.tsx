@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { Departments, Sphere } from "src/utils/types";
+import { DepartmentStatTypes, Departments, Sphere } from "src/utils/types";
 import TableHead from "src/components/TableHead";
 import useStatsDepartment from "src/hooks/useStatsDepartment";
 import useQueryString from "src/hooks/custom/useQueryString";
@@ -18,8 +18,7 @@ interface Props {
 const BranchStat: FC<Props> = ({ sphere_status }) => {
   const start = useQueryString("start");
   const end = useQueryString("end");
-  const [sortKey, setSortKey] = useState<any>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sort, $sort] = useState<DepartmentStatTypes[]>();
 
   const tableRef = useRef(null);
   const btnAction = document.getElementById("export_to_excell");
@@ -46,27 +45,13 @@ const BranchStat: FC<Props> = ({ sphere_status }) => {
     ...(!!end && { finished_at: end }),
   });
 
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
-  // if (isLoading) return <Loading />;
   return (
     <>
       <table className="table table-hover" ref={tableRef}>
-        <TableHead
-          column={column}
-          sort={handleSort}
-          sortKey={sortKey}
-          sortOrder={sortOrder}
-        />
+        <TableHead column={column} onSort={(data) => $sort(data)} data={data} />
 
         <tbody>
-          {data?.map((item, idx) => (
+          {(sort?.length ? sort : data)?.map((item, idx) => (
             <tr key={idx} className="bg-blue">
               <td>{item.name}</td>
               <td>{item.amount}</td>

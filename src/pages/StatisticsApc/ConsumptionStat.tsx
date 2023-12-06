@@ -16,8 +16,13 @@ interface Props {
 }
 
 const ConsumptionStat = ({ sphere_status }: Props) => {
-  const [sortKey, setSortKey] = useState<any>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sort, $sort] = useState<
+    {
+      amount: number;
+      name: string;
+      id: number;
+    }[]
+  >();
 
   const start = useQueryString("start");
   const end = useQueryString("end");
@@ -47,27 +52,17 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
     ...(!!end && { finished_at: end }),
   });
 
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
-
   return (
     <>
       <table className="table table-hover" ref={tableRef}>
         <TableHead
           column={column}
-          sort={handleSort}
-          sortKey={sortKey}
-          sortOrder={sortOrder}
+          onSort={(data) => $sort(data)}
+          data={data?.tests}
         />
 
         <tbody>
-          {data?.tests?.map((item, idx) => (
+          {(sort?.length ? sort : data?.tests)?.map((item, idx) => (
             <tr key={idx} className="bg-blue">
               <td width="50">{idx + 1}</td>
 

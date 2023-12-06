@@ -48,8 +48,6 @@ const DepartmentStat = () => {
     filename: "Отчёт по отделам",
     sheet: "departments",
   });
-  const [sortKey, setSortKey] = useState<any>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const { data, isLoading } = useMarketingStatDep({
     ...(!!start && { started_at: start }),
@@ -67,15 +65,6 @@ const DepartmentStat = () => {
         ),
       };
   }, [data?.pie]);
-
-  const handleSort = (key: any) => {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  };
 
   useUpdateEffect(() => {
     if (btnAction)
@@ -117,12 +106,7 @@ const DepartmentStat = () => {
   return (
     <>
       <table className="table table-hover table-bordered" ref={tableRef}>
-        <TableHead
-          column={column}
-          sort={handleSort}
-          sortKey={sortKey}
-          sortOrder={sortOrder}
-        />
+        <TableHead column={column} />
 
         <tbody>{renderTable}</tbody>
       </table>

@@ -55,28 +55,7 @@ const Users: FC<Props> = ({ add, edit }) => {
     ...(!!client && { position: false }),
   });
 
-  const [sortKey, setSortKey] = useState<keyof UsersType>();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-
-  function handleSort(key: keyof UsersType) {
-    if (key === sortKey) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  }
-
-  const sortData = () => {
-    if (users?.items && sortKey) {
-      const sortedData = [...users?.items].sort((a, b) => {
-        if (a[sortKey]! < b[sortKey]!) return sortOrder === "asc" ? -1 : 1;
-        if (a[sortKey]! > b[sortKey]!) return sortOrder === "asc" ? 1 : -1;
-        else return 0;
-      });
-      return sortedData;
-    }
-  };
+  const [sort, $sort] = useState<UsersType[]>();
 
   const handleIdx = (index: number) => {
     if (currentPage === 1) return index + 1;
@@ -92,10 +71,6 @@ const Users: FC<Props> = ({ add, edit }) => {
   const renderFilter = useMemo(() => {
     return <UsersFilter currentPage={currentPage} />;
   }, [full_name, user_status, role_id, username, phone_number]);
-
-  // useEffect(() => {
-  //   if (currentPage > 1) refetch();
-  // }, [currentPage]);
 
   return (
     <Card>
@@ -115,9 +90,8 @@ const Users: FC<Props> = ({ add, edit }) => {
         <table className="table table-hover">
           <TableHead
             column={column}
-            sort={handleSort}
-            sortKey={sortKey}
-            sortOrder={sortOrder}
+            onSort={(data) => $sort(data)}
+            data={users?.items}
           >
             {renderFilter}
           </TableHead>
@@ -125,7 +99,7 @@ const Users: FC<Props> = ({ add, edit }) => {
           <tbody>
             {!!users?.items?.length &&
               !orderLoading &&
-              (sortData()?.length ? sortData() : users?.items)
+              (sort?.length ? sort : users?.items)
                 ?.filter((user) => user.status !== 1)
                 .map((user, idx) => (
                   <tr className="bg-blue" key={idx}>
