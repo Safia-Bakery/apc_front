@@ -59,7 +59,6 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
     return sumWithInitial;
   };
 
-  // if (isLoading) return <Loading />;
   return (
     <>
       <table className="table table-bordered w-full border-dark" ref={tableRef}>

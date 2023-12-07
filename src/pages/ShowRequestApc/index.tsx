@@ -19,6 +19,7 @@ import {
   Departments,
   FileType,
   MainPermissions,
+  ModalTypes,
   RequestStatus,
 } from "src/utils/types";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
@@ -37,24 +38,16 @@ import Loading from "src/components/Loader";
 import cl from "classnames";
 import { permissionSelector } from "src/store/reducers/sidebar";
 
-const enum ModalTypes {
-  closed = "closed",
-  cancelRequest = "cancelRequest",
-  assign = "assign",
-  showPhoto = "showPhoto",
-}
-
 interface Props {
   edit: MainPermissions;
   attaching: MainPermissions;
-  // synciiko: MainPermissions;
 }
 
 const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const tokenKey = useQueryString("key");
-  const { search, state } = useLocation();
+  const { state } = useLocation();
   const sphere_status = Number(useQueryString("sphere_status"));
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const permissions = useAppSelector(permissionSelector);
@@ -82,12 +75,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
 
   const { mutate, isLoading: uploadLoading } = uploadFileMutation();
 
-  const handleBack = () => {
-    // if (sphere_status === Sphere.fabric)
-    //   navigate(`/requests-apc-fabric${search}`);
-    // if (sphere_status === Sphere.retail)
-    navigate(state?.prevPath);
-  };
+  const handleBack = () => navigate(state?.prevPath);
 
   const handleFilesSelected = (data: FileItem[]) =>
     dispatch(uploadReport(data));

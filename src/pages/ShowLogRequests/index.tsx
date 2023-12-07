@@ -13,7 +13,12 @@ import {
   handleStatus,
   isValidHttpUrl,
 } from "src/utils/helpers";
-import { Departments, FileType, RequestStatus } from "src/utils/types";
+import {
+  Departments,
+  FileType,
+  ModalTypes,
+  RequestStatus,
+} from "src/utils/types";
 import { useForm } from "react-hook-form";
 import ShowRequestModals from "src/components/ShowRequestModals";
 
@@ -22,12 +27,6 @@ import {
   useRemoveParams,
 } from "src/hooks/custom/useCustomNavigate";
 import cl from "classnames";
-
-const enum ModalTypes {
-  closed = "closed",
-  cancelRequest = "cancelRequest",
-  showPhoto = "showPhoto",
-}
 
 const ShowLogRequests = () => {
   const { id } = useParams();

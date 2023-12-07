@@ -3,7 +3,7 @@ import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useCategory from "src/hooks/useCategory";
-import { FC, useEffect, useMemo } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import categoryMutation from "src/hooks/mutation/categoryMutation";
 import useCategories from "src/hooks/useCategories";
 import { successToast } from "src/utils/toast";
@@ -13,6 +13,10 @@ import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
 import { Departments, MarketingSubDepRu, Sphere } from "src/utils/types";
 import MainSelect from "src/components/BaseInputs/MainSelect";
+import UploadComponent, { FileItem } from "src/components/FileUpload";
+import BaseInputs from "src/components/BaseInputs";
+import { imageConverter } from "src/utils/helpers";
+import { baseURL } from "src/main";
 
 interface Props {
   sphere_status?: Sphere;
@@ -44,19 +48,21 @@ const ShowCategory: FC<Props> = ({ sphere_status, dep }) => {
     formState: { errors },
     getValues,
     reset,
+    watch,
   } = useForm();
 
   const onSubmit = () => {
-    const { name, description, urgent, status, sub_id } = getValues();
+    const { name, description, urgent, status, sub_id, files } = getValues();
     mutate(
       {
         name,
         description,
-        status,
-        urgent,
+        status: +!!status,
+        urgent: +!!urgent,
         department: dep,
         sphere_status: sphere_status || Sphere.retail,
         ...(id && { id: +id }),
+        ...(!!files?.length && { file: files[0] }),
         ...(!!sub_id && { sub_id: +sub_id }),
       },
       {
@@ -86,33 +92,27 @@ const ShowCategory: FC<Props> = ({ sphere_status, dep }) => {
     }
   }, [category, reset]);
 
-  let renderDepartment;
-
-  if (Number(dep) === Departments.marketing) {
-    renderDepartment = (
-      <>
-        <BaseInput label="ОТДЕЛ" error={errors.name}>
-          <MainSelect
-            register={register("sub_id", { required: "Обязательное поле" })}
-            values={MarketingSubDepRu}
-          />
-        </BaseInput>
-        <BaseInput label="НАИМЕНОВАНИЕ" error={errors.name}>
-          <MainInput
-            register={register("name", { required: "Обязательное поле" })}
-          />
-        </BaseInput>
-      </>
-    );
-  } else {
-    renderDepartment = (
-      <BaseInput label="НАИМЕНОВАНИЕ" error={errors.name}>
-        <MainInput
-          register={register("name", { required: "Обязательное поле" })}
+  const renderImage = useMemo(() => {
+    if (!!watch("files"))
+      return (
+        <img
+          src={imageConverter(watch("files")?.[0])}
+          alt="category-files"
+          height={150}
+          width={150}
         />
-      </BaseInput>
-    );
-  }
+      );
+
+    if (category?.file && !!id)
+      return (
+        <img
+          src={`${baseURL}/${category.file}`}
+          alt="category-files"
+          height={150}
+          width={150}
+        />
+      );
+  }, [watch("files"), category?.file, id]);
 
   if (isLoading && !!id) return;
 
@@ -124,7 +124,20 @@ const ShowCategory: FC<Props> = ({ sphere_status, dep }) => {
         </button>
       </Header>
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
-        {renderDepartment}
+        {Number(dep) === Departments.marketing && (
+          <BaseInput label="ОТДЕЛ" error={errors.name}>
+            <MainSelect
+              register={register("sub_id", { required: "Обязательное поле" })}
+              values={MarketingSubDepRu}
+            />
+          </BaseInput>
+        )}
+
+        <BaseInput label="НАИМЕНОВАНИЕ" error={errors.name}>
+          <MainInput
+            register={register("name", { required: "Обязательное поле" })}
+          />
+        </BaseInput>
 
         <BaseInput label="ОПИСАНИЕ">
           <MainTextArea register={register("description")} />
@@ -137,6 +150,23 @@ const ShowCategory: FC<Props> = ({ sphere_status, dep }) => {
         />
 
         <MainCheckBox label="Активный" register={register("status")} />
+
+        {Number(dep) === Departments.marketing && (
+          <BaseInput label="ЗАГРУЗИТЬ ФОТО" className="relative">
+            <MainInput
+              value={
+                !!watch("files")?.length ? `${watch("files")?.[0].name}` : ""
+              }
+              register={register("image_name")}
+            />
+            <MainInput
+              type="file"
+              register={register("files")}
+              className="opacity-0 absolute right-0 bottom-0"
+            />
+          </BaseInput>
+        )}
+        {renderImage}
 
         <button type="submit" className="btn btn-success btn-fill float-end">
           Сохранить

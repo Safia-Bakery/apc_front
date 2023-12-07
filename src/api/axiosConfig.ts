@@ -127,6 +127,11 @@ class BaseAPIClient {
     contentType = "application/json",
   }: BaseUrlParams) {
     const fullUrl = this.buildUrlWithParams(url, params);
+    config = config || {};
+    config.headers = {
+      ...(config.headers || {}),
+      "Content-Type": contentType,
+    };
     return this.axiosInstance.put<T>(fullUrl, body, config);
   }
 

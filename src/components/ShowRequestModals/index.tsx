@@ -1,6 +1,12 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Modal from "../Modal";
-import { BrigadaType, FileType, RequestStatus } from "src/utils/types";
+import {
+  BrigadaType,
+  FileType,
+  MarketingSubDepRu,
+  ModalTypes,
+  RequestStatus,
+} from "src/utils/types";
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import styles from "./index.module.scss";
@@ -9,7 +15,7 @@ import BaseInput from "../BaseInputs";
 import MainTextArea from "../BaseInputs/MainTextArea";
 import { CancelReason, detectFileType } from "src/utils/helpers";
 import MainSelect from "../BaseInputs/MainSelect";
-import { successToast } from "src/utils/toast";
+import { errorToast, successToast } from "src/utils/toast";
 import useOrder from "src/hooks/useOrder";
 import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
 import cl from "classnames";
@@ -17,29 +23,28 @@ import useQueryString from "src/hooks/custom/useQueryString";
 import { useRemoveParams } from "src/hooks/custom/useCustomNavigate";
 import useBrigadas from "src/hooks/useBrigadas";
 import Loading from "../Loader";
-
-const enum ModalTypes {
-  closed = "closed",
-  cancelRequest = "cancelRequest",
-  assign = "assign",
-  showPhoto = "showPhoto",
-}
+import MainDatePicker from "../BaseInputs/MainDatePicker";
+import dayjs from "dayjs";
+import marketingReassignMutation from "src/hooks/mutation/marketingReassign";
+import useCategories from "src/hooks/useCategories";
 
 const ShowRequestModals = () => {
   const { id } = useParams();
-  const modal = useQueryString("modal");
+  const modal = Number(useQueryString("modal"));
   const photo = useQueryString("photo");
   const sphere_status = useQueryString("sphere_status");
+  const [deadline, $deadline] = useState<Date>();
   const removeParams = useRemoveParams();
+  const handleDeadline = (event: Date) => $deadline(event);
+  const { mutate: reassign } = marketingReassignMutation();
 
   const { mutate: attach } = attachBrigadaMutation();
-  const {
-    register,
-    getValues,
-    watch,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, getValues, watch, handleSubmit } = useForm();
+
+  const { data: categories, isLoading: categoryLoading } = useCategories({
+    sub_id: Number(watch("direction")),
+    enabled: !!watch("direction"),
+  });
 
   const { data: brigades, isLoading } = useBrigadas({
     enabled: false,
@@ -48,15 +53,41 @@ const ShowRequestModals = () => {
 
   const { refetch: orderRefetch } = useOrder({ id: Number(id) });
 
+  const handleReassign = () => {
+    reassign(
+      {
+        id: Number(id),
+        category_id: getValues("category_id"),
+      },
+      {
+        onSuccess: () => {
+          orderRefetch();
+          successToast("assigned");
+          removeParams(["modal"]);
+        },
+        onError: (e: any) => errorToast(e.message),
+      }
+    );
+  };
+
   const handleBrigada =
-    ({ status, item }: { status: RequestStatus; item?: BrigadaType }) =>
+    ({
+      status,
+      item,
+      time,
+    }: {
+      status: RequestStatus;
+      item?: BrigadaType;
+      time?: string;
+    }) =>
     () => {
       const { fixedReason } = getValues();
       attach(
         {
           request_id: Number(id),
-          brigada_id: Number(item?.id),
           status,
+          ...(!!time && { finishing_time: time }),
+          ...(!!item && { brigada_id: Number(item?.id) }),
           ...(status === RequestStatus.rejected && {
             deny_reason:
               fixedReason < 4
@@ -74,7 +105,7 @@ const ShowRequestModals = () => {
       removeParams(["modal"]);
     };
 
-  const renderModal = useMemo(() => {
+  const renderModal = () => {
     switch (modal) {
       case ModalTypes.assign:
         return (
@@ -169,18 +200,71 @@ const ShowRequestModals = () => {
           </div>
         );
 
+      case ModalTypes.assingDeadline:
+        return (
+          <div className="min-w-[380px] p-4 ">
+            <BaseInput label="Выберите дедлайн">
+              <MainDatePicker
+                showTimeSelect
+                selected={
+                  !!deadline ? dayjs(deadline || undefined).toDate() : undefined
+                }
+                onChange={handleDeadline}
+              />
+            </BaseInput>
+
+            <button
+              onClick={handleBrigada({
+                status: RequestStatus.confirmed,
+                time: deadline?.toISOString(),
+              })}
+              className="btn btn-success btn-fill btn-sm float-end"
+            >
+              Принять
+            </button>
+          </div>
+        );
+
+      case ModalTypes.reassign:
+        return (
+          <div className="min-w-[380px] p-4">
+            <BaseInput label="Выберите направление">
+              <MainSelect
+                values={MarketingSubDepRu}
+                register={register("direction")}
+              />
+            </BaseInput>
+
+            <BaseInput label="Выберите категорию">
+              <MainSelect
+                values={categories?.items || []}
+                register={register("category_id", {
+                  required: "Обязательное поле",
+                })}
+              />
+            </BaseInput>
+
+            <button
+              onClick={handleReassign}
+              className="btn btn-success btn-fill btn-sm float-end"
+            >
+              Перенаправлять
+            </button>
+          </div>
+        );
+
       default:
         return;
     }
-  }, [modal, brigades?.items, photo, detectFileType, watch("fixedReason")]);
+  };
 
   return (
     <Modal
       onClose={() => removeParams(["modal", !!photo ? "photo" : ""])}
       isOpen={!!modal && modal !== ModalTypes.closed}
-      className={styles.assignModal}
+      className={cl(styles.assignModal, "!h-[400px]")}
     >
-      {renderModal}
+      {renderModal()}
     </Modal>
   );
 };

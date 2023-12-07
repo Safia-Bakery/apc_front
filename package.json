@@ -32,6 +32,7 @@
     "sass": "^1.63.6",
     "tailwindcss": "^3.3.5",
     "yandex-maps": "^0.0.1",
+    "yarn": "^1.22.21",
     "ymaps": "^0.2.1"
   },
   "devDependencies": {

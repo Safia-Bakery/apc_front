@@ -87,6 +87,7 @@ export interface Order {
   arrival_date: Date;
   bread_size?: string;
   update_time: { [key: number | string]: Date | string };
+  finishing_time?: string;
 }
 
 export interface OrderType extends BasePaginatedRes {
@@ -195,6 +196,7 @@ export interface Category {
   id: number | string;
   urgent: number;
   sub_id?: number;
+  file: string;
 }
 
 export interface CategoryTypes extends BasePaginatedRes {
@@ -490,4 +492,13 @@ interface BaseSidebarTypes {
 
 export interface SidebarType extends BaseSidebarTypes {
   subroutes?: BaseSidebarTypes[];
+}
+
+export const enum ModalTypes {
+  closed,
+  cancelRequest,
+  assign,
+  showPhoto,
+  assingDeadline,
+  reassign,
 }

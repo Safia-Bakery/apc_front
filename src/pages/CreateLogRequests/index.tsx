@@ -41,9 +41,7 @@ const CreateLogRequests = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
 
-  const handleDateStart = (event: Date) => {
-    $start(event);
-  };
+  const handleDateStart = (event: Date) => $start(event);
 
   useEffect(() => {
     reset({

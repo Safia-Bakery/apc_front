@@ -15,22 +15,30 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.scss";
 
-export const baseURL = "https://api.service.safiabakery.uz";
-// export const baseURL = "http://10.0.0.133:8000";
+// export const baseURL = "https://api.service.safiabakery.uz";
+export const baseURL = "http://10.0.0.133:8000";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export default new BaseAPIClient(baseURL, store);
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <Provider store={store}>
-    <PersistGate persistor={persistor} loading={<Loading absolute />}>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-        <ToastContainer autoClose={600} />
-      </QueryClientProvider>
-    </PersistGate>
-  </Provider>
-);
+let container: any = null;
+
+document.addEventListener("DOMContentLoaded", function (event) {
+  if (!container) {
+    container = document.getElementById("root") as HTMLElement;
+    const root = ReactDOM.createRoot(container);
+    root.render(
+      <Provider store={store}>
+        <PersistGate persistor={persistor} loading={<Loading absolute />}>
+          <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+            <ToastContainer autoClose={600} />
+          </QueryClientProvider>
+        </PersistGate>
+      </Provider>
+    );
+  }
+});

@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "src/main";
 import { Departments, Sphere } from "src/utils/types";
+import apiClient from "src/main";
 
 interface Body {
   name: string;
@@ -10,16 +10,30 @@ interface Body {
   urgent: number;
   department?: Departments;
   sphere_status?: Sphere;
+  files?: any;
 }
 
 const categoryMutation = () => {
-  return useMutation(["handle_category"], (body: Body) => {
-    if (!body.id)
-      return apiClient
-        .post({ url: "/category", body })
-        .then(({ data }) => data);
-    else
-      return apiClient.put({ url: "/category", body }).then(({ data }) => data);
+  const contentType = "multipart/form-data";
+  const config = { timeout: 100000 };
+  return useMutation(["handle_category"], async (body: Body) => {
+    if (!body.id) {
+      const { data } = await apiClient.post({
+        url: "/category",
+        body,
+        config,
+        contentType,
+      });
+      return data;
+    } else {
+      const { data } = await apiClient.put({
+        url: "/category",
+        body,
+        config,
+        contentType,
+      });
+      return data;
+    }
   });
 };
 export default categoryMutation;

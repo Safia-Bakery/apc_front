@@ -18,6 +18,7 @@ import {
   Departments,
   FileType,
   MainPermissions,
+  ModalTypes,
   RequestStatus,
 } from "src/utils/types";
 import { useForm } from "react-hook-form";
@@ -30,13 +31,6 @@ import {
 import { permissionSelector } from "src/store/reducers/sidebar";
 import useQueryString from "src/hooks/custom/useQueryString";
 import cl from "classnames";
-
-const enum ModalTypes {
-  closed = "closed",
-  cancelRequest = "cancelRequest",
-  assign = "assign",
-  showPhoto = "showPhoto",
-}
 
 const ShowMarketingRequest = () => {
   const { id } = useParams();
@@ -90,13 +84,19 @@ const ShowMarketingRequest = () => {
       return (
         <div className="float-end mb10">
           <button
+            onClick={handleModal(ModalTypes.reassign)}
+            className="btn btn-primary btn-fill"
+          >
+            Перенаправлять
+          </button>
+          <button
             onClick={handleModal(ModalTypes.cancelRequest)}
-            className="btn btn-danger btn-fill mr-2"
+            className="btn btn-danger btn-fill mx-2"
           >
             Отклонить
           </button>
           <button
-            onClick={handleBrigada({ status: RequestStatus.confirmed })}
+            onClick={handleModal(ModalTypes.assingDeadline)}
             className="btn btn-success btn-fill"
             id="recieve_request"
           >
@@ -108,7 +108,7 @@ const ShowMarketingRequest = () => {
     if (permissions?.[edit])
       return (
         <div className="float-end mb10">
-          {order?.status! < 2 && (
+          {order?.status! < RequestStatus.sendToRepair && (
             <button
               onClick={handleBrigada({
                 status: RequestStatus.sendToRepair,
@@ -118,7 +118,7 @@ const ShowMarketingRequest = () => {
               Отправить заказчику
             </button>
           )}
-          {order?.status! < 3 && (
+          {order?.status! < RequestStatus.done && (
             <button
               onClick={handleBrigada({ status: RequestStatus.done })}
               className="btn btn-success btn-fill"
@@ -240,7 +240,6 @@ const ShowMarketingRequest = () => {
                         : "Не задано"}
                     </td>
                   </tr>
-
                   <tr>
                     <th>Дата поступления:</th>
                     <td>
@@ -262,6 +261,16 @@ const ShowMarketingRequest = () => {
                     <td>
                       {order?.finished_at
                         ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
+                        : "Не задано"}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Дедлайн:</th>
+                    <td>
+                      {order?.finishing_time
+                        ? dayjs(order?.finishing_time).format(
+                            "DD.MM.YYYY HH:mm"
+                          )
                         : "Не задано"}
                     </td>
                   </tr>

@@ -81,8 +81,6 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
 
   const downloadAsPdf = () => onDownload();
 
-  // if (isLoading) return <Loading />;
-
   return (
     <>
       <table className="table table-hover table-bordered" ref={tableRef}>
