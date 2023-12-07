@@ -15,8 +15,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.scss";
 
-// export const baseURL = "https://api.service.safiabakery.uz";
-export const baseURL = "http://10.0.0.133:8000";
+export const baseURL = "https://api.service.safiabakery.uz";
+// export const baseURL = "http://10.0.0.133:8000";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
