@@ -132,7 +132,7 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
                       handleProduct({ id: item.id, name: item.name })
                     }
                     className={cl(
-                      "py-2 px-4 relative pointer hover:bg-hoverGray transition-colors"
+                      "py-2 px-4 relative pointer hover:bg-hoverGray transition-colors border-b border-b-black "
                     )}
                   >
                     {item.name}
@@ -146,7 +146,7 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
                       handleProduct({ id: item.id, name: item.name })
                     }
                     className={cl(
-                      "py-2 px-4 relative pointer hover:bg-hoverGray transition-colors"
+                      "py-2 px-4 relative pointer hover:bg-hoverGray transition-colors border-b border-b-black"
                     )}
                   >
                     {item.name}

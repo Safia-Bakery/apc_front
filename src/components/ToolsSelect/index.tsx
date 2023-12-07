@@ -115,7 +115,7 @@ const ToolsSelect: React.FC = () => {
           />
         </BaseInput>
         {focused && (
-          <ul className={cl("list-group", styles.list)}>
+          <ul className={cl("list-group border border-gray-500", styles.list)}>
             {items?.map((item, idx) => {
               if (items.length === idx + 1 && !query)
                 return (
@@ -124,7 +124,7 @@ const ToolsSelect: React.FC = () => {
                     ref={lastBookElementRef}
                     onClick={() => handleProduct(item)}
                     className={cl(
-                      "py-2 px-4 relative pointer hover:bg-hoverGray transition-colors"
+                      "py-2 px-4 relative pointer hover:bg-hoverGray transition-colors border-b border-b-gray-500"
                     )}
                   >
                     {item.name}
@@ -138,7 +138,7 @@ const ToolsSelect: React.FC = () => {
                       handleProduct({ id: item.id, name: item.name })
                     }
                     className={cl(
-                      "py-2 px-4 relative pointer hover:bg-hoverGray transition-colors"
+                      "py-2 px-4 relative pointer hover:bg-hoverGray transition-colors border-b border-b-gray-500"
                     )}
                   >
                     {item.name}
