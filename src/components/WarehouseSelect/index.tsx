@@ -119,7 +119,9 @@ const WarehouseSelect: FC = () => {
                     onClick={() =>
                       handleProduct({ id: item.id, name: item.name })
                     }
-                    className={cl("list-group-item relative pointer")}
+                    className={cl(
+                      "py-2 px-4 relative pointer hover:bg-hoverGray transition-colors"
+                    )}
                   >
                     {item.name}
                   </li>
@@ -131,7 +133,9 @@ const WarehouseSelect: FC = () => {
                     onClick={() =>
                       handleProduct({ id: item.id, name: item.name })
                     }
-                    className={cl("list-group-item relative pointer")}
+                    className={cl(
+                      "py-2 px-4 relative pointer hover:bg-hoverGray transition-colors"
+                    )}
                   >
                     {item.name}
                   </li>
