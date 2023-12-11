@@ -1,8 +1,12 @@
 import { FC } from "react";
-import DatePicker from "react-datepicker";
+import DatePicker, { registerLocale, setDefaultLocale } from "react-datepicker";
 import cl from "classnames";
 import { UseFormRegisterReturn } from "react-hook-form";
+import ru from "date-fns/locale/ru";
 import styles from "./index.module.scss";
+
+registerLocale("ru", ru);
+setDefaultLocale("ru");
 
 interface Props {
   onChange?: any;
@@ -35,7 +39,7 @@ const MainDatePicker: FC<Props> = ({
       <DatePicker
         selected={selected}
         onChange={onChange}
-        timeCaption="Time"
+        timeCaption="Время"
         dateFormat={dateFormat}
         timeIntervals={30}
         showTimeSelect={showTimeSelect}
