@@ -35,8 +35,9 @@ const routesArr = [
 
 const StatisticsApc = () => {
   const navigate = useNavigate();
-  const start = useQueryString("start");
-  const end = useQueryString("end");
+  const start =
+    useQueryString("start") || dayjs().startOf("month").format("YYYY-MM-DD");
+  const end = useQueryString("end") || dayjs().format("YYYY-MM-DD");
   const goBack = () => navigate(-1);
   const navigateParams = useNavigateParams();
   const { register, getValues, reset, setValue } = useForm();

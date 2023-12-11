@@ -132,11 +132,6 @@ const Logs = () => {
             </tr>
           </tbody>
         </table>
-        {false && (
-          <div className="w-full">
-            <p className="text-center w-full ">Спосок пуст</p>
-          </div>
-        )}
       </div>
     </Card>
   );

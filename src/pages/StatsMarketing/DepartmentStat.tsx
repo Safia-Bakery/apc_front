@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import { MarketingSubDep } from "src/utils/types";
 import TableHead from "src/components/TableHead";
 import Chart from "react-apexcharts";
@@ -12,12 +12,24 @@ const options = {
   chart: {
     type: "pie",
   } as ApexChart,
+  legend: {
+    fontSize: "22px",
+  },
+  dataLabels: {
+    enabled: true,
+    style: {
+      fontSize: "20px",
+      fontFamily: "Helvetica, Arial, sans-serif",
+      fontWeight: "bold",
+    },
+  },
   responsive: [
     {
       breakpoint: 480,
       options: {
         chart: {
           width: 200,
+          font: 20,
         },
         legend: {
           position: "bottom",
@@ -29,7 +41,7 @@ const options = {
 
 const column = [
   { name: "№", key: "id" },
-  { name: "Отдел", key: "category" },
+  { name: "Направления", key: "category" },
   { name: "Количество закрытых заявок", key: "amount" },
   {
     name: "Время обработки (ч)",

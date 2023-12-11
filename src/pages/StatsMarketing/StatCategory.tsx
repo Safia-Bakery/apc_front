@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import TableHead from "src/components/TableHead";
 import Chart from "react-apexcharts";
 import useQueryString from "src/hooks/custom/useQueryString";
@@ -12,14 +12,12 @@ const optionsBar = {
       type: "bar",
       height: 350,
     },
+
     plotOptions: {
       bar: {
         borderRadius: 10,
         horizontal: true,
       },
-    },
-    dataLabels: {
-      enabled: false,
     },
     title: {
       text: "Процент выполнения",
@@ -37,6 +35,17 @@ const options = {
   chart: {
     type: "pie",
   } as ApexChart,
+  legend: {
+    fontSize: "22px",
+  },
+  dataLabels: {
+    enabled: true,
+    style: {
+      fontSize: "20px",
+      fontFamily: "Helvetica, Arial, sans-serif",
+      fontWeight: "bold",
+    },
+  },
   responsive: [
     {
       breakpoint: 480,
@@ -143,7 +152,17 @@ const StatCategory = () => {
     if (!!bar?.categories?.length && !!bar?.serie)
       return (
         <Chart
-          options={{ ...optionsBar, xaxis: { categories: bar.categories } }}
+          options={{
+            ...optionsBar,
+            xaxis: {
+              categories: bar.categories,
+              labels: {
+                style: {
+                  fontSize: "16px",
+                },
+              },
+            },
+          }}
           series={[bar.serie]}
           type="bar"
           // width={380}
