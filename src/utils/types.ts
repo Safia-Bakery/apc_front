@@ -88,6 +88,14 @@ export interface Order {
   bread_size?: string;
   update_time: { [key: number | string]: Date | string };
   finishing_time?: string;
+  comments: [
+    {
+      id: 3;
+      request: Order;
+      user: UsersType;
+      comment: string;
+    }
+  ];
 }
 
 export interface OrderType extends BasePaginatedRes {
