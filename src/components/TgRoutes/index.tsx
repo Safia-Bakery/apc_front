@@ -11,12 +11,14 @@ const TgRoutes = () => {
   const navigate = useNavigate();
   const { pathname, search } = useLocation();
 
-  useEffect(() => {
-    if (!!tokenKey) {
-      dispatch(loginHandler(tokenKey));
-      navigate(pathname + search);
-    }
-  }, [tokenKey]);
+  console.log(tokenKey, "tokenKey");
+
+  // useEffect(() => {
+  //   if (!!tokenKey) {
+  //     dispatch(loginHandler(tokenKey));
+  //     navigate(pathname + search);
+  //   }
+  // }, [tokenKey]);
 
   useEffect(() => {
     setTimeout(() => {

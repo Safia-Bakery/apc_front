@@ -15,6 +15,15 @@ export const TelegramApp = {
   close() {
     window.Telegram.WebApp.close();
   },
+  toMainScreen() {
+    Telegram.WebApp.MainButton.setText("Закрыть")
+      .show()
+      .onClick(() => {
+        const data = JSON.stringify({ success: true });
+        Telegram.WebApp.sendData(data);
+        Telegram.WebApp.close();
+      });
+  },
 
   confirmClose() {
     window.Telegram.WebApp.enableClosingConfirmation();

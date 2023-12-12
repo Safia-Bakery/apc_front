@@ -7,10 +7,7 @@ import usedItemsMutation from "src/hooks/mutation/usedItems";
 import { successToast } from "src/utils/toast";
 import useOrder from "src/hooks/useOrder";
 import useQueryString from "src/hooks/custom/useQueryString";
-import {
-  useNavigateParams,
-  useRemoveParams,
-} from "src/hooks/custom/useCustomNavigate";
+import { useRemoveParams } from "src/hooks/custom/useCustomNavigate";
 import ToolsSelect from "src/components/ToolsSelect";
 import BaseInput from "src/components/BaseInputs";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
@@ -29,10 +26,8 @@ const column = [{ name: "Наименование" }, { name: "Количест�
 const TelegramAddProduct = () => {
   const { id } = useParams();
   const removeRoute = useRemoveParams();
-  const navigate = useNavigateParams();
   const productJson = useQueryString("product");
   const dispatch = useAppDispatch();
-  const itemModal = useQueryString("itemModal");
   const product = JSON.parse(productJson!) as { id: number; name: string };
   const { mutate: attach } = attachBrigadaMutation();
   const { mutate: deleteExp } = deleteExpenditureMutation();

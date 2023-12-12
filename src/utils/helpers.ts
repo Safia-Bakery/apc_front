@@ -181,6 +181,10 @@ export const handleDepartment = ({
         return "Маркетинг";
       case Departments.it:
         return "IT";
+      case Departments.logystics:
+        return "Запрос машин";
+      case Departments.staff:
+        return "Заявки на еду";
       default:
         break;
     }

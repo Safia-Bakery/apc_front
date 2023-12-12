@@ -5,14 +5,25 @@ import BaseInput from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import Header from "src/components/Header";
 import RateStars from "src/components/RatingStars";
-import { useRemoveParams } from "src/hooks/custom/useCustomNavigate";
+import useQueryString from "src/hooks/custom/useQueryString";
+import commentMutation from "src/hooks/mutation/comment";
+import { handleDepartment } from "src/utils/helpers";
 import { TelegramApp } from "src/utils/tgHelpers";
+import { errorToast } from "src/utils/toast";
+import { Departments } from "src/utils/types";
 
 const TgRating = () => {
   const { id } = useParams();
-  const removeParams = useRemoveParams();
   const [rate, $rate] = useState(0);
   const handleRate = (num: number) => $rate(num);
+  const user_id = Number(useQueryString("user_id"));
+  const department =
+    Number(useQueryString("department")) !== Departments.marketing
+      ? Number(useQueryString("department"))
+      : undefined;
+  const sub_id = Number(useQueryString("sub_id"));
+
+  const { mutate } = commentMutation();
 
   const { register, handleSubmit, getValues } = useForm();
 
@@ -34,9 +45,32 @@ const TgRating = () => {
     }
   }, [rate]);
 
+  const onSubmit = () => {
+    mutate(
+      {
+        request_id: Number(id),
+        comment: getValues("comment"),
+        rating: rate,
+        user_id,
+      },
+      {
+        onSuccess: () => {
+          TelegramApp.toMainScreen();
+        },
+        onError: (e: any) => errorToast(e.message),
+      }
+    );
+  };
+
   return (
-    <div className="absolute inset-0 bg-mainGray flex flex-col z-[1000]">
-      <Header title={`Заказ №${id}`} subTitle={`Статус: `}>
+    <form
+      className="absolute inset-0 bg-mainGray flex flex-col z-[1000]"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <Header
+        title={`Заказ №${id}`}
+        subTitle={handleDepartment({ dep: department, sub: sub_id })}
+      >
         <div
           onClick={() => TelegramApp.closeWindow()}
           className="rounded-full !border !border-black h-9 w-9 flex items-center justify-center"
@@ -87,7 +121,7 @@ const TgRating = () => {
           Готово
         </button>
       )}
-    </div>
+    </form>
   );
 };
 
