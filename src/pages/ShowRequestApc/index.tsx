@@ -441,6 +441,18 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
                     <th className="font-bold">Ответственный</th>
                     <td>{renderAssignment}</td>
                   </tr>
+                  {order?.comments?.[0]?.id && (
+                    <tr>
+                      <th className="font-bold">Рейтинг(отзыв)</th>
+                      <td>{order?.comments?.[0]?.id}</td>
+                    </tr>
+                  )}
+                  {order?.comments?.[0]?.comment && (
+                    <tr>
+                      <th className="font-bold">Коммент</th>
+                      <td>{order?.comments?.[0]?.comment}</td>
+                    </tr>
+                  )}
                   {order?.deny_reason && (
                     <tr>
                       <th className="font-bold">Причина отмены</th>

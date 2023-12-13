@@ -1,3 +1,4 @@
+import cl from "classnames";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
@@ -82,8 +83,13 @@ const TgRating = () => {
       </Header>
 
       <div className="flex flex-1 flex-col px-4">
-        <RateStars value={rate} onChange={handleRate} className="flex-[2]" />
-        <h5 className="font-bold text-xl text-[rgba(0,_0,_0,_0.33)] justify-center items-center flex flex-1 mt-5">
+        <RateStars value={rate} onChange={handleRate} className="flex-1" />
+        <h5
+          className={cl(
+            "font-bold text-xl text-[rgba(0,_0,_0,_0.33)] justify-center items-center flex flex-1 mt-5",
+            { ["hidden"]: !rate }
+          )}
+        >
           {renderTitle}
         </h5>
         {!rate && (
