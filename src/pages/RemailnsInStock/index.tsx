@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Pagination from "src/components/Pagination";
 import ItemsCount from "src/components/ItemsCount";
 import TableHead from "src/components/TableHead";
-import { itemsPerPage } from "src/utils/helpers";
+import { handleIdx, itemsPerPage } from "src/utils/helpers";
 import { useState } from "react";
 import StockFilter from "./filter";
 import dayjs from "dayjs";
@@ -40,11 +40,6 @@ const RemainsInStock = () => {
     page: currentPage,
     store_id: id!,
   });
-
-  const handleIdx = (index: number) => {
-    if (currentPage === 1) return index + 1;
-    else return index + 1 + itemsPerPage * (currentPage - 1);
-  };
 
   const handleSync = () => syncIIKO();
 

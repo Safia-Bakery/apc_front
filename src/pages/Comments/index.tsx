@@ -3,7 +3,7 @@ import Header from "src/components/Header";
 import { Link, useNavigate } from "react-router-dom";
 import Pagination from "src/components/Pagination";
 import { useState } from "react";
-import { itemsPerPage } from "src/utils/helpers";
+import { handleIdx, itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import dayjs from "dayjs";
 import ItemsCount from "src/components/ItemsCount";
@@ -30,10 +30,6 @@ const Comments = () => {
     page: currentPage,
   });
 
-  const handleIdx = (index: number) => {
-    if (currentPage === 1) return index + 1;
-    else return index + 1 + itemsPerPage * (currentPage - 1);
-  };
   return (
     <Card>
       <Header title={"Comments"}>

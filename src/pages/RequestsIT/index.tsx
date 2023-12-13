@@ -7,7 +7,12 @@ import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import { handleStatus, itemsPerPage, requestRows } from "src/utils/helpers";
+import {
+  handleIdx,
+  handleStatus,
+  itemsPerPage,
+  requestRows,
+} from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import InventoryFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
@@ -43,11 +48,6 @@ const RequestsIT = () => {
     page: currentPage,
     department: Departments.it,
   });
-
-  const handleIdx = (index: number) => {
-    if (currentPage === 1) return index + 1;
-    else return index + 1 + itemsPerPage * (currentPage - 1);
-  };
 
   useEffect(() => {
     refetch();

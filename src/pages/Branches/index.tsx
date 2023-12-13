@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Pagination from "src/components/Pagination";
 import { useMemo, useState } from "react";
 import { BranchType, MainPermissions } from "src/utils/types";
-import { itemsPerPage } from "src/utils/helpers";
+import { handleIdx, itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useBranches from "src/hooks/useBranches";
@@ -59,11 +59,6 @@ const Branches = () => {
   const handleNavigate = (route: string) => () => navigate(route);
 
   const handleSync = () => branchSync();
-
-  const handleIdx = (index: number) => {
-    if (currentPage === 1) return index + 1;
-    else return index + 1 + itemsPerPage * (currentPage - 1);
-  };
 
   const renderFilter = useMemo(() => {
     return <BranchesFilter />;

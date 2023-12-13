@@ -8,6 +8,7 @@ import Card from "src/components/Card";
 import Header from "src/components/Header";
 import {
   getValue,
+  handleIdx,
   handleStatus,
   itemsPerPage,
   requestRows,
@@ -85,11 +86,6 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
     ...(!!user && { user }),
     ...(!!urgent?.toString() && { urgent: !!urgent }),
   });
-
-  const handleIdx = (index: number) => {
-    if (currentPage === 1) return index + 1;
-    else return index + 1 + itemsPerPage * (currentPage - 1);
-  };
 
   useEffect(() => {
     refetch();

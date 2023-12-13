@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MainPermissions, UsersType } from "src/utils/types";
 import Pagination from "src/components/Pagination";
 import { FC, useMemo, useState } from "react";
-import { itemsPerPage } from "src/utils/helpers";
+import { handleIdx, itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useUsers from "src/hooks/useUsers";
@@ -42,6 +42,7 @@ const Users: FC<Props> = ({ add, edit }) => {
   const role_id = useQueryString("role_id");
   const username = useQueryString("username");
   const phone_number = useQueryString("phone_number");
+  const [sort, $sort] = useState<UsersType[]>();
   const { data: users, isLoading: orderLoading } = useUsers({
     size: itemsPerPage,
     page: currentPage,
@@ -54,13 +55,6 @@ const Users: FC<Props> = ({ add, edit }) => {
     },
     ...(!!client && { position: false }),
   });
-
-  const [sort, $sort] = useState<UsersType[]>();
-
-  const handleIdx = (index: number) => {
-    if (currentPage === 1) return index + 1;
-    else return index + 1 + itemsPerPage * (currentPage - 1);
-  };
 
   const userStatus = (item: number) => {
     if (item === 1) return "суперадмин";

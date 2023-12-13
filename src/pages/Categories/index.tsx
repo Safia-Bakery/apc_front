@@ -9,7 +9,7 @@ import {
 } from "src/utils/types";
 import Pagination from "src/components/Pagination";
 import { FC, useEffect, useState } from "react";
-import { handleDepartment, itemsPerPage } from "src/utils/helpers";
+import { handleDepartment, handleIdx, itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useCategories from "src/hooks/useCategories";
@@ -51,10 +51,6 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
   });
   const handleNavigate = (route: string) => () => navigate(route);
 
-  const handleIdx = (index: number) => {
-    if (currentPage === 1) return index + 1;
-    else return index + 1 + itemsPerPage * (currentPage - 1);
-  };
   useEffect(() => {
     if (currentPage > 1) refetch();
   }, [currentPage]);

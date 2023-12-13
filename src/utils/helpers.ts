@@ -9,6 +9,7 @@ import {
   SidebarType,
   Sphere,
 } from "./types";
+import useQueryString from "src/hooks/custom/useQueryString";
 
 export const itemsPerPage = 50;
 
@@ -494,4 +495,10 @@ export const isValidHttpUrl = (string: string) => {
 export const imageConverter = (img: File) => {
   if (img?.size) return URL.createObjectURL(img);
   return "";
+};
+
+export const handleIdx = (index: number) => {
+  const currentPage = Number(useQueryString("page")) || 1;
+  if (currentPage === 1) return index + 1;
+  else return index + 1 + itemsPerPage * (currentPage - 1);
 };

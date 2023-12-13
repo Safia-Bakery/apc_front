@@ -1,12 +1,17 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Departments, MainPermissions, Order } from "src/utils/types";
 import Pagination from "src/components/Pagination";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import { handleStatus, itemsPerPage, requestRows } from "src/utils/helpers";
+import {
+  handleIdx,
+  handleStatus,
+  itemsPerPage,
+  requestRows,
+} from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import InventoryFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
@@ -72,14 +77,6 @@ const RequestsMarketing = () => {
     ...(!!user && { user }),
   });
 
-  const handleIdx = (index: number) => {
-    if (currentPage === 1) return index + 1;
-    else return index + 1 + itemsPerPage * (currentPage - 1);
-  };
-  const renderFilter = useMemo(() => {
-    return <InventoryFilter sub_id={sub_id} />;
-  }, [request_status, category_id, created_at, id, phone, user, branch]);
-
   useEffect(() => {
     refetch();
   }, [currentPage, sub_id]);
@@ -110,7 +107,7 @@ const RequestsMarketing = () => {
             onSort={(data) => $sort(data)}
             data={requests?.items}
           >
-            {renderFilter}
+            <InventoryFilter sub_id={sub_id} />
           </TableHead>
 
           <tbody>
