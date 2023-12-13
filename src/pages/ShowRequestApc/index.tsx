@@ -441,10 +441,10 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
                     <th className="font-bold">Ответственный</th>
                     <td>{renderAssignment}</td>
                   </tr>
-                  {order?.comments?.[0]?.id && (
+                  {order?.comments?.[0]?.rating && (
                     <tr>
                       <th className="font-bold">Рейтинг(отзыв)</th>
-                      <td>{order?.comments?.[0]?.id}</td>
+                      <td>{order?.comments?.[0]?.rating}</td>
                     </tr>
                   )}
                   {order?.comments?.[0]?.comment && (

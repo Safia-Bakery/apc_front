@@ -94,6 +94,7 @@ export interface Order {
       request: Order;
       user: UsersType;
       comment: string;
+      rating: string;
     }
   ];
 }

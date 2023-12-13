@@ -274,6 +274,18 @@ const ShowMarketingRequest = () => {
                         : "Не задано"}
                     </td>
                   </tr>
+                  {order?.comments?.[0]?.rating && (
+                    <tr>
+                      <th className="font-bold">Рейтинг(отзыв)</th>
+                      <td>{order?.comments?.[0]?.rating}</td>
+                    </tr>
+                  )}
+                  {order?.comments?.[0]?.comment && (
+                    <tr>
+                      <th className="font-bold">Коммент</th>
+                      <td>{order?.comments?.[0]?.comment}</td>
+                    </tr>
+                  )}
                   {order?.deny_reason && (
                     <tr>
                       <th className="font-bold">Причина отмены</th>
