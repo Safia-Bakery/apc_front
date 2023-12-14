@@ -3,13 +3,6 @@ import { RootState } from "../rootConfig";
 import { Departments, MainPermissions, SidebarType } from "src/utils/types";
 import { routes } from "src/utils/helpers";
 
-const mockdata = [
-  [1, 1, 5],
-  [1, 2, 1],
-  [6, 0, 6],
-  [3, 1, 29],
-];
-
 interface State {
   sidebarItems?: SidebarType[];
   permissions?: { [key in MainPermissions]: boolean };

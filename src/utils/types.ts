@@ -437,7 +437,7 @@ export const MarketingSubDepRu = [
     id: MarketingSubDep.complects,
   },
   {
-    name: "Нестандартные рекламные решения",
+    name: "Для Тер.Менеджеров",
     id: MarketingSubDep.nonstandartAdv,
   },
   {

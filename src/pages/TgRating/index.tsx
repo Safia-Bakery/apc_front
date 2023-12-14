@@ -65,7 +65,7 @@ const TgRating = () => {
 
   return (
     <form
-      className="absolute inset-0 bg-mainGray flex flex-col z-[1000]"
+      className="absolute inset-0 bg-mainGray flex flex-col z-[1000] h-"
       onSubmit={handleSubmit(onSubmit)}
     >
       <Header
@@ -83,47 +83,56 @@ const TgRating = () => {
       </Header>
 
       <div className="flex flex-1 flex-col px-4">
-        <RateStars value={rate} onChange={handleRate} className="flex-1" />
-        <h5
-          className={cl(
-            "font-bold text-xl text-[rgba(0,_0,_0,_0.33)] justify-center items-center flex flex-1 mt-5",
-            { ["hidden"]: !rate }
+        <RateStars
+          value={rate}
+          onChange={handleRate}
+          className="flex-1 items-end"
+        />
+        <div className="flex flex-[2] flex-col justify-center">
+          <h5
+            className={cl(
+              "font-bold text-xl text-[rgba(0,_0,_0,_0.33)] justify-center items-center flex my-10",
+              { ["hidden"]: !rate }
+            )}
+          >
+            {renderTitle}
+          </h5>
+          {!rate && (
+            <h4 className="font-bold text-xl justify-center items-center text-center flex my-10">
+              Оставьте свой отзыв и помогите нам стать ещё лучше
+            </h4>
           )}
-        >
-          {renderTitle}
-        </h5>
-        {!rate && (
-          <h4 className="font-bold text-xl justify-center items-center text-center flex flex-1 mb-5">
-            Оставьте свой отзыв и помогите нам стать ещё лучше
-          </h4>
-        )}
 
-        {!rate && (
-          <img
-            src="/assets/images/safia.jpg"
-            alt=""
-            className="w-28 opacity-20 mx-auto mb-10"
-          />
-        )}
-
-        {rate > 0 && (
-          <h4 className="font-bold text-xl justify-center items-center text-center flex flex-1 mb-5">
-            {rate < 5 ? "Что вас разочаровало?" : "Что мы можем улучшить?"}
-          </h4>
-        )}
-
-        {!!rate && (
-          <BaseInput className="flex flex-1 flex-col">
-            <MainInput
-              className="!bg-darkGray"
-              register={register("comment")}
-              placeholder={"Ваш комментарий..."}
+          {!rate && (
+            <img
+              src="/assets/images/safia.jpg"
+              alt=""
+              className="w-28 opacity-20 mx-auto mb-16"
             />
-          </BaseInput>
-        )}
+          )}
+
+          {rate > 0 && (
+            <h4 className="font-bold text-xl justify-center items-center text-center flex mb-10">
+              {rate < 5 ? "Что вас разочаровало?" : "Что мы можем улучшить?"}
+            </h4>
+          )}
+
+          {!!rate && (
+            <BaseInput className="flex flex-1 flex-col">
+              <MainInput
+                className="!bg-darkGray"
+                register={register("comment")}
+                placeholder={"Ваш комментарий..."}
+              />
+            </BaseInput>
+          )}
+        </div>
       </div>
       {!!rate && (
-        <button type="submit" className="btn btn-primary">
+        <button
+          type="submit"
+          className="btn btn-primary absolute bottom-0 right-0 left-0"
+        >
           Готово
         </button>
       )}

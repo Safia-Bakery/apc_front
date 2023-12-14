@@ -39,7 +39,7 @@ const routeNameMappings: { [key: string]: string } = {
   "marketing-complects": "Комплекты",
   "marketing-designers": "Проектная работа для дизайнеров",
   "marketing-branchEnv": "Внешний вид филиала",
-  "marketing-unstandartAdv": "Нестандартные рекламные решения",
+  "marketing-unstandartAdv": "Для Тер.Менеджеров",
   "requests-logystics": "Заявки на Запрос машин",
   clients: "Клиенты",
   logs: "Логи",

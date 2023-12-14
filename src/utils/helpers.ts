@@ -204,7 +204,7 @@ export const handleDepartment = ({
       case MarketingSubDep.branchEnv:
         return "Внешний вид филиала";
       case MarketingSubDep.nonstandartAdv:
-        return "Нестандартные рекламные решения";
+        return "Для Тер.Менеджеров";
 
       default:
         break;
@@ -394,11 +394,11 @@ export const routes: SidebarType[] = [
         param: `?add=${MainPermissions.add_complect_requests}&edit=${MainPermissions.edit_complect_requests}&title=Комплекты&sub_id=${MarketingSubDep.complects}`,
       },
       {
-        name: "Нестандартные рекламные решения",
+        name: "Для Тер.Менеджеров",
         url: `/marketing-${MarketingSubDep[6]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_nostandard_requests,
-        param: `?add=${MainPermissions.add_nostandard_requests}&edit=${MainPermissions.edit_nostandard_requests}&title=Нестандартные рекламные решения&sub_id=${MarketingSubDep.nonstandartAdv}`,
+        param: `?add=${MainPermissions.add_nostandard_requests}&edit=${MainPermissions.edit_nostandard_requests}&title=Для Тер.Менеджеров&sub_id=${MarketingSubDep.nonstandartAdv}`,
       },
       {
         name: "Внешний вид филиала",
