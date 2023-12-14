@@ -9,6 +9,7 @@ import { sidebatItemsSelector } from "src/store/reducers/sidebar";
 import cl from "classnames";
 import { isMobile } from "src/utils/helpers";
 import styles from "./index.module.scss";
+import CountItem from "./CountItem";
 
 const CustomSidebar = () => {
   const collapsed = useAppSelector(toggleSidebar);
@@ -16,6 +17,8 @@ const CustomSidebar = () => {
   const handleOverlay = () => dispatch(sidebarHandler(!collapsed));
   const routes = useAppSelector(sidebatItemsSelector);
   const { pathname } = useLocation();
+
+  console.log(routes, "routes");
 
   const [menuItem, $menuItem] = useState<MainPermissions>();
 
@@ -72,22 +75,25 @@ const CustomSidebar = () => {
                       href={`#${route.screen}`}
                     >
                       <img
-                        height={20}
-                        width={20}
+                        height={30}
+                        width={30}
                         src={route.icon || ""}
                         className={styles.routeIcon}
                       />
                       <p className={styles.content}>
                         {route.name}
-                        <img
-                          src="/assets/icons/arrow.svg"
-                          alt="arrow"
-                          className={cl({
-                            [styles.activeImage]: activeRoute,
-                          })}
-                          width={15}
-                          height={15}
-                        />
+                        <div className="flex">
+                          {!!route.count && <CountItem count={route.count} />}
+                          <img
+                            src="/assets/icons/arrow.svg"
+                            alt="arrow"
+                            className={cl({
+                              [styles.activeImage]: activeRoute,
+                            })}
+                            width={15}
+                            height={15}
+                          />
+                        </div>
                       </p>
                     </a>
                     <div
@@ -153,7 +159,10 @@ const CustomSidebar = () => {
                         src={route.icon || ""}
                         className={styles.routeIcon}
                       />
-                      <p className={styles.content}>{route.name}</p>
+                      <p className={styles.content}>
+                        {route.name}
+                        {!!route.count && <CountItem count={route.count} />}
+                      </p>
                     </Link>
                   </li>
                 );

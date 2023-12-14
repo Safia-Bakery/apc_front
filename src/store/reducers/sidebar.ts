@@ -1,7 +1,14 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../rootConfig";
-import { MainPermissions, SidebarType } from "src/utils/types";
+import { Departments, MainPermissions, SidebarType } from "src/utils/types";
 import { routes } from "src/utils/helpers";
+
+const mockdata = [
+  [1, 1, 5],
+  [1, 2, 1],
+  [6, 0, 6],
+  [3, 1, 29],
+];
 
 interface State {
   sidebarItems?: SidebarType[];
@@ -24,11 +31,16 @@ export const sidebarReducer = createSlice({
       }, {});
       state.permissions = permissions;
     },
-    sidebarItemsHandler: (state) => {
+    sidebarItemsHandler: (state, { payload }: PayloadAction<[number[]]>) => {
       const { permissions } = state;
       const filteredRoutes: SidebarType[] = [];
 
       routes.forEach((route) => {
+        route.count = payload.find((item) =>
+          item[0] === Departments.apc
+            ? item[1] === route.sphere_status
+            : item[0] === route.department
+        )?.[2];
         if (
           permissions?.[route?.screen] ||
           (route?.subroutes &&

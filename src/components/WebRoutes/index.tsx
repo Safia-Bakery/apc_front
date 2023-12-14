@@ -13,6 +13,7 @@ import {
   sidebatItemsSelector,
 } from "src/store/reducers/sidebar";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
+import useOrderCounts from "src/hooks/useOrderCounts";
 
 const normalizeURL = (path: string) =>
   path.replace(/\/+/g, "/").replace(/\/$/, "");
@@ -23,6 +24,8 @@ const WebRooutes = () => {
   const dispatch = useAppDispatch();
   const permission = useAppSelector(permissionSelector);
   const { error, data: user, isLoading } = useToken({});
+
+  const { data: counts } = useOrderCounts({});
 
   const sidebarItems = useAppSelector(sidebatItemsSelector);
 
@@ -56,8 +59,8 @@ const WebRooutes = () => {
   }, [user?.permissions, token]);
 
   useUpdateEffect(() => {
-    if (permission) dispatch(sidebarItemsHandler());
-  }, [permission]);
+    if (permission && counts) dispatch(sidebarItemsHandler(counts));
+  }, [permission, counts]);
 
   if ((isLoading || !sidebarItems?.length) && token)
     return <Loading absolute />;

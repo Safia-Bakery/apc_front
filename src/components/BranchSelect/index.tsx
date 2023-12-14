@@ -103,7 +103,7 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
     <>
       {focused && <div className={styles.overlay} onClick={onClose} />}
       <div className={styles.drop}>
-        <BaseInput className="mb-0 relative">
+        <BaseInput className="!mb-0 relative">
           {focused && (
             <img
               onClick={close}
@@ -121,7 +121,7 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
           />
         </BaseInput>
         {focused && (
-          <ul className={cl(styles.list)}>
+          <ul className={cl(styles.list, "shadow-xl")}>
             {items?.map((item, idx) => {
               if (items.length === idx + 1 && !query)
                 return (

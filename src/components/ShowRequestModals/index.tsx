@@ -170,7 +170,7 @@ const ShowRequestModals = () => {
                 </MainSelect>
               </BaseInput>
 
-              {getValues("fixedReason") == 4 && (
+              {watch("fixedReason") == 4 && (
                 <BaseInput label="Комментарии">
                   <MainTextArea register={register("cancel_reason")} />
                 </BaseInput>

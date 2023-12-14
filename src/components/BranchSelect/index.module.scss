@@ -19,6 +19,8 @@
 .list {
   height: 200px;
   overflow-y: auto;
+  border: 1px solid black;
+  border-radius: 10px;
 }
 .close {
   position: absolute;

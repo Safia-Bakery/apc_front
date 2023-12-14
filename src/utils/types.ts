@@ -497,6 +497,9 @@ interface BaseSidebarTypes {
   screen: MainPermissions;
   url?: string;
   param?: string;
+  count?: number;
+  department?: Departments;
+  sphere_status?: Sphere;
 }
 
 export interface SidebarType extends BaseSidebarTypes {
@@ -510,4 +513,9 @@ export const enum ModalTypes {
   showPhoto,
   assingDeadline,
   reassign,
+}
+
+export interface CoountTypes {
+  counter: [number[]];
+  comment: string;
 }

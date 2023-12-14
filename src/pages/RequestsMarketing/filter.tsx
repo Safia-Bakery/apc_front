@@ -1,7 +1,6 @@
 import { RequestMarkStatusArr } from "src/utils/helpers";
 import { FC, useState } from "react";
 import useDebounce from "src/hooks/custom/useDebounce";
-import "react-datepicker/dist/react-datepicker.css";
 import BaseInputs from "src/components/BaseInputs";
 import MainSelect from "src/components/BaseInputs/MainSelect";
 import BaseInput from "src/components/BaseInputs";
@@ -15,17 +14,17 @@ import {
   useNavigateParams,
   useRemoveParams,
 } from "src/hooks/custom/useCustomNavigate";
-import cl from "classnames";
 import { useAppSelector } from "src/store/utils/types";
 import { permissionSelector } from "src/store/reducers/sidebar";
 import { MainPermissions } from "src/utils/types";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface Props {
   sub_id?: number | string;
 }
 
-const InventoryFilter: FC<Props> = ({ sub_id }) => {
+const MarketingFilter: FC<Props> = ({ sub_id }) => {
   const deleteParam = useRemoveParams();
   const { data: categories, refetch: categoryRefetch } = useCategories({
     sub_id: Number(sub_id),
@@ -145,4 +144,4 @@ const InventoryFilter: FC<Props> = ({ sub_id }) => {
   );
 };
 
-export default InventoryFilter;
+export default MarketingFilter;

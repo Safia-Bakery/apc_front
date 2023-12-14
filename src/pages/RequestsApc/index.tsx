@@ -87,6 +87,8 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
     ...(!!urgent?.toString() && { urgent: !!urgent }),
   });
 
+  console.log("first");
+
   useEffect(() => {
     refetch();
   }, [currentPage, sphere_status]);

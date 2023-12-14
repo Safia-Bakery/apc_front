@@ -241,6 +241,8 @@ export const routes: SidebarType[] = [
     name: "АРС розница",
     icon: "/assets/icons/apc.svg",
     screen: MainPermissions.get_requests_apc,
+    department: Departments.apc,
+    sphere_status: Sphere.retail,
     subroutes: [
       {
         name: "Заявки на APC розница",
@@ -282,6 +284,8 @@ export const routes: SidebarType[] = [
     name: "АРС фабрика",
     icon: "/assets/icons/apc.svg",
     screen: MainPermissions.get_fabric_requests,
+    department: Departments.apc,
+    sphere_status: Sphere.fabric,
     subroutes: [
       {
         name: "Заявки на APC фабрика",
@@ -352,6 +356,7 @@ export const routes: SidebarType[] = [
     name: "Маркетинг",
     icon: "/assets/icons/marketing.svg",
     screen: MainPermissions.get_design_request,
+    department: Departments.marketing,
     subroutes: [
       {
         name: "Проектная работа для дизайнеров",
@@ -420,6 +425,7 @@ export const routes: SidebarType[] = [
     name: "Запрос машин",
     icon: "/assets/icons/logystics.svg",
     screen: MainPermissions.get_log_requests,
+    department: Departments.logystics,
     subroutes: [
       {
         name: "Заявки на Запрос машин",
@@ -440,6 +446,7 @@ export const routes: SidebarType[] = [
     url: "/requests-staff",
     icon: "/assets/icons/staff.svg",
     screen: MainPermissions.get_staff_requests,
+    department: Departments.staff,
   },
   {
     name: "Пользователи",

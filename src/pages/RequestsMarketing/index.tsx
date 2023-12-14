@@ -13,7 +13,7 @@ import {
   requestRows,
 } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
-import InventoryFilter from "./filter";
+import MarketingFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import { useAppSelector } from "src/store/utils/types";
 import { permissionSelector } from "src/store/reducers/sidebar";
@@ -107,7 +107,7 @@ const RequestsMarketing = () => {
             onSort={(data) => $sort(data)}
             data={requests?.items}
           >
-            <InventoryFilter sub_id={sub_id} />
+            <MarketingFilter sub_id={sub_id} />
           </TableHead>
 
           <tbody>
