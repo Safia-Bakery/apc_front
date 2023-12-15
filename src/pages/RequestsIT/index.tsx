@@ -14,7 +14,7 @@ import {
   requestRows,
 } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
-import InventoryFilter from "./filter";
+import ITFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import useQueryString from "src/hooks/custom/useQueryString";
 
@@ -57,7 +57,7 @@ const RequestsIT = () => {
 
   return (
     <Card>
-      <Header title={"Заявка на инвентарь"}>
+      <Header title={"Заявка на IT"}>
         <button
           onClick={() => navigate("add")}
           className="btn btn-success btn-fill"
@@ -74,7 +74,7 @@ const RequestsIT = () => {
             onSort={(data) => $sort(data)}
             data={requests?.items}
           >
-            <InventoryFilter currentPage={currentPage} />
+            <ITFilter currentPage={currentPage} />
           </TableHead>
 
           {!!requests?.items?.length && (
@@ -83,9 +83,7 @@ const RequestsIT = () => {
                 <tr className={requestRows(order.status)} key={idx}>
                   <td width="40">{handleIdx(idx)}</td>
                   <td width="80">
-                    <Link to={`/requests-designer/${order?.id}`}>
-                      {order?.id}
-                    </Link>
+                    <Link to={`${order?.id}`}>{order?.id}</Link>
                   </td>
                   <td>
                     <span className="not-set">{order?.user?.full_name}</span>

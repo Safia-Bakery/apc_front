@@ -15,7 +15,7 @@ interface Props {
   currentPage: number;
 }
 
-const InventoryFilter: FC<Props> = ({ currentPage }) => {
+const ITFilter: FC<Props> = ({ currentPage }) => {
   const { data: branches } = useBranches({});
 
   const { data: categories, refetch: catRefetch } = useCategories({
@@ -92,4 +92,4 @@ const InventoryFilter: FC<Props> = ({ currentPage }) => {
   );
 };
 
-export default InventoryFilter;
+export default ITFilter;

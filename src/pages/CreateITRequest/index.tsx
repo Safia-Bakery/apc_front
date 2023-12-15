@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { successToast } from "src/utils/toast";
 import Card from "src/components/Card";
@@ -6,44 +6,47 @@ import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
 import cl from "classnames";
 import requestMutation from "src/hooks/mutation/orderMutation";
-
-import useOrders from "src/hooks/useOrders";
 import UploadComponent, { FileItem } from "src/components/FileUpload";
 import styles from "./index.module.scss";
-
 import BaseInputs from "src/components/BaseInputs";
 import MainSelect from "src/components/BaseInputs/MainSelect";
 import MainInput from "src/components/BaseInputs/MainInput";
-import BaseInput from "src/components/BaseInputs";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
-import useUsers from "src/hooks/useUsers";
-import Loading from "src/components/Loader";
-import { Departments } from "src/utils/types";
+import useQueryString from "src/hooks/custom/useQueryString";
+import BranchSelect from "src/components/BranchSelect";
 import useCategories from "src/hooks/useCategories";
-import useBranches from "src/hooks/useBranches";
+import { Departments, MainPermissions, Sphere } from "src/utils/types";
+import WarehouseSelect from "src/components/WarehouseSelect";
+import Loading from "src/components/Loader";
+import { useAppSelector } from "src/store/utils/types";
+import { permissionSelector } from "src/store/reducers/sidebar";
 
 const CreateITRequest = () => {
   const [files, $files] = useState<FormData>();
-  const { data: branches } = useBranches({});
-  const { data: categories } = useCategories({
+  const { mutate, isLoading } = requestMutation();
+  const branchJson = useQueryString("branch");
+  const sphere_status = Number(useQueryString("sphere_status"));
+  const branch = branchJson && JSON.parse(branchJson);
+  const perm = useAppSelector(permissionSelector);
+  const { data: categories, isLoading: categoryLoading } = useCategories({
     department: Departments.it,
   });
-  const { mutate } = requestMutation();
-  const { refetch: requestsRefetch } = useOrders({
-    enabled: false,
-    department: Departments.it,
-  });
-  const { data: users, isLoading } = useUsers({});
-
-  const navigate = useNavigate();
-  const goBack = () => navigate(-1);
-
   const {
     register,
     handleSubmit,
     formState: { errors },
     getValues,
+    reset,
   } = useForm();
+
+  const navigate = useNavigate();
+  const goBack = () => navigate(-1);
+
+  useEffect(() => {
+    reset({
+      fillial_id: branch?.id,
+    });
+  }, [branch?.id]);
 
   const handleFilesSelected = (data: FileItem[]) => {
     const formData = new FormData();
@@ -53,26 +56,30 @@ const CreateITRequest = () => {
     $files(formData);
   };
   const onSubmit = () => {
-    const { urgent, category_id, fillial_id, description, product } =
-      getValues();
+    const { category_id, description, product } = getValues();
     mutate(
       {
         category_id,
         product,
-        // urgent,
         description,
-        fillial_id,
+        fillial_id: branch?.id,
         files,
       },
       {
         onSuccess: () => {
-          requestsRefetch();
           successToast("Заказ успешно создано");
-          navigate("/requests-apc");
+          navigate(`/requests-it`);
         },
       }
     );
   };
+
+  const renderBranchSelect = useMemo(() => {
+    if (perm?.[MainPermissions.get_fillials_list]) {
+      if (sphere_status === Sphere.fabric) return <WarehouseSelect />;
+      else return <BranchSelect origin={1} enabled />;
+    }
+  }, [sphere_status]);
 
   if (isLoading) return <Loading absolute />;
 
@@ -88,26 +95,19 @@ const CreateITRequest = () => {
         className={cl("content", styles.form)}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <BaseInput label="СОТРУДНИК" error={errors.user}>
-          <MainSelect register={register("user")}>
-            <option value={undefined}></option>
-            {users?.items?.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.full_name}
-              </option>
-            ))}
-          </MainSelect>
-        </BaseInput>
-        <BaseInput label="ФИЛИАЛ" error={errors.department}>
-          <MainSelect
-            values={branches?.items}
-            register={register("fillial_id")}
-          />
-        </BaseInput>
+        <BaseInputs
+          className="relative"
+          label="ФИЛИАЛ"
+          error={errors.fillial_id}
+        >
+          {renderBranchSelect}
+        </BaseInputs>
         <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
           <MainSelect
             values={categories?.items}
-            register={register("category_id")}
+            register={register("category_id", {
+              required: "Обязательное поле",
+            })}
           />
         </BaseInputs>
 
@@ -129,10 +129,6 @@ const CreateITRequest = () => {
         >
           <UploadComponent onFilesSelected={handleFilesSelected} />
         </BaseInputs>
-        <div className="form-group flex align-center form-control">
-          <label className="mb-0 mr-2">Срочно</label>
-          <input type="checkbox" {...register("urgent")} />
-        </div>
         <div>
           <button
             type="submit"

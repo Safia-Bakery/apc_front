@@ -256,7 +256,7 @@ export const routes: SidebarType[] = [
         url: "/brigades",
         icon: "/assets/icons/brigades.svg",
         screen: MainPermissions.get_brigadas,
-        param: `?sphere_status=${Sphere.retail}`,
+        param: `?sphere_status=${Sphere.retail}&add=${MainPermissions.add_brigada}&edit=${MainPermissions.edit_brigada}`,
       },
       {
         name: "Остатки на складах",
@@ -299,7 +299,7 @@ export const routes: SidebarType[] = [
         url: "/masters",
         icon: "/assets/icons/brigades.svg",
         screen: MainPermissions.get_master,
-        param: `?sphere_status=${Sphere.fabric}`,
+        param: `?sphere_status=${Sphere.fabric}&add=${MainPermissions.add_master}&edit=${MainPermissions.edit_master}`,
       },
       {
         name: "Категории",
@@ -324,6 +324,48 @@ export const routes: SidebarType[] = [
       },
     ],
   },
+
+  {
+    name: "IT",
+    icon: "/assets/icons/it.svg",
+    screen: MainPermissions.get_it_requests,
+    department: Departments.it,
+    subroutes: [
+      {
+        name: "Заявки",
+        url: "/requests-it",
+        icon: "/assets/icons/subOrder.svg",
+        screen: MainPermissions.get_it_requests,
+      },
+      {
+        name: "Мастера",
+        url: "/masters-it",
+        icon: "/assets/icons/brigades.svg",
+        screen: MainPermissions.get_master,
+      },
+      {
+        name: "Категории",
+        url: `/categories-it`,
+        icon: "/assets/icons/categories.svg",
+        screen: MainPermissions.get_categ_fab,
+      },
+
+      {
+        name: "Остатки на складах",
+        url: "/items-in-stock-it",
+        icon: "/assets/icons/remains-in-stock.svg",
+        screen: MainPermissions.get_warehouse_fabric,
+      },
+      {
+        name: "Статистика",
+        url: "/statistics-it",
+        icon: "/assets/icons/statistics.svg",
+        // param: "/category",
+        screen: MainPermissions.get_statistics,
+      },
+    ],
+  },
+
   // {
   //   name: "Инвентарь",
   //   icon: "/assets/icons/inventary.svg",
@@ -337,21 +379,6 @@ export const routes: SidebarType[] = [
   //     },
   //   ],
   // },
-
-  // {
-  //   name: "IT",
-  //   icon: "/assets/icons/it.svg",
-  //   screen: MainPerm.requests_it,
-  //   subroutes: [
-  //     {
-  //       name: "Заявки",
-  //       url: "/requests-designer",
-  //       icon: "/assets/icons/subOrder.svg",
-  //       screen: MainPerm.requests_it,
-  //     },
-  //   ],
-  // },
-
   {
     name: "Маркетинг",
     icon: "/assets/icons/marketing.svg",

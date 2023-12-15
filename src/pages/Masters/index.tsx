@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { BrigadaType, MainPermissions } from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
-import { FC, useEffect, useMemo, useState } from "react";
-import { handleIdx, itemsPerPage } from "src/utils/helpers";
+import { useEffect, useMemo, useState } from "react";
+import { handleIdx } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useBrigadas from "src/hooks/useBrigadas";
@@ -14,36 +14,33 @@ import { useAppSelector } from "src/store/utils/types";
 import { permissionSelector } from "src/store/reducers/sidebar";
 import useQueryString from "src/hooks/custom/useQueryString";
 
-interface Props {
-  add: MainPermissions;
-  edit: MainPermissions;
-  isMaster?: boolean;
-}
-
-const Masters: FC<Props> = ({ add, edit, isMaster = false }) => {
+const Masters = () => {
   const navigate = useNavigate();
-  const handleNavigate = (id: number | string) => () => navigate(`${id}`);
   const permission = useAppSelector(permissionSelector);
   const sphere_status = useQueryString("sphere_status");
   const currentPage = Number(useQueryString("page")) || 1;
   const [sort, $sort] = useState<BrigadaType[]>();
 
+  const add = Number(useQueryString("add")) as MainPermissions;
+  const edit = Number(useQueryString("edit")) as MainPermissions;
+
+  const handleNavigate = (id: number | string) => () => navigate(`${id}`);
+
   const column = useMemo(() => {
     return [
       { name: "№", key: "id" },
       { name: "Название", key: "name" },
-      { name: isMaster ? "Мастер" : "Бригадир", key: "description" },
+      { name: "Мастер", key: "description" },
       { name: "Описание", key: "description" },
       { name: "Статус", key: "status" },
       { name: "", key: "" },
     ];
-  }, [isMaster]);
+  }, []);
   const {
     data: brigadas,
     isLoading: orderLoading,
     refetch,
   } = useBrigadas({
-    size: itemsPerPage,
     page: currentPage,
     sphere_status: Number(sphere_status),
     enabled: true,
@@ -56,7 +53,7 @@ const Masters: FC<Props> = ({ add, edit, isMaster = false }) => {
   if (orderLoading) return <Loading absolute />;
   return (
     <Card>
-      <Header title={isMaster ? "Мастера" : "Бригады"}>
+      <Header title={"Мастера"}>
         {permission?.[add] && (
           <button
             className="btn btn-success btn-fill"

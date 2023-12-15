@@ -25,7 +25,7 @@ const WebRooutes = () => {
   const permission = useAppSelector(permissionSelector);
   const { error, data: user, isLoading } = useToken({});
 
-  const { data: counts } = useOrderCounts({});
+  const { data: counts } = useOrderCounts({ enabled: !!token });
 
   const sidebarItems = useAppSelector(sidebatItemsSelector);
 
