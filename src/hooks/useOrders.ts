@@ -17,6 +17,7 @@ interface Body {
   created_at?: string;
   request_status?: string;
   user?: string;
+  id?: string | number;
 }
 
 export const useOrders = ({
@@ -34,6 +35,7 @@ export const useOrders = ({
   created_at,
   request_status,
   user,
+  id,
 }: Body) => {
   return useQuery({
     queryKey: [
@@ -49,6 +51,7 @@ export const useOrders = ({
       created_at,
       request_status,
       user,
+      id,
     ],
     queryFn: () =>
       apiClient
@@ -66,6 +69,7 @@ export const useOrders = ({
           created_at,
           request_status,
           user,
+          id,
         })
         .then(({ data: response }) => (response as OrderType) || null),
     enabled,

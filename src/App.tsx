@@ -120,16 +120,6 @@ const routes = [
     screen: MainPermissions.edit_request_apc,
   },
   {
-    element: <Logs />,
-    path: "/requests-apc/:id/logs",
-    screen: MainPermissions.edit_request_apc,
-  },
-  {
-    element: <Logs />,
-    path: "/requests-apc/:id/logs",
-    screen: MainPermissions.edit_request_apc,
-  },
-  {
     element: <RequestsIT />,
     path: "/requests-it",
     screen: MainPermissions.get_it_requests,
@@ -189,42 +179,9 @@ const routes = [
     path: `/marketing-${MarketingSubDep[7]}/:id`,
     screen: MainPermissions.edit_stock_env_requests,
   },
-
   {
     element: <Logs />,
-    path: `/marketing-${MarketingSubDep[7]}/:id/logs`,
-    screen: MainPermissions.edit_stock_env_requests,
-  },
-
-  {
-    element: <Logs />,
-    path: `/marketing-${MarketingSubDep[6]}/:id/logs`,
-    screen: MainPermissions.edit_nostandard_requests,
-  },
-
-  {
-    element: <Logs />,
-    path: `/marketing-${MarketingSubDep[5]}/:id/logs`,
-    screen: MainPermissions.edit_complect_requests,
-  },
-  {
-    element: <Logs />,
-    path: `/marketing-${MarketingSubDep[4]}/:id/logs`,
-    screen: MainPermissions.edit_pos_requests,
-  },
-  {
-    element: <Logs />,
-    path: `/marketing-${MarketingSubDep[3]}/:id/logs`,
-    screen: MainPermissions.edit_promo_requests,
-  },
-  {
-    element: <Logs />,
-    path: `/marketing-${MarketingSubDep[2]}/:id/logs`,
-    screen: MainPermissions.edit_locmar_requests,
-  },
-  {
-    element: <Logs />,
-    path: `/marketing-${MarketingSubDep[1]}/:id/logs`,
+    path: `/request/logs/:id`,
     screen: MainPermissions.edit_design_request,
   },
   {

@@ -6,13 +6,7 @@ import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import {
-  getValue,
-  handleIdx,
-  handleStatus,
-  itemsPerPage,
-  requestRows,
-} from "src/utils/helpers";
+import { handleIdx, handleStatus, requestRows } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import RequestsFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
@@ -86,8 +80,6 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
     ...(!!user && { user }),
     ...(!!urgent?.toString() && { urgent: !!urgent }),
   });
-
-  console.log("first");
 
   useEffect(() => {
     refetch();

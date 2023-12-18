@@ -290,7 +290,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
         >
           <button
             className="btn btn-warning btn-fill mr-2"
-            onClick={() => navigate("logs")}
+            onClick={() => navigate(`/request/logs/${id}`)}
           >
             Логи
           </button>

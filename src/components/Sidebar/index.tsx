@@ -18,8 +18,6 @@ const CustomSidebar = () => {
   const routes = useAppSelector(sidebatItemsSelector);
   const { pathname } = useLocation();
 
-  console.log(routes, "routes");
-
   const [menuItem, $menuItem] = useState<MainPermissions>();
 
   const toggleSubItems = (item: MainPermissions) => {
@@ -42,7 +40,9 @@ const CustomSidebar = () => {
         <div className="flex flex-col justify-between relative z-3">
           <div className={styles.logo}>
             <h3 className={styles.title}>Service</h3>
-            <p className={styles.subTitle}>АРС / Inventory / IT / Marketing</p>
+            <div className={styles.subTitle}>
+              АРС / Inventory / IT / Marketing
+            </div>
           </div>
           <ul className="nav flex-col flex">
             <li className={cl("nav-item")}>
@@ -59,7 +59,7 @@ const CustomSidebar = () => {
                   src={"/assets/icons/controlPanel.svg"}
                   className={styles.routeIcon}
                 />
-                <p className={styles.content}>Панель управления</p>
+                <div className={styles.content}>Панель управления</div>
               </Link>
             </li>
             {routes?.map((route) => {
@@ -80,7 +80,7 @@ const CustomSidebar = () => {
                         src={route.icon || ""}
                         className={styles.routeIcon}
                       />
-                      <p className={styles.content}>
+                      <div className={styles.content}>
                         {route.name}
                         <div className="flex">
                           {!!route.count && <CountItem count={route.count} />}
@@ -94,7 +94,7 @@ const CustomSidebar = () => {
                             height={15}
                           />
                         </div>
-                      </p>
+                      </div>
                     </a>
                     <div
                       className={cl("collapse", {
@@ -132,7 +132,9 @@ const CustomSidebar = () => {
                                 src={subroute.icon || ""}
                                 className={styles.routeIcon}
                               />
-                              <p className={styles.content}>{subroute.name}</p>
+                              <div className={styles.content}>
+                                {subroute.name}
+                              </div>
                             </Link>
                           </li>
                         ))}
@@ -159,10 +161,10 @@ const CustomSidebar = () => {
                         src={route.icon || ""}
                         className={styles.routeIcon}
                       />
-                      <p className={styles.content}>
+                      <div className={styles.content}>
                         {route.name}
                         {!!route.count && <CountItem count={route.count} />}
-                      </p>
+                      </div>
                     </Link>
                   </li>
                 );
