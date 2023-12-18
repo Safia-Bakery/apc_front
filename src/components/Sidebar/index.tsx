@@ -18,8 +18,6 @@ const CustomSidebar = () => {
   const routes = useAppSelector(sidebatItemsSelector);
   const { pathname } = useLocation();
 
-  console.log(routes, "routes");
-
   const [menuItem, $menuItem] = useState<MainPermissions>();
 
   const toggleSubItems = (item: MainPermissions) => {
