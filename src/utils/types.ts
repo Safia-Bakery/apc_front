@@ -423,6 +423,9 @@ export enum MainPermissions {
   it_get_category_product = 1,
   it_add_category_product = 1,
   it_edit_category_product = 1,
+  it_add_master = 1,
+  it_edit_master = 1,
+  it_get_masters = 1,
 }
 export enum MarketingSubDep {
   designers = 1,

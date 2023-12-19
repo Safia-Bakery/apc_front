@@ -417,12 +417,12 @@ const routes = [
   },
   {
     element: <Masters />,
-    path: "/masters/:dep/:sphere",
-    screen: MainPermissions.get_brigadas,
+    path: "/masters",
+    screen: MainPermissions.get_master,
   },
   {
     element: <Masters />,
-    path: "/masters",
+    path: "/brigades",
     screen: MainPermissions.get_master,
   },
   {
@@ -452,8 +452,18 @@ const routes = [
   },
   {
     element: <CreateBrigades />,
+    path: "/masters-it/add",
+    screen: MainPermissions.it_add_master,
+  },
+  {
+    element: <CreateBrigades />,
     path: "/masters/:id",
     screen: MainPermissions.edit_master,
+  },
+  {
+    element: <CreateBrigades />,
+    path: "/masters-it/:id",
+    screen: MainPermissions.it_edit_master,
   },
   {
     element: <CreateBrigades />,

@@ -39,21 +39,14 @@ const CategoriesIT: FC<Props> = ({ sphere_status, dep, add, edit }) => {
   const [sort, $sort] = useState<Category[]>();
   const permission = useAppSelector(permissionSelector);
   const currentPage = Number(useQueryString("page")) || 1;
-  const {
-    data: categories,
-    refetch,
-    isLoading,
-  } = useCategories({
+  const { data: categories, isLoading } = useCategories({
     size: itemsPerPage,
     page: currentPage,
     ...(dep && { department: +dep }),
     ...(sphere_status && { sphere_status }),
   });
-  const handleNavigate = (route: string) => () => navigate(route);
 
-  useEffect(() => {
-    if (currentPage > 1) refetch();
-  }, [currentPage]);
+  const handleNavigate = (route: string) => () => navigate(route);
 
   return (
     <Card>

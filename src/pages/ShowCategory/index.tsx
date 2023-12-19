@@ -6,7 +6,7 @@ import useCategory from "src/hooks/useCategory";
 import { FC, useEffect, useMemo } from "react";
 import categoryMutation from "src/hooks/mutation/categoryMutation";
 import useCategories from "src/hooks/useCategories";
-import { successToast } from "src/utils/toast";
+import { errorToast, successToast } from "src/utils/toast";
 import BaseInput from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
@@ -74,6 +74,7 @@ const ShowCategory: FC<Props> = ({ sphere_status, dep }) => {
           );
           if (id) refetch();
         },
+        onError: (e: any) => errorToast(e.message),
       }
     );
   };

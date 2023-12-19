@@ -1,7 +1,12 @@
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import { useNavigate } from "react-router-dom";
-import { BrigadaType, MainPermissions } from "src/utils/types";
+import {
+  BrigadaType,
+  Departments,
+  MainPermissions,
+  Sphere,
+} from "src/utils/types";
 import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
 import { useEffect, useMemo, useState } from "react";
@@ -18,6 +23,7 @@ const Masters = () => {
   const navigate = useNavigate();
   const permission = useAppSelector(permissionSelector);
   const sphere_status = useQueryString("sphere_status");
+  const dep = useQueryString("dep");
   const currentPage = Number(useQueryString("page")) || 1;
   const [sort, $sort] = useState<BrigadaType[]>();
 
@@ -36,21 +42,15 @@ const Masters = () => {
       { name: "", key: "" },
     ];
   }, []);
-  const {
-    data: brigadas,
-    isLoading: orderLoading,
-    refetch,
-  } = useBrigadas({
+  const { data: brigadas, isLoading: orderLoading } = useBrigadas({
     page: currentPage,
     sphere_status: Number(sphere_status),
     enabled: true,
+    ...(dep && { department: Number(dep) }),
   });
 
-  useEffect(() => {
-    if (currentPage > 1) refetch();
-  }, [currentPage]);
-
   if (orderLoading) return <Loading absolute />;
+
   return (
     <Card>
       <Header title={"Мастера"}>
@@ -58,7 +58,9 @@ const Masters = () => {
           <button
             className="btn btn-success btn-fill"
             id="add_master"
-            onClick={handleNavigate(`add?sphere_status=${sphere_status}`)}
+            onClick={handleNavigate(
+              `add?${dep ? `dep=${dep}` : `sphere_status=${sphere_status}`}`
+            )}
           >
             Добавить
           </button>
@@ -87,7 +89,11 @@ const Masters = () => {
                     {permission?.[edit] && (
                       <TableViewBtn
                         onClick={handleNavigate(
-                          `${order.id}?sphere_status=${order.sphere_status}`
+                          `${order.id}?${
+                            dep
+                              ? `dep=${dep}`
+                              : `sphere_status=${sphere_status}`
+                          }`
                         )}
                       />
                     )}

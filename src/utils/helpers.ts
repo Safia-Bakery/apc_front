@@ -342,6 +342,7 @@ export const routes: SidebarType[] = [
         url: "/masters-it",
         icon: "/assets/icons/brigades.svg",
         screen: MainPermissions.get_master,
+        param: `?dep=${Departments.it}&add=${MainPermissions.it_add_master}&edit=${MainPermissions.it_edit_master}`,
       },
       {
         name: "Категории",
