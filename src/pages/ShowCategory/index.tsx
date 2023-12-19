@@ -3,7 +3,7 @@ import Header from "src/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useCategory from "src/hooks/useCategory";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo } from "react";
 import categoryMutation from "src/hooks/mutation/categoryMutation";
 import useCategories from "src/hooks/useCategories";
 import { successToast } from "src/utils/toast";
@@ -13,8 +13,6 @@ import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
 import { Departments, MarketingSubDepRu, Sphere } from "src/utils/types";
 import MainSelect from "src/components/BaseInputs/MainSelect";
-import UploadComponent, { FileItem } from "src/components/FileUpload";
-import BaseInputs from "src/components/BaseInputs";
 import { imageConverter } from "src/utils/helpers";
 import { baseURL } from "src/main";
 

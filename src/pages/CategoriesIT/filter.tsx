@@ -9,7 +9,7 @@ import useQueryString from "src/hooks/custom/useQueryString";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
 import { StatusName, itemsPerPage } from "src/utils/helpers";
 
-const CategoriesFilter: FC = () => {
+const CategoriesITFilter: FC = () => {
   const currentPage = Number(useQueryString("page")) || 1;
   const [name, $name] = useDebounce("");
   const [department, $department] = useDebounce("");
@@ -56,4 +56,4 @@ const CategoriesFilter: FC = () => {
   );
 };
 
-export default CategoriesFilter;
+export default CategoriesITFilter;

@@ -40,9 +40,13 @@ const routeNameMappings: { [key: string]: string } = {
   "marketing-designers": "Проектная работа для дизайнеров",
   "marketing-branchEnv": "Внешний вид филиала",
   "marketing-unstandartAdv": "Для Тер.Менеджеров",
+  "categories-it": "Категории IT",
+  "add-product": "Добавить Продукты",
+  "edit-product": "Изменить Продукты",
   "requests-logystics": "Заявки на Запрос машин",
   clients: "Клиенты",
   logs: "Логи",
+  products: "Продукты",
 };
 
 const Breadcrumbs: FC = () => {

@@ -1,6 +1,6 @@
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Category,
   Departments,
@@ -8,16 +8,16 @@ import {
   Sphere,
 } from "src/utils/types";
 import Pagination from "src/components/Pagination";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { handleDepartment, handleIdx, itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
 import useCategories from "src/hooks/useCategories";
-import CategoriesFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import useQueryString from "src/hooks/custom/useQueryString";
 import { useAppSelector } from "src/store/utils/types";
 import { permissionSelector } from "src/store/reducers/sidebar";
+import CategoriesITFilter from "./filter";
 
 interface Props {
   sphere_status?: number;
@@ -34,18 +34,26 @@ const column = [
   { name: "", key: "" },
 ];
 
-const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
+const CategoriesIT: FC<Props> = ({ sphere_status, dep, add, edit }) => {
   const navigate = useNavigate();
   const [sort, $sort] = useState<Category[]>();
   const permission = useAppSelector(permissionSelector);
   const currentPage = Number(useQueryString("page")) || 1;
-  const { data: categories, isLoading } = useCategories({
+  const {
+    data: categories,
+    refetch,
+    isLoading,
+  } = useCategories({
     size: itemsPerPage,
     page: currentPage,
     ...(dep && { department: +dep }),
     ...(sphere_status && { sphere_status }),
   });
   const handleNavigate = (route: string) => () => navigate(route);
+
+  useEffect(() => {
+    if (currentPage > 1) refetch();
+  }, [currentPage]);
 
   return (
     <Card>
@@ -70,7 +78,7 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
               onSort={(data) => $sort(data)}
               data={categories?.items}
             >
-              <CategoriesFilter />
+              <CategoriesITFilter />
             </TableHead>
 
             {!!categories?.items?.length && (
@@ -78,30 +86,20 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
                 {(sort?.length ? sort : categories?.items)?.map(
                   (category, idx) => (
                     <tr key={idx} className="bg-blue">
-                      <td width="40">{handleIdx(idx)}</td>
-                      <td>{category?.name}</td>
+                      <td width={40}>{handleIdx(idx)}</td>
                       <td>
-                        {handleDepartment({
-                          ...(!!category?.sub_id
-                            ? { sub: category?.sub_id }
-                            : { dep: category?.department }),
-                        })}
+                        <Link
+                          to={`${category?.id}/products?category_name=${category.name}`}
+                        >
+                          {category?.name}
+                        </Link>
                       </td>
+                      <td>{handleDepartment({ dep: category?.department })}</td>
                       <td>{category?.status ? "Активный" : "Неактивный"}</td>
                       <td width={40}>
                         {permission?.[edit] && (
                           <TableViewBtn
-                            onClick={handleNavigate(
-                              `/categories-${Departments[Number(dep)]}${
-                                !!sphere_status
-                                  ? `-${Sphere[sphere_status]}`
-                                  : ""
-                              }/${category.id}?dep=${category?.department}${
-                                !!category?.sub_id
-                                  ? `&sub_id=${category.sub_id}`
-                                  : ""
-                              }`
-                            )}
+                            onClick={handleNavigate(`${category.id}`)}
                           />
                         )}
                       </td>
@@ -123,4 +121,4 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
   );
 };
 
-export default Categories;
+export default CategoriesIT;

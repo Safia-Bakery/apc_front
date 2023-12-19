@@ -2,6 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 import apiClient from "src/main";
 import { CategoryTypes } from "src/utils/types";
 
+interface Props {
+  enabled?: boolean;
+  size?: number;
+  page?: number;
+  department?: number | string;
+  sub_id?: number | string;
+  body?: { name?: string; category_status?: string };
+  sphere_status?: number;
+}
+
 export const useCategories = ({
   enabled = true,
   size,
@@ -10,15 +20,7 @@ export const useCategories = ({
   department,
   sub_id,
   sphere_status,
-}: {
-  enabled?: boolean;
-  size?: number;
-  page?: number;
-  department?: number | string;
-  sub_id?: number | string;
-  body?: { name?: string; category_status?: string };
-  sphere_status?: number;
-}) => {
+}: Props) => {
   return useQuery({
     queryKey: ["categories", page, department, sub_id, sphere_status],
     queryFn: () =>

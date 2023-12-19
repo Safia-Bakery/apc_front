@@ -33,6 +33,11 @@ const ConsumptionStat = lazy(
   () => import("src/pages/StatisticsApc/ConsumptionStat")
 );
 const Login = lazy(() => import("src/pages/Login"));
+const CategoriesIT = lazy(() => import("src/pages/CategoriesIT"));
+const CategoryProducts = lazy(() => import("src/pages/CategoryProducts"));
+const EditAddCategoryProduct = lazy(
+  () => import("src/pages/EditAddCategoryProduct")
+);
 const EditClient = lazy(() => import("src/pages/EditClient"));
 const TelegramAddProduct = lazy(() => import("src/pages/TelegramAddProduct"));
 const CreateITRequest = lazy(() => import("src/pages/CreateITRequest"));
@@ -291,7 +296,7 @@ const routes = [
   },
   {
     element: (
-      <Categories
+      <CategoriesIT
         add={MainPermissions.add_categ_it}
         edit={MainPermissions.edit_categ_it}
         dep={Departments.it}
@@ -299,6 +304,21 @@ const routes = [
     ),
     path: `/categories-it`,
     screen: MainPermissions.get_categ_it,
+  },
+  {
+    element: <CategoryProducts />,
+    path: `/categories-it/:id/products`,
+    screen: MainPermissions.it_get_category_product,
+  },
+  {
+    element: <EditAddCategoryProduct />,
+    path: `/categories-it/:id/add-product`,
+    screen: MainPermissions.it_add_category_product,
+  },
+  {
+    element: <EditAddCategoryProduct />,
+    path: `/categories-it/:id/edit-product/:product_id`,
+    screen: MainPermissions.it_edit_category_product,
   },
   {
     element: (
