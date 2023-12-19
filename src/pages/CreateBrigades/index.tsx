@@ -13,7 +13,6 @@ import MainSelect from "src/components/BaseInputs/MainSelect";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
-import { Sphere } from "src/utils/types";
 import useQueryString from "src/hooks/custom/useQueryString";
 
 const CreateBrigades = () => {
@@ -21,10 +20,11 @@ const CreateBrigades = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
   const sphere_status = useQueryString("sphere_status");
+  const dep = useQueryString("dep");
   const { refetch: brigadasRefetch } = useBrigadas({
     enabled: false,
-    sphere_status: Number(sphere_status),
-    size: 50,
+    ...(!!dep && { department: Number(dep) }),
+    ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
   });
   const { mutate } = brigadaMutation();
   const { refetch: usersRefetch, data: users } = useUsersForBrigada({
@@ -63,19 +63,16 @@ const CreateBrigades = () => {
         status,
         description: brigada_description,
         name: brigada_name,
-        sphere_status: Number(sphere_status),
         ...(id && { id: Number(id) }),
+        ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
+        ...(!!dep && { department: Number(dep) }),
         ...(!!brigadir && { users: [brigadir] }),
       },
       {
         onSuccess: () => {
           brigadasRefetch();
           successToast(!!id ? "successfully updated" : "successfully created");
-          navigate(
-            Number(sphere_status) === Sphere.retail
-              ? `/brigades?sphere_status=${sphere_status}`
-              : `/masters?sphere_status=${sphere_status}`
-          );
+          navigate(-1);
           if (!!id) {
             brigadaRefetch();
             usersRefetch();
@@ -94,7 +91,11 @@ const CreateBrigades = () => {
 
       <form className="content" onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
-          <BaseInputs label="Название бригады" error={errors.brigada_name}>
+          <BaseInputs
+            label="Название бригады"
+            error={errors.brigada_name}
+            className="w-full"
+          >
             <MainInput
               register={register("brigada_name", {
                 required: "Обязательное поле",

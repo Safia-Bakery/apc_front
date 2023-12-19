@@ -33,20 +33,24 @@ const ConsumptionStat = lazy(
   () => import("src/pages/StatisticsApc/ConsumptionStat")
 );
 const Login = lazy(() => import("src/pages/Login"));
+const CategoriesIT = lazy(() => import("src/pages/CategoriesIT"));
+const CategoryProducts = lazy(() => import("src/pages/CategoryProducts"));
+const EditAddCategoryProduct = lazy(
+  () => import("src/pages/EditAddCategoryProduct")
+);
 const EditClient = lazy(() => import("src/pages/EditClient"));
 const TelegramAddProduct = lazy(() => import("src/pages/TelegramAddProduct"));
 const CreateITRequest = lazy(() => import("src/pages/CreateITRequest"));
 const CreateApcRequest = lazy(() => import("src/pages/CreateApcRequest"));
 const ShowRequestApc = lazy(() => import("src/pages/ShowRequestApc"));
+const ShowITRequest = lazy(() => import("src/pages/ShowITRequest"));
 const RequestsApc = lazy(() => import("src/pages/RequestsApc"));
 const ShowMarketingRequest = lazy(
   () => import("src/pages/ShowMarketingRequest")
 );
 const RequestsMarketing = lazy(() => import("src/pages/RequestsMarketing"));
 const AddMarketingRequest = lazy(() => import("src/pages/AddMarketingRequest"));
-
-// const RequestInventory = lazy(() => import("src/pages/RequestInventory"));
-// const RequestsIT = lazy(() => import("src/pages/RequestsIT"));
+const RequestsIT = lazy(() => import("src/pages/RequestsIT"));
 // const AddInventoryRequest = lazy(() => import("src/pages/AddInventoryRequest"));
 const YandexMap = lazy(() => import("src/pages/Map"));
 const StatisticsApc = lazy(() => import("src/pages/StatisticsApc"));
@@ -102,6 +106,16 @@ const routes = [
   },
   {
     element: (
+      <ShowITRequest
+        edit={MainPermissions.edit_fabric_requests}
+        attaching={MainPermissions.fabric_req_attach_master}
+      />
+    ),
+    path: "/requests-it/:id",
+    screen: MainPermissions.edit_it_requests,
+  },
+  {
+    element: (
       <ShowRequestApc
         edit={MainPermissions.edit_request_apc}
         attaching={MainPermissions.request_ettach}
@@ -111,14 +125,9 @@ const routes = [
     screen: MainPermissions.edit_request_apc,
   },
   {
-    element: <Logs />,
-    path: "/requests-apc/:id/logs",
-    screen: MainPermissions.edit_request_apc,
-  },
-  {
-    element: <Logs />,
-    path: "/requests-apc/:id/logs",
-    screen: MainPermissions.edit_request_apc,
+    element: <RequestsIT />,
+    path: "/requests-it",
+    screen: MainPermissions.get_it_requests,
   },
   {
     element: (
@@ -175,42 +184,9 @@ const routes = [
     path: `/marketing-${MarketingSubDep[7]}/:id`,
     screen: MainPermissions.edit_stock_env_requests,
   },
-
   {
     element: <Logs />,
-    path: `/marketing-${MarketingSubDep[7]}/:id/logs`,
-    screen: MainPermissions.edit_stock_env_requests,
-  },
-
-  {
-    element: <Logs />,
-    path: `/marketing-${MarketingSubDep[6]}/:id/logs`,
-    screen: MainPermissions.edit_nostandard_requests,
-  },
-
-  {
-    element: <Logs />,
-    path: `/marketing-${MarketingSubDep[5]}/:id/logs`,
-    screen: MainPermissions.edit_complect_requests,
-  },
-  {
-    element: <Logs />,
-    path: `/marketing-${MarketingSubDep[4]}/:id/logs`,
-    screen: MainPermissions.edit_pos_requests,
-  },
-  {
-    element: <Logs />,
-    path: `/marketing-${MarketingSubDep[3]}/:id/logs`,
-    screen: MainPermissions.edit_promo_requests,
-  },
-  {
-    element: <Logs />,
-    path: `/marketing-${MarketingSubDep[2]}/:id/logs`,
-    screen: MainPermissions.edit_locmar_requests,
-  },
-  {
-    element: <Logs />,
-    path: `/marketing-${MarketingSubDep[1]}/:id/logs`,
+    path: `/request/logs/:id`,
     screen: MainPermissions.edit_design_request,
   },
   {
@@ -320,6 +296,32 @@ const routes = [
   },
   {
     element: (
+      <CategoriesIT
+        add={MainPermissions.add_categ_it}
+        edit={MainPermissions.edit_categ_it}
+        dep={Departments.it}
+      />
+    ),
+    path: `/categories-it`,
+    screen: MainPermissions.get_categ_it,
+  },
+  {
+    element: <CategoryProducts />,
+    path: `/categories-it/:id/products`,
+    screen: MainPermissions.it_get_category_product,
+  },
+  {
+    element: <EditAddCategoryProduct />,
+    path: `/categories-it/:id/add-product`,
+    screen: MainPermissions.it_add_category_product,
+  },
+  {
+    element: <EditAddCategoryProduct />,
+    path: `/categories-it/:id/edit-product/:product_id`,
+    screen: MainPermissions.it_edit_category_product,
+  },
+  {
+    element: (
       <Categories
         add={MainPermissions.add_mark_category}
         edit={MainPermissions.edit_mark_category}
@@ -349,6 +351,11 @@ const routes = [
     screen: MainPermissions.edit_categ_fab,
   },
   {
+    element: <ShowCategory dep={Departments.it} />,
+    path: `/categories-it/:id`,
+    screen: MainPermissions.edit_categ_it,
+  },
+  {
     element: <ShowCategory dep={Departments.marketing} />,
     path: `/categories-marketing/add`,
     screen: MainPermissions.add_mark_category,
@@ -366,6 +373,11 @@ const routes = [
     ),
     path: `/categories-apc-fabric/add`,
     screen: MainPermissions.add_categ_fab,
+  },
+  {
+    element: <ShowCategory dep={Departments.it} />,
+    path: `/categories-it/add`,
+    screen: MainPermissions.add_categ_it,
   },
   {
     element: <EditAddRole />,
@@ -404,25 +416,19 @@ const routes = [
     screen: MainPermissions.edit_users,
   },
   {
-    element: (
-      <Masters
-        add={MainPermissions.add_brigada}
-        edit={MainPermissions.edit_brigada}
-      />
-    ),
-    path: "/brigades",
-    screen: MainPermissions.get_brigadas,
-  },
-  {
-    element: (
-      <Masters
-        add={MainPermissions.add_master}
-        edit={MainPermissions.edit_master}
-        isMaster
-      />
-    ),
+    element: <Masters />,
     path: "/masters",
     screen: MainPermissions.get_master,
+  },
+  {
+    element: <Masters />,
+    path: "/brigades",
+    screen: MainPermissions.get_master,
+  },
+  {
+    element: <Masters />,
+    path: "/masters-it",
+    screen: MainPermissions.get_master_it,
   },
   {
     element: (
@@ -446,8 +452,18 @@ const routes = [
   },
   {
     element: <CreateBrigades />,
+    path: "/masters-it/add",
+    screen: MainPermissions.it_add_master,
+  },
+  {
+    element: <CreateBrigades />,
     path: "/masters/:id",
     screen: MainPermissions.edit_master,
+  },
+  {
+    element: <CreateBrigades />,
+    path: "/masters-it/:id",
+    screen: MainPermissions.it_edit_master,
   },
   {
     element: <CreateBrigades />,

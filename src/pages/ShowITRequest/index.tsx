@@ -43,7 +43,7 @@ interface Props {
   attaching: MainPermissions;
 }
 
-const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
+const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const tokenKey = useQueryString("key");
@@ -480,4 +480,4 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
   );
 };
 
-export default ShowRequestApc;
+export default ShowITRequest;

@@ -212,6 +212,15 @@ export interface CategoryTypes extends BasePaginatedRes {
   items: Category[];
 }
 
+export interface CategoryProducts {
+  id: number;
+  category_id: number;
+  name: string;
+  status: string;
+  image?: string;
+  description?: string;
+}
+
 export interface ExpenditureType {
   id: number;
   created_at: string;
@@ -377,6 +386,19 @@ export enum MainPermissions {
   get_categ_fab = 57,
   edit_categ_fab = 56,
 
+  get_it_requests = 50,
+  edit_it_requests = 50,
+  add_it_requests = 51,
+  sync_it_req_iiko = 52,
+  it_req_attach_master = 53,
+  add_expen_it = 54,
+  add_categ_it = 55,
+  get_categ_it = 57,
+  edit_categ_it = 56,
+  add_masters_it = 56,
+  edit_master_it = 56,
+  get_master_it = 56,
+
   get_stock_env_requests = 67,
   edit_stock_env_requests = 68,
   add_stock_env_requests = 69,
@@ -397,6 +419,13 @@ export enum MainPermissions {
   add_staff_requests = 79,
   edit_staff_requests = 78,
   staff_modal_time = 77,
+
+  it_get_category_product = 1,
+  it_add_category_product = 1,
+  it_edit_category_product = 1,
+  it_add_master = 1,
+  it_edit_master = 1,
+  it_get_masters = 1,
 }
 export enum MarketingSubDep {
   designers = 1,

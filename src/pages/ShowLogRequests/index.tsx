@@ -134,7 +134,7 @@ const ShowLogRequests = () => {
         >
           <button
             className="btn btn-warning btn-fill mr-2"
-            onClick={() => navigate("logs")}
+            onClick={() => navigate(`/request/logs/${id}`)}
           >
             Логи
           </button>

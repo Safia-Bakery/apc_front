@@ -1,22 +1,17 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Departments, Order } from "src/utils/types";
-import Loading from "src/components/Loader";
 import Pagination from "src/components/Pagination";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import {
-  handleIdx,
-  handleStatus,
-  itemsPerPage,
-  requestRows,
-} from "src/utils/helpers";
+import { handleIdx, handleStatus, requestRows } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
-import InventoryFilter from "./filter";
+import ITFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import useQueryString from "src/hooks/custom/useQueryString";
+import TableLoading from "src/components/TableLoading";
 
 const column = [
   { name: "№", key: "" },
@@ -38,26 +33,42 @@ const RequestsIT = () => {
   const [sort, $sort] = useState<Order[]>();
   const currentPage = Number(useQueryString("page")) || 1;
 
+  const user = useQueryString("user");
+  const id = Number(useQueryString("id"));
+  const responsible = useQueryString("responsible");
+  const category_id = Number(useQueryString("category_id"));
+  const urgent = useQueryString("urgent");
+  const created_at = useQueryString("created_at");
+  const request_status = useQueryString("request_status");
+  const branchJson = useQueryString("branch");
+  const branch = branchJson && JSON.parse(branchJson);
+
   const {
     data: requests,
-    refetch,
     isLoading: orderLoading,
+    refetch,
   } = useOrders({
-    enabled: false,
-    size: itemsPerPage,
-    page: currentPage,
     department: Departments.it,
+    page: currentPage,
+    ...(!!id && { id }),
+    ...(!!category_id && { category_id }),
+    ...(!!created_at && {
+      created_at: dayjs(created_at).format("YYYY-MM-DD"),
+    }),
+    ...(!!branch?.id && { fillial_id: branch?.id }),
+    ...(!!request_status && { request_status }),
+    ...(!!user && { user }),
+    ...(!!responsible && { responsible }),
+    ...(!!urgent?.toString() && { urgent: !!urgent }),
   });
 
   useEffect(() => {
     refetch();
   }, [currentPage]);
 
-  if (orderLoading) return <Loading />;
-
   return (
     <Card>
-      <Header title={"Заявка на инвентарь"}>
+      <Header title={"Заявка на IT"}>
         <button
           onClick={() => navigate("add")}
           className="btn btn-success btn-fill"
@@ -74,7 +85,7 @@ const RequestsIT = () => {
             onSort={(data) => $sort(data)}
             data={requests?.items}
           >
-            <InventoryFilter currentPage={currentPage} />
+            <ITFilter />
           </TableHead>
 
           {!!requests?.items?.length && (
@@ -83,9 +94,7 @@ const RequestsIT = () => {
                 <tr className={requestRows(order.status)} key={idx}>
                   <td width="40">{handleIdx(idx)}</td>
                   <td width="80">
-                    <Link to={`/requests-designer/${order?.id}`}>
-                      {order?.id}
-                    </Link>
+                    <Link to={`${order?.id}`}>{order?.id}</Link>
                   </td>
                   <td>
                     <span className="not-set">{order?.user?.full_name}</span>
@@ -93,11 +102,10 @@ const RequestsIT = () => {
                   <td>-------------</td>
                   <td>{order?.fillial?.parentfillial?.name}</td>
                   <td>{order?.category?.name}</td>
-                  <td
-                    width={100}
-                    className={"overflow-ellipsis max-w-[200px] w-full"}
-                  >
-                    {order?.description}
+                  <td>
+                    <div className={"overflow-ellipsis max-w-[200px] w-full"}>
+                      {order?.description}
+                    </div>
                   </td>
                   <td>
                     {handleStatus({
@@ -110,6 +118,7 @@ const RequestsIT = () => {
               ))}
             </tbody>
           )}
+          {orderLoading && <TableLoading />}
         </table>
         {!!requests && <Pagination totalPages={requests.pages} />}
         {!requests?.items?.length && !orderLoading && (
