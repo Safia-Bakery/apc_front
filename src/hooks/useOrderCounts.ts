@@ -1,8 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "src/main";
+import { tokenSelector } from "src/store/reducers/auth";
+import { useAppSelector } from "src/store/utils/types";
 import { CoountTypes } from "src/utils/types";
 
 export const useOrderCounts = ({ enabled = true }: { enabled?: boolean }) => {
+  const token = useAppSelector(tokenSelector);
   return useQuery({
     queryKey: ["order_count"],
     queryFn: () =>
@@ -12,7 +15,7 @@ export const useOrderCounts = ({ enabled = true }: { enabled?: boolean }) => {
           ({ data: response }: { data: any }) =>
             response.counter as CoountTypes["counter"]
         ),
-    enabled,
+    enabled: enabled && !!token,
     refetchOnMount: true,
   });
 };
