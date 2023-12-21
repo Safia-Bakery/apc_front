@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { BranchTypes } from "src/utils/types";
+import apiClient from "@/main";
+import { BranchTypes } from "@/utils/types";
 
 interface BodyTypes {
   name?: string;

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { CategoryTypes } from "src/utils/types";
+import apiClient from "@/main";
+import { CategoryTypes } from "@/utils/types";
 
 interface Props {
   enabled?: boolean;

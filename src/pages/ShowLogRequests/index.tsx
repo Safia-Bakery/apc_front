@@ -1,31 +1,28 @@
 import { useEffect, useMemo } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import Card from "src/components/Card";
-import Header from "src/components/Header";
-import useOrder from "src/hooks/useOrder";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
+import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
-import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
-import { successToast } from "src/utils/toast";
-import { baseURL } from "src/main";
+import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
+import { successToast } from "@/utils/toast";
+import { baseURL } from "@/main";
 import {
   detectFileType,
   handleDepartment,
   handleStatus,
   isValidHttpUrl,
-} from "src/utils/helpers";
+} from "@/utils/helpers";
 import {
   Departments,
   FileType,
   ModalTypes,
   RequestStatus,
-} from "src/utils/types";
+} from "@/utils/types";
 import { useForm } from "react-hook-form";
-import ShowRequestModals from "src/components/ShowRequestModals";
+import ShowRequestModals from "@/components/ShowRequestModals";
 
-import {
-  useNavigateParams,
-  useRemoveParams,
-} from "src/hooks/custom/useCustomNavigate";
+import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import cl from "classnames";
 
 const ShowLogRequests = () => {

@@ -2,8 +2,8 @@ import "dayjs/locale/ru";
 import dayjs from "dayjs";
 import "react-datepicker/dist/react-datepicker.css";
 import WebRooutes from "./components/WebRoutes";
-import { useAppSelector } from "src/store/utils/types";
-import { tokenSelector } from "src/store/reducers/auth";
+import { useAppSelector } from "@/store/utils/types";
+import { tokenSelector } from "reducers/auth";
 import { lazy, useMemo } from "react";
 import { Route, Routes } from "react-router-dom";
 import {
@@ -11,70 +11,68 @@ import {
   MainPermissions,
   MarketingSubDep,
   Sphere,
-} from "src/utils/types";
-import { permissionSelector } from "src/store/reducers/sidebar";
-import DepartmentStat from "src/pages/StatsMarketing/DepartmentStat";
-import MarketingStatCategory from "src/pages/StatsMarketing/StatCategory";
+} from "@/utils/types";
+import { permissionSelector } from "reducers/sidebar";
+import DepartmentStat from "@/pages/StatsMarketing/DepartmentStat";
+import MarketingStatCategory from "@/pages/StatsMarketing/StatCategory";
 import Suspend from "./components/Suspend";
 import TgRoutes from "./components/TgRoutes";
 
-const ControlPanel = lazy(() => import("src/pages/ControlPanel"));
-const TgRating = lazy(() => import("src/pages/TgRating"));
-const RequestsStaff = lazy(() => import("src/pages/RequestsStaff"));
-const AddStaffOrder = lazy(() => import("src/pages/AddStaffRequest"));
-const LogysticsLogs = lazy(() => import("src/pages/LogysticsLogs"));
-const RequestsLogystics = lazy(() => import("src/pages/RequestsLogystics"));
-const CreateLogRequests = lazy(() => import("src/pages/CreateLogRequests"));
-const ShowLogRequests = lazy(() => import("src/pages/ShowLogRequests"));
-const Masters = lazy(() => import("src/pages/Masters"));
-const ShowConsumption = lazy(() => import("src/pages/ShowConsumption"));
-const Logs = lazy(() => import("src/pages/LogsScreen"));
+const ControlPanel = lazy(() => import("@/pages/ControlPanel"));
+const TgRating = lazy(() => import("@/pages/TgRating"));
+const RequestsStaff = lazy(() => import("@/pages/RequestsStaff"));
+const AddStaffOrder = lazy(() => import("@/pages/AddStaffRequest"));
+const LogysticsLogs = lazy(() => import("@/pages/LogysticsLogs"));
+const RequestsLogystics = lazy(() => import("@/pages/RequestsLogystics"));
+const CreateLogRequests = lazy(() => import("@/pages/CreateLogRequests"));
+const ShowLogRequests = lazy(() => import("@/pages/ShowLogRequests"));
+const Masters = lazy(() => import("@/pages/Masters"));
+const ShowConsumption = lazy(() => import("@/pages/ShowConsumption"));
+const Logs = lazy(() => import("@/pages/LogsScreen"));
 const ConsumptionStat = lazy(
-  () => import("src/pages/StatisticsApc/ConsumptionStat")
+  () => import("@/pages/StatisticsApc/ConsumptionStat")
 );
-const Login = lazy(() => import("src/pages/Login"));
-const CategoriesIT = lazy(() => import("src/pages/CategoriesIT"));
-const CategoryProducts = lazy(() => import("src/pages/CategoryProducts"));
+const Login = lazy(() => import("@/pages/Login"));
+const CategoriesIT = lazy(() => import("@/pages/CategoriesIT"));
+const CategoryProducts = lazy(() => import("@/pages/CategoryProducts"));
 const EditAddCategoryProduct = lazy(
-  () => import("src/pages/EditAddCategoryProduct")
+  () => import("@/pages/EditAddCategoryProduct")
 );
-const EditClient = lazy(() => import("src/pages/EditClient"));
-const TelegramAddProduct = lazy(() => import("src/pages/TelegramAddProduct"));
-const CreateITRequest = lazy(() => import("src/pages/CreateITRequest"));
-const CreateApcRequest = lazy(() => import("src/pages/CreateApcRequest"));
-const ShowRequestApc = lazy(() => import("src/pages/ShowRequestApc"));
-const ShowITRequest = lazy(() => import("src/pages/ShowITRequest"));
-const RequestsApc = lazy(() => import("src/pages/RequestsApc"));
-const ShowMarketingRequest = lazy(
-  () => import("src/pages/ShowMarketingRequest")
-);
-const RequestsMarketing = lazy(() => import("src/pages/RequestsMarketing"));
-const AddMarketingRequest = lazy(() => import("src/pages/AddMarketingRequest"));
-const RequestsIT = lazy(() => import("src/pages/RequestsIT"));
-const AddInventoryRequest = lazy(() => import("src/pages/AddInventoryRequest"));
-const YandexMap = lazy(() => import("src/pages/Map"));
-const StatisticsApc = lazy(() => import("src/pages/StatisticsApc"));
-const StatsMarketing = lazy(() => import("src/pages/StatsMarketing"));
-const Categories = lazy(() => import("src/pages/Categories"));
-const EditAddCategory = lazy(() => import("src/pages/EditAddCategory"));
-const EditAddRole = lazy(() => import("src/pages/EditAddRole"));
-const Roles = lazy(() => import("src/pages/Roles"));
-const ShowRole = lazy(() => import("src/pages/ShowRole"));
-const EditAddUser = lazy(() => import("src/pages/EditAddUser"));
-const Users = lazy(() => import("src/pages/Users"));
-const CreateBrigades = lazy(() => import("src/pages/CreateBrigades"));
-const Comments = lazy(() => import("src/pages/Comments"));
-const ShowComment = lazy(() => import("src/pages/ShowComment"));
-const Branches = lazy(() => import("src/pages/Branches"));
-const EditAddBranch = lazy(() => import("src/pages/EditAddBranch"));
-const RemainsInStock = lazy(() => import("src/pages/RemailnsInStock"));
-// const ShowRemainsInStock = lazy(() => import("src/pages/ShowRemainsInStock"));
-const CategoryStat = lazy(() => import("src/pages/StatisticsApc/CategoryStat"));
-const FillialStat = lazy(() => import("src/pages/StatisticsApc/FillialStat"));
+const EditClient = lazy(() => import("@/pages/EditClient"));
+const TelegramAddProduct = lazy(() => import("@/pages/TelegramAddProduct"));
+const CreateITRequest = lazy(() => import("@/pages/CreateITRequest"));
+const CreateApcRequest = lazy(() => import("@/pages/CreateApcRequest"));
+const ShowRequestApc = lazy(() => import("@/pages/ShowRequestApc"));
+const ShowITRequest = lazy(() => import("@/pages/ShowITRequest"));
+const RequestsApc = lazy(() => import("@/pages/RequestsApc"));
+const ShowMarketingRequest = lazy(() => import("@/pages/ShowMarketingRequest"));
+const RequestsMarketing = lazy(() => import("@/pages/RequestsMarketing"));
+const AddMarketingRequest = lazy(() => import("@/pages/AddMarketingRequest"));
+const RequestsIT = lazy(() => import("@/pages/RequestsIT"));
+const AddInventoryRequest = lazy(() => import("@/pages/AddInventoryRequest"));
+const YandexMap = lazy(() => import("@/pages/Map"));
+const StatisticsApc = lazy(() => import("@/pages/StatisticsApc"));
+const StatsMarketing = lazy(() => import("@/pages/StatsMarketing"));
+const Categories = lazy(() => import("@/pages/Categories"));
+const EditAddCategory = lazy(() => import("@/pages/EditAddCategory"));
+const EditAddRole = lazy(() => import("@/pages/EditAddRole"));
+const Roles = lazy(() => import("@/pages/Roles"));
+const ShowRole = lazy(() => import("@/pages/ShowRole"));
+const EditAddUser = lazy(() => import("@/pages/EditAddUser"));
+const Users = lazy(() => import("@/pages/Users"));
+const CreateBrigades = lazy(() => import("@/pages/CreateBrigades"));
+const Comments = lazy(() => import("@/pages/Comments"));
+const ShowComment = lazy(() => import("@/pages/ShowComment"));
+const Branches = lazy(() => import("@/pages/Branches"));
+const EditAddBranch = lazy(() => import("@/pages/EditAddBranch"));
+const RemainsInStock = lazy(() => import("@/pages/RemailnsInStock"));
+// const ShowRemainsInStock = lazy(() => import("@/pages/ShowRemainsInStock"));
+const CategoryStat = lazy(() => import("@/pages/StatisticsApc/CategoryStat"));
+const FillialStat = lazy(() => import("@/pages/StatisticsApc/FillialStat"));
 const BrigadaCategStat = lazy(
-  () => import("src/pages/StatisticsApc/BrigadaCategStat")
+  () => import("@/pages/StatisticsApc/BrigadaCategStat")
 );
-const BrigadaStat = lazy(() => import("src/pages/StatisticsApc/BrigadaStat"));
+const BrigadaStat = lazy(() => import("@/pages/StatisticsApc/BrigadaStat"));
 
 dayjs.locale("ru");
 

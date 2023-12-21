@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { RoleTypes } from "src/utils/types";
+import apiClient from "@/main";
+import { RoleTypes } from "@/utils/types";
 
 export const useRoles = ({ enabled = true }: { enabled?: boolean }) => {
   return useQuery({

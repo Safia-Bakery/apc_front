@@ -9,9 +9,9 @@ export default defineConfig({
   },
   resolve: {
     alias: [
-      { find: "src", replacement: "/src" },
-      { find: "pages", replacement: "/src/pages" },
-      { find: "components", replacement: "/src/components" },
+      { find: "@/", replacement: "/src/" },
+      { find: "custom/", replacement: "/src/hooks/custom/" },
+      { find: "reducers/", replacement: "/src/store/reducers/" },
     ],
   },
 });

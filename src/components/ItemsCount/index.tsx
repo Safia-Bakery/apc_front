@@ -1,5 +1,5 @@
-import useQueryString from "src/hooks/custom/useQueryString";
-import { itemsPerPage } from "src/utils/helpers";
+import useQueryString from "custom/useQueryString";
+import { itemsPerPage } from "@/utils/helpers";
 
 interface ItemsTypes {
   data: { items: any[]; total: number } | undefined;

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { UsersTypes } from "src/utils/types";
+import apiClient from "@/main";
+import { UsersTypes } from "@/utils/types";
 
 interface BodyTypes {
   full_name?: string;

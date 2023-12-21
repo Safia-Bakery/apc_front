@@ -1,24 +1,24 @@
-import Card from "src/components/Card";
-import Header from "src/components/Header";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
 import { useNavigate } from "react-router-dom";
 import {
   BrigadaType,
   Departments,
   MainPermissions,
   Sphere,
-} from "src/utils/types";
-import Loading from "src/components/Loader";
-import Pagination from "src/components/Pagination";
+} from "@/utils/types";
+import Loading from "@/components/Loader";
+import Pagination from "@/components/Pagination";
 import { useEffect, useMemo, useState } from "react";
-import { handleIdx } from "src/utils/helpers";
-import TableHead from "src/components/TableHead";
-import TableViewBtn from "src/components/TableViewBtn";
-import useBrigadas from "src/hooks/useBrigadas";
-import ItemsCount from "src/components/ItemsCount";
-import { useAppSelector } from "src/store/utils/types";
-import { permissionSelector } from "src/store/reducers/sidebar";
-import useQueryString from "src/hooks/custom/useQueryString";
-import EmptyList from "src/components/EmptyList";
+import { handleIdx } from "@/utils/helpers";
+import TableHead from "@/components/TableHead";
+import TableViewBtn from "@/components/TableViewBtn";
+import useBrigadas from "@/hooks/useBrigadas";
+import ItemsCount from "@/components/ItemsCount";
+import { useAppSelector } from "@/store/utils/types";
+import { permissionSelector } from "reducers/sidebar";
+import useQueryString from "custom/useQueryString";
+import EmptyList from "@/components/EmptyList";
 
 const Masters = () => {
   const navigate = useNavigate();

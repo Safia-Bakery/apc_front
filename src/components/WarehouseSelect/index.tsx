@@ -3,16 +3,13 @@ import styles from "./index.module.scss";
 import { useState } from "react";
 import BaseInput from "../BaseInputs";
 import MainInput from "../BaseInputs/MainInput";
-import useDebounce from "src/hooks/custom/useDebounce";
+import useDebounce from "custom/useDebounce";
 import cl from "classnames";
-import { BranchTypes } from "src/utils/types";
-import {
-  useNavigateParams,
-  useRemoveParams,
-} from "src/hooks/custom/useCustomNavigate";
-import useQueryString from "src/hooks/custom/useQueryString";
-import useWarehouse from "src/hooks/useWarehouse";
-import useUpdateEffect from "src/hooks/useUpdateEffect";
+import { BranchTypes } from "@/utils/types";
+import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
+import useQueryString from "custom/useQueryString";
+import useWarehouse from "@/hooks/useWarehouse";
+import useUpdateEffect from "@/hooks/useUpdateEffect";
 
 const WarehouseSelect: FC = () => {
   const navigate = useNavigateParams();

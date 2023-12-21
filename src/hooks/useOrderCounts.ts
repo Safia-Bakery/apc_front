@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { tokenSelector } from "src/store/reducers/auth";
-import { useAppSelector } from "src/store/utils/types";
-import { CountTypes } from "src/utils/types";
+import apiClient from "@/main";
+import { tokenSelector } from "reducers/auth";
+import { useAppSelector } from "@/store/utils/types";
+import { CountTypes } from "@/utils/types";
 
 export const useOrderCounts = ({ enabled = true }: { enabled?: boolean }) => {
   const token = useAppSelector(tokenSelector);

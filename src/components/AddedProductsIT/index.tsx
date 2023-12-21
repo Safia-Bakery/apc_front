@@ -1,11 +1,11 @@
 import Card from "../Card";
 import Header from "../Header";
 import { useParams } from "react-router-dom";
-import useOrder from "src/hooks/useOrder";
-import { detectFileType } from "src/utils/helpers";
-import { useNavigateParams } from "src/hooks/custom/useCustomNavigate";
-import { FileType, ModalTypes } from "src/utils/types";
-import { baseURL } from "src/main";
+import useOrder from "@/hooks/useOrder";
+import { detectFileType } from "@/utils/helpers";
+import { useNavigateParams } from "custom/useCustomNavigate";
+import { FileType, ModalTypes } from "@/utils/types";
+import { baseURL } from "@/main";
 import cl from "classnames";
 
 const column = [

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { errorToast, successToast } from "src/utils/toast";
-import { BranchTypes } from "src/utils/types";
+import apiClient from "@/main";
+import { errorToast, successToast } from "@/utils/toast";
+import { BranchTypes } from "@/utils/types";
 
 const config = { timeout: 100000 };
 

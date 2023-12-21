@@ -1,25 +1,20 @@
 import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Card from "src/components/Card";
-import Header from "src/components/Header";
-import {
-  Category,
-  Departments,
-  MainPermissions,
-  Sphere,
-} from "src/utils/types";
-import Pagination from "src/components/Pagination";
-import { handleDepartment, handleIdx, itemsPerPage } from "src/utils/helpers";
-import TableHead from "src/components/TableHead";
-import TableViewBtn from "src/components/TableViewBtn";
-import useCategories from "src/hooks/useCategories";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
+import { Category, Departments, MainPermissions, Sphere } from "@/utils/types";
+import Pagination from "@/components/Pagination";
+import { handleDepartment, handleIdx, itemsPerPage } from "@/utils/helpers";
+import TableHead from "@/components/TableHead";
+import TableViewBtn from "@/components/TableViewBtn";
+import useCategories from "@/hooks/useCategories";
 import CategoriesFilter from "./filter";
-import ItemsCount from "src/components/ItemsCount";
-import useQueryString from "src/hooks/custom/useQueryString";
-import { useAppSelector } from "src/store/utils/types";
-import { permissionSelector } from "src/store/reducers/sidebar";
-import EmptyList from "src/components/EmptyList";
-import TableLoading from "src/components/TableLoading";
+import ItemsCount from "@/components/ItemsCount";
+import useQueryString from "custom/useQueryString";
+import { useAppSelector } from "@/store/utils/types";
+import { permissionSelector } from "reducers/sidebar";
+import EmptyList from "@/components/EmptyList";
+import TableLoading from "@/components/TableLoading";
 
 interface Props {
   sphere_status?: number;

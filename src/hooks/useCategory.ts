@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { Category } from "src/utils/types";
+import apiClient from "@/main";
+import { Category } from "@/utils/types";
 
 export const useCategory = ({
   id,

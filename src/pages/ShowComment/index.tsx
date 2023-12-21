@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Card from "src/components/Card";
-import Header from "src/components/Header";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
 import dayjs from "dayjs";
-import TableHead from "src/components/TableHead";
-import { itemsPerPage } from "src/utils/helpers";
-import useOrders from "src/hooks/useOrders";
-import { Order, OrderType } from "src/utils/types";
+import TableHead from "@/components/TableHead";
+import { itemsPerPage } from "@/utils/helpers";
+import useOrders from "@/hooks/useOrders";
+import { Order, OrderType } from "@/utils/types";
 
 const column = [
   { name: "№", key: "id" as keyof Order["id"] },

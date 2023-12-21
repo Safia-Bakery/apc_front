@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import apiClient from "src/main";
-import { Departments, DistinctTypes, Sphere } from "src/utils/types";
+import apiClient from "@/main";
+import { Departments, DistinctTypes, Sphere } from "@/utils/types";
 
 interface BodyTypes {
   enabled?: boolean;

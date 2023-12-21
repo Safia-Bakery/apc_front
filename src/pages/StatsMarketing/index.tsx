@@ -1,13 +1,13 @@
-import Card from "src/components/Card";
-import Header from "src/components/Header";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
 import { Outlet, useNavigate } from "react-router-dom";
-import { useNavigateParams } from "src/hooks/custom/useCustomNavigate";
+import { useNavigateParams } from "custom/useCustomNavigate";
 import dayjs from "dayjs";
-import useQueryString from "src/hooks/custom/useQueryString";
+import useQueryString from "custom/useQueryString";
 import { useForm } from "react-hook-form";
 import cl from "classnames";
 import { useEffect } from "react";
-import StatBar from "src/components/StatBar";
+import StatBar from "@/components/StatBar";
 
 const routesArr = [
   {

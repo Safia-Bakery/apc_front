@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { ExpendituresTypes } from "src/utils/types";
+import apiClient from "@/main";
+import { ExpendituresTypes } from "@/utils/types";
 
 export const useExpenditure = ({
   id,

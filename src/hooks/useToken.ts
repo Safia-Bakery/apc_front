@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { tokenSelector } from "src/store/reducers/auth";
-import { useAppSelector } from "src/store/utils/types";
-import { MeTypes } from "src/utils/types";
+import apiClient from "@/main";
+import { tokenSelector } from "reducers/auth";
+import { useAppSelector } from "@/store/utils/types";
+import { MeTypes } from "@/utils/types";
 
 export const useToken = ({ enabled = true }) => {
   const token = useAppSelector(tokenSelector);

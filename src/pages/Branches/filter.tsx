@@ -1,12 +1,12 @@
 import { ChangeEvent, FC } from "react";
-import BaseInputs from "src/components/BaseInputs";
-import MainInput from "src/components/BaseInputs/MainInput";
-import MainSelect from "src/components/BaseInputs/MainSelect";
-import { useNavigateParams } from "src/hooks/custom/useCustomNavigate";
-import useDebounce from "src/hooks/custom/useDebounce";
-import useQueryString from "src/hooks/custom/useQueryString";
-import useUpdateEffect from "src/hooks/useUpdateEffect";
-import { RegionNames, StatusName } from "src/utils/helpers";
+import BaseInputs from "@/components/BaseInputs";
+import MainInput from "@/components/BaseInputs/MainInput";
+import MainSelect from "@/components/BaseInputs/MainSelect";
+import { useNavigateParams } from "custom/useCustomNavigate";
+import useDebounce from "custom/useDebounce";
+import useQueryString from "custom/useQueryString";
+import useUpdateEffect from "@/hooks/useUpdateEffect";
+import { RegionNames, StatusName } from "@/utils/helpers";
 
 const BranchesFilter: FC = () => {
   const navigate = useNavigateParams();

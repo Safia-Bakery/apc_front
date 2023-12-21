@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { errorToast } from "src/utils/toast";
+import apiClient from "@/main";
+import { errorToast } from "@/utils/toast";
 
 interface Body {
   id: string;

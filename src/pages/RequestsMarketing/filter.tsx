@@ -1,23 +1,20 @@
-import { RequestMarkStatusArr } from "src/utils/helpers";
+import { RequestMarkStatusArr } from "@/utils/helpers";
 import { FC, useState } from "react";
-import useDebounce from "src/hooks/custom/useDebounce";
-import BaseInputs from "src/components/BaseInputs";
-import MainSelect from "src/components/BaseInputs/MainSelect";
-import BaseInput from "src/components/BaseInputs";
-import MainInput from "src/components/BaseInputs/MainInput";
-import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
-import useCategories from "src/hooks/useCategories";
+import useDebounce from "custom/useDebounce";
+import BaseInputs from "@/components/BaseInputs";
+import MainSelect from "@/components/BaseInputs/MainSelect";
+import BaseInput from "@/components/BaseInputs";
+import MainInput from "@/components/BaseInputs/MainInput";
+import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
+import useCategories from "@/hooks/useCategories";
 import dayjs from "dayjs";
-import useQueryString from "src/hooks/custom/useQueryString";
-import BranchSelect from "src/components/BranchSelect";
-import {
-  useNavigateParams,
-  useRemoveParams,
-} from "src/hooks/custom/useCustomNavigate";
-import { useAppSelector } from "src/store/utils/types";
-import { permissionSelector } from "src/store/reducers/sidebar";
-import { MainPermissions } from "src/utils/types";
-import useUpdateEffect from "src/hooks/useUpdateEffect";
+import useQueryString from "custom/useQueryString";
+import BranchSelect from "@/components/BranchSelect";
+import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
+import { useAppSelector } from "@/store/utils/types";
+import { permissionSelector } from "reducers/sidebar";
+import { MainPermissions } from "@/utils/types";
+import useUpdateEffect from "@/hooks/useUpdateEffect";
 import "react-datepicker/dist/react-datepicker.css";
 
 interface Props {

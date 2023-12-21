@@ -1,5 +1,5 @@
 import styles from "./index.module.scss";
-import useToken from "src/hooks/useToken";
+import useToken from "@/hooks/useToken";
 
 const ControlPanel = () => {
   const { data: user } = useToken({ enabled: false });

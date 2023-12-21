@@ -1,13 +1,13 @@
-import Card from "src/components/Card";
-import Header from "src/components/Header";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
-import permissionMutation from "src/hooks/mutation/permissionMutation";
-import useRolePermission from "src/hooks/useRolePermission";
+import permissionMutation from "@/hooks/mutation/permissionMutation";
+import useRolePermission from "@/hooks/useRolePermission";
 import { Fragment, useEffect } from "react";
-import Loading from "src/components/Loader";
-import usePermissions from "src/hooks/usePermissions";
+import Loading from "@/components/Loader";
+import usePermissions from "@/hooks/usePermissions";
 import { useForm } from "react-hook-form";
-import { errorToast, successToast } from "src/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 
 const ShowRole = () => {
   const navigate = useNavigate();

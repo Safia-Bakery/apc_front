@@ -1,23 +1,23 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Departments, Order } from "src/utils/types";
-import Loading from "src/components/Loader";
-import Pagination from "src/components/Pagination";
+import { Departments, Order } from "@/utils/types";
+import Loading from "@/components/Loader";
+import Pagination from "@/components/Pagination";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import useOrders from "src/hooks/useOrders";
-import Card from "src/components/Card";
-import Header from "src/components/Header";
+import useOrders from "@/hooks/useOrders";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
 import {
   handleIdx,
   handleStatus,
   itemsPerPage,
   requestRows,
-} from "src/utils/helpers";
-import TableHead from "src/components/TableHead";
+} from "@/utils/helpers";
+import TableHead from "@/components/TableHead";
 import InventoryFilter from "./filter";
-import ItemsCount from "src/components/ItemsCount";
-import useQueryString from "src/hooks/custom/useQueryString";
-import EmptyList from "src/components/EmptyList";
+import ItemsCount from "@/components/ItemsCount";
+import useQueryString from "custom/useQueryString";
+import EmptyList from "@/components/EmptyList";
 
 const column = [
   { name: "№", key: "" },

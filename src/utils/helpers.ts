@@ -9,7 +9,7 @@ import {
   SidebarType,
   Sphere,
 } from "./types";
-import useQueryString from "src/hooks/custom/useQueryString";
+import useQueryString from "custom/useQueryString";
 
 export const itemsPerPage = 50;
 

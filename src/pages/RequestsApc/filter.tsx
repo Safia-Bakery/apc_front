@@ -1,25 +1,22 @@
-import { RequestStatusArr, SystemArr, UrgentNames } from "src/utils/helpers";
+import { RequestStatusArr, SystemArr, UrgentNames } from "@/utils/helpers";
 import { ChangeEvent, FC, useEffect, useState } from "react";
-import useDebounce from "src/hooks/custom/useDebounce";
+import useDebounce from "custom/useDebounce";
 import "react-datepicker/dist/react-datepicker.css";
-import BaseInputs from "src/components/BaseInputs";
-import MainSelect from "src/components/BaseInputs/MainSelect";
-import BaseInput from "src/components/BaseInputs";
-import MainInput from "src/components/BaseInputs/MainInput";
-import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
-import BranchSelect from "src/components/BranchSelect";
-import useQueryString from "src/hooks/custom/useQueryString";
-import { Departments, MainPermissions, Sphere } from "src/utils/types";
+import BaseInputs from "@/components/BaseInputs";
+import MainSelect from "@/components/BaseInputs/MainSelect";
+import BaseInput from "@/components/BaseInputs";
+import MainInput from "@/components/BaseInputs/MainInput";
+import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
+import BranchSelect from "@/components/BranchSelect";
+import useQueryString from "custom/useQueryString";
+import { Departments, MainPermissions, Sphere } from "@/utils/types";
 import dayjs from "dayjs";
-import {
-  useNavigateParams,
-  useRemoveParams,
-} from "src/hooks/custom/useCustomNavigate";
-import useCategories from "src/hooks/useCategories";
+import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
+import useCategories from "@/hooks/useCategories";
 import { useForm } from "react-hook-form";
-import { permissionSelector } from "src/store/reducers/sidebar";
-import { useAppSelector } from "src/store/utils/types";
-import useUpdateEffect from "src/hooks/useUpdateEffect";
+import { permissionSelector } from "reducers/sidebar";
+import { useAppSelector } from "@/store/utils/types";
+import useUpdateEffect from "@/hooks/useUpdateEffect";
 
 const ApcFilter: FC = () => {
   const navigate = useNavigateParams();

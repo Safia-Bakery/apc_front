@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../rootConfig";
-import { Order } from "src/utils/types";
-import { FileItem } from "src/components/FileUpload";
+import { Order } from "@/utils/types";
+import { FileItem } from "@/components/FileUpload";
 
 interface State {
   sidebarToggler: boolean;

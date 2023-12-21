@@ -1,11 +1,11 @@
 import dayjs from "dayjs";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import EmptyList from "src/components/EmptyList";
-import TableHead from "src/components/TableHead";
-import TableLoading from "src/components/TableLoading";
-import useExpenditure from "src/hooks/useExpenditure";
-import { ExpenditureType } from "src/utils/types";
+import EmptyList from "@/components/EmptyList";
+import TableHead from "@/components/TableHead";
+import TableLoading from "@/components/TableLoading";
+import useExpenditure from "@/hooks/useExpenditure";
+import { ExpenditureType } from "@/utils/types";
 
 const column = [
   { name: "№", key: "name" },

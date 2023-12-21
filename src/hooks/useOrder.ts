@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { Order } from "src/utils/types";
+import apiClient from "@/main";
+import { Order } from "@/utils/types";
 
 export const useOrder = ({
   id,

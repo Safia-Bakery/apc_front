@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { Departments, Sphere } from "src/utils/types";
-import apiClient from "src/main";
+import { Departments, Sphere } from "@/utils/types";
+import apiClient from "@/main";
 
 interface Body {
   name: string;

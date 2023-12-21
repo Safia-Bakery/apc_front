@@ -2,12 +2,12 @@ import { forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import cl from "classnames";
-import BaseInputs from "src/components/BaseInputs";
-import MainInput from "src/components/BaseInputs/MainInput";
-import MainTextArea from "src/components/BaseInputs/MainTextArea";
-import Card from "src/components/Card";
-import Header from "src/components/Header";
-import TableHead from "src/components/TableHead";
+import BaseInputs from "@/components/BaseInputs";
+import MainInput from "@/components/BaseInputs/MainInput";
+import MainTextArea from "@/components/BaseInputs/MainTextArea";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
+import TableHead from "@/components/TableHead";
 
 //test
 interface InventoryFields {

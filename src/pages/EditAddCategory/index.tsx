@@ -2,20 +2,20 @@ import { FC, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 
-import Card from "src/components/Card";
-import Header from "src/components/Header";
-import useCategory from "src/hooks/useCategory";
-import categoryMutation from "src/hooks/mutation/categoryMutation";
-import useCategories from "src/hooks/useCategories";
-import { errorToast, successToast } from "src/utils/toast";
-import BaseInput from "src/components/BaseInputs";
-import MainInput from "src/components/BaseInputs/MainInput";
-import MainTextArea from "src/components/BaseInputs/MainTextArea";
-import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
-import { Departments, MarketingSubDepRu, Sphere } from "src/utils/types";
-import MainSelect from "src/components/BaseInputs/MainSelect";
-import { imageConverter } from "src/utils/helpers";
-import { baseURL } from "src/main";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
+import useCategory from "@/hooks/useCategory";
+import categoryMutation from "@/hooks/mutation/categoryMutation";
+import useCategories from "@/hooks/useCategories";
+import { errorToast, successToast } from "@/utils/toast";
+import BaseInput from "@/components/BaseInputs";
+import MainInput from "@/components/BaseInputs/MainInput";
+import MainTextArea from "@/components/BaseInputs/MainTextArea";
+import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
+import { Departments, MarketingSubDepRu, Sphere } from "@/utils/types";
+import MainSelect from "@/components/BaseInputs/MainSelect";
+import { imageConverter } from "@/utils/helpers";
+import { baseURL } from "@/main";
 
 interface Props {
   sphere_status?: Sphere;

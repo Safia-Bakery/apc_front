@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import TableHead from "src/components/TableHead";
-import useDistinct from "src/hooks/useDistinct";
+import TableHead from "@/components/TableHead";
+import useDistinct from "@/hooks/useDistinct";
 import { Link } from "react-router-dom";
 import { useDownloadExcel } from "react-export-table-to-excel";
-import { Departments, Sphere } from "src/utils/types";
-import useQueryString from "src/hooks/custom/useQueryString";
-import EmptyList from "src/components/EmptyList";
+import { Departments, Sphere } from "@/utils/types";
+import useQueryString from "custom/useQueryString";
+import EmptyList from "@/components/EmptyList";
 
 const column = [
   { name: "№", key: "" },

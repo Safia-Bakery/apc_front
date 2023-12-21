@@ -1,16 +1,13 @@
-import useDebounce from "src/hooks/custom/useDebounce";
+import useDebounce from "custom/useDebounce";
 import "react-datepicker/dist/react-datepicker.css";
 
-import BaseInput from "src/components/BaseInputs";
-import MainInput from "src/components/BaseInputs/MainInput";
-import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
-import {
-  useNavigateParams,
-  useRemoveParams,
-} from "src/hooks/custom/useCustomNavigate";
-import useQueryString from "src/hooks/custom/useQueryString";
+import BaseInput from "@/components/BaseInputs";
+import MainInput from "@/components/BaseInputs/MainInput";
+import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
+import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
+import useQueryString from "custom/useQueryString";
 import dayjs from "dayjs";
-import useUpdateEffect from "src/hooks/useUpdateEffect";
+import useUpdateEffect from "@/hooks/useUpdateEffect";
 
 const StockFilter = () => {
   const navigate = useNavigateParams();

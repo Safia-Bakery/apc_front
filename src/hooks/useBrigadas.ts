@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { BrigadaTypes, Departments } from "src/utils/types";
+import apiClient from "@/main";
+import { BrigadaTypes, Departments } from "@/utils/types";
 
 export const useBrigadas = ({
   enabled = true,

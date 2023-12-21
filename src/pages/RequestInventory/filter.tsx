@@ -1,16 +1,16 @@
-import { OrderTypeNames, UrgentNames } from "src/utils/helpers";
+import { OrderTypeNames, UrgentNames } from "@/utils/helpers";
 import { FC, useEffect, useRef, useState } from "react";
-import useOrders from "src/hooks/useOrders";
-import useDebounce from "src/hooks/custom/useDebounce";
+import useOrders from "@/hooks/useOrders";
+import useDebounce from "custom/useDebounce";
 import "react-datepicker/dist/react-datepicker.css";
-import BaseInputs from "src/components/BaseInputs";
-import MainSelect from "src/components/BaseInputs/MainSelect";
-import BaseInput from "src/components/BaseInputs";
-import MainInput from "src/components/BaseInputs/MainInput";
-import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
-import { Departments } from "src/utils/types";
-import useCategories from "src/hooks/useCategories";
-import useBranches from "src/hooks/useBranches";
+import BaseInputs from "@/components/BaseInputs";
+import MainSelect from "@/components/BaseInputs/MainSelect";
+import BaseInput from "@/components/BaseInputs";
+import MainInput from "@/components/BaseInputs/MainInput";
+import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
+import { Departments } from "@/utils/types";
+import useCategories from "@/hooks/useCategories";
+import useBranches from "@/hooks/useBranches";
 
 const InventoryFilter: FC = () => {
   const { data: branches } = useBranches({});

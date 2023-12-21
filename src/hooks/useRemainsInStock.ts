@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { RemainsInStockType } from "src/utils/types";
+import apiClient from "@/main";
+import { RemainsInStockType } from "@/utils/types";
 
 export const useRemainsInStock = ({
   store_id,

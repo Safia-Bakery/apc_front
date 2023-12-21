@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { CommentTypes } from "src/utils/types";
+import apiClient from "@/main";
+import { CommentTypes } from "@/utils/types";
 
 export const useComments = ({
   enabled = true,

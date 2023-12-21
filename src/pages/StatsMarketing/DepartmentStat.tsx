@@ -1,13 +1,13 @@
 import { useMemo, useRef } from "react";
-import { MarketingSubDep } from "src/utils/types";
-import TableHead from "src/components/TableHead";
+import { MarketingSubDep } from "@/utils/types";
+import TableHead from "@/components/TableHead";
 import Chart from "react-apexcharts";
-import useQueryString from "src/hooks/custom/useQueryString";
+import useQueryString from "custom/useQueryString";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
-import useMarketingStatDep from "src/hooks/useMarketingStatDep";
-import { handleDepartment } from "src/utils/helpers";
-import useUpdateEffect from "src/hooks/useUpdateEffect";
-import EmptyList from "src/components/EmptyList";
+import useMarketingStatDep from "@/hooks/useMarketingStatDep";
+import { handleDepartment } from "@/utils/helpers";
+import useUpdateEffect from "@/hooks/useUpdateEffect";
+import EmptyList from "@/components/EmptyList";
 
 const options = {
   chart: {

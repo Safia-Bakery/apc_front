@@ -1,20 +1,20 @@
-import Card from "src/components/Card";
-import Header from "src/components/Header";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { MainPermissions, UsersType } from "src/utils/types";
-import Pagination from "src/components/Pagination";
+import { MainPermissions, UsersType } from "@/utils/types";
+import Pagination from "@/components/Pagination";
 import { FC, useMemo, useState } from "react";
-import { handleIdx, itemsPerPage } from "src/utils/helpers";
-import TableHead from "src/components/TableHead";
-import TableViewBtn from "src/components/TableViewBtn";
-import useUsers from "src/hooks/useUsers";
+import { handleIdx, itemsPerPage } from "@/utils/helpers";
+import TableHead from "@/components/TableHead";
+import TableViewBtn from "@/components/TableViewBtn";
+import useUsers from "@/hooks/useUsers";
 import UsersFilter from "./filter";
-import ItemsCount from "src/components/ItemsCount";
-import { useAppSelector } from "src/store/utils/types";
-import { permissionSelector } from "src/store/reducers/sidebar";
-import useQueryString from "src/hooks/custom/useQueryString";
-import TableLoading from "src/components/TableLoading";
-import EmptyList from "src/components/EmptyList";
+import ItemsCount from "@/components/ItemsCount";
+import { useAppSelector } from "@/store/utils/types";
+import { permissionSelector } from "reducers/sidebar";
+import useQueryString from "custom/useQueryString";
+import TableLoading from "@/components/TableLoading";
+import EmptyList from "@/components/EmptyList";
 
 const column = [
   { name: "№", key: "" },

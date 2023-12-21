@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren, useCallback, useState } from "react";
-import useUpdateEffect from "src/hooks/useUpdateEffect";
+import useUpdateEffect from "@/hooks/useUpdateEffect";
 
 interface Props extends PropsWithChildren {
   column: { name: string; key: any }[];

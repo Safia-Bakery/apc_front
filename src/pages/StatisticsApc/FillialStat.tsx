@@ -1,11 +1,11 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { DepartmentStatTypes, Departments, Sphere } from "src/utils/types";
-import TableHead from "src/components/TableHead";
-import useStatsDepartment from "src/hooks/useStatsDepartment";
-import useQueryString from "src/hooks/custom/useQueryString";
+import { DepartmentStatTypes, Departments, Sphere } from "@/utils/types";
+import TableHead from "@/components/TableHead";
+import useStatsDepartment from "@/hooks/useStatsDepartment";
+import useQueryString from "custom/useQueryString";
 
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
-import EmptyList from "src/components/EmptyList";
+import EmptyList from "@/components/EmptyList";
 
 const column = [
   { name: "Филиалы", key: "name" },

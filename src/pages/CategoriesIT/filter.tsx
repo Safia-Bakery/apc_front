@@ -1,13 +1,13 @@
 import { FC, useState } from "react";
-import BaseInputs from "src/components/BaseInputs";
-import MainInput from "src/components/BaseInputs/MainInput";
-import MainSelect from "src/components/BaseInputs/MainSelect";
+import BaseInputs from "@/components/BaseInputs";
+import MainInput from "@/components/BaseInputs/MainInput";
+import MainSelect from "@/components/BaseInputs/MainSelect";
 
-import useCategories from "src/hooks/useCategories";
-import useDebounce from "src/hooks/custom/useDebounce";
-import useQueryString from "src/hooks/custom/useQueryString";
-import useUpdateEffect from "src/hooks/useUpdateEffect";
-import { StatusName, itemsPerPage } from "src/utils/helpers";
+import useCategories from "@/hooks/useCategories";
+import useDebounce from "custom/useDebounce";
+import useQueryString from "custom/useQueryString";
+import useUpdateEffect from "@/hooks/useUpdateEffect";
+import { StatusName, itemsPerPage } from "@/utils/helpers";
 
 const CategoriesITFilter: FC = () => {
   const currentPage = Number(useQueryString("page")) || 1;

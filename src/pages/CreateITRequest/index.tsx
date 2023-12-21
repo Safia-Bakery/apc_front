@@ -1,31 +1,31 @@
 import { useEffect, useState, forwardRef } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { successToast } from "src/utils/toast";
-import Card from "src/components/Card";
-import Header from "src/components/Header";
+import { successToast } from "@/utils/toast";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
 import { useNavigate } from "react-router-dom";
 import cl from "classnames";
-import requestMutation from "src/hooks/mutation/orderMutation";
-import UploadComponent, { FileItem } from "src/components/FileUpload";
+import requestMutation from "@/hooks/mutation/orderMutation";
+import UploadComponent, { FileItem } from "@/components/FileUpload";
 import styles from "./index.module.scss";
-import BaseInputs from "src/components/BaseInputs";
-import MainSelect from "src/components/BaseInputs/MainSelect";
-import MainTextArea from "src/components/BaseInputs/MainTextArea";
-import useQueryString from "src/hooks/custom/useQueryString";
-import BranchSelect from "src/components/BranchSelect";
-import useCategories from "src/hooks/useCategories";
+import BaseInputs from "@/components/BaseInputs";
+import MainSelect from "@/components/BaseInputs/MainSelect";
+import MainTextArea from "@/components/BaseInputs/MainTextArea";
+import useQueryString from "custom/useQueryString";
+import BranchSelect from "@/components/BranchSelect";
+import useCategories from "@/hooks/useCategories";
 import {
   CategoryProducts,
   Departments,
   MainPermissions,
   Sphere,
-} from "src/utils/types";
-import Loading from "src/components/Loader";
-import { useAppSelector } from "src/store/utils/types";
-import { permissionSelector } from "src/store/reducers/sidebar";
-import useCatProducts from "src/hooks/useCatProducts";
-import TableHead from "src/components/TableHead";
-import MainInput from "src/components/BaseInputs/MainInput";
+} from "@/utils/types";
+import Loading from "@/components/Loader";
+import { useAppSelector } from "@/store/utils/types";
+import { permissionSelector } from "reducers/sidebar";
+import useCatProducts from "@/hooks/useCatProducts";
+import TableHead from "@/components/TableHead";
+import MainInput from "@/components/BaseInputs/MainInput";
 import { useQueryClient } from "@tanstack/react-query";
 
 const OrderTypeVals = [

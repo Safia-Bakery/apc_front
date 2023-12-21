@@ -1,19 +1,19 @@
-import Card from "src/components/Card";
-import Header from "src/components/Header";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
-import Pagination from "src/components/Pagination";
-import ItemsCount from "src/components/ItemsCount";
-import TableHead from "src/components/TableHead";
-import { handleIdx, itemsPerPage } from "src/utils/helpers";
+import Pagination from "@/components/Pagination";
+import ItemsCount from "@/components/ItemsCount";
+import TableHead from "@/components/TableHead";
+import { handleIdx, itemsPerPage } from "@/utils/helpers";
 import { useState } from "react";
 import StockFilter from "./filter";
 import dayjs from "dayjs";
-import useQueryString from "src/hooks/custom/useQueryString";
-import useRemainsInStock from "src/hooks/useRemainsInStock";
-import useStockSync from "src/hooks/sync/useStockSync";
-import TableLoading from "src/components/TableLoading";
-import { StockItem } from "src/utils/types";
-import EmptyList from "src/components/EmptyList";
+import useQueryString from "custom/useQueryString";
+import useRemainsInStock from "@/hooks/useRemainsInStock";
+import useStockSync from "@/hooks/sync/useStockSync";
+import TableLoading from "@/components/TableLoading";
+import { StockItem } from "@/utils/types";
+import EmptyList from "@/components/EmptyList";
 
 const column = [
   { name: "№", key: "" },

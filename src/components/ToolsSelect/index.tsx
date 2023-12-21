@@ -1,18 +1,15 @@
 import React, { ChangeEvent, useCallback, useEffect, useRef } from "react";
 import styles from "./index.module.scss";
 import { useState } from "react";
-import useTools from "src/hooks/useTools";
+import useTools from "@/hooks/useTools";
 import BaseInput from "../BaseInputs";
 import MainInput from "../BaseInputs/MainInput";
-import useDebounce from "src/hooks/custom/useDebounce";
+import useDebounce from "custom/useDebounce";
 import cl from "classnames";
-import { ToolTypes } from "src/utils/types";
-import {
-  useNavigateParams,
-  useRemoveParams,
-} from "src/hooks/custom/useCustomNavigate";
-import useQueryString from "src/hooks/custom/useQueryString";
-import useUpdateEffect from "src/hooks/useUpdateEffect";
+import { ToolTypes } from "@/utils/types";
+import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
+import useQueryString from "custom/useQueryString";
+import useUpdateEffect from "@/hooks/useUpdateEffect";
 
 const ToolsSelect: React.FC = () => {
   const navigate = useNavigateParams();

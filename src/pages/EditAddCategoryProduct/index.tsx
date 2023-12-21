@@ -1,17 +1,17 @@
-import useCatProducts from "src/hooks/useCatProducts";
-import Card from "src/components/Card";
-import Header from "src/components/Header";
+import useCatProducts from "@/hooks/useCatProducts";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect, useMemo } from "react";
-import { successToast } from "src/utils/toast";
-import BaseInput from "src/components/BaseInputs";
-import MainInput from "src/components/BaseInputs/MainInput";
-import MainTextArea from "src/components/BaseInputs/MainTextArea";
-import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
-import { imageConverter } from "src/utils/helpers";
-import { baseURL } from "src/main";
-import categoryProductMutation from "src/hooks/mutation/categoryProduct";
+import { successToast } from "@/utils/toast";
+import BaseInput from "@/components/BaseInputs";
+import MainInput from "@/components/BaseInputs/MainInput";
+import MainTextArea from "@/components/BaseInputs/MainTextArea";
+import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
+import { imageConverter } from "@/utils/helpers";
+import { baseURL } from "@/main";
+import categoryProductMutation from "@/hooks/mutation/categoryProduct";
 
 const EditAddCategoryProduct = () => {
   const { id: category_id, product_id } = useParams();

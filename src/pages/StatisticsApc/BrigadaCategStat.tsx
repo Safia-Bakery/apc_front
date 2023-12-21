@@ -1,9 +1,9 @@
-import { Departments, Order, Sphere } from "src/utils/types";
-import useStatsBrigadaCateg from "src/hooks/useStatsBrigadaCateg";
-import useQueryString from "src/hooks/custom/useQueryString";
+import { Departments, Order, Sphere } from "@/utils/types";
+import useStatsBrigadaCateg from "@/hooks/useStatsBrigadaCateg";
+import useQueryString from "custom/useQueryString";
 import { FC, useEffect, useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
-import EmptyList from "src/components/EmptyList";
+import EmptyList from "@/components/EmptyList";
 
 const column = [
   { name: "№", key: "id" as keyof Order["id"] },

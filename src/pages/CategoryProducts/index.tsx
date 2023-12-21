@@ -2,18 +2,18 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
-import useCatProducts from "src/hooks/useCatProducts";
-import Card from "src/components/Card";
-import Header from "src/components/Header";
-import { MainPermissions } from "src/utils/types";
-import { handleIdx } from "src/utils/helpers";
-import TableHead from "src/components/TableHead";
-import TableViewBtn from "src/components/TableViewBtn";
-import useQueryString from "src/hooks/custom/useQueryString";
-import { useAppSelector } from "src/store/utils/types";
-import { permissionSelector } from "src/store/reducers/sidebar";
-import { CategoryProducts as CategoryProductsTypes } from "src/utils/types";
-import EmptyList from "src/components/EmptyList";
+import useCatProducts from "@/hooks/useCatProducts";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
+import { MainPermissions } from "@/utils/types";
+import { handleIdx } from "@/utils/helpers";
+import TableHead from "@/components/TableHead";
+import TableViewBtn from "@/components/TableViewBtn";
+import useQueryString from "custom/useQueryString";
+import { useAppSelector } from "@/store/utils/types";
+import { permissionSelector } from "reducers/sidebar";
+import { CategoryProducts as CategoryProductsTypes } from "@/utils/types";
+import EmptyList from "@/components/EmptyList";
 
 const column = [
   { name: "№", key: "" },

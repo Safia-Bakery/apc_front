@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import apiClient from "src/main";
-import { permissionSelector } from "src/store/reducers/sidebar";
-import { useAppSelector } from "src/store/utils/types";
-import { MarketingDepartmentTypes, MainPermissions } from "src/utils/types";
+import apiClient from "@/main";
+import { permissionSelector } from "reducers/sidebar";
+import { useAppSelector } from "@/store/utils/types";
+import { MarketingDepartmentTypes, MainPermissions } from "@/utils/types";
 
 interface BodyTypes {
   enabled?: boolean;

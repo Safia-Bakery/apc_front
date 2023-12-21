@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { errorToast } from "src/utils/toast";
-import { Departments } from "src/utils/types";
+import apiClient from "@/main";
+import { errorToast } from "@/utils/toast";
+import { Departments } from "@/utils/types";
 
 interface BodyType {
   id?: number;

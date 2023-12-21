@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { UserTypes } from "src/utils/types";
+import apiClient from "@/main";
+import { UserTypes } from "@/utils/types";
 
 export const useUser = ({
   id,

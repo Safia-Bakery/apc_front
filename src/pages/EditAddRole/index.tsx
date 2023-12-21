@@ -1,14 +1,14 @@
-import Card from "src/components/Card";
-import Header from "src/components/Header";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import roleMutation from "src/hooks/mutation/roleMutation";
-import { successToast } from "src/utils/toast";
-import useRoles from "src/hooks/useRoles";
-import useRolePermission from "src/hooks/useRolePermission";
-import BaseInputs from "src/components/BaseInputs";
-import MainInput from "src/components/BaseInputs/MainInput";
+import roleMutation from "@/hooks/mutation/roleMutation";
+import { successToast } from "@/utils/toast";
+import useRoles from "@/hooks/useRoles";
+import useRolePermission from "@/hooks/useRolePermission";
+import BaseInputs from "@/components/BaseInputs";
+import MainInput from "@/components/BaseInputs/MainInput";
 
 const EditAddRole = () => {
   const { id } = useParams();

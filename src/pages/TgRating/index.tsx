@@ -2,16 +2,16 @@ import cl from "classnames";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import BaseInput from "src/components/BaseInputs";
-import MainInput from "src/components/BaseInputs/MainInput";
-import Header from "src/components/Header";
-import RateStars from "src/components/RatingStars";
-import useQueryString from "src/hooks/custom/useQueryString";
-import commentMutation from "src/hooks/mutation/comment";
-import { handleDepartment } from "src/utils/helpers";
-import { TelegramApp } from "src/utils/tgHelpers";
-import { errorToast } from "src/utils/toast";
-import { Departments } from "src/utils/types";
+import BaseInput from "@/components/BaseInputs";
+import MainInput from "@/components/BaseInputs/MainInput";
+import Header from "@/components/Header";
+import RateStars from "@/components/RatingStars";
+import useQueryString from "custom/useQueryString";
+import commentMutation from "@/hooks/mutation/comment";
+import { handleDepartment } from "@/utils/helpers";
+import { TelegramApp } from "@/utils/tgHelpers";
+import { errorToast } from "@/utils/toast";
+import { Departments } from "@/utils/types";
 
 const TgRating = () => {
   const { id } = useParams();

@@ -1,20 +1,20 @@
 import { useNavigate, useParams } from "react-router-dom";
-import Card from "src/components/Card";
-import Header from "src/components/Header";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import userMutation from "src/hooks/mutation/userMutation";
-import { successToast } from "src/utils/toast";
-import useUsers from "src/hooks/useUsers";
-import useUser from "src/hooks/useUser";
+import userMutation from "@/hooks/mutation/userMutation";
+import { successToast } from "@/utils/toast";
+import useUsers from "@/hooks/useUsers";
+import useUser from "@/hooks/useUser";
 import InputMask from "react-input-mask";
-import BaseInput from "src/components/BaseInputs";
-import MainSelect from "src/components/BaseInputs/MainSelect";
-import MainInput from "src/components/BaseInputs/MainInput";
-import BaseInputs from "src/components/BaseInputs";
-import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
-import MainRadioBtns from "src/components/BaseInputs/MainRadioBtns";
-import { Sphere } from "src/utils/types";
+import BaseInput from "@/components/BaseInputs";
+import MainSelect from "@/components/BaseInputs/MainSelect";
+import MainInput from "@/components/BaseInputs/MainInput";
+import BaseInputs from "@/components/BaseInputs";
+import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
+import MainRadioBtns from "@/components/BaseInputs/MainRadioBtns";
+import { Sphere } from "@/utils/types";
 
 const EditClient = () => {
   const { id } = useParams();

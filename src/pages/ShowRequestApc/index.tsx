@@ -1,19 +1,19 @@
 import { FC, useEffect, useMemo, useRef } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import AddItems from "src/components/AddProduct";
-import Card from "src/components/Card";
-import Header from "src/components/Header";
-import useOrder from "src/hooks/useOrder";
+import AddItems from "@/components/AddProduct";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
+import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
-import { useAppDispatch, useAppSelector } from "src/store/utils/types";
-import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
-import { successToast } from "src/utils/toast";
-import { baseURL } from "src/main";
+import { useAppDispatch, useAppSelector } from "@/store/utils/types";
+import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
+import { successToast } from "@/utils/toast";
+import { baseURL } from "@/main";
 import {
   detectFileType,
   handleDepartment,
   handleStatus,
-} from "src/utils/helpers";
+} from "@/utils/helpers";
 import { useForm } from "react-hook-form";
 import {
   Departments,
@@ -21,22 +21,19 @@ import {
   MainPermissions,
   ModalTypes,
   RequestStatus,
-} from "src/utils/types";
-import UploadComponent, { FileItem } from "src/components/FileUpload";
-import ShowRequestModals from "src/components/ShowRequestModals";
-import { reportImgSelector, uploadReport } from "src/store/reducers/selects";
-import useQueryString from "src/hooks/custom/useQueryString";
-import {
-  useNavigateParams,
-  useRemoveParams,
-} from "src/hooks/custom/useCustomNavigate";
-import uploadFileMutation from "src/hooks/mutation/uploadFile";
-import { loginHandler } from "src/store/reducers/auth";
-import useBrigadas from "src/hooks/useBrigadas";
-import syncExpenditure from "src/hooks/mutation/syncExpenditure";
-import Loading from "src/components/Loader";
+} from "@/utils/types";
+import UploadComponent, { FileItem } from "@/components/FileUpload";
+import ShowRequestModals from "@/components/ShowRequestModals";
+import { reportImgSelector, uploadReport } from "reducers/selects";
+import useQueryString from "custom/useQueryString";
+import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
+import uploadFileMutation from "@/hooks/mutation/uploadFile";
+import { loginHandler } from "reducers/auth";
+import useBrigadas from "@/hooks/useBrigadas";
+import syncExpenditure from "@/hooks/mutation/syncExpenditure";
+import Loading from "@/components/Loader";
 import cl from "classnames";
-import { permissionSelector } from "src/store/reducers/sidebar";
+import { permissionSelector } from "reducers/sidebar";
 
 interface Props {
   edit: MainPermissions;

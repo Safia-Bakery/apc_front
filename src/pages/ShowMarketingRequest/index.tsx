@@ -1,35 +1,32 @@
 import { useEffect, useMemo } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import Card from "src/components/Card";
-import Header from "src/components/Header";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
 
-import useOrder from "src/hooks/useOrder";
+import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
-import { useAppSelector } from "src/store/utils/types";
-import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
-import { successToast } from "src/utils/toast";
-import { baseURL } from "src/main";
+import { useAppSelector } from "@/store/utils/types";
+import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
+import { successToast } from "@/utils/toast";
+import { baseURL } from "@/main";
 import {
   detectFileType,
   handleDepartment,
   handleStatus,
-} from "src/utils/helpers";
+} from "@/utils/helpers";
 import {
   Departments,
   FileType,
   MainPermissions,
   ModalTypes,
   RequestStatus,
-} from "src/utils/types";
+} from "@/utils/types";
 import { useForm } from "react-hook-form";
-import ShowRequestModals from "src/components/ShowRequestModals";
+import ShowRequestModals from "@/components/ShowRequestModals";
 
-import {
-  useNavigateParams,
-  useRemoveParams,
-} from "src/hooks/custom/useCustomNavigate";
-import { permissionSelector } from "src/store/reducers/sidebar";
-import useQueryString from "src/hooks/custom/useQueryString";
+import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
+import { permissionSelector } from "reducers/sidebar";
+import useQueryString from "custom/useQueryString";
 import cl from "classnames";
 
 const ShowMarketingRequest = () => {

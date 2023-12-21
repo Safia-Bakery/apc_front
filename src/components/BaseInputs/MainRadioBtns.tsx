@@ -2,7 +2,7 @@ import cl from "classnames";
 import styles from "./index.module.scss";
 import { FC } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
-import { StatusName } from "src/utils/helpers";
+import { StatusName } from "@/utils/helpers";
 
 interface Props {
   onChange?: (val: boolean) => void;

@@ -1,11 +1,11 @@
 import { useMemo, useRef } from "react";
-import TableHead from "src/components/TableHead";
+import TableHead from "@/components/TableHead";
 import Chart from "react-apexcharts";
-import useQueryString from "src/hooks/custom/useQueryString";
+import useQueryString from "custom/useQueryString";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
-import useUpdateEffect from "src/hooks/useUpdateEffect";
-import useMarketingStatCat from "src/hooks/useMarketingStatCat";
-import EmptyList from "src/components/EmptyList";
+import useUpdateEffect from "@/hooks/useUpdateEffect";
+import useMarketingStatCat from "@/hooks/useMarketingStatCat";
+import EmptyList from "@/components/EmptyList";
 
 const optionsBar = {
   options: {

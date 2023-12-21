@@ -1,19 +1,19 @@
 import { useNavigate, useParams } from "react-router-dom";
-import Card from "src/components/Card";
-import Header from "src/components/Header";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import { successToast } from "src/utils/toast";
-import useBrigadas from "src/hooks/useBrigadas";
-import useBrigada from "src/hooks/useBrigada";
-import brigadaMutation from "src/hooks/mutation/brigadaMutation";
-import useUsersForBrigada from "src/hooks/useUsersForBrigada";
-import BaseInputs from "src/components/BaseInputs";
-import MainSelect from "src/components/BaseInputs/MainSelect";
-import MainTextArea from "src/components/BaseInputs/MainTextArea";
-import MainInput from "src/components/BaseInputs/MainInput";
-import MainCheckBox from "src/components/BaseInputs/MainCheckBox";
-import useQueryString from "src/hooks/custom/useQueryString";
+import { successToast } from "@/utils/toast";
+import useBrigadas from "@/hooks/useBrigadas";
+import useBrigada from "@/hooks/useBrigada";
+import brigadaMutation from "@/hooks/mutation/brigadaMutation";
+import useUsersForBrigada from "@/hooks/useUsersForBrigada";
+import BaseInputs from "@/components/BaseInputs";
+import MainSelect from "@/components/BaseInputs/MainSelect";
+import MainTextArea from "@/components/BaseInputs/MainTextArea";
+import MainInput from "@/components/BaseInputs/MainInput";
+import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
+import useQueryString from "custom/useQueryString";
 
 const CreateBrigades = () => {
   const { id } = useParams();

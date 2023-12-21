@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from "react";
-import { useAppDispatch, useAppSelector } from "src/store/utils/types";
-import { logoutHandler, tokenSelector } from "src/store/reducers/auth";
+import { useAppDispatch, useAppSelector } from "@/store/utils/types";
+import { logoutHandler, tokenSelector } from "reducers/auth";
 import { Outlet, useNavigate } from "react-router-dom";
-import useToken from "src/hooks/useToken";
+import useToken from "@/hooks/useToken";
 import Loading from "../Loader";
 import CustomSidebar from "../Sidebar";
 import BreadCrump from "../BreadCrump";
@@ -11,9 +11,9 @@ import {
   permissionSelector,
   sidebarItemsHandler,
   sidebatItemsSelector,
-} from "src/store/reducers/sidebar";
-import useUpdateEffect from "src/hooks/useUpdateEffect";
-import useOrderCounts from "src/hooks/useOrderCounts";
+} from "reducers/sidebar";
+import useUpdateEffect from "@/hooks/useUpdateEffect";
+import useOrderCounts from "@/hooks/useOrderCounts";
 
 const normalizeURL = (path: string) =>
   path.replace(/\/+/g, "/").replace(/\/$/, "");

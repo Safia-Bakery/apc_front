@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { OrderType, RequestFilter } from "src/utils/types";
+import apiClient from "@/main";
+import { OrderType, RequestFilter } from "@/utils/types";
 
 interface Body {
   enabled?: boolean;

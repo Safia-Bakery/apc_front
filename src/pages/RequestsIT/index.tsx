@@ -2,18 +2,18 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
-import { Departments, Order } from "src/utils/types";
-import Pagination from "src/components/Pagination";
-import useOrders from "src/hooks/useOrders";
-import Card from "src/components/Card";
-import Header from "src/components/Header";
-import { handleIdx, handleStatus, requestRows } from "src/utils/helpers";
-import TableHead from "src/components/TableHead";
+import { Departments, Order } from "@/utils/types";
+import Pagination from "@/components/Pagination";
+import useOrders from "@/hooks/useOrders";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
+import { handleIdx, handleStatus, requestRows } from "@/utils/helpers";
+import TableHead from "@/components/TableHead";
 import ITFilter from "./filter";
-import ItemsCount from "src/components/ItemsCount";
-import useQueryString from "src/hooks/custom/useQueryString";
-import TableLoading from "src/components/TableLoading";
-import EmptyList from "src/components/EmptyList";
+import ItemsCount from "@/components/ItemsCount";
+import useQueryString from "custom/useQueryString";
+import TableLoading from "@/components/TableLoading";
+import EmptyList from "@/components/EmptyList";
 
 const column = [
   { name: "№", key: "" },

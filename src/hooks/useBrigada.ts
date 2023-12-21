@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { BrigadaType } from "src/utils/types";
+import apiClient from "@/main";
+import { BrigadaType } from "@/utils/types";
 
 export const useBrigada = ({
   id,

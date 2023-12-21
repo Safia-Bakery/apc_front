@@ -6,27 +6,27 @@ import {
   MarketingSubDepRu,
   ModalTypes,
   RequestStatus,
-} from "src/utils/types";
+} from "@/utils/types";
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import styles from "./index.module.scss";
 import Header from "../Header";
 import BaseInput from "../BaseInputs";
 import MainTextArea from "../BaseInputs/MainTextArea";
-import { CancelReason, detectFileType } from "src/utils/helpers";
+import { CancelReason, detectFileType } from "@/utils/helpers";
 import MainSelect from "../BaseInputs/MainSelect";
-import { errorToast, successToast } from "src/utils/toast";
-import useOrder from "src/hooks/useOrder";
-import attachBrigadaMutation from "src/hooks/mutation/attachBrigadaMutation";
+import { errorToast, successToast } from "@/utils/toast";
+import useOrder from "@/hooks/useOrder";
+import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import cl from "classnames";
-import useQueryString from "src/hooks/custom/useQueryString";
-import { useRemoveParams } from "src/hooks/custom/useCustomNavigate";
-import useBrigadas from "src/hooks/useBrigadas";
+import useQueryString from "custom/useQueryString";
+import { useRemoveParams } from "custom/useCustomNavigate";
+import useBrigadas from "@/hooks/useBrigadas";
 import Loading from "../Loader";
 import MainDatePicker from "../BaseInputs/MainDatePicker";
 import dayjs from "dayjs";
-import marketingReassignMutation from "src/hooks/mutation/marketingReassign";
-import useCategories from "src/hooks/useCategories";
+import marketingReassignMutation from "@/hooks/mutation/marketingReassign";
+import useCategories from "@/hooks/useCategories";
 
 const ShowRequestModals = () => {
   const { id } = useParams();

@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import useQueryString from "src/hooks/custom/useQueryString";
-import { loginHandler } from "src/store/reducers/auth";
-import { useAppDispatch } from "src/store/utils/types";
-import { TelegramApp } from "src/utils/tgHelpers";
+import useQueryString from "custom/useQueryString";
+import { loginHandler } from "reducers/auth";
+import { useAppDispatch } from "@/store/utils/types";
+import { TelegramApp } from "@/utils/tgHelpers";
 
 const TgRoutes = () => {
   const tokenKey = useQueryString("key");

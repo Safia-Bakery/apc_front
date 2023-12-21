@@ -5,22 +5,19 @@ import BaseInput from "../BaseInputs";
 import MainTextArea from "../BaseInputs/MainTextArea";
 import { useForm } from "react-hook-form";
 import MainInput from "../BaseInputs/MainInput";
-import useTools from "src/hooks/useTools";
+import useTools from "@/hooks/useTools";
 import ToolsSelect from "../ToolsSelect";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import usedItemsMutation from "src/hooks/mutation/usedItems";
-import { successToast } from "src/utils/toast";
-import useOrder from "src/hooks/useOrder";
-import useQueryString from "src/hooks/custom/useQueryString";
-import {
-  useNavigateParams,
-  useRemoveParams,
-} from "src/hooks/custom/useCustomNavigate";
-import { permissionSelector } from "src/store/reducers/sidebar";
-import { useAppSelector } from "src/store/utils/types";
-import { MainPermissions } from "src/utils/types";
-import useSyncExpanditure from "src/hooks/sync/useSyncExpanditure";
+import usedItemsMutation from "@/hooks/mutation/usedItems";
+import { successToast } from "@/utils/toast";
+import useOrder from "@/hooks/useOrder";
+import useQueryString from "custom/useQueryString";
+import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
+import { permissionSelector } from "reducers/sidebar";
+import { useAppSelector } from "@/store/utils/types";
+import { MainPermissions } from "@/utils/types";
+import useSyncExpanditure from "@/hooks/sync/useSyncExpanditure";
 
 const AddProductModal = () => {
   const { id } = useParams();

@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { MainPermissions } from "src/utils/types";
-import { useAppDispatch, useAppSelector } from "src/store/utils/types";
-import { sidebarHandler, toggleSidebar } from "src/store/reducers/selects";
-import { logoutHandler } from "src/store/reducers/auth";
-import useToken from "src/hooks/useToken";
-import { sidebatItemsSelector } from "src/store/reducers/sidebar";
+import { MainPermissions } from "@/utils/types";
+import { useAppDispatch, useAppSelector } from "@/store/utils/types";
+import { sidebarHandler, toggleSidebar } from "reducers/selects";
+import { logoutHandler } from "reducers/auth";
+import useToken from "@/hooks/useToken";
+import { sidebatItemsSelector } from "reducers/sidebar";
 import cl from "classnames";
-import { isMobile } from "src/utils/helpers";
+import { isMobile } from "@/utils/helpers";
 import styles from "./index.module.scss";
 import CountItem from "./CountItem";
 

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { RolePermissions } from "src/utils/types";
+import apiClient from "@/main";
+import { RolePermissions } from "@/utils/types";
 
 export const useRolePermission = ({
   id,

@@ -1,25 +1,25 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Departments, MainPermissions, Order } from "src/utils/types";
-import Pagination from "src/components/Pagination";
+import { Departments, MainPermissions, Order } from "@/utils/types";
+import Pagination from "@/components/Pagination";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import useOrders from "src/hooks/useOrders";
-import Card from "src/components/Card";
-import Header from "src/components/Header";
+import useOrders from "@/hooks/useOrders";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
 import {
   handleIdx,
   handleStatus,
   itemsPerPage,
   requestRows,
-} from "src/utils/helpers";
-import TableHead from "src/components/TableHead";
+} from "@/utils/helpers";
+import TableHead from "@/components/TableHead";
 import MarketingFilter from "./filter";
-import ItemsCount from "src/components/ItemsCount";
-import { useAppSelector } from "src/store/utils/types";
-import { permissionSelector } from "src/store/reducers/sidebar";
-import useQueryString from "src/hooks/custom/useQueryString";
-import TableLoading from "src/components/TableLoading";
-import EmptyList from "src/components/EmptyList";
+import ItemsCount from "@/components/ItemsCount";
+import { useAppSelector } from "@/store/utils/types";
+import { permissionSelector } from "reducers/sidebar";
+import useQueryString from "custom/useQueryString";
+import TableLoading from "@/components/TableLoading";
+import EmptyList from "@/components/EmptyList";
 
 const column = [
   { name: "№", key: "" },

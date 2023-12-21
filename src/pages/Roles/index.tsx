@@ -1,16 +1,16 @@
-import Card from "src/components/Card";
-import Header from "src/components/Header";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
 import { Link, useNavigate } from "react-router-dom";
-import { MainPermissions, RoleTypes } from "src/utils/types";
+import { MainPermissions, RoleTypes } from "@/utils/types";
 
-import Loading from "src/components/Loader";
+import Loading from "@/components/Loader";
 import { useState } from "react";
-import TableHead from "src/components/TableHead";
-import TableViewBtn from "src/components/TableViewBtn";
-import useRoles from "src/hooks/useRoles";
-import { useAppSelector } from "src/store/utils/types";
-import { permissionSelector } from "src/store/reducers/sidebar";
-import EmptyList from "src/components/EmptyList";
+import TableHead from "@/components/TableHead";
+import TableViewBtn from "@/components/TableViewBtn";
+import useRoles from "@/hooks/useRoles";
+import { useAppSelector } from "@/store/utils/types";
+import { permissionSelector } from "reducers/sidebar";
+import EmptyList from "@/components/EmptyList";
 
 const column = [
   { name: "№", key: "" },

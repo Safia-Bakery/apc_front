@@ -1,21 +1,21 @@
-import Card from "src/components/Card";
-import Header from "src/components/Header";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
 import { useNavigate } from "react-router-dom";
-import Pagination from "src/components/Pagination";
+import Pagination from "@/components/Pagination";
 import { useMemo, useState } from "react";
-import { BranchType, MainPermissions } from "src/utils/types";
-import { handleIdx, itemsPerPage } from "src/utils/helpers";
-import TableHead from "src/components/TableHead";
-import TableViewBtn from "src/components/TableViewBtn";
-import useBranches from "src/hooks/useBranches";
+import { BranchType, MainPermissions } from "@/utils/types";
+import { handleIdx, itemsPerPage } from "@/utils/helpers";
+import TableHead from "@/components/TableHead";
+import TableViewBtn from "@/components/TableViewBtn";
+import useBranches from "@/hooks/useBranches";
 import BranchesFilter from "./filter";
-import ItemsCount from "src/components/ItemsCount";
-import useBranchSync from "src/hooks/sync/useBranchSync";
-import { useAppSelector } from "src/store/utils/types";
-import { permissionSelector } from "src/store/reducers/sidebar";
-import useQueryString from "src/hooks/custom/useQueryString";
-import TableLoading from "src/components/TableLoading";
-import EmptyList from "src/components/EmptyList";
+import ItemsCount from "@/components/ItemsCount";
+import useBranchSync from "@/hooks/sync/useBranchSync";
+import { useAppSelector } from "@/store/utils/types";
+import { permissionSelector } from "reducers/sidebar";
+import useQueryString from "custom/useQueryString";
+import TableLoading from "@/components/TableLoading";
+import EmptyList from "@/components/EmptyList";
 
 const column = [
   { name: "№", key: "id" },

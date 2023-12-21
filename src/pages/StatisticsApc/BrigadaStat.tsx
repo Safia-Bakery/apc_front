@@ -1,11 +1,11 @@
 import { FC, useEffect, useMemo, useRef, useState } from "react";
-import { DepartmentStatTypes, Departments, Sphere } from "src/utils/types";
-import TableHead from "src/components/TableHead";
+import { DepartmentStatTypes, Departments, Sphere } from "@/utils/types";
+import TableHead from "@/components/TableHead";
 import Chart from "react-apexcharts";
-import useStatsBrigada from "src/hooks/useStatsBrigada";
-import useQueryString from "src/hooks/custom/useQueryString";
+import useStatsBrigada from "@/hooks/useStatsBrigada";
+import useQueryString from "custom/useQueryString";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
-import EmptyList from "src/components/EmptyList";
+import EmptyList from "@/components/EmptyList";
 
 interface Props {
   sphere_status: Sphere;

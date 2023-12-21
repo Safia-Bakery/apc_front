@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "src/main";
-import { BotWorkTimeType } from "src/utils/types";
+import apiClient from "@/main";
+import { BotWorkTimeType } from "@/utils/types";
 
 export const useBotWorkTime = ({ enabled = true }: { enabled?: boolean }) => {
   return useQuery({

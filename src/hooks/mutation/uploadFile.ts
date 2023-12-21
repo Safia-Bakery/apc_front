@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { FileItem } from "src/components/FileUpload";
-import apiClient from "src/main";
+import { FileItem } from "@/components/FileUpload";
+import apiClient from "@/main";
 
 interface RegisterTypes {
   request_id: number;

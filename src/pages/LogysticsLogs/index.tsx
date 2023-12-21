@@ -1,10 +1,10 @@
-import Card from "src/components/Card";
-import Header from "src/components/Header";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
-import useOrder from "src/hooks/useOrder";
+import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
-import { RequestStatus } from "src/utils/types";
-import Loading from "src/components/Loader";
+import { RequestStatus } from "@/utils/types";
+import Loading from "@/components/Loader";
 
 const column = [
   { name: "№" },

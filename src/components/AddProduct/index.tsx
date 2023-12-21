@@ -5,16 +5,16 @@ import Header from "../Header";
 import { useParams } from "react-router-dom";
 
 import AddProductModal from "../AddProductModal";
-import useOrder from "src/hooks/useOrder";
-import syncExpenditure from "src/hooks/mutation/syncExpenditure";
-import { successToast } from "src/utils/toast";
-import { useNavigateParams } from "src/hooks/custom/useCustomNavigate";
-import deleteExpenditureMutation from "src/hooks/mutation/deleteExpenditure";
+import useOrder from "@/hooks/useOrder";
+import syncExpenditure from "@/hooks/mutation/syncExpenditure";
+import { successToast } from "@/utils/toast";
+import { useNavigateParams } from "custom/useCustomNavigate";
+import deleteExpenditureMutation from "@/hooks/mutation/deleteExpenditure";
 import dayjs from "dayjs";
-import { MainPermissions } from "src/utils/types";
-import { useAppSelector } from "src/store/utils/types";
-import { permissionSelector } from "src/store/reducers/sidebar";
-import useQueryString from "src/hooks/custom/useQueryString";
+import { MainPermissions } from "@/utils/types";
+import { useAppSelector } from "@/store/utils/types";
+import { permissionSelector } from "reducers/sidebar";
+import useQueryString from "custom/useQueryString";
 
 const column = [
   { name: "№" },

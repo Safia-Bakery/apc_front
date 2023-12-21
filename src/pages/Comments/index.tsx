@@ -1,16 +1,16 @@
-import Card from "src/components/Card";
-import Header from "src/components/Header";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
 import { Link, useNavigate } from "react-router-dom";
-import Pagination from "src/components/Pagination";
+import Pagination from "@/components/Pagination";
 import { useState } from "react";
-import { handleIdx, itemsPerPage } from "src/utils/helpers";
-import TableHead from "src/components/TableHead";
+import { handleIdx, itemsPerPage } from "@/utils/helpers";
+import TableHead from "@/components/TableHead";
 import dayjs from "dayjs";
-import ItemsCount from "src/components/ItemsCount";
-import useComments from "src/hooks/useComments";
-import useQueryString from "src/hooks/custom/useQueryString";
-import { Comments as CommentsTypes } from "src/utils/types";
-import EmptyList from "src/components/EmptyList";
+import ItemsCount from "@/components/ItemsCount";
+import useComments from "@/hooks/useComments";
+import useQueryString from "custom/useQueryString";
+import { Comments as CommentsTypes } from "@/utils/types";
+import EmptyList from "@/components/EmptyList";
 
 const column = [
   { name: "№", key: "id" },
