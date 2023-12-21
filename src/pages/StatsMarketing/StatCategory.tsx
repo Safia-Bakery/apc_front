@@ -5,6 +5,7 @@ import useQueryString from "src/hooks/custom/useQueryString";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
 import useMarketingStatCat from "src/hooks/useMarketingStatCat";
+import EmptyList from "src/components/EmptyList";
 
 const optionsBar = {
   options: {
@@ -181,9 +182,7 @@ const StatCategory = () => {
       {renderPie}
       {renderBar}
       {data?.tables && !Object.values(data?.tables).length && !isLoading && (
-        <div className="w-full">
-          <p className="text-center w-full">Спосок пуст</p>
-        </div>
+        <EmptyList />
       )}
       <button id={"department_stat"} className="hidden" onClick={downloadAsPdf}>
         download

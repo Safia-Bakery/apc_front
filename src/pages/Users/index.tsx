@@ -14,6 +14,7 @@ import { useAppSelector } from "src/store/utils/types";
 import { permissionSelector } from "src/store/reducers/sidebar";
 import useQueryString from "src/hooks/custom/useQueryString";
 import TableLoading from "src/components/TableLoading";
+import EmptyList from "src/components/EmptyList";
 
 const column = [
   { name: "№", key: "" },
@@ -126,11 +127,7 @@ const Users: FC<Props> = ({ add, edit }) => {
           </tbody>
         </table>
         {!!users && <Pagination totalPages={users.pages} />}
-        {!users?.items?.length && !orderLoading && (
-          <div className="w-full">
-            <p className="text-center w-full">Спосок пуст</p>
-          </div>
-        )}
+        {!users?.items?.length && !orderLoading && <EmptyList />}
       </div>
     </Card>
   );

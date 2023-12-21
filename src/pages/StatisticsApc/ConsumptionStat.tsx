@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import { Departments, Sphere } from "src/utils/types";
 import useQueryString from "src/hooks/custom/useQueryString";
+import EmptyList from "src/components/EmptyList";
 
 const column = [
   { name: "№", key: "" },
@@ -75,11 +76,7 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
         </tbody>
       </table>
 
-      {!data?.tests?.length && !isLoading && (
-        <div className="w-full">
-          <p className="text-center w-full ">Спосок пуст</p>
-        </div>
-      )}
+      {!data?.tests?.length && !isLoading && <EmptyList />}
       <button
         id={"consumption_stat"}
         className="hidden"

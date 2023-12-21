@@ -1,9 +1,10 @@
+import { FC, useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import { useNavigate, useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import useCategory from "src/hooks/useCategory";
-import { FC, useEffect, useMemo } from "react";
 import categoryMutation from "src/hooks/mutation/categoryMutation";
 import useCategories from "src/hooks/useCategories";
 import { errorToast, successToast } from "src/utils/toast";
@@ -21,16 +22,17 @@ interface Props {
   dep?: Departments;
 }
 
-const ShowCategory: FC<Props> = ({ sphere_status, dep }) => {
-  const { id } = useParams();
+const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
+  const { id, sphere } = useParams();
   const navigate = useNavigate();
 
   const goBack = () => navigate(-1);
   const { refetch: categoryRefetch } = useCategories({
     enabled: false,
-    page: 1,
     department: dep,
-    ...(sphere_status && { sphere_status }),
+    ...((sphere_status || !!sphere) && {
+      sphere_status: Number(sphere) || sphere_status,
+    }),
   });
 
   const {
@@ -50,7 +52,8 @@ const ShowCategory: FC<Props> = ({ sphere_status, dep }) => {
   } = useForm();
 
   const onSubmit = () => {
-    const { name, description, urgent, status, sub_id, files } = getValues();
+    const { name, description, urgent, status, sub_id, files, time } =
+      getValues();
     mutate(
       {
         name,
@@ -58,7 +61,8 @@ const ShowCategory: FC<Props> = ({ sphere_status, dep }) => {
         status: +!!status,
         urgent: +!!urgent,
         department: dep,
-        sphere_status: sphere_status || Sphere.retail,
+        sphere_status: Number(sphere) || sphere_status || Sphere.retail,
+        ...(!!time && { ftime: +time }),
         ...(id && { id: +id }),
         ...(!!files?.length && { file: files[0] }),
         ...(!!sub_id && { sub_id: +sub_id }),
@@ -67,11 +71,7 @@ const ShowCategory: FC<Props> = ({ sphere_status, dep }) => {
         onSuccess: () => {
           categoryRefetch();
           successToast(!!id ? "successfully updated" : "successfully created");
-          navigate(
-            `/categories-${Departments[Number(dep)]}${
-              !!sphere_status ? `-${Sphere[sphere_status]}` : ""
-            }`
-          );
+          navigate(-1);
           if (id) refetch();
         },
         onError: (e: any) => errorToast(e.message),
@@ -87,6 +87,7 @@ const ShowCategory: FC<Props> = ({ sphere_status, dep }) => {
         urgent: category.urgent,
         status: !!category.status,
         sub_id: Number(category?.sub_id),
+        time: category.ftime,
       });
     }
   }, [category, reset]);
@@ -111,6 +112,7 @@ const ShowCategory: FC<Props> = ({ sphere_status, dep }) => {
           width={150}
         />
       );
+    if (Number(dep) !== Departments.marketing) return;
   }, [watch("files"), category?.file, id]);
 
   if (isLoading && !!id) return;
@@ -137,6 +139,15 @@ const ShowCategory: FC<Props> = ({ sphere_status, dep }) => {
             register={register("name", { required: "Обязательное поле" })}
           />
         </BaseInput>
+
+        {Number(dep) === Departments.it && (
+          <BaseInput label="Время исполнении (в часах)" error={errors.time}>
+            <MainInput
+              register={register("time", { required: "Обязательное поле" })}
+              type="number"
+            />
+          </BaseInput>
+        )}
 
         <BaseInput label="ОПИСАНИЕ">
           <MainTextArea register={register("description")} />
@@ -175,4 +186,4 @@ const ShowCategory: FC<Props> = ({ sphere_status, dep }) => {
   );
 };
 
-export default ShowCategory;
+export default EditAddCategory;

@@ -21,7 +21,7 @@ import MainDatePicker from "src/components/BaseInputs/MainDatePicker";
 import dayjs from "dayjs";
 
 const CreateLogRequests = () => {
-  const [files, $files] = useState<FormData>();
+  const [files, $files] = useState<FileItem[]>();
   const { mutate, isLoading } = requestMutation();
   const branchJson = useQueryString("branch");
   const [start, $start] = useState<Date>();
@@ -49,13 +49,8 @@ const CreateLogRequests = () => {
     });
   }, [branch?.id]);
 
-  const handleFilesSelected = (data: FileItem[]) => {
-    const formData = new FormData();
-    data.forEach((item) => {
-      formData.append("files", item.file, item.file.name);
-    });
-    $files(formData);
-  };
+  const handleFilesSelected = (data: FileItem[]) => $files(data);
+
   const onSubmit = () => {
     const { category_id, description, size } = getValues();
     if (!start) $error("Обязательное поле");

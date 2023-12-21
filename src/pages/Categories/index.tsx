@@ -1,6 +1,7 @@
+import { FC, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import { useNavigate } from "react-router-dom";
 import {
   Category,
   Departments,
@@ -8,7 +9,6 @@ import {
   Sphere,
 } from "src/utils/types";
 import Pagination from "src/components/Pagination";
-import { FC, useState } from "react";
 import { handleDepartment, handleIdx, itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
@@ -18,6 +18,8 @@ import ItemsCount from "src/components/ItemsCount";
 import useQueryString from "src/hooks/custom/useQueryString";
 import { useAppSelector } from "src/store/utils/types";
 import { permissionSelector } from "src/store/reducers/sidebar";
+import EmptyList from "src/components/EmptyList";
+import TableLoading from "src/components/TableLoading";
 
 interface Props {
   sphere_status?: number;
@@ -73,9 +75,9 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
               <CategoriesFilter />
             </TableHead>
 
-            {!!categories?.items?.length && (
-              <tbody>
-                {(sort?.length ? sort : categories?.items)?.map(
+            <tbody>
+              {!!categories?.items?.length &&
+                (sort?.length ? sort : categories?.items)?.map(
                   (category, idx) => (
                     <tr key={idx} className="bg-blue">
                       <td width="40">{handleIdx(idx)}</td>
@@ -108,15 +110,12 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
                     </tr>
                   )
                 )}
-              </tbody>
-            )}
+              {isLoading && <TableLoading />}
+            </tbody>
           </table>
+
           {!!categories && <Pagination totalPages={categories.pages} />}
-          {!categories?.items?.length && !isLoading && (
-            <div className="w-full">
-              <p className="text-center w-full ">Спосок пуст</p>
-            </div>
-          )}
+          {!categories?.items?.length && !isLoading && <EmptyList />}
         </div>
       </div>
     </Card>

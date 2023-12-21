@@ -13,6 +13,7 @@ import useRemainsInStock from "src/hooks/useRemainsInStock";
 import useStockSync from "src/hooks/sync/useStockSync";
 import TableLoading from "src/components/TableLoading";
 import { StockItem } from "src/utils/types";
+import EmptyList from "src/components/EmptyList";
 
 const column = [
   { name: "№", key: "" },
@@ -93,11 +94,7 @@ const RemainsInStock = () => {
           )}
         </table>
         {!!products && <Pagination totalPages={products.pages} />}
-        {!products?.items?.length && !itemsLoading && (
-          <div className="w-full">
-            <p className="text-center w-full">Спосок пуст</p>
-          </div>
-        )}
+        {!products?.items?.length && !itemsLoading && <EmptyList />}
       </div>
     </Card>
   );

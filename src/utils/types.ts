@@ -46,6 +46,18 @@ export interface Order {
   user: UserTypes;
   user_manager: string;
   is_bot: boolean;
+  request_orpr?: {
+    id: number;
+    amount: number;
+    orpr_product: {
+      id: number;
+      category_id: number;
+      name: string;
+      status: number;
+      description: string;
+      image: string;
+    };
+  }[];
   brigada: {
     id: number | string;
     name: string;
@@ -206,6 +218,7 @@ export interface Category {
   urgent: number;
   sub_id?: number;
   file: string;
+  ftime: number;
 }
 
 export interface CategoryTypes extends BasePaginatedRes {
@@ -216,7 +229,7 @@ export interface CategoryProducts {
   id: number;
   category_id: number;
   name: string;
-  status: string;
+  status: number;
   image?: string;
   description?: string;
 }
@@ -386,19 +399,6 @@ export enum MainPermissions {
   get_categ_fab = 57,
   edit_categ_fab = 56,
 
-  get_it_requests = 50,
-  edit_it_requests = 50,
-  add_it_requests = 51,
-  sync_it_req_iiko = 52,
-  it_req_attach_master = 53,
-  add_expen_it = 54,
-  add_categ_it = 55,
-  get_categ_it = 57,
-  edit_categ_it = 56,
-  add_masters_it = 56,
-  edit_master_it = 56,
-  get_master_it = 56,
-
   get_stock_env_requests = 67,
   edit_stock_env_requests = 68,
   add_stock_env_requests = 69,
@@ -420,12 +420,17 @@ export enum MainPermissions {
   edit_staff_requests = 78,
   staff_modal_time = 77,
 
-  it_get_category_product = 1,
-  it_add_category_product = 1,
-  it_edit_category_product = 1,
-  it_add_master = 1,
-  it_edit_master = 1,
-  it_get_masters = 1,
+  it_add_master = 84,
+  it_edit_master = 83,
+  it_get_masters = 85,
+  it_statistics = 81,
+  it_remains_in_stock = 83,
+  get_it_requests = 90,
+  edit_it_requests = 89,
+  add_it_requests = 91,
+  add_categ_it = 87,
+  get_categ_it = 88,
+  edit_categ_it = 86,
 }
 export enum MarketingSubDep {
   designers = 1,
@@ -484,8 +489,10 @@ export enum Departments {
   staff = 6, // zakaz edi
 }
 export enum Sphere {
-  retail = 1,
-  fabric = 2,
+  retail = 1, //for APC department
+  fabric = 2, //for APC department
+  purchase = 3, //for it department
+  fix = 4, //for it department
 }
 export interface CategoryStatTypes {
   success: boolean;
@@ -544,7 +551,7 @@ export const enum ModalTypes {
   reassign,
 }
 
-export interface CoountTypes {
+export interface CountTypes {
   counter: [number[]];
   comment: string;
 }

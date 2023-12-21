@@ -1,8 +1,9 @@
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+
 import { Departments, Order } from "src/utils/types";
 import Pagination from "src/components/Pagination";
-import { useEffect, useState } from "react";
-import dayjs from "dayjs";
 import useOrders from "src/hooks/useOrders";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
@@ -12,6 +13,7 @@ import ITFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import useQueryString from "src/hooks/custom/useQueryString";
 import TableLoading from "src/components/TableLoading";
+import EmptyList from "src/components/EmptyList";
 
 const column = [
   { name: "№", key: "" },
@@ -88,16 +90,18 @@ const RequestsIT = () => {
             <ITFilter />
           </TableHead>
 
-          {!!requests?.items?.length && (
-            <tbody>
-              {(sort?.length ? sort : requests?.items)?.map((order, idx) => (
+          <tbody>
+            {!!requests?.items?.length &&
+              (sort?.length ? sort : requests?.items)?.map((order, idx) => (
                 <tr className={requestRows(order.status)} key={idx}>
                   <td width="40">{handleIdx(idx)}</td>
                   <td width="80">
-                    <Link to={`${order?.id}`}>{order?.id}</Link>
+                    <Link to={`${order?.id}?dep=${Departments.it}`}>
+                      {order?.id}
+                    </Link>
                   </td>
                   <td>
-                    <span className="not-set">{order?.user?.full_name}</span>
+                    <span>{order?.user?.full_name}</span>
                   </td>
                   <td>-------------</td>
                   <td>{order?.fillial?.parentfillial?.name}</td>
@@ -116,16 +120,11 @@ const RequestsIT = () => {
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
                 </tr>
               ))}
-            </tbody>
-          )}
-          {orderLoading && <TableLoading />}
+            {orderLoading && <TableLoading />}
+          </tbody>
         </table>
         {!!requests && <Pagination totalPages={requests.pages} />}
-        {!requests?.items?.length && !orderLoading && (
-          <div className="w-full">
-            <p className="text-center w-full">Спосок пуст</p>
-          </div>
-        )}
+        {!requests?.items?.length && !orderLoading && <EmptyList />}
       </div>
     </Card>
   );

@@ -1,15 +1,14 @@
-import cl from "classnames";
-import { forwardRef, useState } from "react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import cl from "classnames";
 import BaseInputs from "src/components/BaseInputs";
 import MainInput from "src/components/BaseInputs/MainInput";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import TableHead from "src/components/TableHead";
-import { Order } from "src/utils/types";
-import styles from "./index.module.scss";
+
 //test
 interface InventoryFields {
   product: string;
@@ -41,7 +40,7 @@ const column = [
 const AddInventoryRequest = () => {
   const navigate = useNavigate();
 
-  const { control, handleSubmit, register } = useForm<FormData>({
+  const { control, handleSubmit, register, getValues } = useForm<FormData>({
     defaultValues: { inputFields: [initialInventory], main_comment: "" },
   });
 
@@ -129,7 +128,7 @@ const AddInventoryRequest = () => {
         </table>
         <button
           type="button"
-          className={cl("btn btn-primary m-2 btn-fill right-5 relative")}
+          className={cl("btn btn-primary m-2 ")}
           onClick={addInputFields}
         >
           Добавить

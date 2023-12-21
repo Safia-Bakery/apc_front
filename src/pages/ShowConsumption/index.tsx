@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import EmptyList from "src/components/EmptyList";
 import TableHead from "src/components/TableHead";
 import TableLoading from "src/components/TableLoading";
 import useExpenditure from "src/hooks/useExpenditure";
@@ -51,11 +52,7 @@ const ShowConsumption = () => {
         </tbody>
       </table>
 
-      {!data?.items?.length && !isLoading && (
-        <div className="w-full">
-          <p className="text-center w-full ">Спосок пуст</p>
-        </div>
-      )}
+      {!data?.items?.length && !isLoading && <EmptyList />}
     </>
   );
 };

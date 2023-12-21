@@ -345,8 +345,14 @@ export const routes: SidebarType[] = [
         param: `?dep=${Departments.it}&add=${MainPermissions.it_add_master}&edit=${MainPermissions.it_edit_master}`,
       },
       {
-        name: "Категории",
-        url: `/categories-it`,
+        name: "Категории(Закуп)",
+        url: `/categories-it/${Sphere.purchase}`,
+        icon: "/assets/icons/categories.svg",
+        screen: MainPermissions.get_categ_fab,
+      },
+      {
+        name: "Категории(Поддержка)",
+        url: `/categories-it/${Sphere.fix}`,
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_categ_fab,
       },

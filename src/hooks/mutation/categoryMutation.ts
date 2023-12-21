@@ -11,6 +11,7 @@ interface Body {
   department?: Departments;
   sphere_status?: Sphere;
   files?: any;
+  ftime?: number;
 }
 
 const categoryMutation = () => {

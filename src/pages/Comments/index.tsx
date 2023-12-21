@@ -10,6 +10,7 @@ import ItemsCount from "src/components/ItemsCount";
 import useComments from "src/hooks/useComments";
 import useQueryString from "src/hooks/custom/useQueryString";
 import { Comments as CommentsTypes } from "src/utils/types";
+import EmptyList from "src/components/EmptyList";
 
 const column = [
   { name: "№", key: "id" },
@@ -68,11 +69,7 @@ const Comments = () => {
             )}
           </table>
           {!!comments && <Pagination totalPages={comments.pages} />}
-          {!comments?.items?.length && !isLoading && (
-            <div className="w-full">
-              <p className="text-center w-full ">Спосок пуст</p>
-            </div>
-          )}
+          {!comments?.items?.length && !isLoading && <EmptyList />}
         </div>
       </div>
     </Card>

@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useRef } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import AddProduct from "src/components/AddProduct";
+import AddItems from "src/components/AddProduct";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import useOrder from "src/hooks/useOrder";
@@ -37,6 +37,7 @@ import syncExpenditure from "src/hooks/mutation/syncExpenditure";
 import Loading from "src/components/Loader";
 import cl from "classnames";
 import { permissionSelector } from "src/store/reducers/sidebar";
+import AddedProductsIT from "src/components/AddedProductsIT";
 
 interface Props {
   edit: MainPermissions;
@@ -470,11 +471,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
 
       {renderfileUploader}
 
-      {!isNew && order?.status !== RequestStatus.rejected && (
-        <AddProduct>
-          <div className="p-2">{renderSubmit}</div>
-        </AddProduct>
-      )}
+      {!!order?.request_orpr?.length && <AddedProductsIT />}
       <ShowRequestModals />
     </>
   );

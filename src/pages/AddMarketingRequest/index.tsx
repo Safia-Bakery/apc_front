@@ -20,7 +20,7 @@ import { useAppSelector } from "src/store/utils/types";
 import { permissionSelector } from "src/store/reducers/sidebar";
 
 const AddMarketingRequest = () => {
-  const [files, $files] = useState<FormData>();
+  const [files, $files] = useState<FileItem[]>();
   const { mutate } = requestMutation();
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
@@ -47,13 +47,9 @@ const AddMarketingRequest = () => {
   const goBack = () => back(-1);
 
   const handleFilesSelected = (data: FileItem[]) => {
-    const formData = new FormData();
     if (data.length < 2) $filemsg("Добавьте минимум два файла");
     if (data.length >= 2) $filemsg(undefined);
-    data.forEach((item) => {
-      formData.append("files", item.file, item.file.name);
-    });
-    $files(formData);
+    $files(data);
   };
   const onSubmit = () => {
     const { category_id, description, product } = getValues();

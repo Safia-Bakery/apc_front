@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useRef } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import AddProduct from "src/components/AddProduct";
+import AddItems from "src/components/AddProduct";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
 import useOrder from "src/hooks/useOrder";
@@ -471,9 +471,9 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
       {renderfileUploader}
 
       {!isNew && order?.status !== RequestStatus.rejected && (
-        <AddProduct>
+        <AddItems>
           <div className="p-2">{renderSubmit}</div>
-        </AddProduct>
+        </AddItems>
       )}
       <ShowRequestModals />
     </>

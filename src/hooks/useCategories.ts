@@ -22,7 +22,7 @@ export const useCategories = ({
   sphere_status,
 }: Props) => {
   return useQuery({
-    queryKey: ["categories", page, department, sub_id, sphere_status],
+    queryKey: ["categories", department, sphere_status, page, sub_id],
     queryFn: () =>
       apiClient
         .get("/category", {

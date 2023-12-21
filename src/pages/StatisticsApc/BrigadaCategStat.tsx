@@ -3,6 +3,7 @@ import useStatsBrigadaCateg from "src/hooks/useStatsBrigadaCateg";
 import useQueryString from "src/hooks/custom/useQueryString";
 import { FC, useEffect, useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
+import EmptyList from "src/components/EmptyList";
 
 const column = [
   { name: "№", key: "id" as keyof Order["id"] },
@@ -133,11 +134,7 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
         </tbody>
       </table>
 
-      {!data && !isLoading && (
-        <div className="w-full">
-          <p className="text-center w-full ">Спосок пуст</p>
-        </div>
-      )}
+      {!data && !isLoading && <EmptyList />}
       <button
         id={"brigada_categ_stat"}
         className="hidden"

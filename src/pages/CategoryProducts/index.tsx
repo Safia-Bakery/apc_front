@@ -1,10 +1,11 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+
 import useCatProducts from "src/hooks/useCatProducts";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import { useNavigate } from "react-router-dom";
 import { MainPermissions } from "src/utils/types";
-import { useState } from "react";
 import { handleIdx } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
@@ -12,6 +13,7 @@ import useQueryString from "src/hooks/custom/useQueryString";
 import { useAppSelector } from "src/store/utils/types";
 import { permissionSelector } from "src/store/reducers/sidebar";
 import { CategoryProducts as CategoryProductsTypes } from "src/utils/types";
+import EmptyList from "src/components/EmptyList";
 
 const column = [
   { name: "№", key: "" },
@@ -22,7 +24,7 @@ const column = [
 ];
 
 const CategoryProducts = () => {
-  const { id, product_id } = useParams();
+  const { id, sphere } = useParams();
   const { data: products, isLoading } = useCatProducts({
     category_id: Number(id),
   });
@@ -36,10 +38,12 @@ const CategoryProducts = () => {
   return (
     <Card>
       <Header title={`Продукты(${category_name})`}>
-        {permission?.[MainPermissions.it_add_category_product] && (
+        {permission?.[MainPermissions.edit_categ_it] && (
           <button
             className="btn btn-success btn-fill"
-            onClick={handleNavigate(`/categories-it/${id}/add-product`)}
+            onClick={handleNavigate(
+              `/categories-it/${sphere}/${id}/add-product`
+            )}
             id="add_category"
           >
             Добавить
@@ -65,12 +69,10 @@ const CategoryProducts = () => {
                     <td>some</td>
                     <td>{category?.status ? "Активный" : "Неактивный"}</td>
                     <td width={40}>
-                      {permission?.[
-                        MainPermissions.it_edit_category_product
-                      ] && (
+                      {permission?.[MainPermissions.edit_categ_it] && (
                         <TableViewBtn
                           onClick={handleNavigate(
-                            `/categories-it/${id}/edit-product/${category.id}`
+                            `/categories-it/${sphere}/${id}/edit-product/${category.id}`
                           )}
                         />
                       )}
@@ -80,11 +82,7 @@ const CategoryProducts = () => {
               </tbody>
             )}
           </table>
-          {!products?.length && !isLoading && (
-            <div className="w-full">
-              <p className="text-center w-full ">Спосок пуст</p>
-            </div>
-          )}
+          {!products?.length && !isLoading && <EmptyList />}
         </div>
       </div>
     </Card>

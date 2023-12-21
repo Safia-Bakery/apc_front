@@ -32,7 +32,8 @@ const ShowRequestModals = () => {
   const { id } = useParams();
   const modal = Number(useQueryString("modal"));
   const photo = useQueryString("photo");
-  const sphere_status = useQueryString("sphere_status");
+  const sphere_status = Number(useQueryString("sphere_status"));
+  const dep = Number(useQueryString("dep"));
   const [deadline, $deadline] = useState<Date>();
   const removeParams = useRemoveParams();
   const handleDeadline = (event: Date) => $deadline(event);
@@ -48,7 +49,8 @@ const ShowRequestModals = () => {
 
   const { data: brigades, isLoading } = useBrigadas({
     enabled: false,
-    sphere_status: Number(sphere_status),
+    sphere_status,
+    ...(!!dep && { department: dep }),
   });
 
   const { refetch: orderRefetch } = useOrder({ id: Number(id) });

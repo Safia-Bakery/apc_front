@@ -10,6 +10,7 @@ import TableViewBtn from "src/components/TableViewBtn";
 import useRoles from "src/hooks/useRoles";
 import { useAppSelector } from "src/store/utils/types";
 import { permissionSelector } from "src/store/reducers/sidebar";
+import EmptyList from "src/components/EmptyList";
 
 const column = [
   { name: "№", key: "" },
@@ -73,11 +74,7 @@ const Roles = () => {
             </tbody>
           )}
         </table>
-        {!roles?.length && !orderLoading && (
-          <div className="w-full">
-            <p className="text-center w-full">Спосок пуст</p>
-          </div>
-        )}
+        {!roles?.length && !orderLoading && <EmptyList />}
       </div>
     </Card>
   );

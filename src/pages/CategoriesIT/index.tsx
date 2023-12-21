@@ -1,6 +1,8 @@
+import { FC, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+
 import Card from "src/components/Card";
 import Header from "src/components/Header";
-import { Link, useNavigate } from "react-router-dom";
 import {
   Category,
   Departments,
@@ -8,7 +10,6 @@ import {
   Sphere,
 } from "src/utils/types";
 import Pagination from "src/components/Pagination";
-import { FC, useEffect, useState } from "react";
 import { handleDepartment, handleIdx, itemsPerPage } from "src/utils/helpers";
 import TableHead from "src/components/TableHead";
 import TableViewBtn from "src/components/TableViewBtn";
@@ -18,6 +19,8 @@ import useQueryString from "src/hooks/custom/useQueryString";
 import { useAppSelector } from "src/store/utils/types";
 import { permissionSelector } from "src/store/reducers/sidebar";
 import CategoriesITFilter from "./filter";
+import EmptyList from "src/components/EmptyList";
+import TableLoading from "src/components/TableLoading";
 
 interface Props {
   sphere_status?: number;
@@ -34,16 +37,18 @@ const column = [
   { name: "", key: "" },
 ];
 
-const CategoriesIT: FC<Props> = ({ sphere_status, dep, add, edit }) => {
+const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
+  const { sphere } = useParams();
   const navigate = useNavigate();
   const [sort, $sort] = useState<Category[]>();
   const permission = useAppSelector(permissionSelector);
   const currentPage = Number(useQueryString("page")) || 1;
+
   const { data: categories, isLoading } = useCategories({
     size: itemsPerPage,
     page: currentPage,
     ...(dep && { department: +dep }),
-    ...(sphere_status && { sphere_status }),
+    ...(!!sphere && { sphere_status: Number(sphere) }),
   });
 
   const handleNavigate = (route: string) => () => navigate(route);
@@ -74,18 +79,22 @@ const CategoriesIT: FC<Props> = ({ sphere_status, dep, add, edit }) => {
               <CategoriesITFilter />
             </TableHead>
 
-            {!!categories?.items?.length && (
-              <tbody>
-                {(sort?.length ? sort : categories?.items)?.map(
+            <tbody>
+              {!!categories?.items?.length &&
+                (sort?.length ? sort : categories?.items)?.map(
                   (category, idx) => (
                     <tr key={idx} className="bg-blue">
                       <td width={40}>{handleIdx(idx)}</td>
                       <td>
-                        <Link
-                          to={`${category?.id}/products?category_name=${category.name}`}
-                        >
-                          {category?.name}
-                        </Link>
+                        {Number(sphere) === Sphere.purchase ? (
+                          <Link
+                            to={`${category?.id}/products?category_name=${category.name}`}
+                          >
+                            {category?.name}
+                          </Link>
+                        ) : (
+                          category?.name
+                        )}
                       </td>
                       <td>{handleDepartment({ dep: category?.department })}</td>
                       <td>{category?.status ? "Активный" : "Неактивный"}</td>
@@ -99,15 +108,11 @@ const CategoriesIT: FC<Props> = ({ sphere_status, dep, add, edit }) => {
                     </tr>
                   )
                 )}
-              </tbody>
-            )}
+              {isLoading && <TableLoading />}
+            </tbody>
           </table>
           {!!categories && <Pagination totalPages={categories.pages} />}
-          {!categories?.items?.length && !isLoading && (
-            <div className="w-full">
-              <p className="text-center w-full ">Спосок пуст</p>
-            </div>
-          )}
+          {!categories?.items?.length && !isLoading && <EmptyList />}
         </div>
       </div>
     </Card>

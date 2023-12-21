@@ -20,7 +20,7 @@ export const useCatProducts = ({
   id,
 }: Props) => {
   return useQuery({
-    queryKey: ["category_products", page, name, category_id, id],
+    queryKey: ["category_products", category_id, page, name, id],
     queryFn: () =>
       apiClient
         .get("/v1/cat/product", {

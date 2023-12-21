@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useState, forwardRef } from "react";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { successToast } from "src/utils/toast";
 import Card from "src/components/Card";
 import Header from "src/components/Header";
@@ -10,60 +10,151 @@ import UploadComponent, { FileItem } from "src/components/FileUpload";
 import styles from "./index.module.scss";
 import BaseInputs from "src/components/BaseInputs";
 import MainSelect from "src/components/BaseInputs/MainSelect";
-import MainInput from "src/components/BaseInputs/MainInput";
 import MainTextArea from "src/components/BaseInputs/MainTextArea";
 import useQueryString from "src/hooks/custom/useQueryString";
 import BranchSelect from "src/components/BranchSelect";
 import useCategories from "src/hooks/useCategories";
-import { Departments, MainPermissions, Sphere } from "src/utils/types";
-import WarehouseSelect from "src/components/WarehouseSelect";
+import {
+  CategoryProducts,
+  Departments,
+  MainPermissions,
+  Sphere,
+} from "src/utils/types";
 import Loading from "src/components/Loader";
 import { useAppSelector } from "src/store/utils/types";
 import { permissionSelector } from "src/store/reducers/sidebar";
+import useCatProducts from "src/hooks/useCatProducts";
+import TableHead from "src/components/TableHead";
+import MainInput from "src/components/BaseInputs/MainInput";
+import { useQueryClient } from "@tanstack/react-query";
+
+const OrderTypeVals = [
+  { id: Sphere.purchase, name: "Закуп" },
+  { id: Sphere.fix, name: "Поддержка" },
+];
+
+interface InventoryFields {
+  product: string;
+  qnt: string | number;
+  category_id: number;
+}
+
+interface FormDataTypes {
+  inputFields: InventoryFields[];
+  order_type: number;
+  fillial_id: string;
+  description: string;
+  category_id?: number;
+}
+
+const initialInventory: InventoryFields | undefined = {
+  product: "",
+  qnt: "",
+  category_id: 0,
+};
+
+const column = [
+  { name: "№", key: "" },
+  { name: "КАТЕГОРИЕ", key: "category_id" },
+  { name: "ТОВАР", key: "product_id" },
+  { name: "КОЛИЧЕСТВО", key: "count" },
+  { name: "", key: "" },
+];
+
+const InputWrapper = forwardRef<
+  HTMLInputElement,
+  { field: any; type?: string; register?: any; error?: any }
+>(({ field, type = "text", register, error }, ref) => {
+  return (
+    <BaseInputs className="!mb-0" error={error}>
+      <MainInput
+        {...field}
+        ref={ref}
+        type={type}
+        register={register}
+        className="!mb-0"
+      />
+    </BaseInputs>
+  );
+});
+
+const SelectWrapper = forwardRef<
+  HTMLInputElement,
+  { field: any; values: any[] | undefined; register?: any; error?: any }
+>(({ field, values, register, error }, ref) => {
+  return (
+    <BaseInputs className="!mb-0" error={error}>
+      <MainSelect
+        {...field}
+        ref={ref}
+        values={values}
+        register={register}
+        className="!mb-0"
+      />
+    </BaseInputs>
+  );
+});
 
 const CreateITRequest = () => {
-  const [files, $files] = useState<FormData>();
+  const [files, $files] = useState<FileItem[]>();
   const { mutate, isLoading } = requestMutation();
   const branchJson = useQueryString("branch");
-  const sphere_status = Number(useQueryString("sphere_status"));
   const branch = branchJson && JSON.parse(branchJson);
   const perm = useAppSelector(permissionSelector);
-  const { data: categories, isLoading: categoryLoading } = useCategories({
-    department: Departments.it,
-  });
   const {
-    register,
+    control,
     handleSubmit,
+    register,
     formState: { errors },
-    getValues,
     reset,
-  } = useForm();
+    watch,
+  } = useForm<FormDataTypes>({
+    defaultValues: { inputFields: [initialInventory] },
+  });
+
+  const category_id = watch(
+    `inputFields.${watch("inputFields")?.length - 1}.category_id`
+  );
+
+  const { data: categories } = useCategories({
+    department: Departments.it,
+    sphere_status: watch("order_type"),
+    enabled: !!watch("order_type"),
+  });
+
+  useCatProducts({
+    category_id,
+    enabled: !!category_id,
+  });
+
+  const cacheProduct = (categId: number) => {
+    const queryClient = useQueryClient();
+    const productKey = ["category_products", categId, 1, undefined, undefined];
+    return queryClient.getQueryCache().find(productKey)?.state
+      ?.data as CategoryProducts[];
+  };
 
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
 
-  useEffect(() => {
-    reset({
-      fillial_id: branch?.id,
-    });
-  }, [branch?.id]);
+  const handleFilesSelected = (data: FileItem[]) => $files(data);
 
-  const handleFilesSelected = (data: FileItem[]) => {
-    const formData = new FormData();
-    data.forEach((item) => {
-      formData.append("files", item.file, item.file.name);
-    });
-    $files(formData);
-  };
-  const onSubmit = () => {
-    const { category_id, description, product } = getValues();
+  const onSubmit = (data: FormDataTypes) => {
+    const { inputFields, description } = data;
+    const cat_prod =
+      !!inputFields?.[0]?.category_id &&
+      inputFields?.reduce((acc: any, item) => {
+        acc[item.product] = item.qnt;
+        return acc;
+      }, {});
+
     mutate(
       {
-        category_id,
-        product,
+        category_id: data.category_id! || category_id!,
         description,
         fillial_id: branch?.id,
         files,
+        ...(!!cat_prod && { cat_prod }),
       },
       {
         onSuccess: () => {
@@ -74,12 +165,18 @@ const CreateITRequest = () => {
     );
   };
 
-  const renderBranchSelect = useMemo(() => {
-    if (perm?.[MainPermissions.get_fillials_list]) {
-      if (sphere_status === Sphere.fabric) return <WarehouseSelect />;
-      else return <BranchSelect origin={1} enabled />;
-    }
-  }, [sphere_status]);
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "inputFields",
+  });
+
+  const addInputFields = () => append(initialInventory);
+
+  useEffect(() => {
+    reset({
+      fillial_id: branch?.id,
+    });
+  }, [branch?.id]);
 
   if (isLoading) return <Loading absolute />;
 
@@ -100,24 +197,124 @@ const CreateITRequest = () => {
           label="ФИЛИАЛ"
           error={errors.fillial_id}
         >
-          {renderBranchSelect}
+          {perm?.[MainPermissions.get_fillials_list] && (
+            <BranchSelect origin={1} enabled />
+          )}
         </BaseInputs>
-        <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
+        <BaseInputs label="тип" error={errors.order_type}>
           <MainSelect
-            values={categories?.items}
-            register={register("category_id", {
+            values={OrderTypeVals}
+            register={register("order_type", {
               required: "Обязательное поле",
             })}
           />
         </BaseInputs>
 
-        <BaseInputs label="Продукт">
-          <MainInput register={register("product")} />
-        </BaseInputs>
+        {+watch("order_type") === Sphere.purchase ? (
+          <>
+            <table className="table table-hover mb-0">
+              <TableHead column={column} />
+              <tbody>
+                {fields.map((field, index) => (
+                  <tr key={field.id}>
+                    <td width={20}>{index + 1}</td>
+                    <td>
+                      <Controller
+                        name={`inputFields.${index}.category_id`}
+                        control={control}
+                        defaultValue={field.category_id}
+                        render={({ field }) => (
+                          <SelectWrapper
+                            values={categories?.items}
+                            field={field}
+                            error={errors.inputFields?.[index]?.category_id}
+                            register={register(
+                              `inputFields.${index}.category_id`,
+                              {
+                                required: "Обязательное поле",
+                              }
+                            )}
+                          />
+                        )}
+                      />
+                    </td>
+                    <td>
+                      <Controller
+                        name={`inputFields.${index}.product`}
+                        control={control}
+                        defaultValue={field.product}
+                        render={({ field }) => (
+                          <SelectWrapper
+                            values={cacheProduct(
+                              watch(`inputFields.${index}.category_id`)
+                            )}
+                            field={field}
+                            error={errors.inputFields?.[index]?.product}
+                            register={register(`inputFields.${index}.product`, {
+                              required: "Обязательное поле",
+                            })}
+                          />
+                        )}
+                      />
+                    </td>
+                    <td>
+                      <Controller
+                        name={`inputFields.${index}.qnt`}
+                        control={control}
+                        defaultValue={field.qnt}
+                        render={({ field }) => (
+                          <InputWrapper
+                            type={"number"}
+                            field={field}
+                            error={errors.inputFields?.[index]?.qnt}
+                            register={register(`inputFields.${index}.qnt`, {
+                              required: "Обязательное поле",
+                            })}
+                          />
+                        )}
+                      />
+                    </td>
+                    <td className="align-top" width={90}>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          fields.length > 1 ? remove(index) : null
+                        }
+                        className="btn bg-danger text-white h-[38px]"
+                      >
+                        Удалить
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="w-full flex justify-end mt-3">
+              <button
+                type="button"
+                className={cl("btn btn-primary m-2 w-min")}
+                onClick={addInputFields}
+              >
+                Добавить
+              </button>
+            </div>
+          </>
+        ) : (
+          <BaseInputs label="Категорие" error={errors.category_id}>
+            <MainSelect
+              values={categories?.items}
+              register={register("category_id", {
+                required: "Обязательное поле",
+              })}
+            />
+          </BaseInputs>
+        )}
 
-        <BaseInputs label="Комментарии">
+        <BaseInputs label="Комментарии" error={errors.description}>
           <MainTextArea
-            register={register("description")}
+            register={register("description", {
+              required: "Обязательное поле",
+            })}
             placeholder="Комментарии"
           />
         </BaseInputs>
@@ -125,7 +322,6 @@ const CreateITRequest = () => {
         <BaseInputs
           className={`mb-4 ${styles.uploadImage}`}
           label="Добавить файл"
-          error={errors.image}
         >
           <UploadComponent onFilesSelected={handleFilesSelected} />
         </BaseInputs>

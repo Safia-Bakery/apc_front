@@ -24,6 +24,7 @@ import BotTimeModal from "src/components/BotTimeModal";
 import { useNavigateParams } from "src/hooks/custom/useCustomNavigate";
 import StaffFilter from "./filter";
 import { useDownloadExcel } from "react-export-table-to-excel";
+import EmptyList from "src/components/EmptyList";
 
 const column = [
   { name: "№", key: "" },
@@ -203,11 +204,7 @@ const RequestsStaff = () => {
           </tbody>
         </table>
         {!!requests && <Pagination totalPages={requests.pages} />}
-        {!requests?.items?.length && !orderLoading && (
-          <div className="w-full">
-            <p className="text-center w-full">Спосок пуст</p>
-          </div>
-        )}
+        {!requests?.items?.length && !orderLoading && <EmptyList />}
       </div>
       <BotTimeModal />
     </Card>

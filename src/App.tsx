@@ -51,12 +51,12 @@ const ShowMarketingRequest = lazy(
 const RequestsMarketing = lazy(() => import("src/pages/RequestsMarketing"));
 const AddMarketingRequest = lazy(() => import("src/pages/AddMarketingRequest"));
 const RequestsIT = lazy(() => import("src/pages/RequestsIT"));
-// const AddInventoryRequest = lazy(() => import("src/pages/AddInventoryRequest"));
+const AddInventoryRequest = lazy(() => import("src/pages/AddInventoryRequest"));
 const YandexMap = lazy(() => import("src/pages/Map"));
 const StatisticsApc = lazy(() => import("src/pages/StatisticsApc"));
 const StatsMarketing = lazy(() => import("src/pages/StatsMarketing"));
 const Categories = lazy(() => import("src/pages/Categories"));
-const ShowCategory = lazy(() => import("src/pages/ShowCategory"));
+const EditAddCategory = lazy(() => import("src/pages/EditAddCategory"));
 const EditAddRole = lazy(() => import("src/pages/EditAddRole"));
 const Roles = lazy(() => import("src/pages/Roles"));
 const ShowRole = lazy(() => import("src/pages/ShowRole"));
@@ -302,23 +302,23 @@ const routes = [
         dep={Departments.it}
       />
     ),
-    path: `/categories-it`,
+    path: `/categories-it/:sphere`,
     screen: MainPermissions.get_categ_it,
   },
   {
     element: <CategoryProducts />,
-    path: `/categories-it/:id/products`,
-    screen: MainPermissions.it_get_category_product,
+    path: `/categories-it/:sphere/:id/products`,
+    screen: MainPermissions.get_categ_it,
   },
   {
     element: <EditAddCategoryProduct />,
-    path: `/categories-it/:id/add-product`,
-    screen: MainPermissions.it_add_category_product,
+    path: `/categories-it/:sphere/:id/add-product`,
+    screen: MainPermissions.add_categ_it,
   },
   {
     element: <EditAddCategoryProduct />,
-    path: `/categories-it/:id/edit-product/:product_id`,
-    screen: MainPermissions.it_edit_category_product,
+    path: `/categories-it/:sphere/:id/edit-product/:product_id`,
+    screen: MainPermissions.edit_categ_it,
   },
   {
     element: (
@@ -332,52 +332,47 @@ const routes = [
     screen: MainPermissions.get_mark_category,
   },
   {
-    element: <ShowCategory dep={Departments.marketing} />,
+    element: <EditAddCategory dep={Departments.marketing} />,
     path: `/categories-marketing/:id`,
     screen: MainPermissions.edit_mark_category,
   },
   {
     element: (
-      <ShowCategory dep={Departments.apc} sphere_status={Sphere.retail} />
+      <EditAddCategory dep={Departments.apc} sphere_status={Sphere.retail} />
     ),
     path: `/categories-apc-retail/:id`,
     screen: MainPermissions.edit_apc_category,
   },
   {
     element: (
-      <ShowCategory dep={Departments.apc} sphere_status={Sphere.fabric} />
+      <EditAddCategory dep={Departments.apc} sphere_status={Sphere.fabric} />
     ),
     path: `/categories-apc-fabric/:id`,
     screen: MainPermissions.edit_categ_fab,
   },
   {
-    element: <ShowCategory dep={Departments.it} />,
-    path: `/categories-it/:id`,
+    element: <EditAddCategory dep={Departments.it} />,
+    path: `/categories-it/:sphere/:id`,
     screen: MainPermissions.edit_categ_it,
   },
   {
-    element: <ShowCategory dep={Departments.marketing} />,
-    path: `/categories-marketing/add`,
-    screen: MainPermissions.add_mark_category,
+    element: <EditAddCategory dep={Departments.it} />,
+    path: `/categories-it/:sphere/add`,
+    screen: MainPermissions.edit_categ_it,
   },
   {
     element: (
-      <ShowCategory dep={Departments.apc} sphere_status={Sphere.retail} />
+      <EditAddCategory dep={Departments.apc} sphere_status={Sphere.retail} />
     ),
     path: `/categories-apc-retail/add`,
     screen: MainPermissions.add_apc_category,
   },
   {
     element: (
-      <ShowCategory dep={Departments.apc} sphere_status={Sphere.fabric} />
+      <EditAddCategory dep={Departments.apc} sphere_status={Sphere.fabric} />
     ),
     path: `/categories-apc-fabric/add`,
     screen: MainPermissions.add_categ_fab,
-  },
-  {
-    element: <ShowCategory dep={Departments.it} />,
-    path: `/categories-it/add`,
-    screen: MainPermissions.add_categ_it,
   },
   {
     element: <EditAddRole />,
@@ -428,7 +423,7 @@ const routes = [
   {
     element: <Masters />,
     path: "/masters-it",
-    screen: MainPermissions.get_master_it,
+    screen: MainPermissions.it_get_masters,
   },
   {
     element: (
@@ -518,13 +513,13 @@ const routes = [
     screen: MainPermissions.get_log_categs,
   },
   {
-    element: <ShowCategory dep={Departments.logystics} />,
+    element: <EditAddCategory dep={Departments.logystics} />,
     path: `/categories-logystics/:id`,
     screen: MainPermissions.edit_log_categs,
   },
 
   {
-    element: <ShowCategory dep={Departments.logystics} />,
+    element: <EditAddCategory dep={Departments.logystics} />,
     path: `/categories-logystics/add`,
     screen: MainPermissions.add_log_categs,
   },

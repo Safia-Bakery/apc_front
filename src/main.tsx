@@ -1,4 +1,4 @@
-import ReactDOM from "react-dom/client";
+import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -15,8 +15,9 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.scss";
 
-// export const baseURL = "https://api.service.safiabakery.uz";
-export const baseURL = "http://10.0.0.133:8000";
+export const baseURL = "https://api.service.safiabakery.uz"; // todo
+// export const baseURL = "http://10.0.0.131:8000";
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -27,7 +28,7 @@ let container: any = null;
 document.addEventListener("DOMContentLoaded", function (event) {
   if (!container) {
     container = document.getElementById("root") as HTMLElement;
-    const root = ReactDOM.createRoot(container);
+    const root = createRoot(container);
     root.render(
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={<Loading absolute />}>

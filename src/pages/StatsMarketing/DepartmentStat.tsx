@@ -7,6 +7,7 @@ import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel
 import useMarketingStatDep from "src/hooks/useMarketingStatDep";
 import { handleDepartment } from "src/utils/helpers";
 import useUpdateEffect from "src/hooks/useUpdateEffect";
+import EmptyList from "src/components/EmptyList";
 
 const options = {
   chart: {
@@ -124,9 +125,7 @@ const DepartmentStat = () => {
       </table>
       {renderChart}
       {data?.table && !Object.values(data?.table).length && !isLoading && (
-        <div className="w-full">
-          <p className="text-center w-full">Спосок пуст</p>
-        </div>
+        <EmptyList />
       )}
       <button id={"department_stat"} className="hidden" onClick={downloadAsPdf}>
         download

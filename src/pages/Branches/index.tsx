@@ -15,6 +15,7 @@ import { useAppSelector } from "src/store/utils/types";
 import { permissionSelector } from "src/store/reducers/sidebar";
 import useQueryString from "src/hooks/custom/useQueryString";
 import TableLoading from "src/components/TableLoading";
+import EmptyList from "src/components/EmptyList";
 
 const column = [
   { name: "№", key: "id" },
@@ -131,11 +132,7 @@ const Branches = () => {
           </tbody>
         </table>
         {!!branches && <Pagination totalPages={branches.pages} />}
-        {!branches?.items?.length && !isFetching && (
-          <div className="w-full">
-            <p className="text-center w-full ">Спосок пуст</p>
-          </div>
-        )}
+        {!branches?.items?.length && !isFetching && <EmptyList />}
       </div>
     </Card>
   );

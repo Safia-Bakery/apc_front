@@ -22,7 +22,7 @@ import { useAppSelector } from "src/store/utils/types";
 import { permissionSelector } from "src/store/reducers/sidebar";
 
 const CreateApcRequest = () => {
-  const [files, $files] = useState<FormData>();
+  const [files, $files] = useState<FileItem[]>();
   const { mutate, isLoading } = requestMutation();
   const branchJson = useQueryString("branch");
   const sphere_status = Number(useQueryString("sphere_status"));
@@ -50,13 +50,8 @@ const CreateApcRequest = () => {
     });
   }, [branch?.id]);
 
-  const handleFilesSelected = (data: FileItem[]) => {
-    const formData = new FormData();
-    data.forEach((item) => {
-      formData.append("files", item.file, item.file.name);
-    });
-    $files(formData);
-  };
+  const handleFilesSelected = (data: FileItem[]) => $files(data);
+
   const onSubmit = () => {
     const { category_id, description, product } = getValues();
     mutate(

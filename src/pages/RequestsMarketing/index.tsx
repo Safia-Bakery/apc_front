@@ -19,6 +19,7 @@ import { useAppSelector } from "src/store/utils/types";
 import { permissionSelector } from "src/store/reducers/sidebar";
 import useQueryString from "src/hooks/custom/useQueryString";
 import TableLoading from "src/components/TableLoading";
+import EmptyList from "src/components/EmptyList";
 
 const column = [
   { name: "№", key: "" },
@@ -155,11 +156,7 @@ const RequestsMarketing = () => {
           </tbody>
         </table>
         {!!requests && <Pagination totalPages={requests.pages} />}
-        {!requests?.items?.length && !orderLoading && (
-          <div className="w-full">
-            <p className="text-center w-full">Спосок пуст</p>
-          </div>
-        )}
+        {!requests?.items?.length && !orderLoading && <EmptyList />}
       </div>
     </Card>
   );

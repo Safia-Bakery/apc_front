@@ -5,6 +5,7 @@ import Chart from "react-apexcharts";
 import useStatsBrigada from "src/hooks/useStatsBrigada";
 import useQueryString from "src/hooks/custom/useQueryString";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
+import EmptyList from "src/components/EmptyList";
 
 interface Props {
   sphere_status: Sphere;
@@ -113,11 +114,7 @@ const BrigadaStat: FC<Props> = ({ sphere_status }) => {
           height={400}
         />
       )}
-      {!data?.length && !isLoading && (
-        <div className="w-full">
-          <p className="text-center w-full ">Спосок пуст</p>
-        </div>
-      )}
+      {!data?.length && !isLoading && <EmptyList />}
       <button id={"brigada_stat"} className="hidden" onClick={downloadAsPdf}>
         download
       </button>

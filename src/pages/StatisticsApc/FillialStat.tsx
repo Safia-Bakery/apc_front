@@ -5,6 +5,7 @@ import useStatsDepartment from "src/hooks/useStatsDepartment";
 import useQueryString from "src/hooks/custom/useQueryString";
 
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
+import EmptyList from "src/components/EmptyList";
 
 const column = [
   { name: "Филиалы", key: "name" },
@@ -60,11 +61,7 @@ const BranchStat: FC<Props> = ({ sphere_status }) => {
         </tbody>
       </table>
 
-      {!data?.length && !isLoading && (
-        <div className="w-full">
-          <p className="text-center w-full ">Спосок пуст</p>
-        </div>
-      )}
+      {!data?.length && !isLoading && <EmptyList />}
       <button id={"branch_stat"} className="hidden" onClick={downloadAsPdf}>
         download
       </button>

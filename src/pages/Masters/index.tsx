@@ -18,6 +18,7 @@ import ItemsCount from "src/components/ItemsCount";
 import { useAppSelector } from "src/store/utils/types";
 import { permissionSelector } from "src/store/reducers/sidebar";
 import useQueryString from "src/hooks/custom/useQueryString";
+import EmptyList from "src/components/EmptyList";
 
 const Masters = () => {
   const navigate = useNavigate();
@@ -104,11 +105,7 @@ const Masters = () => {
           )}
         </table>
         {!!brigadas && <Pagination totalPages={brigadas.pages} />}
-        {!brigadas?.items?.length && !orderLoading && (
-          <div className="w-full">
-            <p className="text-center w-full">Спосок пуст</p>
-          </div>
-        )}
+        {!brigadas?.items?.length && !orderLoading && <EmptyList />}
       </div>
     </Card>
   );

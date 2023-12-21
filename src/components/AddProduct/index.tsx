@@ -30,7 +30,7 @@ interface Props extends PropsWithChildren {
   synciiko?: MainPermissions;
 }
 
-const AddProduct: FC<Props> = ({ children, synciiko }) => {
+const AddItems: FC<Props> = ({ children, synciiko }) => {
   const { id } = useParams();
   const permissions = useAppSelector(permissionSelector);
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
@@ -143,4 +143,4 @@ const AddProduct: FC<Props> = ({ children, synciiko }) => {
   );
 };
 
-export default AddProduct;
+export default AddItems;

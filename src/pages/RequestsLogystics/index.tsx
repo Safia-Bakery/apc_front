@@ -21,6 +21,7 @@ import { permissionSelector } from "src/store/reducers/sidebar";
 import useQueryString from "src/hooks/custom/useQueryString";
 import TableLoading from "src/components/TableLoading";
 import LogFilter from "./filter";
+import EmptyList from "src/components/EmptyList";
 
 interface Props {
   add: MainPermissions;
@@ -168,11 +169,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
           </tbody>
         </table>
         {!!requests && <Pagination totalPages={requests.pages} />}
-        {!requests?.items?.length && !orderLoading && (
-          <div className="w-full">
-            <p className="text-center w-full">Спосок пуст</p>
-          </div>
-        )}
+        {!requests?.items?.length && !orderLoading && <EmptyList />}
       </div>
     </Card>
   );

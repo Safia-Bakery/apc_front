@@ -17,6 +17,7 @@ import TableHead from "src/components/TableHead";
 import InventoryFilter from "./filter";
 import ItemsCount from "src/components/ItemsCount";
 import useQueryString from "src/hooks/custom/useQueryString";
+import EmptyList from "src/components/EmptyList";
 
 const column = [
   { name: "№", key: "" },
@@ -103,11 +104,7 @@ const RequestInventory = () => {
           )}
         </table>
         {!!requests && <Pagination totalPages={requests.pages} />}
-        {!requests?.items?.length && !orderLoading && (
-          <div className="w-full">
-            <p className="text-center w-full">Спосок пуст</p>
-          </div>
-        )}
+        {!requests?.items?.length && !orderLoading && <EmptyList />}
       </div>
     </Card>
   );
