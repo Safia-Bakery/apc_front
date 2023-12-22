@@ -1,6 +1,5 @@
 import { FC, useEffect, useMemo, useRef } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import AddItems from "@/components/AddProduct";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import useOrder from "@/hooks/useOrder";
@@ -28,7 +27,6 @@ import { reportImgSelector, uploadReport } from "reducers/selects";
 import useQueryString from "custom/useQueryString";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import uploadFileMutation from "@/hooks/mutation/uploadFile";
-import { loginHandler } from "reducers/auth";
 import useBrigadas from "@/hooks/useBrigadas";
 import syncExpenditure from "@/hooks/mutation/syncExpenditure";
 import Loading from "@/components/Loader";
@@ -44,9 +42,9 @@ interface Props {
 const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const tokenKey = useQueryString("key");
   const { state } = useLocation();
   const sphere_status = Number(useQueryString("sphere_status"));
+  const dep = Number(useQueryString("dep"));
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const permissions = useAppSelector(permissionSelector);
   const dispatch = useAppDispatch();
@@ -55,7 +53,8 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   const { mutate: attach, isLoading: attachLoading } = attachBrigadaMutation();
   const { refetch: brigadasRefetch } = useBrigadas({
     enabled: false,
-    sphere_status: sphere_status,
+    department: dep || Departments.it,
+    ...(!!sphere_status && { sphere_status }),
   });
   const handleModal = (type: ModalTypes) => () => {
     navigateParams({ modal: type });
@@ -260,10 +259,6 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   }, [upladedFiles, permissions, order?.status, order?.file]);
 
   useEffect(() => {
-    if (tokenKey) dispatch(loginHandler(tokenKey));
-  }, [tokenKey]);
-
-  useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
@@ -463,6 +458,9 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
           </div>
           <hr />
           {renderBtns}
+          {!isNew && order?.status !== RequestStatus.rejected && (
+            <div className="p-2">{renderSubmit}</div>
+          )}
         </div>
       </Card>
 

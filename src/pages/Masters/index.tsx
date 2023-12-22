@@ -1,15 +1,11 @@
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { useNavigate } from "react-router-dom";
-import {
-  BrigadaType,
-  Departments,
-  MainPermissions,
-  Sphere,
-} from "@/utils/types";
+import { BrigadaType, MainPermissions } from "@/utils/types";
 import Loading from "@/components/Loader";
 import Pagination from "@/components/Pagination";
-import { useEffect, useMemo, useState } from "react";
 import { handleIdx } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import TableViewBtn from "@/components/TableViewBtn";
@@ -23,7 +19,7 @@ import EmptyList from "@/components/EmptyList";
 const Masters = () => {
   const navigate = useNavigate();
   const permission = useAppSelector(permissionSelector);
-  const sphere_status = useQueryString("sphere_status");
+  const sphere_status = Number(useQueryString("sphere_status"));
   const dep = useQueryString("dep");
   const currentPage = Number(useQueryString("page")) || 1;
   const [sort, $sort] = useState<BrigadaType[]>();
@@ -45,9 +41,9 @@ const Masters = () => {
   }, []);
   const { data: brigadas, isLoading: orderLoading } = useBrigadas({
     page: currentPage,
-    sphere_status: Number(sphere_status),
     enabled: true,
-    ...(dep && { department: Number(dep) }),
+    ...(!!dep && { department: Number(dep) }),
+    ...(!!sphere_status && { sphere_status }),
   });
 
   if (orderLoading) return <Loading absolute />;

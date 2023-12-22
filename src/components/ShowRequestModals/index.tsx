@@ -47,10 +47,10 @@ const ShowRequestModals = () => {
     enabled: !!watch("direction"),
   });
 
-  const { data: brigades, isLoading } = useBrigadas({
+  const { data: brigades, isFetching: brigadaLoading } = useBrigadas({
     enabled: false,
-    sphere_status,
     ...(!!dep && { department: dep }),
+    ...(!!sphere_status && { sphere_status }),
   });
 
   const { refetch: orderRefetch } = useOrder({ id: Number(id) });
@@ -118,11 +118,11 @@ const ShowRequestModals = () => {
               </button>
             </Header>
             <div className={styles.items}>
-              {isLoading ? (
+              {brigadaLoading ? (
                 <Loading />
               ) : (
                 brigades?.items
-                  .filter((item) => item.user!?.length > 0)
+                  .filter((item) => !!item.user!?.length)
                   .map((item, idx) => (
                     <div key={idx} className={styles.item}>
                       <h6>{item?.name}</h6>
