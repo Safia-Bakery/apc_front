@@ -30,6 +30,7 @@ const routeNameMappings: { [key: string]: string } = {
   branches: "Филлиалы",
   "requests-inventory": "Заявка на инвентарь",
   "requests-apc": "Заявки АРС",
+  "requests-it": "Заявки it",
   "requests-designer": "Проектная работа для дизайнеров",
   "requests-apc-retail": "Заявки на APC розница",
   "requests-apc-fabric": "Заявки на APC фабрика",
@@ -53,10 +54,8 @@ const Breadcrumbs: FC = () => {
   const location = useLocation();
   const pathname = location.pathname;
   const dispatch = useAppDispatch();
-  const handleLogout = () => {
-    dispatch(logoutHandler());
-    // window.location.reload();
-  };
+  const handleLogout = () => dispatch(logoutHandler());
+
   const { data: me } = useToken({ enabled: false });
 
   const breadcrumbs: Breadcrumb[] = [];
