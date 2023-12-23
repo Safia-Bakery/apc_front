@@ -2,10 +2,10 @@ import { FC, useEffect, useRef, useState } from "react";
 import { DepartmentStatTypes, Departments, Sphere } from "@/utils/types";
 import TableHead from "@/components/TableHead";
 import useStatsDepartment from "@/hooks/useStatsDepartment";
-import useQueryString from "custom/useQueryString";
 
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 import EmptyList from "@/components/EmptyList";
+import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
 
 const column = [
   { name: "Филиалы", key: "name" },
@@ -17,8 +17,8 @@ interface Props {
 }
 
 const BranchStat: FC<Props> = ({ sphere_status }) => {
-  const start = useQueryString("start");
-  const end = useQueryString("end");
+  const start = useUpdateQueryStr("start");
+  const end = useUpdateQueryStr("end");
   const [sort, $sort] = useState<DepartmentStatTypes[]>();
 
   const tableRef = useRef(null);

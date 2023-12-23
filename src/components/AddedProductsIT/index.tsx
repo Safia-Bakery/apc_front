@@ -53,16 +53,18 @@ const AddedProductsIT = () => {
                 <td>{item?.orpr_product.name}</td>
                 <td>{item?.amount}</td>
                 <td>
-                  <div
-                    className={cl(
-                      "text-link cursor-pointer max-w-[150px] w-full text-truncate"
-                    )}
-                    onClick={handleShowPhoto(
-                      `${baseURL}/${item.orpr_product.image}`
-                    )}
-                  >
-                    Файл
-                  </div>
+                  {!!item?.orpr_product?.image && (
+                    <div
+                      className={cl(
+                        "text-link cursor-pointer max-w-[150px] w-full text-truncate"
+                      )}
+                      onClick={handleShowPhoto(
+                        `${baseURL}/${item?.orpr_product?.image}`
+                      )}
+                    >
+                      Файл
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}

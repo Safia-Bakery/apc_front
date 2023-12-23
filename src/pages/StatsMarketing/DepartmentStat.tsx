@@ -2,12 +2,12 @@ import { useMemo, useRef } from "react";
 import { MarketingSubDep } from "@/utils/types";
 import TableHead from "@/components/TableHead";
 import Chart from "react-apexcharts";
-import useQueryString from "custom/useQueryString";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 import useMarketingStatDep from "@/hooks/useMarketingStatDep";
 import { handleDepartment } from "@/utils/helpers";
 import useUpdateEffect from "@/hooks/useUpdateEffect";
 import EmptyList from "@/components/EmptyList";
+import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
 
 const options = {
   chart: {
@@ -51,8 +51,8 @@ const column = [
 ];
 
 const DepartmentStat = () => {
-  const start = useQueryString("start");
-  const end = useQueryString("end");
+  const start = useUpdateQueryStr("start");
+  const end = useUpdateQueryStr("end");
   const tableRef = useRef(null);
   const btnAction = document.getElementById("export_to_excell");
 

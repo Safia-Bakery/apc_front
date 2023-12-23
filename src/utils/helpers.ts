@@ -332,8 +332,14 @@ export const routes: SidebarType[] = [
     department: Departments.it,
     subroutes: [
       {
-        name: "Заявки",
-        url: "/requests-it",
+        name: "Заявки Закуп",
+        url: `/requests-it/${Sphere.purchase}`,
+        icon: "/assets/icons/subOrder.svg",
+        screen: MainPermissions.get_it_requests,
+      },
+      {
+        name: "Заявки Поддержка",
+        url: `/requests-it/${Sphere.fix}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_it_requests,
       },

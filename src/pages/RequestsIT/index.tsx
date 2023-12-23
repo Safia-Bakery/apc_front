@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 
 import { Departments, Order } from "@/utils/types";
@@ -34,6 +34,7 @@ const RequestsIT = () => {
   const navigate = useNavigate();
   const [sort, $sort] = useState<Order[]>();
   const currentPage = Number(useQueryString("page")) || 1;
+  const { sphere } = useParams();
 
   const user = useQueryString("user");
   const id = Number(useQueryString("id"));
@@ -51,6 +52,7 @@ const RequestsIT = () => {
     refetch,
   } = useOrders({
     department: Departments.it,
+    sphere_status: Number(sphere),
     page: currentPage,
     ...(!!id && { id }),
     ...(!!category_id && { category_id }),

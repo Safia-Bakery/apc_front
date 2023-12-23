@@ -3,9 +3,9 @@ import { DepartmentStatTypes, Departments, Sphere } from "@/utils/types";
 import TableHead from "@/components/TableHead";
 import Chart from "react-apexcharts";
 import useStatsBrigada from "@/hooks/useStatsBrigada";
-import useQueryString from "custom/useQueryString";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 import EmptyList from "@/components/EmptyList";
+import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
 
 interface Props {
   sphere_status: Sphere;
@@ -49,8 +49,8 @@ const column = [
 ];
 
 const BrigadaStat: FC<Props> = ({ sphere_status }) => {
-  const start = useQueryString("start");
-  const end = useQueryString("end");
+  const start = useUpdateQueryStr("start");
+  const end = useUpdateQueryStr("end");
   const [sort, $sort] = useState<DepartmentStatTypes[]>();
 
   const tableRef = useRef(null);

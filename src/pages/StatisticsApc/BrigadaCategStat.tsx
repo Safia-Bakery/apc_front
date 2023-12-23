@@ -1,9 +1,9 @@
 import { Departments, Order, Sphere } from "@/utils/types";
 import useStatsBrigadaCateg from "@/hooks/useStatsBrigadaCateg";
-import useQueryString from "custom/useQueryString";
 import { FC, useEffect, useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import EmptyList from "@/components/EmptyList";
+import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
 
 const column = [
   { name: "№", key: "id" as keyof Order["id"] },
@@ -23,8 +23,8 @@ interface Props {
 }
 
 const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
-  const start = useQueryString("start");
-  const end = useQueryString("end");
+  const start = useUpdateQueryStr("start");
+  const end = useUpdateQueryStr("end");
 
   const tableRef = useRef(null);
   const btnAction = document.getElementById("export_to_excell");

@@ -1,11 +1,11 @@
 import { useMemo, useRef } from "react";
 import TableHead from "@/components/TableHead";
 import Chart from "react-apexcharts";
-import useQueryString from "custom/useQueryString";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 import useUpdateEffect from "@/hooks/useUpdateEffect";
 import useMarketingStatCat from "@/hooks/useMarketingStatCat";
 import EmptyList from "@/components/EmptyList";
+import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
 
 const optionsBar = {
   options: {
@@ -77,8 +77,8 @@ const column = [
 ];
 
 const StatCategory = () => {
-  const start = useQueryString("start");
-  const end = useQueryString("end");
+  const start = useUpdateQueryStr("start");
+  const end = useUpdateQueryStr("end");
   const tableRef = useRef(null);
   const btnAction = document.getElementById("export_to_excell");
 

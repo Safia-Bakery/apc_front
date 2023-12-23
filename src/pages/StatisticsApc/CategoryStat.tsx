@@ -3,9 +3,17 @@ import { Departments, Sphere } from "@/utils/types";
 import TableHead from "@/components/TableHead";
 import Chart from "react-apexcharts";
 import useStatsCategory from "@/hooks/useStatsCategory";
-import useQueryString from "custom/useQueryString";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 import EmptyList from "@/components/EmptyList";
+import dayjs from "dayjs";
+import { useLocation, useParams } from "react-router-dom";
+import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
+
+interface SortTypes {
+  category: string;
+  amount: number;
+  time: number;
+}
 
 interface Props {
   sphere_status: Sphere;
@@ -41,17 +49,11 @@ const column = [
 ];
 
 const CategoryStat: FC<Props> = ({ sphere_status }) => {
-  const start = useQueryString("start");
-  const end = useQueryString("end");
+  const start = useUpdateQueryStr("start");
+  const end = useUpdateQueryStr("end");
   const tableRef = useRef(null);
   const btnAction = document.getElementById("export_to_excell");
-  const [sort, $sort] = useState<
-    {
-      category: string;
-      amount: number;
-      time: number;
-    }[]
-  >();
+  const [sort, $sort] = useState<SortTypes[]>();
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,

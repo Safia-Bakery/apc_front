@@ -79,7 +79,7 @@ dayjs.locale("ru");
 const routes = [
   {
     element: <CreateITRequest />,
-    path: "/requests-it/add",
+    path: "/requests-it/:sphere/add",
     screen: MainPermissions.add_request_apc,
   },
   {
@@ -109,7 +109,7 @@ const routes = [
         attaching={MainPermissions.fabric_req_attach_master}
       />
     ),
-    path: "/requests-it/:id",
+    path: "/requests-it/:sphere/:id",
     screen: MainPermissions.edit_it_requests,
   },
   {
@@ -124,7 +124,7 @@ const routes = [
   },
   {
     element: <RequestsIT />,
-    path: "/requests-it",
+    path: "/requests-it/:sphere",
     screen: MainPermissions.get_it_requests,
   },
   {

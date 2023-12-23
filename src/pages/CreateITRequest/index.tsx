@@ -1,7 +1,7 @@
 import { useEffect, useState, forwardRef } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import cl from "classnames";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { successToast } from "@/utils/toast";
@@ -60,6 +60,7 @@ const column = [
   { name: "ТОВАР", key: "product_id" },
   { name: "КОЛИЧЕСТВО", key: "count" },
   { name: "", key: "" },
+  { name: "", key: "" },
 ];
 
 const InputWrapper = forwardRef<
@@ -99,6 +100,7 @@ const SelectWrapper = forwardRef<
 const CreateITRequest = () => {
   const [files, $files] = useState<FileItem[]>();
   const { mutate, isLoading } = requestMutation();
+  const { sphere } = useParams();
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
   const perm = useAppSelector(permissionSelector);
@@ -119,8 +121,8 @@ const CreateITRequest = () => {
 
   const { data: categories } = useCategories({
     department: Departments.it,
-    sphere_status: watch("order_type"),
-    enabled: !!watch("order_type"),
+    sphere_status: Number(sphere),
+    enabled: !!sphere,
   });
 
   useCatProducts({
@@ -160,7 +162,7 @@ const CreateITRequest = () => {
       {
         onSuccess: () => {
           successToast("Заказ успешно создано");
-          navigate(`/requests-it`);
+          navigate(`/requests-it/${sphere}`);
         },
       }
     );
@@ -202,18 +204,10 @@ const CreateITRequest = () => {
             <BranchSelect origin={1} enabled />
           )}
         </BaseInputs>
-        <BaseInputs label="тип" error={errors.order_type}>
-          <MainSelect
-            values={OrderTypeVals}
-            register={register("order_type", {
-              required: "Обязательное поле",
-            })}
-          />
-        </BaseInputs>
 
-        {+watch("order_type") === Sphere.purchase ? (
+        {Number(sphere) === Sphere.purchase ? (
           <>
-            <table className="table table-hover mb-0">
+            <table className="table table-hover ">
               <TableHead column={column} />
               <tbody>
                 {fields.map((field, index) => (
@@ -281,16 +275,25 @@ const CreateITRequest = () => {
                         onClick={() =>
                           fields.length > 1 ? remove(index) : null
                         }
-                        className="btn bg-danger text-white h-[38px]"
+                        className="btn bg-danger text-white"
                       >
                         Удалить
+                      </button>
+                    </td>
+                    <td className="align-top" width={90}>
+                      <button
+                        type="button"
+                        className={cl("btn btn-primary w-min")}
+                        onClick={addInputFields}
+                      >
+                        Добавить
                       </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <div className="w-full flex justify-end mt-3">
+            {/* <div className="w-full flex justify-end mt-3">
               <button
                 type="button"
                 className={cl("btn btn-primary m-2 w-min")}
@@ -298,7 +301,7 @@ const CreateITRequest = () => {
               >
                 Добавить
               </button>
-            </div>
+            </div> */}
           </>
         ) : (
           <BaseInputs label="Категорие" error={errors.category_id}>
