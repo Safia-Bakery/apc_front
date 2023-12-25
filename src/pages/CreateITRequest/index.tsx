@@ -1,4 +1,4 @@
-import { useEffect, useState, forwardRef } from "react";
+import { useEffect, useState, forwardRef, useMemo } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import cl from "classnames";
 import { useNavigate, useParams } from "react-router-dom";
@@ -50,7 +50,7 @@ interface FormDataTypes {
 
 const initialInventory: InventoryFields | undefined = {
   product: "",
-  qnt: "",
+  qnt: 1,
   category_id: 0,
 };
 
@@ -59,8 +59,8 @@ const column = [
   { name: "КАТЕГОРИЕ", key: "category_id" },
   { name: "ТОВАР", key: "product_id" },
   { name: "КОЛИЧЕСТВО", key: "count" },
-  { name: "", key: "" },
-  { name: "", key: "" },
+  { name: "", key: "remove" },
+  { name: "", key: "add" },
 ];
 
 const InputWrapper = forwardRef<
@@ -111,6 +111,7 @@ const CreateITRequest = () => {
     formState: { errors },
     reset,
     watch,
+    setValue,
   } = useForm<FormDataTypes>({
     defaultValues: { inputFields: [initialInventory] },
   });
@@ -139,6 +140,14 @@ const CreateITRequest = () => {
 
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
+
+  const handleIncrement = (idx: number) => () => {
+    setValue(`inputFields.${idx}.qnt`, +watch(`inputFields.${idx}.qnt`) + 1);
+  };
+  const handleDecrement = (idx: number) => () => {
+    if (+watch(`inputFields.${idx}.qnt`) > 1)
+      setValue(`inputFields.${idx}.qnt`, +watch(`inputFields.${idx}.qnt`) - 1);
+  };
 
   const handleFilesSelected = (data: FileItem[]) => $files(data);
 
@@ -173,6 +182,16 @@ const CreateITRequest = () => {
     name: "inputFields",
   });
 
+  const renderBranches = useMemo(() => {
+    return (
+      <BaseInputs className="relative" label="ФИЛИАЛ" error={errors.fillial_id}>
+        {perm?.[MainPermissions.get_fillials_list] && (
+          <BranchSelect origin={1} enabled />
+        )}
+      </BaseInputs>
+    );
+  }, [branch]);
+
   const addInputFields = () => append(initialInventory);
 
   useEffect(() => {
@@ -195,15 +214,7 @@ const CreateITRequest = () => {
         className={cl("content", styles.form)}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <BaseInputs
-          className="relative"
-          label="ФИЛИАЛ"
-          error={errors.fillial_id}
-        >
-          {perm?.[MainPermissions.get_fillials_list] && (
-            <BranchSelect origin={1} enabled />
-          )}
-        </BaseInputs>
+        {renderBranches}
 
         {Number(sphere) === Sphere.purchase ? (
           <>
@@ -211,7 +222,7 @@ const CreateITRequest = () => {
               <TableHead column={column} />
               <tbody>
                 {fields.map((field, index) => (
-                  <tr key={field.id}>
+                  <tr key={field.id + index}>
                     <td width={20}>{index + 1}</td>
                     <td>
                       <Controller
@@ -252,24 +263,46 @@ const CreateITRequest = () => {
                         )}
                       />
                     </td>
-                    <td>
-                      <Controller
-                        name={`inputFields.${index}.qnt`}
-                        control={control}
-                        defaultValue={field.qnt}
-                        render={({ field }) => (
-                          <InputWrapper
-                            type={"number"}
-                            field={field}
-                            error={errors.inputFields?.[index]?.qnt}
-                            register={register(`inputFields.${index}.qnt`, {
-                              required: "Обязательное поле",
-                            })}
+                    <td width={250}>
+                      <div className="flex gap-4 w-full">
+                        <button
+                          type="button"
+                          className={cl(
+                            styles.increment,
+                            "btn bg-danger text-white"
+                          )}
+                          onClick={handleDecrement(index)}
+                        >
+                          -
+                        </button>
+                        <div className="w-12">
+                          <Controller
+                            name={`inputFields.${index}.qnt`}
+                            control={control}
+                            defaultValue={field.qnt}
+                            render={({ field }) => (
+                              <InputWrapper
+                                type="number"
+                                field={field}
+                                error={errors.inputFields?.[index]?.qnt}
+                                register={register(`inputFields.${index}.qnt`, {
+                                  required: "Обязательное поле",
+                                })}
+                              />
+                            )}
                           />
-                        )}
-                      />
+                        </div>
+                        <button
+                          className={cl(styles.increment, "btn bg-green-400")}
+                          type="button"
+                          onClick={handleIncrement(index)}
+                        >
+                          +
+                        </button>
+                      </div>
                     </td>
-                    <td className="align-top" width={90}>
+
+                    <td className="align-top" width={100}>
                       <button
                         type="button"
                         onClick={() =>
@@ -280,7 +313,7 @@ const CreateITRequest = () => {
                         Удалить
                       </button>
                     </td>
-                    <td className="align-top" width={90}>
+                    <td className="align-top" width={100}>
                       <button
                         type="button"
                         className={cl("btn btn-primary w-min")}
@@ -293,15 +326,6 @@ const CreateITRequest = () => {
                 ))}
               </tbody>
             </table>
-            {/* <div className="w-full flex justify-end mt-3">
-              <button
-                type="button"
-                className={cl("btn btn-primary m-2 w-min")}
-                onClick={addInputFields}
-              >
-                Добавить
-              </button>
-            </div> */}
           </>
         ) : (
           <BaseInputs label="Категорие" error={errors.category_id}>

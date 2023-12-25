@@ -42,7 +42,7 @@ const TableHead: FC<Props> = ({ column, children, data, onSort }) => {
             <th
               onClick={handleSort(key)}
               className={"bg-primary text-white"}
-              key={name}
+              key={name + key}
             >
               {name}{" "}
               {sortKey === key && (

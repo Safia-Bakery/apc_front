@@ -96,6 +96,8 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
     }
   }, [data?.items]);
 
+  if (isLoading && !items.length) return;
+
   return (
     <>
       {focused && <div className={styles.overlay} onClick={onClose} />}

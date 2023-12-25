@@ -20,6 +20,7 @@ import { reportImgSelector, uploadReport } from "reducers/selects";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import uploadFileMutation from "@/hooks/mutation/uploadFile";
 import useSyncExpanditure from "@/hooks/sync/useSyncExpanditure";
+import { TelegramApp } from "@/utils/tgHelpers";
 
 const column = [{ name: "Наименование" }, { name: "Количество" }, { name: "" }];
 
@@ -98,17 +99,7 @@ const TelegramAddProduct = () => {
           onSuccess: (data: any) => {
             if (data.status === 200) {
               successToast("Успешно закончен");
-              //@ts-ignore
-              Telegram.WebApp.MainButton.setText("Закрыть")
-                .show()
-                .onClick(function () {
-                  //@ts-ignore
-                  const data = JSON.stringify({ success: true });
-                  //@ts-ignore
-                  Telegram.WebApp.sendData(data);
-                  //@ts-ignore
-                  Telegram.WebApp.close();
-                });
+              TelegramApp.toMainScreen();
             }
           },
         }
