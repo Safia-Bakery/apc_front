@@ -411,6 +411,10 @@ export enum MainPermissions {
   edit_log_requests = 73,
   add_log_requests = 72,
 
+  get_log_cars = 72, // todo
+  add_log_cars = 72, // todo
+  edit_log_cars = 72, // todo
+
   get_log_categs = 74,
   add_log_categs = 75,
   edit_log_categs = 76,
@@ -431,6 +435,10 @@ export enum MainPermissions {
   add_categ_it = 87,
   get_categ_it = 88,
   edit_categ_it = 86,
+
+  get_client_comment = 86, //todo
+  edit_client_comment = 86, //todo
+  add_client_comment = 86, //todo
 }
 export enum MarketingSubDep {
   designers = 1,

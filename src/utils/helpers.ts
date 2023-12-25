@@ -479,6 +479,12 @@ export const routes: SidebarType[] = [
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_log_categs,
       },
+      {
+        name: "Грузовики",
+        url: `/logystics-cars`,
+        icon: "/assets/icons/truck.svg",
+        screen: MainPermissions.get_log_requests,
+      },
     ],
   },
   {
@@ -512,6 +518,12 @@ export const routes: SidebarType[] = [
     url: "/comments",
     icon: "/assets/icons/comments.svg",
     screen: MainPermissions.get_comments_list,
+  },
+  {
+    name: "Отзывы гостей",
+    url: "/client-comments",
+    icon: "/assets/icons/clientComment.svg",
+    screen: MainPermissions.get_client_comment,
   },
   {
     name: "Настройки",

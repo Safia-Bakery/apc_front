@@ -9,8 +9,9 @@ import useRoles from "@/hooks/useRoles";
 import useRolePermission from "@/hooks/useRolePermission";
 import BaseInputs from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
+import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 
-const EditAddRole = () => {
+const EditAddLogCars = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate("/users");
@@ -35,8 +36,8 @@ const EditAddRole = () => {
       { name: getValues("name"), id: Number(id) },
       {
         onSuccess: () => {
-          successToast(!id ? "role created" : "role updated");
-          navigate("/roles");
+          successToast("success");
+          navigate(-1);
           usersRefetch();
           if (!!id) roleRefecth();
         },
@@ -52,7 +53,6 @@ const EditAddRole = () => {
       });
     }
   }, [role?.role_name, id]);
-
   return (
     <Card>
       <Header title={!id ? "Добавить" : `Изменить роль №${id}`}>
@@ -62,11 +62,20 @@ const EditAddRole = () => {
       </Header>
 
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
-        <BaseInputs label="НАИМЕНОВАНИЕ" error={errors.name}>
+        <BaseInputs label="Модель машины" error={errors.name}>
           <MainInput
-            autoFocus
-            register={register("name", { required: "Обязательное поле" })}
+            register={register("car_model", { required: "Обязательное поле" })}
           />
+        </BaseInputs>
+
+        <BaseInputs label="Номер" error={errors.name}>
+          <MainInput
+            register={register("car_number", { required: "Обязательное поле" })}
+          />
+        </BaseInputs>
+
+        <BaseInputs label="статус">
+          <MainCheckBox label="Активный" register={register("status")} />
         </BaseInputs>
 
         <button type="submit" className="btn btn-success btn-fill">
@@ -77,4 +86,4 @@ const EditAddRole = () => {
   );
 };
 
-export default EditAddRole;
+export default EditAddLogCars;

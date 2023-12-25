@@ -120,13 +120,13 @@ const CreateITRequest = () => {
     `inputFields.${watch("inputFields")?.length - 1}.category_id`
   );
 
-  const { data: categories } = useCategories({
+  const { data: categories, isLoading: categoryLoading } = useCategories({
     department: Departments.it,
     sphere_status: Number(sphere),
     enabled: !!sphere,
   });
 
-  useCatProducts({
+  const { isLoading: productLoading } = useCatProducts({
     category_id,
     enabled: !!category_id,
   });
@@ -200,7 +200,8 @@ const CreateITRequest = () => {
     });
   }, [branch?.id]);
 
-  if (isLoading) return <Loading absolute />;
+  if (isLoading || (productLoading && !!category_id) || categoryLoading)
+    return <Loading absolute />;
 
   return (
     <Card>

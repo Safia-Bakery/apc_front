@@ -1,24 +1,23 @@
+import { Link, useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { Link, useNavigate } from "react-router-dom";
 import Pagination from "@/components/Pagination";
-import { useState } from "react";
 import { handleIdx, itemsPerPage } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
-import dayjs from "dayjs";
 import ItemsCount from "@/components/ItemsCount";
 import useComments from "@/hooks/useComments";
 import useQueryString from "custom/useQueryString";
-import { Comments as CommentsTypes } from "@/utils/types";
 import EmptyList from "@/components/EmptyList";
 
 const column = [
   { name: "№", key: "id" },
   { name: "Сотрудник", key: "purchaser" },
-  { name: "Заявка", key: "status" },
-  { name: "Оценка", key: "status" },
+  { name: "Заявка", key: "id" },
+  { name: "Оценка", key: "rate" },
   { name: "Текст", key: "status" },
-  { name: "Дата", key: "status" },
+  { name: "Дата", key: "date" },
 ];
 
 const Comments = () => {

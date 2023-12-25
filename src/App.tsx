@@ -1,11 +1,12 @@
-import "dayjs/locale/ru";
+import { lazy, useMemo } from "react";
 import dayjs from "dayjs";
+import { Route, Routes } from "react-router-dom";
+import "dayjs/locale/ru";
 import "react-datepicker/dist/react-datepicker.css";
+
 import WebRooutes from "./components/WebRoutes";
 import { useAppSelector } from "@/store/utils/types";
 import { tokenSelector } from "reducers/auth";
-import { lazy, useMemo } from "react";
-import { Route, Routes } from "react-router-dom";
 import {
   Departments,
   MainPermissions,
@@ -65,8 +66,13 @@ const Comments = lazy(() => import("@/pages/Comments"));
 const ShowComment = lazy(() => import("@/pages/ShowComment"));
 const Branches = lazy(() => import("@/pages/Branches"));
 const EditAddBranch = lazy(() => import("@/pages/EditAddBranch"));
+const LogysticCars = lazy(() => import("@/pages/LogysticCars"));
+const EditAddLogCars = lazy(() => import("@/pages/EditAddLogCars"));
+const EditAddClientsComments = lazy(
+  () => import("@/pages/EditAddClientsComments")
+);
+const ClientsComments = lazy(() => import("@/pages/ClientsComments"));
 const RemainsInStock = lazy(() => import("@/pages/RemailnsInStock"));
-// const ShowRemainsInStock = lazy(() => import("@/pages/ShowRemainsInStock"));
 const CategoryStat = lazy(() => import("@/pages/StatisticsApc/CategoryStat"));
 const FillialStat = lazy(() => import("@/pages/StatisticsApc/FillialStat"));
 const BrigadaCategStat = lazy(
@@ -560,6 +566,37 @@ const routes = [
     element: <AddStaffOrder />,
     path: "/requests-staff/add",
     screen: MainPermissions.add_staff_requests,
+  },
+  {
+    element: <LogysticCars />,
+    path: "/logystics-cars",
+    screen: MainPermissions.get_log_requests,
+  },
+  {
+    element: <EditAddLogCars />,
+    path: "/logystics-cars/add",
+    screen: MainPermissions.add_log_requests,
+  },
+  {
+    element: <EditAddLogCars />,
+    path: "/logystics-cars/:id",
+    screen: MainPermissions.edit_log_requests,
+  },
+
+  {
+    element: <ClientsComments />,
+    path: "/client-comments",
+    screen: MainPermissions.get_client_comment,
+  },
+  {
+    element: <EditAddClientsComments />,
+    path: "/client-comments/:id",
+    screen: MainPermissions.edit_client_comment,
+  },
+  {
+    element: <EditAddClientsComments />,
+    path: "/client-comments/add",
+    screen: MainPermissions.add_client_comment,
   },
 ];
 
