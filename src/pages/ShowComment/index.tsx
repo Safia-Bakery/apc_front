@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import dayjs from "dayjs";
 import TableHead from "@/components/TableHead";
-import { itemsPerPage } from "@/utils/helpers";
+import { detectFileType, itemsPerPage } from "@/utils/helpers";
 import useOrders from "@/hooks/useOrders";
-import { Order, OrderType } from "@/utils/types";
+import { FileType, ModalTypes, Order, OrderType } from "@/utils/types";
+import useOrder from "@/hooks/useOrder";
+import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
+import { baseURL } from "@/main";
+import cl from "classnames";
+import ShowRequestModals from "@/components/ShowRequestModals";
+import Loading from "@/components/Loader";
 
 const column = [
   { name: "№", key: "id" as keyof Order["id"] },
@@ -19,17 +25,24 @@ const column = [
 const ShowComment = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [sort, $sort] = useState<OrderType[]>();
+  const navigateParams = useNavigateParams();
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const { data: order, isLoading: orderLoading } = useOrder({ id: Number(id) });
 
-  const { data: requests } = useOrders({
-    size: itemsPerPage,
-    page: currentPage,
-    enabled: false,
-  });
+  const handleShowPhoto = (file: string) => () => {
+    if (detectFileType(file) === FileType.other) return window.open(file);
+    else {
+      navigateParams({ modal: ModalTypes.showPhoto, photo: file });
+    }
+  };
+
+  const renderModal = useMemo(() => {
+    return <ShowRequestModals />;
+  }, []);
 
   const goBack = () => navigate(-1);
+
+  if (orderLoading) return <Loading absolute />;
 
   return (
     <>
@@ -46,39 +59,32 @@ const ShowComment = () => {
                 <tbody>
                   <tr>
                     <th>Сотрудник</th>
-                    <td width={450}>Сотрудник</td>
+                    <td width={450}>{order?.product}</td>
                   </tr>
                   <tr>
                     <th>Филиал</th>
-                    <td>E sergeli</td>
+                    <td>{order?.fillial?.parentfillial?.name}</td>
                   </tr>
                   <tr>
-                    <th>Категория</th>
-                    <td>category</td>
-                  </tr>
-                  <tr>
-                    <th>Комментарий</th>
-                    <td>comments</td>
-                  </tr>
-                  <tr>
-                    <th>Фото</th>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <th>Статус</th>
-                    <td>status </td>
-                  </tr>
-                  <tr>
-                    <th>Результат</th>
-                    <td>result</td>
-                  </tr>
-                  <tr>
-                    <th>Результат файл</th>
-                    <td>result file</td>
-                  </tr>
-                  <tr>
-                    <th>Дата</th>
-                    <td>{dayjs("order").format("DD.MM.YYYY HH:mm")}</td>
+                    <th>Файл</th>
+                    <td className="flex flex-col">
+                      {order?.file?.map((item, index) => {
+                        if (item.status === 0)
+                          return (
+                            <div
+                              className={cl(
+                                "text-link cursor-pointer max-w-[150px] w-full text-truncate"
+                              )}
+                              onClick={handleShowPhoto(
+                                `${baseURL}/${item.url}`
+                              )}
+                              key={item.url + index}
+                            >
+                              файл - {index + 1}
+                            </div>
+                          );
+                      })}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -89,47 +95,17 @@ const ShowComment = () => {
                 <tbody>
                   <tr>
                     <th>Добавил</th>
-                    <td width={450}>added</td>
+                    <td width={450}>{order?.user?.full_name}</td>
                   </tr>
                   <tr>
-                    <th>Добавлен в </th>
-                    <td>{dayjs("order").format("DD.MM.YYYY HH:mm")}</td>
+                    <th>Дата поступления </th>
+                    <td>
+                      {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
+                    </td>
                   </tr>
                   <tr>
-                    <th>Назначил испольнителя</th>
-                    <td>Administrator</td>
-                  </tr>
-                  <tr>
-                    <th>Назначен испольнитель в</th>
-                    <td>{dayjs("order").format("DD.MM.YYYY HH:mm")}</td>
-                  </tr>
-                  <tr>
-                    <th>Принял</th>
-                    <td>no</td>
-                  </tr>
-                  <tr>
-                    <th>Принят в</th>
-                    <td>-</td>
-                  </tr>
-                  <tr>
-                    <th>Завершил</th>
-                    <td>(не задано)</td>
-                  </tr>
-                  <tr>
-                    <th>Завершен в</th>
-                    <td>-</td>
-                  </tr>
-                  <tr>
-                    <th>Отменил</th>
-                    <td>someone</td>
-                  </tr>
-                  <tr>
-                    <th>Отменен в</th>
-                    <td>{dayjs("order").format("DD.MM.YYYY HH:mm")}</td>
-                  </tr>
-                  <tr>
-                    <th>Причина отмены</th>
-                    <td>denyreason</td>
+                    <th>Комментарий</th>
+                    <td>{order?.description}</td>
                   </tr>
                 </tbody>
               </table>
@@ -137,8 +113,9 @@ const ShowComment = () => {
           </div>
         </div>
       </Card>
+      {renderModal}
 
-      <Card>
+      {/* <Card>
         <Header title="Отзывы" />
         <div className="content">
           <table className="table table-hover">
@@ -166,7 +143,7 @@ const ShowComment = () => {
           </table>
           <hr />
         </div>
-      </Card>
+      </Card> */}
     </>
   );
 };

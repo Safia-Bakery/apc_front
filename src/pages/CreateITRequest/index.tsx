@@ -276,7 +276,7 @@ const CreateITRequest = () => {
                         >
                           -
                         </button>
-                        <div className="w-12">
+                        <div className="w-16">
                           <Controller
                             name={`inputFields.${index}.qnt`}
                             control={control}

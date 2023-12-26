@@ -3,25 +3,26 @@ import Header from "@/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import roleMutation from "@/hooks/mutation/roleMutation";
 import { successToast } from "@/utils/toast";
-import useRoles from "@/hooks/useRoles";
-import useRolePermission from "@/hooks/useRolePermission";
 import BaseInputs from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
 import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
+import useCars from "@/hooks/useCars";
+import carsMutation from "@/hooks/mutation/cars";
 
 const EditAddLogCars = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const goBack = () => navigate("/users");
-  const { refetch: usersRefetch } = useRoles({ enabled: !!id });
-  const { mutate: postRole } = roleMutation();
+  const goBack = () => navigate(-1);
+  const { refetch: carsRefetch } = useCars({ enabled: false });
+  const { mutate: postCars } = carsMutation();
 
-  const { data: role, refetch: roleRefecth } = useRolePermission({
+  const { data, refetch: carRefetch } = useCars({
     id: Number(id),
     enabled: !!id,
   });
+
+  const car = data?.[0];
 
   const {
     register,
@@ -32,27 +33,30 @@ const EditAddLogCars = () => {
   } = useForm();
 
   const onSubmit = () => {
-    postRole(
-      { name: getValues("name"), id: Number(id) },
+    const { car_model, car_number, status } = getValues();
+    postCars(
+      { name: car_model, id: Number(id), status, number: car_number },
       {
         onSuccess: () => {
           successToast("success");
-          navigate(-1);
-          usersRefetch();
-          if (!!id) roleRefecth();
+          goBack();
+          carsRefetch();
+          if (!!id) carRefetch();
         },
       }
     );
   };
 
   useEffect(() => {
-    if (id && role?.role_name) {
+    if (id && car) {
       reset({
-        name: role.role_name,
-        key: "",
+        car_model: car.name,
+        status: car.status,
+        car_number: car.number,
       });
     }
-  }, [role?.role_name, id]);
+  }, [car, id]);
+
   return (
     <Card>
       <Header title={!id ? "Добавить" : `Изменить роль №${id}`}>

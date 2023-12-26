@@ -7,10 +7,8 @@ import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import {
-  getValue,
   handleIdx,
   handleStatus,
-  itemsPerPage,
   requestRows,
   staffCategoryId,
 } from "@/utils/helpers";

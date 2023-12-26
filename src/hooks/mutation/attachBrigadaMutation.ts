@@ -9,6 +9,7 @@ interface Body {
   brigada_id?: number;
   deny_reason?: string;
   finishing_time?: string;
+  car_id?: number;
 }
 
 const attachBrigadaMutation = () => {

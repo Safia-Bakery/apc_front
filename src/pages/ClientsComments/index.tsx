@@ -4,18 +4,26 @@ import dayjs from "dayjs";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import Pagination from "@/components/Pagination";
-import { handleIdx, itemsPerPage } from "@/utils/helpers";
+import { detectFileType, handleIdx } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import ItemsCount from "@/components/ItemsCount";
-import useComments from "@/hooks/useComments";
 import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
-import { MainPermissions } from "@/utils/types";
+import {
+  Departments,
+  FileType,
+  MainPermissions,
+  ModalTypes,
+} from "@/utils/types";
 import DateRangeBlock from "@/components/DateRangeBlock";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
+import useOrders from "@/hooks/useOrders";
+import { baseURL } from "@/main";
+import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
+import ShowRequestModals from "@/components/ShowRequestModals";
 
 const column = [
   { name: "№", key: "id" },
@@ -31,12 +39,13 @@ const ClientsComments = () => {
   const tableRef = useRef(null);
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
-  const currentPage = Number(useQueryString("page")) || 1;
+  const navigateParams = useNavigateParams();
+  const page = Number(useQueryString("page")) || 1;
   const permission = useAppSelector(permissionSelector);
 
-  const { data: comments, isLoading } = useComments({
-    size: itemsPerPage,
-    page: currentPage,
+  const { data: comments, isLoading } = useOrders({
+    page,
+    department: Departments.clientComment,
   });
 
   const { onDownload } = useDownloadExcel({
@@ -44,6 +53,17 @@ const ClientsComments = () => {
     filename: "статистика по категориям",
     sheet: "categories",
   });
+
+  const renderModal = useMemo(() => {
+    return <ShowRequestModals />;
+  }, []);
+
+  const handleShowPhoto = (file: string) => () => {
+    if (detectFileType(file) === FileType.other) return window.open(file);
+    else {
+      navigateParams({ modal: ModalTypes.showPhoto, photo: file });
+    }
+  };
 
   const downloadAsPdf = () => onDownload();
 
@@ -82,22 +102,35 @@ const ClientsComments = () => {
                     <td width="40">{handleIdx(idx)}</td>
                     <td>
                       {permission?.[MainPermissions.add_client_comment] ? (
-                        <Link to={`/comments/${comment?.request?.id}`}>
+                        <Link to={`/client-comments/${comment?.id}`}>
                           {comment?.id}
                         </Link>
                       ) : (
                         <span>{comment?.id}</span>
                       )}
                     </td>
-                    <td>{comment.user?.full_name}</td>
+                    <td>{comment?.product}</td>
 
-                    <td>branch</td>
+                    <td>{comment?.fillial?.parentfillial?.name}</td>
                     <td>
-                      {dayjs(comment?.request?.finished_at).format(
-                        "DD.MM.YYYY HH:mm"
-                      )}
+                      {dayjs(comment?.created_at).format("DD.MM.YYYY HH:mm")}
                     </td>
-                    <td>{comment?.comment}</td>
+                    <td>
+                      <div
+                        onClick={handleShowPhoto(
+                          `${baseURL}/${comment?.file?.[0]?.url}`
+                        )}
+                        className="h-20 w-20 flex items-center justify-center"
+                      >
+                        <img
+                          height={80}
+                          width={80}
+                          src={`${baseURL}/${comment?.file?.[0]?.url}`}
+                          alt="image"
+                        />
+                      </div>
+                    </td>
+                    <td>{comment?.description}</td>
                   </tr>
                 ))}
               </tbody>
@@ -107,6 +140,7 @@ const ClientsComments = () => {
           {!comments?.items?.length && !isLoading && <EmptyList />}
         </div>
       </div>
+      {renderModal}
     </Card>
   );
 };

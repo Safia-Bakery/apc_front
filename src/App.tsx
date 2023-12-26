@@ -69,7 +69,7 @@ const EditAddBranch = lazy(() => import("@/pages/EditAddBranch"));
 const LogysticCars = lazy(() => import("@/pages/LogysticCars"));
 const EditAddLogCars = lazy(() => import("@/pages/EditAddLogCars"));
 const EditAddClientsComments = lazy(
-  () => import("@/pages/EditAddClientsComments")
+  () => import("@/pages/CreateClientsComments")
 );
 const ClientsComments = lazy(() => import("@/pages/ClientsComments"));
 const RemainsInStock = lazy(() => import("@/pages/RemailnsInStock"));
@@ -589,7 +589,7 @@ const routes = [
     screen: MainPermissions.get_client_comment,
   },
   {
-    element: <EditAddClientsComments />,
+    element: <ShowComment />,
     path: "/client-comments/:id",
     screen: MainPermissions.edit_client_comment,
   },

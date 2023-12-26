@@ -1,16 +1,16 @@
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { Link, useNavigate } from "react-router-dom";
-import { MainPermissions, RoleTypes } from "@/utils/types";
-
+import { CarsTypes, MainPermissions } from "@/utils/types";
 import Loading from "@/components/Loader";
-import { useState } from "react";
 import TableHead from "@/components/TableHead";
 import TableViewBtn from "@/components/TableViewBtn";
-import useRoles from "@/hooks/useRoles";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import EmptyList from "@/components/EmptyList";
+import useCars from "@/hooks/useCars";
 
 const column = [
   { name: "№", key: "" },
@@ -24,10 +24,11 @@ const LogysticCars = () => {
   const navigate = useNavigate();
   const handleNavigate = (route: string) => () => navigate(route);
   const permission = useAppSelector(permissionSelector);
-  const [sort, $sort] = useState<RoleTypes[]>();
+  const [sort, $sort] = useState<CarsTypes[]>();
 
-  const { data: roles, isLoading: orderLoading } = useRoles({});
-  if (orderLoading) return <Loading />;
+  const { data: cars, isLoading: carsLoading } = useCars({});
+
+  if (carsLoading) return <Loading />;
 
   return (
     <Card>
@@ -47,16 +48,16 @@ const LogysticCars = () => {
           <TableHead
             column={column}
             onSort={(data) => $sort(data)}
-            data={roles}
+            data={cars}
           />
 
-          {!!roles?.length && (
+          {!!cars?.length && (
             <tbody>
-              {(sort?.length ? sort : roles)?.map((car, idx) => (
+              {(sort?.length ? sort : cars)?.map((car, idx) => (
                 <tr className="bg-blue" key={car.id}>
                   <td width="40">{idx + 1}</td>
                   <td>{car?.name}</td>
-                  <td>{car?.name}</td>
+                  <td>{car?.number}</td>
                   <td>{!car.status ? "Не активный" : "Активный"}</td>
                   <td width={40}>
                     {permission?.[MainPermissions.edit_log_cars] && (
@@ -68,7 +69,7 @@ const LogysticCars = () => {
             </tbody>
           )}
         </table>
-        {!roles?.length && !orderLoading && <EmptyList />}
+        {!cars?.length && !carsLoading && <EmptyList />}
       </div>
     </Card>
   );

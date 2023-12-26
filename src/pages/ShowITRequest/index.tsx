@@ -56,6 +56,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
     department: dep || Departments.it,
     ...(!!sphere_status && { sphere_status }),
   });
+
   const handleModal = (type: ModalTypes) => () => {
     navigateParams({ modal: type });
   };

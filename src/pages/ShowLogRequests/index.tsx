@@ -21,13 +21,13 @@ import {
 } from "@/utils/types";
 import { useForm } from "react-hook-form";
 import ShowRequestModals from "@/components/ShowRequestModals";
-
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import cl from "classnames";
+import useQueryString from "@/hooks/custom/useQueryString";
 
 const ShowLogRequests = () => {
   const { id } = useParams();
-
+  const modal = useQueryString("modal");
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
   const { mutate: attach } = attachBrigadaMutation();
@@ -94,9 +94,7 @@ const ShowLogRequests = () => {
         <div className="float-end mb10">
           {order?.status! < 2 && (
             <button
-              onClick={handleBrigada({
-                status: RequestStatus.sendToRepair,
-              })}
+              onClick={handleModal(ModalTypes.cars)}
               className="btn btn-warning btn-fill mr-2"
             >
               Отправить в путь
@@ -113,6 +111,10 @@ const ShowLogRequests = () => {
           )}
         </div>
       );
+  }, [order?.status]);
+
+  const renderModals = useMemo(() => {
+    if (order?.status !== RequestStatus.done) return <ShowRequestModals />;
   }, [order?.status]);
 
   useEffect(() => {
@@ -285,6 +287,12 @@ const ShowLogRequests = () => {
                         : "Не задано"}
                     </td>
                   </tr>
+                  {!!order?.cars?.name && (
+                    <tr>
+                      <th>Назначенный грузовик</th>
+                      <td>{order?.cars?.name}</td>
+                    </tr>
+                  )}
                   {order?.deny_reason && (
                     <tr>
                       <th className="font-bold">Причина отмены</th>
@@ -300,7 +308,7 @@ const ShowLogRequests = () => {
         </div>
       </Card>
 
-      <ShowRequestModals />
+      {renderModals}
     </>
   );
 };

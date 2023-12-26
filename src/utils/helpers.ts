@@ -215,19 +215,8 @@ export const stockStores = {
   retail: "4aafb5af-66c3-4419-af2d-72897f652019",
 };
 
-export const getValue = (obj: any, key: string) => {
-  const keys = key.split(".");
-  let value = obj;
-
-  for (const k of keys) {
-    if (!value) break;
-    value = value[k];
-  }
-
-  return value;
-};
-
 export const staffCategoryId = 36;
+export const clientCommentCategoryId = 56;
 // export const logysticsCategs = 37;
 
 export const routes: SidebarType[] = [
@@ -468,7 +457,7 @@ export const routes: SidebarType[] = [
     department: Departments.logystics,
     subroutes: [
       {
-        name: "Заявки на Запрос машин",
+        name: "Запрос машин",
         url: "/requests-logystics",
         icon: "/assets/icons/logystics.svg",
         screen: MainPermissions.get_log_requests,

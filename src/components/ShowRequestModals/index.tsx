@@ -27,6 +27,7 @@ import MainDatePicker from "../BaseInputs/MainDatePicker";
 import dayjs from "dayjs";
 import marketingReassignMutation from "@/hooks/mutation/marketingReassign";
 import useCategories from "@/hooks/useCategories";
+import useCars from "@/hooks/useCars";
 
 const ShowRequestModals = () => {
   const { id } = useParams();
@@ -42,9 +43,13 @@ const ShowRequestModals = () => {
   const { mutate: attach } = attachBrigadaMutation();
   const { register, getValues, watch, handleSubmit } = useForm();
 
-  const { data: categories, isLoading: categoryLoading } = useCategories({
+  const { data: categories } = useCategories({
     sub_id: Number(watch("direction")),
     enabled: !!watch("direction"),
+  });
+
+  const { data: cars, isLoading: carLoading } = useCars({
+    enabled: modal === ModalTypes.cars,
   });
 
   const { data: brigades, isFetching: brigadaLoading } = useBrigadas({
@@ -77,10 +82,12 @@ const ShowRequestModals = () => {
       status,
       item,
       time,
+      car_id,
     }: {
       status: RequestStatus;
       item?: BrigadaType;
       time?: string;
+      car_id?: number;
     }) =>
     () => {
       const { fixedReason } = getValues();
@@ -89,6 +96,7 @@ const ShowRequestModals = () => {
           request_id: Number(id),
           status,
           ...(!!time && { finishing_time: time }),
+          ...(!!car_id && { car_id }),
           ...(!!item && { brigada_id: Number(item?.id) }),
           ...(status === RequestStatus.rejected && {
             deny_reason:
@@ -131,6 +139,41 @@ const ShowRequestModals = () => {
                         onClick={handleBrigada({
                           status: RequestStatus.confirmed,
                           item,
+                        })}
+                        className="btn btn-success btn-fill btn-sm"
+                      >
+                        Назначить
+                      </button>
+                    </div>
+                  ))
+              )}
+            </div>
+          </div>
+        );
+      case ModalTypes.cars:
+        return (
+          <div className={styles.birgadesModal}>
+            <Header title="Выберите исполнителя">
+              <button onClick={() => removeParams(["modal"])} className="close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </Header>
+            <div className={styles.items}>
+              {carLoading ? (
+                <Loading />
+              ) : (
+                cars
+                  ?.filter((item) => !!item.status)
+                  .map((item, idx) => (
+                    <div key={idx} className={styles.item}>
+                      <h6>
+                        {item?.name}+ {item?.number}
+                      </h6>
+                      <button
+                        id="attach_to_bridaga"
+                        onClick={handleBrigada({
+                          status: RequestStatus.sendToRepair,
+                          car_id: item.id,
                         })}
                         className="btn btn-success btn-fill btn-sm"
                       >

@@ -109,6 +109,7 @@ export interface Order {
       rating: string;
     }
   ];
+  cars?: CarsTypes;
 }
 
 export interface OrderType extends BasePaginatedRes {
@@ -411,9 +412,9 @@ export enum MainPermissions {
   edit_log_requests = 73,
   add_log_requests = 72,
 
-  get_log_cars = 72, // todo
-  add_log_cars = 72, // todo
-  edit_log_cars = 72, // todo
+  get_log_cars = 92,
+  add_log_cars = 93,
+  edit_log_cars = 94,
 
   get_log_categs = 74,
   add_log_categs = 75,
@@ -436,9 +437,9 @@ export enum MainPermissions {
   get_categ_it = 88,
   edit_categ_it = 86,
 
-  get_client_comment = 86, //todo
-  edit_client_comment = 86, //todo
-  add_client_comment = 86, //todo
+  get_client_comment = 95,
+  edit_client_comment = 97,
+  add_client_comment = 96,
 }
 export enum MarketingSubDep {
   designers = 1,
@@ -495,6 +496,7 @@ export enum Departments {
   it = 4,
   logystics = 5, // zakaz mawin
   staff = 6, // zakaz edi
+  clientComment = 7, // otziv clientov
 }
 export enum Sphere {
   retail = 1, //for APC department
@@ -557,9 +559,17 @@ export const enum ModalTypes {
   showPhoto,
   assingDeadline,
   reassign,
+  cars,
 }
 
 export interface CountTypes {
   counter: [number[]];
   comment: string;
+}
+
+export interface CarsTypes {
+  id: number;
+  name: string;
+  status: number;
+  number: string;
 }

@@ -48,6 +48,7 @@ const routeNameMappings: { [key: string]: string } = {
   clients: "Клиенты",
   logs: "Логи",
   products: "Продукты",
+  "client-comments": "Отзывы гостей",
 };
 
 const Breadcrumbs: FC = () => {

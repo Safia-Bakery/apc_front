@@ -1,13 +1,12 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Departments, MainPermissions, Order, Sphere } from "@/utils/types";
+import { Departments, MainPermissions, Order } from "@/utils/types";
 import Pagination from "@/components/Pagination";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import {
-  getValue,
   handleIdx,
   handleStatus,
   itemsPerPage,
@@ -88,7 +87,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
 
   return (
     <Card>
-      <Header title={"Заявки"}>
+      <Header title="Заявки на Запрос машин">
         <button className="btn btn-primary btn-fill mr-2">Экспорт</button>
         {permission?.[add] && (
           <button

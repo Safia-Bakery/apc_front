@@ -75,6 +75,7 @@ const CreateLogRequests = () => {
   };
 
   if (isLoading || categoryLoading) return <Loading absolute />;
+
   return (
     <Card>
       <Header title={"Создать заказ"}>
