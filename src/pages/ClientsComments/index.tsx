@@ -1,5 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
+import { useMemo, useRef } from "react";
 
 import Card from "@/components/Card";
 import Header from "@/components/Header";
@@ -18,8 +20,6 @@ import {
   ModalTypes,
 } from "@/utils/types";
 import DateRangeBlock from "@/components/DateRangeBlock";
-import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
-import { useMemo, useRef } from "react";
 import useOrders from "@/hooks/useOrders";
 import { baseURL } from "@/main";
 import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
@@ -38,7 +38,6 @@ const column = [
 const ClientsComments = () => {
   const tableRef = useRef(null);
   const navigate = useNavigate();
-  const goBack = () => navigate(-1);
   const navigateParams = useNavigateParams();
   const page = Number(useQueryString("page")) || 1;
   const permission = useAppSelector(permissionSelector);
@@ -50,8 +49,8 @@ const ClientsComments = () => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "статистика по категориям",
-    sheet: "categories",
+    filename: "Отзывы гостей",
+    sheet: "Отзывы гостей",
   });
 
   const renderModal = useMemo(() => {
@@ -123,8 +122,7 @@ const ClientsComments = () => {
                         className="h-20 w-20 flex items-center justify-center"
                       >
                         <img
-                          height={80}
-                          width={80}
+                          className="object-contain h-20 w-20"
                           src={`${baseURL}/${comment?.file?.[0]?.url}`}
                           alt="image"
                         />
