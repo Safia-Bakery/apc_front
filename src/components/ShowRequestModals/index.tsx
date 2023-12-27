@@ -167,7 +167,7 @@ const ShowRequestModals = () => {
                   .map((item, idx) => (
                     <div key={idx} className={styles.item}>
                       <h6>
-                        {item?.name}+ {item?.number}
+                        {item?.name} {item?.number}
                       </h6>
                       <button
                         id="attach_to_bridaga"
