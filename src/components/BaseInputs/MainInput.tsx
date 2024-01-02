@@ -1,4 +1,10 @@
-import { ChangeEvent, FC, HTMLInputTypeAttribute, useRef } from "react";
+import {
+  ChangeEvent,
+  FC,
+  HTMLInputTypeAttribute,
+  KeyboardEventHandler,
+  useRef,
+} from "react";
 import cl from "classnames";
 import { UseFormRegisterReturn } from "react-hook-form";
 import styles from "./index.module.scss";
@@ -15,6 +21,7 @@ interface Props {
   onFocus?: () => void;
   ref?: any;
   defaultValue?: any;
+  onKeyDown?: KeyboardEventHandler;
 }
 
 const MainInput: FC<Props> = ({

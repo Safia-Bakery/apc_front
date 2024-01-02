@@ -16,7 +16,7 @@
   left: 0;
   right: 0;
 }
-.list {
+.lists {
   height: 200px;
   overflow-y: auto;
   border: 1px solid black;
@@ -28,4 +28,14 @@
   top: 50%;
   z-index: 10;
   transform: translateY(-50%);
+}
+.list {
+  padding: 0.5rem 1rem;
+  position: relative;
+  cursor: pointer;
+  transition: 0.2s;
+  border-bottom: 1px solid black;
+  &:hover {
+    background: var(--hoverGray);
+  }
 }

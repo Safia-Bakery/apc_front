@@ -1,4 +1,11 @@
-import { ChangeEvent, FC, useCallback, useEffect, useRef } from "react";
+import {
+  ChangeEvent,
+  FC,
+  useCallback,
+  useEffect,
+  useRef,
+  KeyboardEvent,
+} from "react";
 import styles from "./index.module.scss";
 import { useState } from "react";
 import BaseInput from "../BaseInputs";
@@ -23,6 +30,7 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
   const [search, $search] = useState("");
   const [page, $page] = useState(1);
   const [focused, $focused] = useState(false);
+  const [selectedIdx, $selectedIdx] = useState(-1);
 
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
@@ -52,6 +60,7 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
 
   const onClose = () => {
     $focused(false);
+    $selectedIdx(-1);
     removeParam(["choose_fillial"]);
   };
 
@@ -65,6 +74,7 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
     removeParam(["branch", "choose_fillial"]);
     $search("");
     $focused(false);
+    $selectedIdx(-1);
   };
 
   useEffect(() => {
@@ -76,11 +86,27 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
   const handleProduct = (product: { id: string; name: string }) => {
     navigate({ branch: JSON.stringify(product), choose_fillial: false });
     $focused(false);
+    $selectedIdx(-1);
   };
 
   const handleFocus = () => {
     if (!enabled) refetch();
     $focused(true);
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "ArrowDown") {
+      $selectedIdx((prevIndex) =>
+        prevIndex < items.length - 1 ? prevIndex + 1 : prevIndex
+      );
+    } else if (event.key === "ArrowUp") {
+      $selectedIdx((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : prevIndex));
+    } else if (event.key === "Enter") {
+      if (selectedIdx !== -1) {
+        event.preventDefault();
+        handleProduct(items[selectedIdx]);
+      }
+    }
   };
 
   useUpdateEffect(() => {
@@ -96,7 +122,18 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
     }
   }, [data?.items]);
 
-  if (isLoading && !items.length) return;
+  useEffect(() => {
+    if (selectedIdx !== -1) {
+      const selectedOptionElement = document.getElementById(
+        `option-${selectedIdx}`
+      );
+      if (selectedOptionElement) {
+        selectedOptionElement.scrollIntoView({ block: "nearest" });
+      }
+    }
+  }, [selectedIdx]);
+
+  if (isLoading && !items.length && enabled) return;
 
   return (
     <>
@@ -117,10 +154,11 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
             onChange={handleSearch}
             value={search}
             onFocus={handleFocus}
+            onKeyDown={handleKeyDown}
           />
         </BaseInput>
         {focused && (
-          <ul className={cl(styles.list, "shadow-xl")}>
+          <ul className={cl(styles.lists, "shadow-xl")}>
             {items?.map((item, idx) => {
               if (items.length === idx + 1 && !query)
                 return (
@@ -130,9 +168,10 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
                     onClick={() =>
                       handleProduct({ id: item.id, name: item.name })
                     }
-                    className={cl(
-                      "py-2 px-4 relative pointer hover:bg-hoverGray transition-colors border-b border-b-black "
-                    )}
+                    id={`option-${idx}`}
+                    className={cl(styles.list, {
+                      ["bg-gray-400"]: idx === selectedIdx,
+                    })}
                   >
                     {item.name}
                   </li>
@@ -144,9 +183,10 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
                     onClick={() =>
                       handleProduct({ id: item.id, name: item.name })
                     }
-                    className={cl(
-                      "py-2 px-4 relative pointer hover:bg-hoverGray transition-colors border-b border-b-black"
-                    )}
+                    id={`option-${idx}`}
+                    className={cl(styles.list, {
+                      ["bg-gray-400"]: idx === selectedIdx,
+                    })}
                   >
                     {item.name}
                   </li>
