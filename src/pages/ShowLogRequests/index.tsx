@@ -23,7 +23,7 @@ import { useForm } from "react-hook-form";
 import ShowRequestModals from "@/components/ShowRequestModals";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import cl from "classnames";
-import useQueryString from "@/hooks/custom/useQueryString";
+import useQueryString from "custom/useQueryString";
 
 const ShowLogRequests = () => {
   const { id } = useParams();

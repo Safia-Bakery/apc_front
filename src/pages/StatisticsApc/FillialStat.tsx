@@ -5,7 +5,7 @@ import useStatsDepartment from "@/hooks/useStatsDepartment";
 
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 import EmptyList from "@/components/EmptyList";
-import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
+import useUpdateQueryStr from "custom/useUpdateQueryStr";
 
 const column = [
   { name: "Филиалы", key: "name" },

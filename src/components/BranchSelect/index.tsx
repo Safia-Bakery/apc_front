@@ -9,7 +9,7 @@ import { BranchTypes } from "@/utils/types";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import useBranches from "@/hooks/useBranches";
 import useQueryString from "custom/useQueryString";
-import useUpdateEffect from "@/hooks/useUpdateEffect";
+import useUpdateEffect from "custom/useUpdateEffect";
 
 interface Props {
   origin?: number;

@@ -9,7 +9,7 @@ import { BranchTypes } from "@/utils/types";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import useQueryString from "custom/useQueryString";
 import useWarehouse from "@/hooks/useWarehouse";
-import useUpdateEffect from "@/hooks/useUpdateEffect";
+import useUpdateEffect from "custom/useUpdateEffect";
 
 const WarehouseSelect: FC = () => {
   const navigate = useNavigateParams();

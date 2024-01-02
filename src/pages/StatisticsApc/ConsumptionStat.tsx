@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import { Departments, Sphere } from "@/utils/types";
 import EmptyList from "@/components/EmptyList";
-import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
+import useUpdateQueryStr from "custom/useUpdateQueryStr";
 
 const column = [
   { name: "№", key: "" },

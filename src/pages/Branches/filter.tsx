@@ -5,7 +5,7 @@ import MainSelect from "@/components/BaseInputs/MainSelect";
 import { useNavigateParams } from "custom/useCustomNavigate";
 import useDebounce from "custom/useDebounce";
 import useQueryString from "custom/useQueryString";
-import useUpdateEffect from "@/hooks/useUpdateEffect";
+import useUpdateEffect from "custom/useUpdateEffect";
 import { RegionNames, StatusName } from "@/utils/helpers";
 
 const BranchesFilter: FC = () => {

@@ -16,7 +16,7 @@ import useCategories from "@/hooks/useCategories";
 import { useForm } from "react-hook-form";
 import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
-import useUpdateEffect from "@/hooks/useUpdateEffect";
+import useUpdateEffect from "custom/useUpdateEffect";
 
 const ApcFilter: FC = () => {
   const navigate = useNavigateParams();

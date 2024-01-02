@@ -6,7 +6,7 @@ import MainSelect from "@/components/BaseInputs/MainSelect";
 import useCategories from "@/hooks/useCategories";
 import useDebounce from "custom/useDebounce";
 import useQueryString from "custom/useQueryString";
-import useUpdateEffect from "@/hooks/useUpdateEffect";
+import useUpdateEffect from "custom/useUpdateEffect";
 import { StatusName, itemsPerPage } from "@/utils/helpers";
 
 const CategoriesFilter: FC = () => {

@@ -7,7 +7,7 @@ import { useNavigateParams } from "custom/useCustomNavigate";
 import useDebounce from "custom/useDebounce";
 import useQueryString from "custom/useQueryString";
 import useRoles from "@/hooks/useRoles";
-import useUpdateEffect from "@/hooks/useUpdateEffect";
+import useUpdateEffect from "custom/useUpdateEffect";
 
 interface Props {
   currentPage: number;

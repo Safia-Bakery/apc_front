@@ -14,7 +14,7 @@ import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import { MainPermissions } from "@/utils/types";
-import useUpdateEffect from "@/hooks/useUpdateEffect";
+import useUpdateEffect from "custom/useUpdateEffect";
 import "react-datepicker/dist/react-datepicker.css";
 
 interface Props {

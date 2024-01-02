@@ -30,7 +30,7 @@ const routeNameMappings: { [key: string]: string } = {
   branches: "Филлиалы",
   "requests-inventory": "Заявка на инвентарь",
   "requests-apc": "Заявки АРС",
-  "requests-it": "Заявки it",
+  "requests-it": "Заявки IT",
   "requests-designer": "Проектная работа для дизайнеров",
   "requests-apc-retail": "Заявки на APC розница",
   "requests-apc-fabric": "Заявки на APC фабрика",

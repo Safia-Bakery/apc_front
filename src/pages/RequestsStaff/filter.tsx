@@ -13,7 +13,7 @@ import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { useForm } from "react-hook-form";
 import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
-import useUpdateEffect from "@/hooks/useUpdateEffect";
+import useUpdateEffect from "custom/useUpdateEffect";
 
 const today = new Date();
 const tomorrow = today.setDate(today.getDate() + 1);

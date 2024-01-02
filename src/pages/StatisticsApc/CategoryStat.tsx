@@ -7,7 +7,7 @@ import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel
 import EmptyList from "@/components/EmptyList";
 import dayjs from "dayjs";
 import { useLocation, useParams } from "react-router-dom";
-import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
+import useUpdateQueryStr from "custom/useUpdateQueryStr";
 
 interface SortTypes {
   category: string;

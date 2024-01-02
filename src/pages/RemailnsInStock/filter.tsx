@@ -7,7 +7,7 @@ import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import useQueryString from "custom/useQueryString";
 import dayjs from "dayjs";
-import useUpdateEffect from "@/hooks/useUpdateEffect";
+import useUpdateEffect from "custom/useUpdateEffect";
 
 const StockFilter = () => {
   const navigate = useNavigateParams();

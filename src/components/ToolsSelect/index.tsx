@@ -9,7 +9,7 @@ import cl from "classnames";
 import { ToolTypes } from "@/utils/types";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import useQueryString from "custom/useQueryString";
-import useUpdateEffect from "@/hooks/useUpdateEffect";
+import useUpdateEffect from "custom/useUpdateEffect";
 
 const ToolsSelect: React.FC = () => {
   const navigate = useNavigateParams();

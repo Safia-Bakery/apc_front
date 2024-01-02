@@ -5,9 +5,9 @@ import Chart from "react-apexcharts";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 import useMarketingStatDep from "@/hooks/useMarketingStatDep";
 import { handleDepartment } from "@/utils/helpers";
-import useUpdateEffect from "@/hooks/useUpdateEffect";
+import useUpdateEffect from "custom/useUpdateEffect";
 import EmptyList from "@/components/EmptyList";
-import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
+import useUpdateQueryStr from "custom/useUpdateQueryStr";
 
 const options = {
   chart: {

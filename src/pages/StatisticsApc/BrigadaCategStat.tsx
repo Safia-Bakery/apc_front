@@ -3,7 +3,7 @@ import useStatsBrigadaCateg from "@/hooks/useStatsBrigadaCateg";
 import { FC, useEffect, useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import EmptyList from "@/components/EmptyList";
-import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
+import useUpdateQueryStr from "custom/useUpdateQueryStr";
 
 const column = [
   { name: "№", key: "id" as keyof Order["id"] },
