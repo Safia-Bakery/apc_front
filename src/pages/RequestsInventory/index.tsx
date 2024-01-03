@@ -32,7 +32,7 @@ const column = [
   { name: "Автор", key: "user.name" },
 ];
 
-const RequestInventory = () => {
+const RequestsInventory = () => {
   const navigate = useNavigate();
   const currentPage = Number(useQueryString("page")) || 1;
   const [sort, $sort] = useState<Order[]>();
@@ -110,4 +110,4 @@ const RequestInventory = () => {
   );
 };
 
-export default RequestInventory;
+export default RequestsInventory;

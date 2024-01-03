@@ -51,6 +51,8 @@ const RequestsMarketing = lazy(() => import("@/pages/RequestsMarketing"));
 const AddMarketingRequest = lazy(() => import("@/pages/AddMarketingRequest"));
 const RequestsIT = lazy(() => import("@/pages/RequestsIT"));
 const AddInventoryRequest = lazy(() => import("@/pages/AddInventoryRequest"));
+const RequestsInventory = lazy(() => import("@/pages/RequestsInventory"));
+const ShowRequestInventory = lazy(() => import("@/pages/ShowRequestInventory"));
 const YandexMap = lazy(() => import("@/pages/Map"));
 const StatisticsApc = lazy(() => import("@/pages/StatisticsApc"));
 const StatsMarketing = lazy(() => import("@/pages/StatsMarketing"));
@@ -557,6 +559,47 @@ const routes = [
     path: "/requests-staff",
     screen: MainPermissions.get_staff_requests,
   },
+
+  // iniventory
+  {
+    element: <RequestsInventory />,
+    path: "/requests-inventory",
+    screen: MainPermissions.get_requests_inventory,
+  },
+  {
+    element: <ShowRequestInventory />,
+    path: "/requests-inventory/:id",
+    screen: MainPermissions.edit_requests_inventory,
+  },
+  {
+    element: <AddInventoryRequest />,
+    path: "/requests-inventory/add",
+    screen: MainPermissions.add_requests_inventory,
+  },
+  {
+    element: (
+      <Categories
+        add={MainPermissions.add_category_inventory}
+        edit={MainPermissions.edit_category_inventory}
+        dep={Departments.inventory}
+      />
+    ),
+    path: `/categories-inventory`,
+    screen: MainPermissions.get_category_inventory,
+  },
+
+  {
+    element: <EditAddCategory dep={Departments.inventory} />,
+    path: `/categories-inventory/:id`,
+    screen: MainPermissions.edit_category_inventory,
+  },
+  {
+    element: <EditAddCategory dep={Departments.inventory} />,
+    path: `/categories-inventory/add`,
+    screen: MainPermissions.add_category_inventory,
+  },
+
+  // ===========================================================
   {
     element: <ShowLogRequests />,
     path: "/requests-staff/:id",
