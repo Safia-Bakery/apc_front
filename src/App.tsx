@@ -82,6 +82,9 @@ const BrigadaCategStat = lazy(
 );
 const BrigadaStat = lazy(() => import("@/pages/StatisticsApc/BrigadaStat"));
 
+const EditProductInventory = lazy(() => import("@/pages/EditProductInventory"));
+const ProductsInventory = lazy(() => import("@/pages/ProductsInventory"));
+
 dayjs.locale("ru");
 
 const routes = [
@@ -597,6 +600,16 @@ const routes = [
     element: <EditAddCategory dep={Departments.inventory} />,
     path: `/categories-inventory/add`,
     screen: MainPermissions.add_category_inventory,
+  },
+  {
+    element: <EditProductInventory />,
+    path: `/products-inventory/:id`,
+    screen: MainPermissions.edit_product_inventory,
+  },
+  {
+    element: <ProductsInventory />,
+    path: `/products-inventory`,
+    screen: MainPermissions.get_product_inventory,
   },
 
   // ===========================================================

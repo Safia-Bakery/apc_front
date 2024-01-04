@@ -46,14 +46,14 @@ const WebRooutes = () => {
       );
   }, [permission, token]);
 
-  // useEffect(() => {
-  //   const currentPath = window.location.pathname;
-  //   const normalizedPath = normalizeURL(currentPath);
-  //   if (currentPath !== normalizedPath)
-  //     navigate(normalizedPath, { replace: true });
+  useEffect(() => {
+    // const currentPath = window.location.pathname;
+    // const normalizedPath = normalizeURL(currentPath);
+    // if (currentPath !== normalizedPath)
+    //   navigate(normalizedPath, { replace: true });
 
-  //   if (window.location.pathname === "/") navigate("/home");
-  // }, []);
+    if (window.location.pathname === "/") navigate("/home");
+  }, []);
 
   useEffect(() => {
     if (!!user?.permissions.length && !!token)

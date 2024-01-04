@@ -68,9 +68,13 @@ const CustomSidebar = () => {
                 return (
                   <li className="nav-item" key={route.url + route.name}>
                     <div
-                      className={cl("nav-link flex", styles.link, {
-                        ["show"]: activeRoute,
-                      })}
+                      className={cl(
+                        "nav-link flex cursor-pointer",
+                        styles.link,
+                        {
+                          ["show"]: activeRoute,
+                        }
+                      )}
                       onClick={() => toggleSubItems(route.screen)}
                     >
                       <img

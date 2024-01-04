@@ -385,6 +385,12 @@ export const routes: SidebarType[] = [
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_category_inventory,
       },
+      {
+        name: "Продукты",
+        url: "/products-inventory",
+        icon: "/assets/icons/products.svg",
+        screen: MainPermissions.get_product_inventory,
+      },
     ],
   },
   {

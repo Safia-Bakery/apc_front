@@ -447,6 +447,9 @@ export enum MainPermissions {
   add_category_inventory = 2,
   edit_category_inventory = 2,
   get_category_inventory = 2,
+
+  edit_product_inventory = 2,
+  get_product_inventory = 2,
 }
 export enum MarketingSubDep {
   designers = 1,
