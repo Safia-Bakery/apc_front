@@ -368,25 +368,19 @@ export const routes: SidebarType[] = [
     ],
   },
 
-  {
-    name: "Инвентарь",
-    icon: "/assets/icons/inventary.svg",
-    screen: MainPermissions.get_requests_inventory,
-    subroutes: [
-      {
-        name: "Заявки",
-        url: "/requests-inventory",
-        icon: "/assets/icons/subOrder.svg",
-        screen: MainPermissions.get_requests_inventory,
-      },
-      {
-        name: "Категории",
-        url: `/categories-inventory`,
-        icon: "/assets/icons/categories.svg",
-        screen: MainPermissions.get_category_inventory,
-      },
-    ],
-  },
+  // {
+  //   name: "Инвентарь",
+  //   icon: "/assets/icons/inventary.svg",
+  //   screen: MainPerm.,
+  //   subroutes: [
+  //     {
+  //       name: "Заявки",
+  //       url: "/requests-inventory",
+  //       icon: "/assets/icons/subOrder.svg",
+  //       screen: MainPerm.requests_inventory,
+  //     },
+  //   ],
+  // },
   {
     name: "Маркетинг",
     icon: "/assets/icons/marketing.svg",
