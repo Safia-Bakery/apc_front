@@ -336,51 +336,57 @@ export const routes: SidebarType[] = [
         name: "Мастера",
         url: "/masters-it",
         icon: "/assets/icons/brigades.svg",
-        screen: MainPermissions.get_master,
+        screen: MainPermissions.it_get_masters,
         param: `?dep=${Departments.it}&add=${MainPermissions.it_add_master}&edit=${MainPermissions.it_edit_master}`,
       },
       {
         name: "Категории(Закуп)",
         url: `/categories-it/${Sphere.purchase}`,
         icon: "/assets/icons/categories.svg",
-        screen: MainPermissions.get_categ_fab,
+        screen: MainPermissions.get_categ_it,
       },
       {
         name: "Категории(Поддержка)",
         url: `/categories-it/${Sphere.fix}`,
         icon: "/assets/icons/categories.svg",
-        screen: MainPermissions.get_categ_fab,
+        screen: MainPermissions.get_categ_it,
       },
 
       {
         name: "Остатки на складах",
         url: "/items-in-stock-it",
         icon: "/assets/icons/remains-in-stock.svg",
-        screen: MainPermissions.get_warehouse_fabric,
+        screen: MainPermissions.it_remains_in_stock,
       },
       {
         name: "Статистика",
         url: "/statistics-it",
         icon: "/assets/icons/statistics.svg",
         // param: "/category",
-        screen: MainPermissions.get_statistics,
+        screen: MainPermissions.it_statistics,
       },
     ],
   },
 
-  // {
-  //   name: "Инвентарь",
-  //   icon: "/assets/icons/inventary.svg",
-  //   screen: MainPerm.,
-  //   subroutes: [
-  //     {
-  //       name: "Заявки",
-  //       url: "/requests-inventory",
-  //       icon: "/assets/icons/subOrder.svg",
-  //       screen: MainPerm.requests_inventory,
-  //     },
-  //   ],
-  // },
+  {
+    name: "Инвентарь",
+    icon: "/assets/icons/inventary.svg",
+    screen: MainPermissions.get_requests_inventory,
+    subroutes: [
+      {
+        name: "Заявки",
+        url: "/requests-inventory",
+        icon: "/assets/icons/subOrder.svg",
+        screen: MainPermissions.get_requests_inventory,
+      },
+      {
+        name: "Категории",
+        url: `/categories-inventory`,
+        icon: "/assets/icons/categories.svg",
+        screen: MainPermissions.get_category_inventory,
+      },
+    ],
+  },
   {
     name: "Маркетинг",
     icon: "/assets/icons/marketing.svg",
