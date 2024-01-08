@@ -250,6 +250,7 @@ export interface DistinctTypes {
     amount: number;
     name: string;
     id: number;
+    price?: number;
   }[];
 }
 
