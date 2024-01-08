@@ -7,23 +7,25 @@ import { Departments, Sphere } from "@/utils/types";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
 
+interface ItemType {
+  amount: number;
+  name: string;
+  id: number;
+  price: number;
+}
+
 const column = [
   { name: "№", key: "" },
   { name: "Материал", key: "name" },
   { name: "Количество (шт)", key: "amount" },
+  { name: "Сумма", key: "total" },
 ];
 interface Props {
   sphere_status: Sphere;
 }
 
 const ConsumptionStat = ({ sphere_status }: Props) => {
-  const [sort, $sort] = useState<
-    {
-      amount: number;
-      name: string;
-      id: number;
-    }[]
-  >();
+  const [sort, $sort] = useState<ItemType[]>();
 
   const start = useUpdateQueryStr("start");
   const end = useUpdateQueryStr("end");
@@ -70,7 +72,8 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
               <td>
                 <Link to={item?.id.toString()}>{item?.name}</Link>
               </td>
-              <td>{item?.amount}</td>
+              <td>{item?.amount} </td>
+              {item.price && <td>{item?.amount * item?.price} </td>}
             </tr>
           ))}
         </tbody>

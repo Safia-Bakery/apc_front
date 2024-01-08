@@ -250,6 +250,7 @@ export interface DistinctTypes {
     amount: number;
     name: string;
     id: number;
+    price?: number;
   }[];
 }
 
@@ -440,6 +441,16 @@ export enum MainPermissions {
   get_client_comment = 95,
   edit_client_comment = 97,
   add_client_comment = 96,
+
+  get_requests_inventory = 2,
+  add_requests_inventory = 2,
+  edit_requests_inventory = 2,
+  add_category_inventory = 2,
+  edit_category_inventory = 2,
+  get_category_inventory = 2,
+
+  edit_product_inventory = 2,
+  get_product_inventory = 2,
 }
 export enum MarketingSubDep {
   designers = 1,
