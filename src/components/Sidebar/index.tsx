@@ -67,12 +67,15 @@ const CustomSidebar = () => {
                 const activeRoute = menuItem === route.screen;
                 return (
                   <li className="nav-item" key={route.url + route.name}>
-                    <a
-                      className={cl("nav-link flex", styles.link, {
-                        ["show"]: activeRoute,
-                      })}
+                    <div
+                      className={cl(
+                        "nav-link flex cursor-pointer",
+                        styles.link,
+                        {
+                          ["show"]: activeRoute,
+                        }
+                      )}
                       onClick={() => toggleSubItems(route.screen)}
-                      href={`#${route.screen}`}
                     >
                       <img
                         height={30}
@@ -83,7 +86,7 @@ const CustomSidebar = () => {
                       <div className={styles.content}>
                         {route.name}
                         <div className="flex">
-                          {!!route.count && <CountItem count={route.count} />}
+                          {!!route?.count && <CountItem count={route?.count} />}
                           <img
                             src="/assets/icons/arrow.svg"
                             alt="arrow"
@@ -95,7 +98,7 @@ const CustomSidebar = () => {
                           />
                         </div>
                       </div>
-                    </a>
+                    </div>
                     <div
                       className={cl("collapse", {
                         ["show"]: activeRoute,
@@ -163,7 +166,7 @@ const CustomSidebar = () => {
                       />
                       <div className={styles.content}>
                         {route.name}
-                        {!!route.count && <CountItem count={route.count} />}
+                        {!!route?.count && <CountItem count={route.count} />}
                       </div>
                     </Link>
                   </li>

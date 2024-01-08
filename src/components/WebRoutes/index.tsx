@@ -15,8 +15,8 @@ import {
 import useUpdateEffect from "custom/useUpdateEffect";
 import useOrderCounts from "@/hooks/useOrderCounts";
 
-const normalizeURL = (path: string) =>
-  path.replace(/\/+/g, "/").replace(/\/$/, "");
+// const normalizeURL = (path: string) =>
+//   path.replace(/\/+/g, "/").replace(/\/$/, "");
 
 const WebRooutes = () => {
   const token = useAppSelector(tokenSelector);
@@ -25,7 +25,9 @@ const WebRooutes = () => {
   const permission = useAppSelector(permissionSelector);
   const { error, data: user, isLoading } = useToken({});
 
-  const { data: counts } = useOrderCounts({ enabled: !!token });
+  const { data: counts, isLoading: countLoading } = useOrderCounts({
+    enabled: !!token,
+  });
 
   const sidebarItems = useAppSelector(sidebatItemsSelector);
 
@@ -45,10 +47,10 @@ const WebRooutes = () => {
   }, [permission, token]);
 
   useEffect(() => {
-    const currentPath = window.location.pathname;
-    const normalizedPath = normalizeURL(currentPath);
-    if (currentPath !== normalizedPath)
-      navigate(normalizedPath, { replace: true });
+    // const currentPath = window.location.pathname;
+    // const normalizedPath = normalizeURL(currentPath);
+    // if (currentPath !== normalizedPath)
+    //   navigate(normalizedPath, { replace: true });
 
     if (window.location.pathname === "/") navigate("/home");
   }, []);
@@ -62,7 +64,10 @@ const WebRooutes = () => {
     if (permission && counts) dispatch(sidebarItemsHandler(counts));
   }, [permission, counts]);
 
-  if ((isLoading || !sidebarItems?.length) && token)
+  if (
+    (isLoading || !sidebarItems?.length || !permission || countLoading) &&
+    token
+  )
     return <Loading absolute />;
 
   return (
