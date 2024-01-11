@@ -75,6 +75,7 @@ export interface Order {
     id: number;
     amount: number;
     comment: string;
+    status: number;
     user: UserTypes;
     created_at: Date;
     tool: {
@@ -322,7 +323,10 @@ export interface ToolsEarchType {
 export interface ToolTypes extends BasePaginatedRes {
   items: {
     name: string;
-    id: number;
+    id: string;
+    code: string;
+    mainunit: string;
+    producttype: string;
   }[];
 }
 
@@ -425,6 +429,18 @@ export enum MainPermissions {
   add_staff_requests = 79,
   edit_staff_requests = 78,
   staff_modal_time = 77,
+
+  // it_add_master = 58,
+  // it_edit_master = 58,
+  // it_get_masters = 58,
+  // it_statistics = 58,
+  // it_remains_in_stock = 58,
+  // get_it_requests = 58,
+  // edit_it_requests = 58,
+  // add_it_requests = 58,
+  // add_categ_it = 58,
+  // get_categ_it = 58,
+  // edit_categ_it = 58,
 
   it_add_master = 84,
   it_edit_master = 83,

@@ -11,10 +11,6 @@
   left: 0;
   right: 0;
 }
-.list {
-  height: 200px;
-  overflow-y: scroll;
-}
 
 .close {
   position: absolute;
@@ -22,4 +18,25 @@
   top: 50%;
   z-index: 10;
   transform: translateY(-50%);
+}
+.list {
+  padding: 0.5rem 1rem;
+  position: relative;
+  cursor: pointer;
+  transition: 0.2s;
+  border-bottom: 1px solid black;
+  background: white;
+  &:hover {
+    background: var(--hoverGray);
+  }
+}
+.lists {
+  height: 200px;
+  overflow-y: auto;
+  border: 1px solid black;
+  border-radius: 10px;
+  position: absolute;
+  top: 38px;
+  left: 0;
+  right: 0;
 }

@@ -1,24 +1,32 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/main";
-import { ToolTypes } from "@/utils/types";
+import { Departments, ToolTypes } from "@/utils/types";
+
+interface Body {
+  enabled?: boolean;
+  size?: number;
+  page?: number;
+  name?: string | null;
+  department?: Departments;
+  id?: string;
+}
 
 export const useTools = ({
   enabled = true,
   size,
   page = 1,
-  query,
-}: {
-  enabled?: boolean;
-  size?: number;
-  page?: number;
-  query?: string;
-}) => {
+  name,
+  department,
+  id,
+}: Body) => {
   return useQuery({
-    queryKey: ["tools"],
+    queryKey: ["tools", name, department, page],
     queryFn: () =>
       apiClient
-        .get(!!query ? "/tools/" : "/tools", {
-          ...(query && { query }),
+        .get("/tools/", {
+          name,
+          department,
+          id,
           page,
           size,
         })

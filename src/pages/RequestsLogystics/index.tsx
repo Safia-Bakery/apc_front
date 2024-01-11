@@ -81,10 +81,6 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
     ...(!!urgent && { urgent: !!urgent }),
   });
 
-  useEffect(() => {
-    refetch();
-  }, [currentPage]);
-
   return (
     <Card>
       <Header title="Заявки на Запрос машин">

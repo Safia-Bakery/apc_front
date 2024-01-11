@@ -25,7 +25,7 @@ export default new BaseAPIClient(baseURL, store);
 
 let container: any = null;
 
-document.addEventListener("DOMContentLoaded", function (event) {
+document.addEventListener("DOMContentLoaded", function () {
   if (!container) {
     container = document.getElementById("root") as HTMLElement;
     const root = createRoot(container);

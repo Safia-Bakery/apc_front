@@ -3,31 +3,28 @@ import Modal from "../Modal";
 import styles from "./index.module.scss";
 import BaseInput from "../BaseInputs";
 import MainTextArea from "../BaseInputs/MainTextArea";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import MainInput from "../BaseInputs/MainInput";
 import useTools from "@/hooks/useTools";
-import ToolsSelect from "../ToolsSelect";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import usedItemsMutation from "@/hooks/mutation/usedItems";
 import { successToast } from "@/utils/toast";
 import useOrder from "@/hooks/useOrder";
 import useQueryString from "custom/useQueryString";
-import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
+import { useRemoveParams } from "custom/useCustomNavigate";
 import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
 import { MainPermissions } from "@/utils/types";
 import useSyncExpanditure from "@/hooks/sync/useSyncExpanditure";
+import BaseInputs from "../BaseInputs";
+import { SelectWrapper } from "../InputWrappers";
 
 const AddProductModal = () => {
   const { id } = useParams();
   const removeRoute = useRemoveParams();
-  const navigate = useNavigateParams();
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const modal = useQueryString("add_product_modal");
-  const productJson = useQueryString("product");
-  const itemModal = useQueryString("itemModal");
-  const product = JSON.parse(productJson!) as { id: number; name: string };
   const permissions = useAppSelector(permissionSelector);
   const { refetch: syncWithIiko, isFetching } = useSyncExpanditure({
     enabled: false,
@@ -43,23 +40,21 @@ const AddProductModal = () => {
     enabled: false,
   });
 
-  const { register, handleSubmit, getValues, reset } = useForm();
-
-  const handleProducts = () => {
-    navigate({ itemModal: true });
-  };
+  const { register, handleSubmit, getValues, reset, control } = useForm();
 
   const handleModal = () => {
-    if (!!modal) removeRoute(["add_product_modal", "product", "itemModal"]);
+    if (!!modal) removeRoute(["add_product_modal"]);
   };
 
   const onSubmit = () => {
-    const { count, comment } = getValues();
+    const { count, comment, product } = getValues();
+
+    console.log(getValues());
     mutate(
       {
         amount: count,
         request_id: Number(id),
-        tool_id: product.id,
+        tool_id: product.value,
         comment,
       },
       {
@@ -104,18 +99,20 @@ const AddProductModal = () => {
           </button>
           <div className={styles.modalBody}>
             <div className="form-group field-apcitems-product_id relative">
-              <label className="control-label">Товар</label>
-              <div
-                className="form-control"
-                onClick={handleProducts}
-                id="choose_product"
-              >
-                {!product?.name ? "Выберите продукт" : product.name}
-              </div>
-
-              {!!itemModal &&
-                itemModal !== "false" &&
-                permissions?.[addExp] && <ToolsSelect />}
+              {permissions?.[addExp] && (
+                <Controller
+                  name={"product"}
+                  control={control}
+                  render={({ field }) => (
+                    <BaseInputs className="!mb-0 mt-4" label="Выберите продукт">
+                      <SelectWrapper
+                        field={field}
+                        register={register("product")}
+                      />
+                    </BaseInputs>
+                  )}
+                />
+              )}
             </div>
 
             <BaseInput label="Количество">

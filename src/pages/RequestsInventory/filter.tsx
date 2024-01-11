@@ -107,6 +107,11 @@ const ITFilter: FC = () => {
         </div>
       </td>
       <td className="p-0">
+        <BaseInput className="!m-1">
+          <MainInput register={register("prods")} className="!mb-0" />
+        </BaseInput>
+      </td>
+      <td className="p-0">
         <MainDatePicker
           selected={
             !!created_at && created_at !== "undefined"

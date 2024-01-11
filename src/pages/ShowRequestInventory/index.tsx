@@ -28,6 +28,7 @@ import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
 import cl from "classnames";
+import AddedInventoryProducts from "@/components/AddedInventoryProducts";
 
 const ShowRequestInventory = () => {
   const { id } = useParams();
@@ -42,7 +43,6 @@ const ShowRequestInventory = () => {
   const { getValues } = useForm();
   const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
-  const edit = Number(useQueryString("edit")) as MainPermissions;
   const navigate = useNavigate();
   const { search, state } = useLocation();
 
@@ -77,15 +77,16 @@ const ShowRequestInventory = () => {
     };
 
   const renderBtns = useMemo(() => {
-    if (permissions?.[edit] && isNew)
+    if (permissions?.[MainPermissions.edit_requests_inventory] && isNew)
       return (
         <div className="float-end mb10">
-          <button
+          {/* <button
             onClick={handleModal(ModalTypes.reassign)}
             className="btn btn-primary btn-fill"
           >
             Перенаправлять
-          </button>
+          </button> */}
+
           <button
             onClick={handleModal(ModalTypes.cancelRequest)}
             className="btn btn-danger btn-fill mx-2"
@@ -93,19 +94,26 @@ const ShowRequestInventory = () => {
             Отклонить
           </button>
           <button
+            onClick={handleBrigada({ status: RequestStatus.done })}
+            className="btn btn-success btn-fill"
+            id="finish_request"
+          >
+            Завершить
+          </button>
+          {/* <button
             onClick={handleModal(ModalTypes.assingDeadline)}
             className="btn btn-success btn-fill"
             id="recieve_request"
           >
             Принять
-          </button>
+          </button> */}
         </div>
       );
 
-    if (permissions?.[edit])
+    if (permissions?.[MainPermissions.edit_requests_inventory])
       return (
         <div className="float-end mb10">
-          {order?.status! < RequestStatus.sendToRepair && (
+          {/* {order?.status! < RequestStatus.sendToRepair && (
             <button
               onClick={handleBrigada({
                 status: RequestStatus.sendToRepair,
@@ -114,7 +122,7 @@ const ShowRequestInventory = () => {
             >
               Отправить заказчику
             </button>
-          )}
+          )} */}
           {order?.status! < RequestStatus.done && (
             <button
               onClick={handleBrigada({ status: RequestStatus.done })}
@@ -294,6 +302,8 @@ const ShowRequestInventory = () => {
             </div>
           </div>
           <hr />
+
+          <AddedInventoryProducts />
           {renderBtns}
         </div>
       </Card>

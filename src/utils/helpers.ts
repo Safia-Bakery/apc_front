@@ -215,8 +215,6 @@ export const stockStores = {
   retail: "4aafb5af-66c3-4419-af2d-72897f652019",
 };
 
-export const staffCategoryId = 36;
-export const clientCommentCategoryId = 56;
 // export const logysticsCategs = 37;
 
 export const routes: SidebarType[] = [
@@ -371,6 +369,7 @@ export const routes: SidebarType[] = [
   {
     name: "Инвентарь",
     icon: "/assets/icons/inventary.svg",
+    department: Departments.inventory,
     screen: MainPermissions.get_requests_inventory,
     subroutes: [
       {
@@ -562,3 +561,7 @@ export const handleIdx = (index: number) => {
   if (currentPage === 1) return index + 1;
   else return index + 1 + itemsPerPage * (currentPage - 1);
 };
+
+export const staffCategoryId = 36;
+export const clientCommentCategoryId = 56;
+export const inventoryCategoryId = 52;
