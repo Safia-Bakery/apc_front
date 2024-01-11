@@ -28,11 +28,7 @@ import { permissionSelector } from "reducers/sidebar";
 import useCatProducts from "@/hooks/useCatProducts";
 import TableHead from "@/components/TableHead";
 import MainInput from "@/components/BaseInputs/MainInput";
-
-const OrderTypeVals = [
-  { id: Sphere.purchase, name: "Закуп" },
-  { id: Sphere.fix, name: "Поддержка" },
-];
+import { InputWrapper } from "@/components/InputWrappers";
 
 interface InventoryFields {
   product: string;
@@ -62,23 +58,6 @@ const column = [
   { name: "", key: "remove" },
   { name: "", key: "add" },
 ];
-
-const InputWrapper = forwardRef<
-  HTMLInputElement,
-  { field: any; type?: string; register?: any; error?: any }
->(({ field, type = "text", register, error }, ref) => {
-  return (
-    <BaseInputs className="!mb-0" error={error}>
-      <MainInput
-        {...field}
-        ref={ref}
-        type={type}
-        register={register}
-        className="!mb-0"
-      />
-    </BaseInputs>
-  );
-});
 
 const SelectWrapper = forwardRef<
   HTMLInputElement,
@@ -170,8 +149,8 @@ const CreateITRequest = () => {
       },
       {
         onSuccess: () => {
-          successToast("Заказ успешно создано");
           navigate(`/requests-it/${sphere}`);
+          successToast("Заказ успешно создано");
         },
       }
     );

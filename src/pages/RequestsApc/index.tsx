@@ -82,10 +82,6 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
     ...(!!urgent?.toString() && { urgent: !!urgent }),
   });
 
-  useEffect(() => {
-    refetch();
-  }, [currentPage, sphere_status]);
-
   return (
     <Card>
       <Header title={"Заявки"}>

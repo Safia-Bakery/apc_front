@@ -13,6 +13,7 @@ interface Body {
   arrival_date?: string;
   bread_size?: number;
   cat_prod?: { [key: string | number]: number };
+  expenditure?: { [key: string]: [number, string] };
 }
 
 const requestMutation = () => {
@@ -22,41 +23,37 @@ const requestMutation = () => {
 
   return useMutation(
     ["create_order"],
-    ({
-      product,
-      description,
-      category_id,
-      fillial_id,
-      files,
-      factory,
-      size,
-      arrival_date,
-      bread_size,
-      cat_prod,
-    }: Body) => {
+    async (body: Body) => {
       const formData = new FormData();
-      !!cat_prod && formData.append("cat_prod", JSON.stringify(cat_prod));
-      files?.forEach((item) => {
-        formData.append("files", item.file, item.file.name);
+      console.log(body, "body");
+      Object.entries(body).forEach((item) => {
+        switch (item[0]) {
+          case "cat_prod":
+            formData.append(item[0], JSON.stringify(item[1]));
+            break;
+          case "expenditure":
+            formData.append(item[0], JSON.stringify(item[1]));
+            break;
+
+          case "files":
+            body.files?.forEach((item) => {
+              formData.append("files", item.file);
+            });
+            break;
+
+          default:
+            formData.append(item[0], item[1]);
+            break;
+        }
       });
-      return apiClient
-        .post({
-          url: "/request",
-          body: formData,
-          params: {
-            product,
-            description,
-            category_id,
-            fillial_id,
-            factory,
-            size,
-            arrival_date,
-            bread_size,
-          },
-          config,
-          contentType,
-        })
-        .then(({ data }) => data);
+      const { data } = await apiClient.post({
+        url: "/request",
+        body: formData,
+        params: { size: body.size },
+        config,
+        contentType,
+      });
+      return data;
     },
     { onError: (e: Error) => errorToast(e.message) }
   );

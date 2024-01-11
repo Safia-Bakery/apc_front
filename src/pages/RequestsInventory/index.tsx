@@ -24,7 +24,9 @@ const column = [
   { name: "Номер", key: "id" },
   { name: "ОТПРАВИТЕЛЬ", key: "type" },
   { name: "ПОЛУЧАТЕЛЬ", key: "fillial.name" },
+  { name: "ТОВАРЫ", key: "expenditures" },
   { name: "Дата", key: "created_at" },
+
   {
     name: "Статус",
     key: "status",
@@ -32,7 +34,7 @@ const column = [
   { name: "Автор", key: "user.name" },
 ];
 
-const RequestInventory = () => {
+const RequestsInventory = () => {
   const navigate = useNavigate();
   const currentPage = Number(useQueryString("page")) || 1;
   const [sort, $sort] = useState<Order[]>();
@@ -47,10 +49,6 @@ const RequestInventory = () => {
     page: currentPage,
     department: Departments.inventory,
   });
-
-  useEffect(() => {
-    refetch();
-  }, [currentPage]);
 
   if (orderLoading) return <Loading absolute />;
 
@@ -90,6 +88,16 @@ const RequestInventory = () => {
                     <span className="not-set">{order?.user.full_name}</span>
                   </td>
                   <td>{order?.fillial?.parentfillial?.name}</td>
+                  <td>
+                    <ul className="max-w-xs w-full">
+                      {!!order?.expanditure?.length &&
+                        order?.expanditure?.map((prod) => (
+                          <li className="list-disc" key={prod.id}>
+                            {prod?.tool?.name}
+                          </li>
+                        ))}
+                    </ul>
+                  </td>
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
                   <td>
                     {handleStatus({
@@ -97,7 +105,7 @@ const RequestInventory = () => {
                       dep: Departments.inventory,
                     })}
                   </td>
-                  <td>{order?.user?.full_name}</td>
+                  <td>{order?.user_manager}</td>
                 </tr>
               ))}
             </tbody>
@@ -110,4 +118,4 @@ const RequestInventory = () => {
   );
 };
 
-export default RequestInventory;
+export default RequestsInventory;

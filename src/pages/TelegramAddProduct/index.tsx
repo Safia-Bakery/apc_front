@@ -1,14 +1,12 @@
 import styles from "./index.module.scss";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import useTools from "@/hooks/useTools";
 import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import usedItemsMutation from "@/hooks/mutation/usedItems";
 import { successToast } from "@/utils/toast";
 import useOrder from "@/hooks/useOrder";
-import useQueryString from "custom/useQueryString";
 import { useRemoveParams } from "custom/useCustomNavigate";
-import ToolsSelect from "@/components/ToolsSelect";
 import BaseInput from "@/components/BaseInputs";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import Header from "@/components/Header";
@@ -21,15 +19,15 @@ import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import uploadFileMutation from "@/hooks/mutation/uploadFile";
 import useSyncExpanditure from "@/hooks/sync/useSyncExpanditure";
 import { TelegramApp } from "@/utils/tgHelpers";
+import BaseInputs from "@/components/BaseInputs";
+import { SelectWrapper } from "@/components/InputWrappers";
 
 const column = [{ name: "Наименование" }, { name: "Количество" }, { name: "" }];
 
 const TelegramAddProduct = () => {
   const { id } = useParams();
   const removeRoute = useRemoveParams();
-  const productJson = useQueryString("product");
   const dispatch = useAppDispatch();
-  const product = JSON.parse(productJson!) as { id: number; name: string };
   const { mutate: attach } = attachBrigadaMutation();
   const { mutate: deleteExp } = deleteExpenditureMutation();
   const inputRef = useRef<any>(null);
@@ -53,15 +51,15 @@ const TelegramAddProduct = () => {
     enabled: false,
   });
 
-  const { register, handleSubmit, getValues, reset } = useForm();
+  const { register, handleSubmit, getValues, reset, control } = useForm();
 
   const onSubmit = () => {
-    const { comment } = getValues();
+    const { comment, product } = getValues();
     mutate(
       {
         amount: count,
         request_id: Number(id),
-        tool_id: product?.id,
+        tool_id: product.value,
         comment,
       },
       {
@@ -154,9 +152,15 @@ const TelegramAddProduct = () => {
               )}
             </button>
           </div>
-          <BaseInput label="Выберите продукт">
-            <ToolsSelect />
-          </BaseInput>
+          <Controller
+            name={"product"}
+            control={control}
+            render={({ field }) => (
+              <BaseInputs label="Выберите продукт">
+                <SelectWrapper field={field} register={register("product")} />
+              </BaseInputs>
+            )}
+          />
 
           {/* <BaseInput label="Количество"> */}
           <div className="flex gap-2 my-4">
