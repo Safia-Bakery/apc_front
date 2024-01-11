@@ -24,6 +24,21 @@ const InventoryFilter: FC = () => {
           <MainInput className="!mb-0" onChange={handleName} />
         </BaseInput>
       </td>
+      <td className="p-0">
+        <BaseInput className="!m-1">
+          <MainInput className="!mb-0" />
+        </BaseInput>
+      </td>
+      <td className="p-0">
+        <BaseInput className="!m-1">
+          <MainInput className="!mb-0" />
+        </BaseInput>
+      </td>
+      <td className="p-0">
+        <BaseInput className="!m-1">
+          <MainInput className="!mb-0" />
+        </BaseInput>
+      </td>
       <td></td>
     </>
   );

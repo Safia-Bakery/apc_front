@@ -82,7 +82,7 @@ const BrigadaCategStat = lazy(
 );
 const BrigadaStat = lazy(() => import("@/pages/StatisticsApc/BrigadaStat"));
 
-const EditProductInventory = lazy(() => import("@/pages/EditProductInventory"));
+const EditInventoryProd = lazy(() => import("@/pages/EditInventoryProd"));
 const ProductsInventory = lazy(() => import("@/pages/ProductsInventory"));
 
 dayjs.locale("ru");
@@ -602,7 +602,7 @@ const routes = [
     screen: MainPermissions.add_category_inventory,
   },
   {
-    element: <EditProductInventory />,
+    element: <EditInventoryProd />,
     path: `/products-inventory/:id`,
     screen: MainPermissions.edit_product_inventory,
   },

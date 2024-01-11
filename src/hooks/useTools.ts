@@ -9,18 +9,20 @@ interface Body {
   name?: string | null;
   department?: Departments;
   id?: string;
+  few_amounts?: boolean;
 }
 
 export const useTools = ({
   enabled = true,
   size,
-  page = 1,
+  page,
   name,
   department,
+  few_amounts,
   id,
 }: Body) => {
   return useQuery({
-    queryKey: ["tools", name, department, page],
+    queryKey: ["tools", name, department, page, id, few_amounts],
     queryFn: () =>
       apiClient
         .get("/tools/", {
@@ -29,6 +31,7 @@ export const useTools = ({
           id,
           page,
           size,
+          few_amounts,
         })
         .then(({ data: response }) => {
           return response as ToolTypes;

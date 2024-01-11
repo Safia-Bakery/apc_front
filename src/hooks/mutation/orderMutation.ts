@@ -25,7 +25,6 @@ const requestMutation = () => {
     ["create_order"],
     async (body: Body) => {
       const formData = new FormData();
-      console.log(body, "body");
       Object.entries(body).forEach((item) => {
         switch (item[0]) {
           case "cat_prod":

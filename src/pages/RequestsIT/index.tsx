@@ -65,6 +65,11 @@ const RequestsIT = () => {
     ...(!!responsible && { responsible }),
     ...(!!urgent?.toString() && { urgent: !!urgent }),
   });
+
+  useEffect(() => {
+    refetch();
+  }, [currentPage]);
+
   return (
     <Card>
       <Header title={"Заявка на IT"}>

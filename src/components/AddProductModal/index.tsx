@@ -49,7 +49,6 @@ const AddProductModal = () => {
   const onSubmit = () => {
     const { count, comment, product } = getValues();
 
-    console.log(getValues());
     mutate(
       {
         amount: count,
