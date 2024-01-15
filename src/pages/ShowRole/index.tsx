@@ -8,10 +8,12 @@ import Loading from "@/components/Loader";
 import usePermissions from "@/hooks/usePermissions";
 import { useForm } from "react-hook-form";
 import { errorToast, successToast } from "@/utils/toast";
+import useQueryString from "@/hooks/custom/useQueryString";
 
 const ShowRole = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const view_ids = useQueryString("view_ids");
   const {
     data: rolePermission,
     refetch,
@@ -83,7 +85,11 @@ const ShowRole = () => {
                 <tbody>
                   {item.actions.map((child) => (
                     <tr key={child?.id}>
-                      <td>{child?.action_name}</td>
+                      <td>
+                        {!view_ids
+                          ? child?.action_name
+                          : `${child?.action_name} = ${child?.id}`}
+                      </td>
                       <td width={50}>
                         <input
                           type="checkbox"

@@ -584,46 +584,25 @@ const routes = [
     path: "/requests-inventory/add",
     screen: MainPermissions.add_requests_inventory,
   },
-  // {
-  //   element: (
-  //     <Categories
-  //       add={MainPermissions.add_category_inventory}
-  //       edit={MainPermissions.edit_category_inventory}
-  //       dep={Departments.inventory}
-  //     />
-  //   ),
-  //   path: `/categories-inventory`,
-  //   screen: MainPermissions.get_category_inventory,
-  // },
-  // {
-  //   element: <EditAddCategory dep={Departments.inventory} />,
-  //   path: `/categories-inventory/:id`,
-  //   screen: MainPermissions.edit_category_inventory,
-  // },
-  // {
-  //   element: <EditAddCategory dep={Departments.inventory} />,
-  //   path: `/categories-inventory/add`,
-  //   screen: MainPermissions.add_category_inventory,
-  // },
   {
     element: <EditInventoryProd />,
-    path: "/products-inventory/:id",
+    path: "/inventory-remains/:id",
     screen: MainPermissions.edit_product_inventory,
   },
   {
     element: <InventoryRemains />,
-    path: "/products-inventory",
-    screen: MainPermissions.get_product_inventory,
+    path: "/inventory-remains",
+    screen: MainPermissions.inventory_remains_in_stock,
   },
   {
     element: <InventoryOrderedTools />,
     path: "/order-products-inventory",
-    screen: MainPermissions.get_product_inventory,
+    screen: MainPermissions.get_inventory_purchase_prods,
   },
   {
     element: <ShowInventoryTool />,
     path: "/order-products-inventory/:id",
-    screen: MainPermissions.get_product_inventory,
+    screen: MainPermissions.edit_inventory_purchase_prods,
   },
   {
     element: <ToolsIerarch />,
