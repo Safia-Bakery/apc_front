@@ -51,6 +51,9 @@ body {
 ::-webkit-scrollbar {
   width: 4px;
 }
+::-webkit-scrollbar:horizontal {
+  height: 4px;
+}
 
 tr {
   &:hover {
@@ -276,7 +279,6 @@ body > .navbar-collapse .nav li .nav-link {
   margin: 5px;
   opacity: 0.86;
   border-radius: 4px;
-  // display: block;
   background: 0 0;
   border: 0;
 }
@@ -302,12 +304,7 @@ table {
     text-align: start;
   }
 }
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6,
+
 h1,
 h2,
 h3,

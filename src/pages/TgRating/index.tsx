@@ -73,7 +73,7 @@ const TgRating = () => {
         subTitle={handleDepartment({ dep: department, sub: sub_id })}
       >
         <div
-          onClick={() => TelegramApp.closeWindow()}
+          onClick={() => TelegramApp.close()}
           className="rounded-full !border !border-black h-9 w-9 flex items-center justify-center"
         >
           <span aria-hidden="true" className="text-3xl font-thin">

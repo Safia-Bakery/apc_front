@@ -163,7 +163,7 @@ export const detectFileType = (url: string) => {
   }
 };
 
-export const isMobile = window.innerWidth <= 1200;
+export const isMobile = window.innerWidth <= 960;
 
 export const handleDepartment = ({
   dep,

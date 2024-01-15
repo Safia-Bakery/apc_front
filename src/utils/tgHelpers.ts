@@ -29,10 +29,6 @@ export const TelegramApp = {
     window.Telegram.WebApp.enableClosingConfirmation();
     window.Telegram.WebApp.isClosingConfirmationEnabled = true;
   },
-
-  closeWindow() {
-    window.Telegram.WebApp.close();
-  },
   showProgress() {
     window.Telegram.WebApp.MainButton.showProgress();
   },

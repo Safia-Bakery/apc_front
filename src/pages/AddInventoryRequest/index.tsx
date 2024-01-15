@@ -9,7 +9,7 @@ import TableHead from "@/components/TableHead";
 import { MainPermissions } from "@/utils/types";
 import styles from "./index.module.scss";
 import requestMutation from "@/hooks/mutation/orderMutation";
-import { inventoryCategoryId } from "@/utils/helpers";
+import { inventoryCategoryId, isMobile } from "@/utils/helpers";
 import BranchSelect from "@/components/BranchSelect";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
@@ -17,6 +17,7 @@ import useQueryString from "@/hooks/custom/useQueryString";
 import { successToast } from "@/utils/toast";
 import useOrders from "@/hooks/useOrders";
 import { InputWrapper, SelectWrapper } from "@/components/InputWrappers";
+import { TelegramApp } from "@/utils/tgHelpers";
 
 //test
 interface InventoryFields {
@@ -90,9 +91,12 @@ const AddInventoryRequest = () => {
       },
       {
         onSuccess: () => {
-          refetch();
-          navigate("/requests-inventory");
-          successToast("created");
+          if (isMobile) TelegramApp.toMainScreen();
+          else {
+            refetch();
+            navigate("/requests-inventory");
+            successToast("created");
+          }
         },
       }
     );
@@ -111,118 +115,136 @@ const AddInventoryRequest = () => {
   return (
     <Card>
       <Header title={"Добавить"}>
-        <button
-          onClick={() => navigate(-1)}
-          className="btn btn-primary btn-fill"
-        >
-          Назад
-        </button>
+        {!isMobile && (
+          <button
+            onClick={() => navigate(-1)}
+            className="btn btn-primary btn-fill"
+          >
+            Назад
+          </button>
+        )}
       </Header>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="table-responsive content"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="content w-full">
         <BaseInputs className="relative" label="ФИЛИАЛ">
-          {perm?.[MainPermissions.get_fillials_list] && (
-            <BranchSelect enabled origin={1} />
-          )}
+          <BranchSelect
+            enabled
+            origin={1}
+            // permission={MainPermissions.get_fillials_list}
+          />
         </BaseInputs>
         <h2 className="font-weight-normal">Товары</h2>
+        <div className={styles.table}>
+          <table className={"table table-hover"}>
+            <TableHead column={column} />
 
-        <table className="table table-hover">
-          <TableHead column={column} />
-
-          <tbody>
-            {fields.map((field, index) => (
-              <tr key={field.id + index}>
-                <td>{index + 1}</td>
-                <td>
-                  <Controller
-                    name={`inputFields.${index}.product`}
-                    control={control}
-                    defaultValue={field.product}
-                    render={({ field }) => (
-                      <SelectWrapper
-                        field={field}
-                        register={register(`inputFields.${index}.product`)}
-                      />
-                    )}
-                  />
-                </td>
-                <td>
-                  <div className="flex gap-4 w-full">
-                    <button
-                      type="button"
-                      className={cl(
-                        styles.increment,
-                        "btn bg-danger text-white"
+            <tbody>
+              {fields.map((field, index) => (
+                <tr key={field.id + index}>
+                  <td>{index + 1}</td>
+                  <td className="min-w-[180px]">
+                    <Controller
+                      name={`inputFields.${index}.product`}
+                      control={control}
+                      defaultValue={field.product}
+                      render={({ field }) => (
+                        <SelectWrapper
+                          field={field}
+                          register={register(`inputFields.${index}.product`)}
+                        />
                       )}
-                      onClick={handleDecrement(index)}
-                    >
-                      -
-                    </button>
-                    <div className="w-16">
-                      <Controller
-                        name={`inputFields.${index}.qnt`}
-                        control={control}
-                        defaultValue={field.qnt}
-                        render={({ field }) => (
-                          <InputWrapper
-                            type="number"
-                            field={field}
-                            error={errors.inputFields?.[index]?.qnt}
-                            register={register(`inputFields.${index}.qnt`, {
-                              required: "Обязательное поле",
-                            })}
-                          />
+                    />
+                  </td>
+                  <td>
+                    <div className="flex gap-4 w-full">
+                      <button
+                        type="button"
+                        className={cl(
+                          styles.increment,
+                          "btn bg-danger text-white"
                         )}
-                      />
+                        onClick={handleDecrement(index)}
+                      >
+                        -
+                      </button>
+                      <div className="w-16">
+                        <Controller
+                          name={`inputFields.${index}.qnt`}
+                          control={control}
+                          defaultValue={field.qnt}
+                          render={({ field }) => (
+                            <InputWrapper
+                              type="number"
+                              field={field}
+                              error={errors.inputFields?.[index]?.qnt}
+                              register={register(`inputFields.${index}.qnt`, {
+                                required: "Обязательное поле",
+                              })}
+                            />
+                          )}
+                        />
+                      </div>
+                      <button
+                        className={cl(styles.increment, "btn bg-green-400")}
+                        type="button"
+                        onClick={handleIncrement(index)}
+                      >
+                        +
+                      </button>
                     </div>
+                  </td>
+                  <td>
+                    <Controller
+                      name={`inputFields.${index}.comment`}
+                      control={control}
+                      defaultValue={field.comment}
+                      render={({ field }) => <InputWrapper field={field} />}
+                    />
+                  </td>
+                  <td className="align-top" width={100}>
                     <button
-                      className={cl(styles.increment, "btn bg-green-400")}
                       type="button"
-                      onClick={handleIncrement(index)}
+                      onClick={() => (fields.length > 1 ? remove(index) : null)}
+                      className="btn bg-danger text-white"
                     >
-                      +
+                      Удалить
                     </button>
-                  </div>
-                </td>
-                <td>
-                  <Controller
-                    name={`inputFields.${index}.comment`}
-                    control={control}
-                    defaultValue={field.comment}
-                    render={({ field }) => <InputWrapper field={field} />}
-                  />
-                </td>
-                <td className="align-top" width={100}>
-                  <button
-                    type="button"
-                    onClick={() => (fields.length > 1 ? remove(index) : null)}
-                    className="btn bg-danger text-white"
-                  >
-                    Удалить
-                  </button>
-                </td>
-                <td className="align-top" width={100}>
-                  <button
-                    type="button"
-                    className={cl("btn btn-primary w-min")}
-                    onClick={addInputFields}
-                  >
-                    Добавить
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  </td>
+                  {!isMobile && (
+                    <td className="align-top" width={100}>
+                      <button
+                        type="button"
+                        className={cl("btn btn-primary w-min")}
+                        onClick={addInputFields}
+                      >
+                        Добавить
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {isMobile && (
+          <div className="mb-2 z-10 relative">
+            <button
+              type="button"
+              className={cl("btn btn-primary w-min")}
+              onClick={addInputFields}
+            >
+              Добавить
+            </button>
+          </div>
+        )}
 
-        <BaseInputs label="ПРИМЕЧАНИЕ">
+        <BaseInputs label="ПРИМЕЧАНИЕ" className="z-10 relative">
           <MainTextArea register={register("main_comment")} />
         </BaseInputs>
-        <button type="submit" className="btn btn-success btn-fill">
+        <button
+          type="submit"
+          className="btn btn-success btn-fill z-10 relative"
+        >
           Сохранить
         </button>
       </form>

@@ -351,6 +351,11 @@ const routes = [
     screen: MainPermissions.edit_mark_category,
   },
   {
+    element: <EditAddCategory dep={Departments.marketing} />,
+    path: `/categories-marketing/add`,
+    screen: MainPermissions.add_mark_category,
+  },
+  {
     element: (
       <EditAddCategory dep={Departments.apc} sphere_status={Sphere.retail} />
     ),
@@ -870,6 +875,14 @@ const App = () => {
             </Suspend>
           }
           path={"order-rating/:id"}
+        />
+        <Route
+          element={
+            <Suspend>
+              <AddInventoryRequest />
+            </Suspend>
+          }
+          path={"inventory-request-add"}
         />
       </Route>
     </Routes>

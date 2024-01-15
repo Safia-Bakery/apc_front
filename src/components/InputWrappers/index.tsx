@@ -15,7 +15,7 @@ export const SelectWrapper = forwardRef<
         {...field}
         ref={ref}
         register={register}
-        className="!mb-0"
+        className="!mb-0 z-20"
       />
     </BaseInputs>
   );
