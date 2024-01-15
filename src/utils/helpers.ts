@@ -576,4 +576,4 @@ export const handleIdx = (index: number) => {
 
 export const staffCategoryId = 36;
 export const clientCommentCategoryId = 56;
-export const inventoryCategoryId = 52;
+export const inventoryCategoryId = 59;
