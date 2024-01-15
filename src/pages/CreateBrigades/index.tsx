@@ -21,11 +21,7 @@ const CreateBrigades = () => {
   const goBack = () => navigate(-1);
   const sphere_status = useQueryString("sphere_status");
   const dep = useQueryString("dep");
-  const { refetch: brigadasRefetch } = useBrigadas({
-    enabled: false,
-    ...(!!dep && { department: Number(dep) }),
-    ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
-  });
+
   const { mutate } = brigadaMutation();
   const { refetch: usersRefetch, data: users } = useUsersForBrigada({
     id: Number(id),
@@ -70,7 +66,6 @@ const CreateBrigades = () => {
       },
       {
         onSuccess: () => {
-          brigadasRefetch();
           successToast(!!id ? "successfully updated" : "successfully created");
           navigate(-1);
           if (!!id) {

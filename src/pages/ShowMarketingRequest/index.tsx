@@ -119,7 +119,6 @@ const ShowMarketingRequest = () => {
             <button
               onClick={handleBrigada({ status: RequestStatus.done })}
               className="btn btn-success btn-fill"
-              id="finish_request"
             >
               Завершить
             </button>

@@ -49,7 +49,8 @@ const routeNameMappings: { [key: string]: string } = {
   logs: "Логи",
   products: "Продукты",
   "client-comments": "Отзывы гостей",
-  "products-inventory": "Продукты Инвентарь",
+  "products-inventory": "Остатки на складах",
+  "products-ierarch": "Инвентарь / Товары",
 };
 
 const Breadcrumbs: FC = () => {

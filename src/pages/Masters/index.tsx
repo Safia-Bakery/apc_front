@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Card from "@/components/Card";
@@ -39,12 +39,20 @@ const Masters = () => {
       { name: "", key: "" },
     ];
   }, []);
-  const { data: brigadas, isLoading: orderLoading } = useBrigadas({
+  const {
+    data: brigadas,
+    isLoading: orderLoading,
+    refetch,
+  } = useBrigadas({
     page: currentPage,
     enabled: true,
     ...(!!dep && { department: Number(dep) }),
     ...(!!sphere_status && { sphere_status }),
   });
+
+  useEffect(() => {
+    refetch();
+  }, [currentPage, sphere_status]);
 
   if (orderLoading) return <Loading absolute />;
 

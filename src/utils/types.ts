@@ -313,13 +313,6 @@ export enum FileType {
   photo = "photo",
 }
 
-export interface ToolsEarchType {
-  id: string;
-  name: string;
-  code: string;
-  child: ToolsEarchType[];
-}
-
 export interface ToolTypes extends BasePaginatedRes {
   items: {
     name: string;
@@ -468,10 +461,9 @@ export enum MainPermissions {
   get_requests_inventory = 2,
   add_requests_inventory = 2,
   edit_requests_inventory = 2,
-  add_category_inventory = 2,
-  edit_category_inventory = 2,
-  get_category_inventory = 2,
-
+  // add_category_inventory = 2,
+  // edit_category_inventory = 2,
+  // get_category_inventory = 2,
   edit_product_inventory = 2,
   get_product_inventory = 2,
 }
@@ -606,4 +598,82 @@ export interface CarsTypes {
   name: string;
   status: number;
   number: string;
+}
+
+export interface ToolsEarchType {
+  folders: {
+    num: string;
+    code: string;
+    parent_id: string;
+    description: string;
+    id: string;
+    name: string;
+    category: string;
+  }[];
+  tools: {
+    id: number;
+    code: string;
+    producttype: string;
+    parentid: string;
+    total_price: string;
+    sklad_id: string[];
+    department: Departments;
+    max_amount: string;
+    name: string;
+    num: string;
+    iikoid: string;
+    price: number;
+    mainunit: string;
+    amount_left: string;
+    last_update: string;
+    min_amount: string;
+    image: string;
+  }[];
+}
+
+export interface InventoryOrders extends BasePaginatedRes {
+  items: {
+    id: number;
+    status: number;
+    user: {
+      id: number;
+      username: string;
+      full_name: string;
+      email: string;
+      phone_number: string;
+      group: {
+        name: string;
+        id: number;
+      };
+      status: number;
+    };
+    created_at: string;
+    updated_at: string;
+  }[];
+}
+
+export interface InventoryOrder extends BasePaginatedRes {
+  items: {
+    id: number;
+    status: number;
+    need_tools: {
+      id: number;
+      name: string;
+      code: string;
+      mainunit: string;
+      producttype: string;
+      iikoid: string;
+      price: number;
+      parentid: string;
+      total_price: number;
+      amount_left: number;
+      min_amount: number;
+      max_amount: number;
+    };
+    ordered_amount: number;
+    amount_last: number;
+    toolorder_id: number;
+    updated_at: string;
+    created_at: string;
+  }[];
 }

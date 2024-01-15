@@ -14,7 +14,7 @@ const EditInventoryProd = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
 
-  const { data } = useTools({ id });
+  const { data, refetch: toolRefetch } = useTools({ id });
   const tool = data?.items?.[0];
   const { refetch } = useTools({
     enabled: false,
@@ -48,6 +48,10 @@ const EditInventoryProd = () => {
       max_amount: tool?.max_amount,
     });
   }, [tool]);
+
+  useEffect(() => {
+    toolRefetch();
+  }, []);
 
   return (
     <Card>

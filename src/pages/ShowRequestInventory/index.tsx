@@ -26,7 +26,6 @@ import ShowRequestModals from "@/components/ShowRequestModals";
 
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { permissionSelector } from "reducers/sidebar";
-import useQueryString from "custom/useQueryString";
 import cl from "classnames";
 import AddedInventoryProducts from "@/components/AddedInventoryProducts";
 
@@ -44,7 +43,7 @@ const ShowRequestInventory = () => {
   const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
   const navigate = useNavigate();
-  const { search, state } = useLocation();
+  const { state } = useLocation();
 
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
@@ -80,13 +79,6 @@ const ShowRequestInventory = () => {
     if (permissions?.[MainPermissions.edit_requests_inventory] && isNew)
       return (
         <div className="float-end mb10">
-          {/* <button
-            onClick={handleModal(ModalTypes.reassign)}
-            className="btn btn-primary btn-fill"
-          >
-            Перенаправлять
-          </button> */}
-
           <button
             onClick={handleModal(ModalTypes.cancelRequest)}
             className="btn btn-danger btn-fill mx-2"
@@ -96,38 +88,19 @@ const ShowRequestInventory = () => {
           <button
             onClick={handleBrigada({ status: RequestStatus.done })}
             className="btn btn-success btn-fill"
-            id="finish_request"
           >
             Завершить
           </button>
-          {/* <button
-            onClick={handleModal(ModalTypes.assingDeadline)}
-            className="btn btn-success btn-fill"
-            id="recieve_request"
-          >
-            Принять
-          </button> */}
         </div>
       );
 
     if (permissions?.[MainPermissions.edit_requests_inventory])
       return (
         <div className="float-end mb10">
-          {/* {order?.status! < RequestStatus.sendToRepair && (
-            <button
-              onClick={handleBrigada({
-                status: RequestStatus.sendToRepair,
-              })}
-              className="btn btn-warning btn-fill mr-2"
-            >
-              Отправить заказчику
-            </button>
-          )} */}
           {order?.status! < RequestStatus.done && (
             <button
               onClick={handleBrigada({ status: RequestStatus.done })}
               className="btn btn-success btn-fill"
-              id="finish_request"
             >
               Завершить
             </button>

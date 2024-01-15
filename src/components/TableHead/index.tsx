@@ -1,8 +1,9 @@
 import { FC, PropsWithChildren, useCallback, useState } from "react";
 import useUpdateEffect from "custom/useUpdateEffect";
+import cl from "classnames";
 
 interface Props extends PropsWithChildren {
-  column: { name: string; key: any }[];
+  column: { name: string; key: any; center?: boolean }[];
   data?: any[];
   onSort?: (arg: any[] | undefined) => void;
 }
@@ -38,10 +39,12 @@ const TableHead: FC<Props> = ({ column, children, data, onSort }) => {
     <>
       <thead>
         <tr>
-          {column.map(({ name, key }) => (
+          {column.map(({ name, key, center }) => (
             <th
               onClick={handleSort(key)}
-              className={"bg-primary text-white"}
+              className={cl("bg-primary text-white", {
+                ["text-center"]: center,
+              })}
               key={name + key}
             >
               {name}{" "}

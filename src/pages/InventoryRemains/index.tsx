@@ -21,17 +21,19 @@ import {
   useRemoveParams,
 } from "@/hooks/custom/useCustomNavigate";
 import { useDownloadExcel } from "react-export-table-to-excel";
+import inventoryMinsMutation from "@/hooks/mutation/inventoryMins";
+import { errorToast, successToast } from "@/utils/toast";
 
 const column = [
   { name: "№", key: "" },
   { name: "Наименование", key: "name" },
-  { name: "Остаток", key: "amount_left" },
-  { name: "Минимум", key: "min_amount" },
-  { name: "Максимум", key: "max_amount" },
-  { name: "", key: "" },
+  { name: "Остаток", key: "amount_left", center: true },
+  { name: "Минимум", key: "min_amount", center: true },
+  { name: "Максимум", key: "max_amount", center: true },
+  { name: "", key: "view" },
 ];
 
-const ProductsInventory = () => {
+const InventoryRemains = () => {
   const navigate = useNavigate();
   const tableRef = useRef(null);
   const navigateParams = useNavigateParams();
@@ -43,6 +45,8 @@ const ProductsInventory = () => {
   const handleNavigate = (route: string) => () => navigate(route);
   const mins = useQueryString("mins");
 
+  const { mutate: minsMutation } = inventoryMinsMutation();
+
   const {
     data: tools,
     isLoading: toolsLoading,
@@ -50,17 +54,26 @@ const ProductsInventory = () => {
   } = useTools({
     department: Departments.inventory,
     page,
-    ...(!!name && { name }),
     few_amounts: !!mins,
+    ...(!!name && { name }),
   });
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "Продукты Инвентарь",
-    sheet: "Продукты Инвентарь",
+    filename: "Остатки на складах",
+    sheet: "Остатки на складах",
   });
 
   const downloadAsPdf = () => onDownload();
+
+  const handleRequestsMins = () =>
+    minsMutation(undefined, {
+      onSuccess: () => {
+        navigate("/order-products-inventory");
+        successToast("created");
+      },
+      onError: (e: any) => errorToast(e.message),
+    });
 
   const handleMins = () => {
     if (!mins) navigateParams({ mins: 1 });
@@ -73,7 +86,12 @@ const ProductsInventory = () => {
 
   return (
     <Card>
-      <Header title="Продукты Инвентарь">
+      <Header title="Остатки на складах">
+        {!!mins && (
+          <button className="btn btn-warning mr-2" onClick={handleRequestsMins}>
+            Заявка на минимумы
+          </button>
+        )}
         <button className="btn btn-success mr-2" onClick={downloadAsPdf}>
           Export Excel
         </button>
@@ -98,16 +116,22 @@ const ProductsInventory = () => {
               (sort?.length ? sort : tools?.items)?.map((tool, idx) => (
                 <tr
                   key={idx}
-                  className={cl("", {
-                    ["bg-red-300 hover:!opacity-80"]:
+                  className={cl("transition-colors", {
+                    ["table-danger"]:
                       tool.min_amount && tool.amount_left < tool.min_amount,
                   })}
                 >
                   <td width="40">{handleIdx(idx)}</td>
                   <td>{tool?.name}</td>
-                  <td>{tool?.amount_left}</td>
-                  <td>{tool?.min_amount}</td>
-                  <td>{tool?.max_amount}</td>
+                  <td width={150} className="text-center">
+                    {tool?.amount_left}
+                  </td>
+                  <td width={150} className="text-center">
+                    {tool?.min_amount}
+                  </td>
+                  <td width={150} className="text-center">
+                    {tool?.max_amount}
+                  </td>
                   <td width={40}>
                     {permission?.[MainPermissions.edit_product_inventory] && (
                       <TableViewBtn onClick={handleNavigate(`${tool.id}`)} />
@@ -125,4 +149,4 @@ const ProductsInventory = () => {
   );
 };
 
-export default ProductsInventory;
+export default InventoryRemains;

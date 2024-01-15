@@ -7,7 +7,7 @@ import {
   ModalTypes,
   RequestStatus,
 } from "@/utils/types";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import styles from "./index.module.scss";
 import Header from "../Header";
@@ -237,11 +237,13 @@ const ShowRequestModals = () => {
             >
               <span aria-hidden="true">&times;</span>
             </button>
-            {photo && detectFileType(photo) === FileType.photo ? (
-              <img src={photo} className={styles.image} alt="uploaded-file" />
-            ) : (
-              <video src={photo || ""} className={styles.image} controls />
-            )}
+            <Link to={photo || ""} target="_blank" rel="noopener noreferrer">
+              {photo && detectFileType(photo) === FileType.photo ? (
+                <img src={photo} className={styles.image} alt="uploaded-file" />
+              ) : (
+                <video src={photo || ""} className={styles.image} controls />
+              )}
+            </Link>
           </div>
         );
 

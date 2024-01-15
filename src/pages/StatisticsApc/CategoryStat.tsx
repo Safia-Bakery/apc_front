@@ -74,6 +74,20 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
       labels: data?.piechart.map((item) => item.category_name),
     };
   }, [data?.piechart]);
+  const renderAvarage = useMemo(() => {
+    if (!!data?.table.length) {
+      const { totalTime, totalAmount } = data?.table?.reduce(
+        (acc, item) => {
+          acc.totalAmount += item.amount;
+          acc.totalTime += item.time;
+          return acc;
+        },
+        { totalAmount: 0, totalTime: 0 }
+      );
+
+      return (totalTime / totalAmount).toFixed(3);
+    }
+  }, [data?.table]);
 
   useEffect(() => {
     if (btnAction)
@@ -102,6 +116,13 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
               <td>{item?.time}</td>
             </tr>
           ))}
+          <tr>
+            <td></td>
+            <th className="text-2xl">В среднем:</th>
+            <td colSpan={2} className="text-2xl">
+              {renderAvarage} минут
+            </td>
+          </tr>
         </tbody>
       </table>
 

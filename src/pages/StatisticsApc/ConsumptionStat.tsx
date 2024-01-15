@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import TableHead from "@/components/TableHead";
 import useDistinct from "@/hooks/useDistinct";
 import { Link } from "react-router-dom";
@@ -17,6 +17,7 @@ interface ItemType {
 const column = [
   { name: "№", key: "" },
   { name: "Материал", key: "name" },
+  { name: "Цена", key: "price" },
   { name: "Количество (шт)", key: "amount" },
   { name: "Сумма", key: "total" },
 ];
@@ -33,11 +34,28 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
   const tableRef = useRef(null);
   const btnAction = document.getElementById("export_to_excell");
 
+  const { data, isLoading } = useDistinct({
+    department: Departments.apc,
+    sphere_status,
+    ...(!!start && { started_at: start }),
+    ...(!!end && { finished_at: end }),
+  });
+
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
     filename: "статистика по расходам",
     sheet: "categories",
   });
+
+  const renderProductCount = useMemo(() => {
+    return data?.tests.reduce((acc, item) => {
+      if (item.price) acc + item.price;
+
+      return acc;
+    }, 0);
+  }, [data?.tests]);
+
+  const downloadAsPdf = () => onDownload();
 
   useEffect(() => {
     if (btnAction)
@@ -45,15 +63,6 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
         document.getElementById("consumption_stat")?.click();
       });
   }, [btnAction]);
-
-  const downloadAsPdf = () => onDownload();
-
-  const { data, isLoading } = useDistinct({
-    department: Departments.apc,
-    sphere_status,
-    ...(!!start && { started_at: start }),
-    ...(!!end && { finished_at: end }),
-  });
 
   return (
     <>
@@ -72,10 +81,18 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
               <td>
                 <Link to={item?.id.toString()}>{item?.name}</Link>
               </td>
-              <td>{item?.amount} </td>
+
+              <td>{item?.price}</td>
+              <td>{item?.amount}</td>
               {item.price && <td>{item?.amount * item?.price} </td>}
             </tr>
           ))}
+          <tr>
+            <th colSpan={4} className="text-lg">
+              В общем:
+            </th>
+            <th className="text-lg">{renderProductCount}</th>
+          </tr>
         </tbody>
       </table>
 

@@ -1,6 +1,6 @@
 import { Departments, Order, Sphere } from "@/utils/types";
 import useStatsBrigadaCateg from "@/hooks/useStatsBrigadaCateg";
-import { FC, useEffect, useRef } from "react";
+import { FC, Fragment, useEffect, useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
@@ -72,64 +72,37 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
             ))}
           </tr>
         </thead>
-
         <tbody>
           {data &&
-            Object.keys(data)?.map((mainKey: string, idx) => (
-              <tr key={mainKey} className="bg-blue mb-2 ">
-                <td className="border-dark" width="40">
-                  {idx + 1}
-                </td>
+            Object.entries(data).map((mainKey, idx) => (
+              <Fragment key={idx}>
+                <tr>
+                  <td rowSpan={mainKey[1].length + 1}>{idx + 1}</td>
+                  <td rowSpan={mainKey[1].length + 1}>{mainKey[0]}</td>
 
-                <td className="border-dark">{mainKey}</td>
-                <td className="p-0 border-dark">
-                  <div className="flex flex-col">
-                    {data?.[mainKey]?.map((categ, idx) => (
-                      <span
-                        key={idx}
-                        className="border-bottom py-2 px-1 border-dark"
-                      >
-                        {categ[1]}
-                      </span>
-                    ))}
-                    <span className="border-bottom py-2 px-1 text-center font-bold">
-                      Общее
-                    </span>
-                  </div>
-                </td>
-
-                <td className="p-0 border-dark">
-                  <div className="flex flex-col border-dark">
-                    {data[mainKey]?.map((qnt, idx) => (
-                      <span
-                        key={idx}
-                        className="border-bottom text-center py-2 px-1 border-dark"
-                      >
-                        {qnt[2]}
-                      </span>
-                    ))}
-                    <span className=" py-2 px-1 text-center font-bold ">
-                      {calculator(2, data[mainKey])}
-                    </span>
-                  </div>
-                </td>
-
-                <td className="p-0 border-dark">
-                  <div className="flex flex-col">
-                    {data[mainKey]?.map((timer, idx) => (
-                      <span
-                        key={idx}
-                        className="border-bottom py-2 px-1 text-center border-dark"
-                      >
-                        {timer[3]}
-                      </span>
-                    ))}
-                    <span className="border-bottom py-2 px-1 text-center font-bold">
-                      {calculator(3, data[mainKey])}
-                    </span>
-                  </div>
-                </td>
-              </tr>
+                  <td>{mainKey[1][0][1]}</td>
+                  <td className="text-center">{mainKey[1][0][2]}</td>
+                  <td className="text-center">{mainKey[1][0][3]}</td>
+                </tr>
+                {mainKey[1]?.slice(1).map((qnt, index) => (
+                  <Fragment key={index}>
+                    <tr>
+                      <td>{qnt[1]}</td>
+                      <td className="text-center">{qnt[2]}</td>
+                      <td className="text-center">{qnt[3]}</td>
+                    </tr>
+                  </Fragment>
+                ))}
+                <tr className="bg-green-400 ">
+                  <th className="text-center text-lg">Общее</th>
+                  <th className="text-center  text-lg">
+                    {calculator(2, mainKey[1])}
+                  </th>
+                  <th className="text-center  text-lg">
+                    {calculator(3, mainKey[1])}
+                  </th>
+                </tr>
+              </Fragment>
             ))}
         </tbody>
       </table>

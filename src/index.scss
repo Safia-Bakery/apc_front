@@ -52,6 +52,12 @@ body {
   width: 4px;
 }
 
+tr {
+  &:hover {
+    background: var(--hoverGray);
+  }
+}
+
 ::-webkit-scrollbar-track {
   background: #fff;
   border-radius: 10px;
@@ -88,15 +94,26 @@ input {
 }
 .table-danger {
   background-color: #f5c6cb !important;
+
+  &:hover {
+    opacity: 0.6 !important;
+    --bs-table-hover-bg: #87cb16 !important;
+  }
 }
 .table-primary {
   background-color: #b8daff !important;
+  &:hover {
+    opacity: 0.6 !important;
+    --bs-table-hover-bg: #87cb16 !important;
+  }
 }
 .table-warning {
   background-color: #fff49eb0 !important;
-}
-.table-success {
-  background-color: #e7ffcbd4 !important;
+
+  &:hover {
+    opacity: 0.6 !important;
+    --bs-table-hover-bg: #87cb16 !important;
+  }
 }
 .table-responsive {
   overflow-x: initial !important;
@@ -304,7 +321,7 @@ h6 {
 }
 
 table tr {
-  border-bottom: 1px solid #c3d2dc;
+  border-bottom: 1px solid black;
 }
 a {
   color: #007bff;
@@ -325,7 +342,7 @@ a {
   max-width: 100%;
 }
 .table-bordered {
-  border: 1px solid #e9ecef;
+  border: 1px solid black;
 }
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: rgba(0, 0, 0, 0.05);
@@ -339,7 +356,7 @@ p {
 }
 .table-bordered td,
 .table-bordered th {
-  border: 1px solid #e9ecef;
+  border: 1px solid black;
 }
 .table-bordered > :not(caption) > * > * {
   border-width: 0 1px;
