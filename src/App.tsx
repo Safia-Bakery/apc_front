@@ -89,6 +89,10 @@ const ShowInventoryTool = lazy(() => import("@/pages/ShowInventoryTool"));
 const InventoryOrderedTools = lazy(
   () => import("@/pages/InventoryOrderedTools")
 );
+const EditAddFAQQuestions = lazy(() => import("@/pages/EditAddFAQQuestions"));
+const FAQQuestions = lazy(() => import("@/pages/FAQQuestions"));
+const EditFAQRequests = lazy(() => import("@/pages/EditFAQRequests"));
+const FAQRequests = lazy(() => import("@/pages/FAQRequests"));
 
 dayjs.locale("ru");
 
@@ -656,6 +660,33 @@ const routes = [
     element: <EditAddClientsComments />,
     path: "/client-comments/add",
     screen: MainPermissions.add_client_comment,
+  },
+  // ===========================================================
+
+  {
+    element: <EditAddFAQQuestions />,
+    path: "/faq/add",
+    screen: MainPermissions.add_faq,
+  },
+  {
+    element: <EditAddFAQQuestions />,
+    path: "/faq/:id",
+    screen: MainPermissions.edit_faq,
+  },
+  {
+    element: <FAQQuestions />,
+    path: "/faq",
+    screen: MainPermissions.get_faq,
+  },
+  {
+    element: <FAQRequests />,
+    path: "/requests-faq",
+    screen: MainPermissions.get_faq_requests,
+  },
+  {
+    element: <EditFAQRequests />,
+    path: "/requests-faq/:id",
+    screen: MainPermissions.edit_faq_requests,
   },
 ];
 

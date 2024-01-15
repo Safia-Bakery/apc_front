@@ -467,6 +467,12 @@ export enum MainPermissions {
   edit_inventory_purchase_prods = 104,
   inventory_remains_in_stock = 105,
   inventory_reports = 106,
+
+  get_faq = 107,
+  add_faq = 107,
+  edit_faq = 107,
+  get_faq_requests = 107,
+  edit_faq_requests = 107,
 }
 export enum MarketingSubDep {
   designers = 1,
@@ -677,4 +683,17 @@ export interface InventoryOrder extends BasePaginatedRes {
     updated_at: string;
     created_at: string;
   }[];
+}
+export interface FAQTypes {
+  id?: number;
+  question?: string;
+  answer?: string;
+  status?: number;
+}
+export interface MainFAQTypes extends BasePaginatedRes {
+  items: FAQTypes[];
+}
+
+export interface FAQRequestTypes extends BasePaginatedRes {
+  items: { id: number; comments: string; status: number; created_at: string }[];
 }

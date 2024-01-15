@@ -500,6 +500,25 @@ export const routes: SidebarType[] = [
     ],
   },
   {
+    name: "Заявки FAQ",
+    icon: "/assets/icons/comments.svg",
+    screen: MainPermissions.get_faq_requests,
+    subroutes: [
+      {
+        name: "Вопросы",
+        url: "/faq",
+        icon: "/assets/icons/subOrder.svg",
+        screen: MainPermissions.get_faq,
+      },
+      {
+        name: "Отзывы",
+        url: "/requests-faq",
+        icon: "/assets/icons/comments.svg",
+        screen: MainPermissions.get_faq_requests,
+      },
+    ],
+  },
+  {
     name: "Заявки на еду",
     url: "/requests-staff",
     icon: "/assets/icons/staff.svg",
