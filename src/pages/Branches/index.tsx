@@ -72,6 +72,7 @@ const Branches = () => {
           {iikoBtn && (
             <button
               onClick={handleSync}
+              disabled={isFetching}
               className="btn btn-primary btn-fill mr-2 !flex"
             >
               <img

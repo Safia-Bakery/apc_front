@@ -51,6 +51,7 @@ const RemainsInStock = () => {
           <button
             onClick={handleSync}
             className="btn btn-primary btn-fill mr-2 !flex"
+            disabled={syncLoading}
           >
             <img
               src="/assets/icons/sync.svg"

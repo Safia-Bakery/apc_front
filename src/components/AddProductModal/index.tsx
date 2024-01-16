@@ -85,6 +85,7 @@ const AddProductModal = () => {
         </Header>
         <div className={styles.block}>
           <button
+            disabled={isFetching}
             className="btn btn-primary float-end mr-3 z-3 relative"
             onClick={() => syncWithIiko()}
           >

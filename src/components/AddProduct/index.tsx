@@ -34,7 +34,7 @@ const AddItems: FC<Props> = ({ children, synciiko }) => {
   const permissions = useAppSelector(permissionSelector);
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const navigate = useNavigateParams();
-  const { mutate } = syncExpenditure();
+  const { mutate, isLoading } = syncExpenditure();
   const { mutate: deleteExp } = deleteExpenditureMutation();
 
   const { data: products, refetch } = useOrder({
@@ -73,6 +73,7 @@ const AddItems: FC<Props> = ({ children, synciiko }) => {
       <Header title="Товары">
         {synciiko && permissions?.[synciiko] && (
           <button
+            disabled={isLoading}
             onClick={handleSync}
             className="btn btn-primary btn-fill btn-sm mr-2"
           >

@@ -140,6 +140,7 @@ const TelegramAddProduct = () => {
         <div className={styles.modalBody}>
           <div className="flex justify-content-end">
             <button
+              disabled={isFetching}
               className="btn btn-primary z-3 relative"
               onClick={() => syncWithIiko()}
             >

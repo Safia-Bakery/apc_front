@@ -204,7 +204,7 @@ const routes = [
   },
   {
     element: <Logs />,
-    path: `/request/logs/:id`,
+    path: "/request/logs/:id",
     screen: MainPermissions.edit_design_request,
   },
   {
@@ -297,7 +297,7 @@ const routes = [
         dep={Departments.apc}
       />
     ),
-    path: `/categories-apc-retail`,
+    path: "/categories-apc-retail",
     screen: MainPermissions.get_apc_category,
   },
   {
@@ -309,7 +309,7 @@ const routes = [
         dep={Departments.apc}
       />
     ),
-    path: `/categories-apc-fabric`,
+    path: "/categories-apc-fabric",
     screen: MainPermissions.get_categ_fab,
   },
   {
@@ -320,22 +320,22 @@ const routes = [
         dep={Departments.it}
       />
     ),
-    path: `/categories-it/:sphere`,
+    path: "/categories-it/:sphere",
     screen: MainPermissions.get_categ_it,
   },
   {
     element: <CategoryProducts />,
-    path: `/categories-it/:sphere/:id/products`,
+    path: "/categories-it/:sphere/:id/products",
     screen: MainPermissions.get_categ_it,
   },
   {
     element: <EditAddCategoryProduct />,
-    path: `/categories-it/:sphere/:id/add-product`,
+    path: "/categories-it/:sphere/:id/add-product",
     screen: MainPermissions.add_categ_it,
   },
   {
     element: <EditAddCategoryProduct />,
-    path: `/categories-it/:sphere/:id/edit-product/:product_id`,
+    path: "/categories-it/:sphere/:id/edit-product/:product_id",
     screen: MainPermissions.edit_categ_it,
   },
   {
@@ -346,55 +346,55 @@ const routes = [
         dep={Departments.marketing}
       />
     ),
-    path: `/categories-marketing`,
+    path: "/categories-marketing",
     screen: MainPermissions.get_mark_category,
   },
   {
     element: <EditAddCategory dep={Departments.marketing} />,
-    path: `/categories-marketing/:id`,
+    path: "/categories-marketing/:id",
     screen: MainPermissions.edit_mark_category,
   },
   {
     element: <EditAddCategory dep={Departments.marketing} />,
-    path: `/categories-marketing/add`,
+    path: "/categories-marketing/add",
     screen: MainPermissions.add_mark_category,
   },
   {
     element: (
       <EditAddCategory dep={Departments.apc} sphere_status={Sphere.retail} />
     ),
-    path: `/categories-apc-retail/:id`,
+    path: "/categories-apc-retail/:id",
     screen: MainPermissions.edit_apc_category,
   },
   {
     element: (
       <EditAddCategory dep={Departments.apc} sphere_status={Sphere.fabric} />
     ),
-    path: `/categories-apc-fabric/:id`,
+    path: "/categories-apc-fabric/:id",
     screen: MainPermissions.edit_categ_fab,
   },
   {
     element: <EditAddCategory dep={Departments.it} />,
-    path: `/categories-it/:sphere/:id`,
+    path: "/categories-it/:sphere/:id",
     screen: MainPermissions.edit_categ_it,
   },
   {
     element: <EditAddCategory dep={Departments.it} />,
-    path: `/categories-it/:sphere/add`,
+    path: "/categories-it/:sphere/add",
     screen: MainPermissions.edit_categ_it,
   },
   {
     element: (
       <EditAddCategory dep={Departments.apc} sphere_status={Sphere.retail} />
     ),
-    path: `/categories-apc-retail/add`,
+    path: "/categories-apc-retail/add",
     screen: MainPermissions.add_apc_category,
   },
   {
     element: (
       <EditAddCategory dep={Departments.apc} sphere_status={Sphere.fabric} />
     ),
-    path: `/categories-apc-fabric/add`,
+    path: "/categories-apc-fabric/add",
     screen: MainPermissions.add_categ_fab,
   },
   {
@@ -523,7 +523,6 @@ const routes = [
     path: "/items-in-stock/:id",
     screen: MainPermissions.get_warehouse_retail,
   },
-
   {
     element: (
       <Categories
@@ -532,18 +531,18 @@ const routes = [
         dep={Departments.logystics}
       />
     ),
-    path: `/categories-logystics`,
+    path: "/categories-logystics",
     screen: MainPermissions.get_log_categs,
   },
   {
     element: <EditAddCategory dep={Departments.logystics} />,
-    path: `/categories-logystics/:id`,
+    path: "/categories-logystics/:id",
     screen: MainPermissions.edit_log_categs,
   },
 
   {
     element: <EditAddCategory dep={Departments.logystics} />,
-    path: `/categories-logystics/add`,
+    path: "/categories-logystics/add",
     screen: MainPermissions.add_log_categs,
   },
   {
