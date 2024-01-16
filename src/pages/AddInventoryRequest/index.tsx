@@ -6,7 +6,7 @@ import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import TableHead from "@/components/TableHead";
-import { MainPermissions } from "@/utils/types";
+import { Departments, MainPermissions } from "@/utils/types";
 import styles from "./index.module.scss";
 import requestMutation from "@/hooks/mutation/orderMutation";
 import { inventoryCategoryId, isMobile } from "@/utils/helpers";
@@ -150,6 +150,7 @@ const AddInventoryRequest = () => {
                       render={({ field }) => (
                         <SelectWrapper
                           field={field}
+                          department={Departments.inventory}
                           register={register(`inputFields.${index}.product`)}
                         />
                       )}

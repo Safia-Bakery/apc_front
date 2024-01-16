@@ -10,7 +10,7 @@ import { useRemoveParams } from "custom/useCustomNavigate";
 import BaseInput from "@/components/BaseInputs";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import Header from "@/components/Header";
-import { RequestStatus } from "@/utils/types";
+import { Departments, RequestStatus } from "@/utils/types";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import deleteExpenditureMutation from "@/hooks/mutation/deleteExpenditure";
 import UploadComponent, { FileItem } from "@/components/FileUpload";
@@ -158,7 +158,11 @@ const TelegramAddProduct = () => {
             control={control}
             render={({ field }) => (
               <BaseInputs label="Выберите продукт">
-                <SelectWrapper field={field} register={register("product")} />
+                <SelectWrapper
+                  field={field}
+                  register={register("product")}
+                  department={Departments.inventory}
+                />
               </BaseInputs>
             )}
           />

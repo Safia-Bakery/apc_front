@@ -19,6 +19,12 @@
   overflow-y: auto;
   border: 1px solid black;
   border-radius: 10px;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  left: 0;
+  z-index: 200;
+  background: white;
 }
 .close {
   position: absolute;

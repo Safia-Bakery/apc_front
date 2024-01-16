@@ -6,12 +6,18 @@ import MainInput from "../BaseInputs/MainInput";
 
 export const SelectWrapper = forwardRef<
   HTMLInputElement,
-  { field: any; type?: string; register?: any; error?: any }
->(({ field, register, error }, ref) => {
+  {
+    field: any;
+    type?: string;
+    register?: any;
+    error?: any;
+    department: Departments;
+  }
+>(({ field, register, error, department }, ref) => {
   return (
     <BaseInputs className="!mb-0" error={error}>
       <ToolsSelect
-        department={Departments.inventory}
+        department={department}
         {...field}
         ref={ref}
         register={register}

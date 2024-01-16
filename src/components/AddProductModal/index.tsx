@@ -15,7 +15,7 @@ import useQueryString from "custom/useQueryString";
 import { useRemoveParams } from "custom/useCustomNavigate";
 import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
-import { MainPermissions } from "@/utils/types";
+import { Departments, MainPermissions } from "@/utils/types";
 import useSyncExpanditure from "@/hooks/sync/useSyncExpanditure";
 import BaseInputs from "../BaseInputs";
 import { SelectWrapper } from "../InputWrappers";
@@ -36,9 +36,9 @@ const AddProductModal = () => {
     enabled: false,
   });
 
-  const { refetch: iearchRefetch } = useTools({
-    enabled: false,
-  });
+  // const { refetch: iearchRefetch } = useTools({
+  //   enabled: false,
+  // });
 
   const { register, handleSubmit, getValues, reset, control } = useForm();
 
@@ -67,9 +67,9 @@ const AddProductModal = () => {
     );
   };
 
-  useEffect(() => {
-    if (!!modal && !!permissions?.[addExp]) iearchRefetch();
-  }, [modal, permissions?.[addExp]]);
+  // useEffect(() => {
+  //   if (!!modal && !!permissions?.[addExp]) iearchRefetch();
+  // }, [modal, permissions?.[addExp]]);
 
   return (
     <Modal
@@ -106,6 +106,7 @@ const AddProductModal = () => {
                   render={({ field }) => (
                     <BaseInputs className="!mb-0 mt-4" label="Выберите продукт">
                       <SelectWrapper
+                        department={Departments.apc}
                         field={field}
                         register={register("product")}
                       />

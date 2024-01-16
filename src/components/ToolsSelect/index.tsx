@@ -51,8 +51,6 @@ const ToolsSelect: FC<Props> = ({ department, ...others }) => {
 
   const pageIncrement = () => $page((prev) => prev + 1);
 
-  // if (isLoading) return;
-
   return (
     <Select
       options={items}
