@@ -260,6 +260,7 @@ export interface Comments {
   request: Order;
   user: UserTypes;
   comment: string;
+  rating: number;
 }
 
 export interface CommentTypes extends BasePaginatedRes {
@@ -442,18 +443,6 @@ export enum MainPermissions {
   get_categ_it = 58,
   edit_categ_it = 58,
 
-  // it_add_master = 84, //todo
-  // it_edit_master = 83,
-  // it_get_masters = 85,
-  // it_statistics = 81,
-  // it_remains_in_stock = 83,
-  // get_it_requests = 90,
-  // edit_it_requests = 89,
-  // add_it_requests = 91,
-  // add_categ_it = 87,
-  // get_categ_it = 88,
-  // edit_categ_it = 86,
-
   get_client_comment = 95,
   edit_client_comment = 97,
   add_client_comment = 96,
@@ -469,10 +458,10 @@ export enum MainPermissions {
   inventory_reports = 106,
 
   get_faq = 107,
-  add_faq = 107,
-  edit_faq = 107,
-  get_faq_requests = 107,
-  edit_faq_requests = 107,
+  add_faq = 108,
+  edit_faq = 109,
+  get_faq_requests = 110,
+  edit_faq_requests = 111,
 }
 export enum MarketingSubDep {
   designers = 1,

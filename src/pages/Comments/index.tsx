@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import Pagination from "@/components/Pagination";
@@ -32,7 +31,7 @@ const Comments = () => {
 
   return (
     <Card>
-      <Header title={"Comments"}>
+      <Header title="Отзывы">
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад
         </button>
@@ -55,7 +54,7 @@ const Comments = () => {
                         {comment?.request?.id}
                       </Link>
                     </td>
-                    <td>rate</td>
+                    <td>{comment?.rating}</td>
                     <td>{comment?.comment}</td>
                     <td>
                       {dayjs(comment?.request?.finished_at).format(
