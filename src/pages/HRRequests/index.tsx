@@ -2,9 +2,15 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { FAQRequestTypes, MainFAQTypes, MainPermissions } from "@/utils/types";
+import { FAQRequestTypes, MainPermissions, RequestStatus } from "@/utils/types";
 import Pagination from "@/components/Pagination";
-import { handleIdx } from "@/utils/helpers";
+import {
+  HRRequestTypes,
+  handleHRStatus,
+  handleIdx,
+  handleStatus,
+  requestRows,
+} from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import TableViewBtn from "@/components/TableViewBtn";
 import ItemsCount from "@/components/ItemsCount";
@@ -22,17 +28,34 @@ const column = [
   { name: "", key: "" },
 ];
 
-const FAQRequests = () => {
+const handleTitle = (dep: HRRequestTypes) => {
+  switch (dep) {
+    case HRRequestTypes.asked_questions:
+      return "Заданные вопросы";
+    case HRRequestTypes.objections:
+      return "Возражении";
+    case HRRequestTypes.offers:
+      return "Предложении";
+
+    default:
+      break;
+  }
+};
+
+const HRRequests = () => {
   const navigate = useNavigate();
   const [sort, $sort] = useState<FAQRequestTypes["items"]>();
   const permission = useAppSelector(permissionSelector);
   const page = Number(useQueryString("page")) || 1;
+  const sphere = Number(useQueryString("sphere"));
+
   const {
     data: faqs,
     isLoading,
     refetch,
   } = useFAQRequests({
     page,
+    ...(!!sphere && { sphere }),
   });
   const handleNavigate = (route: string) => () => navigate(route);
 
@@ -42,7 +65,7 @@ const FAQRequests = () => {
 
   return (
     <Card>
-      <Header title="Отзывы" />
+      <Header title={handleTitle(sphere)} />
 
       <div className="content">
         <ItemsCount data={faqs} />
@@ -56,10 +79,10 @@ const FAQRequests = () => {
           <tbody>
             {!!faqs?.items?.length &&
               (sort?.length ? sort : faqs?.items)?.map((faq, idx) => (
-                <tr key={idx} className="bg-blue">
+                <tr key={idx} className={requestRows(faq.status)}>
                   <td width="40">{handleIdx(idx)}</td>
                   <td>{faq?.comments}</td>
-                  <td>{faq?.status ? "Активный" : "Неактивный"}</td>
+                  <td>{handleHRStatus(faq?.status)}</td>
                   <td width={40}>
                     {permission?.[MainPermissions.edit_faq] && (
                       <TableViewBtn onClick={handleNavigate(`${faq.id}`)} />
@@ -78,4 +101,4 @@ const FAQRequests = () => {
   );
 };
 
-export default FAQRequests;
+export default HRRequests;

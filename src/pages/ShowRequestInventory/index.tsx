@@ -19,6 +19,7 @@ import {
   FileType,
   MainPermissions,
   ModalTypes,
+  Order,
   RequestStatus,
 } from "@/utils/types";
 import { useForm } from "react-hook-form";
@@ -28,6 +29,7 @@ import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { permissionSelector } from "reducers/sidebar";
 import cl from "classnames";
 import AddedInventoryProducts from "@/components/AddedInventoryProducts";
+import Loading from "@/components/Loader";
 
 const ShowRequestInventory = () => {
   const { id } = useParams();
@@ -35,12 +37,17 @@ const ShowRequestInventory = () => {
 
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
-  const { mutate: attach } = attachBrigadaMutation();
+  const { mutate: attach, isLoading: attaching } = attachBrigadaMutation();
   const handleModal = (type: ModalTypes) => () => {
     navigateParams({ modal: type });
   };
   const { getValues } = useForm();
-  const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
+  const {
+    data: order,
+    refetch: orderRefetch,
+    isLoading,
+    isFetching,
+  } = useOrder({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -54,9 +61,18 @@ const ShowRequestInventory = () => {
 
   const handleBack = () => navigate(state?.prevPath);
 
-  const handleBrigada =
-    ({ status }: { status: RequestStatus }) =>
+  const handleRequest =
+    ({
+      status,
+      expanditure,
+    }: {
+      status: RequestStatus;
+      expanditure: Order["expanditure"];
+    }) =>
     () => {
+      // console.log(expanditure, "expanditure");
+      // if (!expanditure?.find((item) => !!item.status)) alert("Выберите товар!");
+      // else
       attach(
         {
           request_id: Number(id),
@@ -86,32 +102,19 @@ const ShowRequestInventory = () => {
             Отклонить
           </button>
           <button
-            onClick={handleBrigada({ status: RequestStatus.done })}
+            onClick={handleRequest({
+              status: RequestStatus.done,
+              expanditure: order.expanditure,
+            })}
             className="btn btn-success btn-fill"
           >
             Завершить
           </button>
         </div>
       );
-
-    if (permissions?.[MainPermissions.edit_requests_inventory])
-      return (
-        <div className="float-end mb10">
-          {order?.status! < RequestStatus.done && (
-            <button
-              onClick={handleBrigada({ status: RequestStatus.done })}
-              className="btn btn-success btn-fill"
-            >
-              Завершить
-            </button>
-          )}
-        </div>
-      );
   }, [permissions, order?.status]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  if (isLoading || isFetching) return <Loading absolute />;
 
   return (
     <>
@@ -280,7 +283,7 @@ const ShowRequestInventory = () => {
           {renderBtns}
         </div>
       </Card>
-
+      {attaching && <Loading absolute />}
       <ShowRequestModals />
     </>
   );

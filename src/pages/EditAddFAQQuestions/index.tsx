@@ -75,6 +75,7 @@ const EditAddFAQQuestions = () => {
         </BaseInputs>
         <BaseInputs label="Ответ" error={errors.answer}>
           <MainTextArea
+            placeholder="Ответ"
             register={register("answer", { required: "Обязательное поле" })}
           />
         </BaseInputs>

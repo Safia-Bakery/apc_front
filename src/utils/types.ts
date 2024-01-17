@@ -684,5 +684,12 @@ export interface MainFAQTypes extends BasePaginatedRes {
 }
 
 export interface FAQRequestTypes extends BasePaginatedRes {
-  items: { id: number; comments: string; status: number; created_at: string }[];
+  items: {
+    id: number;
+    comments: string;
+    status: number;
+    created_at: string;
+    sphere: number;
+    answer: string;
+  }[];
 }

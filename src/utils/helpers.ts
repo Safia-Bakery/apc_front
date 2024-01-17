@@ -215,6 +215,12 @@ export const stockStores = {
   retail: "4aafb5af-66c3-4419-af2d-72897f652019",
 };
 
+export enum HRRequestTypes {
+  offers = 3,
+  objections = 2,
+  asked_questions = 1,
+}
+
 // export const logysticsCategs = 37;
 
 export const routes: SidebarType[] = [
@@ -500,21 +506,36 @@ export const routes: SidebarType[] = [
     ],
   },
   {
-    name: "Заявки FAQ",
+    name: "HR Заявки",
     icon: "/assets/icons/comments.svg",
     screen: MainPermissions.get_faq_requests,
     subroutes: [
       {
-        name: "Вопросы",
+        name: "Вопросы и ответы",
         url: "/faq",
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_faq,
       },
       {
-        name: "Отзывы",
-        url: "/requests-faq",
+        name: "Предложении 🧠",
+        url: "/hr-offers",
         icon: "/assets/icons/comments.svg",
         screen: MainPermissions.get_faq_requests,
+        param: `?sphere=${HRRequestTypes.offers}`,
+      },
+      {
+        name: "Возражении 📝",
+        url: "/hr-objections",
+        icon: "/assets/icons/comments.svg",
+        screen: MainPermissions.get_faq_requests,
+        param: `?sphere=${HRRequestTypes.objections}`,
+      },
+      {
+        name: "Заданные вопросы ❔",
+        url: "/hr-asked-questions",
+        icon: "/assets/icons/comments.svg",
+        screen: MainPermissions.get_faq_requests,
+        param: `?sphere=${HRRequestTypes.asked_questions}`,
       },
     ],
   },
@@ -591,6 +612,20 @@ export const handleIdx = (index: number) => {
   const currentPage = Number(useQueryString("page")) || 1;
   if (currentPage === 1) return index + 1;
   else return index + 1 + itemsPerPage * (currentPage - 1);
+};
+
+export const handleHRStatus = (dep: RequestStatus) => {
+  switch (dep) {
+    case RequestStatus.new:
+      return "Новый";
+    case RequestStatus.confirmed:
+      return "Отвечен";
+    case RequestStatus.rejected:
+      return "Отклонён";
+
+    default:
+      break;
+  }
 };
 
 export const staffCategoryId = 36;

@@ -90,9 +90,9 @@ const InventoryOrderedTools = lazy(
   () => import("@/pages/InventoryOrderedTools")
 );
 const EditAddFAQQuestions = lazy(() => import("@/pages/EditAddFAQQuestions"));
-const FAQQuestions = lazy(() => import("@/pages/FAQQuestions"));
-const EditFAQRequests = lazy(() => import("@/pages/EditFAQRequests"));
-const FAQRequests = lazy(() => import("@/pages/FAQRequests"));
+const HRQuestions = lazy(() => import("@/pages/HRQuestions"));
+const EditHRRequests = lazy(() => import("@/pages/EditHRRequests"));
+const HRRequests = lazy(() => import("@/pages/HRRequests"));
 
 dayjs.locale("ru");
 
@@ -673,18 +673,38 @@ const routes = [
     screen: MainPermissions.edit_faq,
   },
   {
-    element: <FAQQuestions />,
+    element: <HRQuestions />,
     path: "/faq",
     screen: MainPermissions.get_faq,
   },
   {
-    element: <FAQRequests />,
-    path: "/requests-faq",
+    element: <HRRequests />,
+    path: "/hr-offers",
     screen: MainPermissions.get_faq_requests,
   },
   {
-    element: <EditFAQRequests />,
-    path: "/requests-faq/:id",
+    element: <EditHRRequests />,
+    path: "/hr-offers/:id",
+    screen: MainPermissions.edit_faq_requests,
+  },
+  {
+    element: <HRRequests />,
+    path: "/hr-asked-questions",
+    screen: MainPermissions.get_faq_requests,
+  },
+  {
+    element: <EditHRRequests />,
+    path: "/hr-asked-questions/:id",
+    screen: MainPermissions.edit_faq_requests,
+  },
+  {
+    element: <HRRequests />,
+    path: "/hr-objections",
+    screen: MainPermissions.get_faq_requests,
+  },
+  {
+    element: <EditHRRequests />,
+    path: "/hr-objections/:id",
     screen: MainPermissions.edit_faq_requests,
   },
 ];

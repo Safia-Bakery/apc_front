@@ -9,7 +9,8 @@ const column = [
   { name: "№" },
   { name: "Наименование" },
   { name: "Количество" },
-  { name: "Примичание" },
+  { name: "Комментария" },
+  { name: "Статус" },
   { name: "" },
 ];
 
@@ -19,6 +20,13 @@ const AddedInventoryProducts = () => {
   const { mutate } = updateInventoryProdMutation();
 
   const { data: order, refetch } = useOrder({ id: Number(id) });
+
+  const handleStatus = (status: number) => {
+    if (!order?.status && !status) return "Новый";
+    if (!!order?.status && !status) return "Формировано на новую заявку";
+
+    if (status) return "Передано";
+  };
 
   const handleUpdateProd = (id: number) => () =>
     mutate({ id, status: 1 }, { onSuccess: () => refetch() });
@@ -47,6 +55,7 @@ const AddedInventoryProducts = () => {
                 <td>{item?.tool.name}</td>
                 <td>{item?.amount}</td>
                 <td>{item?.comment}</td>
+                <td>{handleStatus(item?.status)}</td>
                 <td width={40}>
                   {!item.status && order.status === RequestStatus.new && (
                     <div

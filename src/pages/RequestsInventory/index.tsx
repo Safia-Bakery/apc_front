@@ -50,6 +50,10 @@ const RequestsInventory = () => {
     department: Departments.inventory,
   });
 
+  useEffect(() => {
+    refetch();
+  }, []);
+
   if (orderLoading) return <Loading absolute />;
 
   return (
