@@ -15,11 +15,13 @@ import BaseInputs from "@/components/BaseInputs";
 import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 import MainRadioBtns from "@/components/BaseInputs/MainRadioBtns";
 import { Sphere } from "@/utils/types";
+import useRoles from "@/hooks/useRoles";
 
 const EditClient = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
+  const { data: roles } = useRoles({});
   const { refetch: usersRefetch } = useUsers({
     enabled: false,
     page: 1,
@@ -32,11 +34,12 @@ const EditClient = () => {
   const { mutate } = userMutation();
 
   const onSubmit = () => {
-    const { status } = getValues();
+    const { status, group_id } = getValues();
 
     mutate(
       {
         status: !status ? 2 : 0,
+        group_id: !!group_id ? group_id : 0,
         sphere_status: sphere_status ? Sphere.fabric : Sphere.retail,
         ...(!!id && { user_id: Number(id) }),
       },
@@ -121,7 +124,7 @@ const EditClient = () => {
           </div>
           <div className="col-md-6">
             <BaseInput label="РОЛЬ" error={errors.department}>
-              <MainSelect disabled register={register("group_id")} />
+              <MainSelect values={roles} register={register("group_id")} />
             </BaseInput>
             {!!id && (
               <BaseInputs label="Телеграм ID" error={errors.telegram_id}>
