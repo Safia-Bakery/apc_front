@@ -292,7 +292,7 @@ export const routes: SidebarType[] = [
         url: "/masters",
         icon: "/assets/icons/brigades.svg",
         screen: MainPermissions.get_master,
-        param: `?sphere_status=${Sphere.fabric}&add=${MainPermissions.add_master}&edit=${MainPermissions.edit_master}`,
+        param: `?dep=${Departments.apc}&sphere_status=${Sphere.fabric}&add=${MainPermissions.add_master}&edit=${MainPermissions.edit_master}`,
       },
       {
         name: "Категории",
