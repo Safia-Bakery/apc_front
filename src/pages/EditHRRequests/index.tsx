@@ -2,7 +2,7 @@ import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMemo, useState } from "react";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import useFAQRequests from "@/hooks/useFaqRequests";
 import dayjs from "dayjs";
 import hrRequestsMutation from "@/hooks/mutation/hrRequest";
@@ -18,7 +18,7 @@ const EditHRRequests = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
-  const { mutate: postFaq } = hrRequestsMutation();
+  const { mutate: postFaq, isLoading: posting } = hrRequestsMutation();
   const [answerModal, $answerModal] = useState(false);
 
   const { register, getValues } = useForm();
@@ -39,9 +39,12 @@ const EditHRRequests = () => {
           navigate(`/hr-asked-questions?sphere=${faq?.sphere}`);
           if (!!id) refetch();
         },
+        onError: (e: any) => errorToast(e.message),
       }
     );
   };
+
+  const toggleModal = () => $answerModal((prev) => !prev);
 
   const renderBtns = useMemo(() => {
     if (!faq?.status)
@@ -53,10 +56,7 @@ const EditHRRequests = () => {
           >
             Отклонить
           </button>
-          <button
-            onClick={() => $answerModal(true)}
-            className="btn btn-success btn-fill"
-          >
+          <button onClick={toggleModal} className="btn btn-success btn-fill">
             Ответить
           </button>
         </div>
@@ -101,21 +101,27 @@ const EditHRRequests = () => {
         {renderBtns}
       </div>
 
-      <Modal isOpen={answerModal}>
-        <Header title="Ответить" />
+      <Modal isOpen={answerModal} onClose={toggleModal}>
+        <Header title="Ответить">
+          <button onClick={toggleModal} className="close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </Header>
         <div className="px-4">
           <BaseInput label="Комментарии">
             <MainTextArea register={register("answer")} />
           </BaseInput>
 
           <button
-            className="btn btn-success"
+            className="btn btn-success w-full"
             onClick={() => onSubmit(RequestStatus.confirmed)}
           >
             Отправить
           </button>
         </div>
       </Modal>
+
+      {posting && <Loading absolute />}
     </Card>
   );
 };
