@@ -6,6 +6,7 @@ import { useDownloadExcel } from "react-export-table-to-excel";
 import { Departments, Sphere } from "@/utils/types";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
+import { numberWithCommas } from "@/utils/helpers";
 
 interface ItemType {
   amount: number;
@@ -48,11 +49,7 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
   });
 
   const renderProductCount = useMemo(() => {
-    return data?.tests.reduce((acc, item) => {
-      if (item.price) acc + item.price;
-
-      return acc;
-    }, 0);
+    return data?.tests.reduce((acc, item) => (acc += item.price || 0), 0);
   }, [data?.tests]);
 
   const downloadAsPdf = () => onDownload();
@@ -82,16 +79,19 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
                 <Link to={item?.id.toString()}>{item?.name}</Link>
               </td>
 
-              <td>{item?.price}</td>
+              <td>{item?.price && numberWithCommas(item?.price)}</td>
               <td>{item?.amount}</td>
-              {item.price && <td>{item?.amount * item?.price} </td>}
+
+              <td>
+                {item?.price && numberWithCommas(item?.amount * item?.price)}
+              </td>
             </tr>
           ))}
           <tr>
             <th colSpan={4} className="text-lg">
               В общем:
             </th>
-            <th className="text-lg">{renderProductCount}</th>
+            <th className="text-lg">{numberWithCommas(renderProductCount!)}</th>
           </tr>
         </tbody>
       </table>

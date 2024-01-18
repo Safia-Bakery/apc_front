@@ -473,7 +473,8 @@ export const routes: SidebarType[] = [
       },
       {
         name: "Статистика",
-        url: "/statistics-marketing/department",
+        url: "/statistics-marketing",
+        param: "/department",
         icon: "/assets/icons/statistics.svg",
         screen: MainPermissions.get_statistics,
       },
