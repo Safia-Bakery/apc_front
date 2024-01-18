@@ -51,6 +51,10 @@ const routeNameMappings: { [key: string]: string } = {
   "client-comments": "Отзывы гостей",
   "products-inventory": "Остатки на складах",
   "products-ierarch": "Инвентарь / Товары",
+  "hr-objections": "Возражении 📝",
+  "hr-offers": "Предложении 🧠",
+  faq: "Вопросы и ответы",
+  "hr-asked-questions": "Заданные вопросы ❔",
 };
 
 const Breadcrumbs: FC = () => {
