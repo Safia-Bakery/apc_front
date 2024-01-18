@@ -1,7 +1,6 @@
 import Header from "../Header";
 import { useParams } from "react-router-dom";
 import useOrder from "@/hooks/useOrder";
-import { useNavigateParams } from "custom/useCustomNavigate";
 import updateInventoryProdMutation from "@/hooks/mutation/updateInventoryProd";
 import { RequestStatus } from "@/utils/types";
 
@@ -9,7 +8,7 @@ const column = [
   { name: "№" },
   { name: "Наименование" },
   { name: "Количество" },
-  { name: "Комментария" },
+  { name: "Комментарии" },
   { name: "Статус" },
   { name: "" },
 ];

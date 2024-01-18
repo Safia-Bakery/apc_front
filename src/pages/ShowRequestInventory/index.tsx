@@ -1,10 +1,11 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import cl from "classnames";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import dayjs from "dayjs";
+import { useForm } from "react-hook-form";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-
 import useOrder from "@/hooks/useOrder";
-import dayjs from "dayjs";
 import { useAppSelector } from "@/store/utils/types";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { successToast } from "@/utils/toast";
@@ -19,21 +20,18 @@ import {
   FileType,
   MainPermissions,
   ModalTypes,
-  Order,
   RequestStatus,
 } from "@/utils/types";
-import { useForm } from "react-hook-form";
 import ShowRequestModals from "@/components/ShowRequestModals";
-
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { permissionSelector } from "reducers/sidebar";
-import cl from "classnames";
 import AddedInventoryProducts from "@/components/AddedInventoryProducts";
 import Loading from "@/components/Loader";
 
 const ShowRequestInventory = () => {
   const { id } = useParams();
   const permissions = useAppSelector(permissionSelector);
+  const [changed, $changed] = useState(false);
 
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
@@ -62,32 +60,25 @@ const ShowRequestInventory = () => {
   const handleBack = () => navigate(state?.prevPath);
 
   const handleRequest =
-    ({
-      status,
-      expanditure,
-    }: {
-      status: RequestStatus;
-      expanditure: Order["expanditure"];
-    }) =>
+    ({ status }: { status: RequestStatus }) =>
     () => {
-      // console.log(expanditure, "expanditure");
-      // if (!expanditure?.find((item) => !!item.status)) alert("Выберите товар!");
-      // else
-      attach(
-        {
-          request_id: Number(id),
-          status,
-          deny_reason: getValues("cancel_reason"),
-        },
-        {
-          onSuccess: (data: any) => {
-            if (data.status === 200) {
-              orderRefetch();
-              successToast("assigned");
-            }
+      if (changed) alert("Выберите товар!");
+      else
+        attach(
+          {
+            request_id: Number(id),
+            status,
+            deny_reason: getValues("cancel_reason"),
           },
-        }
-      );
+          {
+            onSuccess: (data: any) => {
+              if (data.status === 200) {
+                orderRefetch();
+                successToast("assigned");
+              }
+            },
+          }
+        );
       removeParams(["modal"]);
     };
 
@@ -104,7 +95,6 @@ const ShowRequestInventory = () => {
           <button
             onClick={handleRequest({
               status: RequestStatus.done,
-              expanditure: order.expanditure,
             })}
             className="btn btn-success btn-fill"
           >
@@ -112,7 +102,12 @@ const ShowRequestInventory = () => {
           </button>
         </div>
       );
-  }, [permissions, order?.status]);
+  }, [permissions, order?.status, changed]);
+
+  useEffect(() => {
+    if (!order?.expanditure?.find((item) => !!item.status)) $changed(true);
+    else $changed(false);
+  }, [order?.expanditure]);
 
   if (isLoading || isFetching) return <Loading absolute />;
 
