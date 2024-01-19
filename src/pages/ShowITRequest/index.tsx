@@ -33,6 +33,7 @@ import Loading from "@/components/Loader";
 import cl from "classnames";
 import { permissionSelector } from "reducers/sidebar";
 import AddedProductsIT from "@/components/AddedProductsIT";
+import Modal from "@/components/Modal";
 
 interface Props {
   edit: MainPermissions;
@@ -45,6 +46,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   const { state } = useLocation();
   const sphere_status = Number(useQueryString("sphere_status"));
   const dep = Number(useQueryString("dep"));
+  const modal = useQueryString("modal");
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const permissions = useAppSelector(permissionSelector);
   const dispatch = useAppDispatch();
@@ -152,6 +154,18 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
         }
       );
   };
+
+  const renderRequestModals = useMemo(() => {
+    return <ShowRequestModals />;
+  }, [modal]);
+
+  const renderChangeModals = useMemo(() => {
+    return (
+      <Modal isOpen={false}>
+        <div className=""></div>
+      </Modal>
+    );
+  }, []);
 
   const renderBtns = useMemo(() => {
     if (permissions?.[edit] && isNew && permissions?.[attaching])
@@ -324,10 +338,10 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                   </tr>
                   <tr>
                     <th>Группа проблем</th>
-                    <td>{order?.category?.name}</td>
+                    <td className="">{order?.category?.name}</td>
                   </tr>
                   <tr>
-                    <th>Отдел</th>
+                    <th>Филиал</th>
                     <td>{order?.fillial?.parentfillial?.name}</td>
                   </tr>
                   <tr>
@@ -336,7 +350,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                   </tr>
                   <tr>
                     <th>Файл</th>
-                    <td className="flex flex-col">
+                    <td className="flex flex-col !border-none">
                       {order?.file?.map((item, index) => {
                         if (item.status === 0)
                           return (
@@ -357,7 +371,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                   </tr>
                   <tr>
                     <th id="photo_report">Фотоотчёт</th>
-                    <td className="flex flex-col">
+                    <td className="flex flex-col !border-none">
                       {order?.file?.map((item, index) => {
                         if (item.status === 1)
                           return (
@@ -468,7 +482,9 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
       {renderfileUploader}
 
       {!!order?.request_orpr?.length && <AddedProductsIT />}
-      <ShowRequestModals />
+      {renderRequestModals}
+
+      {renderChangeModals}
     </>
   );
 };

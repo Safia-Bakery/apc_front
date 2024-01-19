@@ -21,6 +21,7 @@ import useSyncExpanditure from "@/hooks/sync/useSyncExpanditure";
 import { TelegramApp } from "@/utils/tgHelpers";
 import BaseInputs from "@/components/BaseInputs";
 import { SelectWrapper } from "@/components/InputWrappers";
+import Loading from "@/components/Loader";
 
 const column = [{ name: "Наименование" }, { name: "Количество" }, { name: "" }];
 
@@ -47,9 +48,9 @@ const TelegramAddProduct = () => {
     id: Number(id),
   });
 
-  const { refetch: iearchRefetch } = useTools({
-    enabled: false,
-  });
+  // const { refetch: iearchRefetch } = useTools({
+  //   enabled: false,
+  // });
 
   const { register, handleSubmit, getValues, reset, control } = useForm();
 
@@ -126,9 +127,9 @@ const TelegramAddProduct = () => {
   const handleIncrement = () => $count((prev) => prev + 1);
   const handleDecrement = () => $count((prev) => prev - 1);
 
-  useEffect(() => {
-    iearchRefetch();
-  }, []);
+  // useEffect(() => {
+  //   iearchRefetch();
+  // }, []);
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -138,19 +139,13 @@ const TelegramAddProduct = () => {
 
       <div className={styles.block}>
         <div className={styles.modalBody}>
-          <div className="flex justify-content-end">
+          <div className="flex justify-end">
             <button
               disabled={isFetching}
               className="btn btn-primary z-3 relative"
               onClick={() => syncWithIiko()}
             >
-              {isFetching ? (
-                <div className="spinner-border text-warning" role="status">
-                  <span className="sr-only">Loading...</span>
-                </div>
-              ) : (
-                "Обновить"
-              )}
+              Обновить
             </button>
           </div>
           <Controller
@@ -161,7 +156,7 @@ const TelegramAddProduct = () => {
                 <SelectWrapper
                   field={field}
                   register={register("product")}
-                  department={Departments.inventory}
+                  department={Departments.apc}
                 />
               </BaseInputs>
             )}
@@ -266,6 +261,8 @@ const TelegramAddProduct = () => {
           </button>
         </div>
       </div>
+
+      {isFetching && <Loading absolute />}
     </form>
   );
 };
