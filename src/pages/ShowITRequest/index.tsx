@@ -34,6 +34,10 @@ import cl from "classnames";
 import { permissionSelector } from "reducers/sidebar";
 import AddedProductsIT from "@/components/AddedProductsIT";
 import Modal from "@/components/Modal";
+import BranchSelect from "@/components/BranchSelect";
+import BaseInput from "@/components/BaseInputs";
+import MainSelect from "@/components/BaseInputs/MainSelect";
+import useCategories from "@/hooks/useCategories";
 
 interface Props {
   edit: MainPermissions;
@@ -47,10 +51,15 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   const sphere_status = Number(useQueryString("sphere_status"));
   const dep = Number(useQueryString("dep"));
   const modal = useQueryString("modal");
+  const changeModal = Number(useQueryString("changeModal"));
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const permissions = useAppSelector(permissionSelector);
   const dispatch = useAppDispatch();
   const navigateParams = useNavigateParams();
+  const { data: categories, isLoading: categoryLoading } = useCategories({
+    enabled: changeModal === ModalTypes.changeCateg,
+    department: Departments.it,
+  });
   const removeParams = useRemoveParams();
   const { mutate: attach, isLoading: attachLoading } = attachBrigadaMutation();
   const { refetch: brigadasRefetch } = useBrigadas({
@@ -59,10 +68,10 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
     ...(!!sphere_status && { sphere_status }),
   });
 
-  const handleModal = (type: ModalTypes) => () => {
+  const handleModal = (type: ModalTypes) => () =>
     navigateParams({ modal: type });
-  };
-  const { getValues } = useForm();
+
+  const { getValues, register } = useForm();
   const {
     data: order,
     refetch: orderRefetch,
@@ -82,9 +91,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
 
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
-    else {
-      navigateParams({ modal: ModalTypes.showPhoto, photo: file });
-    }
+    else navigateParams({ modal: ModalTypes.showPhoto, photo: file });
   };
 
   const handleBrigada =
@@ -160,12 +167,25 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   }, [modal]);
 
   const renderChangeModals = useMemo(() => {
-    return (
-      <Modal isOpen={false}>
-        <div className=""></div>
-      </Modal>
-    );
-  }, []);
+    if (categoryLoading) return <Loading absolute />;
+    else
+      switch (changeModal) {
+        case ModalTypes.changeBranch:
+          return <BranchSelect />;
+        case ModalTypes.changeCateg:
+          return (
+            <BaseInput>
+              <MainSelect
+                values={categories?.items}
+                register={register("category")}
+              />
+            </BaseInput>
+          );
+
+        default:
+          break;
+      }
+  }, [categoryLoading, changeModal, categories]);
 
   const renderBtns = useMemo(() => {
     if (permissions?.[edit] && isNew && permissions?.[attaching])
@@ -483,8 +503,10 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
 
       {!!order?.request_orpr?.length && <AddedProductsIT />}
       {renderRequestModals}
-
-      {renderChangeModals}
+      <Modal isOpen={false}>
+        <div className=""></div>
+        {renderChangeModals}
+      </Modal>
     </>
   );
 };

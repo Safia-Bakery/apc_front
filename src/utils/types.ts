@@ -582,6 +582,8 @@ export const enum ModalTypes {
   assingDeadline,
   reassign,
   cars,
+  changeBranch,
+  changeCateg,
 }
 
 export interface CountTypes {

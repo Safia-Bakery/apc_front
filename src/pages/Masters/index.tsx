@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import Card from "@/components/Card";
 import Header from "@/components/Header";
@@ -23,6 +23,7 @@ const Masters = () => {
   const dep = useQueryString("dep");
   const currentPage = Number(useQueryString("page")) || 1;
   const [sort, $sort] = useState<BrigadaType[]>();
+  const { search } = useLocation();
 
   const add = Number(useQueryString("add")) as MainPermissions;
   const edit = Number(useQueryString("edit")) as MainPermissions;
@@ -63,9 +64,7 @@ const Masters = () => {
           <button
             className="btn btn-success btn-fill"
             id="add_master"
-            onClick={handleNavigate(
-              `add?${dep ? `dep=${dep}` : `sphere_status=${sphere_status}`}`
-            )}
+            onClick={handleNavigate(`add${search}`)}
           >
             Добавить
           </button>
