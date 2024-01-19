@@ -10,6 +10,8 @@ interface Body {
   deny_reason?: string;
   finishing_time?: string;
   car_id?: number;
+  fillial_id?: string;
+  category_id?: string | number;
 }
 
 const attachBrigadaMutation = () => {

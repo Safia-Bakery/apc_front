@@ -7,6 +7,7 @@ import { Departments, Sphere } from "@/utils/types";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
 import { numberWithCommas } from "@/utils/helpers";
+import Loading from "@/components/Loader";
 
 interface ItemType {
   amount: number;
@@ -49,7 +50,8 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
   });
 
   const renderProductCount = useMemo(() => {
-    return data?.tests.reduce((acc, item) => (acc += item.price || 0), 0);
+    if (data?.tests)
+      return data?.tests.reduce((acc, item) => (acc += item.price || 0), 0);
   }, [data?.tests]);
 
   const downloadAsPdf = () => onDownload();
@@ -60,6 +62,8 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
         document.getElementById("consumption_stat")?.click();
       });
   }, [btnAction]);
+
+  if (isLoading) return <Loading absolute />;
 
   return (
     <>

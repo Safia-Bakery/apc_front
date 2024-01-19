@@ -1,0 +1,10 @@
+.changeBtn {
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.tableRow:hover {
+  & .changeBtn {
+    opacity: 1;
+  }
+}

@@ -38,6 +38,7 @@ import BranchSelect from "@/components/BranchSelect";
 import BaseInput from "@/components/BaseInputs";
 import MainSelect from "@/components/BaseInputs/MainSelect";
 import useCategories from "@/hooks/useCategories";
+import styles from "./index.module.scss";
 
 interface Props {
   edit: MainPermissions;
@@ -56,6 +57,8 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   const permissions = useAppSelector(permissionSelector);
   const dispatch = useAppDispatch();
   const navigateParams = useNavigateParams();
+  const branchJson = useQueryString("branch");
+  const branch = branchJson && JSON.parse(branchJson);
   const { data: categories, isLoading: categoryLoading } = useCategories({
     enabled: changeModal === ModalTypes.changeCateg,
     department: Departments.it,
@@ -70,6 +73,9 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
 
   const handleModal = (type: ModalTypes) => () =>
     navigateParams({ modal: type });
+
+  const handleChangeModal = (type: ModalTypes) => () =>
+    navigateParams({ changeModal: type });
 
   const { getValues, register } = useForm();
   const {
@@ -88,6 +94,28 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
 
   const handleFilesSelected = (data: FileItem[]) =>
     dispatch(uploadReport(data));
+
+  const handleChange =
+    ({ filial, categ }: { filial?: boolean; categ?: boolean }) =>
+    () => {
+      attach(
+        {
+          request_id: Number(id),
+          status: order?.status!,
+          ...(filial && branch && { fillial_id: branch.id }),
+          ...(categ && { category_id: getValues("category") }),
+        },
+        {
+          onSuccess: (data: any) => {
+            if (data.status === 200) {
+              orderRefetch();
+              successToast("assigned");
+              removeParams(["branch", "changeModal"]);
+            }
+          },
+        }
+      );
+    };
 
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
@@ -167,24 +195,44 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   }, [modal]);
 
   const renderChangeModals = useMemo(() => {
-    if (categoryLoading) return <Loading absolute />;
-    else
-      switch (changeModal) {
-        case ModalTypes.changeBranch:
-          return <BranchSelect />;
-        case ModalTypes.changeCateg:
-          return (
-            <BaseInput>
+    switch (changeModal) {
+      case ModalTypes.changeBranch:
+        return (
+          <>
+            <BaseInput label="Выберите филиал">
+              <BranchSelect enabled />
+            </BaseInput>
+
+            <button
+              className="btn btn-success btn-fill w-full"
+              onClick={handleChange({ filial: true })}
+            >
+              Применить
+            </button>
+          </>
+        );
+      case ModalTypes.changeCateg:
+        return (
+          <>
+            <BaseInput label="Выберите группу проблем">
               <MainSelect
                 values={categories?.items}
                 register={register("category")}
               />
             </BaseInput>
-          );
 
-        default:
-          break;
-      }
+            <button
+              className="btn btn-success btn-fill w-full"
+              onClick={handleChange({ categ: true })}
+            >
+              Применить
+            </button>
+          </>
+        );
+
+      default:
+        break;
+    }
   }, [categoryLoading, changeModal, categories]);
 
   const renderBtns = useMemo(() => {
@@ -248,7 +296,10 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
             <span>{order?.brigada?.name}</span>
             <button
               onClick={handleModal(ModalTypes.assign)}
-              className="btn btn-primary btn-fill float-end"
+              className={cl(
+                "btn btn-primary btn-fill float-end",
+                styles.changeBtn
+              )}
             >
               Переназначить
             </button>
@@ -293,14 +344,14 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
       );
   }, [upladedFiles, permissions, order?.status, order?.file]);
 
+  const closeModal = () => removeParams(["changeModal"]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
-    if (order?.status! <= 1) {
-      brigadasRefetch();
-    }
+    if (order?.status! <= 1) brigadasRefetch();
   }, [order?.status]);
 
   if (isLoading || uploadLoading || attachLoading || orderLoading)
@@ -358,11 +409,39 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                   </tr>
                   <tr>
                     <th>Группа проблем</th>
-                    <td className="">{order?.category?.name}</td>
+                    <td className={styles.tableRow}>
+                      <div className="flex items-center justify-between">
+                        <span>{order?.category?.name}</span>
+
+                        <button
+                          className={cl(
+                            "btn btn-primary btn-fill",
+                            styles.changeBtn
+                          )}
+                          onClick={handleChangeModal(ModalTypes.changeCateg)}
+                        >
+                          Переназначить
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                   <tr>
                     <th>Филиал</th>
-                    <td>{order?.fillial?.parentfillial?.name}</td>
+                    <td className={styles.tableRow}>
+                      <div className="flex items-center justify-between">
+                        <span>{order?.fillial?.parentfillial?.name}</span>
+
+                        <button
+                          onClick={handleChangeModal(ModalTypes.changeBranch)}
+                          className={cl(
+                            "btn btn-primary btn-fill",
+                            styles.changeBtn
+                          )}
+                        >
+                          Переназначить
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                   <tr>
                     <th>Продукт</th>
@@ -467,7 +546,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                   </tr>
                   <tr>
                     <th className="font-bold">Ответственный</th>
-                    <td>{renderAssignment}</td>
+                    <td className={styles.tableRow}>{renderAssignment}</td>
                   </tr>
                   {order?.comments?.[0]?.rating && (
                     <tr>
@@ -503,9 +582,13 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
 
       {!!order?.request_orpr?.length && <AddedProductsIT />}
       {renderRequestModals}
-      <Modal isOpen={false}>
-        <div className=""></div>
-        {renderChangeModals}
+      <Modal isOpen={!!changeModal} onClose={closeModal}>
+        <Header title="Переназначить">
+          <button onClick={closeModal} className="close">
+            <span>&times;</span>
+          </button>
+        </Header>
+        <div className="p-2">{renderChangeModals}</div>
       </Modal>
     </>
   );

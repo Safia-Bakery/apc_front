@@ -110,7 +110,7 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled }) => {
   };
 
   useUpdateEffect(() => {
-    refetch();
+    if (query) refetch();
   }, [query]);
 
   useEffect(() => {

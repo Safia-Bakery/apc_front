@@ -56,6 +56,7 @@ const ToolsSelect: FC<Props> = ({ department, ...others }) => {
       options={items}
       onMenuScrollToBottom={pageIncrement}
       placeholder="Выбрать товар"
+      // isSearchable={false}
       onInputChange={(e) => $query(e)}
       {...others}
     />

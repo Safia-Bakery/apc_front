@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Pagination from "@/components/Pagination";
 import ItemsCount from "@/components/ItemsCount";
 import TableHead from "@/components/TableHead";
-import { handleIdx, itemsPerPage } from "@/utils/helpers";
+import { handleIdx } from "@/utils/helpers";
 import { useState } from "react";
 import StockFilter from "./filter";
 import dayjs from "dayjs";
@@ -27,6 +27,8 @@ const RemainsInStock = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
   const currentPage = Number(useQueryString("page")) || 1;
+  const name = useQueryString("name");
+  const syncDate = useQueryString("syncDate");
   const { id } = useParams();
   const [sort, $sort] = useState<StockItem[]>();
 
@@ -37,9 +39,10 @@ const RemainsInStock = () => {
 
   const { data: products, isLoading: itemsLoading } = useRemainsInStock({
     enabled: true,
-    size: itemsPerPage,
     page: currentPage,
     store_id: id!,
+    ...(name && { name }),
+    ...(syncDate && { syncDate }),
   });
 
   const handleSync = () => syncIIKO();

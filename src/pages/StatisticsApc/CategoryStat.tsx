@@ -8,6 +8,7 @@ import EmptyList from "@/components/EmptyList";
 import dayjs from "dayjs";
 import { useLocation, useParams } from "react-router-dom";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
+import Loading from "@/components/Loader";
 
 interface SortTypes {
   category: string;
@@ -76,7 +77,7 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
   }, [data?.piechart]);
   const renderAvarage = useMemo(() => {
     if (!!data?.table.length) {
-      const { totalTime, totalAmount } = data?.table?.reduce(
+      const totals = data?.table?.reduce(
         (acc, item) => {
           acc.totalAmount += item.amount;
           acc.totalTime += item.time;
@@ -85,7 +86,8 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
         { totalAmount: 0, totalTime: 0 }
       );
 
-      return (totalTime / totalAmount).toFixed(3);
+      return totals;
+      // .toFixed(3);
     }
   }, [data?.table]);
 
@@ -97,6 +99,8 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
   }, [btnAction]);
 
   const downloadAsPdf = () => onDownload();
+
+  if (isLoading && !renderAvarage) return <Loading absolute />;
 
   return (
     <>
@@ -116,13 +120,29 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
               <td>{item?.time}</td>
             </tr>
           ))}
-          <tr>
-            <td></td>
-            <th className="text-2xl">В среднем:</th>
-            <td colSpan={2} className="text-2xl">
-              {renderAvarage} минут
-            </td>
-          </tr>
+          {renderAvarage?.totalTime && renderAvarage?.totalAmount && (
+            <>
+              <tr>
+                <td></td>
+                <th className="text-2xl">В Общем: </th>
+                <td className="text-2xl">{renderAvarage?.totalAmount} шт</td>
+                <td className="text-2xl">
+                  {renderAvarage?.totalTime} м (
+                  {(renderAvarage?.totalTime / 60).toFixed(3)} часов)
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <th className="text-2xl">В среднем:</th>
+                <td colSpan={2} className="text-2xl">
+                  {(
+                    renderAvarage?.totalTime / renderAvarage?.totalAmount
+                  ).toFixed(3)}{" "}
+                  минут
+                </td>
+              </tr>
+            </>
+          )}
         </tbody>
       </table>
 

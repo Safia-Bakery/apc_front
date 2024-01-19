@@ -1,9 +1,10 @@
 import { Departments, Order, Sphere } from "@/utils/types";
 import useStatsBrigadaCateg from "@/hooks/useStatsBrigadaCateg";
-import { FC, Fragment, useEffect, useRef } from "react";
+import { FC, Fragment, useEffect, useMemo, useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
+import Loading from "@/components/Loader";
 
 const column = [
   { name: "№", key: "id" as keyof Order["id"] },
@@ -59,6 +60,8 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
 
     return sumWithInitial;
   };
+
+  if (isLoading) return <Loading absolute />;
 
   return (
     <>
