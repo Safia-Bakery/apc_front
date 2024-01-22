@@ -26,7 +26,7 @@ const Roles = () => {
   const [sort, $sort] = useState<RoleTypes[]>();
 
   const { data: roles, isLoading: orderLoading } = useRoles({});
-  if (orderLoading) return <Loading />;
+  if (orderLoading) return <Loading absolute />;
 
   return (
     <Card>

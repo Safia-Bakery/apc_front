@@ -12,3 +12,18 @@
   color: #676767;
   margin-bottom: 0;
 }
+
+.hr {
+  border-width: 2px;
+  border-color: #00000080;
+  opacity: 0.6;
+}
+
+.blockItem {
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #fff;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+}

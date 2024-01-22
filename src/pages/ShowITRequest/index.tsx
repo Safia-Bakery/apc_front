@@ -101,7 +101,6 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
       attach(
         {
           request_id: Number(id),
-          status: order?.status!,
           ...(filial && branch && { fillial_id: branch.id }),
           ...(categ && { category_id: getValues("category") }),
         },
