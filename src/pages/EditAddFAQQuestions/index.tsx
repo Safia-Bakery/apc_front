@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import roleMutation from "@/hooks/mutation/roleMutation";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import useRoles from "@/hooks/useRoles";
 import useRolePermission from "@/hooks/useRolePermission";
 import BaseInputs from "@/components/BaseInputs";
@@ -45,6 +45,7 @@ const EditAddFAQQuestions = () => {
           goBack();
           if (!!id) refetch();
         },
+        onError: (e: any) => errorToast(e.message),
       }
     );
   };

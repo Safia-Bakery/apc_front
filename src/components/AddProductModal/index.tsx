@@ -9,7 +9,7 @@ import useTools from "@/hooks/useTools";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import usedItemsMutation from "@/hooks/mutation/usedItems";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import useOrder from "@/hooks/useOrder";
 import useQueryString from "custom/useQueryString";
 import { useRemoveParams } from "custom/useCustomNavigate";
@@ -19,6 +19,7 @@ import { Departments, MainPermissions } from "@/utils/types";
 import useSyncExpanditure from "@/hooks/sync/useSyncExpanditure";
 import BaseInputs from "../BaseInputs";
 import { SelectWrapper } from "../InputWrappers";
+import cl from "classnames";
 
 const AddProductModal = () => {
   const { id } = useParams();
@@ -40,7 +41,8 @@ const AddProductModal = () => {
   //   enabled: false,
   // });
 
-  const { register, handleSubmit, getValues, reset, control } = useForm();
+  const { register, handleSubmit, getValues, reset, control, watch, setValue } =
+    useForm();
 
   const handleModal = () => {
     if (!!modal) removeRoute(["add_product_modal"]);
@@ -63,8 +65,15 @@ const AddProductModal = () => {
           handleModal();
           orderRefetch();
         },
+        onError: (e: any) => errorToast(e.message),
       }
     );
+  };
+
+  const handleIncrement = () => setValue("count", +watch("count") + 1);
+
+  const handleDecrement = () => {
+    if (+watch("count") > 1) setValue("count", +watch("count") - 1);
   };
 
   // useEffect(() => {
@@ -116,8 +125,34 @@ const AddProductModal = () => {
               )}
             </div>
 
-            <BaseInput label="Количество">
+            {/* <BaseInput label="Количество">
               <MainInput type="number" register={register("count")} />
+            </BaseInput> */}
+
+            <BaseInput label="Количество">
+              <div className="flex gap-4 w-full">
+                <button
+                  type="button"
+                  className={cl(styles.increment, "btn bg-danger text-white")}
+                  onClick={handleDecrement}
+                >
+                  -
+                </button>
+                <div className="w-16">
+                  <MainInput
+                    type="number"
+                    register={register("count")}
+                    className="!mb-0"
+                  />
+                </div>
+                <button
+                  className={cl(styles.increment, "btn bg-green-400")}
+                  type="button"
+                  onClick={handleIncrement}
+                >
+                  +
+                </button>
+              </div>
             </BaseInput>
 
             <BaseInput label="Примичание">

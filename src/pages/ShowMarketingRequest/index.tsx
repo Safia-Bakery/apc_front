@@ -7,7 +7,7 @@ import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
 import { useAppSelector } from "@/store/utils/types";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
 import {
   detectFileType,
@@ -44,7 +44,7 @@ const ShowMarketingRequest = () => {
   const isNew = order?.status === RequestStatus.new;
   const edit = Number(useQueryString("edit")) as MainPermissions;
   const navigate = useNavigate();
-  const { search, state } = useLocation();
+  const { state } = useLocation();
 
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
@@ -71,6 +71,7 @@ const ShowMarketingRequest = () => {
               successToast("assigned");
             }
           },
+          onError: (e: any) => errorToast(e.message),
         }
       );
       removeParams(["modal"]);
@@ -191,7 +192,7 @@ const ShowMarketingRequest = () => {
                   </tr>
                   <tr>
                     <th>Файл</th>
-                    <td className="flex flex-col">
+                    <td className="flex flex-col !border-none">
                       {order?.file?.map((item, index) => {
                         if (item.status === 0)
                           return (

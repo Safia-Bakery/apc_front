@@ -89,15 +89,15 @@ const ShowInventoryTool = () => {
                 order.items?.map((item, idx) => (
                   <tr key={idx} className={cl("transition-colors")}>
                     <td width="40">{handleIdx(idx)}</td>
-                    <td>{item?.need_tools?.name}</td>
+                    <td>{item?.need_tool?.name}</td>
                     <td width={150} className="text-center">
                       {item?.amount_last}
                     </td>
                     <td width={150} className="text-center">
-                      {item?.need_tools?.max_amount}
+                      {item?.need_tool?.max_amount}
                     </td>
                     <td width={150} className="text-center">
-                      {item?.need_tools?.min_amount}
+                      {item?.need_tool?.min_amount}
                     </td>
                     <td width={150} className="text-center">
                       {item?.ordered_amount}

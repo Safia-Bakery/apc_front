@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { FAQRequestTypes, MainPermissions, RequestStatus } from "@/utils/types";
+import { FAQRequestTypes, MainPermissions } from "@/utils/types";
 import Pagination from "@/components/Pagination";
 import {
   HRRequestTypes,
   handleHRStatus,
   handleIdx,
-  handleStatus,
   requestRows,
 } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
@@ -18,8 +17,8 @@ import useQueryString from "custom/useQueryString";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import EmptyList from "@/components/EmptyList";
-import TableLoading from "@/components/TableLoading";
 import useFAQRequests from "@/hooks/useFaqRequests";
+import Loading from "@/components/Loader";
 
 const column = [
   { name: "№", key: "" },
@@ -90,9 +89,9 @@ const HRRequests = () => {
                   </td>
                 </tr>
               ))}
-            {isLoading && <TableLoading />}
           </tbody>
         </table>
+        {isLoading && <Loading />}
 
         {!!faqs && <Pagination totalPages={faqs.pages} />}
         {!faqs?.items?.length && !isLoading && <EmptyList />}

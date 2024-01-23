@@ -1,12 +1,12 @@
 import { FC, useEffect, useMemo, useRef } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
 import {
   detectFileType,
@@ -39,6 +39,10 @@ import BaseInput from "@/components/BaseInputs";
 import MainSelect from "@/components/BaseInputs/MainSelect";
 import useCategories from "@/hooks/useCategories";
 import styles from "./index.module.scss";
+import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
+import orderMsgMutation from "@/hooks/mutation/orderMsg";
+import TableViewBtn from "@/components/TableViewBtn";
+import MainTextArea from "@/components/BaseInputs/MainTextArea";
 
 interface Props {
   edit: MainPermissions;
@@ -46,18 +50,15 @@ interface Props {
 }
 
 const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
-  const { id } = useParams();
+  const { id, sphere } = useParams();
   const navigate = useNavigate();
-  const { state } = useLocation();
-  const sphere_status = Number(useQueryString("sphere_status"));
-  const dep = Number(useQueryString("dep"));
   const modal = useQueryString("modal");
   const changeModal = Number(useQueryString("changeModal"));
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const permissions = useAppSelector(permissionSelector);
   const dispatch = useAppDispatch();
   const navigateParams = useNavigateParams();
-  const branchJson = useQueryString("branch");
+  const branchJson = useUpdateQueryStr("branch");
   const branch = branchJson && JSON.parse(branchJson);
   const { data: categories, isLoading: categoryLoading } = useCategories({
     enabled: changeModal === ModalTypes.changeCateg,
@@ -67,8 +68,8 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   const { mutate: attach, isLoading: attachLoading } = attachBrigadaMutation();
   const { refetch: brigadasRefetch } = useBrigadas({
     enabled: false,
-    department: dep || Departments.it,
-    ...(!!sphere_status && { sphere_status }),
+    department: Departments.it,
+    ...(!!sphere && { sphere }),
   });
 
   const handleModal = (type: ModalTypes) => () =>
@@ -88,32 +89,54 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   const upladedFiles = useAppSelector(reportImgSelector);
   const { mutate: synIIco, isLoading } = syncExpenditure();
 
+  const { mutate: msgMutation, isLoading: msgLoading } = orderMsgMutation();
+
   const { mutate, isLoading: uploadLoading } = uploadFileMutation();
 
-  const handleBack = () => navigate(state?.prevPath);
+  const handleBack = () => navigate(`/requests-it/${sphere}`);
 
   const handleFilesSelected = (data: FileItem[]) =>
     dispatch(uploadReport(data));
 
+  const handleMessage = () => {
+    msgMutation(
+      {
+        request_id: Number(id),
+        message: getValues("left_comment"),
+      },
+      {
+        onSuccess: () => {
+          orderRefetch();
+          removeParams(["changeModal"]);
+          successToast("success");
+        },
+        onError: (e: any) => errorToast(e.message),
+      }
+    );
+  };
+
   const handleChange =
     ({ filial, categ }: { filial?: boolean; categ?: boolean }) =>
     () => {
-      attach(
-        {
-          request_id: Number(id),
-          ...(filial && branch && { fillial_id: branch.id }),
-          ...(categ && { category_id: getValues("category") }),
-        },
-        {
-          onSuccess: (data: any) => {
-            if (data.status === 200) {
-              orderRefetch();
-              successToast("assigned");
-              removeParams(["branch", "changeModal"]);
-            }
+      const { category: category_id } = getValues();
+      if (!!branch || category_id)
+        attach(
+          {
+            request_id: Number(id),
+            ...(!!branch?.id && filial && { fillial_id: branch.id }),
+            ...(categ && { category_id }),
           },
-        }
-      );
+          {
+            onSuccess: (data: any) => {
+              if (data.status === 200) {
+                orderRefetch();
+                successToast("assigned");
+                removeParams(["branch", "changeModal"]);
+              }
+            },
+            onError: (e: any) => errorToast(e.message),
+          }
+        );
     };
 
   const handleShowPhoto = (file: string) => () => {
@@ -150,6 +173,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                 );
               }
             },
+            onError: (e: any) => errorToast(e.message),
           }
         );
       } else
@@ -166,6 +190,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                 successToast("assigned");
               }
             },
+            onError: (e: any) => errorToast(e.message),
           }
         );
       removeParams(["modal"]);
@@ -185,6 +210,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
             inputRef.current.value = null;
             successToast("Сохранено");
           },
+          onError: (e: any) => errorToast(e.message),
         }
       );
   };
@@ -228,11 +254,25 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
             </button>
           </>
         );
+      case ModalTypes.leaveMessage:
+        return (
+          <>
+            <BaseInput label="Оставить комментария">
+              <MainTextArea register={register("left_comment")} />
+            </BaseInput>
 
+            <button
+              className="btn btn-success btn-fill w-full"
+              onClick={handleMessage}
+            >
+              Применить
+            </button>
+          </>
+        );
       default:
         break;
     }
-  }, [categoryLoading, changeModal, categories]);
+  }, [categoryLoading, changeModal, categories, branch]);
 
   const renderBtns = useMemo(() => {
     if (permissions?.[edit] && isNew && permissions?.[attaching])
@@ -353,7 +393,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
     if (order?.status! <= 1) brigadasRefetch();
   }, [order?.status]);
 
-  if (isLoading || uploadLoading || attachLoading || orderLoading)
+  if (isLoading || uploadLoading || attachLoading || orderLoading || msgLoading)
     return <Loading absolute />;
 
   return (
@@ -482,7 +522,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                               )}
                               key={item.url + index}
                             >
-                              {item.url}
+                              файл - {index + 1}
                             </div>
                           );
                       })}
@@ -507,10 +547,6 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                     <td>{!order?.category?.urgent ? "Нет" : "Да"}</td>
                   </tr>
                   <tr>
-                    <th>Забрал для</th>
-                    <td>---------</td>
-                  </tr>
-                  <tr>
                     <th>Изменил</th>
                     <td>
                       {!!order?.user_manager
@@ -520,7 +556,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                   </tr>
 
                   <tr>
-                    <th>Дата поступления:</th>
+                    <th>Дата поступления</th>
                     <td>
                       {order?.created_at
                         ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
@@ -528,7 +564,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата изменения:</th>
+                    <th>Дата изменения</th>
                     <td>
                       {order?.started_at
                         ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
@@ -536,7 +572,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата выполнения:</th>
+                    <th>Дата выполнения</th>
                     <td>
                       {order?.finished_at
                         ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
@@ -546,6 +582,28 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                   <tr>
                     <th className="font-bold">Ответственный</th>
                     <td className={styles.tableRow}>{renderAssignment}</td>
+                  </tr>
+                  <tr>
+                    <th className="font-bold">Оставить комментария</th>
+                    <td className={styles.tableRow}>
+                      <div className="flex items-center justify-between">
+                        {/* <span>{order?.fillial?.parentfillial?.name}</span> */}
+                        <div className="flex flex-col">
+                          {!!order?.communication?.length &&
+                            order?.communication.map((item) => (
+                              <div className="mt-2 flex gap-1">
+                                <span className="font-bold flex">
+                                  {item.user.full_name}:
+                                </span>
+                                <span className="">{item.message}</span>
+                              </div>
+                            ))}
+                        </div>
+                        <TableViewBtn
+                          onClick={handleChangeModal(ModalTypes.leaveMessage)}
+                        />
+                      </div>
+                    </td>
                   </tr>
                   {order?.comments?.[0]?.rating && (
                     <tr>
@@ -582,7 +640,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
       {!!order?.request_orpr?.length && <AddedProductsIT />}
       {renderRequestModals}
       <Modal isOpen={!!changeModal} onClose={closeModal}>
-        <Header title="Переназначить">
+        <Header title="Изменить">
           <button onClick={closeModal} className="close">
             <span>&times;</span>
           </button>

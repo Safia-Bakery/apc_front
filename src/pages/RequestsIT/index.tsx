@@ -12,8 +12,8 @@ import TableHead from "@/components/TableHead";
 import ITFilter from "./filter";
 import ItemsCount from "@/components/ItemsCount";
 import useQueryString from "custom/useQueryString";
-import TableLoading from "@/components/TableLoading";
 import EmptyList from "@/components/EmptyList";
+import Loading from "@/components/Loader";
 
 const column = [
   { name: "№", key: "" },
@@ -122,9 +122,9 @@ const RequestsIT = () => {
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
                 </tr>
               ))}
-            {orderLoading && <TableLoading />}
           </tbody>
         </table>
+        {orderLoading && <Loading absolute />}
         {!!requests && <Pagination totalPages={requests.pages} />}
         {!requests?.items?.length && !orderLoading && <EmptyList />}
       </div>

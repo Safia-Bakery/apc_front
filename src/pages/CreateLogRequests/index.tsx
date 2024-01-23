@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { useNavigate } from "react-router-dom";
@@ -69,6 +69,7 @@ const CreateLogRequests = () => {
             successToast("Заказ успешно создано");
             navigate("/requests-logystics");
           },
+          onError: (e: any) => errorToast(e.message),
         }
       );
     }

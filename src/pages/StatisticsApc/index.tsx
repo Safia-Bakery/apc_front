@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import { Outlet, useNavigate } from "react-router-dom";
 import StatBar from "@/components/StatBar";
 import DateRangeBlock from "@/components/DateRangeBlock";
+import useQueryString from "@/hooks/custom/useQueryString";
 
 const routesArr = [
   {
@@ -30,10 +31,11 @@ const routesArr = [
 const StatisticsApc = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
+  const cons_title = useQueryString("cons_title");
 
   return (
     <Card>
-      <Header title={"Статистика"}>
+      <Header title={!!cons_title ? cons_title : "Статистика"}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад
         </button>

@@ -14,7 +14,7 @@ import useQueryString from "custom/useQueryString";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import EmptyList from "@/components/EmptyList";
-import TableLoading from "@/components/TableLoading";
+import Loading from "@/components/Loader";
 
 interface Props {
   sphere_status?: number;
@@ -105,9 +105,9 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
                     </tr>
                   )
                 )}
-              {isLoading && <TableLoading />}
             </tbody>
           </table>
+          {isLoading && <Loading absolute />}
 
           {!!categories && <Pagination totalPages={categories.pages} />}
           {!categories?.items?.length && !isLoading && <EmptyList />}

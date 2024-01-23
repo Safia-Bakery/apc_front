@@ -14,8 +14,8 @@ import cl from "classnames";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
-import TableLoading from "@/components/TableLoading";
 import EmptyList from "@/components/EmptyList";
+import Loading from "@/components/Loader";
 
 interface Props {
   add: MainPermissions;
@@ -79,7 +79,6 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
     ...(!!branch?.id && { fillial_id: branch?.id }),
     ...(!!request_status && { request_status }),
     ...(!!user && { user }),
-    ...(!!urgent?.toString() && { urgent: !!urgent }),
   });
 
   useEffect(() => {
@@ -113,7 +112,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
           >
             <RequestsFilter />
           </TableHead>
-          <tbody id="requests_body">
+          <tbody>
             {!!requests?.items?.length &&
               !orderLoading &&
               (sort?.length ? sort : requests?.items)?.map((order, idx) => (
@@ -166,9 +165,9 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
                   </td>
                 </tr>
               ))}
-            {orderLoading && <TableLoading />}
           </tbody>
         </table>
+        {orderLoading && <Loading absolute />}
         {!!requests && <Pagination totalPages={requests.pages} />}
         {!requests?.items?.length && !orderLoading && <EmptyList />}
       </div>

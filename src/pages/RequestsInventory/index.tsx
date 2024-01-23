@@ -38,6 +38,12 @@ const RequestsInventory = () => {
   const navigate = useNavigate();
   const currentPage = Number(useQueryString("page")) || 1;
   const [sort, $sort] = useState<Order[]>();
+  const request_status = useQueryString("request_status");
+  const created_at = useQueryString("created_at");
+  const user = useQueryString("user");
+  const id = Number(useQueryString("id"));
+  const branchJson = useQueryString("branch");
+  const branch = branchJson && JSON.parse(branchJson);
 
   const {
     data: requests,
@@ -48,6 +54,11 @@ const RequestsInventory = () => {
     size: itemsPerPage,
     page: currentPage,
     department: Departments.inventory,
+    ...(!!request_status && { request_status }),
+    ...(!!created_at && { created_at }),
+    ...(!!branch?.id && { fillial_id: branch?.id }),
+    ...(!!user && { user }),
+    ...(!!id && { id }),
   });
 
   useEffect(() => {

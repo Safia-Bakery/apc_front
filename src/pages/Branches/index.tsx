@@ -14,8 +14,8 @@ import useBranchSync from "@/hooks/sync/useBranchSync";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
-import TableLoading from "@/components/TableLoading";
 import EmptyList from "@/components/EmptyList";
+import Loading from "@/components/Loader";
 
 const column = [
   { name: "№", key: "id" },
@@ -128,10 +128,9 @@ const Branches = () => {
                   </td>
                 </tr>
               ))}
-
-            {isFetching && <TableLoading />}
           </tbody>
         </table>
+        {isFetching && <Loading absolute />}
         {!!branches && <Pagination totalPages={branches.pages} />}
         {!branches?.items?.length && !isFetching && <EmptyList />}
       </div>

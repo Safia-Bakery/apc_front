@@ -6,20 +6,17 @@ import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import TableHead from "@/components/TableHead";
-import { Departments, MainPermissions } from "@/utils/types";
+import { Departments } from "@/utils/types";
 import styles from "./index.module.scss";
 import requestMutation from "@/hooks/mutation/orderMutation";
 import { inventoryCategoryId, isMobile } from "@/utils/helpers";
 import BranchSelect from "@/components/BranchSelect";
-import { permissionSelector } from "@/store/reducers/sidebar";
-import { useAppSelector } from "@/store/utils/types";
 import useQueryString from "@/hooks/custom/useQueryString";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import useOrders from "@/hooks/useOrders";
 import { InputWrapper, SelectWrapper } from "@/components/InputWrappers";
 import { TelegramApp } from "@/utils/tgHelpers";
 
-//test
 interface InventoryFields {
   product: {
     value: string;
@@ -65,7 +62,6 @@ const AddInventoryRequest = () => {
   });
 
   const { mutate } = requestMutation();
-  const perm = useAppSelector(permissionSelector);
 
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
@@ -84,10 +80,10 @@ const AddInventoryRequest = () => {
 
     mutate(
       {
-        description: main_comment,
         category_id: inventoryCategoryId,
         fillial_id: branch.id,
         expenditure,
+        description: !!main_comment ? main_comment : " ",
       },
       {
         onSuccess: () => {
@@ -98,6 +94,7 @@ const AddInventoryRequest = () => {
             successToast("created");
           }
         },
+        onError: (e: any) => errorToast(e.message),
       }
     );
   };

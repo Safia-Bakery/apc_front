@@ -337,9 +337,9 @@ export const routes: SidebarType[] = [
         screen: MainPermissions.get_it_requests,
       },
       {
-        name: "Мастера",
+        name: "ИТ специалисты",
         url: "/masters-it",
-        icon: "/assets/icons/brigades.svg",
+        icon: "/assets/icons/users.svg",
         screen: MainPermissions.it_get_masters,
         param: `?dep=${Departments.it}&add=${MainPermissions.it_add_master}&edit=${MainPermissions.it_edit_master}`,
       },

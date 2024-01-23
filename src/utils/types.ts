@@ -65,6 +65,12 @@ export interface Order {
     status?: number;
     order?: string;
   };
+  communication?: {
+    id: number;
+    message: string;
+    status: number;
+    user: UsersType;
+  }[];
   file: {
     url: string;
     status: number;
@@ -426,22 +432,39 @@ export enum MainPermissions {
   add_log_categs = 75,
   edit_log_categs = 76,
 
-  get_staff_requests = 80,
+  // get_staff_requests = 58,
+  // add_staff_requests = 58,
+  // edit_staff_requests = 58,
+  // staff_modal_time = 58,
+
+  get_staff_requests = 80, //todo
   add_staff_requests = 79,
   edit_staff_requests = 78,
   staff_modal_time = 77,
 
-  it_add_master = 84, //todo
-  it_edit_master = 83,
-  it_get_masters = 85,
-  it_statistics = 81,
-  it_remains_in_stock = 83,
-  get_it_requests = 90,
-  edit_it_requests = 89,
-  add_it_requests = 91,
-  add_categ_it = 87,
-  get_categ_it = 88,
-  edit_categ_it = 86,
+  // it_add_master = 84, //todo
+  // it_edit_master = 83,
+  // it_get_masters = 85,
+  // it_statistics = 81,
+  // it_remains_in_stock = 83,
+  // get_it_requests = 90,
+  // edit_it_requests = 89,
+  // add_it_requests = 91,
+  // add_categ_it = 87,
+  // get_categ_it = 88,
+  // edit_categ_it = 86,
+
+  it_add_master = 58,
+  it_edit_master = 58,
+  it_get_masters = 58,
+  it_statistics = 58,
+  it_remains_in_stock = 58,
+  get_it_requests = 58,
+  edit_it_requests = 58,
+  add_it_requests = 58,
+  add_categ_it = 58,
+  get_categ_it = 58,
+  edit_categ_it = 58,
 
   get_client_comment = 95,
   edit_client_comment = 97,
@@ -584,6 +607,7 @@ export const enum ModalTypes {
   cars,
   changeBranch,
   changeCateg,
+  leaveMessage,
 }
 
 export interface CountTypes {
@@ -654,7 +678,7 @@ export interface InventoryOrder extends BasePaginatedRes {
   items: {
     id: number;
     status: number;
-    need_tools: {
+    need_tool: {
       id: number;
       name: string;
       code: string;

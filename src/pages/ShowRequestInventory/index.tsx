@@ -8,7 +8,7 @@ import Header from "@/components/Header";
 import useOrder from "@/hooks/useOrder";
 import { useAppSelector } from "@/store/utils/types";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
 import {
   detectFileType,
@@ -57,7 +57,7 @@ const ShowRequestInventory = () => {
     }
   };
 
-  const handleBack = () => navigate(state?.prevPath);
+  const handleBack = () => navigate("/requests-inventory");
 
   const handleRequest =
     ({ status }: { status: RequestStatus }) =>
@@ -77,6 +77,7 @@ const ShowRequestInventory = () => {
                 successToast("assigned");
               }
             },
+            onError: (e: any) => errorToast(e.message),
           }
         );
       removeParams(["modal"]);
@@ -171,7 +172,7 @@ const ShowRequestInventory = () => {
                   </tr>
                   <tr>
                     <th>Файл</th>
-                    <td className="flex flex-col">
+                    <td className="flex flex-col !border-none">
                       {order?.file?.map((item, index) => {
                         if (item.status === 0)
                           return (

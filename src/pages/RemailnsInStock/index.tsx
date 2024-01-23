@@ -4,16 +4,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import Pagination from "@/components/Pagination";
 import ItemsCount from "@/components/ItemsCount";
 import TableHead from "@/components/TableHead";
-import { handleIdx } from "@/utils/helpers";
+import { handleIdx, numberWithCommas } from "@/utils/helpers";
 import { useState } from "react";
 import StockFilter from "./filter";
 import dayjs from "dayjs";
 import useQueryString from "custom/useQueryString";
 import useRemainsInStock from "@/hooks/useRemainsInStock";
 import useStockSync from "@/hooks/sync/useStockSync";
-import TableLoading from "@/components/TableLoading";
 import { StockItem } from "@/utils/types";
 import EmptyList from "@/components/EmptyList";
+import Loading from "@/components/Loader";
 
 const column = [
   { name: "№", key: "" },
@@ -90,13 +90,13 @@ const RemainsInStock = () => {
                   <td>{item?.name}</td>
                   <td>{dayjs(item?.last_update).format("DD.MM.YYYY")}</td>
                   <td>{item?.amount_left}</td>
-                  <td>{item?.total_price}</td>
+                  <td>{numberWithCommas(item?.total_price)}</td>
                 </tr>
               ))}
-              {(syncLoading || itemsLoading) && <TableLoading />}
             </tbody>
           )}
         </table>
+        {(syncLoading || itemsLoading) && <Loading absolute />}
         {!!products && <Pagination totalPages={products.pages} />}
         {!products?.items?.length && !itemsLoading && <EmptyList />}
       </div>

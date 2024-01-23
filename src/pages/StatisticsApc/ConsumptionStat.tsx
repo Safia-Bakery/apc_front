@@ -8,6 +8,7 @@ import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
 import { numberWithCommas } from "@/utils/helpers";
 import Loading from "@/components/Loader";
+import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
 
 interface ItemType {
   amount: number;
@@ -29,6 +30,7 @@ interface Props {
 
 const ConsumptionStat = ({ sphere_status }: Props) => {
   const [sort, $sort] = useState<ItemType[]>();
+  const navigateParams = useNavigateParams();
 
   const start = useUpdateQueryStr("start");
   const end = useUpdateQueryStr("end");
@@ -80,7 +82,9 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
               <td width="50">{idx + 1}</td>
 
               <td>
-                <Link to={item?.id.toString()}>{item?.name}</Link>
+                <Link to={`${item?.id.toString()}?cons_title=${item?.name}`}>
+                  {item?.name}
+                </Link>
               </td>
 
               <td>{item?.price && numberWithCommas(item?.price)}</td>

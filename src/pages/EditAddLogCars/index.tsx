@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import BaseInputs from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
 import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
@@ -43,6 +43,7 @@ const EditAddLogCars = () => {
           carsRefetch();
           if (!!id) carRefetch();
         },
+        onError: (e: any) => errorToast(e.message),
       }
     );
   };

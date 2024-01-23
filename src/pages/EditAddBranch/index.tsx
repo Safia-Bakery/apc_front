@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import useBranch from "@/hooks/useBranch";
 import branchMutation from "@/hooks/mutation/branchMutation";
 import useBranches from "@/hooks/useBranches";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import MainInput from "@/components/BaseInputs/MainInput";
 import BaseInputs from "@/components/BaseInputs";
 import MainSelect from "@/components/BaseInputs/MainSelect";
@@ -58,6 +58,7 @@ const EditAddBranch = () => {
           refetch();
           successToast("Успешно изменено");
         },
+        onError: (e: any) => errorToast(e.message),
       });
     }
   };
@@ -82,6 +83,7 @@ const EditAddBranch = () => {
           successToast(!!id ? "successfully updated" : "successfully created");
           navigate("/branches");
         },
+        onError: (e: any) => errorToast(e.message),
       }
     );
   };

@@ -23,6 +23,7 @@ const ControlPanel = lazy(() => import("@/pages/ControlPanel"));
 const TgRating = lazy(() => import("@/pages/TgRating"));
 const RequestsStaff = lazy(() => import("@/pages/RequestsStaff"));
 const AddStaffOrder = lazy(() => import("@/pages/AddStaffRequest"));
+const ShowRequestStaff = lazy(() => import("@/pages/ShowRequestStaff"));
 const LogysticsLogs = lazy(() => import("@/pages/LogysticsLogs"));
 const RequestsLogystics = lazy(() => import("@/pages/RequestsLogystics"));
 const CreateLogRequests = lazy(() => import("@/pages/CreateLogRequests"));
@@ -620,7 +621,7 @@ const routes = [
 
   // ===========================================================
   {
-    element: <ShowLogRequests />,
+    element: <ShowRequestStaff />,
     path: "/requests-staff/:id",
     screen: MainPermissions.edit_staff_requests,
   },

@@ -4,7 +4,7 @@ import cl from "classnames";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import requestMutation from "@/hooks/mutation/orderMutation";
@@ -152,6 +152,7 @@ const CreateITRequest = () => {
           navigate(`/requests-it/${sphere}`);
           successToast("Заказ успешно создано");
         },
+        onError: (e: any) => errorToast(e.message),
       }
     );
   };
@@ -184,7 +185,7 @@ const CreateITRequest = () => {
 
   return (
     <Card>
-      <Header title={"Создать заказ"}>
+      <Header title="Создать заказ">
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад
         </button>
@@ -198,7 +199,7 @@ const CreateITRequest = () => {
 
         {Number(sphere) === Sphere.purchase ? (
           <>
-            <table className="table table-hover ">
+            <table className="table table-hover">
               <TableHead column={column} />
               <tbody>
                 {fields.map((field, index) => (

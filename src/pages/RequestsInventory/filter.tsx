@@ -9,10 +9,9 @@ import MainInput from "@/components/BaseInputs/MainInput";
 import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
 import BranchSelect from "@/components/BranchSelect";
 import useQueryString from "custom/useQueryString";
-import { Departments, MainPermissions } from "@/utils/types";
+import { MainPermissions } from "@/utils/types";
 import dayjs from "dayjs";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
-import useCategories from "@/hooks/useCategories";
 import { useForm } from "react-hook-form";
 import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
@@ -22,13 +21,6 @@ const ITFilter: FC = () => {
   const navigate = useNavigateParams();
   const deleteParam = useRemoveParams();
   const perm = useAppSelector(permissionSelector);
-  const sphere_status = Number(useQueryString("sphere_status"));
-
-  const { data: categories, refetch: catRefetch } = useCategories({
-    department: Departments.it,
-    ...(!!sphere_status && { sphere_status }),
-    enabled: false,
-  });
 
   const { register, reset } = useForm();
   const [id, $id] = useDebounce<string>("");
@@ -36,7 +28,6 @@ const ITFilter: FC = () => {
   const [user, $user] = useDebounce<string>("");
   const [reciever, $reciever] = useDebounce<string>("");
   const request_status = useQueryString("request_status");
-  const category_id = Number(useQueryString("category_id"));
   const created_at = useQueryString("created_at");
   const userQ = useQueryString("user");
   const idQ = useQueryString("id");
@@ -49,9 +40,6 @@ const ITFilter: FC = () => {
     $user(e.target.value);
 
   const handleID = (e: ChangeEvent<HTMLInputElement>) => $id(e.target.value);
-
-  const handlereciever = (e: ChangeEvent<HTMLInputElement>) =>
-    $reciever(e.target.value);
 
   useUpdateEffect(() => {
     navigate({ user });
@@ -78,9 +66,9 @@ const ITFilter: FC = () => {
     <>
       <td></td>
       <td className="p-0">
-        <BaseInput className="!m-1">
+        <BaseInput className="!m-1 relative">
           <MainInput
-            register={register("idQ")}
+            register={register("id")}
             className="!mb-0"
             type="number"
             onChange={handleID}

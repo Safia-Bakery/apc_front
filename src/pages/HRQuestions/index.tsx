@@ -12,8 +12,8 @@ import useQueryString from "custom/useQueryString";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import EmptyList from "@/components/EmptyList";
-import TableLoading from "@/components/TableLoading";
 import useFAQ from "@/hooks/useFAQ";
+import Loading from "@/components/Loader";
 
 const column = [
   { name: "№", key: "" },
@@ -39,7 +39,7 @@ const FAQQuestions = () => {
   useEffect(() => {
     refetch();
   }, []);
-
+  if (isLoading) return <Loading absolute />;
   return (
     <Card>
       <Header title={"Вопросы"}>
@@ -78,7 +78,6 @@ const FAQQuestions = () => {
                     </td>
                   </tr>
                 ))}
-              {isLoading && <TableLoading />}
             </tbody>
           </table>
 

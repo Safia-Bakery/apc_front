@@ -7,7 +7,7 @@ import Header from "../Header";
 import AddProductModal from "../AddProductModal";
 import useOrder from "@/hooks/useOrder";
 import syncExpenditure from "@/hooks/mutation/syncExpenditure";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import { useNavigateParams } from "custom/useCustomNavigate";
 import deleteExpenditureMutation from "@/hooks/mutation/deleteExpenditure";
 import { MainPermissions } from "@/utils/types";
@@ -51,6 +51,7 @@ const AddItems: FC<Props> = ({ children, synciiko }) => {
           refetch();
         }
       },
+      onError: (e: any) => errorToast(e.message),
     });
   };
 
@@ -63,6 +64,7 @@ const AddItems: FC<Props> = ({ children, synciiko }) => {
         onSuccess: (data: any) => {
           if (data.status == 200) successToast("Успешно синхронизировано");
         },
+        onError: (e: any) => errorToast(e.message),
       }
     );
 

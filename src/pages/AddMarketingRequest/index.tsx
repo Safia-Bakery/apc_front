@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { useNavigate } from "react-router-dom";
@@ -71,6 +71,7 @@ const AddMarketingRequest = () => {
               }?sub_id=${sub_id}&add=${add}&edit=${edit}&title=${title}`
             );
           },
+          onError: (e: any) => errorToast(e.message),
         }
       );
   };

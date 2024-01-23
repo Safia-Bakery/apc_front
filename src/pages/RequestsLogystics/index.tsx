@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Departments, MainPermissions, Order } from "@/utils/types";
 import Pagination from "@/components/Pagination";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
@@ -18,9 +18,9 @@ import cl from "classnames";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
-import TableLoading from "@/components/TableLoading";
 import LogFilter from "./filter";
 import EmptyList from "@/components/EmptyList";
+import Loading from "@/components/Loader";
 
 interface Props {
   add: MainPermissions;
@@ -160,9 +160,9 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
                   </td>
                 </tr>
               ))}
-            {orderLoading && <TableLoading />}
           </tbody>
         </table>
+        {orderLoading && <Loading absolute />}
         {!!requests && <Pagination totalPages={requests.pages} />}
         {!requests?.items?.length && !orderLoading && <EmptyList />}
       </div>

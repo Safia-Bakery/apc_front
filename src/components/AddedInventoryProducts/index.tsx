@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import useOrder from "@/hooks/useOrder";
 import updateInventoryProdMutation from "@/hooks/mutation/updateInventoryProd";
 import { RequestStatus } from "@/utils/types";
+import { errorToast } from "@/utils/toast";
 
 const column = [
   { name: "№" },
@@ -28,7 +29,10 @@ const AddedInventoryProducts = () => {
   };
 
   const handleUpdateProd = (id: number) => () =>
-    mutate({ id, status: 1 }, { onSuccess: () => refetch() });
+    mutate(
+      { id, status: 1 },
+      { onSuccess: () => refetch(), onError: (e: any) => errorToast(e.message) }
+    );
 
   return (
     <>

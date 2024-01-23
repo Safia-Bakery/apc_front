@@ -4,7 +4,7 @@ import useTools from "@/hooks/useTools";
 import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import usedItemsMutation from "@/hooks/mutation/usedItems";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import useOrder from "@/hooks/useOrder";
 import { useRemoveParams } from "custom/useCustomNavigate";
 import BaseInput from "@/components/BaseInputs";
@@ -70,6 +70,7 @@ const TelegramAddProduct = () => {
           reset();
           refetch();
         },
+        onError: (e: any) => errorToast(e.message),
       }
     );
   };
@@ -82,6 +83,7 @@ const TelegramAddProduct = () => {
           refetch();
         }
       },
+      onError: (e: any) => errorToast(e.message),
     });
   };
 
@@ -101,6 +103,7 @@ const TelegramAddProduct = () => {
               TelegramApp.toMainScreen();
             }
           },
+          onError: (e: any) => errorToast(e.message),
         }
       );
     };
@@ -118,6 +121,7 @@ const TelegramAddProduct = () => {
             inputRef.current.value = null;
             dispatch(uploadReport(null));
           },
+          onError: (e: any) => errorToast(e.message),
         }
       );
   };

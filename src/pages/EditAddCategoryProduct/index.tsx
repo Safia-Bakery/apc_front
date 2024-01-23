@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect, useMemo } from "react";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import BaseInput from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
@@ -65,6 +65,7 @@ const EditAddCategoryProduct = () => {
           navigate(-1);
           if (product_id) productRefetch();
         },
+        onError: (e: any) => errorToast(e.message),
       }
     );
   };

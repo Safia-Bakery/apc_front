@@ -110,6 +110,7 @@ const ShowRequestModals = () => {
             orderRefetch();
             successToast("assigned");
           },
+          onError: (e: any) => errorToast(e.message),
         }
       );
       removeParams(["modal"]);

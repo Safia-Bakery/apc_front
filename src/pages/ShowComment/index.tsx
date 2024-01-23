@@ -67,7 +67,7 @@ const ShowComment = () => {
                   </tr>
                   <tr>
                     <th>Файл</th>
-                    <td className="flex flex-col">
+                    <td className="flex flex-col !border-none">
                       {order?.file?.map((item, index) => {
                         if (item.status === 0)
                           return (

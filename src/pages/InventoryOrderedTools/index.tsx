@@ -1,11 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Departments,
-  InventoryOrders,
-  MainPermissions,
-  ToolTypes,
-} from "@/utils/types";
+import { InventoryOrders } from "@/utils/types";
 import Pagination from "@/components/Pagination";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
@@ -13,20 +8,12 @@ import { handleIdx } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import ItemsCount from "@/components/ItemsCount";
 import useQueryString from "custom/useQueryString";
-import TableLoading from "@/components/TableLoading";
 import EmptyList from "@/components/EmptyList";
-import { permissionSelector } from "@/store/reducers/sidebar";
-import { useAppSelector } from "@/store/utils/types";
-import TableViewBtn from "@/components/TableViewBtn";
-import useTools from "@/hooks/useTools";
 import cl from "classnames";
-import {
-  useNavigateParams,
-  useRemoveParams,
-} from "@/hooks/custom/useCustomNavigate";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import useInventoryOrders from "@/hooks/useInventoryOrders";
 import dayjs from "dayjs";
+import Loading from "@/components/Loader";
 
 const column = [
   { name: "№", key: "" },
@@ -100,9 +87,9 @@ const InventoryOrderedTools = () => {
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
                 </tr>
               ))}
-            {toolsLoading && <TableLoading />}
           </tbody>
         </table>
+        {toolsLoading && <Loading absolute />}
         {!!orders && <Pagination totalPages={orders.pages} />}
         {!orders?.items?.length && !toolsLoading && <EmptyList />}
       </div>

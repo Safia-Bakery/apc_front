@@ -7,7 +7,7 @@ import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
 import {
   detectFileType,
@@ -109,10 +109,12 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
                         successToast("assigned");
                       }
                     },
+                    onError: (e: any) => errorToast(e.message),
                   }
                 );
               }
             },
+            onError: (e: any) => errorToast(e.message),
           }
         );
       } else
@@ -129,6 +131,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
                 successToast("assigned");
               }
             },
+            onError: (e: any) => errorToast(e.message),
           }
         );
       removeParams(["modal"]);
@@ -148,6 +151,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
             inputRef.current.value = null;
             successToast("Сохранено");
           },
+          onError: (e: any) => errorToast(e.message),
         }
       );
   };
@@ -339,7 +343,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
                   </tr>
                   <tr>
                     <th>Файл</th>
-                    <td className="flex flex-col">
+                    <td className="flex flex-col !border-none">
                       {order?.file?.map((item, index) => {
                         if (item.status === 0)
                           return (
@@ -360,7 +364,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
                   </tr>
                   <tr>
                     <th id="photo_report">Фотоотчёт</th>
-                    <td className="flex flex-col">
+                    <td className="flex flex-col !border-none">
                       {order?.file?.map((item, index) => {
                         if (item.status === 1)
                           return (
@@ -373,7 +377,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
                               )}
                               key={item.url + index}
                             >
-                              {item.url}
+                              файл - {index + 1}
                             </div>
                           );
                       })}

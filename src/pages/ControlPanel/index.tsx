@@ -10,7 +10,6 @@ import { Departments, MainPermissions, Sphere } from "@/utils/types";
 import Chart from "react-apexcharts";
 import { useMemo } from "react";
 import Loading from "@/components/Loader";
-import { handleDepartment } from "@/utils/helpers";
 
 const options = {
   chart: {
@@ -29,8 +28,9 @@ const options = {
   },
 } as any;
 
+type DepType = { dep: Departments; sphere?: Sphere };
 interface DepTypes {
-  [key: number]: { dep: Departments; sphere?: Sphere };
+  [key: number]: DepType;
 }
 
 const mainDeps: DepTypes = {
@@ -79,9 +79,8 @@ const mainDeps: DepTypes = {
 
 const ControlPanel = () => {
   const { data: user } = useToken({ enabled: false });
-
   const perms = new Set(user?.permissions);
-  const mainDep = Object.entries(mainDeps).find((item) =>
+  const mainDep: DepType = Object.entries(mainDeps).find((item) =>
     perms.has(+item[0])
   )?.[1];
 
@@ -90,6 +89,55 @@ const ControlPanel = () => {
     ...(mainDep?.sphere && { sphere_status: mainDep?.sphere }),
     enabled: !!mainDep?.dep,
   });
+
+  const renderDep = useMemo(() => {
+    if (mainDep)
+      switch (mainDep.dep) {
+        case Departments.apc:
+          if (mainDep.sphere === Sphere.fabric)
+            return {
+              title: "АРС - фабрика",
+              teamUrl: "/statistics-apc-fabric/brigada",
+              newOrders:
+                "/requests-apc-fabric?sphere_status=2&addExp=54&request_status=0",
+            };
+          else
+            return {
+              title: "АРС - розница",
+              teamUrl: "/statistics-apc-retail/brigada",
+              newOrders:
+                "/requests-apc-retail?sphere_status=1&addExp=28&request_status=0",
+              ratingUrl: "",
+            };
+        case Departments.inventory:
+          return {
+            title: "Инвентарь",
+            newOrders: "/requests-inventory?request_status=0",
+          };
+        case Departments.marketing:
+          return { title: "Маркетинг" };
+        case Departments.it:
+          if (mainDep.sphere === Sphere.purchase)
+            return {
+              title: "IT - закуп",
+              newOrders: "/requests-it/3?request_status=0",
+            };
+          else
+            return {
+              title: "IT - поддержка",
+              newOrders: "/requests-it/4?request_status=0",
+            };
+        case Departments.logystics:
+          return {
+            title: "Запрос машин",
+            newOrders: "/requests-logystics?request_status=0",
+          };
+        case Departments.staff:
+          return { title: "Заявки на еду", newOrders: "/requests-staff" };
+        default:
+          break;
+      }
+  }, [mainDep]);
 
   const series = useMemo(() => {
     if (!!stats?.brage_requests)
@@ -114,10 +162,10 @@ const ControlPanel = () => {
           <h4 className="title m-0">Добро пожаловать {user?.full_name}</h4>
           <p className={styles.category}>{user?.role?.toString()}</p>
 
-          <p>{handleDepartment({ dep: mainDep.dep })}</p>
+          <p>{renderDep?.title}</p>
         </div>
 
-        <div className="mt-6">
+        <div>
           <p className={styles.category}>{dayjs().format("DD-MM-YYYY")}</p>
         </div>
       </Card>
@@ -141,16 +189,18 @@ const ControlPanel = () => {
               )}
 
               <div className="w-full flex justify-end">
-                <Link to={""} className="flex text-gray-400">
-                  Перейти{" "}
-                  <img
-                    src="/assets/icons/arrowBlack.svg"
-                    alt=""
-                    className="rotate-90"
-                    width={15}
-                    height={15}
-                  />
-                </Link>
+                {renderDep?.teamUrl && (
+                  <Link to={renderDep?.teamUrl} className="flex text-gray-400">
+                    Перейти{" "}
+                    <img
+                      src="/assets/icons/arrowBlack.svg"
+                      alt=""
+                      className="rotate-90"
+                      width={15}
+                      height={15}
+                    />
+                  </Link>
+                )}
               </div>
 
               <hr className={styles.hr} />
@@ -174,17 +224,22 @@ const ControlPanel = () => {
                   </h3>
                   <h2 className="text-center mt-2">{stats?.new_requests}</h2>
 
-                  <div className="w-full flex justify-end">
-                    <Link to={""} className="flex text-gray-400 text-xs mt-3">
-                      открыть список{" "}
-                      <img
-                        src="/assets/icons/arrowBlack.svg"
-                        alt=""
-                        className="rotate-90"
-                        width={15}
-                        height={15}
-                      />
-                    </Link>
+                  <div className="w-full flex justify-end mt-3">
+                    {renderDep?.newOrders && (
+                      <Link
+                        to={renderDep?.newOrders}
+                        className="flex text-gray-400 text-xs"
+                      >
+                        открыть список{" "}
+                        <img
+                          src="/assets/icons/arrowBlack.svg"
+                          alt=""
+                          className="rotate-90"
+                          width={15}
+                          height={15}
+                        />
+                      </Link>
+                    )}
                   </div>
                 </div>
 
@@ -192,17 +247,22 @@ const ControlPanel = () => {
                   <h3 className="text-base h-12">Средний рейтинг</h3>
                   <h2 className="text-center mt-2">{stats?.avg_rating}</h2>
 
-                  <div className="w-full flex justify-end">
-                    <Link to={""} className="flex text-gray-400 text-xs mt-3">
-                      открыть все оценки{" "}
-                      <img
-                        src="/assets/icons/arrowBlack.svg"
-                        alt=""
-                        className="rotate-90"
-                        width={15}
-                        height={15}
-                      />
-                    </Link>
+                  <div className="w-full flex justify-end mt-3">
+                    {renderDep?.ratingUrl && (
+                      <Link
+                        to={renderDep?.ratingUrl}
+                        className="flex text-gray-400 text-xs "
+                      >
+                        открыть все оценки{" "}
+                        <img
+                          src="/assets/icons/arrowBlack.svg"
+                          alt=""
+                          className="rotate-90"
+                          width={15}
+                          height={15}
+                        />
+                      </Link>
+                    )}
                   </div>
                 </div>
 
@@ -226,7 +286,7 @@ const ControlPanel = () => {
                     Обработано за текущий месяц
                   </h3>
                   <div className="text-center flex items-center justify-center mt-2">
-                    <h3 className="text-lg">786 заявок</h3>
+                    <h3 className="text-lg">{stats?.total_requests} заявок</h3>
                   </div>
 
                   <div className="mt-3 h-4" />

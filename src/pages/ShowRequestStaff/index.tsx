@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
@@ -6,25 +6,16 @@ import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
-import { baseURL } from "@/main";
 import {
-  detectFileType,
   handleDepartment,
   handleStatus,
   isValidHttpUrl,
 } from "@/utils/helpers";
-import {
-  Departments,
-  FileType,
-  ModalTypes,
-  RequestStatus,
-} from "@/utils/types";
+import { Departments, ModalTypes, RequestStatus } from "@/utils/types";
 import { useForm } from "react-hook-form";
-import ShowRequestModals from "@/components/ShowRequestModals";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
-import cl from "classnames";
 
-const ShowLogRequests = () => {
+const ShowRequestStaff = () => {
   const { id } = useParams();
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
@@ -37,14 +28,7 @@ const ShowLogRequests = () => {
   const isNew = order?.status === RequestStatus.new;
   const navigate = useNavigate();
 
-  const handleShowPhoto = (file: string) => () => {
-    if (detectFileType(file) === FileType.other) return window.open(file);
-    else {
-      navigateParams({ modal: ModalTypes.showPhoto, photo: file });
-    }
-  };
-
-  const handleBack = () => navigate("/requests-logystics");
+  const handleBack = () => navigate("/requests-staff");
 
   const handleBrigada =
     ({ status }: { status: RequestStatus }) =>
@@ -83,40 +67,22 @@ const ShowLogRequests = () => {
             className="btn btn-success btn-fill"
             id="recieve_request"
           >
-            Принять в работу
+            Принять
           </button>
         </div>
       );
-    else
+    if (order?.status && order?.status < RequestStatus.done)
       return (
         <div className="float-end mb10">
-          {order?.status! < 2 && (
-            <button
-              onClick={handleModal(ModalTypes.cars)}
-              className="btn btn-warning btn-fill mr-2"
-            >
-              Отправить в путь
-            </button>
-          )}
-          {order?.status! < 3 && (
-            <button
-              onClick={handleBrigada({ status: RequestStatus.done })}
-              className="btn btn-success btn-fill"
-            >
-              Завершить
-            </button>
-          )}
+          <button
+            onClick={handleBrigada({ status: RequestStatus.done })}
+            className="btn btn-success btn-fill"
+          >
+            Завершить
+          </button>
         </div>
       );
   }, [order?.status]);
-
-  const renderModals = useMemo(() => {
-    if (order?.status !== RequestStatus.done) return <ShowRequestModals />;
-  }, [order?.status]);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   return (
     <>
@@ -177,27 +143,6 @@ const ShowLogRequests = () => {
                     <td>{order?.fillial?.parentfillial?.name}</td>
                   </tr>
                   <tr>
-                    <th>Файл</th>
-                    <td className="flex flex-col !border-none">
-                      {order?.file?.map((item, index) => {
-                        if (item.status === 0)
-                          return (
-                            <div
-                              className={cl(
-                                "text-link cursor-pointer max-w-[150px] w-full text-truncate"
-                              )}
-                              onClick={handleShowPhoto(
-                                `${baseURL}/${item.url}`
-                              )}
-                              key={item.url + index}
-                            >
-                              файл - {index + 1}
-                            </div>
-                          );
-                      })}
-                    </td>
-                  </tr>
-                  <tr>
                     <th>Примичание</th>
                     <td>{order?.description}</td>
                   </tr>
@@ -211,20 +156,6 @@ const ShowLogRequests = () => {
                           </Link>
                         ) : (
                           order?.location?.from_loc
-                        )}
-                      </td>
-                    </tr>
-                  )}
-                  {order?.location?.to_loc && (
-                    <tr>
-                      <th>Куда</th>
-                      <td>
-                        {isValidHttpUrl(order?.location?.to_loc) ? (
-                          <Link to={order?.location?.to_loc} target="_blank">
-                            {order?.location?.to_loc}
-                          </Link>
-                        ) : (
-                          order?.location?.to_loc
                         )}
                       </td>
                     </tr>
@@ -304,10 +235,8 @@ const ShowLogRequests = () => {
           {renderBtns}
         </div>
       </Card>
-
-      {renderModals}
     </>
   );
 };
 
-export default ShowLogRequests;
+export default ShowRequestStaff;

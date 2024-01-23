@@ -15,7 +15,7 @@ import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import CategoriesITFilter from "./filter";
 import EmptyList from "@/components/EmptyList";
-import TableLoading from "@/components/TableLoading";
+import Loading from "@/components/Loader";
 
 interface Props {
   sphere_status?: number;
@@ -28,6 +28,7 @@ const column = [
   { name: "№", key: "" },
   { name: "Наименование", key: "name" },
   { name: "Отдел", key: "department" },
+  { name: "Время исполнении", key: "ftime" },
   { name: "Статус", key: "status" },
   { name: "", key: "" },
 ];
@@ -92,6 +93,7 @@ const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
                         )}
                       </td>
                       <td>{handleDepartment({ dep: category?.department })}</td>
+                      <td>{category.ftime} часов</td>
                       <td>{category?.status ? "Активный" : "Неактивный"}</td>
                       <td width={40}>
                         {permission?.[edit] && (
@@ -103,9 +105,9 @@ const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
                     </tr>
                   )
                 )}
-              {isLoading && <TableLoading />}
             </tbody>
           </table>
+          {isLoading && <Loading absolute />}
           {!!categories && <Pagination totalPages={categories.pages} />}
           {!categories?.items?.length && !isLoading && <EmptyList />}
         </div>

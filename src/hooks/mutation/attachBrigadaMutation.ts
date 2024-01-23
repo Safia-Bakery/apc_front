@@ -5,7 +5,7 @@ import { RequestStatus } from "@/utils/types";
 
 interface Body {
   request_id: number;
-  status: RequestStatus;
+  status?: RequestStatus;
   brigada_id?: number;
   deny_reason?: string;
   finishing_time?: string;

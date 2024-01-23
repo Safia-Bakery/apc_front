@@ -2,18 +2,22 @@ import { useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
-import { successToast } from "@/utils/toast";
-import useBrigadas from "@/hooks/useBrigadas";
+import { useEffect, useMemo, useState } from "react";
+import { errorToast, successToast } from "@/utils/toast";
 import useBrigada from "@/hooks/useBrigada";
 import brigadaMutation from "@/hooks/mutation/brigadaMutation";
 import useUsersForBrigada from "@/hooks/useUsersForBrigada";
 import BaseInputs from "@/components/BaseInputs";
-import MainSelect from "@/components/BaseInputs/MainSelect";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import MainInput from "@/components/BaseInputs/MainInput";
 import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 import useQueryString from "custom/useQueryString";
+import Select from "react-select";
+
+interface SelectValue {
+  value: number | string;
+  label: string;
+}
 
 const CreateBrigades = () => {
   const { id } = useParams();
@@ -21,9 +25,11 @@ const CreateBrigades = () => {
   const goBack = () => navigate(-1);
   const sphere_status = useQueryString("sphere_status");
   const dep = useQueryString("dep");
+  const [users, $users] = useState<SelectValue[]>();
+  const [selectedUser, $selectedUser] = useState<SelectValue>();
 
   const { mutate } = brigadaMutation();
-  const { refetch: usersRefetch, data: users } = useUsersForBrigada({
+  const { refetch: usersRefetch, data } = useUsersForBrigada({
     id: Number(id),
     enabled: !!id,
   });
@@ -42,17 +48,21 @@ const CreateBrigades = () => {
 
   useEffect(() => {
     if (id && brigada) {
+      if (brigada?.user?.[0]?.full_name && brigada?.user?.[0]?.id)
+        $selectedUser({
+          label: brigada?.user?.[0]?.full_name,
+          value: brigada?.user?.[0]?.id,
+        });
       reset({
         brigada_name: brigada?.name,
         brigada_description: brigada?.description,
-        brigadir: brigada?.user?.[0]?.id,
         status: !!brigada.status,
       });
     }
-  }, [brigada, id, users]);
+  }, [brigada, id]);
 
   const onSubmit = () => {
-    const { brigada_name, brigada_description, brigadir, status } = getValues();
+    const { brigada_name, brigada_description, status } = getValues();
 
     mutate(
       {
@@ -62,20 +72,48 @@ const CreateBrigades = () => {
         ...(id && { id: Number(id) }),
         ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
         ...(!!dep && { department: Number(dep) }),
-        ...(!!brigadir && { users: [brigadir] }),
+        ...(!!selectedUser && { users: [+selectedUser.value] }),
       },
       {
         onSuccess: () => {
           successToast(!!id ? "successfully updated" : "successfully created");
           navigate(-1);
           if (!!id) {
-            brigadaRefetch();
             usersRefetch();
+            brigadaRefetch();
           }
         },
+        onError: (e: any) => errorToast(e.message),
       }
     );
   };
+
+  const renderUsers = useMemo(() => {
+    if (!!id && users)
+      return (
+        <BaseInputs label="Выберите бригадира">
+          <Select
+            options={users}
+            value={selectedUser}
+            onChange={(e) => $selectedUser(e!)}
+            isClearable
+          />
+        </BaseInputs>
+      );
+  }, [users, selectedUser]);
+
+  useEffect(() => {
+    if (data?.length)
+      $users(
+        data.map((item) => {
+          return {
+            value: item.id,
+            label: item.full_name,
+          };
+        })
+      );
+  }, [data]);
+
   return (
     <Card>
       <Header title={!id ? "Добавить" : `Изменить бригада №${id}`}>
@@ -99,20 +137,7 @@ const CreateBrigades = () => {
           </BaseInputs>
         </div>
 
-        {!!id && (
-          <BaseInputs label="Выберите бригадира">
-            <MainSelect register={register("brigadir")}>
-              <option value={undefined}></option>
-              {users
-                ?.filter((item) => !!item.username)
-                ?.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.username}
-                  </option>
-                ))}
-            </MainSelect>
-          </BaseInputs>
-        )}
+        {renderUsers}
         <BaseInputs label="ОПИСАНИЕ">
           <MainTextArea register={register("brigada_description")} />
         </BaseInputs>

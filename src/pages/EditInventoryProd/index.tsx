@@ -3,7 +3,7 @@ import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import MainInput from "@/components/BaseInputs/MainInput";
 import BaseInputs from "@/components/BaseInputs";
 import updateToolsMutation from "@/hooks/mutation/updateTools";
@@ -37,6 +37,7 @@ const EditInventoryProd = () => {
           navigate(-1);
           successToast("successfully updated");
         },
+        onError: (e: any) => errorToast(e.message),
       }
     );
   };
@@ -63,18 +64,10 @@ const EditInventoryProd = () => {
 
       <form className="content" onSubmit={handleSubmit(onSubmit)}>
         <BaseInputs label="Минимум">
-          <MainInput
-            register={register("min_amount", {
-              required: "Обязательное поле",
-            })}
-          />
+          <MainInput register={register("min_amount")} />
         </BaseInputs>
         <BaseInputs label="Максимум">
-          <MainInput
-            register={register("max_amount", {
-              required: "Обязательное поле",
-            })}
-          />
+          <MainInput register={register("max_amount")} />
         </BaseInputs>
 
         <button type="submit" className="btn btn-success mt-3">

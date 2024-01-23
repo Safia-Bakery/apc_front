@@ -9,7 +9,6 @@ import TableHead from "@/components/TableHead";
 import InventoryFilter from "./filter";
 import ItemsCount from "@/components/ItemsCount";
 import useQueryString from "custom/useQueryString";
-import TableLoading from "@/components/TableLoading";
 import EmptyList from "@/components/EmptyList";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
@@ -23,6 +22,7 @@ import {
 import { useDownloadExcel } from "react-export-table-to-excel";
 import inventoryMinsMutation from "@/hooks/mutation/inventoryMins";
 import { errorToast, successToast } from "@/utils/toast";
+import Loading from "@/components/Loader";
 
 const column = [
   { name: "№", key: "" },
@@ -119,6 +119,8 @@ const InventoryRemains = () => {
                   className={cl("transition-colors", {
                     ["table-danger"]:
                       tool.min_amount && tool.amount_left < tool.min_amount,
+                    ["table-success"]:
+                      tool.min_amount && tool.amount_left > tool.min_amount,
                   })}
                 >
                   <td width="40">{handleIdx(idx)}</td>
@@ -139,9 +141,9 @@ const InventoryRemains = () => {
                   </td>
                 </tr>
               ))}
-            {toolsLoading && <TableLoading />}
           </tbody>
         </table>
+        {toolsLoading && <Loading absolute />}
         {!!tools && <Pagination totalPages={tools.pages} />}
         {!tools?.items?.length && !toolsLoading && <EmptyList />}
       </div>

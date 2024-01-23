@@ -53,7 +53,7 @@ const Masters = () => {
 
   useEffect(() => {
     refetch();
-  }, [currentPage, sphere_status]);
+  }, []);
 
   if (orderLoading) return <Loading absolute />;
 

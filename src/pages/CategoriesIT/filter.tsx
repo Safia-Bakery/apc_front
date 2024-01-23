@@ -34,17 +34,22 @@ const CategoriesITFilter: FC = () => {
     <>
       <td></td>
       <td className="p-0">
-        <BaseInputs className="m-2">
+        <BaseInputs className="!m-1">
           <MainInput onChange={(e) => $name(e.target.value)} />
         </BaseInputs>
       </td>
       <td className="p-0">
-        <BaseInputs className="m-2">
+        <BaseInputs className="!m-1">
           <MainInput onChange={(e) => $department(e.target.value)} />
         </BaseInputs>
       </td>
       <td className="p-0">
-        <BaseInputs className="m-2">
+        <BaseInputs className="!m-1">
+          <MainInput disabled />
+        </BaseInputs>
+      </td>
+      <td className="p-0">
+        <BaseInputs className="!m-1 !mb-2">
           <MainSelect
             values={StatusName}
             onChange={(e) => $category_status(e.target.value)}

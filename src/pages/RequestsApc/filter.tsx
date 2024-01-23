@@ -92,6 +92,7 @@ const ApcFilter: FC = () => {
             <MainSelect
               value={system?.toString()}
               values={SystemArr}
+              disabled
               onChange={(e) => navigate({ system: e.target.value })}
             />
           </BaseInput>
@@ -128,12 +129,7 @@ const ApcFilter: FC = () => {
       </td>
       <td className="p-0">
         <BaseInputs className="!m-1">
-          <MainSelect
-            values={UrgentNames}
-            className="!mb-0"
-            value={urgent?.toString()}
-            onChange={handleUrgent}
-          />
+          <MainSelect disabled className="!mb-0" onChange={handleUrgent} />
         </BaseInputs>
       </td>
       <td className="p-0">

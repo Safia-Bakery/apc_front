@@ -13,8 +13,8 @@ import ItemsCount from "@/components/ItemsCount";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
-import TableLoading from "@/components/TableLoading";
 import EmptyList from "@/components/EmptyList";
+import Loading from "@/components/Loader";
 
 const column = [
   { name: "№", key: "" },
@@ -123,9 +123,9 @@ const Users: FC<Props> = ({ add, edit }) => {
                     </td>
                   </tr>
                 ))}
-            {orderLoading && <TableLoading />}
           </tbody>
         </table>
+        {orderLoading && <Loading absolute />}
         {!!users && <Pagination totalPages={users.pages} />}
         {!users?.items?.length && !orderLoading && <EmptyList />}
       </div>

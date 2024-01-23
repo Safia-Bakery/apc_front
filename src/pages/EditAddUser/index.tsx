@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import userMutation from "@/hooks/mutation/userMutation";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import useUsers from "@/hooks/useUsers";
 import useUser from "@/hooks/useUser";
 import InputMask from "react-input-mask";
@@ -71,6 +71,7 @@ const EditAddUser = () => {
             if (!!id) userRefetch();
           }
         },
+        onError: (e: any) => errorToast(e.message),
       }
     );
   };

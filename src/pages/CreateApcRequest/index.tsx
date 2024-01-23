@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { useNavigate } from "react-router-dom";
@@ -70,6 +70,7 @@ const CreateApcRequest = () => {
             `/requests-apc-${Sphere[sphere_status]}?sphere_status=${sphere_status}&addExp=${addExp}`
           );
         },
+        onError: (e: any) => errorToast(e.message),
       }
     );
   };

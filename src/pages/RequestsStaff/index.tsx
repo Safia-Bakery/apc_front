@@ -17,12 +17,12 @@ import ItemsCount from "@/components/ItemsCount";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
-import TableLoading from "@/components/TableLoading";
 import BotTimeModal from "@/components/BotTimeModal";
 import { useNavigateParams } from "custom/useCustomNavigate";
 import StaffFilter from "./filter";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import EmptyList from "@/components/EmptyList";
+import Loading from "@/components/Loader";
 
 const column = [
   { name: "№", key: "" },
@@ -93,7 +93,7 @@ const RequestsStaff = () => {
 
   useEffect(() => {
     refetch();
-  }, [currentPage, sphere_status]);
+  }, []);
 
   const renderProductCount = useMemo(() => {
     return requests?.items.reduce(
@@ -198,9 +198,9 @@ const RequestsStaff = () => {
                   </td>
                 </tr>
               ))}
-            {orderLoading && <TableLoading />}
           </tbody>
         </table>
+        {orderLoading && <Loading absolute />}
         {!!requests && <Pagination totalPages={requests.pages} />}
         {!requests?.items?.length && !orderLoading && <EmptyList />}
       </div>

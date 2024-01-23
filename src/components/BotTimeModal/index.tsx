@@ -11,6 +11,7 @@ import { MainPermissions } from "@/utils/types";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import Loading from "../Loader";
+import { errorToast } from "@/utils/toast";
 
 const BotTimeModal = () => {
   const { mutate } = botWorkingTime();
@@ -39,6 +40,7 @@ const BotTimeModal = () => {
         onSuccess: () => {
           closeModal();
         },
+        onError: (e: any) => errorToast(e.message),
       }
     );
   };
