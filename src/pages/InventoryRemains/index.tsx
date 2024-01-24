@@ -82,7 +82,7 @@ const InventoryRemains = () => {
 
   useEffect(() => {
     refetch();
-  }, [page]);
+  }, []);
 
   return (
     <Card>

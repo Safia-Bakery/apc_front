@@ -38,12 +38,12 @@ const ShowRequestModals = () => {
   const [deadline, $deadline] = useState<Date>();
   const removeParams = useRemoveParams();
   const handleDeadline = (event: Date) => $deadline(event);
-  const { mutate: reassign } = marketingReassignMutation();
-
-  const { mutate: attach } = attachBrigadaMutation();
+  const { mutate: reassign, isLoading: reassigning } =
+    marketingReassignMutation();
+  const { mutate: attach, isLoading: attaching } = attachBrigadaMutation();
   const { register, getValues, watch, handleSubmit } = useForm();
 
-  const { data: categories } = useCategories({
+  const { data: categories, isLoading: categoriesLoading } = useCategories({
     sub_id: Number(watch("direction")),
     enabled: !!watch("direction"),
   });
@@ -58,7 +58,9 @@ const ShowRequestModals = () => {
     ...(!!sphere_status && { sphere_status }),
   });
 
-  const { refetch: orderRefetch } = useOrder({ id: Number(id) });
+  const { refetch: orderRefetch, isFetching: orderFetching } = useOrder({
+    id: Number(id),
+  });
 
   const handleReassign = () => {
     reassign(
@@ -305,6 +307,15 @@ const ShowRequestModals = () => {
         return;
     }
   };
+
+  if (
+    (carLoading && modal === ModalTypes.cars) ||
+    orderFetching ||
+    (categoriesLoading && !!watch("direction")) ||
+    attaching ||
+    reassigning
+  )
+    return <Loading absolute />;
 
   return (
     <Modal

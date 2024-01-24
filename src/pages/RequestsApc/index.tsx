@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Departments, MainPermissions, Order, Sphere } from "@/utils/types";
 import Pagination from "@/components/Pagination";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
@@ -16,6 +16,7 @@ import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
+import { useDownloadExcel } from "react-export-table-to-excel";
 
 interface Props {
   add: MainPermissions;
@@ -30,12 +31,18 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const currentPage = Number(useQueryString("page")) || 1;
   const { pathname, search } = useLocation();
+  const tableRef = useRef(null);
+
+  const { onDownload } = useDownloadExcel({
+    currentTableRef: tableRef.current,
+    filename: "Заявки на APC розница",
+    sheet: "Заявки на APC розница",
+  });
 
   const user = useQueryString("user");
   const id = Number(useQueryString("id"));
   const system = useQueryString("system");
   const category_id = Number(useQueryString("category_id"));
-  const urgent = useQueryString("urgent");
   const created_at = useQueryString("created_at");
   const request_status = useQueryString("request_status");
   const branchJson = useQueryString("branch");
@@ -61,6 +68,8 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
 
     return columns;
   }, [sphere_status]);
+
+  const downloadAsPdf = () => onDownload();
 
   const {
     data: requests,
@@ -88,7 +97,12 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
   return (
     <Card>
       <Header title={"Заявки"}>
-        <button className="btn btn-primary btn-fill mr-2">Экспорт</button>
+        <button
+          className="btn btn-primary btn-fill mr-2"
+          onClick={downloadAsPdf}
+        >
+          Экспорт
+        </button>
         {permission?.[add] && (
           <button
             onClick={() =>
@@ -104,7 +118,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
 
       <div className="table-responsive grid-view content">
         <ItemsCount data={requests} />
-        <table className="table table-hover">
+        <table className="table table-hover" ref={tableRef}>
           <TableHead
             column={column}
             onSort={(data) => $sort(data)}

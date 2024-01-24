@@ -1,7 +1,7 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Departments, MainPermissions, Order } from "@/utils/types";
 import Pagination from "@/components/Pagination";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
@@ -36,17 +36,18 @@ const column = [
   { name: "Изменил", key: "category.name" },
 ];
 
-const RequestsMarketing = () => {
+interface Props {
+  title: string;
+  sub_id: number;
+  add: MainPermissions;
+  edit: MainPermissions;
+}
+
+const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
   const navigate = useNavigate();
   const [sort, $sort] = useState<Order[]>();
   const permission = useAppSelector(permissionSelector);
   const currentPage = Number(useQueryString("page")) || 1;
-  const { pathname, search } = useLocation();
-
-  const title = useQueryString("title");
-  const sub_id = Number(useQueryString("sub_id"));
-  const add = Number(useQueryString("add")) as MainPermissions;
-  const edit = Number(useQueryString("edit")) as MainPermissions;
 
   const request_status = useQueryString("request_status");
   const category_id = Number(useQueryString("category_id"));
@@ -87,11 +88,7 @@ const RequestsMarketing = () => {
       <Header title={title?.toString()}>
         {permission?.[add] && (
           <button
-            onClick={() =>
-              navigate(
-                `add?sub_id=${sub_id}&add=${add}&edit=${edit}&title=${title}`
-              )
-            }
+            onClick={() => navigate(`add?sub_id=${sub_id}`)}
             className="btn btn-success btn-fill"
             id="add_request"
           >
@@ -119,11 +116,7 @@ const RequestsMarketing = () => {
                   <td width="40">{handleIdx(idx)}</td>
                   <td width="80">
                     {permission?.[edit] ? (
-                      <Link
-                        id="request_id"
-                        to={`${order?.id}?sub_id=${sub_id}&edit=${edit}`}
-                        state={{ prevPath: pathname + search }}
-                      >
+                      <Link to={`${order?.id}?sub_id=${sub_id}&edit=${edit}`}>
                         {order?.id}
                       </Link>
                     ) : (

@@ -1,4 +1,4 @@
-import { ChangeEvent, FC } from "react";
+import { ChangeEvent, FC, KeyboardEventHandler } from "react";
 import cl from "classnames";
 import styles from "./index.module.scss";
 import { UseFormRegisterReturn } from "react-hook-form";
@@ -9,6 +9,8 @@ interface Props {
   placeholder?: string | null;
   disabled?: boolean;
   register?: UseFormRegisterReturn;
+  onKeyDown?: KeyboardEventHandler;
+  autoFocus?: boolean;
 }
 
 const MainTextArea: FC<Props> = ({

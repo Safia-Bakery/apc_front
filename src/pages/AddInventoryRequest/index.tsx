@@ -12,10 +12,12 @@ import requestMutation from "@/hooks/mutation/orderMutation";
 import { inventoryCategoryId, isMobile } from "@/utils/helpers";
 import BranchSelect from "@/components/BranchSelect";
 import useQueryString from "@/hooks/custom/useQueryString";
-import { errorToast, successToast } from "@/utils/toast";
+import { successToast } from "@/utils/toast";
 import useOrders from "@/hooks/useOrders";
 import { InputWrapper, SelectWrapper } from "@/components/InputWrappers";
 import { TelegramApp } from "@/utils/tgHelpers";
+import Loading from "@/components/Loader";
+import { useState } from "react";
 
 interface InventoryFields {
   product: {
@@ -49,6 +51,7 @@ const column = [
 const AddInventoryRequest = () => {
   const navigate = useNavigate();
   const { refetch } = useOrders({ enabled: false });
+  const [btn, $btn] = useState(false);
 
   const {
     control,
@@ -61,7 +64,7 @@ const AddInventoryRequest = () => {
     defaultValues: { inputFields: [initialInventory], main_comment: "" },
   });
 
-  const { mutate } = requestMutation();
+  const { mutate, isLoading: mutating } = requestMutation();
 
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
@@ -87,23 +90,24 @@ const AddInventoryRequest = () => {
       },
       {
         onSuccess: () => {
-          if (isMobile) TelegramApp.toMainScreen();
-          else {
+          if (isMobile) {
+            $btn(true);
+            TelegramApp.toMainScreen();
+          } else {
             refetch();
             navigate("/requests-inventory");
             successToast("created");
           }
         },
-        onError: (e: any) => errorToast(e.message),
       }
     );
   };
 
   const addInputFields = () => append(initialInventory);
 
-  const handleIncrement = (idx: number) => () => {
+  const handleIncrement = (idx: number) => () =>
     setValue(`inputFields.${idx}.qnt`, +watch(`inputFields.${idx}.qnt`) + 1);
-  };
+
   const handleDecrement = (idx: number) => () => {
     if (+watch(`inputFields.${idx}.qnt`) > 1)
       setValue(`inputFields.${idx}.qnt`, +watch(`inputFields.${idx}.qnt`) - 1);
@@ -239,13 +243,18 @@ const AddInventoryRequest = () => {
         <BaseInputs label="ПРИМЕЧАНИЕ" className="z-10 relative">
           <MainTextArea register={register("main_comment")} />
         </BaseInputs>
-        <button
-          type="submit"
-          className="btn btn-success btn-fill z-10 relative"
-        >
-          Сохранить
-        </button>
+        {!btn && (
+          <button
+            type="submit"
+            disabled={mutating}
+            className="btn btn-success btn-fill z-10 relative"
+          >
+            Сохранить
+          </button>
+        )}
       </form>
+
+      {mutating && <Loading absolute />}
     </Card>
   );
 };

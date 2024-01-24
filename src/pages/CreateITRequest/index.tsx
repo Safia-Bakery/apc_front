@@ -321,9 +321,7 @@ const CreateITRequest = () => {
 
         <BaseInputs label="Комментарии" error={errors.description}>
           <MainTextArea
-            register={register("description", {
-              required: "Обязательное поле",
-            })}
+            register={register("description")}
             placeholder="Комментарии"
           />
         </BaseInputs>

@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { InventoryOrders } from "@/utils/types";
 import Pagination from "@/components/Pagination";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx } from "@/utils/helpers";
+import { handleIdx, handleStatus, requestRows } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import ItemsCount from "@/components/ItemsCount";
 import useQueryString from "custom/useQueryString";
@@ -19,11 +19,11 @@ const column = [
   { name: "№", key: "" },
   { name: "Номер", key: "id" },
   { name: "Автор", key: "user" },
+  { name: "Статус", key: "status" },
   { name: "Дата", key: "created_at" },
 ];
 
 const InventoryOrderedTools = () => {
-  const navigate = useNavigate();
   const tableRef = useRef(null);
   const [sort, $sort] = useState<InventoryOrders["items"]>();
   const page = Number(useQueryString("page")) || 1;
@@ -42,14 +42,9 @@ const InventoryOrderedTools = () => {
 
   const downloadAsPdf = () => onDownload();
 
-  // const handleMins = () => {
-  //   if (!mins) navigateParams({ mins: 1 });
-  //   else removeParams(["mins"]);
-  // };
-
   useEffect(() => {
     refetch();
-  }, [page]);
+  }, []);
 
   return (
     <Card>
@@ -57,9 +52,6 @@ const InventoryOrderedTools = () => {
         <button className="btn btn-success mr-2" onClick={downloadAsPdf}>
           Export Excel
         </button>
-        {/* <button className="btn btn-primary" onClick={handleMins}>
-          {!mins ? "Загрузить минимумы" : "Загрузить все"}
-        </button> */}
       </Header>
 
       <div className="content">
@@ -75,7 +67,10 @@ const InventoryOrderedTools = () => {
               (sort?.length ? sort : orders?.items)?.map((order, idx) => (
                 <tr
                   key={idx}
-                  className={cl("transition-colors hover:bg-hoverGray", {})}
+                  className={cl(
+                    "transition-colors hover:bg-hoverGray",
+                    requestRows(order?.status)
+                  )}
                 >
                   <td width="40">{handleIdx(idx)}</td>
                   <td width={50} className="text-center">
@@ -84,6 +79,10 @@ const InventoryOrderedTools = () => {
                     </Link>
                   </td>
                   <td>{order?.user?.full_name}</td>
+                  <td>
+                    {!!order.status.toString() &&
+                      handleStatus({ status: order?.status })}
+                  </td>
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
                 </tr>
               ))}

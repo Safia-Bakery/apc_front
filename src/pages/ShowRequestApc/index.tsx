@@ -64,6 +64,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
     data: order,
     refetch: orderRefetch,
     isLoading: orderLoading,
+    isFetching: orderFetching,
   } = useOrder({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
   const inputRef = useRef<any>(null);
@@ -262,6 +263,11 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
       );
   }, [upladedFiles, permissions, order?.status, order?.file]);
 
+  const renderModal = useMemo(() => {
+    if (!!order?.status.toString() && order?.status < RequestStatus.done)
+      return <ShowRequestModals />;
+  }, [order?.status]);
+
   useEffect(() => {
     if (tokenKey) dispatch(loginHandler(tokenKey));
   }, [tokenKey]);
@@ -276,7 +282,13 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
     }
   }, [order?.status]);
 
-  if (isLoading || uploadLoading || attachLoading || orderLoading)
+  if (
+    isLoading ||
+    uploadLoading ||
+    attachLoading ||
+    orderLoading ||
+    orderFetching
+  )
     return <Loading absolute />;
 
   return (
@@ -476,7 +488,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
           <div className="p-2">{renderSubmit}</div>
         </AddItems>
       )}
-      <ShowRequestModals />
+      {renderModal}
     </>
   );
 };

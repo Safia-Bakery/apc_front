@@ -7,6 +7,7 @@ import styles from "./index.module.scss";
 import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
 import useQueryString from "@/hooks/custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
+import cl from "classnames";
 
 const ToolsIerarch = () => {
   const navigate = useNavigate();
@@ -37,12 +38,12 @@ const ToolsIerarch = () => {
       <ul>
         {data?.folders?.map((folder) => (
           <li
-            className={styles.folder}
+            className={cl(styles.folder, "bg-gray-300")}
             onClick={handleParentId(folder.id, folder.name)}
             key={folder.id}
           >
             <img src="/assets/icons/folder.svg" alt="folder" />
-            <span className="bg-gray-300">{folder.name}</span>
+            <span>{folder.name}</span>
           </li>
         ))}
         <hr />

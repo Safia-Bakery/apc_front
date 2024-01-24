@@ -470,6 +470,16 @@ export enum MainPermissions {
   edit_client_comment = 97,
   add_client_comment = 96,
 
+  // get_requests_inventory = 58,
+  // add_requests_inventory = 58,
+  // edit_requests_inventory = 58,
+  // edit_product_inventory = 58,
+  // get_product_inventory = 58,
+  // get_inventory_purchase_prods = 58,
+  // edit_inventory_purchase_prods = 58,
+  // inventory_remains_in_stock = 58,
+  // inventory_reports = 58,
+
   get_requests_inventory = 98,
   add_requests_inventory = 99,
   edit_requests_inventory = 100,
@@ -671,6 +681,31 @@ export interface InventoryOrders extends BasePaginatedRes {
     };
     created_at: string;
     updated_at: string;
+    order_need: [
+      {
+        id: number;
+        status: number;
+        need_tool: {
+          id: number;
+          name: string;
+          code: string;
+          mainunit: string;
+          producttype: string;
+          iikoid: string;
+          price: number;
+          parentid: string;
+          total_price: number;
+          amount_left: number;
+          min_amount: number;
+          max_amount: number;
+        };
+        ordered_amount: number;
+        amount_last: number;
+        toolorder_id: number;
+        created_at: string;
+        updated_at: string;
+      }
+    ];
   }[];
 }
 

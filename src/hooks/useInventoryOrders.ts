@@ -9,6 +9,7 @@ interface Body {
   enabled?: boolean;
   size?: number;
   page?: number;
+  id?: number;
 }
 
 export const useInventoryOrders = (body: Body) => {

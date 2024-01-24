@@ -1,26 +1,16 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import dayjs from "dayjs";
-import TableHead from "@/components/TableHead";
-import { detectFileType, itemsPerPage } from "@/utils/helpers";
-import useOrders from "@/hooks/useOrders";
-import { FileType, ModalTypes, Order, OrderType } from "@/utils/types";
+import { detectFileType } from "@/utils/helpers";
+import { FileType, ModalTypes, Order } from "@/utils/types";
 import useOrder from "@/hooks/useOrder";
 import { useNavigateParams } from "custom/useCustomNavigate";
 import { baseURL } from "@/main";
 import cl from "classnames";
 import ShowRequestModals from "@/components/ShowRequestModals";
 import Loading from "@/components/Loader";
-
-const column = [
-  { name: "№", key: "id" as keyof Order["id"] },
-  { name: "Сотрудник", key: "purchaser" as keyof Order["product"] },
-  { name: "Оценка", key: "type" as keyof Order["product"] },
-  { name: "Текст", key: "category.name" as keyof Order["category"] },
-  { name: "Дата", key: "price" as keyof Order["product"] },
-];
 
 const ShowComment = () => {
   const { id } = useParams();

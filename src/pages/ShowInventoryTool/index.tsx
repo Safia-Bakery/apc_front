@@ -2,17 +2,18 @@ import { useMemo, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx } from "@/utils/helpers";
-import { ModalTypes } from "@/utils/types";
-import { useNavigateParams } from "custom/useCustomNavigate";
+import { handleIdx, handleStatus } from "@/utils/helpers";
+import { RequestStatus } from "@/utils/types";
 import cl from "classnames";
-import useInventoryOrdersNeeded from "@/hooks/useInventoryOrdersNeeded";
 import Loading from "@/components/Loader";
 import TableHead from "@/components/TableHead";
 import dayjs from "dayjs";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import Pagination from "@/components/Pagination";
 import EmptyList from "@/components/EmptyList";
+import toolOrderMutation from "@/hooks/mutation/toolOrder";
+import useInventoryOrders from "@/hooks/useInventoryOrders";
+import { errorToast, successToast } from "@/utils/toast";
 
 const column = [
   { name: "№", key: "" },
@@ -27,14 +28,14 @@ const column = [
 const ShowInventoryTool = () => {
   const { id } = useParams();
   const tableRef = useRef(null);
+  const { mutate } = toolOrderMutation();
 
-  const navigateParams = useNavigateParams();
-  const handleModal = (type: ModalTypes) => () => {
-    navigateParams({ modal: type });
-  };
-  const { data: order, isLoading } = useInventoryOrdersNeeded({
-    toolorder_id: Number(id),
+  const { data, isLoading, refetch, isFetching } = useInventoryOrders({
+    id: Number(id),
+    enabled: !!id,
   });
+
+  const order = data?.items?.[0];
   const navigate = useNavigate();
 
   const handleBack = () => navigate(-1);
@@ -47,32 +48,48 @@ const ShowInventoryTool = () => {
 
   const downloadAsPdf = () => onDownload();
 
+  const onSubmit = (status: RequestStatus) => {
+    mutate(
+      {
+        id: +id!,
+        status,
+      },
+      {
+        onSuccess: () => {
+          refetch();
+          navigate("/order-products-inventory");
+          successToast("success");
+        },
+        onError: (e: any) => errorToast(e.message),
+      }
+    );
+  };
+
   const renderBtns = useMemo(() => {
-    if (!!order?.items?.length)
+    if (!!order?.status?.toString() && order?.status < RequestStatus.done)
       return (
         <div className="float-end mb10">
           <button
-            onClick={handleModal(ModalTypes.cancelRequest)}
-            className="btn btn-danger btn-fill mx-2"
-          >
-            Отклонить
-          </button>
-          <button
-            // onClick={handleBrigada({ status: RequestStatus.done })}
+            onClick={() => onSubmit(RequestStatus.done)}
             className="btn btn-success btn-fill"
           >
             Завершить
           </button>
         </div>
       );
-  }, [order?.items]);
+  }, [order?.order_need]);
 
-  if (isLoading) return <Loading absolute />;
+  if (isLoading || isFetching) return <Loading absolute />;
 
   return (
     <>
       <Card className="overflow-hidden">
-        <Header title={`Заказ №${id}`}>
+        <Header
+          title={`Заявки на закуп №${id}`}
+          subTitle={`Статус: ${handleStatus({
+            status: order?.status,
+          })}`}
+        >
           <button className="btn btn-success mr-2" onClick={downloadAsPdf}>
             Export Excel
           </button>
@@ -85,8 +102,8 @@ const ShowInventoryTool = () => {
             <TableHead column={column} />
 
             <tbody>
-              {!!order?.items.length &&
-                order.items?.map((item, idx) => (
+              {!!order?.order_need.length &&
+                order.order_need?.map((item, idx) => (
                   <tr key={idx} className={cl("transition-colors")}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td>{item?.need_tool?.name}</td>
@@ -108,8 +125,8 @@ const ShowInventoryTool = () => {
             </tbody>
           </table>
           {renderBtns}
-          {!!order && <Pagination totalPages={order.pages} />}
-          {!order?.items?.length && !isLoading && <EmptyList />}
+          {!order?.order_need?.length && !isLoading && <EmptyList />}
+          {!!order && <Pagination totalPages={data.pages} />}
         </div>
       </Card>
     </>

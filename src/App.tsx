@@ -209,37 +209,86 @@ const routes = [
     screen: MainPermissions.edit_design_request,
   },
   {
-    element: <RequestsMarketing />,
+    element: (
+      <RequestsMarketing
+        add={MainPermissions.add_design_request}
+        edit={MainPermissions.edit_design_request}
+        title={"Проектная работа для дизайнеров"}
+        sub_id={MarketingSubDep.designers}
+      />
+    ),
     path: `/marketing-${MarketingSubDep[1]}`,
     screen: MainPermissions.get_design_request,
   },
   {
-    element: <RequestsMarketing />,
+    element: (
+      <RequestsMarketing
+        add={MainPermissions.add_locmar_requests}
+        edit={MainPermissions.edit_locmar_requests}
+        title="Локальный маркетинг"
+        sub_id={MarketingSubDep.local_marketing}
+      />
+    ),
     path: `/marketing-${MarketingSubDep[2]}`,
     screen: MainPermissions.get_locmar_requests,
   },
   {
-    element: <RequestsMarketing />,
+    element: (
+      <RequestsMarketing
+        add={MainPermissions.add_promo_requests}
+        edit={MainPermissions.edit_promo_requests}
+        title="Промо-продукция"
+        sub_id={MarketingSubDep.promo_production}
+      />
+    ),
     path: `/marketing-${MarketingSubDep[3]}`,
     screen: MainPermissions.get_promo_requests,
   },
   {
-    element: <RequestsMarketing />,
+    element: (
+      <RequestsMarketing
+        add={MainPermissions.add_pos_requests}
+        edit={MainPermissions.edit_pos_requests}
+        title="POS-Материалы"
+        sub_id={MarketingSubDep.pos}
+      />
+    ),
     path: `/marketing-${MarketingSubDep[4]}`,
     screen: MainPermissions.get_pos_requests,
   },
   {
-    element: <RequestsMarketing />,
+    element: (
+      <RequestsMarketing
+        add={MainPermissions.add_complect_requests}
+        edit={MainPermissions.edit_complect_requests}
+        title="Комплекты"
+        sub_id={MarketingSubDep.complects}
+      />
+    ),
     path: `/marketing-${MarketingSubDep[5]}`,
     screen: MainPermissions.get_complect_requests,
   },
   {
-    element: <RequestsMarketing />,
+    element: (
+      <RequestsMarketing
+        add={MainPermissions.add_nostandard_requests}
+        edit={MainPermissions.edit_nostandard_requests}
+        title="Для Тер.Менеджеров"
+        sub_id={MarketingSubDep.nonstandartAdv}
+      />
+    ),
     path: `/marketing-${MarketingSubDep[6]}`,
     screen: MainPermissions.get_nostandard_requests,
   },
   {
-    element: <RequestsMarketing />,
+    element: (
+      <RequestsMarketing
+        add={MainPermissions.add_stock_env_requests}
+        edit={MainPermissions.edit_stock_env_requests}
+        title="Внешний вид филиала"
+        sub_id={MarketingSubDep.branchEnv}
+      />
+    ),
     path: `/marketing-${MarketingSubDep[7]}`,
     screen: MainPermissions.get_stock_env_requests,
   },

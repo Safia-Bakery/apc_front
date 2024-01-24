@@ -18,6 +18,7 @@ import {
   Departments,
   FileType,
   MainPermissions,
+  MarketingSubDep,
   ModalTypes,
   RequestStatus,
 } from "@/utils/types";
@@ -28,6 +29,7 @@ import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
 import cl from "classnames";
+import Loading from "@/components/Loader";
 
 const ShowMarketingRequest = () => {
   const { id } = useParams();
@@ -35,16 +37,22 @@ const ShowMarketingRequest = () => {
 
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
-  const { mutate: attach } = attachBrigadaMutation();
+  const { mutate: attach, isLoading: attaching } = attachBrigadaMutation();
   const handleModal = (type: ModalTypes) => () => {
     navigateParams({ modal: type });
   };
   const { getValues } = useForm();
-  const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
+  const {
+    data: order,
+    refetch: orderRefetch,
+    isLoading: orderLoading,
+    isFetching: orderFetching,
+  } = useOrder({ id: Number(id) });
+
   const isNew = order?.status === RequestStatus.new;
   const edit = Number(useQueryString("edit")) as MainPermissions;
+  const sub_id = Number(useQueryString("sub_id"));
   const navigate = useNavigate();
-  const { state } = useLocation();
 
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
@@ -53,7 +61,7 @@ const ShowMarketingRequest = () => {
     }
   };
 
-  const handleBack = () => navigate(state?.prevPath);
+  const handleBack = () => navigate(`/marketing-${MarketingSubDep[sub_id]}`);
 
   const handleBrigada =
     ({ status }: { status: RequestStatus }) =>
@@ -128,9 +136,16 @@ const ShowMarketingRequest = () => {
       );
   }, [permissions, order?.status]);
 
+  const renderModal = useMemo(() => {
+    if (!!order?.status.toString() && order?.status < RequestStatus.done)
+      return <ShowRequestModals />;
+  }, [order?.status]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  if (attaching || orderLoading || orderFetching) return <Loading absolute />;
 
   return (
     <>
@@ -298,7 +313,7 @@ const ShowMarketingRequest = () => {
         </div>
       </Card>
 
-      <ShowRequestModals />
+      {renderModal}
     </>
   );
 };

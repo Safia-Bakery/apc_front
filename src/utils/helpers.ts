@@ -221,8 +221,6 @@ export enum HRRequestTypes {
   asked_questions = 1,
 }
 
-// export const logysticsCategs = 37;
-
 export const routes: SidebarType[] = [
   {
     name: "Тепловая карта",
@@ -420,7 +418,6 @@ export const routes: SidebarType[] = [
         name: "Проектная работа для дизайнеров",
         url: `/marketing-${MarketingSubDep[1]}`,
         icon: "/assets/icons/subOrder.svg",
-        param: `?add=${MainPermissions.add_design_request}&edit=${MainPermissions.edit_design_request}&title=Проектная работа для дизайнеров&sub_id=${MarketingSubDep.designers}`,
         screen: MainPermissions.get_design_request,
       },
       {
@@ -428,42 +425,36 @@ export const routes: SidebarType[] = [
         url: `/marketing-${MarketingSubDep[2]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_locmar_requests,
-        param: `?add=${MainPermissions.add_locmar_requests}&edit=${MainPermissions.edit_locmar_requests}&title=Локальный маркетинг&sub_id=${MarketingSubDep.local_marketing}`,
       },
       {
         name: "Промо-продукция",
         url: `/marketing-${MarketingSubDep[3]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_promo_requests,
-        param: `?add=${MainPermissions.add_promo_requests}&edit=${MainPermissions.edit_promo_requests}&title=Промо-продукция&sub_id=${MarketingSubDep.promo_production}`,
       },
       {
         name: "POS-Материалы",
         url: `/marketing-${MarketingSubDep[4]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_pos_requests,
-        param: `?add=${MainPermissions.add_pos_requests}&edit=${MainPermissions.edit_pos_requests}&title=POS-Материалы&sub_id=${MarketingSubDep.pos}`,
       },
       {
         name: "Комплекты",
         url: `/marketing-${MarketingSubDep[5]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_complect_requests,
-        param: `?add=${MainPermissions.add_complect_requests}&edit=${MainPermissions.edit_complect_requests}&title=Комплекты&sub_id=${MarketingSubDep.complects}`,
       },
       {
         name: "Для Тер.Менеджеров",
         url: `/marketing-${MarketingSubDep[6]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_nostandard_requests,
-        param: `?add=${MainPermissions.add_nostandard_requests}&edit=${MainPermissions.edit_nostandard_requests}&title=Для Тер.Менеджеров&sub_id=${MarketingSubDep.nonstandartAdv}`,
       },
       {
         name: "Внешний вид филиала",
         url: `/marketing-${MarketingSubDep[7]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_stock_env_requests,
-        param: `?add=${MainPermissions.add_stock_env_requests}&edit=${MainPermissions.edit_stock_env_requests}&title=Внешний вид филиала&sub_id=${MarketingSubDep.branchEnv}`,
       },
       {
         name: "Категории",
@@ -631,4 +622,4 @@ export const handleHRStatus = (dep: RequestStatus) => {
 
 export const staffCategoryId = 36;
 export const clientCommentCategoryId = 56;
-export const inventoryCategoryId = 59;
+export const inventoryCategoryId = 59; // prod - 59, local - 52 todo

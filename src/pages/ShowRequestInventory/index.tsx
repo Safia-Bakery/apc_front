@@ -27,6 +27,7 @@ import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { permissionSelector } from "reducers/sidebar";
 import AddedInventoryProducts from "@/components/AddedInventoryProducts";
 import Loading from "@/components/Loader";
+import useQueryString from "@/hooks/custom/useQueryString";
 
 const ShowRequestInventory = () => {
   const { id } = useParams();
@@ -104,6 +105,11 @@ const ShowRequestInventory = () => {
         </div>
       );
   }, [permissions, order?.status, changed]);
+
+  const renderModals = useMemo(() => {
+    if (!!order?.status.toString() && order?.status < RequestStatus.done)
+      return <ShowRequestModals />;
+  }, [order?.status]);
 
   useEffect(() => {
     if (!order?.expanditure?.find((item) => !!item.status)) $changed(true);
@@ -280,7 +286,7 @@ const ShowRequestInventory = () => {
         </div>
       </Card>
       {attaching && <Loading absolute />}
-      <ShowRequestModals />
+      {renderModals}
     </>
   );
 };

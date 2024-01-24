@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useRef } from "react";
+import { FC, useEffect, useMemo, useRef, KeyboardEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
@@ -66,24 +66,26 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   });
   const removeParams = useRemoveParams();
   const { mutate: attach, isLoading: attachLoading } = attachBrigadaMutation();
-  const { refetch: brigadasRefetch } = useBrigadas({
-    enabled: false,
-    department: Departments.it,
-    ...(!!sphere && { sphere }),
-  });
-
-  const handleModal = (type: ModalTypes) => () =>
-    navigateParams({ modal: type });
-
-  const handleChangeModal = (type: ModalTypes) => () =>
-    navigateParams({ changeModal: type });
-
-  const { getValues, register } = useForm();
+  const { refetch: brigadasRefetch, isFetching: brigadaFetching } = useBrigadas(
+    {
+      department: Departments.it,
+      ...(!!sphere && { sphere }),
+    }
+  );
   const {
     data: order,
     refetch: orderRefetch,
     isLoading: orderLoading,
+    isFetching: orderFetching,
   } = useOrder({ id: Number(id) });
+
+  const handleModal = (modal: ModalTypes) => () => navigateParams({ modal });
+
+  const handleChangeModal = (changeModal: ModalTypes) => () =>
+    navigateParams({ changeModal });
+
+  const { getValues, register, reset } = useForm();
+
   const isNew = order?.status === RequestStatus.new;
   const inputRef = useRef<any>(null);
   const upladedFiles = useAppSelector(reportImgSelector);
@@ -109,6 +111,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
           orderRefetch();
           removeParams(["changeModal"]);
           successToast("success");
+          reset({});
         },
         onError: (e: any) => errorToast(e.message),
       }
@@ -215,6 +218,13 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
       );
   };
 
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleMessage();
+    }
+  };
+
   const renderRequestModals = useMemo(() => {
     return <ShowRequestModals />;
   }, [modal]);
@@ -258,7 +268,11 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
         return (
           <>
             <BaseInput label="Оставить комментария">
-              <MainTextArea register={register("left_comment")} />
+              <MainTextArea
+                autoFocus
+                onKeyDown={handleKeyDown}
+                register={register("left_comment")}
+              />
             </BaseInput>
 
             <button
@@ -274,53 +288,37 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
     }
   }, [categoryLoading, changeModal, categories, branch]);
 
-  const renderBtns = useMemo(() => {
-    if (permissions?.[edit] && isNew && permissions?.[attaching])
+  const renderSubmit = useMemo(() => {
+    if (permissions?.[edit])
       return (
-        <div className="float-end mb10">
+        <div className="flex justify-between mb10">
           <button
             onClick={handleModal(ModalTypes.cancelRequest)}
             className="btn btn-danger btn-fill"
           >
-            Отклонить
+            Отменить
           </button>
-        </div>
-      );
-  }, [permissions, order?.status]);
-
-  const renderSubmit = useMemo(() => {
-    if (!!order?.brigada?.name && permissions?.[edit])
-      return (
-        <div className="flex justify-between mb10">
-          {order?.status! < 3 && (
-            <button
-              onClick={handleModal(ModalTypes.cancelRequest)}
-              className="btn btn-danger btn-fill"
-            >
-              Отменить
-            </button>
-          )}
           <div>
-            {order?.status! < 2 && (
-              <button
-                onClick={handleBrigada({
-                  status: RequestStatus.sendToRepair,
-                })}
-                className="btn btn-warning btn-fill mr-2"
-              >
-                Забрать для ремонта
-              </button>
-            )}
-            {order?.status! < 3 && (
-              <button
-                id={"fixed"}
-                onClick={handleBrigada({
-                  status: RequestStatus.done,
-                })}
-                className="btn btn-success btn-fill"
-              >
-                Починил {isLoading && <Loading />}
-              </button>
+            {order?.status! > RequestStatus.new && (
+              <>
+                <button
+                  onClick={handleBrigada({
+                    status: RequestStatus.sendToRepair,
+                  })}
+                  className="btn btn-warning btn-fill mr-2"
+                >
+                  Забрать для ремонта
+                </button>
+                <button
+                  id={"fixed"}
+                  onClick={handleBrigada({
+                    status: RequestStatus.done,
+                  })}
+                  className="btn btn-success btn-fill"
+                >
+                  Починил {isLoading && <Loading />}
+                </button>
+              </>
             )}
           </div>
         </div>
@@ -328,7 +326,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   }, [permissions, order?.status, isLoading]);
 
   const renderAssignment = useMemo(() => {
-    if (permissions?.[attaching] && order?.status! <= 1) {
+    if (permissions?.[attaching] && order?.status! <= RequestStatus.confirmed) {
       if (order?.brigada?.name) {
         return (
           <>
@@ -386,16 +384,20 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   const closeModal = () => removeParams(["changeModal"]);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
-    if (order?.status! <= 1) brigadasRefetch();
+    if (!!order?.status.toString() && order?.status <= RequestStatus.confirmed)
+      brigadasRefetch();
   }, [order?.status]);
 
-  if (isLoading || uploadLoading || attachLoading || orderLoading || msgLoading)
+  if (
+    isLoading ||
+    uploadLoading ||
+    attachLoading ||
+    orderLoading ||
+    msgLoading ||
+    brigadaFetching ||
+    orderFetching
+  )
     return <Loading absolute />;
-
   return (
     <>
       <Card className="overflow-hidden">
@@ -591,7 +593,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                         <div className="flex flex-col">
                           {!!order?.communication?.length &&
                             order?.communication.map((item) => (
-                              <div className="mt-2 flex gap-1">
+                              <div className="mt-2 flex gap-1" key={item.id}>
                                 <span className="font-bold flex">
                                   {item.user.full_name}:
                                 </span>
@@ -628,10 +630,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
             </div>
           </div>
           <hr />
-          {renderBtns}
-          {!isNew && order?.status !== RequestStatus.rejected && (
-            <div className="p-2">{renderSubmit}</div>
-          )}
+          <div className="p-2">{renderSubmit}</div>
         </div>
       </Card>
 

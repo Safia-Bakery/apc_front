@@ -23,17 +23,22 @@ import { useForm } from "react-hook-form";
 import ShowRequestModals from "@/components/ShowRequestModals";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import cl from "classnames";
+import Loading from "@/components/Loader";
 
 const ShowLogRequests = () => {
   const { id } = useParams();
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
-  const { mutate: attach } = attachBrigadaMutation();
+  const { mutate: attach, isLoading: attaching } = attachBrigadaMutation();
   const handleModal = (type: ModalTypes) => () => {
     navigateParams({ modal: type });
   };
   const { getValues } = useForm();
-  const { data: order, refetch: orderRefetch } = useOrder({ id: Number(id) });
+  const {
+    data: order,
+    refetch: orderRefetch,
+    isLoading,
+  } = useOrder({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
   const navigate = useNavigate();
 
@@ -111,12 +116,16 @@ const ShowLogRequests = () => {
   }, [order?.status]);
 
   const renderModals = useMemo(() => {
-    if (order?.status !== RequestStatus.done) return <ShowRequestModals />;
+    if (!!order?.status.toString() && order?.status < RequestStatus.done)
+      return <ShowRequestModals />;
   }, [order?.status]);
 
   useEffect(() => {
+    orderRefetch();
     window.scrollTo(0, 0);
   }, []);
+
+  if (attaching || isLoading) return <Loading absolute />;
 
   return (
     <>

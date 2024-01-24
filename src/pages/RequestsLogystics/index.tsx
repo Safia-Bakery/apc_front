@@ -62,6 +62,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
   const {
     data: requests,
     isLoading: orderLoading,
+    isFetching,
     refetch,
   } = useOrders({
     enabled: true,
@@ -80,6 +81,8 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
     ...(!!user && { user: user }),
     ...(!!urgent && { urgent: !!urgent }),
   });
+
+  if (orderLoading) return <Loading absolute />;
 
   return (
     <Card>
@@ -162,7 +165,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
               ))}
           </tbody>
         </table>
-        {orderLoading && <Loading absolute />}
+        {isFetching && <Loading absolute />}
         {!!requests && <Pagination totalPages={requests.pages} />}
         {!requests?.items?.length && !orderLoading && <EmptyList />}
       </div>

@@ -19,5 +19,3 @@ const updateToolsMutation = () => {
   });
 };
 export default updateToolsMutation;
-
-// /tools/

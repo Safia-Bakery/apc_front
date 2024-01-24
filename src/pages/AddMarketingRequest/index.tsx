@@ -65,11 +65,7 @@ const AddMarketingRequest = () => {
         {
           onSuccess: () => {
             successToast("Заказ успешно создано");
-            back(
-              `/marketing-${
-                MarketingSubDep[Number(sub_id)]
-              }?sub_id=${sub_id}&add=${add}&edit=${edit}&title=${title}`
-            );
+            back(`/marketing-${MarketingSubDep[Number(sub_id)]}`);
           },
           onError: (e: any) => errorToast(e.message),
         }
