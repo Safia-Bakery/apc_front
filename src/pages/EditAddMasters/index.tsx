@@ -35,7 +35,7 @@ const EditAddMasters = () => {
   const {
     refetch: usersRefetch,
     data,
-    isLoading: usersLoading,
+    isFetching: usersLoading,
   } = useUsersForBrigada({
     id: Number(id),
     enabled: !!id,
@@ -94,13 +94,14 @@ const EditAddMasters = () => {
           <Select
             options={users}
             value={selectedUser}
+            isLoading={usersLoading}
             onChange={(e) => $selectedUser(e!)}
             onInputChange={handleSearch}
             isClearable
           />
         </BaseInputs>
       );
-  }, [users, selectedUser]);
+  }, [users, selectedUser, usersLoading]);
 
   useEffect(() => {
     if (data?.items.length)
@@ -129,7 +130,7 @@ const EditAddMasters = () => {
     }
   }, [brigada, id]);
 
-  if (!!id && (usersLoading || brigadaLoading)) return <Loading absolute />;
+  if (!!id && brigadaLoading) return <Loading absolute />;
 
   return (
     <Card>
