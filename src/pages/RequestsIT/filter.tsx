@@ -80,7 +80,7 @@ const ITFilter: FC = () => {
       <td className="p-0">
         <BaseInput className="!m-1">
           <MainInput
-            register={register("idQ")}
+            register={register("id")}
             className="!mb-0"
             type="number"
             onChange={handleID}

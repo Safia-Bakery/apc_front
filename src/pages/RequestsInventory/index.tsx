@@ -65,11 +65,11 @@ const RequestsInventory = () => {
     refetch();
   }, []);
 
-  if (orderLoading) return <Loading absolute />;
+  // if (orderLoading) return <Loading absolute />;
 
   return (
     <Card>
-      <Header title={"Заявка на инвентарь"}>
+      <Header title={"Заявки на инвентарь"}>
         <button
           onClick={() => navigate("add")}
           className="btn btn-success btn-fill"
