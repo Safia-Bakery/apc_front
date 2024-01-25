@@ -737,4 +737,6 @@ export interface MainStatTypes {
   avg_time?: number; // in minutes
   total_requests: number;
   in_progress?: number;
+  last_30?: number;
+  last_month?: number;
 }

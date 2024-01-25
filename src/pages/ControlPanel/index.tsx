@@ -8,7 +8,7 @@ import cl from "classnames";
 import useMainStats from "@/hooks/useMainStats";
 import { Departments, MainPermissions, Sphere } from "@/utils/types";
 import Chart from "react-apexcharts";
-import { useMemo } from "react";
+import { ChangeEvent, useMemo, useRef, useState } from "react";
 import Loading from "@/components/Loader";
 
 const options = {
@@ -77,12 +77,21 @@ const mainDeps: DepTypes = {
   },
 };
 
+enum MonthVals {
+  last_30 = "last_30",
+  last_month = "last_month",
+}
+
 const ControlPanel = () => {
   const { data: user } = useToken({ enabled: false });
   const perms = new Set(user?.permissions);
   const mainDep: DepType = Object.entries(mainDeps).find((item) =>
     perms.has(+item[0])
   )?.[1];
+  const [selectMonth, $selectMonth] = useState(MonthVals.last_month);
+
+  const handleMonth = (e: ChangeEvent<HTMLSelectElement>) =>
+    $selectMonth(e.target.value as MonthVals);
 
   const { data: stats, isLoading } = useMainStats({
     department: mainDep?.dep!,
@@ -98,15 +107,13 @@ const ControlPanel = () => {
             return {
               title: "АРС - фабрика",
               teamUrl: "/statistics-apc-fabric/brigada",
-              newOrders:
-                "/requests-apc-fabric?sphere_status=2&addExp=54&request_status=0",
+              newOrders: "/requests-apc-fabric?request_status=0",
             };
           else
             return {
               title: "АРС - розница",
               teamUrl: "/statistics-apc-retail/brigada",
-              newOrders:
-                "/requests-apc-retail?sphere_status=1&addExp=28&request_status=0",
+              newOrders: "/requests-apc-retail?request_status=0",
               ratingUrl: "",
             };
         case Departments.inventory:
@@ -153,6 +160,21 @@ const ControlPanel = () => {
       };
   }, [stats?.brage_requests]);
 
+  const renderChart = useMemo(() => {
+    if (series?.serie)
+      return (
+        <Chart
+          options={{
+            ...options,
+            xaxis: { categories: series.categories },
+          }}
+          series={[series.serie]}
+          type="bar"
+          height={300}
+        />
+      );
+  }, [series]);
+
   if (isLoading) return <Loading absolute />;
 
   return (
@@ -174,19 +196,7 @@ const ControlPanel = () => {
           <div className="flex flex-[6] gap-2 ">
             <div className={cl(styles.blockItem)}>
               <h3 className="text-center mb-4">Моя команда</h3>
-
-              {series?.serie && (
-                <Chart
-                  options={{
-                    ...options,
-                    xaxis: { categories: series.categories },
-                  }}
-                  series={[series.serie]}
-                  type="bar"
-                  // width={380}
-                  height={300}
-                />
-              )}
+              {renderChart}
 
               <div className="w-full flex justify-end">
                 {renderDep?.teamUrl && (
@@ -283,10 +293,17 @@ const ControlPanel = () => {
 
                 <div className={cl(styles.blockItem, "flex-1 justify-between")}>
                   <h3 className="text-base h-12">
-                    Обработано за текущий месяц
+                    <select onChange={handleMonth} value={selectMonth}>
+                      <option value={MonthVals.last_month}>
+                        Обработано за текущий месяц
+                      </option>
+                      <option value={MonthVals.last_30}>
+                        Обработано за последние 30 дней
+                      </option>
+                    </select>
                   </h3>
                   <div className="text-center flex items-center justify-center mt-2">
-                    <h3 className="text-lg">{stats?.total_requests} заявок</h3>
+                    <h3 className="text-lg">{stats?.[selectMonth]} заявок</h3>
                   </div>
 
                   <div className="mt-3 h-4" />
