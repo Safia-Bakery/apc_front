@@ -240,14 +240,12 @@ export const routes: SidebarType[] = [
         url: "/requests-apc-retail",
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_requests_apc,
-        param: `?sphere_status=${Sphere.retail}&addExp=${MainPermissions.request_add_expanditure}`,
       },
       {
         name: "Бригады",
         url: "/brigades",
         icon: "/assets/icons/brigades.svg",
         screen: MainPermissions.get_brigadas,
-        param: `?dep=${Departments.apc}&sphere_status=${Sphere.retail}&add=${MainPermissions.add_brigada}&edit=${MainPermissions.edit_brigada}`,
       },
       {
         name: "Остатки на складах",
@@ -283,14 +281,12 @@ export const routes: SidebarType[] = [
         url: "/requests-apc-fabric",
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_fabric_requests,
-        param: `?sphere_status=${Sphere.fabric}&addExp=${MainPermissions.add_expen_fab}`,
       },
       {
         name: "Мастера",
         url: "/masters",
         icon: "/assets/icons/brigades.svg",
         screen: MainPermissions.get_master,
-        param: `?dep=${Departments.apc}&sphere_status=${Sphere.fabric}&add=${MainPermissions.add_master}&edit=${MainPermissions.edit_master}`,
       },
       {
         name: "Категории",
@@ -339,7 +335,6 @@ export const routes: SidebarType[] = [
         url: "/masters-it",
         icon: "/assets/icons/users.svg",
         screen: MainPermissions.it_get_masters,
-        param: `?dep=${Departments.it}&add=${MainPermissions.it_add_master}&edit=${MainPermissions.it_edit_master}`,
       },
       {
         name: "Категории(Закуп)",

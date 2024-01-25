@@ -21,14 +21,14 @@ import { useDownloadExcel } from "react-export-table-to-excel";
 interface Props {
   add: MainPermissions;
   edit: MainPermissions;
+  sphere_status: Sphere;
+  addExp: MainPermissions;
 }
 
-const RequestsApc: FC<Props> = ({ add, edit }) => {
+const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
   const navigate = useNavigate();
   const [sort, $sort] = useState<Order[]>();
   const permission = useAppSelector(permissionSelector);
-  const sphere_status = useQueryString("sphere_status");
-  const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const currentPage = Number(useQueryString("page")) || 1;
   const { pathname, search } = useLocation();
   const tableRef = useRef(null);
@@ -135,8 +135,7 @@ const RequestsApc: FC<Props> = ({ add, edit }) => {
                   <td width="80">
                     {permission?.[edit] ? (
                       <Link
-                        id="request_id"
-                        to={`/requests-apc/${order?.id}?sphere_status=${sphere_status}&addExp=${addExp}`}
+                        to={`/requests-apc-${Sphere[sphere_status]}/${order?.id}?sphere_status=${sphere_status}`}
                         state={{ prevPath: pathname + search }}
                       >
                         {order?.id}

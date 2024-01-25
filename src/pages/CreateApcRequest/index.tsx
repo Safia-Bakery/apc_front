@@ -42,10 +42,7 @@ const CreateApcRequest = () => {
   } = useForm();
 
   const navigate = useNavigate();
-  const goBack = () =>
-    navigate(
-      `/requests-apc-${Sphere[sphere_status]}?sphere_status=${sphere_status}&addExp=${addExp}`
-    );
+  const goBack = () => navigate(`/requests-apc-${Sphere[sphere_status]}`);
 
   useEffect(() => {
     reset({

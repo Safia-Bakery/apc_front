@@ -21,6 +21,7 @@ import {
   MainPermissions,
   ModalTypes,
   RequestStatus,
+  Sphere,
 } from "@/utils/types";
 import UploadComponent, { FileItem } from "@/components/FileUpload";
 import ShowRequestModals from "@/components/ShowRequestModals";
@@ -36,17 +37,16 @@ import cl from "classnames";
 import { permissionSelector } from "reducers/sidebar";
 
 interface Props {
-  edit: MainPermissions;
-  attaching: MainPermissions;
+  edit?: MainPermissions;
+  attaching?: MainPermissions;
+  addExp?: MainPermissions;
 }
 
-const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
+const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const tokenKey = useQueryString("key");
-  const { state } = useLocation();
   const sphere_status = Number(useQueryString("sphere_status"));
-  const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const permissions = useAppSelector(permissionSelector);
   const dispatch = useAppDispatch();
   const navigateParams = useNavigateParams();
@@ -73,7 +73,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
 
   const { mutate, isLoading: uploadLoading } = uploadFileMutation();
 
-  const handleBack = () => navigate(state?.prevPath);
+  const handleBack = () => navigate(`/requests-apc-${Sphere[sphere_status!]}`);
 
   const handleFilesSelected = (data: FileItem[]) =>
     dispatch(uploadReport(data));
@@ -158,7 +158,13 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
   };
 
   const renderBtns = useMemo(() => {
-    if (permissions?.[edit] && isNew && permissions?.[attaching])
+    if (
+      edit &&
+      attaching &&
+      permissions?.[edit] &&
+      isNew &&
+      permissions?.[attaching]
+    )
       return (
         <div className="float-end mb10">
           <button
@@ -172,7 +178,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
   }, [permissions, order?.status]);
 
   const renderSubmit = useMemo(() => {
-    if (!!order?.brigada?.name && permissions?.[edit])
+    if (edit && !!order?.brigada?.name && permissions?.[edit])
       return (
         <div className="flex justify-between mb10">
           {order?.status! < 3 && (
@@ -211,7 +217,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
   }, [permissions, order?.status, isLoading]);
 
   const renderAssignment = useMemo(() => {
-    if (permissions?.[attaching] && order?.status! <= 1) {
+    if (attaching && permissions?.[attaching] && order?.status! <= 1) {
       if (order?.brigada?.name) {
         return (
           <>
@@ -239,7 +245,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
   }, [permissions, order?.status, order?.brigada?.name]);
 
   const renderfileUploader = useMemo(() => {
-    if (permissions?.[addExp] && !isNew && order?.status !== 4)
+    if (addExp && permissions?.[addExp] && !isNew && order?.status !== 4)
       return (
         <Card className="overflow-hidden">
           <Header title={"Добавить фотоотчёт"} />
@@ -302,14 +308,19 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching }) => {
           })}`}
         >
           <button
-            className="btn btn-warning btn-fill mr-2"
+            className="btn btn-warning btn-fill"
             onClick={() => navigate(`/request/logs/${id}`)}
           >
             Логи
           </button>
-          <button onClick={handleBack} className="btn btn-primary btn-fill">
-            Назад
-          </button>
+          {!!sphere_status && (
+            <button
+              onClick={handleBack}
+              className="btn btn-primary btn-fill ml-2"
+            >
+              Назад
+            </button>
+          )}
         </Header>
         <div className="content">
           <div className="row ">

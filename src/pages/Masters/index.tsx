@@ -3,7 +3,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { BrigadaType, MainPermissions } from "@/utils/types";
+import {
+  BrigadaType,
+  Departments,
+  MainPermissions,
+  Sphere,
+} from "@/utils/types";
 import Loading from "@/components/Loader";
 import Pagination from "@/components/Pagination";
 import { handleIdx } from "@/utils/helpers";
@@ -16,17 +21,24 @@ import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 
-const Masters = () => {
+interface Props {
+  dep: Departments;
+  sphere_status?: Sphere;
+  add: MainPermissions;
+  edit: MainPermissions;
+}
+
+const Masters = ({ dep, sphere_status, add, edit }: Props) => {
   const navigate = useNavigate();
   const permission = useAppSelector(permissionSelector);
-  const sphere_status = Number(useQueryString("sphere_status"));
-  const dep = useQueryString("dep");
+  // const sphere_status = Number(useQueryString("sphere_status"));
+  // const dep = useQueryString("dep");
+  const { search } = useLocation();
   const currentPage = Number(useQueryString("page")) || 1;
   const [sort, $sort] = useState<BrigadaType[]>();
-  const { search } = useLocation();
 
-  const add = Number(useQueryString("add")) as MainPermissions;
-  const edit = Number(useQueryString("edit")) as MainPermissions;
+  // const add = Number(useQueryString("add")) as MainPermissions;
+  // const edit = Number(useQueryString("edit")) as MainPermissions;
 
   const handleNavigate = (id: number | string) => () => navigate(`${id}`);
 
@@ -40,6 +52,7 @@ const Masters = () => {
       { name: "", key: "" },
     ];
   }, []);
+
   const {
     data: brigadas,
     isLoading: orderLoading,
@@ -64,7 +77,9 @@ const Masters = () => {
           <button
             className="btn btn-success btn-fill"
             id="add_master"
-            onClick={handleNavigate(`add${search}`)}
+            onClick={handleNavigate(
+              `add?dep=${dep}&sphere_status=${sphere_status}`
+            )}
           >
             Добавить
           </button>
@@ -93,11 +108,7 @@ const Masters = () => {
                     {permission?.[edit] && (
                       <TableViewBtn
                         onClick={handleNavigate(
-                          `${order.id}?${
-                            dep
-                              ? `dep=${dep}`
-                              : `sphere_status=${sphere_status}`
-                          }`
+                          `${order.id}?dep=${dep}&sphere_status=${sphere_status}`
                         )}
                       />
                     )}

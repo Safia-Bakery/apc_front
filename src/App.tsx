@@ -116,11 +116,12 @@ const routes = [
   {
     element: (
       <ShowRequestApc
+        addExp={MainPermissions.add_expen_fab}
         edit={MainPermissions.edit_fabric_requests}
         attaching={MainPermissions.fabric_req_attach_master}
       />
     ),
-    path: "/requests-apc/:id",
+    path: "/requests-apc-fabric/:id",
     screen: MainPermissions.edit_fabric_requests,
   },
   {
@@ -136,12 +137,18 @@ const routes = [
   {
     element: (
       <ShowRequestApc
+        addExp={MainPermissions.request_add_expanditure}
         edit={MainPermissions.edit_request_apc}
         attaching={MainPermissions.request_ettach}
       />
     ),
-    path: "/requests-apc/:id",
+    path: "/requests-apc-retail/:id",
     screen: MainPermissions.edit_request_apc,
+  },
+  {
+    element: <ShowRequestApc />,
+    path: "/requests-apc/:id",
+    screen: MainPermissions.get_statistics,
   },
   {
     element: <RequestsIT />,
@@ -151,6 +158,8 @@ const routes = [
   {
     element: (
       <RequestsApc
+        sphere_status={Sphere.retail}
+        addExp={MainPermissions.request_add_expanditure}
         add={MainPermissions.add_request_apc}
         edit={MainPermissions.edit_request_apc}
       />
@@ -161,6 +170,8 @@ const routes = [
   {
     element: (
       <RequestsApc
+        sphere_status={Sphere.fabric}
+        addExp={MainPermissions.add_expen_fab}
         add={MainPermissions.add_fabric_requests}
         edit={MainPermissions.edit_fabric_requests}
       />
@@ -484,17 +495,37 @@ const routes = [
     screen: MainPermissions.edit_users,
   },
   {
-    element: <Masters />,
+    element: (
+      <Masters
+        dep={Departments.apc}
+        sphere_status={Sphere.fabric}
+        add={MainPermissions.add_master}
+        edit={MainPermissions.edit_master}
+      />
+    ),
     path: "/masters",
     screen: MainPermissions.get_master,
   },
   {
-    element: <Masters />,
+    element: (
+      <Masters
+        dep={Departments.apc}
+        sphere_status={Sphere.retail}
+        add={MainPermissions.add_brigada}
+        edit={MainPermissions.edit_brigada}
+      />
+    ),
     path: "/brigades",
     screen: MainPermissions.get_brigadas,
   },
   {
-    element: <Masters />,
+    element: (
+      <Masters
+        dep={Departments.it}
+        add={MainPermissions.it_add_master}
+        edit={MainPermissions.it_edit_master}
+      />
+    ),
     path: "/masters-it",
     screen: MainPermissions.it_get_masters,
   },
