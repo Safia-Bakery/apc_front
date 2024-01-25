@@ -27,12 +27,9 @@ const AddMarketingRequest = () => {
   const [filemsg, $filemsg] = useState<string>();
   const perm = useAppSelector(permissionSelector);
 
-  const title = useQueryString("title");
-  const sub_id = useQueryString("sub_id");
-  const add = useQueryString("add") || 0;
-  const edit = useQueryString("edit") || "";
+  const sub_id = Number(useQueryString("sub_id"));
   const { data: categories, isLoading } = useCategories({
-    sub_id: Number(sub_id),
+    sub_id,
   });
 
   const {
@@ -44,7 +41,7 @@ const AddMarketingRequest = () => {
   } = useForm();
 
   const back = useNavigate();
-  const goBack = () => back(-1);
+  const goBack = () => back(`/marketing-${MarketingSubDep[sub_id]}`);
 
   const handleFilesSelected = (data: FileItem[]) => {
     if (data.length < 2) $filemsg("Добавьте минимум два файла");
@@ -65,7 +62,7 @@ const AddMarketingRequest = () => {
         {
           onSuccess: () => {
             successToast("Заказ успешно создано");
-            back(`/marketing-${MarketingSubDep[Number(sub_id)]}`);
+            goBack();
           },
           onError: (e: any) => errorToast(e.message),
         }

@@ -37,7 +37,7 @@ const AddStaffRequest = () => {
   } = useForm();
 
   const navigate = useNavigate();
-  const goBack = () => navigate(-1);
+  const goBack = () => navigate("requests-staff");
 
   const onSubmit = () => {
     const { description, product, bread } = getValues();

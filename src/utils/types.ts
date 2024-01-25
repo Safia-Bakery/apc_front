@@ -432,17 +432,12 @@ export enum MainPermissions {
   add_log_categs = 75,
   edit_log_categs = 76,
 
-  // get_staff_requests = 58,
-  // add_staff_requests = 58,
-  // edit_staff_requests = 58,
-  // staff_modal_time = 58,
-
-  get_staff_requests = 80, //todo
+  get_staff_requests = 80,
   add_staff_requests = 79,
   edit_staff_requests = 78,
   staff_modal_time = 77,
 
-  it_add_master = 84, //todo
+  it_add_master = 84,
   it_edit_master = 83,
   it_get_masters = 85,
   it_statistics = 81,
@@ -454,31 +449,9 @@ export enum MainPermissions {
   get_categ_it = 88,
   edit_categ_it = 86,
 
-  // it_add_master = 58,
-  // it_edit_master = 58,
-  // it_get_masters = 58,
-  // it_statistics = 58,
-  // it_remains_in_stock = 58,
-  // get_it_requests = 58,
-  // edit_it_requests = 58,
-  // add_it_requests = 58,
-  // add_categ_it = 58,
-  // get_categ_it = 58,
-  // edit_categ_it = 58,
-
   get_client_comment = 95,
   edit_client_comment = 97,
   add_client_comment = 96,
-
-  // get_requests_inventory = 58,
-  // add_requests_inventory = 58,
-  // edit_requests_inventory = 58,
-  // edit_product_inventory = 58,
-  // get_product_inventory = 58,
-  // get_inventory_purchase_prods = 58,
-  // edit_inventory_purchase_prods = 58,
-  // inventory_remains_in_stock = 58,
-  // inventory_reports = 58,
 
   get_requests_inventory = 98,
   add_requests_inventory = 99,

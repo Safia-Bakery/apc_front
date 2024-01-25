@@ -64,7 +64,7 @@ const Roles = lazy(() => import("@/pages/Roles"));
 const ShowRole = lazy(() => import("@/pages/ShowRole"));
 const EditAddUser = lazy(() => import("@/pages/EditAddUser"));
 const Users = lazy(() => import("@/pages/Users"));
-const CreateBrigades = lazy(() => import("@/pages/CreateBrigades"));
+const EditAddMasters = lazy(() => import("@/pages/EditAddMasters"));
 const Comments = lazy(() => import("@/pages/Comments"));
 const ShowComment = lazy(() => import("@/pages/ShowComment"));
 const Branches = lazy(() => import("@/pages/Branches"));
@@ -514,32 +514,32 @@ const routes = [
     screen: MainPermissions.edit_clients,
   },
   {
-    element: <CreateBrigades />,
+    element: <EditAddMasters />,
     path: "/masters/add",
     screen: MainPermissions.add_master,
   },
   {
-    element: <CreateBrigades />,
+    element: <EditAddMasters />,
     path: "/masters-it/add",
     screen: MainPermissions.it_add_master,
   },
   {
-    element: <CreateBrigades />,
+    element: <EditAddMasters />,
     path: "/masters/:id",
     screen: MainPermissions.edit_master,
   },
   {
-    element: <CreateBrigades />,
+    element: <EditAddMasters />,
     path: "/masters-it/:id",
     screen: MainPermissions.it_edit_master,
   },
   {
-    element: <CreateBrigades />,
+    element: <EditAddMasters />,
     path: "/brigades/add",
     screen: MainPermissions.add_brigada,
   },
   {
-    element: <CreateBrigades />,
+    element: <EditAddMasters />,
     path: "/brigades/:id",
     screen: MainPermissions.edit_brigada,
   },

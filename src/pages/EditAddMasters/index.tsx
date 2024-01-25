@@ -13,13 +13,15 @@ import MainInput from "@/components/BaseInputs/MainInput";
 import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 import useQueryString from "custom/useQueryString";
 import Select from "react-select";
+import useDebounce from "@/hooks/custom/useDebounce";
+import Loading from "@/components/Loader";
 
 interface SelectValue {
   value: number | string;
   label: string;
 }
 
-const CreateBrigades = () => {
+const EditAddMasters = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
@@ -27,13 +29,23 @@ const CreateBrigades = () => {
   const dep = useQueryString("dep");
   const [users, $users] = useState<SelectValue[]>();
   const [selectedUser, $selectedUser] = useState<SelectValue>();
+  const [search, $search] = useDebounce("");
 
   const { mutate } = brigadaMutation();
-  const { refetch: usersRefetch, data } = useUsersForBrigada({
+  const {
+    refetch: usersRefetch,
+    data,
+    isLoading: usersLoading,
+  } = useUsersForBrigada({
     id: Number(id),
     enabled: !!id,
+    name: search,
   });
-  const { data: brigada, refetch: brigadaRefetch } = useBrigada({
+  const {
+    data: brigada,
+    refetch: brigadaRefetch,
+    isLoading: brigadaLoading,
+  } = useBrigada({
     id: Number(id),
     enabled: !!id,
   });
@@ -45,21 +57,6 @@ const CreateBrigades = () => {
     getValues,
     reset,
   } = useForm();
-
-  useEffect(() => {
-    if (id && brigada) {
-      if (brigada?.user?.[0]?.full_name && brigada?.user?.[0]?.id)
-        $selectedUser({
-          label: brigada?.user?.[0]?.full_name,
-          value: brigada?.user?.[0]?.id,
-        });
-      reset({
-        brigada_name: brigada?.name,
-        brigada_description: brigada?.description,
-        status: !!brigada.status,
-      });
-    }
-  }, [brigada, id]);
 
   const onSubmit = () => {
     const { brigada_name, brigada_description, status } = getValues();
@@ -77,7 +74,7 @@ const CreateBrigades = () => {
       {
         onSuccess: () => {
           successToast(!!id ? "successfully updated" : "successfully created");
-          navigate(-1);
+          goBack();
           if (!!id) {
             usersRefetch();
             brigadaRefetch();
@@ -88,14 +85,17 @@ const CreateBrigades = () => {
     );
   };
 
+  const handleSearch = (e: string) => $search(e);
+
   const renderUsers = useMemo(() => {
-    if (!!id && users)
+    if (!!id)
       return (
         <BaseInputs label="Выберите бригадира">
           <Select
             options={users}
             value={selectedUser}
             onChange={(e) => $selectedUser(e!)}
+            onInputChange={handleSearch}
             isClearable
           />
         </BaseInputs>
@@ -103,9 +103,9 @@ const CreateBrigades = () => {
   }, [users, selectedUser]);
 
   useEffect(() => {
-    if (data?.length)
+    if (data?.items.length)
       $users(
-        data.map((item) => {
+        data.items.map((item) => {
           return {
             value: item.id,
             label: item.full_name,
@@ -113,6 +113,23 @@ const CreateBrigades = () => {
         })
       );
   }, [data]);
+
+  useEffect(() => {
+    if (id && brigada) {
+      if (brigada?.user?.[0]?.full_name && brigada?.user?.[0]?.id)
+        $selectedUser({
+          label: brigada?.user?.[0]?.full_name,
+          value: brigada?.user?.[0]?.id,
+        });
+      reset({
+        brigada_name: brigada?.name,
+        brigada_description: brigada?.description,
+        status: !!brigada.status,
+      });
+    }
+  }, [brigada, id]);
+
+  if (!!id && (usersLoading || brigadaLoading)) return <Loading absolute />;
 
   return (
     <Card>
@@ -152,4 +169,4 @@ const CreateBrigades = () => {
   );
 };
 
-export default CreateBrigades;
+export default EditAddMasters;

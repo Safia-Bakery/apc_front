@@ -62,7 +62,7 @@ const EditAddCategoryProduct = () => {
           successToast(
             !!category_id ? "successfully updated" : "successfully created"
           );
-          navigate(-1);
+          goBack();
           if (product_id) productRefetch();
         },
         onError: (e: any) => errorToast(e.message),
@@ -107,7 +107,7 @@ const EditAddCategoryProduct = () => {
   return (
     <Card className="overflow-hidden pb-3">
       <Header
-        title={!category_id ? "Добавить" : `Изменить категорие №${category_id}`}
+        title={!category_id ? "Добавить" : `Изменить категори  №${category_id}`}
       >
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад

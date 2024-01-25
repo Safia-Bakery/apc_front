@@ -37,7 +37,7 @@ const CreateClientsComments = () => {
   } = useForm();
 
   const navigate = useNavigate();
-  const goBack = () => navigate(-1);
+  const goBack = () => navigate("/client-comments");
 
   useEffect(() => {
     reset({
@@ -58,7 +58,7 @@ const CreateClientsComments = () => {
         files,
       },
       {
-        onSuccess: () => navigate("/client-comments"),
+        onSuccess: () => goBack(),
         onError: (e) => errorToast(e.message),
       }
     );

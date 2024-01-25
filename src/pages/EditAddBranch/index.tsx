@@ -18,7 +18,7 @@ import MainRadioBtns from "@/components/BaseInputs/MainRadioBtns";
 const EditAddBranch = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const goBack = () => navigate(-1);
+  const goBack = () => navigate("/branches");
 
   const { mutate } = branchMutation();
   const { mutate: depMutation } = branchDepartmentMutation();
@@ -81,7 +81,7 @@ const EditAddBranch = () => {
           branchesRefetch();
           refetch();
           successToast(!!id ? "successfully updated" : "successfully created");
-          navigate("/branches");
+          goBack();
         },
         onError: (e: any) => errorToast(e.message),
       }

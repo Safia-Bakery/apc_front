@@ -71,7 +71,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
         onSuccess: () => {
           categoryRefetch();
           successToast(!!id ? "successfully updated" : "successfully created");
-          navigate(-1);
+          goBack();
           if (id) refetch();
         },
         onError: (e: any) => errorToast(e.message),

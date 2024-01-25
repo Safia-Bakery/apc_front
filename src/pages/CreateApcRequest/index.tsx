@@ -42,7 +42,10 @@ const CreateApcRequest = () => {
   } = useForm();
 
   const navigate = useNavigate();
-  const goBack = () => navigate(-1);
+  const goBack = () =>
+    navigate(
+      `/requests-apc-${Sphere[sphere_status]}?sphere_status=${sphere_status}&addExp=${addExp}`
+    );
 
   useEffect(() => {
     reset({
@@ -66,9 +69,7 @@ const CreateApcRequest = () => {
       {
         onSuccess: () => {
           successToast("Заказ успешно создано");
-          navigate(
-            `/requests-apc-${Sphere[sphere_status]}?sphere_status=${sphere_status}&addExp=${addExp}`
-          );
+          goBack();
         },
         onError: (e: any) => errorToast(e.message),
       }

@@ -118,7 +118,7 @@ const CreateITRequest = () => {
   };
 
   const navigate = useNavigate();
-  const goBack = () => navigate(-1);
+  const goBack = () => navigate(`/requests-it/${sphere}`);
 
   const handleIncrement = (idx: number) => () => {
     setValue(`inputFields.${idx}.qnt`, +watch(`inputFields.${idx}.qnt`) + 1);
@@ -149,7 +149,7 @@ const CreateITRequest = () => {
       },
       {
         onSuccess: () => {
-          navigate(`/requests-it/${sphere}`);
+          goBack();
           successToast("Заказ успешно создано");
         },
         onError: (e: any) => errorToast(e.message),

@@ -38,7 +38,7 @@ const ShowInventoryTool = () => {
   const order = data?.items?.[0];
   const navigate = useNavigate();
 
-  const handleBack = () => navigate(-1);
+  const handleBack = () => navigate("/order-products-inventory");
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
@@ -57,7 +57,7 @@ const ShowInventoryTool = () => {
       {
         onSuccess: () => {
           refetch();
-          navigate("/order-products-inventory");
+          handleBack();
           successToast("success");
         },
         onError: (e: any) => errorToast(e.message),

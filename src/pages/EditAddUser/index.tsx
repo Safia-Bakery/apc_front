@@ -172,14 +172,6 @@ const EditAddUser = () => {
             <BaseInput label="E-MAIL">
               <MainInput register={register("email")} />
             </BaseInput>
-            {/* {!!id && (
-              <BaseInput label="Бригада">
-                <MainSelect
-                  values={brigada}
-                  register={register("brigada_id")}
-                />
-              </BaseInput>
-            )} */}
 
             <BaseInput label="статус">
               <MainCheckBox label="Активный" register={register("status")} />

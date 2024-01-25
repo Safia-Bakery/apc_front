@@ -62,13 +62,6 @@ const BrigadaStat: FC<Props> = ({ sphere_status }) => {
     sheet: "categories",
   });
 
-  useEffect(() => {
-    if (btnAction)
-      btnAction.addEventListener("click", () => {
-        document.getElementById("brigada_stat")?.click();
-      });
-  }, [btnAction]);
-
   const downloadAsPdf = () => onDownload();
 
   const { isLoading, data } = useStatsBrigada({
@@ -92,6 +85,13 @@ const BrigadaStat: FC<Props> = ({ sphere_status }) => {
     if (data?.length)
       return data?.reduce((acc, item) => (acc += item.amount || 0), 0);
   }, [data]);
+
+  useEffect(() => {
+    if (btnAction)
+      btnAction.addEventListener("click", () => {
+        document.getElementById("brigada_stat")?.click();
+      });
+  }, [btnAction]);
 
   return (
     <>

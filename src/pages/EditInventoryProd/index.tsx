@@ -34,7 +34,7 @@ const EditInventoryProd = () => {
       {
         onSuccess: () => {
           refetch();
-          navigate(-1);
+          goBack();
           successToast("successfully updated");
         },
         onError: (e: any) => errorToast(e.message),

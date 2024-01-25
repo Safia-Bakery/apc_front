@@ -118,7 +118,7 @@ const AddInventoryRequest = () => {
       <Header title={"Добавить"}>
         {!isMobile && (
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/requests-inventory")}
             className="btn btn-primary btn-fill"
           >
             Назад

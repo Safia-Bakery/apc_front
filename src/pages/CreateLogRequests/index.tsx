@@ -39,7 +39,7 @@ const CreateLogRequests = () => {
   } = useForm();
 
   const navigate = useNavigate();
-  const goBack = () => navigate(-1);
+  const goBack = () => navigate("/requests-logystics");
 
   const handleDateStart = (event: Date) => $start(event);
 
@@ -67,7 +67,7 @@ const CreateLogRequests = () => {
         {
           onSuccess: () => {
             successToast("Заказ успешно создано");
-            navigate("/requests-logystics");
+            goBack();
           },
           onError: (e: any) => errorToast(e.message),
         }
