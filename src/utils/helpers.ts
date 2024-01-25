@@ -354,19 +354,19 @@ export const routes: SidebarType[] = [
         screen: MainPermissions.get_categ_it,
       },
 
-      {
-        name: "Остатки на складах",
-        url: "/items-in-stock-it",
-        icon: "/assets/icons/remains-in-stock.svg",
-        screen: MainPermissions.it_remains_in_stock,
-      },
-      {
-        name: "Статистика",
-        url: "/statistics-it",
-        icon: "/assets/icons/statistics.svg",
-        // param: "/category",
-        screen: MainPermissions.it_statistics,
-      },
+      // {
+      //   name: "Остатки на складах",
+      //   url: "/items-in-stock-it",
+      //   icon: "/assets/icons/remains-in-stock.svg",
+      //   screen: MainPermissions.it_remains_in_stock,
+      // },
+      // {
+      //   name: "Статистика",
+      //   url: "/statistics-it",
+      //   icon: "/assets/icons/statistics.svg",
+      //   // param: "/category",
+      //   screen: MainPermissions.it_statistics,
+      // },
     ],
   },
 

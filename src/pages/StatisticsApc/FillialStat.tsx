@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { DepartmentStatTypes, Departments, Sphere } from "@/utils/types";
 import TableHead from "@/components/TableHead";
 import useStatsDepartment from "@/hooks/useStatsDepartment";
@@ -6,8 +6,10 @@ import useStatsDepartment from "@/hooks/useStatsDepartment";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
+import { handleIdx } from "@/utils/helpers";
 
 const column = [
+  { name: "№", key: "" },
   { name: "Филиалы", key: "name" },
   { name: "Количество (шт)", key: "amount" },
 ];
@@ -46,6 +48,11 @@ const BranchStat: FC<Props> = ({ sphere_status }) => {
     ...(!!end && { finished_at: end }),
   });
 
+  const renderProductCount = useMemo(() => {
+    if (data?.length)
+      return data?.reduce((acc, item) => (acc += item.amount || 0), 0);
+  }, [data]);
+
   return (
     <>
       <table className="table table-hover" ref={tableRef}>
@@ -53,11 +60,18 @@ const BranchStat: FC<Props> = ({ sphere_status }) => {
 
         <tbody>
           {(sort?.length ? sort : data)?.map((item, idx) => (
-            <tr key={idx} className="bg-blue">
+            <tr key={item.name + idx} className="bg-blue">
+              <td width={30}> {handleIdx(idx)}</td>
               <td>{item.name}</td>
               <td>{item.amount}</td>
             </tr>
           ))}
+
+          <tr>
+            <th></th>
+            <th className="text-lg">В общем:</th>
+            <th className="text-lg">{renderProductCount}</th>
+          </tr>
         </tbody>
       </table>
 

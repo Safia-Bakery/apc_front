@@ -65,8 +65,6 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
       });
   }, [btnAction]);
 
-  if (isLoading) return <Loading absolute />;
-
   return (
     <>
       <table className="table table-hover" ref={tableRef}>

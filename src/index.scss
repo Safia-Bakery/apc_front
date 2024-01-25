@@ -318,7 +318,7 @@ h6 {
 }
 
 table tr {
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #495057;
 }
 a {
   color: #007bff;
@@ -339,7 +339,7 @@ a {
   max-width: 100%;
 }
 .table-bordered {
-  border: 1px solid black;
+  border: 1px solid #495057;
 }
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: rgba(0, 0, 0, 0.05);
@@ -353,7 +353,7 @@ p {
 }
 .table-bordered td,
 .table-bordered th {
-  border: 1px solid black;
+  border: 1px solid #495057;
 }
 .table-bordered > :not(caption) > * > * {
   border-width: 0 1px;

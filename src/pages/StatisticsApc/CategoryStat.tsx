@@ -100,8 +100,6 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
 
   const downloadAsPdf = () => onDownload();
 
-  if (isLoading && !renderAvarage) return <Loading absolute />;
-
   return (
     <>
       <table className="table table-hover table-bordered" ref={tableRef}>

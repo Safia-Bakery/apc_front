@@ -88,6 +88,11 @@ const BrigadaStat: FC<Props> = ({ sphere_status }) => {
       };
   }, [data]);
 
+  const renderProductCount = useMemo(() => {
+    if (data?.length)
+      return data?.reduce((acc, item) => (acc += item.amount || 0), 0);
+  }, [data]);
+
   return (
     <>
       <table ref={tableRef} className="table table-hover">
@@ -102,6 +107,12 @@ const BrigadaStat: FC<Props> = ({ sphere_status }) => {
               <td>{idx * 3} </td>
             </tr>
           ))}
+          <tr>
+            <td></td>
+            <th className="text-lg">В общем:</th>
+            <th className="text-lg">{renderProductCount}</th>
+            <td></td>
+          </tr>
         </tbody>
       </table>
 
