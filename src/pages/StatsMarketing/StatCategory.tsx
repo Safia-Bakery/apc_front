@@ -20,6 +20,8 @@ const optionsBar = {
         horizontal: true,
       },
     },
+    legend: { show: false },
+    dataLabels: { enabled: false },
     title: {
       text: "Процент выполнения",
       floating: true,
@@ -97,7 +99,7 @@ const StatCategory = () => {
     if (data?.pie)
       return {
         serie: Object.keys(data?.pie).map((item) =>
-          Math.round(data.pie[item][1])
+          Math.round(data.pie[item][0])
         ),
         labels: Object.keys(data?.pie).map((item) => item),
       };
@@ -132,7 +134,7 @@ const StatCategory = () => {
           <td>{item[0]}</td>
           <td>{item[1][0]}</td>
           <td>{item[1][1]}</td>
-          <td>{item[1][2]}</td>
+          <td>{item[1][2]}%</td>
         </tr>
       ));
   }, [data?.tables]);
@@ -155,18 +157,14 @@ const StatCategory = () => {
         <Chart
           options={{
             ...optionsBar,
+            tooltip: { enabled: false },
             xaxis: {
               categories: bar.categories,
-              labels: {
-                style: {
-                  fontSize: "16px",
-                },
-              },
+              labels: { style: { fontSize: "16px" } },
             },
           }}
           series={[bar.serie]}
           type="bar"
-          // width={380}
           height={400}
         />
       );

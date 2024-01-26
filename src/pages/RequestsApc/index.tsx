@@ -45,6 +45,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
   const category_id = Number(useQueryString("category_id"));
   const created_at = useQueryString("created_at");
   const request_status = useQueryString("request_status");
+  const rate = useQueryString("rate");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
 
@@ -58,6 +59,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
       { name: "Срочно", key: "urgent" },
       { name: "Бригада", key: "brigada" },
       { name: "Дата поступления", key: "created_at" },
+      { name: "Рейтинг", key: "rate" },
       { name: "Статус", key: "status" },
       { name: "Изменил", key: "user_manager" },
     ];
@@ -88,6 +90,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
     ...(!!branch?.id && { fillial_id: branch?.id }),
     ...(!!request_status && { request_status }),
     ...(!!user && { user }),
+    ...(!!rate && { rate: !!rate }),
   });
 
   useEffect(() => {
@@ -167,6 +170,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                       : "Не задано"}
                   </td>
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
+                  <td>{order.rating}</td>
                   <td>
                     {handleStatus({
                       status: order?.status,

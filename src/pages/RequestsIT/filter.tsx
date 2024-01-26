@@ -1,4 +1,4 @@
-import { RequestStatusArr } from "@/utils/helpers";
+import { RatingFilterVals, RequestStatusArr } from "@/utils/helpers";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import useDebounce from "custom/useDebounce";
 import "react-datepicker/dist/react-datepicker.css";
@@ -40,6 +40,7 @@ const ITFilter: FC = () => {
   const created_at = useQueryString("created_at");
   const userQ = useQueryString("user");
   const idQ = useQueryString("id");
+  const rate = useQueryString("rate");
 
   const startRange = (start: Date | null) => {
     if (start === undefined) deleteParam(["created_at"]);
@@ -130,6 +131,15 @@ const ITFilter: FC = () => {
         <BaseInput className="!m-1">
           <MainInput register={register("comment")} className="!mb-0" />
         </BaseInput>
+      </td>
+      <td className="p-0">
+        <BaseInputs className="!m-1">
+          <MainSelect
+            values={RatingFilterVals}
+            value={rate?.toString()}
+            onChange={(e) => navigate({ rate: e.target.value })}
+          />
+        </BaseInputs>
       </td>
       <td className="p-0">
         <BaseInputs className="!m-1">

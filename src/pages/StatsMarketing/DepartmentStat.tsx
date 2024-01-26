@@ -43,6 +43,7 @@ const options = {
 const column = [
   { name: "№", key: "id" },
   { name: "Направления", key: "category" },
+  { name: "Количество открытых заявок", key: "amount" },
   { name: "Количество закрытых заявок", key: "amount" },
   {
     name: "Время обработки (ч)",
@@ -98,6 +99,8 @@ const DepartmentStat = () => {
               sub: +item[0] as unknown as MarketingSubDep,
             })}
           </td>
+          {/* insert open date */}
+          <td>{item[1][0]}</td>
           <td>{item[1][0]}</td>
           <td>{item[1][1]}</td>
         </tr>

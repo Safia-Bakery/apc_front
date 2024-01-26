@@ -1,4 +1,4 @@
-import { RequestMarkStatusArr } from "@/utils/helpers";
+import { RatingFilterVals, RequestMarkStatusArr } from "@/utils/helpers";
 import { FC, useState } from "react";
 import useDebounce from "custom/useDebounce";
 import BaseInputs from "@/components/BaseInputs";
@@ -38,6 +38,7 @@ const MarketingFilter: FC<Props> = ({ sub_id }) => {
   const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
   const created_at = useQueryString("created_at");
+  const rate = useQueryString("rate");
 
   const handleName = (user: string) => $user(user);
   const handleID = (id: string) => $id(id);
@@ -119,6 +120,15 @@ const MarketingFilter: FC<Props> = ({ sub_id }) => {
           dateFormat="d.MM.yyyy"
           wrapperClassName={"m-1"}
         />
+      </td>
+      <td className="p-0">
+        <BaseInputs className="!m-1">
+          <MainSelect
+            values={RatingFilterVals}
+            value={rate?.toString()}
+            onChange={(e) => navigate({ rate: e.target.value })}
+          />
+        </BaseInputs>
       </td>
       <td className="p-0">
         <BaseInputs className="!m-1">

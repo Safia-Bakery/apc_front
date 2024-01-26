@@ -24,6 +24,7 @@ const column = [
   { name: "Филиал", key: "fillial.name" },
   { name: "Категория", key: "fillial.name" },
   { name: "Комментарий", key: "fillial.name" },
+  { name: "Рейтинг", key: "rate" },
   {
     name: "Статус",
     key: "status",
@@ -45,6 +46,7 @@ const RequestsIT = () => {
   const urgent = useQueryString("urgent");
   const created_at = useQueryString("created_at");
   const request_status = useQueryString("request_status");
+  const rate = useQueryString("rate");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
 
@@ -65,6 +67,7 @@ const RequestsIT = () => {
     ...(!!request_status && { request_status }),
     ...(!!user && { user }),
     ...(!!responsible && { responsible }),
+    ...(!!rate && { rate: !!rate }),
     ...(!!urgent?.toString() && { urgent: !!urgent }),
   });
 
@@ -132,6 +135,7 @@ const RequestsIT = () => {
                       {order?.description}
                     </div>
                   </td>
+                  <td>{order.rating}</td>
                   <td>
                     {handleStatus({
                       status: order?.status,

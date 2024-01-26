@@ -29,6 +29,7 @@ const column = [
   { name: "Подкатегория", key: "fillial.name" },
   { name: "Филиал", key: "fillial.name" },
   { name: "Дата оформления", key: "fillial.name" },
+  { name: "Рейтинг", key: "rate" },
   {
     name: "Статус",
     key: "status",
@@ -55,6 +56,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
   const id = useQueryString("id");
   const phone = useQueryString("phone");
   const user = useQueryString("user");
+  const rate = useQueryString("rate");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
 
@@ -77,6 +79,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
     ...(!!category_id && { category_id }),
     ...(!!request_status && { request_status }),
     ...(!!user && { user }),
+    ...(!!rate && { rate: !!rate }),
   });
 
   useEffect(() => {
@@ -133,6 +136,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
                       {order?.description}
                     </td> */}
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}</td>
+                  <td>{order.rating}</td>
                   <td>
                     {handleStatus({
                       status: order?.status,

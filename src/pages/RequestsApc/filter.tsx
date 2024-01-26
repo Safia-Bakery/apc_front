@@ -1,4 +1,4 @@
-import { RequestStatusArr, SystemArr, UrgentNames } from "@/utils/helpers";
+import { RatingFilterVals, RequestStatusArr, SystemArr } from "@/utils/helpers";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import useDebounce from "custom/useDebounce";
 import "react-datepicker/dist/react-datepicker.css";
@@ -36,6 +36,7 @@ const ApcFilter: FC = () => {
   const [user, $user] = useDebounce<string>("");
   const system = useQueryString("system");
   const request_status = useQueryString("request_status");
+  const rate = useQueryString("rate");
   const category_id = Number(useQueryString("category_id"));
   const urgent = useQueryString("urgent");
   const created_at = useQueryString("created_at");
@@ -153,6 +154,15 @@ const ApcFilter: FC = () => {
         />
       </td>
 
+      <td className="p-0">
+        <BaseInputs className="!m-1">
+          <MainSelect
+            values={RatingFilterVals}
+            value={rate?.toString()}
+            onChange={(e) => navigate({ rate: e.target.value })}
+          />
+        </BaseInputs>
+      </td>
       <td className="p-0">
         <BaseInputs className="!m-1">
           <MainSelect

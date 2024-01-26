@@ -104,6 +104,8 @@ export const RequestStatusArr = [
   { id: RequestStatus.rejected, name: "Отклонён" },
 ];
 
+export const RatingFilterVals = [{ id: 1, name: "Фильтровать" }];
+
 export const RequestMarkStatusArr = [
   { id: RequestStatus.new, name: "Новый" },
   { id: RequestStatus.confirmed, name: "Принят" },
@@ -578,6 +580,7 @@ export const routes: SidebarType[] = [
     ],
   },
 ];
+
 export const isValidHttpUrl = (string: string) => {
   let url;
 
