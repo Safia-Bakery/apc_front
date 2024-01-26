@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 
@@ -14,6 +14,7 @@ import ItemsCount from "@/components/ItemsCount";
 import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
+import { useDownloadExcel } from "react-export-table-to-excel";
 
 const column = [
   { name: "№", key: "" },
@@ -32,6 +33,7 @@ const column = [
 
 const RequestsIT = () => {
   const navigate = useNavigate();
+  const tableRef = useRef(null);
   const [sort, $sort] = useState<Order[]>();
   const currentPage = Number(useQueryString("page")) || 1;
   const { sphere } = useParams();
@@ -66,6 +68,13 @@ const RequestsIT = () => {
     ...(!!urgent?.toString() && { urgent: !!urgent }),
   });
 
+  const { onDownload } = useDownloadExcel({
+    currentTableRef: tableRef.current,
+    filename: "Заявки ИТ",
+    sheet: "Заявки ИТ",
+  });
+  const downloadAsPdf = () => onDownload();
+
   useEffect(() => {
     refetch();
   }, [currentPage]);
@@ -73,6 +82,12 @@ const RequestsIT = () => {
   return (
     <Card>
       <Header title={"Заявка на IT"}>
+        <button
+          onClick={downloadAsPdf}
+          className="btn btn-primary btn-fill mr-2"
+        >
+          Экспорт в Excel
+        </button>
         <button
           onClick={() => navigate("add")}
           className="btn btn-success btn-fill"
@@ -83,7 +98,7 @@ const RequestsIT = () => {
 
       <div className="table-responsive grid-view content">
         <ItemsCount data={requests} />
-        <table className="table table-hover">
+        <table ref={tableRef} className="table table-hover">
           <TableHead
             column={column}
             onSort={(data) => $sort(data)}

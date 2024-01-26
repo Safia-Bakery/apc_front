@@ -26,8 +26,8 @@ const ITFilter: FC = () => {
 
   const { data: categories, refetch: catRefetch } = useCategories({
     department: Departments.it,
-    ...(!!sphere_status && { sphere_status }),
     enabled: false,
+    ...(!!sphere_status && { sphere_status }),
   });
 
   const { register, reset } = useForm();

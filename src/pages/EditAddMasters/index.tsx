@@ -15,6 +15,7 @@ import useQueryString from "custom/useQueryString";
 import Select from "react-select";
 import useDebounce from "@/hooks/custom/useDebounce";
 import Loading from "@/components/Loader";
+import { Departments, Sphere } from "@/utils/types";
 
 interface SelectValue {
   value: number | string;
@@ -25,11 +26,42 @@ const EditAddMasters = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
-  const sphere_status = useQueryString("sphere_status");
-  const dep = useQueryString("dep");
+  const sphere_status = Number(useQueryString("sphere_status"));
+  const dep = Number(useQueryString("dep"));
   const [users, $users] = useState<SelectValue[]>();
   const [selectedUser, $selectedUser] = useState<SelectValue>();
   const [search, $search] = useDebounce("");
+
+  const renderDep = useMemo(() => {
+    switch (dep) {
+      case Departments.apc:
+        if (sphere_status === Sphere.fabric)
+          return {
+            inputTitle: "НАЗВАНИЕ МАСТЕРА",
+            selectTitle: "Выберите Мастера",
+            mainTitle: `Изменить Мастер №${id}`,
+          };
+        else
+          return {
+            inputTitle: "НАЗВАНИЕ БРИГАДЫ",
+            selectTitle: "ВЫБЕРИТЕ БРИГАДИРА",
+            mainTitle: `Изменить бригада №${id}`,
+          };
+      case Departments.it:
+        return {
+          inputTitle: "НАЗВАНИЕ ИТ специалиста",
+          selectTitle: "ВЫБЕРИТЕ ИТ специалиста",
+          mainTitle: `Изменить ИТ специалиста №${id}`,
+        };
+
+      default:
+        return {
+          inputTitle: "НАЗВАНИЕ ИТ специалиста",
+          selectTitle: "ВЫБЕРИТЕ ИТ специалиста",
+          mainTitle: `Изменить специалиста №${id}`,
+        };
+    }
+  }, [dep, sphere_status]);
 
   const { mutate } = brigadaMutation();
   const {
@@ -40,6 +72,8 @@ const EditAddMasters = () => {
     id: Number(id),
     enabled: !!id,
     name: search,
+    department: dep,
+    ...(sphere_status && { sphere_status }),
   });
   const {
     data: brigada,
@@ -67,8 +101,8 @@ const EditAddMasters = () => {
         description: brigada_description,
         name: brigada_name,
         ...(id && { id: Number(id) }),
-        ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
-        ...(!!dep && { department: Number(dep) }),
+        ...(!!sphere_status && { sphere_status }),
+        ...(!!dep && { department: dep }),
         ...(!!selectedUser && { users: [+selectedUser.value] }),
       },
       {
@@ -90,10 +124,11 @@ const EditAddMasters = () => {
   const renderUsers = useMemo(() => {
     if (!!id)
       return (
-        <BaseInputs label="Выберите бригадира">
+        <BaseInputs label={renderDep.selectTitle}>
           <Select
             options={users}
             value={selectedUser}
+            placeholder={"Выбрать"}
             isLoading={usersLoading}
             onChange={(e) => $selectedUser(e!)}
             onInputChange={handleSearch}
@@ -134,7 +169,7 @@ const EditAddMasters = () => {
 
   return (
     <Card>
-      <Header title={!id ? "Добавить" : `Изменить бригада №${id}`}>
+      <Header title={!id ? "Добавить" : renderDep.mainTitle}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад
         </button>
@@ -143,7 +178,7 @@ const EditAddMasters = () => {
       <form className="content" onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
           <BaseInputs
-            label="Название бригады"
+            label={renderDep.inputTitle}
             error={errors.brigada_name}
             className="w-full"
           >

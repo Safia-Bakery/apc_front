@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Card from "@/components/Card";
 import Header from "@/components/Header";
@@ -31,22 +31,30 @@ interface Props {
 const Masters = ({ dep, sphere_status, add, edit }: Props) => {
   const navigate = useNavigate();
   const permission = useAppSelector(permissionSelector);
-  // const sphere_status = Number(useQueryString("sphere_status"));
-  // const dep = useQueryString("dep");
-  const { search } = useLocation();
   const currentPage = Number(useQueryString("page")) || 1;
   const [sort, $sort] = useState<BrigadaType[]>();
 
-  // const add = Number(useQueryString("add")) as MainPermissions;
-  // const edit = Number(useQueryString("edit")) as MainPermissions;
-
   const handleNavigate = (id: number | string) => () => navigate(`${id}`);
+
+  const renderDep = useMemo(() => {
+    switch (dep) {
+      case Departments.apc:
+        if (sphere_status === Sphere.fabric)
+          return { mainTitle: "Мастера", tableTitle: "Мастер" };
+        else return { mainTitle: "Бригады", tableTitle: "Бригадир" };
+      case Departments.it:
+        return { mainTitle: "ИТ специалисты", tableTitle: "ИТ специалист" };
+
+      default:
+        return { mainTitle: "Мастера", tableTitle: "Мастер" };
+    }
+  }, [dep, sphere_status]);
 
   const column = useMemo(() => {
     return [
       { name: "№", key: "id" },
       { name: "Название", key: "name" },
-      { name: "Мастер", key: "description" },
+      { name: renderDep?.tableTitle, key: "name" },
       { name: "Описание", key: "description" },
       { name: "Статус", key: "status" },
       { name: "", key: "" },
@@ -72,7 +80,7 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
 
   return (
     <Card>
-      <Header title={"Мастера"}>
+      <Header title={renderDep?.mainTitle}>
         {permission?.[add] && (
           <button
             className="btn btn-success btn-fill"

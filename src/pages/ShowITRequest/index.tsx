@@ -307,7 +307,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                   })}
                   className="btn btn-warning btn-fill mr-2"
                 >
-                  Забрать для ремонта
+                  Забрать на ремонт
                 </button>
                 <button
                   id={"fixed"}
@@ -461,7 +461,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                           )}
                           onClick={handleChangeModal(ModalTypes.changeCateg)}
                         >
-                          Переназначить
+                          Изменить
                         </button>
                       </div>
                     </td>
@@ -479,7 +479,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                             styles.changeBtn
                           )}
                         >
-                          Переназначить
+                          Изменить
                         </button>
                       </div>
                     </td>

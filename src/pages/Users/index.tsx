@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MainPermissions, UsersType } from "@/utils/types";
 import Pagination from "@/components/Pagination";
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { handleIdx, itemsPerPage } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import TableViewBtn from "@/components/TableViewBtn";
@@ -44,7 +44,11 @@ const Users: FC<Props> = ({ add, edit }) => {
   const username = useQueryString("username");
   const phone_number = useQueryString("phone_number");
   const [sort, $sort] = useState<UsersType[]>();
-  const { data: users, isLoading: orderLoading } = useUsers({
+  const {
+    data: users,
+    isLoading: orderLoading,
+    refetch,
+  } = useUsers({
     size: itemsPerPage,
     page: currentPage,
     body: {
@@ -66,6 +70,10 @@ const Users: FC<Props> = ({ add, edit }) => {
   const renderFilter = useMemo(() => {
     return <UsersFilter currentPage={currentPage} />;
   }, [full_name, user_status, role_id, username, phone_number]);
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   return (
     <Card>

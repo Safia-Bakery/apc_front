@@ -26,7 +26,6 @@ const EditAddUser = () => {
   const goBack = () => navigate(-1);
 
   const { data: roles } = useRoles({});
-  const { refetch: usersRefetch } = useUsers({ enabled: false, page: 1 });
   const { data: user, refetch: userRefetch } = useUser({ id: Number(id) });
   const [sphere_status, $sphere_status] = useState<boolean>();
   const client = useQueryString("client");
@@ -63,7 +62,6 @@ const EditAddUser = () => {
       {
         onSuccess: (data: any) => {
           if (data.status === 200) {
-            usersRefetch();
             navigate(!client ? "/users" : "/clients");
             successToast(
               !!id ? "successfully updated" : "successfully created"
