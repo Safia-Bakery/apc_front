@@ -120,7 +120,11 @@ const RequestsIT = () => {
                   <td>
                     <span>{order?.user?.full_name}</span>
                   </td>
-                  <td>-------------</td>
+                  <td>
+                    {!!order?.brigada?.name
+                      ? order?.brigada?.name
+                      : "-----------"}
+                  </td>
                   <td>{order?.fillial?.parentfillial?.name}</td>
                   <td>{order?.category?.name}</td>
                   <td>
