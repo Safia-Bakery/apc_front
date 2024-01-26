@@ -5,7 +5,6 @@ import useDebounce from "custom/useDebounce";
 import { Departments } from "@/utils/types";
 import Select from "react-select";
 import { UseFormRegisterReturn } from "react-hook-form";
-import Loading from "../Loader";
 
 interface Props {
   department?: Departments;
@@ -21,7 +20,7 @@ const ToolsSelect: FC<Props> = ({ department, ...others }) => {
   const [query, $query] = useDebounce("");
   const [page, $page] = useState(1);
 
-  const { data, isLoading } = useTools({
+  const { data, isFetching } = useTools({
     page,
     department,
     ...(!!query && { name: query }),
@@ -52,11 +51,10 @@ const ToolsSelect: FC<Props> = ({ department, ...others }) => {
 
   const pageIncrement = () => $page((prev) => prev + 1);
 
-  if (isLoading) return <Loading absolute />;
-
   return (
     <Select
       options={items}
+      isLoading={isFetching}
       onMenuScrollToBottom={pageIncrement}
       placeholder="Выбрать товар"
       onInputChange={(e) => $query(e)}
