@@ -180,7 +180,11 @@ const CreateITRequest = () => {
     });
   }, [branch?.id]);
 
-  if (isLoading || (productLoading && !!category_id) || categoryLoading)
+  if (
+    isLoading ||
+    (productLoading && !!category_id) ||
+    (categoryLoading && !!sphere)
+  )
     return <Loading absolute />;
 
   return (

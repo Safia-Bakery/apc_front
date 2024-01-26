@@ -8,10 +8,13 @@ import cl from "classnames";
 import useMainStats from "@/hooks/useMainStats";
 import { Departments, MainPermissions, Sphere } from "@/utils/types";
 import Chart from "react-apexcharts";
-import { ChangeEvent, useMemo, useRef, useState } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import Loading from "@/components/Loader";
 
 const options = {
+  legend: {
+    show: false,
+  },
   chart: {
     type: "bar",
     height: 300,
@@ -23,7 +26,7 @@ const options = {
       barHeight: "40%",
     },
   },
-  dataLabels: {
+  tooltip: {
     enabled: false,
   },
 } as any;

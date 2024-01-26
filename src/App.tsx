@@ -101,7 +101,7 @@ const routes = [
   {
     element: <CreateITRequest />,
     path: "/requests-it/:sphere/add",
-    screen: MainPermissions.add_request_apc,
+    screen: MainPermissions.add_it_requests,
   },
   {
     element: <CreateApcRequest />,
@@ -127,8 +127,8 @@ const routes = [
   {
     element: (
       <ShowITRequest
-        edit={MainPermissions.edit_fabric_requests}
-        attaching={MainPermissions.fabric_req_attach_master}
+        edit={MainPermissions.edit_it_requests}
+        attaching={MainPermissions.edit_it_requests}
       />
     ),
     path: "/requests-it/:sphere/:id",
