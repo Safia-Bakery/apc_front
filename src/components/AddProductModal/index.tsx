@@ -5,9 +5,7 @@ import BaseInput from "../BaseInputs";
 import MainTextArea from "../BaseInputs/MainTextArea";
 import { Controller, useForm } from "react-hook-form";
 import MainInput from "../BaseInputs/MainInput";
-import useTools from "@/hooks/useTools";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
 import usedItemsMutation from "@/hooks/mutation/usedItems";
 import { errorToast, successToast } from "@/utils/toast";
 import useOrder from "@/hooks/useOrder";
@@ -20,26 +18,26 @@ import useSyncExpanditure from "@/hooks/sync/useSyncExpanditure";
 import BaseInputs from "../BaseInputs";
 import { SelectWrapper } from "../InputWrappers";
 import cl from "classnames";
+import Loading from "../Loader";
 
-const AddProductModal = () => {
+interface Props {
+  addExp: MainPermissions;
+}
+
+const AddProductModal = ({ addExp }: Props) => {
   const { id } = useParams();
   const removeRoute = useRemoveParams();
-  const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const modal = useQueryString("add_product_modal");
   const permissions = useAppSelector(permissionSelector);
   const { refetch: syncWithIiko, isFetching } = useSyncExpanditure({
     enabled: false,
   });
 
-  const { mutate } = usedItemsMutation();
+  const { mutate, isLoading } = usedItemsMutation();
   const { refetch: orderRefetch } = useOrder({
     id: Number(id),
     enabled: false,
   });
-
-  // const { refetch: iearchRefetch } = useTools({
-  //   enabled: false,
-  // });
 
   const { register, handleSubmit, getValues, reset, control, watch, setValue } =
     useForm();
@@ -95,12 +93,12 @@ const AddProductModal = () => {
         <div className={styles.block}>
           <button
             disabled={isFetching}
-            className="btn btn-primary float-end mr-3 z-3 relative"
+            className="btn btn-primary float-end mr-3 z-30 relative"
             onClick={() => syncWithIiko()}
           >
             {isFetching ? (
-              <div className="spinner-border text-warning" role="status">
-                <span className="sr-only">Loading...</span>
+              <div className="w-6 ">
+                <Loading />
               </div>
             ) : (
               "Синхронизировать с iiko"
@@ -163,12 +161,17 @@ const AddProductModal = () => {
           <hr />
 
           <div className={styles.footer}>
-            <button type="submit" className="btn btn-success btn-fill">
+            <button
+              disabled={isLoading}
+              type="submit"
+              className="btn btn-success btn-fill"
+            >
               Добавить
             </button>
           </div>
         </div>
       </form>
+      {isLoading && <Loading absolute />}
     </Modal>
   );
 };

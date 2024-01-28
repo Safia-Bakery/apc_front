@@ -495,7 +495,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
       {renderfileUploader}
 
       {!isNew && order?.status !== RequestStatus.rejected && (
-        <AddItems>
+        <AddItems addExp={addExp}>
           <div className="p-2">{renderSubmit}</div>
         </AddItems>
       )}

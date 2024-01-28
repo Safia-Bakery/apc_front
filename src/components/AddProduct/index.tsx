@@ -27,12 +27,12 @@ const column = [
 
 interface Props extends PropsWithChildren {
   synciiko?: MainPermissions;
+  addExp?: MainPermissions;
 }
 
-const AddItems: FC<Props> = ({ children, synciiko }) => {
+const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
   const { id } = useParams();
   const permissions = useAppSelector(permissionSelector);
-  const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const navigate = useNavigateParams();
   const { mutate, isLoading } = syncExpenditure();
   const { mutate: deleteExp } = deleteExpenditureMutation();
@@ -89,7 +89,7 @@ const AddItems: FC<Props> = ({ children, synciiko }) => {
             Синхронизировать с iiko
           </button>
         )}
-        {isFinished && permissions?.[addExp] && (
+        {addExp && isFinished && permissions?.[addExp] && (
           <button
             className="btn btn-success btn-fill btn-sm"
             onClick={handleModal}
@@ -140,7 +140,7 @@ const AddItems: FC<Props> = ({ children, synciiko }) => {
           {children}
         </div>
       </div>
-      <AddProductModal />
+      {addExp && <AddProductModal addExp={addExp} />}
     </Card>
   );
 };
