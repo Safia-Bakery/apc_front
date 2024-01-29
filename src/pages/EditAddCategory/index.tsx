@@ -140,7 +140,8 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
           />
         </BaseInput>
 
-        {Number(dep) === Departments.it && (
+        {(Number(dep) === Departments.it ||
+          Number(dep) === Departments.marketing) && (
           <BaseInput label="Время исполнении (в часах)" error={errors.time}>
             <MainInput
               register={register("time", { required: "Обязательное поле" })}

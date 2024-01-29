@@ -23,6 +23,7 @@ const WebRooutes = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const permission = useAppSelector(permissionSelector);
+
   const { error, data: user, isLoading } = useToken({});
 
   const { data: counts, isLoading: countLoading } = useOrderCounts({

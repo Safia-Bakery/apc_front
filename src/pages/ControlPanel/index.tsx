@@ -243,8 +243,6 @@ const ControlPanel = () => {
 
   if (isLoading) return <Loading absolute />;
 
-  console.log("first");
-
   return (
     <>
       <Card className={cl(styles.card, "!mb-2")}>
