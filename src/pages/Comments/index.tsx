@@ -66,8 +66,8 @@ const Comments = () => {
               </tbody>
             )}
           </table>
-          {!!comments && <Pagination totalPages={comments.pages} />}
           {!comments?.items?.length && !isLoading && <EmptyList />}
+          {!!comments && <Pagination totalPages={comments.pages} />}
         </div>
       </div>
     </Card>

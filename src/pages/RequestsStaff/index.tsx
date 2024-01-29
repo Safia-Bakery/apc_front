@@ -20,9 +20,10 @@ import useQueryString from "custom/useQueryString";
 import BotTimeModal from "@/components/BotTimeModal";
 import { useNavigateParams } from "custom/useCustomNavigate";
 import StaffFilter from "./filter";
-import { useDownloadExcel } from "react-export-table-to-excel";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
+import useStaffExcell from "@/hooks/useStaffExcell";
+import { baseURL } from "@/main";
 
 const column = [
   { name: "№", key: "" },
@@ -41,6 +42,7 @@ const tomorrow = today.setDate(today.getDate() + 1);
 const RequestsStaff = () => {
   const navigate = useNavigate();
   const [sort, $sort] = useState<Order[]>();
+  const [excelFile, $excelFile] = useState(false);
   const permission = useAppSelector(permissionSelector);
   const sphere_status = useQueryString("sphere_status");
   const currentPage = Number(useQueryString("page")) || 1;
@@ -49,30 +51,28 @@ const RequestsStaff = () => {
   const tableRef = useRef(null);
   const arrival_date = useQueryString("arrival_date");
 
-  const { onDownload } = useDownloadExcel({
-    currentTableRef: tableRef.current,
-    filename: `Заявки на еду ${
-      !!arrival_date && arrival_date !== "undefined"
-        ? dayjs(arrival_date).format("MM.DD.YYYY")
-        : dayjs().format("MM.DD.YYYY")
-    }`,
-    sheet: "staff",
-  });
-
-  const downloadAsPdf = () => onDownload();
-
   const user = useQueryString("user");
   const id = Number(useQueryString("id"));
-  const system = useQueryString("system");
-  const department = useQueryString("department");
-  const category_id = Number(useQueryString("category_id"));
+  const bread = useQueryString("bread");
+  const portion = useQueryString("portion");
   const request_status = useQueryString("request_status");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
 
   const {
+    data: totals,
+    isFetching: excellFtching,
+    isLoading: excellLoading,
+    refetch: excellRefetch,
+  } = useStaffExcell({
+    date: dayjs(!!arrival_date ? arrival_date : tomorrow).format("YYYY-MM-DD"),
+    file: excelFile,
+  });
+
+  const {
     data: requests,
-    isLoading: orderLoading,
+    isLoading,
+    isFetching,
     refetch,
   } = useOrders({
     enabled: true,
@@ -82,33 +82,43 @@ const RequestsStaff = () => {
     ),
     category_id: staffCategoryId,
     ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
-    ...(!!system && { is_bot: !!system }),
     ...(!!id && { id }),
-    ...(!!department && { department }),
     ...(!!branch?.id && { fillial_id: branch?.id }),
-    ...(!!category_id && { category_id }),
     ...(!!request_status && { request_status }),
-    ...(!!user && { user: user }),
+    ...(!!user && { user }),
+    ...(!!bread && { bread }),
+    ...(!!portion && { portion }),
   });
+
+  useEffect(() => {
+    if (excelFile && totals?.url) {
+      const url = `${baseURL}/${totals.url}`;
+      const a = document.createElement("a");
+      a.href = url;
+      document.body.appendChild(a);
+      a.click();
+
+      $excelFile(false);
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  }, [excelFile, totals?.url]);
+
+  const handleExcell = () => $excelFile(true);
+
+  const renderFilter = useMemo(() => {
+    return <StaffFilter />;
+  }, []);
+
+  const renderModal = useMemo(() => {
+    return <BotTimeModal />;
+  }, []);
 
   useEffect(() => {
     refetch();
   }, []);
 
-  const renderProductCount = useMemo(() => {
-    return requests?.items.reduce(
-      (acc, item) => acc + (!isNaN(+item.size) ? Number(item.size) : 0),
-      0
-    );
-  }, [requests]);
-
-  const renderBreadCount = useMemo(() => {
-    return requests?.items.reduce(
-      (acc, item) =>
-        acc + (!isNaN(+item.bread_size!) ? Number(item.bread_size) : 0),
-      0
-    );
-  }, [requests]);
+  if (excellLoading) return <Loading absolute />;
 
   return (
     <Card>
@@ -117,18 +127,17 @@ const RequestsStaff = () => {
           <div className="p-2 btn btn-warning flex flex-col justify-between">
             <h4>Количество еды</h4>
             <h2 className={"flex text-3xl justify-end"}>
-              {renderProductCount}
+              {totals?.total_food}
             </h2>
           </div>
           <div className="p-2 btn btn-primary flex flex-col justify-between">
             <h4>Количество хлеба</h4>
-            <h2 className={"flex text-3xl justify-end"}>{renderBreadCount}</h2>
+            <h2 className={"flex text-3xl justify-end"}>
+              {totals?.total_bread}
+            </h2>
           </div>
           <div className="flex flex-col gap-2 justify-between">
-            <button
-              className="btn btn-success btn-fill"
-              onClick={downloadAsPdf}
-            >
+            <button className="btn btn-success btn-fill" onClick={handleExcell}>
               Экспорт в Excel
             </button>
             {permission?.[MainPermissions.staff_modal_time] && (
@@ -160,11 +169,11 @@ const RequestsStaff = () => {
             onSort={(data) => $sort(data)}
             data={requests?.items}
           >
-            <StaffFilter />
+            {renderFilter}
           </TableHead>
           <tbody id="requests_body">
             {!!requests?.items?.length &&
-              !orderLoading &&
+              !isLoading &&
               (sort?.length ? sort : requests?.items)?.map((order, idx) => (
                 <tr className={requestRows(order?.status)} key={idx}>
                   <td width="40">{handleIdx(idx)}</td>
@@ -200,11 +209,11 @@ const RequestsStaff = () => {
               ))}
           </tbody>
         </table>
-        {orderLoading && <Loading absolute />}
+        {(isFetching || excellFtching) && <Loading absolute />}
+        {!requests?.items?.length && !isLoading && <EmptyList />}
         {!!requests && <Pagination totalPages={requests.pages} />}
-        {!requests?.items?.length && !orderLoading && <EmptyList />}
       </div>
-      <BotTimeModal />
+      {renderModal}
     </Card>
   );
 };

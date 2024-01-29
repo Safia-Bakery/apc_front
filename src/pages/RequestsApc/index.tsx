@@ -76,6 +76,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
   const {
     data: requests,
     isLoading: orderLoading,
+    isFetching: orderFetching,
     refetch,
   } = useOrders({
     department: Departments.apc,
@@ -184,9 +185,9 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
               ))}
           </tbody>
         </table>
-        {orderLoading && <Loading absolute />}
-        {!!requests && <Pagination totalPages={requests.pages} />}
+        {(orderLoading || orderFetching) && <Loading absolute />}
         {!requests?.items?.length && !orderLoading && <EmptyList />}
+        {!!requests && <Pagination totalPages={requests.pages} />}
       </div>
     </Card>
   );

@@ -144,8 +144,8 @@ const InventoryRemains = () => {
           </tbody>
         </table>
         {toolsLoading && <Loading absolute />}
-        {!!tools && <Pagination totalPages={tools.pages} />}
         {!tools?.items?.length && !toolsLoading && <EmptyList />}
+        {!!tools && <Pagination totalPages={tools.pages} />}
       </div>
     </Card>
   );

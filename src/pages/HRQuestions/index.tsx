@@ -81,8 +81,8 @@ const FAQQuestions = () => {
             </tbody>
           </table>
 
-          {!!faqs && <Pagination totalPages={faqs.pages} />}
           {!faqs?.items?.length && !isLoading && <EmptyList />}
+          {!!faqs && <Pagination totalPages={faqs.pages} />}
         </div>
       </div>
     </Card>

@@ -93,8 +93,8 @@ const HRRequests = () => {
         </table>
         {isLoading && <Loading />}
 
-        {!!faqs && <Pagination totalPages={faqs.pages} />}
         {!faqs?.items?.length && !isLoading && <EmptyList />}
+        {!!faqs && <Pagination totalPages={faqs.pages} />}
       </div>
     </Card>
   );

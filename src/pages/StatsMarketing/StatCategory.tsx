@@ -128,15 +128,19 @@ const StatCategory = () => {
 
   const renderTable = useMemo(() => {
     if (data?.tables)
-      return Object.entries(data?.tables)?.map((item, idx) => (
-        <tr key={idx} className="bg-blue hover:bg-mainGray">
-          <td width="40">{idx + 1}</td>
-          <td>{item[0]}</td>
-          <td>{item[1][0]}</td>
-          <td>{item[1][1]}</td>
-          <td>{item[1][2]}%</td>
-        </tr>
-      ));
+      return Object.entries(data?.tables)
+        ?.sort((a, b) => {
+          return b[1][0] - a[1][0];
+        })
+        .map((item, idx) => (
+          <tr key={idx} className="bg-blue hover:bg-mainGray">
+            <td width="40">{idx + 1}</td>
+            <td>{item[0]}</td>
+            <td>{item[1][0]}</td>
+            <td>{item[1][1]}</td>
+            <td>{item[1][2]}%</td>
+          </tr>
+        ));
   }, [data?.tables]);
 
   const renderPie = useMemo(() => {

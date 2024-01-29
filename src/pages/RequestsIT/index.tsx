@@ -148,8 +148,8 @@ const RequestsIT = () => {
           </tbody>
         </table>
         {orderLoading && <Loading absolute />}
-        {!!requests && <Pagination totalPages={requests.pages} />}
         {!requests?.items?.length && !orderLoading && <EmptyList />}
+        {!!requests && <Pagination totalPages={requests.pages} />}
       </div>
     </Card>
   );

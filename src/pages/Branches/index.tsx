@@ -131,8 +131,8 @@ const Branches = () => {
           </tbody>
         </table>
         {isFetching && <Loading absolute />}
-        {!!branches && <Pagination totalPages={branches.pages} />}
         {!branches?.items?.length && !isFetching && <EmptyList />}
+        {!!branches && <Pagination totalPages={branches.pages} />}
       </div>
     </Card>
   );

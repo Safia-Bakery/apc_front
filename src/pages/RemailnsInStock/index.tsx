@@ -97,8 +97,8 @@ const RemainsInStock = () => {
           )}
         </table>
         {(syncLoading || itemsLoading) && <Loading absolute />}
-        {!!products && <Pagination totalPages={products.pages} />}
         {!products?.items?.length && !itemsLoading && <EmptyList />}
+        {!!products && <Pagination totalPages={products.pages} />}
       </div>
     </Card>
   );

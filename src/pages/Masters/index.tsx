@@ -126,8 +126,8 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
             </tbody>
           )}
         </table>
-        {!!brigadas && <Pagination totalPages={brigadas.pages} />}
         {!brigadas?.items?.length && !orderLoading && <EmptyList />}
+        {!!brigadas && <Pagination totalPages={brigadas.pages} />}
       </div>
     </Card>
   );

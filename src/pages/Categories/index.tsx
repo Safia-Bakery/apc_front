@@ -109,8 +109,8 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
           </table>
           {isLoading && <Loading absolute />}
 
-          {!!categories && <Pagination totalPages={categories.pages} />}
           {!categories?.items?.length && !isLoading && <EmptyList />}
+          {!!categories && <Pagination totalPages={categories.pages} />}
         </div>
       </div>
     </Card>

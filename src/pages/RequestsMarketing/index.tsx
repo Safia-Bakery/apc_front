@@ -151,8 +151,8 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
           </tbody>
         </table>
         {orderLoading && <Loading absolute />}
-        {!!requests && <Pagination totalPages={requests.pages} />}
         {!requests?.items?.length && !orderLoading && <EmptyList />}
+        {!!requests && <Pagination totalPages={requests.pages} />}
       </div>
     </Card>
   );

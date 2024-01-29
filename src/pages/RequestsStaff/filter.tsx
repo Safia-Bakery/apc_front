@@ -23,7 +23,7 @@ const StaffFilter: FC = () => {
   const deleteParam = useRemoveParams();
   const perm = useAppSelector(permissionSelector);
 
-  const { reset } = useForm();
+  const { reset, register } = useForm();
   const [id, $id] = useDebounce<string>("");
   const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
@@ -54,6 +54,14 @@ const StaffFilter: FC = () => {
     navigate({ id });
   }, [id]);
 
+  useUpdateEffect(() => {
+    navigate({ portion });
+  }, [portion]);
+
+  useUpdateEffect(() => {
+    navigate({ bread });
+  }, [bread]);
+
   useEffect(() => {
     if (!!userQ || !!idQ) {
       reset({
@@ -68,7 +76,12 @@ const StaffFilter: FC = () => {
       <td></td>
       <td className="p-0">
         <BaseInput className="!m-1">
-          <MainInput className="!mb-0" type="number" onChange={handleID} />
+          <MainInput
+            register={register("idQ")}
+            className="!mb-0"
+            type="number"
+            onChange={handleID}
+          />
         </BaseInput>
       </td>
       <td className="p-0">

@@ -6,7 +6,12 @@ import { Link } from "react-router-dom";
 import Container from "@/components/Container";
 import cl from "classnames";
 import useMainStats from "@/hooks/useMainStats";
-import { Departments, MainPermissions, Sphere } from "@/utils/types";
+import {
+  Departments,
+  MainPermissions,
+  MarketingSubDep,
+  Sphere,
+} from "@/utils/types";
 import Chart from "react-apexcharts";
 import { ChangeEvent, useMemo, useState } from "react";
 import Loading from "@/components/Loader";
@@ -31,7 +36,12 @@ const options = {
   },
 } as any;
 
-type DepType = { dep: Departments; sphere?: Sphere };
+type DepType = {
+  dep: Departments;
+  sphere?: Sphere;
+  sub_id?: MarketingSubDep;
+  ratingUrl?: string;
+};
 interface DepTypes {
   [key: number]: DepType;
 }
@@ -53,24 +63,31 @@ const mainDeps: DepTypes = {
   },
   [MainPermissions.get_design_request]: {
     dep: Departments.marketing,
+    sub_id: MarketingSubDep.designers,
   },
   [MainPermissions.get_locmar_requests]: {
     dep: Departments.marketing,
+    sub_id: MarketingSubDep.local_marketing,
   },
   [MainPermissions.get_promo_requests]: {
     dep: Departments.marketing,
+    sub_id: MarketingSubDep.promo_production,
   },
   [MainPermissions.get_pos_requests]: {
     dep: Departments.marketing,
+    sub_id: MarketingSubDep.pos,
   },
   [MainPermissions.get_complect_requests]: {
     dep: Departments.marketing,
+    sub_id: MarketingSubDep.complects,
   },
   [MainPermissions.get_nostandard_requests]: {
     dep: Departments.marketing,
+    sub_id: MarketingSubDep.nonstandartAdv,
   },
   [MainPermissions.get_stock_env_requests]: {
     dep: Departments.marketing,
+    sub_id: MarketingSubDep.branchEnv,
   },
   [MainPermissions.get_log_requests]: {
     dep: Departments.logystics,
@@ -99,6 +116,7 @@ const ControlPanel = () => {
   const { data: stats, isLoading } = useMainStats({
     department: mainDep?.dep!,
     ...(mainDep?.sphere && { sphere_status: mainDep?.sphere }),
+    ...(mainDep?.sub_id && { sub_id: mainDep?.sub_id }),
     enabled: !!mainDep?.dep,
   });
 
@@ -111,13 +129,14 @@ const ControlPanel = () => {
               title: "АРС - фабрика",
               teamUrl: "/statistics-apc-fabric/brigada",
               newOrders: "/requests-apc-fabric?request_status=0",
+              ratingUrl: "/requests-apc-fabric?rate=1",
             };
           else
             return {
               title: "АРС - розница",
               teamUrl: "/statistics-apc-retail/brigada",
               newOrders: "/requests-apc-retail?request_status=0",
-              ratingUrl: "",
+              ratingUrl: "/requests-apc-retail?rate=1",
             };
         case Departments.inventory:
           return {
@@ -125,17 +144,61 @@ const ControlPanel = () => {
             newOrders: "/requests-inventory?request_status=0",
           };
         case Departments.marketing:
-          return { title: "Маркетинг" };
+          if (mainDep.sub_id === MarketingSubDep.branchEnv)
+            return {
+              title: "Маркетинг(Внешний вид филиала)",
+              newOrders: "/marketing-branchEnv?request_status=0",
+              ratingUrl: "/marketing-branchEnv?rate=1",
+            };
+          if (mainDep.sub_id === MarketingSubDep.complects)
+            return {
+              title: "Маркетинг(Комплекты)",
+              newOrders: "/marketing-complects?request_status=0",
+              ratingUrl: "/marketing-complects?rate=1",
+            };
+          if (mainDep.sub_id === MarketingSubDep.designers)
+            return {
+              title: "Маркетинг(Проектная работа для дизайнеров)",
+              newOrders: "/marketing-designers?request_status=0",
+              ratingUrl: "/marketing-designers?rate=1",
+            };
+          if (mainDep.sub_id === MarketingSubDep.local_marketing)
+            return {
+              title: "Маркетинг(Локальный маркетинг)",
+              newOrders: "/marketing-local_marketing?request_status=0",
+              ratingUrl: "/marketing-local_marketing?rate=1",
+            };
+          if (mainDep.sub_id === MarketingSubDep.nonstandartAdv)
+            return {
+              title: "Маркетинг(Для Тер.Менеджеров)",
+              newOrders: "/marketing-nonstandartAdv?request_status=0",
+              ratingUrl: "/marketing-nonstandartAdv?rate=1",
+            };
+          if (mainDep.sub_id === MarketingSubDep.pos)
+            return {
+              title: "Маркетинг(POS-Материалы)",
+              newOrders: "/marketing-pos?request_status=0",
+              ratingUrl: "/marketing-pos?rate=1",
+            };
+          if (mainDep.sub_id === MarketingSubDep.promo_production)
+            return {
+              title: "Маркетинг(Промо-продукция)",
+              newOrders: "/marketing-promo_production?request_status=0",
+              ratingUrl: "/marketing-promo_production?rate=1",
+            };
+          else return { title: "Маркетинг" };
         case Departments.it:
           if (mainDep.sphere === Sphere.purchase)
             return {
               title: "IT - закуп",
               newOrders: "/requests-it/3?request_status=0",
+              ratingUrl: "/requests-it/3?rate=1",
             };
           else
             return {
               title: "IT - поддержка",
               newOrders: "/requests-it/4?request_status=0",
+              ratingUrl: "/requests-it/4?rate=1",
             };
         case Departments.logystics:
           return {
@@ -179,6 +242,8 @@ const ControlPanel = () => {
   }, [series]);
 
   if (isLoading) return <Loading absolute />;
+
+  console.log("first");
 
   return (
     <>

@@ -16,6 +16,7 @@ import { Departments } from "@/utils/types";
 const TgRating = () => {
   const { id } = useParams();
   const [rate, $rate] = useState(0);
+  const [btnState, $btnState] = useState(true);
   const handleRate = (num: number) => $rate(num);
   const user_id = Number(useQueryString("user_id"));
   const department =
@@ -57,6 +58,7 @@ const TgRating = () => {
       {
         onSuccess: () => {
           TelegramApp.toMainScreen();
+          $btnState(false);
         },
         onError: (e: any) => errorToast(e.message),
       }
@@ -65,7 +67,7 @@ const TgRating = () => {
 
   return (
     <form
-      className="absolute inset-0 bg-mainGray flex flex-col z-[1000] h-"
+      className="absolute inset-0 bg-mainGray flex flex-col z-[1000] h-[100lvh]"
       onSubmit={handleSubmit(onSubmit)}
     >
       <Header
@@ -128,7 +130,7 @@ const TgRating = () => {
           )}
         </div>
       </div>
-      {!!rate && (
+      {!!rate && btnState && (
         <button
           type="submit"
           className="btn btn-primary absolute bottom-0 right-0 left-0"
