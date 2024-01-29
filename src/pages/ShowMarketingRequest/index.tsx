@@ -102,7 +102,7 @@ const ShowMarketingRequest = () => {
             Отклонить
           </button>
           <button
-            onClick={handleModal(ModalTypes.assingDeadline)}
+            onClick={handleBrigada({ status: RequestStatus.confirmed })}
             className="btn btn-success btn-fill"
             id="recieve_request"
           >
@@ -279,10 +279,8 @@ const ShowMarketingRequest = () => {
                   <tr>
                     <th>Дедлайн:</th>
                     <td>
-                      {order?.finishing_time
-                        ? dayjs(order?.finishing_time).format(
-                            "DD.MM.YYYY HH:mm"
-                          )
+                      {!!order?.category?.ftime
+                        ? order?.category.ftime
                         : "Не задано"}
                     </td>
                   </tr>

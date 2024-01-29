@@ -63,6 +63,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
   const {
     data: requests,
     isLoading: orderLoading,
+    isFetching: orderFetching,
     refetch,
   } = useOrders({
     size: itemsPerPage,
@@ -150,7 +151,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
               ))}
           </tbody>
         </table>
-        {orderLoading && <Loading absolute />}
+        {(orderLoading || orderFetching) && <Loading absolute />}
         {!requests?.items?.length && !orderLoading && <EmptyList />}
         {!!requests && <Pagination totalPages={requests.pages} />}
       </div>

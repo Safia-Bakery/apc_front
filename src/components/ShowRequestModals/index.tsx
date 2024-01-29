@@ -250,30 +250,30 @@ const ShowRequestModals = () => {
           </div>
         );
 
-      case ModalTypes.assingDeadline:
-        return (
-          <div className="min-w-[380px] p-4 ">
-            <BaseInput label="Выберите дедлайн">
-              <MainDatePicker
-                showTimeSelect
-                selected={
-                  !!deadline ? dayjs(deadline || undefined).toDate() : undefined
-                }
-                onChange={handleDeadline}
-              />
-            </BaseInput>
+      // case ModalTypes.assingDeadline:
+      //   return (
+      //     <div className="min-w-[380px] p-4 ">
+      //       <BaseInput label="Выберите дедлайн">
+      //         <MainDatePicker
+      //           showTimeSelect
+      //           selected={
+      //             !!deadline ? dayjs(deadline || undefined).toDate() : undefined
+      //           }
+      //           onChange={handleDeadline}
+      //         />
+      //       </BaseInput>
 
-            <button
-              onClick={handleBrigada({
-                status: RequestStatus.confirmed,
-                time: deadline?.toISOString(),
-              })}
-              className="btn btn-success btn-fill btn-sm float-end"
-            >
-              Принять
-            </button>
-          </div>
-        );
+      //       <button
+      //         onClick={handleBrigada({
+      //           status: RequestStatus.confirmed,
+      //           time: deadline?.toISOString(),
+      //         })}
+      //         className="btn btn-success btn-fill btn-sm float-end"
+      //       >
+      //         Принять
+      //       </button>
+      //     </div>
+      //   );
 
       case ModalTypes.reassign:
         return (
