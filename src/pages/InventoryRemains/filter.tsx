@@ -8,16 +8,25 @@ import { useForm } from "react-hook-form";
 const InventoryFilter: FC = () => {
   const navigate = useNavigateParams();
   const [name, $name] = useDebounce<string>("");
+  const [deadline, $deadline] = useDebounce<string>("");
 
   const { register, reset } = useForm();
 
   const handleName = (e: ChangeEvent<HTMLInputElement>) =>
     $name(e.target.value);
 
+  const handleDeadline = (e: ChangeEvent<HTMLInputElement>) =>
+    $deadline(e.target.value);
+
   useEffect(() => {
     navigate({ name });
     if (!!name) reset({ name });
   }, [name]);
+
+  useEffect(() => {
+    navigate({ deadline });
+    if (!!deadline) reset({ deadline });
+  }, [deadline]);
 
   return (
     <>
@@ -44,6 +53,15 @@ const InventoryFilter: FC = () => {
       <td className="p-0">
         <BaseInput className="!m-1">
           <MainInput className="!mb-0" />
+        </BaseInput>
+      </td>
+      <td className="p-0">
+        <BaseInput className="!m-1">
+          <MainInput
+            className="!mb-0"
+            onChange={handleDeadline}
+            register={register("deadline")}
+          />
         </BaseInput>
       </td>
       <td></td>

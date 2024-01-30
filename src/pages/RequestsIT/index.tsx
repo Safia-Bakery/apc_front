@@ -53,6 +53,7 @@ const RequestsIT = () => {
   const {
     data: requests,
     isLoading: orderLoading,
+    isFetching: orderFetching,
     refetch,
   } = useOrders({
     department: Departments.it,
@@ -80,7 +81,7 @@ const RequestsIT = () => {
 
   useEffect(() => {
     refetch();
-  }, [currentPage]);
+  }, []);
 
   return (
     <Card>
@@ -99,7 +100,7 @@ const RequestsIT = () => {
         </button>
       </Header>
 
-      <div className="table-responsive grid-view content">
+      <div className="table-responsive grid-view content ">
         <ItemsCount data={requests} />
         <table ref={tableRef} className="table table-hover">
           <TableHead
@@ -147,7 +148,7 @@ const RequestsIT = () => {
               ))}
           </tbody>
         </table>
-        {orderLoading && <Loading absolute />}
+        {(orderLoading || orderFetching) && <Loading absolute />}
         {!requests?.items?.length && !orderLoading && <EmptyList />}
         {!!requests && <Pagination totalPages={requests.pages} />}
       </div>

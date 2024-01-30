@@ -119,7 +119,7 @@ input {
   }
 }
 .table-responsive {
-  overflow-x: initial !important;
+  overflow-x: auto;
 }
 .link {
   color: #007bff;
@@ -131,7 +131,7 @@ input::-webkit-inner-spin-button {
 }
 
 .table > :not(caption) > * > :not(th) {
-  background-color: transparent !important;
+  background-color: transparent;
 }
 
 .table-success {

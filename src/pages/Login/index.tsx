@@ -10,16 +10,15 @@ import useToken from "@/hooks/useToken";
 import { successToast } from "@/utils/toast";
 import BaseInput from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
-import { permissionSelector } from "reducers/sidebar";
+import Loading from "@/components/Loader";
 
 const Login = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const token = useAppSelector(tokenSelector);
-  const { refetch } = useToken({});
+  const { refetch, isFetching: tokenLoading } = useToken({});
   const [error, $error] = useState(false);
   const savedLink = useAppSelector(linkSelector);
-  const perm = useAppSelector(permissionSelector);
 
   const {
     register,
@@ -28,11 +27,7 @@ const Login = () => {
     getValues,
   } = useForm();
 
-  const { mutate } = loginMutation();
-
-  useEffect(() => {
-    if (token && perm) navigate(savedLink);
-  }, [token, perm]);
+  const { mutate, isLoading } = loginMutation();
 
   const onSubmit = () => {
     const { username, password } = getValues();
@@ -50,6 +45,13 @@ const Login = () => {
       }
     );
   };
+
+  useEffect(() => {
+    if (token) navigate(savedLink);
+  }, [token]);
+
+  if (isLoading || tokenLoading) return <Loading absolute />;
+
   return (
     <div className={styles.login_wrap}>
       <div className={styles.overlay} />

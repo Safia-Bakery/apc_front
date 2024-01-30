@@ -334,6 +334,7 @@ export interface ToolTypes extends BasePaginatedRes {
     amount_left: number;
     min_amount: number | null;
     max_amount: number | null;
+    deadline?: string | number;
   }[];
 }
 

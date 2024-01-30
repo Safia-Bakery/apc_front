@@ -6,6 +6,10 @@ import DateRangeBlock from "@/components/DateRangeBlock";
 
 const routesArr = [
   {
+    name: "По уровнем сервиса",
+    url: "service_level",
+  },
+  {
     name: "Отчет по направлениям",
     url: "department",
   },
@@ -21,7 +25,7 @@ const StatsMarketing = () => {
 
   return (
     <Card>
-      <Header title={"Статистика Маркетинг"}>
+      <Header title="Статистика Маркетинг">
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад
         </button>

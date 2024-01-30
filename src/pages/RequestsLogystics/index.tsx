@@ -63,7 +63,6 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
     data: requests,
     isLoading: orderLoading,
     isFetching,
-    refetch,
   } = useOrders({
     enabled: true,
     size: itemsPerPage,

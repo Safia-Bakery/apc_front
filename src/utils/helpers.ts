@@ -462,7 +462,7 @@ export const routes: SidebarType[] = [
       {
         name: "Статистика",
         url: "/statistics-marketing",
-        param: "/department",
+        param: "/service_level",
         icon: "/assets/icons/statistics.svg",
         screen: MainPermissions.get_statistics,
       },

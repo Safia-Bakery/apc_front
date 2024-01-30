@@ -64,6 +64,7 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
   const {
     data: brigadas,
     isLoading: orderLoading,
+    isFetching,
     refetch,
   } = useBrigadas({
     page: currentPage,
@@ -76,7 +77,7 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
     refetch();
   }, []);
 
-  if (orderLoading) return <Loading absolute />;
+  if (orderLoading || isFetching) return <Loading absolute />;
 
   return (
     <Card>

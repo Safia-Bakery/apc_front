@@ -5,6 +5,9 @@ module.exports = {
     extend: {
       colors: {
         mainGray: "#f5f5f5",
+        tableSuccess: "#90ee90",
+        tableWarn: "#fff49eb0",
+        tableDanger: "#f5c6cb",
         darkGray: "#EDECEC",
         black: "#303031",
         darkYellow: "#FFDC4C",

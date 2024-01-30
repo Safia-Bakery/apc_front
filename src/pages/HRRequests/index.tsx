@@ -92,7 +92,6 @@ const HRRequests = () => {
           </tbody>
         </table>
         {isLoading && <Loading />}
-
         {!faqs?.items?.length && !isLoading && <EmptyList />}
         {!!faqs && <Pagination totalPages={faqs.pages} />}
       </div>

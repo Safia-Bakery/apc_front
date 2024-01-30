@@ -180,7 +180,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
   const renderSubmit = useMemo(() => {
     if (edit && !!order?.brigada?.name && permissions?.[edit])
       return (
-        <div className="flex justify-between mb10">
+        <div className="flex justify-between gap-2">
           {order?.status! < 3 && (
             <button
               onClick={handleModal(ModalTypes.cancelRequest)}
@@ -189,13 +189,13 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
               Отменить
             </button>
           )}
-          <div>
+          <div className="flex gap-2">
             {order?.status! < 2 && (
               <button
                 onClick={handleBrigada({
                   status: RequestStatus.sendToRepair,
                 })}
-                className="btn btn-warning btn-fill mr-2"
+                className="btn btn-warning btn-fill "
               >
                 Забрать для ремонта
               </button>

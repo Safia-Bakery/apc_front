@@ -291,7 +291,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   const renderSubmit = useMemo(() => {
     if (permissions?.[edit])
       return (
-        <div className="flex justify-between mb10">
+        <div className="flex justify-between mb10 gap-2">
           <button
             onClick={handleModal(ModalTypes.cancelRequest)}
             className="btn btn-danger btn-fill"
@@ -300,12 +300,12 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
           </button>
           <div>
             {order?.status! > RequestStatus.new && (
-              <>
+              <div className="flex gap-2">
                 <button
                   onClick={handleBrigada({
                     status: RequestStatus.sendToRepair,
                   })}
-                  className="btn btn-warning btn-fill mr-2"
+                  className="btn btn-warning btn-fill"
                 >
                   Забрать на ремонт
                 </button>
@@ -318,7 +318,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                 >
                   Починил {isLoading && <Loading />}
                 </button>
-              </>
+              </div>
             )}
           </div>
         </div>
@@ -408,15 +408,17 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
             dep: Departments.apc,
           })}`}
         >
-          <button
-            className="btn btn-warning btn-fill mr-2"
-            onClick={() => navigate(`/request/logs/${id}`)}
-          >
-            Логи
-          </button>
-          <button onClick={handleBack} className="btn btn-primary btn-fill">
-            Назад
-          </button>
+          <div className="flex gap-2">
+            <button
+              className="btn btn-warning btn-fill "
+              onClick={() => navigate(`/request/logs/${id}`)}
+            >
+              Логи
+            </button>
+            <button onClick={handleBack} className="btn btn-primary btn-fill">
+              Назад
+            </button>
+          </div>
         </Header>
         <div className="content">
           <div className="row ">

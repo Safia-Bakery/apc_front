@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { MarketingSubDep } from "@/utils/types";
 import TableHead from "@/components/TableHead";
 import Chart from "react-apexcharts";
@@ -80,7 +80,7 @@ const DepartmentStat = () => {
       };
   }, [data?.pie]);
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     if (btnAction)
       btnAction.addEventListener("click", () => {
         document.getElementById("department_stat")?.click();

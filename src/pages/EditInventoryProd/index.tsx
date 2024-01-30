@@ -16,24 +16,21 @@ const EditInventoryProd = () => {
 
   const { data, refetch: toolRefetch } = useTools({ id });
   const tool = data?.items?.[0];
-  const { refetch } = useTools({
-    enabled: false,
-  });
 
   const { mutate } = updateToolsMutation();
 
   const onSubmit = () => {
-    const { min_amount, max_amount } = getValues();
+    const { min_amount, max_amount, deadline } = getValues();
 
     mutate(
       {
         id: Number(id),
         min_amount,
         max_amount,
+        deadline,
       },
       {
         onSuccess: () => {
-          refetch();
           goBack();
           successToast("successfully updated");
         },
@@ -47,6 +44,7 @@ const EditInventoryProd = () => {
     reset({
       min_amount: tool?.min_amount,
       max_amount: tool?.max_amount,
+      deadline: tool?.deadline,
     });
   }, [tool]);
 
@@ -68,6 +66,9 @@ const EditInventoryProd = () => {
         </BaseInputs>
         <BaseInputs label="Максимум">
           <MainInput register={register("max_amount")} />
+        </BaseInputs>
+        <BaseInputs label="Дедлайн">
+          <MainInput register={register("deadline")} />
         </BaseInputs>
 
         <button type="submit" className="btn btn-success mt-3">

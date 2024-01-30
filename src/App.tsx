@@ -14,8 +14,6 @@ import {
   Sphere,
 } from "@/utils/types";
 import { permissionSelector } from "reducers/sidebar";
-import DepartmentStat from "@/pages/StatsMarketing/DepartmentStat";
-import MarketingStatCategory from "@/pages/StatsMarketing/StatCategory";
 import Suspend from "./components/Suspend";
 import TgRoutes from "./components/TgRoutes";
 
@@ -56,7 +54,18 @@ const RequestsInventory = lazy(() => import("@/pages/RequestsInventory"));
 const ShowRequestInventory = lazy(() => import("@/pages/ShowRequestInventory"));
 const YandexMap = lazy(() => import("@/pages/Map"));
 const StatisticsApc = lazy(() => import("@/pages/StatisticsApc"));
+
 const StatsMarketing = lazy(() => import("@/pages/StatsMarketing"));
+const MarketingStatCategory = lazy(
+  () => import("@/pages/StatsMarketing/StatCategory")
+);
+const MarketingServiceStats = lazy(
+  () => import("@/pages/StatsMarketing/ServiceStats")
+);
+const DepartmentStat = lazy(
+  () => import("@/pages/StatsMarketing/DepartmentStat")
+);
+
 const Categories = lazy(() => import("@/pages/Categories"));
 const EditAddCategory = lazy(() => import("@/pages/EditAddCategory"));
 const EditAddRole = lazy(() => import("@/pages/EditAddRole"));
@@ -812,15 +821,15 @@ const App = () => {
 
   return (
     <Routes>
+      <Route
+        element={
+          <Suspend>
+            <Login />
+          </Suspend>
+        }
+        path={"/login"}
+      />
       <Route path="/" element={<WebRooutes />}>
-        <Route
-          element={
-            <Suspend>
-              <Login />
-            </Suspend>
-          }
-          path={"/login"}
-        />
         <Route
           element={
             <Suspend>
@@ -968,6 +977,15 @@ const App = () => {
               </Suspend>
             }
           >
+            <Route
+              index
+              path="service_level"
+              element={
+                <Suspend>
+                  <MarketingServiceStats />
+                </Suspend>
+              }
+            />
             <Route
               index
               path="department"

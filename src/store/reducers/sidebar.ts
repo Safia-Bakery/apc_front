@@ -28,8 +28,8 @@ export const sidebarReducer = createSlice({
       const { permissions } = state;
       const filteredRoutes: SidebarType[] = [];
 
-      routes.forEach((route) => {
-        route.count = payload.find((item) =>
+      routes?.forEach((route) => {
+        route.count = payload?.find((item) =>
           item[0] === Departments.apc
             ? item[1] === route.sphere_status
             : item[0] === route.department

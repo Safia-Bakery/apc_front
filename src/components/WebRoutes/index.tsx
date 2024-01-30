@@ -61,14 +61,11 @@ const WebRooutes = () => {
       dispatch(permissionHandler(user?.permissions));
   }, [user?.permissions, token]);
 
-  useUpdateEffect(() => {
-    if (permission && counts) dispatch(sidebarItemsHandler(counts));
+  useEffect(() => {
+    if (permission && counts?.length) dispatch(sidebarItemsHandler(counts));
   }, [permission, counts]);
 
-  if (
-    (isLoading || !sidebarItems?.length || !permission || countLoading) &&
-    token
-  )
+  if (isLoading || !sidebarItems?.length || !permission || countLoading)
     return <Loading absolute />;
 
   return (

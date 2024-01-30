@@ -30,6 +30,7 @@ const column = [
   { name: "Остаток", key: "amount_left", center: true },
   { name: "Минимум", key: "min_amount", center: true },
   { name: "Максимум", key: "max_amount", center: true },
+  { name: "Дедлайн", key: "deadline", center: true },
   { name: "", key: "view" },
 ];
 
@@ -133,6 +134,9 @@ const InventoryRemains = () => {
                   </td>
                   <td width={150} className="text-center">
                     {tool?.max_amount}
+                  </td>
+                  <td width={150} className="text-center">
+                    {tool?.deadline}
                   </td>
                   <td width={40}>
                     {permission?.[MainPermissions.edit_product_inventory] && (

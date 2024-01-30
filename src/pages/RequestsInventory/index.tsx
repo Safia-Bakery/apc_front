@@ -49,6 +49,7 @@ const RequestsInventory = () => {
     data: requests,
     refetch,
     isLoading: orderLoading,
+    isFetching: orderFetching,
   } = useOrders({
     enabled: true,
     size: itemsPerPage,
@@ -126,6 +127,7 @@ const RequestsInventory = () => {
             </tbody>
           )}
         </table>
+        {(orderFetching || orderLoading) && <Loading absolute />}
         {!!requests && <Pagination totalPages={requests.pages} />}
         {!requests?.items?.length && !orderLoading && <EmptyList />}
       </div>
