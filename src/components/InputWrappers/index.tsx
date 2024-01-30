@@ -12,14 +12,16 @@ export const SelectWrapper = forwardRef<
     register?: any;
     error?: any;
     department: Departments;
+    paginate?: boolean;
   }
->(({ field, register, error, department }, ref) => {
+>(({ field, register, error, department, paginate }, ref) => {
   return (
     <BaseInputs className="!mb-0" error={error}>
       <ToolsSelect
         department={department}
         {...field}
         ref={ref}
+        paginate={paginate}
         register={register}
         className="!mb-0 z-20"
       />

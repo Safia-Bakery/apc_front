@@ -9,6 +9,7 @@ import { UseFormRegisterReturn } from "react-hook-form";
 interface Props {
   department?: Departments;
   register?: UseFormRegisterReturn;
+  paginate?: boolean;
 }
 
 interface SelectValue {
@@ -16,7 +17,11 @@ interface SelectValue {
   label: string;
 }
 
-const ToolsSelect: FC<Props> = ({ department, ...others }) => {
+const ToolsSelect: FC<Props> = ({
+  department,
+  paginate = false,
+  ...others
+}) => {
   const [query, $query] = useDebounce("");
   const [page, $page] = useState(1);
 
@@ -47,7 +52,7 @@ const ToolsSelect: FC<Props> = ({ department, ...others }) => {
           };
         })
       );
-  }, [data?.items]);
+  }, [data?.items, query]);
 
   const pageIncrement = () => $page((prev) => prev + 1);
 
@@ -55,7 +60,7 @@ const ToolsSelect: FC<Props> = ({ department, ...others }) => {
     <Select
       options={items}
       isLoading={isFetching}
-      onMenuScrollToBottom={pageIncrement}
+      onMenuScrollToBottom={() => (paginate ? pageIncrement() : null)}
       placeholder="Выбрать товар"
       onInputChange={(e) => $query(e)}
       {...others}

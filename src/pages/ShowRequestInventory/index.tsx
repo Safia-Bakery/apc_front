@@ -27,7 +27,6 @@ import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { permissionSelector } from "reducers/sidebar";
 import AddedInventoryProducts from "@/components/AddedInventoryProducts";
 import Loading from "@/components/Loader";
-import useQueryString from "@/hooks/custom/useQueryString";
 
 const ShowRequestInventory = () => {
   const { id } = useParams();

@@ -19,6 +19,7 @@ import BaseInputs from "../BaseInputs";
 import { SelectWrapper } from "../InputWrappers";
 import cl from "classnames";
 import Loading from "../Loader";
+import { useEffect } from "react";
 
 interface Props {
   addExp: MainPermissions;
@@ -74,9 +75,9 @@ const AddProductModal = ({ addExp }: Props) => {
     if (+watch("count") > 1) setValue("count", +watch("count") - 1);
   };
 
-  // useEffect(() => {
-  //   if (!!modal && !!permissions?.[addExp]) iearchRefetch();
-  // }, [modal, permissions?.[addExp]]);
+  useEffect(() => {
+    reset({ count: 1 });
+  }, []);
 
   return (
     <Modal
@@ -93,6 +94,7 @@ const AddProductModal = ({ addExp }: Props) => {
         <div className={styles.block}>
           <button
             disabled={isFetching}
+            type="button"
             className="btn btn-primary float-end mr-3 z-30 relative"
             onClick={() => syncWithIiko()}
           >
