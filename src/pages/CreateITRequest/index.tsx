@@ -103,6 +103,7 @@ const CreateITRequest = () => {
     department: Departments.it,
     sphere_status: Number(sphere),
     enabled: !!sphere,
+    category_status: 1,
   });
 
   const { isLoading: productLoading } = useCatProducts({

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Modal from "../Modal";
 import {
   BrigadaType,
@@ -23,8 +22,6 @@ import useQueryString from "custom/useQueryString";
 import { useRemoveParams } from "custom/useCustomNavigate";
 import useBrigadas from "@/hooks/useBrigadas";
 import Loading from "../Loader";
-import MainDatePicker from "../BaseInputs/MainDatePicker";
-import dayjs from "dayjs";
 import marketingReassignMutation from "@/hooks/mutation/marketingReassign";
 import useCategories from "@/hooks/useCategories";
 import useCars from "@/hooks/useCars";
@@ -35,9 +32,7 @@ const ShowRequestModals = () => {
   const photo = useQueryString("photo");
   const sphere_status = Number(useQueryString("sphere_status"));
   const dep = Number(useQueryString("dep"));
-  const [deadline, $deadline] = useState<Date>();
   const removeParams = useRemoveParams();
-  const handleDeadline = (event: Date) => $deadline(event);
   const { mutate: reassign, isLoading: reassigning } =
     marketingReassignMutation();
   const { mutate: attach, isLoading: attaching } = attachBrigadaMutation();
@@ -46,6 +41,7 @@ const ShowRequestModals = () => {
   const { data: categories, isLoading: categoriesLoading } = useCategories({
     sub_id: Number(watch("direction")),
     enabled: !!watch("direction"),
+    category_status: 1,
   });
 
   const { data: cars, isLoading: carLoading } = useCars({

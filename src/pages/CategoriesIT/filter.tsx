@@ -20,10 +20,9 @@ const CategoriesITFilter: FC = () => {
     page: currentPage,
     enabled: false,
     ...(!!department && { department }),
-    body: {
-      ...(!!name && { name }),
-      ...(!!category_status && { category_status }),
-    },
+
+    ...(!!name && { name }),
+    ...(!!category_status && { category_status }),
   });
 
   useUpdateEffect(() => {

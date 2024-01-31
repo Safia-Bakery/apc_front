@@ -8,7 +8,8 @@ interface Props {
   page?: number;
   department?: number | string;
   sub_id?: number | string;
-  body?: { name?: string; category_status?: string };
+  name?: string;
+  category_status?: number | string;
   sphere_status?: number;
 }
 
@@ -16,13 +17,22 @@ export const useCategories = ({
   enabled = true,
   size,
   page = 1,
-  body,
+  name,
+  category_status,
   department,
   sub_id,
   sphere_status,
 }: Props) => {
   return useQuery({
-    queryKey: ["categories", department, sphere_status, page, sub_id],
+    queryKey: [
+      "categories",
+      department,
+      sphere_status,
+      page,
+      name,
+      category_status,
+      sub_id,
+    ],
     queryFn: () =>
       apiClient
         .get("/category", {
@@ -31,7 +41,8 @@ export const useCategories = ({
           department,
           sub_id,
           sphere_status,
-          ...body,
+          name,
+          category_status,
         })
         .then(({ data: response }) => response as CategoryTypes),
     enabled,

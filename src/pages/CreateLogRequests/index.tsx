@@ -29,6 +29,7 @@ const CreateLogRequests = () => {
   const [error, $error] = useState<string>();
   const { data: categories, isLoading: categoryLoading } = useCategories({
     department: Departments.logystics,
+    category_status: 1,
   });
   const {
     register,

@@ -63,6 +63,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   const { data: categories, isLoading: categoryLoading } = useCategories({
     enabled: changeModal === ModalTypes.changeCateg,
     department: Departments.it,
+    category_status: 1,
   });
   const removeParams = useRemoveParams();
   const { mutate: attach, isLoading: attachLoading } = attachBrigadaMutation();

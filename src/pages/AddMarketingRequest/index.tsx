@@ -30,6 +30,7 @@ const AddMarketingRequest = () => {
   const sub_id = Number(useQueryString("sub_id"));
   const { data: categories, isLoading } = useCategories({
     sub_id,
+    category_status: 1,
   });
 
   const {

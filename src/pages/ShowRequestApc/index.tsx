@@ -54,7 +54,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
   const { mutate: attach, isLoading: attachLoading } = attachBrigadaMutation();
   const { refetch: brigadasRefetch } = useBrigadas({
     enabled: false,
-    sphere_status: sphere_status,
+    sphere_status,
   });
   const handleModal = (type: ModalTypes) => () => {
     navigateParams({ modal: type });
