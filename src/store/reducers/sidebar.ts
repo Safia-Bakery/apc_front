@@ -29,27 +29,30 @@ export const sidebarReducer = createSlice({
       const filteredRoutes: SidebarType[] = [];
 
       routes?.forEach((route) => {
-        route.count = payload?.find((item) =>
+        const updatedRoute = { ...route };
+        updatedRoute.count = payload?.find((item) =>
           item[0] === Departments.apc
             ? item[1] === route.sphere_status
             : item[0] === route.department
         )?.[2];
         if (
-          permissions?.[route?.screen] ||
-          (route?.subroutes &&
-            route.subroutes.some((subroute) => permissions?.[subroute.screen]))
+          permissions?.[updatedRoute?.screen] ||
+          (updatedRoute?.subroutes &&
+            updatedRoute.subroutes.some(
+              (subroute) => permissions?.[subroute.screen]
+            ))
         ) {
-          const filteredSubroutes = route?.subroutes?.filter(
+          const filteredSubroutes = updatedRoute?.subroutes?.filter(
             (sub) => permissions?.[sub?.screen]
           );
 
           if (!!filteredSubroutes?.length) {
             filteredRoutes.push({
-              ...route,
+              ...updatedRoute,
               subroutes: filteredSubroutes,
             });
           } else {
-            filteredRoutes.push(route);
+            filteredRoutes.push(updatedRoute);
           }
         }
       });

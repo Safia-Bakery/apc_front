@@ -20,10 +20,12 @@ import Loading from "@/components/Loader";
 import { useState } from "react";
 
 interface InventoryFields {
-  product: {
-    value: string;
-    label: string;
-  };
+  product:
+    | {
+        value: string;
+        label: string;
+      }
+    | undefined;
   qnt: string | number;
   comment: string;
 }
@@ -34,7 +36,7 @@ interface FormData {
 }
 
 const initialInventory: InventoryFields = {
-  product: { value: "", label: "" },
+  product: undefined,
   qnt: 1,
   comment: "",
 };
@@ -76,31 +78,36 @@ const AddInventoryRequest = () => {
 
   const onSubmit = (data: FormData) => {
     const { main_comment, inputFields } = data;
-    const expenditure = inputFields.reduce((acc: any, item) => {
-      acc[item?.product?.value] = [+item.qnt, item.comment];
-      return acc;
-    }, {});
+    if (inputFields.find((item) => !item.product?.value))
+      return alert("Необходимо выбрать товар!");
+    else {
+      const expenditure = inputFields.reduce((acc: any, item) => {
+        if (item?.product?.value)
+          acc[item?.product?.value] = [+item.qnt, item.comment];
+        return acc;
+      }, {});
 
-    mutate(
-      {
-        category_id: inventoryCategoryId,
-        fillial_id: branch.id,
-        expenditure,
-        description: !!main_comment ? main_comment : " ",
-      },
-      {
-        onSuccess: () => {
-          if (isMobile) {
-            $btn(true);
-            TelegramApp.toMainScreen();
-          } else {
-            refetch();
-            navigate("/requests-inventory");
-            successToast("created");
-          }
+      mutate(
+        {
+          category_id: inventoryCategoryId,
+          fillial_id: branch.id,
+          expenditure,
+          description: !!main_comment ? main_comment : " ",
         },
-      }
-    );
+        {
+          onSuccess: () => {
+            if (isMobile) {
+              $btn(true);
+              TelegramApp.toMainScreen();
+            } else {
+              refetch();
+              navigate("/requests-inventory");
+              successToast("created");
+            }
+          },
+        }
+      );
+    }
   };
 
   const addInputFields = () => append(initialInventory);
