@@ -64,7 +64,7 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
     <>
       <table className="table table-bordered w-full border-dark" ref={tableRef}>
         <thead>
-          <tr>
+          <tr className="hover:bg-transparent">
             {column.map(({ name, key }) => (
               <th key={key} className={"border-dark"}>
                 {name}
@@ -76,7 +76,7 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
           {data &&
             Object.entries(data).map((mainKey, idx) => (
               <Fragment key={idx}>
-                <tr>
+                <tr className="hover:bg-transparent">
                   <td rowSpan={mainKey[1].length + 1}>{idx + 1}</td>
                   <td rowSpan={mainKey[1].length + 1}>{mainKey[0]}</td>
 
@@ -86,14 +86,14 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
                 </tr>
                 {mainKey[1]?.slice(1).map((qnt, index) => (
                   <Fragment key={index}>
-                    <tr>
+                    <tr className="hover:bg-transparent">
                       <td>{qnt[1]}</td>
                       <td className="text-center">{qnt[2]}</td>
                       <td className="text-center">{qnt[3]}</td>
                     </tr>
                   </Fragment>
                 ))}
-                <tr className="bg-green-400 ">
+                <tr className="bg-green-400 hover:bg-green-400">
                   <th className="text-center text-lg">Общее</th>
                   <th className="text-center  text-lg">
                     {calculator(2, mainKey[1])}

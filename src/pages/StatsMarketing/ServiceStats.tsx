@@ -74,7 +74,7 @@ const ServiceStats = () => {
     <>
       <table className="table table-bordered w-full border-dark" ref={tableRef}>
         <thead>
-          <tr>
+          <tr className="hover:bg-transparent">
             {column.map(({ name, colSpan, className }) => (
               <th
                 key={name}
@@ -90,7 +90,7 @@ const ServiceStats = () => {
           {!!data &&
             Object.entries(data).map((mainKey, idx) => (
               <Fragment key={idx}>
-                <tr>
+                <tr className="hover:bg-transparent">
                   <td rowSpan={mainKey[1].length + 1}>{idx + 1}</td>
                   <td rowSpan={mainKey[1].length + 1}>
                     {handleDepartment({ sub: +mainKey[0] })}
@@ -125,7 +125,7 @@ const ServiceStats = () => {
                   ?.slice(1)
                   .map((item: ServiceStatsType, index: number) => (
                     <Fragment key={index}>
-                      <tr>
+                      <tr className="hover:bg-transparent">
                         <td>{item.category}</td>
                         <td className="text-center">{item.total_requests}</td>
 
@@ -154,7 +154,7 @@ const ServiceStats = () => {
                       </tr>
                     </Fragment>
                   ))}
-                <tr>
+                <tr className="hover:bg-transparent">
                   <th className="text-center text-lg">Общее / Среднее(%):</th>
                   <th className="text-center text-lg">
                     {calculator(mainKey[0], "total_requests")}

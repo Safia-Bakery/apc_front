@@ -6,6 +6,7 @@ import {
   ServiceStatsTypes,
   Sphere,
 } from "@/utils/types";
+import dayjs from "dayjs";
 
 interface Params {
   enabled?: boolean;
@@ -16,14 +17,34 @@ interface Params {
   sphere_status?: Sphere;
 }
 
-export const useServiceMarkStats = (params: Params) => {
+export const useServiceMarkStats = ({
+  enabled,
+  started_at = dayjs().startOf("month").format("YYYY-MM-DD"),
+  finished_at = dayjs().format("YYYY-MM-DD"),
+  sub_id,
+  department,
+  sphere_status,
+}: Params) => {
   return useQuery({
-    queryKey: ["Service_Mark_Stats", params],
+    queryKey: [
+      "Service_Mark_Stats",
+      finished_at,
+      started_at,
+      sub_id,
+      department,
+      sphere_status,
+    ],
     queryFn: () =>
       apiClient
-        .get("/v2/stats/marketing", params)
+        .get("/v2/stats/marketing", {
+          finished_at,
+          started_at,
+          sub_id,
+          department,
+          sphere_status,
+        })
         .then(({ data: response }) => response as ServiceStatsTypes),
-    enabled: params.enabled,
+    enabled,
     refetchOnMount: true,
   });
 };

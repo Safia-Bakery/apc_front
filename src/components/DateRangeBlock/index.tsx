@@ -46,6 +46,7 @@ const DateRangeBlock = () => {
       />
       <button
         className={cl("btn btn-primary btn-fill h-[40px]")}
+        type="button"
         onClick={handleDate}
       >
         Показать

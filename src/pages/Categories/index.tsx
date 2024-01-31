@@ -66,9 +66,7 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
               column={column}
               onSort={(data) => $sort(data)}
               data={categories?.items}
-            >
-              <CategoriesFilter />
-            </TableHead>
+            />
 
             <tbody>
               {!!categories?.items?.length &&
