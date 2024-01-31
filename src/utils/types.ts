@@ -37,7 +37,6 @@ export interface Order {
   description: string;
   size: string;
   id: number | string;
-  rating: number;
   created_at: Date;
   started_at: Date;
   deny_reason: string | null;
@@ -740,4 +739,20 @@ export interface MainStatTypes {
   in_progress?: number;
   last_30?: number;
   last_month?: number;
+}
+
+export interface ServiceStatsType {
+  total_requests: number;
+  finished_on_time: number;
+  not_finished_on_time: number;
+  status_zero: number;
+  percentage_finished_on_time: number;
+  percentage_not_finished_on_time: number;
+  percentage_status_zero: number;
+  avg_finishing: number;
+  category: string;
+}
+
+export interface ServiceStatsTypes {
+  [key: number]: ServiceStatsType[];
 }

@@ -45,7 +45,7 @@ interface Props {
 const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const tokenKey = useQueryString("key");
+  const modal = Number(useQueryString("modal"));
   const sphere_status = Number(useQueryString("sphere_status"));
   const permissions = useAppSelector(permissionSelector);
   const dispatch = useAppDispatch();
@@ -270,13 +270,12 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
   }, [upladedFiles, permissions, order?.status, order?.file]);
 
   const renderModal = useMemo(() => {
-    if (!!order?.status.toString() && order?.status < RequestStatus.done)
+    if (
+      !!order?.status.toString() &&
+      (order?.status < RequestStatus.done || modal === ModalTypes.showPhoto)
+    )
       return <ShowRequestModals />;
-  }, [order?.status]);
-
-  useEffect(() => {
-    if (tokenKey) dispatch(loginHandler(tokenKey));
-  }, [tokenKey]);
+  }, [order?.status, modal]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

@@ -137,7 +137,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
                       {order?.description}
                     </td> */}
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}</td>
-                  <td>{order.rating}</td>
+                  <td>{order?.comments?.[0]?.rating}</td>
                   <td>
                     {handleStatus({
                       status: order?.status,

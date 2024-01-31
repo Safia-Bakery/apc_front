@@ -136,7 +136,7 @@ const RequestsIT = () => {
                       {order?.description}
                     </div>
                   </td>
-                  <td>{order.rating}</td>
+                  <td>{order?.comments?.[0]?.rating}</td>
                   <td>
                     {handleStatus({
                       status: order?.status,

@@ -1,10 +1,15 @@
-import { Departments, Sphere } from "@/utils/types";
-import useStatsBrigadaCateg from "@/hooks/useStatsBrigadaCateg";
+import {
+  Departments,
+  ServiceStatsType,
+  ServiceStatsTypes,
+} from "@/utils/types";
 import { Fragment, useEffect, useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
 import cl from "classnames";
+import useServiceMarkStats from "@/hooks/useServiceMarkStats";
+import { handleDepartment, numberWithCommas as fixedN } from "@/utils/helpers";
 
 const column = [
   { name: "№" },
@@ -32,28 +37,30 @@ const ServiceStats = () => {
 
   const downloadAsPdf = () => onDownload();
 
-  const { isLoading, data } = useStatsBrigadaCateg({
-    department: Departments.apc,
-    sphere_status: Sphere.retail,
+  const { isLoading, data } = useServiceMarkStats({
+    department: Departments.marketing,
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),
   });
 
-  const calculator = (idx: number, arr: any[]) => {
-    const sumWithInitial = arr.reduce(
-      (accumulator, currentValue) => accumulator + currentValue[idx],
+  const calculator = (idx: any, key: keyof ServiceStatsType) => {
+    const sumWithInitial = data?.[idx]?.reduce(
+      (accumulator, currentValue) => accumulator + +currentValue[key],
       0
     );
 
-    return sumWithInitial;
+    if (sumWithInitial) return sumWithInitial;
+    else return 0;
   };
-  const averageCalculator = (idx: number, arr: any[]) => {
-    const sumWithInitial = arr.reduce(
-      (accumulator, currentValue) => accumulator + currentValue[idx],
+  const averageCalculator = (idx: any, key: keyof ServiceStatsType) => {
+    const sumWithInitial = data?.[idx]?.reduce(
+      (accumulator, currentValue) => accumulator + +currentValue[key],
       0
     );
 
-    return (sumWithInitial / arr.length).toFixed(2);
+    if (sumWithInitial)
+      return +(sumWithInitial / (data?.[idx]?.length || 0)).toFixed(2);
+    else return 0;
   };
 
   useEffect(() => {
@@ -80,57 +87,111 @@ const ServiceStats = () => {
           </tr>
         </thead>
         <tbody>
-          {data &&
+          {!!data &&
             Object.entries(data).map((mainKey, idx) => (
               <Fragment key={idx}>
                 <tr>
                   <td rowSpan={mainKey[1].length + 1}>{idx + 1}</td>
-                  <td rowSpan={mainKey[1].length + 1}>{mainKey[0]}</td>
+                  <td rowSpan={mainKey[1].length + 1}>
+                    {handleDepartment({ sub: +mainKey[0] })}
+                  </td>
 
-                  <td>{mainKey[1][0][1]}</td>
-                  <td className="text-center">{mainKey[1][0][2]}</td>
+                  <td>{mainKey[1][0].category}</td>
+                  <td className="text-center">
+                    {mainKey[1][0].total_requests}
+                  </td>
 
-                  <td className="text-center !bg-tableSuccess">in time</td>
-                  <td className="text-center !bg-tableSuccess">in time</td>
-                  <td className="text-center !bg-tableWarn">not in time</td>
-                  <td className="text-center !bg-tableWarn">not in time</td>
-                  <td className="text-center !bg-tableDanger">unhandled</td>
-                  <td className="text-center !bg-tableDanger">unhandled</td>
-                  <td className="text-center">average time</td>
+                  <td className="text-center !bg-tableSuccess">
+                    {mainKey[1][0].finished_on_time}
+                  </td>
+                  <td className="text-center !bg-tableSuccess">
+                    {fixedN(mainKey[1][0].percentage_finished_on_time)}%
+                  </td>
+                  <td className="text-center !bg-tableWarn">
+                    {mainKey[1][0].not_finished_on_time}
+                  </td>
+                  <td className="text-center !bg-tableWarn">
+                    {fixedN(mainKey[1][0].percentage_not_finished_on_time)}%
+                  </td>
+                  <td className="text-center !bg-tableDanger">
+                    {mainKey[1][0].status_zero}
+                  </td>
+                  <td className="text-center !bg-tableDanger">
+                    {fixedN(mainKey[1][0].percentage_status_zero)}%
+                  </td>
+                  <td className="text-center">{mainKey[1][0].avg_finishing}</td>
                 </tr>
-                {mainKey[1]?.slice(1).map((qnt, index) => (
-                  <Fragment key={index}>
-                    <tr>
-                      <td>{qnt[1]}</td>
-                      <td className="text-center">{qnt[2]}</td>
+                {mainKey[1]
+                  ?.slice(1)
+                  .map((item: ServiceStatsType, index: number) => (
+                    <Fragment key={index}>
+                      <tr>
+                        <td>{item.category}</td>
+                        <td className="text-center">{item.total_requests}</td>
 
-                      <td className="text-center !bg-tableSuccess">in time</td>
-                      <td className="text-center !bg-tableSuccess">in time</td>
+                        <td className="text-center !bg-tableSuccess">
+                          {item.finished_on_time}
+                        </td>
+                        <td className="text-center !bg-tableSuccess">
+                          {fixedN(item.percentage_finished_on_time)}%
+                        </td>
 
-                      <td className="text-center !bg-tableWarn">not in time</td>
-                      <td className="text-center !bg-tableWarn">not in time</td>
+                        <td className="text-center !bg-tableWarn">
+                          {item.not_finished_on_time}
+                        </td>
+                        <td className="text-center !bg-tableWarn">
+                          {fixedN(item.percentage_not_finished_on_time)}%
+                        </td>
 
-                      <td className="text-center !bg-tableDanger">unhandled</td>
-                      <td className="text-center !bg-tableDanger">unhandled</td>
+                        <td className="text-center !bg-tableDanger">
+                          {item.status_zero}
+                        </td>
+                        <td className="text-center !bg-tableDanger">
+                          {fixedN(item.percentage_status_zero)}%
+                        </td>
 
-                      <td className="text-center">average</td>
-                    </tr>
-                  </Fragment>
-                ))}
+                        <td className="text-center">{item.avg_finishing}</td>
+                      </tr>
+                    </Fragment>
+                  ))}
                 <tr>
                   <th className="text-center text-lg">Общее / Среднее(%):</th>
                   <th className="text-center text-lg">
-                    {averageCalculator(2, mainKey[1])}
+                    {calculator(mainKey[0], "total_requests")}
                   </th>
                   <th className="text-center text-lg !bg-tableSuccess">
-                    {/* {calculator(3, mainKey[1])} */}
+                    {calculator(mainKey[0], "finished_on_time")}
                   </th>
-                  <th className="!bg-tableSuccess"></th>
-                  <th className="!bg-tableWarn"></th>
-                  <th className="!bg-tableWarn"></th>
-                  <th className="!bg-tableDanger"></th>
-                  <th className="!bg-tableDanger"></th>
-                  <th></th>
+                  <th className="!bg-tableSuccess text-center">
+                    {averageCalculator(
+                      mainKey[0],
+                      "percentage_finished_on_time"
+                    )}
+                    %
+                  </th>
+                  <th className="!bg-tableWarn text-center">
+                    {calculator(mainKey[0], "not_finished_on_time")}
+                  </th>
+                  <th className="!bg-tableWarn text-center">
+                    {averageCalculator(
+                      mainKey[0],
+                      "percentage_not_finished_on_time"
+                    )}
+                    %
+                  </th>
+                  <th className="!bg-tableDanger text-center">
+                    {calculator(mainKey[0], "status_zero")}
+                  </th>
+                  <th className="!bg-tableDanger text-center">
+                    {averageCalculator(mainKey[0], "percentage_status_zero")}%
+                  </th>
+                  <th className="text-center">
+                    {averageCalculator(mainKey[0], "avg_finishing")} (
+                    {(
+                      averageCalculator(mainKey[0], "avg_finishing") / 60
+                    ).toFixed(2)}
+                    часов)
+                  </th>
                 </tr>
               </Fragment>
             ))}

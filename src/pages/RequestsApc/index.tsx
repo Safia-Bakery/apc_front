@@ -171,7 +171,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                       : "Не задано"}
                   </td>
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
-                  <td>{order.rating}</td>
+                  <td>{order?.comments?.[0]?.rating}</td>
                   <td>
                     {handleStatus({
                       status: order?.status,

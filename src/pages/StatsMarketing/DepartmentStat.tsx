@@ -5,7 +5,6 @@ import Chart from "react-apexcharts";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 import useMarketingStatDep from "@/hooks/useMarketingStatDep";
 import { handleDepartment } from "@/utils/helpers";
-import useUpdateEffect from "custom/useUpdateEffect";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
 
@@ -100,9 +99,9 @@ const DepartmentStat = () => {
             })}
           </td>
           {/* insert open date */}
+          <td>{item[1][2]}</td>
           <td>{item[1][0]}</td>
-          <td>{item[1][0]}</td>
-          <td>{item[1][1]}</td>
+          <td>{item[1][1] || 0}</td>
         </tr>
       ));
   }, [data?.table]);
