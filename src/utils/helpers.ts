@@ -379,12 +379,6 @@ export const routes: SidebarType[] = [
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_requests_inventory,
       },
-      // {
-      //   name: "Категории",
-      //   url: `/categories-inventory`,
-      //   icon: "/assets/icons/categories.svg",
-      //   screen: MainPermissions.get_category_inventory,
-      // },
       {
         name: "Инвентарь / Товары",
         url: "/products-ierarch",
@@ -396,12 +390,6 @@ export const routes: SidebarType[] = [
         url: "/order-products-inventory",
         icon: "/assets/icons/products.svg",
         screen: MainPermissions.get_inventory_purchase_prods,
-      },
-      {
-        name: "Остатки на складах",
-        url: "/inventory-remains",
-        icon: "/assets/icons/products.svg",
-        screen: MainPermissions.inventory_remains_in_stock,
       },
     ],
   },

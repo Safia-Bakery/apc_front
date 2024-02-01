@@ -333,7 +333,7 @@ export interface ToolTypes extends BasePaginatedRes {
     amount_left: number;
     min_amount: number | null;
     max_amount: number | null;
-    deadline?: string | number;
+    ftime?: string | number;
   }[];
 }
 
@@ -633,6 +633,7 @@ export interface ToolsEarchType {
     last_update: string;
     min_amount: string;
     image: string;
+    ftime?: number | null;
   }[];
 }
 

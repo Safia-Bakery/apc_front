@@ -6,7 +6,6 @@ import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { handleIdx } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
-import InventoryFilter from "./filter";
 import ItemsCount from "@/components/ItemsCount";
 import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
@@ -76,10 +75,7 @@ const InventoryRemains = () => {
       onError: (e: any) => errorToast(e.message),
     });
 
-  const handleMins = () => {
-    if (!mins) navigateParams({ mins: 1 });
-    else removeParams(["mins"]);
-  };
+  const handleMins = () => navigate("/products-ierarch");
 
   useEffect(() => {
     refetch();
@@ -108,9 +104,7 @@ const InventoryRemains = () => {
             column={column}
             onSort={(data) => $sort(data)}
             data={tools?.items}
-          >
-            <InventoryFilter />
-          </TableHead>
+          />
 
           <tbody>
             {!!tools?.items?.length &&
@@ -136,7 +130,7 @@ const InventoryRemains = () => {
                     {tool?.max_amount}
                   </td>
                   <td width={150} className="text-center">
-                    {tool?.deadline}
+                    {tool?.ftime}
                   </td>
                   <td width={40}>
                     {permission?.[MainPermissions.edit_product_inventory] && (

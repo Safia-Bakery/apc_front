@@ -27,7 +27,7 @@ const EditInventoryProd = () => {
         id: Number(id),
         min_amount,
         max_amount,
-        deadline,
+        ftime: deadline,
       },
       {
         onSuccess: () => {
@@ -44,7 +44,7 @@ const EditInventoryProd = () => {
     reset({
       min_amount: tool?.min_amount,
       max_amount: tool?.max_amount,
-      deadline: tool?.deadline,
+      deadline: tool?.ftime,
     });
   }, [tool]);
 
@@ -67,7 +67,7 @@ const EditInventoryProd = () => {
         <BaseInputs label="Максимум">
           <MainInput register={register("max_amount")} />
         </BaseInputs>
-        <BaseInputs label="Дедлайн">
+        <BaseInputs label="Дедлайн(в часах)">
           <MainInput register={register("deadline")} />
         </BaseInputs>
 

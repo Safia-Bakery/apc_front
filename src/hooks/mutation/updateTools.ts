@@ -9,7 +9,7 @@ interface Body {
   department?: number;
   min_amount?: number;
   max_amount?: number;
-  deadline?: number | string;
+  ftime?: number | string;
   image?: string;
 }
 
