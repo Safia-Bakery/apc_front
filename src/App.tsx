@@ -224,6 +224,21 @@ const routes = [
     screen: MainPermissions.edit_stock_env_requests,
   },
   {
+    element: <ShowMarketingRequest />,
+    path: `/marketing-all-requests/:id`,
+    screen: MainPermissions.marketing_all_requests,
+  },
+  {
+    element: (
+      <RequestsMarketing
+        title={"Заявки Маркетинг"}
+        edit={MainPermissions.marketing_all_requests}
+      />
+    ),
+    path: "/marketing-all-requests",
+    screen: MainPermissions.marketing_all_requests,
+  },
+  {
     element: <Logs />,
     path: "/request/logs/:id",
     screen: MainPermissions.edit_design_request,

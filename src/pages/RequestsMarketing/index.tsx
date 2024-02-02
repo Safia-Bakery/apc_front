@@ -30,18 +30,15 @@ const column = [
   { name: "Филиал", key: "fillial.name" },
   { name: "Дата оформления", key: "fillial.name" },
   { name: "Рейтинг", key: "rate" },
-  {
-    name: "Статус",
-    key: "status",
-  },
+  { name: "Статус", key: "status" },
   { name: "Изменил", key: "category.name" },
 ];
 
 interface Props {
   title: string;
-  sub_id: number;
-  add: MainPermissions;
-  edit: MainPermissions;
+  sub_id?: number;
+  add?: MainPermissions;
+  edit?: MainPermissions;
 }
 
 const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
@@ -85,12 +82,12 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
 
   useEffect(() => {
     refetch();
-  }, [currentPage, sub_id]);
+  }, [sub_id]);
 
   return (
     <Card className="overflow-hidden">
       <Header title={title?.toString()}>
-        {permission?.[add] && (
+        {add && permission?.[add] && (
           <button
             onClick={() => navigate(`add?sub_id=${sub_id}`)}
             className="btn btn-success btn-fill"
@@ -119,7 +116,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
                 <tr className={requestRows(order.status)} key={idx}>
                   <td width="40">{handleIdx(idx)}</td>
                   <td width="80">
-                    {permission?.[edit] ? (
+                    {edit && permission?.[edit] ? (
                       <Link to={`${order?.id}?sub_id=${sub_id}&edit=${edit}`}>
                         {order?.id}
                       </Link>
@@ -133,9 +130,6 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
                   <td>{order?.user?.phone_number}</td>
                   <td>{order?.category?.name}</td>
                   <td>{order?.fillial?.parentfillial?.name}</td>
-                  {/* <td width={100} className={styles.text}>
-                      {order?.description}
-                    </td> */}
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}</td>
                   <td>{order?.comments?.[0]?.rating}</td>
                   <td>

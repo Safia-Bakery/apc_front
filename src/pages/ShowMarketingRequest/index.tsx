@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 
@@ -34,6 +34,7 @@ import Loading from "@/components/Loader";
 const ShowMarketingRequest = () => {
   const { id } = useParams();
   const permissions = useAppSelector(permissionSelector);
+  const modal = Number(useQueryString("modal"));
 
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
@@ -137,9 +138,12 @@ const ShowMarketingRequest = () => {
   }, [permissions, order?.status]);
 
   const renderModal = useMemo(() => {
-    if (!!order?.status.toString() && order?.status < RequestStatus.done)
+    if (
+      !!order?.status.toString() &&
+      (order?.status < RequestStatus.done || modal === ModalTypes.showPhoto)
+    )
       return <ShowRequestModals />;
-  }, [order?.status]);
+  }, [order?.status, modal]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -157,15 +161,19 @@ const ShowMarketingRequest = () => {
             dep: Departments.marketing,
           })}`}
         >
-          <button
-            className="btn btn-warning btn-fill mr-2"
-            onClick={() => navigate(`/request/logs/${id}`)}
-          >
-            Логи
-          </button>
-          <button onClick={handleBack} className="btn btn-primary btn-fill">
-            Назад
-          </button>
+          <div className="flex gap-2">
+            <button
+              className="btn btn-warning btn-fill "
+              onClick={() => navigate(`/request/logs/${id}`)}
+            >
+              Логи
+            </button>
+            {MarketingSubDep[sub_id] && (
+              <button onClick={handleBack} className="btn btn-primary btn-fill">
+                Назад
+              </button>
+            )}
+          </div>
         </Header>
         <div className="content">
           <div className="row">

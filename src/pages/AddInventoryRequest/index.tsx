@@ -9,7 +9,7 @@ import TableHead from "@/components/TableHead";
 import { Departments } from "@/utils/types";
 import styles from "./index.module.scss";
 import requestMutation from "@/hooks/mutation/orderMutation";
-import { inventoryCategoryId, isMobile } from "@/utils/helpers";
+import { isMobile } from "@/utils/helpers";
 import BranchSelect from "@/components/BranchSelect";
 import useQueryString from "@/hooks/custom/useQueryString";
 import { successToast } from "@/utils/toast";
@@ -18,6 +18,7 @@ import { InputWrapper, SelectWrapper } from "@/components/InputWrappers";
 import { TelegramApp } from "@/utils/tgHelpers";
 import Loading from "@/components/Loader";
 import { useState } from "react";
+import { inventoryCategoryId } from "@/utils/keys";
 
 interface InventoryFields {
   product:

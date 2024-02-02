@@ -6,12 +6,7 @@ import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import {
-  handleIdx,
-  handleStatus,
-  requestRows,
-  staffCategoryId,
-} from "@/utils/helpers";
+import { handleIdx, handleStatus, requestRows } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import ItemsCount from "@/components/ItemsCount";
 import { useAppSelector } from "@/store/utils/types";
@@ -24,6 +19,7 @@ import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
 import useStaffExcell from "@/hooks/useStaffExcell";
 import { baseURL } from "@/main";
+import { staffCategoryId } from "@/utils/keys";
 
 const column = [
   { name: "№", key: "" },

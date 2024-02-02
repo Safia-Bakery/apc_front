@@ -468,6 +468,8 @@ export enum MainPermissions {
   edit_faq = 109,
   get_faq_requests = 110,
   edit_faq_requests = 111,
+
+  marketing_all_requests = 112,
 }
 export enum MarketingSubDep {
   designers = 1,
@@ -477,13 +479,6 @@ export enum MarketingSubDep {
   complects = 5,
   nonstandartAdv = 6,
   branchEnv = 7,
-}
-
-export enum ApcStatisticsTypes {
-  category = 1,
-  fillial = 2,
-  brigade = 3,
-  brigadaCateg = 4,
 }
 
 export const MarketingSubDepRu = [

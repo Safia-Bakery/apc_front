@@ -10,6 +10,7 @@ import {
   Sphere,
 } from "./types";
 import useQueryString from "custom/useQueryString";
+import { stockStores } from "./keys";
 
 export const itemsPerPage = 50;
 
@@ -212,10 +213,6 @@ export const handleDepartment = ({
         break;
     }
 };
-export const stockStores = {
-  fabric: "f09c2c8d-00bb-4fa4-81b5-4f4e31995b86",
-  retail: "4aafb5af-66c3-4419-af2d-72897f652019",
-};
 
 export enum HRRequestTypes {
   offers = 3,
@@ -399,6 +396,12 @@ export const routes: SidebarType[] = [
     screen: MainPermissions.get_design_request,
     department: Departments.marketing,
     subroutes: [
+      {
+        name: "Все Заявки",
+        url: "/marketing-all-requests",
+        icon: "/assets/icons/subOrder.svg",
+        screen: MainPermissions.marketing_all_requests,
+      },
       {
         name: "Проектная работа для дизайнеров",
         url: `/marketing-${MarketingSubDep[1]}`,
@@ -605,7 +608,3 @@ export const handleHRStatus = (dep: RequestStatus) => {
       break;
   }
 };
-
-export const staffCategoryId = 36;
-export const clientCommentCategoryId = 56;
-export const inventoryCategoryId = 59; // prod - 59, local - 52 todo

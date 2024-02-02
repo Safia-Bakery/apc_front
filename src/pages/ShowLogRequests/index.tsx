@@ -24,10 +24,12 @@ import ShowRequestModals from "@/components/ShowRequestModals";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import cl from "classnames";
 import Loading from "@/components/Loader";
+import useQueryString from "@/hooks/custom/useQueryString";
 
 const ShowLogRequests = () => {
   const { id } = useParams();
   const navigateParams = useNavigateParams();
+  const modal = Number(useQueryString("modal"));
   const removeParams = useRemoveParams();
   const { mutate: attach, isLoading: attaching } = attachBrigadaMutation();
   const handleModal = (type: ModalTypes) => () => {
@@ -116,9 +118,12 @@ const ShowLogRequests = () => {
   }, [order?.status]);
 
   const renderModals = useMemo(() => {
-    if (!!order?.status.toString() && order?.status < RequestStatus.done)
+    if (
+      !!order?.status.toString() &&
+      (order?.status < RequestStatus.done || modal === ModalTypes.showPhoto)
+    )
       return <ShowRequestModals />;
-  }, [order?.status]);
+  }, [order?.status, modal]);
 
   useEffect(() => {
     orderRefetch();

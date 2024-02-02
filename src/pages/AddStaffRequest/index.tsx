@@ -18,7 +18,7 @@ import Loading from "@/components/Loader";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import dayjs from "dayjs";
-import { staffCategoryId } from "@/utils/helpers";
+import { staffCategoryId } from "@/utils/keys";
 
 const AddStaffRequest = () => {
   const { mutate, isLoading } = requestMutation();

@@ -15,6 +15,23 @@ import {
 import Chart from "react-apexcharts";
 import { ChangeEvent, useMemo, useState } from "react";
 import Loading from "@/components/Loader";
+import { useAppSelector } from "@/store/utils/types";
+import { permissionSelector } from "@/store/reducers/sidebar";
+
+enum Months {
+  "Январь",
+  "февраль",
+  "март",
+  "апрель",
+  "May",
+  "июнь",
+  "июль",
+  "Август",
+  "Сентябрь",
+  "Октябрь",
+  "Ноябрь",
+  "Декабрь",
+}
 
 const options = {
   legend: {
@@ -45,6 +62,23 @@ type DepType = {
 interface DepTypes {
   [key: number]: DepType;
 }
+
+const btnArr = [
+  {
+    title: "Новые",
+    url: "/marketing-all-requests?request_status=0",
+  },
+  {
+    title: "Принятые",
+    url: "/marketing-all-requests?request_status=1",
+    className: "table-primary",
+  },
+  {
+    title: "Отправленные заказчикам",
+    url: "/marketing-all-requests?request_status=2",
+    className: "table-warning",
+  },
+];
 
 const mainDeps: DepTypes = {
   [MainPermissions.get_requests_apc]: {
@@ -108,7 +142,10 @@ const ControlPanel = () => {
   const mainDep: DepType = Object.entries(mainDeps).find((item) =>
     perms.has(+item[0])
   )?.[1];
+  const mainPerms = useAppSelector(permissionSelector);
   const [selectMonth, $selectMonth] = useState(MonthVals.last_month);
+
+  const isMarkAdmin = mainPerms?.[MainPermissions.marketing_all_requests];
 
   const handleMonth = (e: ChangeEvent<HTMLSelectElement>) =>
     $selectMonth(e.target.value as MonthVals);
@@ -116,7 +153,10 @@ const ControlPanel = () => {
   const { data: stats, isLoading } = useMainStats({
     department: mainDep?.dep!,
     ...(mainDep?.sphere && { sphere_status: mainDep?.sphere }),
-    ...(mainDep?.sub_id && { sub_id: mainDep?.sub_id }),
+    ...(mainDep?.sub_id &&
+      !isMarkAdmin && {
+        sub_id: mainDep?.sub_id,
+      }),
     enabled: !!mainDep?.dep,
   });
 
@@ -144,6 +184,11 @@ const ControlPanel = () => {
             newOrders: "/requests-inventory?request_status=0",
           };
         case Departments.marketing:
+          if (isMarkAdmin)
+            return {
+              title: "Маркетинг",
+              ratingUrl: "/marketing-all-requests?rate=1",
+            };
           if (mainDep.sub_id === MarketingSubDep.branchEnv)
             return {
               title: "Маркетинг(Внешний вид филиала)",
@@ -241,6 +286,41 @@ const ControlPanel = () => {
       );
   }, [series]);
 
+  const renderMarketingContent = useMemo(() => {
+    if (isMarkAdmin && mainDep.dep === Departments.marketing)
+      return (
+        <div className="flex gap-2">
+          {btnArr.map((item) => (
+            <Link
+              to={item.url}
+              className={cl(
+                styles.blockItem,
+                item.className,
+                "flex-1 justify-between items-center text-black"
+              )}
+              key={item.title}
+            >
+              <div className="flex"></div>
+              <div className="text-base font-bold flex items-center justify-center text-center">
+                {item.title}
+              </div>
+
+              <div className="w-full flex justify-end mt-3">
+                открыть список{" "}
+                <img
+                  src="/assets/icons/arrowBlack.svg"
+                  alt=""
+                  className="rotate-90"
+                  width={15}
+                  height={15}
+                />
+              </div>
+            </Link>
+          ))}
+        </div>
+      );
+  }, [user?.permissions]);
+
   if (isLoading) return <Loading absolute />;
 
   return (
@@ -301,7 +381,7 @@ const ControlPanel = () => {
                   <h2 className="text-center mt-2">{stats?.new_requests}</h2>
 
                   <div className="w-full flex justify-end mt-3">
-                    {renderDep?.newOrders && (
+                    {renderDep?.newOrders && !isMarkAdmin && (
                       <Link
                         to={renderDep?.newOrders}
                         className="flex text-gray-400 text-xs"
@@ -378,9 +458,12 @@ const ControlPanel = () => {
               {/* ========================================================================= */}
 
               <div className={cl(styles.blockItem, "h-64")}>
-                <h3 className="text-base">Январь</h3>
+                <h3 className="text-base capitalize">
+                  {Months[dayjs().get("M")]}
+                </h3>
                 <p className="text-xl">Статистика по заказам</p>
               </div>
+              {renderMarketingContent}
             </div>
           </div>
         </Container>
