@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import useBranch from "@/hooks/useBranch";
 import branchMutation from "@/hooks/mutation/branchMutation";
-import useBranches from "@/hooks/useBranches";
 import { errorToast, successToast } from "@/utils/toast";
 import MainInput from "@/components/BaseInputs/MainInput";
 import BaseInputs from "@/components/BaseInputs";
@@ -14,6 +13,7 @@ import branchDepartmentMutation from "@/hooks/mutation/branchDepartment";
 import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 import { Departments } from "@/utils/types";
 import MainRadioBtns from "@/components/BaseInputs/MainRadioBtns";
+import Loading from "@/components/Loader";
 
 const EditAddBranch = () => {
   const { id } = useParams();
@@ -24,24 +24,7 @@ const EditAddBranch = () => {
   const { mutate: depMutation } = branchDepartmentMutation();
   const [is_fabrica, $is_fabrica] = useState<boolean>();
 
-  const { data: branch, refetch } = useBranch({ id: id! });
-  const { refetch: branchesRefetch } = useBranches({
-    enabled: false,
-    origin: 0,
-  });
-
-  useEffect(() => {
-    if (!!id && branch) {
-      if (branch.is_fabrica !== null) $is_fabrica(!!branch.is_fabrica);
-      reset({
-        name: branch?.name,
-        region: branch?.country,
-        lat: branch?.latitude,
-        lng: branch?.longtitude,
-        status: !!branch?.status,
-      });
-    }
-  }, [branch, id]);
+  const { data: branch, refetch, isLoading } = useBranch({ id: id! });
 
   const {
     register,
@@ -78,7 +61,6 @@ const EditAddBranch = () => {
       },
       {
         onSuccess: () => {
-          branchesRefetch();
           refetch();
           successToast(!!id ? "successfully updated" : "successfully created");
           goBack();
@@ -92,6 +74,20 @@ const EditAddBranch = () => {
     return branch?.fillial_department.find((item) => item.origin === origin)
       ?.id;
   };
+
+  useEffect(() => {
+    if (!!id && branch) {
+      if (branch.is_fabrica !== null) $is_fabrica(!!branch.is_fabrica);
+      reset({
+        name: branch?.name,
+        region: branch?.country,
+        lat: branch?.latitude,
+        lng: branch?.longtitude,
+        status: !!branch?.status,
+      });
+    }
+  }, [branch, id]);
+  if (isLoading) return <Loading absolute />;
   return (
     <Card>
       <Header title={!id ? "Добавить" : `Изменить филиал ${branch?.name}`}>
@@ -104,14 +100,14 @@ const EditAddBranch = () => {
         <BaseInputs label="НАЗВАНИЕ" error={errors.name}>
           <MainInput
             register={register("name", { required: "Обязательное поле" })}
-            disabled={!!id}
+            // disabled={!!id}
           />
         </BaseInputs>
 
         <BaseInputs label="РЕГИОН" error={errors.region}>
           <MainInput
             register={register("region", { required: "Обязательное поле" })}
-            disabled={!!id}
+            // disabled={!!id}
           />
         </BaseInputs>
 
