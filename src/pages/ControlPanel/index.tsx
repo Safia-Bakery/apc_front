@@ -321,7 +321,7 @@ const ControlPanel = () => {
       );
   }, [user?.permissions]);
 
-  if (isLoading) return <Loading absolute />;
+  if (isLoading && !!mainDep?.dep) return <Loading absolute />;
 
   return (
     <>
@@ -337,137 +337,150 @@ const ControlPanel = () => {
           <p className={styles.category}>{dayjs().format("DD-MM-YYYY")}</p>
         </div>
       </Card>
-      <div className="h-full -mt-4">
-        <Container>
-          <div className="flex flex-[6] gap-2 ">
-            <div className={cl(styles.blockItem)}>
-              <h3 className="text-center mb-4">Моя команда</h3>
-              {renderChart}
+      {mainDep?.dep && (
+        <div className="h-full -mt-4">
+          <Container>
+            <div className="flex flex-[6] gap-2 ">
+              <div className={cl(styles.blockItem)}>
+                <h3 className="text-center mb-4">Моя команда</h3>
+                {renderChart}
 
-              <div className="w-full flex justify-end">
-                {renderDep?.teamUrl && (
-                  <Link to={renderDep?.teamUrl} className="flex text-gray-400">
-                    Перейти{" "}
-                    <img
-                      src="/assets/icons/arrowBlack.svg"
-                      alt=""
-                      className="rotate-90"
-                      width={15}
-                      height={15}
-                    />
-                  </Link>
-                )}
+                <div className="w-full flex justify-end">
+                  {renderDep?.teamUrl && (
+                    <Link
+                      to={renderDep?.teamUrl}
+                      className="flex text-gray-400"
+                    >
+                      Перейти{" "}
+                      <img
+                        src="/assets/icons/arrowBlack.svg"
+                        alt=""
+                        className="rotate-90"
+                        width={15}
+                        height={15}
+                      />
+                    </Link>
+                  )}
+                </div>
+
+                <hr className={styles.hr} />
+
+                <p className="">
+                  Количество заявок в обработке:{" "}
+                  <span className="text-xl text-blue-500">
+                    {stats?.in_progress}
+                  </span>
+                </p>
               </div>
+              <div className="flex flex-col gap-2 flex-1">
+                {/* main block */}
 
-              <hr className={styles.hr} />
+                {/* ========================================================================= */}
+                <div className="flex gap-2 flex-[4]">
+                  {/* top row content */}
+                  <div
+                    className={cl(styles.blockItem, "flex-1 justify-between")}
+                  >
+                    <h3 className="text-base h-12">
+                      Заявки без исполнителя Новые
+                    </h3>
+                    <h2 className="text-center mt-2">{stats?.new_requests}</h2>
 
-              <p className="">
-                Количество заявок в обработке:{" "}
-                <span className="text-xl text-blue-500">
-                  {stats?.in_progress}
-                </span>
-              </p>
-            </div>
-            <div className="flex flex-col gap-2 flex-1">
-              {/* main block */}
+                    <div className="w-full flex justify-end mt-3">
+                      {renderDep?.newOrders && !isMarkAdmin && (
+                        <Link
+                          to={renderDep?.newOrders}
+                          className="flex text-gray-400 text-xs"
+                        >
+                          открыть список{" "}
+                          <img
+                            src="/assets/icons/arrowBlack.svg"
+                            alt=""
+                            className="rotate-90"
+                            width={15}
+                            height={15}
+                          />
+                        </Link>
+                      )}
+                    </div>
+                  </div>
 
-              {/* ========================================================================= */}
-              <div className="flex gap-2 flex-[4]">
-                {/* top row content */}
-                <div className={cl(styles.blockItem, "flex-1 justify-between")}>
-                  <h3 className="text-base h-12">
-                    Заявки без исполнителя Новые
+                  <div
+                    className={cl(styles.blockItem, "flex-1 justify-between")}
+                  >
+                    <h3 className="text-base h-12">Средний рейтинг</h3>
+                    <h2 className="text-center mt-2">{stats?.avg_rating}</h2>
+
+                    <div className="w-full flex justify-end mt-3">
+                      {renderDep?.ratingUrl && (
+                        <Link
+                          to={renderDep?.ratingUrl}
+                          className="flex text-gray-400 text-xs "
+                        >
+                          открыть все оценки{" "}
+                          <img
+                            src="/assets/icons/arrowBlack.svg"
+                            alt=""
+                            className="rotate-90"
+                            width={15}
+                            height={15}
+                          />
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+
+                  <div
+                    className={cl(styles.blockItem, "flex-1 justify-between")}
+                  >
+                    <h3 className="text-base h-12">Среднее время обработки</h3>
+                    <div className="text-center flex items-center justify-center mt-2">
+                      {stats?.avg_time && (
+                        <h3 className="text-lg">
+                          {Math.floor(stats?.avg_time / 60)} ч.{" "}
+                          {stats?.avg_time % 60} мин
+                        </h3>
+                      )}{" "}
+                      /<p className="text-xs"> 1 заяка</p>
+                    </div>
+
+                    <div className="mt-3 h-4" />
+                  </div>
+
+                  <div
+                    className={cl(styles.blockItem, "flex-1 justify-between")}
+                  >
+                    <h3 className="text-base h-12">
+                      <select onChange={handleMonth} value={selectMonth}>
+                        <option value={MonthVals.last_month}>
+                          Обработано за текущий месяц
+                        </option>
+                        <option value={MonthVals.last_30}>
+                          Обработано за последние 30 дней
+                        </option>
+                      </select>
+                    </h3>
+                    <div className="text-center flex items-center justify-center mt-2">
+                      <h3 className="text-lg">{stats?.[selectMonth]} заявок</h3>
+                    </div>
+
+                    <div className="mt-3 h-4" />
+                  </div>
+                </div>
+                {/* ========================================================================= */}
+
+                <div className={cl(styles.blockItem, "h-64")}>
+                  <h3 className="text-base capitalize">
+                    {Months[dayjs().get("M")]}
                   </h3>
-                  <h2 className="text-center mt-2">{stats?.new_requests}</h2>
-
-                  <div className="w-full flex justify-end mt-3">
-                    {renderDep?.newOrders && !isMarkAdmin && (
-                      <Link
-                        to={renderDep?.newOrders}
-                        className="flex text-gray-400 text-xs"
-                      >
-                        открыть список{" "}
-                        <img
-                          src="/assets/icons/arrowBlack.svg"
-                          alt=""
-                          className="rotate-90"
-                          width={15}
-                          height={15}
-                        />
-                      </Link>
-                    )}
-                  </div>
+                  <p className="text-xl">Статистика по заказам</p>
                 </div>
-
-                <div className={cl(styles.blockItem, "flex-1 justify-between")}>
-                  <h3 className="text-base h-12">Средний рейтинг</h3>
-                  <h2 className="text-center mt-2">{stats?.avg_rating}</h2>
-
-                  <div className="w-full flex justify-end mt-3">
-                    {renderDep?.ratingUrl && (
-                      <Link
-                        to={renderDep?.ratingUrl}
-                        className="flex text-gray-400 text-xs "
-                      >
-                        открыть все оценки{" "}
-                        <img
-                          src="/assets/icons/arrowBlack.svg"
-                          alt=""
-                          className="rotate-90"
-                          width={15}
-                          height={15}
-                        />
-                      </Link>
-                    )}
-                  </div>
-                </div>
-
-                <div className={cl(styles.blockItem, "flex-1 justify-between")}>
-                  <h3 className="text-base h-12">Среднее время обработки</h3>
-                  <div className="text-center flex items-center justify-center mt-2">
-                    {stats?.avg_time && (
-                      <h3 className="text-lg">
-                        {Math.floor(stats?.avg_time / 60)} ч.{" "}
-                        {stats?.avg_time % 60} мин
-                      </h3>
-                    )}{" "}
-                    /<p className="text-xs"> 1 заяка</p>
-                  </div>
-
-                  <div className="mt-3 h-4" />
-                </div>
-
-                <div className={cl(styles.blockItem, "flex-1 justify-between")}>
-                  <h3 className="text-base h-12">
-                    <select onChange={handleMonth} value={selectMonth}>
-                      <option value={MonthVals.last_month}>
-                        Обработано за текущий месяц
-                      </option>
-                      <option value={MonthVals.last_30}>
-                        Обработано за последние 30 дней
-                      </option>
-                    </select>
-                  </h3>
-                  <div className="text-center flex items-center justify-center mt-2">
-                    <h3 className="text-lg">{stats?.[selectMonth]} заявок</h3>
-                  </div>
-
-                  <div className="mt-3 h-4" />
-                </div>
+                {renderMarketingContent}
               </div>
-              {/* ========================================================================= */}
-
-              <div className={cl(styles.blockItem, "h-64")}>
-                <h3 className="text-base capitalize">
-                  {Months[dayjs().get("M")]}
-                </h3>
-                <p className="text-xl">Статистика по заказам</p>
-              </div>
-              {renderMarketingContent}
             </div>
-          </div>
-        </Container>
-      </div>
+          </Container>
+        </div>
+      )}
     </>
   );
 };

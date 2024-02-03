@@ -115,18 +115,20 @@ const ClientsComments = () => {
                       {dayjs(comment?.created_at).format("DD.MM.YYYY HH:mm")}
                     </td>
                     <td>
-                      <div
-                        onClick={handleShowPhoto(
-                          `${baseURL}/${comment?.file?.[0]?.url}`
-                        )}
-                        className="h-20 w-20 flex items-center justify-center"
-                      >
-                        <img
-                          className="object-contain h-20 w-20"
-                          src={`${baseURL}/${comment?.file?.[0]?.url}`}
-                          alt="image"
-                        />
-                      </div>
+                      {comment?.file?.[0]?.url && (
+                        <div
+                          onClick={handleShowPhoto(
+                            `${baseURL}/${comment?.file?.[0]?.url}`
+                          )}
+                          className="h-20 w-20 flex items-center justify-center"
+                        >
+                          <img
+                            className="object-contain h-20 w-20"
+                            src={`${baseURL}/${comment?.file?.[0]?.url}`}
+                            alt="image"
+                          />
+                        </div>
+                      )}
                     </td>
                     <td>{comment?.description}</td>
                   </tr>

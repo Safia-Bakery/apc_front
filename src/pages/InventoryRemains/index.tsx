@@ -1,27 +1,20 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Departments, MainPermissions, ToolTypes } from "@/utils/types";
-import Pagination from "@/components/Pagination";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx } from "@/utils/helpers";
-import TableHead from "@/components/TableHead";
-import ItemsCount from "@/components/ItemsCount";
-import useQueryString from "custom/useQueryString";
-import EmptyList from "@/components/EmptyList";
-import { permissionSelector } from "@/store/reducers/sidebar";
-import { useAppSelector } from "@/store/utils/types";
-import TableViewBtn from "@/components/TableViewBtn";
-import useTools from "@/hooks/useTools";
-import cl from "classnames";
-import {
-  useNavigateParams,
-  useRemoveParams,
-} from "@/hooks/custom/useCustomNavigate";
-import { useDownloadExcel } from "react-export-table-to-excel";
-import inventoryMinsMutation from "@/hooks/mutation/inventoryMins";
-import { errorToast, successToast } from "@/utils/toast";
 import Loading from "@/components/Loader";
+import useToolsIerarch from "@/hooks/useToolsIerarch";
+import { useNavigate } from "react-router-dom";
+import styles from "./index.module.scss";
+import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
+import useQueryString from "@/hooks/custom/useQueryString";
+import EmptyList from "@/components/EmptyList";
+import cl from "classnames";
+import { useAppSelector } from "@/store/utils/types";
+import { permissionSelector } from "@/store/reducers/sidebar";
+import { MainPermissions } from "@/utils/types";
+import TableViewBtn from "@/components/TableViewBtn";
+import TableHead from "@/components/TableHead";
+import { useEffect, useRef } from "react";
+import { useDownloadExcel } from "react-export-table-to-excel";
 
 const column = [
   { name: "№", key: "" },
@@ -29,7 +22,7 @@ const column = [
   { name: "Остаток", key: "amount_left", center: true },
   { name: "Минимум", key: "min_amount", center: true },
   { name: "Максимум", key: "max_amount", center: true },
-  { name: "Дедлайн", key: "deadline", center: true },
+  { name: "Дедлайн(в часах)", key: "ftime", center: true },
   { name: "", key: "view" },
 ];
 
@@ -37,26 +30,18 @@ const InventoryRemains = () => {
   const navigate = useNavigate();
   const tableRef = useRef(null);
   const navigateParams = useNavigateParams();
-  const removeParams = useRemoveParams();
-  const [sort, $sort] = useState<ToolTypes["items"]>();
-  const page = Number(useQueryString("page")) || 1;
-  const name = useQueryString("name");
   const permission = useAppSelector(permissionSelector);
   const handleNavigate = (route: string) => () => navigate(route);
   const mins = useQueryString("mins");
 
-  const { mutate: minsMutation } = inventoryMinsMutation();
-
-  const {
-    data: tools,
-    isLoading: toolsLoading,
-    refetch,
-  } = useTools({
-    department: Departments.inventory,
-    page,
-    few_amounts: !!mins,
-    ...(!!name && { name }),
+  const parent_id = useQueryString("parent_id");
+  const parent_name = useQueryString("parent_name");
+  const { data, isLoading, isFetching, refetch } = useToolsIerarch({
+    ...(!!parent_id && { parent_id }),
   });
+
+  const handleParentId = (id: string, name: string) => () =>
+    navigateParams({ parent_id: id, parent_name: name });
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
@@ -66,29 +51,17 @@ const InventoryRemains = () => {
 
   const downloadAsPdf = () => onDownload();
 
-  const handleRequestsMins = () =>
-    minsMutation(undefined, {
-      onSuccess: () => {
-        navigate("/order-products-inventory");
-        successToast("created");
-      },
-      onError: (e: any) => errorToast(e.message),
-    });
-
-  const handleMins = () => navigate("/products-ierarch");
+  const handleMins = () => navigate("/inventory-remains?mins=1");
 
   useEffect(() => {
     refetch();
   }, []);
 
+  if (isLoading) return <Loading absolute />;
+
   return (
-    <Card>
-      <Header title="Остатки на складах">
-        {!!mins && (
-          <button className="btn btn-warning mr-2" onClick={handleRequestsMins}>
-            Заявка на минимумы
-          </button>
-        )}
+    <Card className="pb-4">
+      <Header title={!parent_name ? "Инвентарь / Товары" : parent_name}>
         <button className="btn btn-success mr-2" onClick={downloadAsPdf}>
           Export Excel
         </button>
@@ -97,18 +70,23 @@ const InventoryRemains = () => {
         </button>
       </Header>
 
-      <div className="content">
-        <ItemsCount data={tools} />
-        <table className="table table-hover" ref={tableRef}>
-          <TableHead
-            column={column}
-            onSort={(data) => $sort(data)}
-            data={tools?.items}
-          />
-
-          <tbody>
-            {!!tools?.items?.length &&
-              (sort?.length ? sort : tools?.items)?.map((tool, idx) => (
+      <ul>
+        {data?.folders?.map((folder) => (
+          <li
+            className={cl(styles.folder, "bg-gray-300")}
+            onClick={handleParentId(folder.id, folder.name)}
+            key={folder.id}
+          >
+            <img src="/assets/icons/folder.svg" alt="folder" />
+            <span>{folder.name}</span>
+          </li>
+        ))}
+        <hr />
+        {!!data?.tools?.length && (
+          <table className="table table-bordered" ref={tableRef}>
+            <TableHead column={column} />
+            <tbody>
+              {data?.tools?.map((tool, idx) => (
                 <tr
                   key={idx}
                   className={cl("transition-colors", {
@@ -118,7 +96,7 @@ const InventoryRemains = () => {
                       tool.min_amount && tool.amount_left > tool.min_amount,
                   })}
                 >
-                  <td width="40">{handleIdx(idx)}</td>
+                  <td width="40">{idx + 1}</td>
                   <td>{tool?.name}</td>
                   <td width={150} className="text-center">
                     {tool?.amount_left}
@@ -134,17 +112,21 @@ const InventoryRemains = () => {
                   </td>
                   <td width={40}>
                     {permission?.[MainPermissions.edit_product_inventory] && (
-                      <TableViewBtn onClick={handleNavigate(`${tool.id}`)} />
+                      <TableViewBtn
+                        onClick={handleNavigate(
+                          `/inventory-remains/${tool.id}`
+                        )}
+                      />
                     )}
                   </td>
                 </tr>
               ))}
-          </tbody>
-        </table>
-        {toolsLoading && <Loading absolute />}
-        {!tools?.items?.length && !toolsLoading && <EmptyList />}
-        {!!tools && <Pagination totalPages={tools.pages} />}
-      </div>
+            </tbody>
+          </table>
+        )}
+      </ul>
+      {!data?.folders.length && !data?.tools.length && <EmptyList />}
+      {!isLoading && isFetching && <Loading absolute />}
     </Card>
   );
 };

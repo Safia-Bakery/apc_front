@@ -93,8 +93,8 @@ const BrigadaCategStat = lazy(
 const BrigadaStat = lazy(() => import("@/pages/StatisticsApc/BrigadaStat"));
 
 const EditInventoryProd = lazy(() => import("@/pages/EditInventoryProd"));
+const InventoryRemainsMins = lazy(() => import("@/pages/InventoryRemainsMins"));
 const InventoryRemains = lazy(() => import("@/pages/InventoryRemains"));
-const ToolsIerarch = lazy(() => import("@/pages/ToolsIerarch"));
 const ShowInventoryTool = lazy(() => import("@/pages/ShowInventoryTool"));
 const InventoryOrderedTools = lazy(
   () => import("@/pages/InventoryOrderedTools")
@@ -703,7 +703,7 @@ const routes = [
     screen: MainPermissions.edit_product_inventory,
   },
   {
-    element: <InventoryRemains />,
+    element: <InventoryRemainsMins />,
     path: "/inventory-remains",
     screen: MainPermissions.inventory_remains_in_stock,
   },
@@ -718,7 +718,7 @@ const routes = [
     screen: MainPermissions.edit_inventory_purchase_prods,
   },
   {
-    element: <ToolsIerarch />,
+    element: <InventoryRemains />,
     path: "/products-ierarch",
     screen: MainPermissions.get_product_inventory,
   },

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Pagination from "@/components/Pagination";
 import { useEffect, useMemo, useState } from "react";
 import { BranchType, MainPermissions } from "@/utils/types";
-import { handleIdx, itemsPerPage } from "@/utils/helpers";
+import { handleIdx } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import TableViewBtn from "@/components/TableViewBtn";
 import useBranches from "@/hooks/useBranches";
