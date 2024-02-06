@@ -48,7 +48,10 @@ export const useStatsCategory = ({
         .then(({ data: response }) => {
           return response as CategoryStatTypes;
         }),
-    enabled: enabled && permmission?.[MainPermissions.get_statistics],
+    enabled:
+      enabled &&
+      (permmission?.[MainPermissions.stats_apc_fabric] ||
+        permmission?.[MainPermissions.stats_apc_fabric]),
   });
 };
 export default useStatsCategory;

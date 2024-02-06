@@ -110,7 +110,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
       {
         onSuccess: () => {
           orderRefetch();
-          removeParams(["changeModal"]);
+          closeModal();
           successToast("success");
           reset({});
         },

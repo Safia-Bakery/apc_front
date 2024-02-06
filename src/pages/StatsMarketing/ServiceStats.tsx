@@ -49,8 +49,7 @@ const ServiceStats = () => {
       0
     );
 
-    if (sumWithInitial) return sumWithInitial;
-    else return 0;
+    return sumWithInitial || 0;
   };
   const averageCalculator = (idx: any, key: keyof ServiceStatsType) => {
     const sumWithInitial = data?.[idx]?.reduce(

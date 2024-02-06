@@ -362,7 +362,6 @@ export enum MainPermissions {
   get_mark_category = 6,
   add_mark_category = 20,
   edit_mark_category = 21,
-  get_statistics = 7,
   get_map = 8,
   synch_fillials_iiko = 9,
   synch_tools_iiko = 30,
@@ -470,6 +469,18 @@ export enum MainPermissions {
   edit_faq_requests = 111,
 
   marketing_all_requests = 112,
+
+  get_requests_cctv = 117,
+  add_requests_cctv = 118,
+  edit_requests_cctv = 115,
+  edit_cetagories_cctv = 120,
+  get_cetagories_cctv = 116,
+  add_cetagories_cctv = 119,
+
+  stats_apc_fabric = 114,
+
+  stats_apc_retail = 113,
+  stats_marketing = 7,
 }
 export enum MarketingSubDep {
   designers = 1,
@@ -520,6 +531,7 @@ export enum Departments {
   logystics = 5, // zakaz mawin
   staff = 6, // zakaz edi
   clientComment = 7, // otziv clientov
+  cctv = 8, // videonablyudeniye
 }
 export enum Sphere {
   retail = 1, //for APC department

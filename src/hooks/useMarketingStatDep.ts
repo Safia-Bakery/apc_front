@@ -31,7 +31,7 @@ export const useMarketingStatDep = ({
         .then(({ data: response }) => {
           return response as MarketingDepartmentTypes;
         }),
-    enabled: enabled && permmission?.[MainPermissions.get_statistics],
+    enabled: enabled && permmission?.[MainPermissions.stats_marketing],
   });
 };
 export default useMarketingStatDep;

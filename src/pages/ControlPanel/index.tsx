@@ -129,6 +129,9 @@ const mainDeps: DepTypes = {
   [MainPermissions.get_staff_requests]: {
     dep: Departments.staff,
   },
+  [MainPermissions.get_requests_cctv]: {
+    dep: Departments.cctv,
+  },
 };
 
 enum MonthVals {
@@ -236,14 +239,14 @@ const ControlPanel = () => {
           if (mainDep.sphere === Sphere.purchase)
             return {
               title: "IT - закуп",
-              newOrders: "/requests-it/3?request_status=0",
-              ratingUrl: "/requests-it/3?rate=1",
+              newOrders: `/requests-it/${Sphere.purchase}?request_status=0`,
+              ratingUrl: `/requests-it/${Sphere.purchase}?rate=1`,
             };
           else
             return {
               title: "IT - поддержка",
-              newOrders: "/requests-it/4?request_status=0",
-              ratingUrl: "/requests-it/4?rate=1",
+              newOrders: `/requests-it/${Sphere.fix}?request_status=0`,
+              ratingUrl: `/requests-it/${Sphere.fix}?rate=1`,
             };
         case Departments.logystics:
           return {
@@ -252,6 +255,12 @@ const ControlPanel = () => {
           };
         case Departments.staff:
           return { title: "Заявки на еду", newOrders: "/requests-staff" };
+
+        case Departments.cctv:
+          return {
+            title: "Видеонаблюдение",
+            newOrders: "/requests-cctv?request_status=0",
+          };
         default:
           break;
       }

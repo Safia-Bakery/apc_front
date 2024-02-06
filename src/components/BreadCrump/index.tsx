@@ -57,6 +57,9 @@ const routeNameMappings: { [key: string]: string } = {
   "hr-asked-questions": "Заданные вопросы ❔",
   "order-products-inventory": "Заявки на закуп",
   "inventory-remains": "Остатки на складах инвентарь",
+  "requests-cctv": "Видеонаблюдение",
+  "categories-cctv": "Категории видеонаблюдении",
+  request: "Заявки",
 };
 
 const Breadcrumbs: FC = () => {

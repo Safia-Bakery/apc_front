@@ -7,7 +7,7 @@ import useCategories from "@/hooks/useCategories";
 import useDebounce from "custom/useDebounce";
 import useQueryString from "custom/useQueryString";
 import useUpdateEffect from "custom/useUpdateEffect";
-import { StatusName, itemsPerPage } from "@/utils/helpers";
+import { StatusName } from "@/utils/helpers";
 
 const CategoriesITFilter: FC = () => {
   const currentPage = Number(useQueryString("page")) || 1;
@@ -16,7 +16,6 @@ const CategoriesITFilter: FC = () => {
   const [category_status, $category_status] = useState<string>();
 
   const { refetch } = useCategories({
-    size: itemsPerPage,
     page: currentPage,
     enabled: false,
     ...(!!department && { department }),

@@ -25,17 +25,20 @@ import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import cl from "classnames";
 import Loading from "@/components/Loader";
 import useQueryString from "@/hooks/custom/useQueryString";
+import BaseInput from "@/components/BaseInputs";
+import MainSelect from "@/components/BaseInputs/MainSelect";
+import useCategories from "@/hooks/useCategories";
+import Modal from "@/components/Modal";
 
-const ShowLogRequests = () => {
+const ShowCCTVRequests = () => {
   const { id } = useParams();
   const navigateParams = useNavigateParams();
   const modal = Number(useQueryString("modal"));
   const removeParams = useRemoveParams();
   const { mutate: attach, isLoading: attaching } = attachBrigadaMutation();
-  const handleModal = (type: ModalTypes) => () => {
+  const handleModal = (type: ModalTypes) => () =>
     navigateParams({ modal: type });
-  };
-  const { getValues } = useForm();
+  const { getValues, register } = useForm();
   const {
     data: order,
     refetch: orderRefetch,
@@ -43,6 +46,13 @@ const ShowLogRequests = () => {
   } = useOrder({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
   const navigate = useNavigate();
+  const changeModal = Number(useQueryString("changeModal"));
+
+  const { data: categories, isLoading: categoryLoading } = useCategories({
+    enabled: changeModal === ModalTypes.changeCateg,
+    department: Departments.cctv,
+    category_status: 1,
+  });
 
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
@@ -51,7 +61,9 @@ const ShowLogRequests = () => {
     }
   };
 
-  const handleBack = () => navigate("/requests-logystics");
+  const handleBack = () => navigate("/requests-cctv");
+  const handleChangeModal = (changeModal: ModalTypes) => () =>
+    navigateParams({ changeModal });
 
   const handleBrigada =
     ({ status }: { status: RequestStatus }) =>
@@ -74,6 +86,51 @@ const ShowLogRequests = () => {
       );
       removeParams(["modal"]);
     };
+  const closeModal = () => removeParams(["changeModal"]);
+
+  const handleChange = () => {
+    const { category: category_id } = getValues();
+    attach(
+      {
+        request_id: Number(id),
+        category_id,
+        status: RequestStatus.done,
+      },
+      {
+        onSuccess: (data: any) => {
+          if (data.status === 200) {
+            orderRefetch();
+            successToast("assigned");
+            closeModal();
+          }
+        },
+        onError: (e: any) => errorToast(e.message),
+      }
+    );
+  };
+
+  const renderChangeModals = useMemo(() => {
+    switch (changeModal) {
+      case ModalTypes.changeCateg:
+        return (
+          <>
+            <BaseInput label="Выберите группу проблем">
+              <MainSelect
+                values={categories?.items}
+                register={register("category")}
+              />
+            </BaseInput>
+
+            <button
+              className="btn btn-success btn-fill w-full"
+              onClick={handleChange}
+            >
+              Применить
+            </button>
+          </>
+        );
+    }
+  }, [categoryLoading, changeModal, categories]);
 
   const renderBtns = useMemo(() => {
     if (isNew)
@@ -90,24 +147,16 @@ const ShowLogRequests = () => {
             className="btn btn-success btn-fill"
             id="recieve_request"
           >
-            Принять в работу
+            Принять
           </button>
         </div>
       );
     else
       return (
         <div className="float-end mb10">
-          {order?.status! < 2 && (
+          {order?.status! < RequestStatus.done && (
             <button
-              onClick={handleModal(ModalTypes.cars)}
-              className="btn btn-warning btn-fill mr-2"
-            >
-              Отправить в путь
-            </button>
-          )}
-          {order?.status! < 3 && (
-            <button
-              onClick={handleBrigada({ status: RequestStatus.done })}
+              onClick={handleChangeModal(ModalTypes.changeCateg)}
               className="btn btn-success btn-fill"
             >
               Завершить
@@ -173,16 +222,6 @@ const ShowLogRequests = () => {
                     </td>
                   </tr>
                   <tr>
-                    <th>Тип</th>
-                    <td>
-                      {handleDepartment({
-                        ...(!!order?.category?.sub_id
-                          ? { sub: order?.category?.sub_id }
-                          : { dep: order?.category?.department }),
-                      })}
-                    </td>
-                  </tr>
-                  <tr>
                     <th>Группа проблем</th>
                     <td>{order?.category?.name}</td>
                   </tr>
@@ -212,37 +251,9 @@ const ShowLogRequests = () => {
                     </td>
                   </tr>
                   <tr>
-                    <th>Примичание</th>
+                    <th>Описание события</th>
                     <td>{order?.description}</td>
                   </tr>
-                  {order?.location?.from_loc && (
-                    <tr>
-                      <th>Откуда</th>
-                      <td>
-                        {isValidHttpUrl(order?.location?.from_loc) ? (
-                          <Link to={order?.location?.from_loc} target="_blank">
-                            {order?.location?.from_loc}
-                          </Link>
-                        ) : (
-                          order?.location?.from_loc
-                        )}
-                      </td>
-                    </tr>
-                  )}
-                  {order?.location?.to_loc && (
-                    <tr>
-                      <th>Куда</th>
-                      <td>
-                        {isValidHttpUrl(order?.location?.to_loc) ? (
-                          <Link to={order?.location?.to_loc} target="_blank">
-                            {order?.location?.to_loc}
-                          </Link>
-                        ) : (
-                          order?.location?.to_loc
-                        )}
-                      </td>
-                    </tr>
-                  )}
                 </tbody>
               </table>
             </div>
@@ -275,35 +286,25 @@ const ShowLogRequests = () => {
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата изменения:</th>
+                    <th>Дата и время начало событий</th>
                     <td>
-                      {order?.started_at
-                        ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
+                      {order?.update_time.vidfrom
+                        ? dayjs(order?.update_time.vidfrom).format(
+                            "DD.MM.YYYY HH:mm"
+                          )
                         : "Не задано"}
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата выполнения:</th>
+                    <th>Дата и время конец событий</th>
                     <td>
-                      {order?.finished_at
-                        ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
+                      {order?.update_time.vidto
+                        ? dayjs(order?.update_time.vidto).format(
+                            "DD.MM.YYYY HH:mm"
+                          )
                         : "Не задано"}
                     </td>
                   </tr>
-                  <tr>
-                    <th>Дата поставки:</th>
-                    <td>
-                      {order?.arrival_date
-                        ? dayjs(order?.arrival_date).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
-                    </td>
-                  </tr>
-                  {!!order?.cars?.name && (
-                    <tr>
-                      <th>Назначенный грузовик</th>
-                      <td>{order?.cars?.name}</td>
-                    </tr>
-                  )}
                   {order?.deny_reason && (
                     <tr>
                       <th className="font-bold">Причина отмены</th>
@@ -318,10 +319,17 @@ const ShowLogRequests = () => {
           {renderBtns}
         </div>
       </Card>
-
       {renderModals}
+      <Modal isOpen={!!changeModal} onClose={closeModal}>
+        <Header title="Изменить">
+          <button onClick={closeModal} className="close">
+            <span>&times;</span>
+          </button>
+        </Header>
+        <div className="p-2">{renderChangeModals}</div>
+      </Modal>
     </>
   );
 };
 
-export default ShowLogRequests;
+export default ShowCCTVRequests;

@@ -1,14 +1,13 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { Category, Departments, MainPermissions, Sphere } from "@/utils/types";
 import Pagination from "@/components/Pagination";
-import { handleDepartment, handleIdx, itemsPerPage } from "@/utils/helpers";
+import { handleDepartment, handleIdx } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import TableViewBtn from "@/components/TableViewBtn";
 import useCategories from "@/hooks/useCategories";
-import CategoriesFilter from "./filter";
 import ItemsCount from "@/components/ItemsCount";
 import useQueryString from "custom/useQueryString";
 import { useAppSelector } from "@/store/utils/types";
@@ -35,10 +34,13 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
   const navigate = useNavigate();
   const [sort, $sort] = useState<Category[]>();
   const permission = useAppSelector(permissionSelector);
-  const currentPage = Number(useQueryString("page")) || 1;
-  const { data: categories, isLoading } = useCategories({
-    size: itemsPerPage,
-    page: currentPage,
+  const page = Number(useQueryString("page")) || 1;
+  const {
+    data: categories,
+    isLoading,
+    refetch,
+  } = useCategories({
+    page,
     ...(dep && { department: +dep }),
     ...(sphere_status && { sphere_status }),
   });

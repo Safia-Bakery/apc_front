@@ -25,7 +25,7 @@ const ShowRequestStaff = lazy(() => import("@/pages/ShowRequestStaff"));
 const LogysticsLogs = lazy(() => import("@/pages/LogysticsLogs"));
 const RequestsLogystics = lazy(() => import("@/pages/RequestsLogystics"));
 const CreateLogRequests = lazy(() => import("@/pages/CreateLogRequests"));
-const ShowLogRequests = lazy(() => import("@/pages/ShowLogRequests"));
+const ShowLogRequests = lazy(() => import("@/pages/ShowCCTVRequests"));
 const Masters = lazy(() => import("@/pages/Masters"));
 const ShowConsumption = lazy(() => import("@/pages/ShowConsumption"));
 const Logs = lazy(() => import("@/pages/LogsScreen"));
@@ -59,9 +59,7 @@ const StatsMarketing = lazy(() => import("@/pages/StatsMarketing"));
 const MarketingStatCategory = lazy(
   () => import("@/pages/StatsMarketing/StatCategory")
 );
-const MarketingServiceStats = lazy(
-  () => import("@/pages/StatsMarketing/ServiceStats")
-);
+const ServiceStats = lazy(() => import("@/pages/StatsMarketing/ServiceStats"));
 const DepartmentStat = lazy(
   () => import("@/pages/StatsMarketing/DepartmentStat")
 );
@@ -103,6 +101,12 @@ const EditAddFAQQuestions = lazy(() => import("@/pages/EditAddFAQQuestions"));
 const HRQuestions = lazy(() => import("@/pages/HRQuestions"));
 const EditHRRequests = lazy(() => import("@/pages/EditHRRequests"));
 const HRRequests = lazy(() => import("@/pages/HRRequests"));
+
+const RequestsCCTV = lazy(() => import("@/pages/RequestsCCTV"));
+const CreateCCTVRequest = lazy(() => import("@/pages/CreateCCTVRequest"));
+const ShowCCTVRequests = lazy(() => import("@/pages/ShowCCTVRequests"));
+
+const StatsIT = lazy(() => import("@/pages/StatsIT"));
 
 dayjs.locale("ru");
 
@@ -157,7 +161,12 @@ const routes = [
   {
     element: <ShowRequestApc />,
     path: "/requests-apc/:id",
-    screen: MainPermissions.get_statistics,
+    screen: MainPermissions.stats_apc_retail,
+  },
+  {
+    element: <ShowRequestApc />,
+    path: "/requests-apc/:id",
+    screen: MainPermissions.stats_apc_fabric,
   },
   {
     element: <RequestsIT />,
@@ -363,15 +372,15 @@ const routes = [
     screen: MainPermissions.get_stock_env_requests,
   },
   { element: <YandexMap />, path: "/map", screen: MainPermissions.get_map },
-  {
-    element: <StatisticsApc />,
-    path: "/statistics",
-    screen: MainPermissions.get_statistics,
-  },
+  // {
+  //   element: <StatisticsApc />,
+  //   path: "/statistics",
+  //   screen: MainPermissions.stats_apc_retail,
+  // },
   {
     element: <StatisticsApc />,
     path: "/statistics-apc-fabric",
-    screen: MainPermissions.get_statistics,
+    screen: MainPermissions.stats_apc_fabric,
   },
   {
     element: (
@@ -812,6 +821,53 @@ const routes = [
     path: "/hr-objections/:id",
     screen: MainPermissions.edit_faq_requests,
   },
+  // ===========================================================
+
+  {
+    element: <RequestsCCTV />,
+    path: "/requests-cctv",
+    screen: MainPermissions.get_requests_cctv,
+  },
+  {
+    element: <ShowCCTVRequests />,
+    path: "/requests-cctv/:id",
+    screen: MainPermissions.edit_requests_cctv,
+  },
+  {
+    element: <CreateCCTVRequest />,
+    path: "/requests-cctv/add",
+    screen: MainPermissions.add_requests_cctv,
+  },
+
+  {
+    element: (
+      <Categories
+        add={MainPermissions.add_cetagories_cctv}
+        edit={MainPermissions.edit_cetagories_cctv}
+        dep={Departments.cctv}
+      />
+    ),
+    path: "/categories-cctv",
+    screen: MainPermissions.get_cetagories_cctv,
+  },
+  {
+    element: <EditAddCategory dep={Departments.cctv} />,
+    path: "/categories-cctv/add",
+    screen: MainPermissions.add_cetagories_cctv,
+  },
+  {
+    element: <EditAddCategory dep={Departments.cctv} />,
+    path: "/categories-cctv/:id",
+    screen: MainPermissions.edit_cetagories_cctv,
+  },
+
+  {
+    element: <Logs />,
+    path: "/request/logs/:id",
+    screen: MainPermissions.edit_requests_cctv,
+  },
+
+  // ===========================================================
 ];
 
 const App = () => {
@@ -846,6 +902,7 @@ const App = () => {
       />
       <Route path="/" element={<WebRooutes />}>
         <Route
+          index
           element={
             <Suspend>
               <ControlPanel />
@@ -862,7 +919,7 @@ const App = () => {
           path={"*"}
         />
 
-        {permission?.[MainPermissions.get_statistics] && (
+        {permission?.[MainPermissions.stats_apc_retail] && (
           <Route
             path="/statistics-apc-retail"
             element={
@@ -922,7 +979,7 @@ const App = () => {
             />
           </Route>
         )}
-        {permission?.[MainPermissions.get_statistics] && (
+        {permission?.[MainPermissions.stats_apc_fabric] && (
           <Route
             path="/statistics-apc-fabric"
             element={
@@ -983,7 +1040,28 @@ const App = () => {
           </Route>
         )}
 
-        {permission?.[MainPermissions.get_statistics] && (
+        {permission?.[MainPermissions.it_statistics] && (
+          <Route
+            path="/statistics-it"
+            element={
+              <Suspend>
+                <StatsIT />
+              </Suspend>
+            }
+          >
+            <Route
+              index
+              path="service_level"
+              element={
+                <Suspend>
+                  <ServiceStats />
+                </Suspend>
+              }
+            />
+          </Route>
+        )}
+
+        {permission?.[MainPermissions.stats_marketing] && (
           <Route
             path="/statistics-marketing"
             element={
@@ -997,7 +1075,7 @@ const App = () => {
               path="service_level"
               element={
                 <Suspend>
-                  <MarketingServiceStats />
+                  <ServiceStats />
                 </Suspend>
               }
             />

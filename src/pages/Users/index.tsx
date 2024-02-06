@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MainPermissions, UsersType } from "@/utils/types";
 import Pagination from "@/components/Pagination";
 import { FC, useEffect, useMemo, useState } from "react";
-import { handleIdx, itemsPerPage } from "@/utils/helpers";
+import { handleIdx } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import TableViewBtn from "@/components/TableViewBtn";
 import useUsers from "@/hooks/useUsers";
@@ -49,7 +49,6 @@ const Users: FC<Props> = ({ add, edit }) => {
     isLoading: orderLoading,
     refetch,
   } = useUsers({
-    size: itemsPerPage,
     page: currentPage,
     body: {
       ...(!!full_name && { full_name }),

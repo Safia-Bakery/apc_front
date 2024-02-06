@@ -46,7 +46,10 @@ export const useStatsDepartment = ({
         .then(({ data: response }) => {
           return response as DepartmentStatTypes[];
         }),
-    enabled: enabled && permmission?.[MainPermissions.get_statistics],
+    enabled:
+      enabled &&
+      (permmission?.[MainPermissions.stats_apc_fabric] ||
+        permmission?.[MainPermissions.stats_apc_fabric]),
   });
 };
 export default useStatsDepartment;

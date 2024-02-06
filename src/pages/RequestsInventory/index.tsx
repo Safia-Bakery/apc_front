@@ -7,12 +7,7 @@ import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import {
-  handleIdx,
-  handleStatus,
-  itemsPerPage,
-  requestRows,
-} from "@/utils/helpers";
+import { handleIdx, handleStatus, requestRows } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import InventoryFilter from "./filter";
 import ItemsCount from "@/components/ItemsCount";
@@ -52,7 +47,6 @@ const RequestsInventory = () => {
     isFetching: orderFetching,
   } = useOrders({
     enabled: true,
-    size: itemsPerPage,
     page: currentPage,
     department: Departments.inventory,
     ...(!!request_status && { request_status }),

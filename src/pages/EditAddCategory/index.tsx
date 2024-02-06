@@ -30,6 +30,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
   const { refetch: categoryRefetch } = useCategories({
     enabled: false,
     department: dep,
+    page: 1,
     ...((sphere_status || !!sphere) && {
       sphere_status: Number(sphere) || sphere_status,
     }),

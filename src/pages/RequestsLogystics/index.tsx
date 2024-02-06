@@ -6,12 +6,7 @@ import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import {
-  handleIdx,
-  handleStatus,
-  itemsPerPage,
-  requestRows,
-} from "@/utils/helpers";
+import { handleIdx, handleStatus, requestRows } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import ItemsCount from "@/components/ItemsCount";
 import cl from "classnames";
@@ -65,7 +60,6 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
     isFetching,
   } = useOrders({
     enabled: true,
-    size: itemsPerPage,
     department: Departments.logystics,
     page: currentPage,
     ...(!!system && { is_bot: !!system }),

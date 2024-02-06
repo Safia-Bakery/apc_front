@@ -189,6 +189,8 @@ export const handleDepartment = ({
         return "Запрос машин";
       case Departments.staff:
         return "Заявки на еду";
+      case Departments.cctv:
+        return "Видеонаблюдение";
       default:
         break;
     }
@@ -264,7 +266,7 @@ export const routes: SidebarType[] = [
         url: "/statistics-apc-retail",
         param: "/category",
         icon: "/assets/icons/statistics.svg",
-        screen: MainPermissions.get_statistics,
+        screen: MainPermissions.stats_apc_retail,
       },
     ],
   },
@@ -306,7 +308,7 @@ export const routes: SidebarType[] = [
         url: "/statistics-apc-fabric",
         icon: "/assets/icons/statistics.svg",
         param: "/category",
-        screen: MainPermissions.get_statistics,
+        screen: MainPermissions.stats_apc_fabric,
       },
     ],
   },
@@ -455,7 +457,7 @@ export const routes: SidebarType[] = [
         url: "/statistics-marketing",
         param: "/service_level",
         icon: "/assets/icons/statistics.svg",
-        screen: MainPermissions.get_statistics,
+        screen: MainPermissions.stats_marketing,
       },
     ],
   },
@@ -516,6 +518,26 @@ export const routes: SidebarType[] = [
         icon: "/assets/icons/comments.svg",
         screen: MainPermissions.get_faq_requests,
         param: `?sphere=${HRRequestTypes.asked_questions}`,
+      },
+    ],
+  },
+  {
+    name: "Видеонаблюдение",
+    icon: "/assets/icons/camera.svg",
+    screen: MainPermissions.get_requests_cctv,
+    department: Departments.cctv,
+    subroutes: [
+      {
+        name: "Заявки",
+        url: "/requests-cctv",
+        icon: "/assets/icons/subOrder.svg",
+        screen: MainPermissions.get_requests_cctv,
+      },
+      {
+        name: "Категории",
+        url: `/categories-cctv`,
+        icon: "/assets/icons/categories.svg",
+        screen: MainPermissions.get_cetagories_cctv,
       },
     ],
   },

@@ -132,7 +132,11 @@ const RequestsIT = () => {
                   <td>{order?.fillial?.parentfillial?.name}</td>
                   <td>{order?.category?.name}</td>
                   <td>
-                    <div className={"overflow-ellipsis max-w-[200px] w-full"}>
+                    <div
+                      className={
+                        "overflow-hidden text-ellipsis max-w-[200px] w-full"
+                      }
+                    >
                       {order?.description}
                     </div>
                   </td>

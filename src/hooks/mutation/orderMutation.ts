@@ -14,6 +14,8 @@ interface Body {
   bread_size?: number;
   cat_prod?: { [key: string | number]: number };
   expenditure?: { [key: string]: [number, string] };
+  vidfrom?: string;
+  vidto?: string;
 }
 
 const requestMutation = () => {

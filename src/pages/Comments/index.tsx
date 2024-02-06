@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import Pagination from "@/components/Pagination";
-import { handleIdx, itemsPerPage } from "@/utils/helpers";
+import { handleIdx } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import ItemsCount from "@/components/ItemsCount";
 import useComments from "@/hooks/useComments";
@@ -25,7 +25,6 @@ const Comments = () => {
   const currentPage = Number(useQueryString("page")) || 1;
 
   const { data: comments, isLoading } = useComments({
-    size: itemsPerPage,
     page: currentPage,
   });
 

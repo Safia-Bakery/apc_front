@@ -181,7 +181,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
     if (edit && !!order?.brigada?.name && permissions?.[edit])
       return (
         <div className="flex justify-between gap-2">
-          {order?.status! < 3 && (
+          {order?.status! < RequestStatus.done && (
             <button
               onClick={handleModal(ModalTypes.cancelRequest)}
               className="btn btn-danger btn-fill"
@@ -190,7 +190,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
             </button>
           )}
           <div className="flex gap-2">
-            {order?.status! < 2 && (
+            {order?.status! < RequestStatus.sendToRepair && (
               <button
                 onClick={handleBrigada({
                   status: RequestStatus.sendToRepair,
@@ -200,9 +200,9 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                 Забрать для ремонта
               </button>
             )}
-            {order?.status! < 3 && (
+            {order?.status! < RequestStatus.done && (
               <button
-                id={"fixed"}
+                id="fixed"
                 onClick={handleBrigada({
                   status: RequestStatus.done,
                 })}

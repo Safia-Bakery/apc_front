@@ -30,7 +30,7 @@ const MainDatePicker: FC<Props> = ({
   wrapperClassName,
   showTimeSelect,
   iconClassName,
-  dateFormat = "d.MM.yyyy h:mm aa",
+  dateFormat = "Pp",
 }) => {
   const handleClear = () => onChange(undefined);
 

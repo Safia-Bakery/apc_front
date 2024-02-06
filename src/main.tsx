@@ -1,17 +1,17 @@
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { persistor, store } from "./store/rootConfig.ts";
-import BaseAPIClient from "./api/axiosConfig.ts";
-import Loading from "./components/Loader/index.tsx";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "./utils/helpers.ts";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import App from "./App.tsx";
+import { queryClient } from "./utils/helpers.ts";
+import { persistor, store } from "./store/rootConfig.ts";
+import BaseAPIClient from "./api/axiosConfig.ts";
+import Loading from "./components/Loader/index.tsx";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.scss";
 

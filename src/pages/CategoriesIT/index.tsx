@@ -5,7 +5,7 @@ import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { Category, Departments, MainPermissions, Sphere } from "@/utils/types";
 import Pagination from "@/components/Pagination";
-import { handleDepartment, handleIdx, itemsPerPage } from "@/utils/helpers";
+import { handleDepartment, handleIdx } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import TableViewBtn from "@/components/TableViewBtn";
 import useCategories from "@/hooks/useCategories";
@@ -41,7 +41,6 @@ const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
   const currentPage = Number(useQueryString("page")) || 1;
 
   const { data: categories, isLoading } = useCategories({
-    size: itemsPerPage,
     page: currentPage,
     ...(dep && { department: +dep }),
     ...(!!sphere && { sphere_status: Number(sphere) }),
