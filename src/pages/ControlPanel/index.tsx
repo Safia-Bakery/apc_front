@@ -414,30 +414,32 @@ const ControlPanel = () => {
                     </div>
                   </div>
 
-                  <div
-                    className={cl(styles.blockItem, "flex-1 justify-between")}
-                  >
-                    <h3 className="text-base h-12">Средний рейтинг</h3>
-                    <h2 className="text-center mt-2">{stats?.avg_rating}</h2>
+                  {!!stats?.avg_rating && (
+                    <div
+                      className={cl(styles.blockItem, "flex-1 justify-between")}
+                    >
+                      <h3 className="text-base h-12">Средний рейтинг</h3>
+                      <h2 className="text-center mt-2">{stats?.avg_rating}</h2>
 
-                    <div className="w-full flex justify-end mt-3">
-                      {renderDep?.ratingUrl && (
-                        <Link
-                          to={renderDep?.ratingUrl}
-                          className="flex text-gray-400 text-xs "
-                        >
-                          открыть все оценки{" "}
-                          <img
-                            src="/assets/icons/arrowBlack.svg"
-                            alt=""
-                            className="rotate-90"
-                            width={15}
-                            height={15}
-                          />
-                        </Link>
-                      )}
+                      <div className="w-full flex justify-end mt-3">
+                        {renderDep?.ratingUrl && (
+                          <Link
+                            to={renderDep?.ratingUrl}
+                            className="flex text-gray-400 text-xs "
+                          >
+                            открыть все оценки{" "}
+                            <img
+                              src="/assets/icons/arrowBlack.svg"
+                              alt=""
+                              className="rotate-90"
+                              width={15}
+                              height={15}
+                            />
+                          </Link>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   <div
                     className={cl(styles.blockItem, "flex-1 justify-between")}
