@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import useOrder from "@/hooks/useOrder";
@@ -7,12 +7,7 @@ import dayjs from "dayjs";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
-import {
-  detectFileType,
-  handleDepartment,
-  handleStatus,
-  isValidHttpUrl,
-} from "@/utils/helpers";
+import { detectFileType, handleStatus } from "@/utils/helpers";
 import {
   Departments,
   FileType,
@@ -174,8 +169,15 @@ const ShowCCTVRequests = () => {
       return <ShowRequestModals />;
   }, [order?.status, modal]);
 
+  const handleValidateDate = (date: string | undefined) => {
+    if (date) {
+      return dayjs(date).isValid()
+        ? dayjs(date).format("DD.MM.YYYY HH:mm")
+        : date;
+    } else return "Не задано";
+  };
+
   useEffect(() => {
-    orderRefetch();
     window.scrollTo(0, 0);
   }, []);
 
@@ -287,23 +289,11 @@ const ShowCCTVRequests = () => {
                   </tr>
                   <tr>
                     <th>Дата и время начало событий</th>
-                    <td>
-                      {order?.update_time.vidfrom
-                        ? dayjs(order?.update_time.vidfrom).format(
-                            "DD.MM.YYYY HH:mm"
-                          )
-                        : "Не задано"}
-                    </td>
+                    <td>{handleValidateDate(order?.update_time.vidfrom)}</td>
                   </tr>
                   <tr>
                     <th>Дата и время конец событий</th>
-                    <td>
-                      {order?.update_time.vidto
-                        ? dayjs(order?.update_time.vidto).format(
-                            "DD.MM.YYYY HH:mm"
-                          )
-                        : "Не задано"}
-                    </td>
+                    <td>{handleValidateDate(order?.update_time.vidto)}</td>
                   </tr>
                   {order?.deny_reason && (
                     <tr>

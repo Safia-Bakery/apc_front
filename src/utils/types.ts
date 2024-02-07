@@ -104,7 +104,7 @@ export interface Order {
   finished_at: Date;
   arrival_date: Date;
   bread_size?: string;
-  update_time: { [key: number | string]: Date | string };
+  update_time: { [key: number | string]: string };
   finishing_time?: string;
   comments: [
     {

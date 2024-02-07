@@ -97,15 +97,6 @@ const CCTVFilter: FC = () => {
           />
         </BaseInput>
       </td>
-      <td className="p-0">
-        <BaseInput className="!m-1">
-          <MainInput
-            register={register("responsible")}
-            className="!mb-0"
-            onChange={handleResponsible}
-          />
-        </BaseInput>
-      </td>
       <td width={150} className="p-0 relative">
         <div
           onClick={() => $enabled(true)}
@@ -126,6 +117,7 @@ const CCTVFilter: FC = () => {
           />
         </BaseInputs>
       </td>
+
       <td className="p-0">
         <BaseInputs className="!m-1">
           <MainSelect
@@ -156,6 +148,15 @@ const CCTVFilter: FC = () => {
           dateFormat="d.MM.yyyy"
           wrapperClassName={"m-1"}
         />
+      </td>
+      <td className="p-0">
+        <BaseInput className="!m-1">
+          <MainInput
+            register={register("responsible")}
+            className="!mb-0"
+            onChange={handleResponsible}
+          />
+        </BaseInput>
       </td>
     </>
   );

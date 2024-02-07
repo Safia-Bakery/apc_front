@@ -36,6 +36,7 @@ const ITFilter: FC = () => {
     if (start === undefined) deleteParam(["created_at"]);
     if (!!start) navigate({ created_at: start });
   };
+
   const handleName = (e: ChangeEvent<HTMLInputElement>) =>
     $user(e.target.value);
 

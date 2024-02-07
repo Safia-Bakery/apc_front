@@ -50,7 +50,9 @@ const RequestsInventory = () => {
     page: currentPage,
     department: Departments.inventory,
     ...(!!request_status && { request_status }),
-    ...(!!created_at && { created_at }),
+    ...(!!created_at && {
+      created_at: dayjs(created_at).format("YYYY-MM-DD"),
+    }),
     ...(!!branch?.id && { fillial_id: branch?.id }),
     ...(!!user && { user }),
     ...(!!id && { id }),
@@ -59,8 +61,6 @@ const RequestsInventory = () => {
   useEffect(() => {
     refetch();
   }, []);
-
-  // if (orderLoading) return <Loading absolute />;
 
   return (
     <Card>
