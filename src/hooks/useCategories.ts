@@ -11,41 +11,17 @@ interface Props {
   name?: string;
   category_status?: number | string;
   sphere_status?: number;
+  parent_id?: number;
 }
 
-export const useCategories = ({
-  enabled = true,
-  size,
-  page = 1,
-  name,
-  category_status,
-  department,
-  sub_id,
-  sphere_status,
-}: Props) => {
+export const useCategories = (params: Props) => {
   return useQuery({
-    queryKey: [
-      "categories",
-      department,
-      sphere_status,
-      page,
-      name,
-      category_status,
-      sub_id,
-    ],
+    queryKey: ["categories", params],
     queryFn: () =>
       apiClient
-        .get("/category", {
-          size,
-          page,
-          department,
-          sub_id,
-          sphere_status,
-          name,
-          category_status,
-        })
+        .get("/category", params)
         .then(({ data: response }) => response as CategoryTypes),
-    enabled,
+    enabled: params.enabled,
     refetchOnMount: true,
   });
 };

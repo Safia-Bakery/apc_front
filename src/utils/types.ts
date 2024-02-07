@@ -226,6 +226,8 @@ export interface Category {
   sub_id?: number;
   file: string;
   ftime: number;
+  parent_id?: number | null;
+  is_child?: boolean | null;
 }
 
 export interface CategoryTypes extends BasePaginatedRes {

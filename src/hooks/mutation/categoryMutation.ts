@@ -12,6 +12,8 @@ interface Body {
   sphere_status?: Sphere;
   files?: any;
   ftime?: number;
+  parent_id?: number;
+  is_child?: boolean;
 }
 
 const categoryMutation = () => {

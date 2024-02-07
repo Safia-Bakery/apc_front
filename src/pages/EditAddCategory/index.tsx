@@ -16,6 +16,7 @@ import { Departments, MarketingSubDepRu, Sphere } from "@/utils/types";
 import MainSelect from "@/components/BaseInputs/MainSelect";
 import { imageConverter } from "@/utils/helpers";
 import { baseURL } from "@/main";
+import useQueryString from "@/hooks/custom/useQueryString";
 
 interface Props {
   sphere_status?: Sphere;
@@ -25,12 +26,14 @@ interface Props {
 const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
   const { id, sphere } = useParams();
   const navigate = useNavigate();
+  const parent_id = Number(useQueryString("parent_id"));
 
   const goBack = () => navigate(-1);
   const { refetch: categoryRefetch } = useCategories({
     enabled: false,
     department: dep,
     page: 1,
+    ...(parent_id && { parent_id }),
     ...((sphere_status || !!sphere) && {
       sphere_status: Number(sphere) || sphere_status,
     }),
@@ -53,7 +56,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
   } = useForm();
 
   const onSubmit = () => {
-    const { name, description, urgent, status, sub_id, files, time } =
+    const { name, description, urgent, status, sub_id, files, time, is_child } =
       getValues();
     mutate(
       {
@@ -62,6 +65,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
         status: +!!status,
         urgent: +!!urgent,
         department: dep,
+        is_child,
         sphere_status: Number(sphere) || sphere_status || Sphere.retail,
         ...(!!time && { ftime: +time }),
         ...(id && { id: +id }),
@@ -89,6 +93,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
         status: !!category.status,
         sub_id: Number(category?.sub_id),
         time: category.ftime,
+        is_child: !category.is_child,
       });
     }
   }, [category, reset]);
@@ -162,6 +167,8 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
         />
 
         <MainCheckBox label="Активный" register={register("status")} />
+
+        <MainCheckBox label="Последний" register={register("is_child")} />
 
         {Number(dep) === Departments.marketing && (
           <BaseInput label="ЗАГРУЗИТЬ ФОТО" className="relative">
