@@ -11,15 +11,15 @@ interface Body {
   page?: number;
 }
 
-export const useFAQ = (body: Body) => {
+export const useFAQ = ({ enabled, ...params }: Body) => {
   const token = useAppSelector(tokenSelector);
   return useQuery({
-    queryKey: ["faq_questions", body],
+    queryKey: ["faq_questions", params],
     queryFn: () =>
       apiClient
-        .get("/hr/question", body)
+        .get({ url: "/hr/question", params })
         .then(({ data: response }) => response as MainFAQTypes),
-    enabled: body.enabled && !!token,
+    enabled: enabled && !!token,
   });
 };
 export default useFAQ;

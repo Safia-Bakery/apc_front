@@ -21,7 +21,7 @@ import dayjs from "dayjs";
 import { staffCategoryId } from "@/utils/keys";
 
 const AddStaffRequest = () => {
-  const { mutate, isLoading } = requestMutation();
+  const { mutate, isPending } = requestMutation();
   const branchJson = useQueryString("branch");
   const sphere_status = Number(useQueryString("sphere_status"));
   const branch = branchJson && JSON.parse(branchJson);
@@ -73,7 +73,7 @@ const AddStaffRequest = () => {
     }
   }, [sphere_status]);
 
-  if (isLoading) return <Loading absolute />;
+  if (isPending) return <Loading absolute />;
 
   return (
     <Card>

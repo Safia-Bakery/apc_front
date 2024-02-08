@@ -38,7 +38,7 @@ const ShowMarketingRequest = () => {
 
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
-  const { mutate: attach, isLoading: attaching } = attachBrigadaMutation();
+  const { mutate: attach, isPending: attaching } = attachBrigadaMutation();
   const handleModal = (type: ModalTypes) => () => {
     navigateParams({ modal: type });
   };

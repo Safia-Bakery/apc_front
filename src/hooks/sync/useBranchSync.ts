@@ -18,7 +18,7 @@ export const useBranchSync = ({
     queryKey: ["branches_sync"],
     queryFn: () =>
       apiClient
-        .get("/synch/department", { page, size }, config)
+        .get({ url: "/synch/department", params: { page, size }, config })
         .then(({ data: response }) => {
           return response as BranchTypes;
         })

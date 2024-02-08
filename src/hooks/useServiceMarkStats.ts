@@ -21,27 +21,19 @@ export const useServiceMarkStats = ({
   enabled,
   started_at = dayjs().startOf("month").format("YYYY-MM-DD"),
   finished_at = dayjs().format("YYYY-MM-DD"),
-  sub_id,
-  department,
-  sphere_status,
+  ...params
 }: Params) => {
   return useQuery({
-    queryKey: [
-      "Service_Mark_Stats",
-      finished_at,
-      started_at,
-      sub_id,
-      department,
-      sphere_status,
-    ],
+    queryKey: ["Service_Mark_Stats", finished_at, started_at, params],
     queryFn: () =>
       apiClient
-        .get("/v2/stats/marketing", {
-          finished_at,
-          started_at,
-          sub_id,
-          department,
-          sphere_status,
+        .get({
+          url: "/v2/stats/marketing",
+          params: {
+            finished_at,
+            started_at,
+            ...params,
+          },
         })
         .then(({ data: response }) => response as ServiceStatsTypes),
     enabled,
@@ -49,5 +41,3 @@ export const useServiceMarkStats = ({
   });
 };
 export default useServiceMarkStats;
-
-//  /v2/stats/marketing

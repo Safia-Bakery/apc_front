@@ -10,15 +10,15 @@ interface Body {
   enabled?: boolean;
 }
 
-export const useMainStats = (body: Body) => {
+export const useMainStats = ({ enabled, ...params }: Body) => {
   const token = useAppSelector(tokenSelector);
   return useQuery({
-    queryKey: ["main_statistics", body],
+    queryKey: ["main_statistics", params],
     queryFn: () =>
       apiClient
-        .get("/v1/stats/main", body)
+        .get({ url: "/v1/stats/main", params })
         .then(({ data: response }) => response as MainStatTypes),
-    enabled: body.enabled && !!token,
+    enabled: enabled && !!token,
   });
 };
 export default useMainStats;

@@ -78,7 +78,7 @@ const SelectWrapper = forwardRef<
 
 const CreateITRequest = () => {
   const [files, $files] = useState<FileItem[]>();
-  const { mutate, isLoading } = requestMutation();
+  const { mutate, isPending } = requestMutation();
   const { sphere } = useParams();
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
@@ -105,7 +105,6 @@ const CreateITRequest = () => {
     enabled: !!sphere,
     category_status: 1,
   });
-
   const { isLoading: productLoading } = useCatProducts({
     category_id,
     enabled: !!category_id,
@@ -113,8 +112,9 @@ const CreateITRequest = () => {
 
   const cacheProduct = (categId: number) => {
     const queryClient = useQueryClient();
-    const productKey = ["category_products", categId, 1, undefined, undefined];
-    return queryClient.getQueryCache().find(productKey)?.state
+    const productKey = ["category_products", { category_id: categId }];
+
+    return queryClient.getQueryCache().find({ queryKey: productKey })?.state
       ?.data as CategoryProducts[];
   };
 
@@ -182,7 +182,7 @@ const CreateITRequest = () => {
   }, [branch?.id]);
 
   if (
-    isLoading ||
+    isPending ||
     (productLoading && !!category_id) ||
     (categoryLoading && !!sphere)
   )

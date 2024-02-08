@@ -8,8 +8,12 @@ interface Body {
 }
 
 const orderMsgMutation = () => {
-  return useMutation(["order_message"], (body: Body) =>
-    apiClient.post({ url: "/v1/reqest/message", body }).then(({ data }) => data)
-  );
+  return useMutation({
+    mutationKey: ["order_message"],
+    mutationFn: (body: Body) =>
+      apiClient
+        .post({ url: "/v1/reqest/message", body })
+        .then(({ data }) => data),
+  });
 };
 export default orderMsgMutation;

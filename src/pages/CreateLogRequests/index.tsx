@@ -22,7 +22,7 @@ import dayjs from "dayjs";
 
 const CreateLogRequests = () => {
   const [files, $files] = useState<FileItem[]>();
-  const { mutate, isLoading } = requestMutation();
+  const { mutate, isPending } = requestMutation();
   const branchJson = useQueryString("branch");
   const [start, $start] = useState<Date>();
   const branch = branchJson && JSON.parse(branchJson);
@@ -76,7 +76,7 @@ const CreateLogRequests = () => {
     }
   };
 
-  if (isLoading || categoryLoading) return <Loading absolute />;
+  if (isPending || categoryLoading) return <Loading absolute />;
 
   return (
     <Card>

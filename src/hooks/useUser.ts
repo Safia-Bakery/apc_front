@@ -13,7 +13,7 @@ export const useUser = ({
     queryKey: ["user", id],
     queryFn: () =>
       apiClient
-        .get(`/users/${id}`)
+        .get({ url: `/users/${id}` })
         .then(({ data: response }) => (response as UserTypes) || null),
     enabled: !!id && enabled,
     refetchOnMount: true,

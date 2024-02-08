@@ -15,11 +15,16 @@ interface Body {
 }
 
 const attachBrigadaMutation = () => {
-  return useMutation(["attach_brigada_to_request"], (body: Body) =>
-    apiClient
-      .put({ url: "/request/attach/brigada", body })
-      .then((res) => res)
-      .catch((e: Error) => errorToast(e.message))
-  );
+  return useMutation({
+    mutationKey: ["attach_brigada_to_request"],
+    mutationFn: (body: Body) =>
+      apiClient
+        .put({ url: "/request/attach/brigada", body })
+        .then((res) => res)
+        .catch((e: Error) => errorToast(e.message)),
+
+    // retry: true, // todo
+    // retryDelay: 1000,
+  });
 };
 export default attachBrigadaMutation;

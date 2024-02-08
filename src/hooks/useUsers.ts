@@ -27,7 +27,7 @@ export const useUsers = ({
     queryKey: ["users", page, position, body],
     queryFn: () =>
       apiClient
-        .get(`/users`, { page, size, ...body, position })
+        .get({ url: "/users", params: { page, size, ...body, position } })
         .then(({ data: response }) => {
           return response as UsersTypes;
         }),

@@ -27,23 +27,24 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
   const { id, sphere } = useParams();
   const navigate = useNavigate();
   const parent_id = Number(useQueryString("parent_id"));
+  const parent_name = useQueryString("parent_name");
 
   const goBack = () => navigate(-1);
-  const { refetch: categoryRefetch } = useCategories({
-    enabled: false,
-    department: dep,
-    page: 1,
-    ...(parent_id && { parent_id }),
-    ...((sphere_status || !!sphere) && {
-      sphere_status: Number(sphere) || sphere_status,
-    }),
-  });
 
   const {
     data: category,
     isLoading,
     refetch,
   } = useCategory({ id: Number(id) });
+  const { refetch: categoryRefetch } = useCategories({
+    enabled: false,
+    page: 1,
+    department: dep,
+    ...((sphere_status || !!sphere) && {
+      sphere_status: Number(sphere) || sphere_status,
+    }),
+    ...(!!category?.parent_id && { parent_id: category.parent_id }),
+  });
   const { mutate } = categoryMutation();
 
   const {
@@ -71,6 +72,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
         ...(id && { id: +id }),
         ...(!!files?.length && { file: files[0] }),
         ...(!!sub_id && { sub_id: +sub_id }),
+        ...(!!parent_id && { parent_id }),
       },
       {
         onSuccess: () => {
@@ -93,7 +95,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
         status: !!category.status,
         sub_id: Number(category?.sub_id),
         time: category.ftime,
-        is_child: !category.is_child,
+        is_child: !!category.is_child,
       });
     }
   }, [category, reset]);
@@ -121,11 +123,16 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
     if (Number(dep) !== Departments.marketing) return;
   }, [watch("files"), category?.file, id]);
 
+  const renderTitle = useMemo(() => {
+    if (id) return `Изменить категорие №${id}`;
+    else return parent_name ? `Добавить на ${parent_name}` : "Добавить";
+  }, []);
+
   if (isLoading && !!id) return;
 
   return (
     <Card className="overflow-hidden pb-3">
-      <Header title={!id ? "Добавить" : `Изменить категорие №${id}`}>
+      <Header title={renderTitle}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад
         </button>
@@ -185,6 +192,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
             />
           </BaseInput>
         )}
+
         {renderImage}
 
         <button type="submit" className="btn btn-success btn-fill float-end">

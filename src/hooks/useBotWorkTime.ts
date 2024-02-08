@@ -7,7 +7,7 @@ export const useBotWorkTime = ({ enabled = true }: { enabled?: boolean }) => {
     queryKey: ["bot_work_time"],
     queryFn: () =>
       apiClient
-        .get(`/working`)
+        .get({ url: "/working" })
         .then(({ data: response }) => response as BotWorkTimeType),
     enabled,
   });

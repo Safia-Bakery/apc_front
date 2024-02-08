@@ -18,7 +18,7 @@ const EditHRRequests = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
-  const { mutate: postFaq, isLoading: posting } = hrRequestsMutation();
+  const { mutate: postFaq, isPending: posting } = hrRequestsMutation();
   const [answerModal, $answerModal] = useState(false);
 
   const { register, getValues } = useForm();

@@ -13,7 +13,7 @@ export const useOrder = ({
     queryKey: ["order", id],
     queryFn: () =>
       apiClient
-        .get(`/request/${id}`)
+        .get({ url: `/request/${id}` })
         .then(({ data: response }) => (response as Order) || null),
     enabled: !!id && enabled,
     refetchOnMount: true,

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { InventoryOrders } from "@/utils/types";
 import Pagination from "@/components/Pagination";
@@ -31,7 +31,7 @@ const InventoryOrderedTools = () => {
   const {
     data: orders,
     isLoading: toolsLoading,
-    refetch,
+    // refetch,
   } = useInventoryOrders({ page });
 
   const { onDownload } = useDownloadExcel({
@@ -42,9 +42,9 @@ const InventoryOrderedTools = () => {
 
   const downloadAsPdf = () => onDownload();
 
-  useEffect(() => {
-    refetch();
-  }, []);
+  // useEffect(() => {
+  //   refetch();
+  // }, []);
 
   return (
     <Card>

@@ -14,7 +14,7 @@ const EditInventoryProd = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
 
-  const { data, refetch: toolRefetch } = useTools({ id });
+  const { data } = useTools({ id });
   const tool = data?.items?.[0];
 
   const { mutate } = updateToolsMutation();
@@ -48,9 +48,9 @@ const EditInventoryProd = () => {
     });
   }, [tool]);
 
-  useEffect(() => {
-    toolRefetch();
-  }, []);
+  // useEffect(() => {
+  //   toolRefetch();
+  // }, []);
 
   return (
     <Card>

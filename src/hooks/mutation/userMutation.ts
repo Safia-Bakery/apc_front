@@ -17,9 +17,9 @@ interface Body {
 }
 
 const userMutation = () => {
-  return useMutation(
-    ["create_update_user"],
-    (body: Body) => {
+  return useMutation({
+    mutationKey: ["create_update_user"],
+    mutationFn: (body: Body) => {
       if (body.user_id)
         return apiClient
           .put({ url: "/users", body })
@@ -36,12 +36,9 @@ const userMutation = () => {
           if (res.status === 200) return res;
         });
     },
-    {
-      onError: (e: any) =>
-        errorToast(
-          e.response?.data.detail ? e.response?.data.detail : e.message
-        ),
-    }
-  );
+
+    onError: (e: any) =>
+      errorToast(e.response?.data.detail ? e.response?.data.detail : e.message),
+  });
 };
 export default userMutation;

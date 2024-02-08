@@ -20,7 +20,7 @@ import { CCTVCategoryId } from "@/utils/keys";
 
 const CreateCCTVRequest = () => {
   const [files, $files] = useState<FileItem[]>();
-  const { mutate, isLoading } = requestMutation();
+  const { mutate, isPending } = requestMutation();
   const branchJson = useQueryString("branch");
   const [start, $start] = useState<Date>();
   const [end, $end] = useState<Date>();
@@ -71,7 +71,7 @@ const CreateCCTVRequest = () => {
     });
   }, [branch?.id]);
 
-  if (isLoading) return <Loading absolute />;
+  if (isPending) return <Loading absolute />;
 
   return (
     <Card>

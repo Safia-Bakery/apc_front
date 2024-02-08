@@ -7,14 +7,16 @@ interface Body {
 }
 
 const marketingReassignMutation = () => {
-  return useMutation(["redirect_marketing_order"], (body: Body) =>
-    apiClient
-      .put({
-        url: "/v1/request/redirect",
-        body,
-      })
-      .then(({ data }) => data)
-      .catch((e) => e.message)
-  );
+  return useMutation({
+    mutationKey: ["redirect_marketing_order"],
+    mutationFn: (body: Body) =>
+      apiClient
+        .put({
+          url: "/v1/request/redirect",
+          body,
+        })
+        .then(({ data }) => data)
+        .catch((e) => e.message),
+  });
 };
 export default marketingReassignMutation;

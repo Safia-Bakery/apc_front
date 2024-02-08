@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
@@ -51,16 +51,16 @@ const HRRequests = () => {
   const {
     data: faqs,
     isLoading,
-    refetch,
+    // refetch,
   } = useFAQRequests({
     page,
     ...(!!sphere && { sphere }),
   });
   const handleNavigate = (route: string) => () => navigate(route);
 
-  useEffect(() => {
-    refetch();
-  }, []);
+  // useEffect(() => {
+  //   refetch();
+  // }, []);
 
   return (
     <Card>

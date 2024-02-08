@@ -1,7 +1,6 @@
 import { RequestStatusArr } from "@/utils/helpers";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import useDebounce from "custom/useDebounce";
-import "react-datepicker/dist/react-datepicker.css";
 import BaseInputs from "@/components/BaseInputs";
 import MainSelect from "@/components/BaseInputs/MainSelect";
 import BaseInput from "@/components/BaseInputs";

@@ -9,7 +9,9 @@ export const useToken = ({ enabled = true }) => {
   return useQuery({
     queryKey: ["me_token"],
     queryFn: () =>
-      apiClient.get("/me").then(({ data: response }) => response as MeTypes),
+      apiClient
+        .get({ url: "/me" })
+        .then(({ data: response }) => response as MeTypes),
     enabled: !!token && enabled,
   });
 };

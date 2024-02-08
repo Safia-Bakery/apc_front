@@ -13,7 +13,7 @@ export const useSyncExpanditure = ({
     queryKey: ["expanditure_sync"],
     queryFn: () =>
       apiClient
-        .get("/synch/groups", {}, config)
+        .get({ url: "/synch/groups", config })
         .then((response) => {
           if (response.status === 200) {
             successToast("Синхронизирован");

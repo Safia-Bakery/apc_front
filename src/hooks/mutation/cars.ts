@@ -9,14 +9,17 @@ interface Body {
 }
 
 const carsMutation = () => {
-  return useMutation(["cars_mutation"], async (body: Body) => {
-    if (body.id) {
-      const { data } = await apiClient.put({ url: "/v1/cars", body });
-      return data;
-    } else {
-      const { data } = await apiClient.post({ url: "/v1/cars", body });
-      return data;
-    }
+  return useMutation({
+    mutationKey: ["cars_mutation"],
+    mutationFn: async (body: Body) => {
+      if (body.id) {
+        const { data } = await apiClient.put({ url: "/v1/cars", body });
+        return data;
+      } else {
+        const { data } = await apiClient.post({ url: "/v1/cars", body });
+        return data;
+      }
+    },
   });
 };
 export default carsMutation;

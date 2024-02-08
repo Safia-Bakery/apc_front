@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Departments, Order } from "@/utils/types";
 import Loading from "@/components/Loader";
 import Pagination from "@/components/Pagination";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
@@ -42,7 +42,6 @@ const RequestsInventory = () => {
 
   const {
     data: requests,
-    refetch,
     isLoading: orderLoading,
     isFetching: orderFetching,
   } = useOrders({
@@ -58,9 +57,9 @@ const RequestsInventory = () => {
     ...(!!id && { id }),
   });
 
-  useEffect(() => {
-    refetch();
-  }, []);
+  // useEffect(() => {
+  //   refetch();
+  // }, []);
 
   return (
     <Card>

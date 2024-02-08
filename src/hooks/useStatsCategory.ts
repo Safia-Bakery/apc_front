@@ -38,12 +38,15 @@ export const useStatsCategory = ({
     ],
     queryFn: () =>
       apiClient
-        .get("/v1/stats/category", {
-          timer,
-          department,
-          sphere_status,
-          started_at,
-          finished_at,
+        .get({
+          url: "/v1/stats/category",
+          params: {
+            timer,
+            department,
+            sphere_status,
+            started_at,
+            finished_at,
+          },
         })
         .then(({ data: response }) => {
           return response as CategoryStatTypes;

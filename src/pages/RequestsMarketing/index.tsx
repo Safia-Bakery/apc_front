@@ -56,11 +56,10 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
     data: requests,
     isLoading: orderLoading,
     isFetching: orderFetching,
-    refetch,
   } = useOrders({
     department: Departments.marketing,
     page: currentPage,
-    sub_id: sub_id,
+    sub_id,
 
     ...(!!created_at && {
       created_at: dayjs(created_at).format("YYYY-MM-DD"),
@@ -74,9 +73,9 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
     ...(!!rate && { rate: !!rate }),
   });
 
-  useEffect(() => {
-    refetch();
-  }, [sub_id]);
+  // useEffect(() => {
+  //   refetch();
+  // }, [sub_id]);
 
   return (
     <Card className="overflow-hidden">

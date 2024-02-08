@@ -21,9 +21,12 @@ export const useMarketingStatCat = ({
     queryKey: ["stats_marketing_cat", created_at, finished_at],
     queryFn: () =>
       apiClient
-        .get("/v1/stats/marketing/cat", {
-          created_at,
-          finished_at,
+        .get({
+          url: "/v1/stats/marketing/cat",
+          params: {
+            created_at,
+            finished_at,
+          },
         })
         .then(({ data: response }) => {
           return response as MarketingDepartmentTypes;

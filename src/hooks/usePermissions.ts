@@ -6,7 +6,7 @@ export const usePermissions = ({ enabled = true }: { enabled?: boolean }) => {
   return useQuery({
     queryKey: ["all_permissions"],
     queryFn: () =>
-      apiClient.get(`/all/permissions`).then(({ data: response }) => {
+      apiClient.get({ url: "/all/permissions" }).then(({ data: response }) => {
         return (response as PermissionTypes[]) || [];
       }),
     enabled,

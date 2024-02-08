@@ -23,9 +23,9 @@ const requestMutation = () => {
 
   const config = { timeout: 100000 };
 
-  return useMutation(
-    ["create_order"],
-    async (body: Body) => {
+  return useMutation({
+    mutationKey: ["create_order"],
+    mutationFn: async (body: Body) => {
       const formData = new FormData();
       Object.entries(body).forEach((item) => {
         switch (item[0]) {
@@ -56,7 +56,7 @@ const requestMutation = () => {
       });
       return data;
     },
-    { onError: (e: Error) => errorToast(e.message) }
-  );
+    onError: (e: Error) => errorToast(e.message),
+  });
 };
 export default requestMutation;

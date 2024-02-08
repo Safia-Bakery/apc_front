@@ -59,7 +59,6 @@ const RequestsStaff = () => {
     data: totals,
     isFetching: excellFtching,
     isLoading: excellLoading,
-    refetch: excellRefetch,
   } = useStaffExcell({
     date: dayjs(!!arrival_date ? arrival_date : tomorrow).format("YYYY-MM-DD"),
     file: excelFile,
@@ -69,7 +68,6 @@ const RequestsStaff = () => {
     data: requests,
     isLoading,
     isFetching,
-    refetch,
   } = useOrders({
     enabled: true,
     page: currentPage,
@@ -110,9 +108,9 @@ const RequestsStaff = () => {
     return <BotTimeModal />;
   }, []);
 
-  useEffect(() => {
-    refetch();
-  }, []);
+  // useEffect(() => {
+  //   refetch();
+  // }, []);
 
   if (excellLoading) return <Loading absolute />;
 

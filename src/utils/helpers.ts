@@ -64,8 +64,10 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      cacheTime: EPresetTimes.MINUTE * 10,
-      staleTime: EPresetTimes.MINUTE * 5,
+      gcTime: EPresetTimes.MINUTE * 10,
+      staleTime: EPresetTimes.SECOND * 10,
+      refetchOnReconnect: true,
+      refetchOnMount: true,
     },
   },
 });

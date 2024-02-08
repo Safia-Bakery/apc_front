@@ -15,7 +15,7 @@ export const useComments = ({
     queryKey: ["comments", page],
     queryFn: () =>
       apiClient
-        .get("/v1/comments", { size, page })
+        .get({ url: "/v1/comments", params: { size, page } })
         .then(({ data: response }) => response as CommentTypes),
     enabled,
     refetchOnMount: true,

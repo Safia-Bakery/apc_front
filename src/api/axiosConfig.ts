@@ -76,11 +76,7 @@ class BaseAPIClient {
     return config;
   }
 
-  public async get<T>(
-    url: string,
-    params?: object,
-    config?: AxiosRequestConfig
-  ) {
+  public async get<T>({ url, params, config }: BaseUrlParams) {
     try {
       const fullUrl = this.buildUrlWithParams(url, params);
       config = config || {};

@@ -14,14 +14,14 @@ interface Props {
   parent_id?: number;
 }
 
-export const useCategories = (params: Props) => {
+export const useCategories = ({ enabled, ...params }: Props) => {
   return useQuery({
     queryKey: ["categories", params],
     queryFn: () =>
       apiClient
-        .get("/category", params)
+        .get({ url: "/category", params })
         .then(({ data: response }) => response as CategoryTypes),
-    enabled: params.enabled,
+    enabled,
     refetchOnMount: true,
   });
 };

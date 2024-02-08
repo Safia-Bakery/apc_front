@@ -10,7 +10,7 @@ export const useOrderCounts = ({ enabled = true }: { enabled?: boolean }) => {
     queryKey: ["order_count"],
     queryFn: () =>
       apiClient
-        .get("/v1/department/count")
+        .get({ url: "/v1/department/count" })
         .then(
           ({ data: response }: { data: any }) =>
             response.counter as CountTypes["counter"]

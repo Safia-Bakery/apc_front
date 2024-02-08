@@ -12,15 +12,15 @@ interface Body {
   id?: number;
 }
 
-export const useInventoryOrders = (body: Body) => {
+export const useInventoryOrders = (params: Body) => {
   const token = useAppSelector(tokenSelector);
   return useQuery({
-    queryKey: ["toolsorder", body],
+    queryKey: ["toolsorder", params],
     queryFn: () =>
       apiClient
-        .get("/toolsorder", body)
+        .get({ url: "/toolsorder", params })
         .then(({ data: response }) => response as InventoryOrders),
-    enabled: body.enabled && !!token,
+    enabled: params.enabled && !!token,
     refetchOnMount: true,
   });
 };

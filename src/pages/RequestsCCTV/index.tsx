@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
@@ -49,7 +49,7 @@ const RequestsCCTV = () => {
     data: requests,
     isLoading: orderLoading,
     isFetching: orderFetching,
-    refetch,
+    // refetch,
   } = useOrders({
     department: Departments.cctv,
     page,
@@ -77,9 +77,9 @@ const RequestsCCTV = () => {
     return <CCTVFilter />;
   }, []);
 
-  useEffect(() => {
-    refetch();
-  }, []);
+  // useEffect(() => {
+  //   refetch();
+  // }, []);
 
   return (
     <Card>

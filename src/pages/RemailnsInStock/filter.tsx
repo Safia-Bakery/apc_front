@@ -1,6 +1,4 @@
 import useDebounce from "custom/useDebounce";
-import "react-datepicker/dist/react-datepicker.css";
-
 import BaseInput from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
 import MainDatePicker from "@/components/BaseInputs/MainDatePicker";

@@ -13,15 +13,15 @@ interface Body {
   sphere?: HRRequestTypes;
 }
 
-export const useFAQRequests = (params: Body) => {
+export const useFAQRequests = ({ enabled, ...params }: Body) => {
   const token = useAppSelector(tokenSelector);
   return useQuery({
     queryKey: ["faq_questions", params],
     queryFn: () =>
       apiClient
-        .get("/hr/request", params)
+        .get({ url: "/hr/request", params })
         .then(({ data: response }) => response as FAQRequestTypes),
-    enabled: params.enabled && !!token,
+    enabled: enabled && !!token,
   });
 };
 export default useFAQRequests;

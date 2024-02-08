@@ -16,9 +16,9 @@ const usedItems = () => {
 
   const config = { timeout: 100000 };
 
-  return useMutation(
-    ["create_order"],
-    ({ amount, request_id, tool_id, comment, files }: Body) => {
+  return useMutation({
+    mutationKey: ["create_order"],
+    mutationFn: ({ amount, request_id, tool_id, comment, files }: Body) => {
       const formData = new FormData();
       formData.append("amount", String(amount));
       formData.append("request_id", String(request_id));
@@ -37,7 +37,7 @@ const usedItems = () => {
         })
         .then(({ data }) => data);
     },
-    { onError: (e: Error) => errorToast(e.message) }
-  );
+    onError: (e: Error) => errorToast(e.message),
+  });
 };
 export default usedItems;

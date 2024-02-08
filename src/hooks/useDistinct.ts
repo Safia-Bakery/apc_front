@@ -29,11 +29,14 @@ export const useDistinct = ({
     ],
     queryFn: () =>
       apiClient
-        .get("/v1/expanditure/distinct", {
-          started_at,
-          finished_at,
-          sphere_status,
-          department,
+        .get({
+          url: "/v1/expanditure/distinct",
+          params: {
+            started_at,
+            finished_at,
+            sphere_status,
+            department,
+          },
         })
         .then(({ data: response }) => {
           return response as DistinctTypes;

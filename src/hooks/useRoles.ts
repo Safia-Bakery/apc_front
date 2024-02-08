@@ -7,7 +7,7 @@ export const useRoles = ({ enabled = true }: { enabled?: boolean }) => {
     queryKey: ["user_role"],
     queryFn: () =>
       apiClient
-        .get(`/user/role`)
+        .get({ url: "/user/role" })
         .then(({ data: response }) => response as RoleTypes[]),
     enabled,
     refetchOnMount: true,

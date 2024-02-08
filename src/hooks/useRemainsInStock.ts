@@ -11,18 +11,12 @@ interface Body {
   last_update?: string;
 }
 
-export const useRemainsInStock = ({
-  store_id,
-  enabled = true,
-  page,
-  name,
-  last_update,
-}: Body) => {
+export const useRemainsInStock = ({ enabled, store_id, ...params }: Body) => {
   return useQuery({
-    queryKey: ["remains_in_stock", store_id, page, name, last_update],
+    queryKey: ["remains_in_stock", params],
     queryFn: () =>
       apiClient
-        .get(`/v1/tools/left`, { store_id, page, name, last_update })
+        .get({ url: "/v1/tools/left", params })
         .then(({ data: response }) => (response as RemainsInStockType) || null),
     enabled: !!store_id && enabled,
     refetchOnMount: true,

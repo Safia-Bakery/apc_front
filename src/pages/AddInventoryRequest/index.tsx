@@ -67,7 +67,7 @@ const AddInventoryRequest = () => {
     defaultValues: { inputFields: [initialInventory], main_comment: "" },
   });
 
-  const { mutate, isLoading: mutating } = requestMutation();
+  const { mutate, isPending: mutating } = requestMutation();
 
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);

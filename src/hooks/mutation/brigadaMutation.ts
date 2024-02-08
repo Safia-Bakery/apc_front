@@ -14,41 +14,25 @@ interface BodyType {
 }
 
 const brigadaMutation = () => {
-  return useMutation(
-    ["update_brigada"],
-    ({
-      id,
-      name,
-      description,
-      status,
-      users,
-      sphere_status,
-      department,
-    }: BodyType) => {
-      if (id)
-        return apiClient
-          .put({
-            url: "/brigadas",
-            body: {
-              name,
-              id,
-              description,
-              status,
-              users,
-              sphere_status,
-              department,
-            },
-          })
-          .then(({ data }) => data);
-      else
-        return apiClient
-          .post({
-            url: "/brigadas",
-            body: { name, description, status, sphere_status, department },
-          })
-          .then(({ data }) => data);
+  return useMutation({
+    mutationKey: ["update_brigada"],
+    mutationFn: async (body: BodyType) => {
+      const { id, users } = body;
+      if (id && users) {
+        const { data } = await apiClient.put({
+          url: "/brigadas",
+          body,
+        });
+        return data;
+      } else {
+        const { data } = await apiClient.post({
+          url: "/brigadas",
+          body,
+        });
+        return data;
+      }
     },
-    { onError: (e: Error) => errorToast(e.message) }
-  );
+    onError: (e) => errorToast(e.message),
+  });
 };
 export default brigadaMutation;

@@ -10,14 +10,14 @@ import {
   Sphere,
 } from "@/utils/types";
 
-interface BodyTypes {
+type BodyTypes = {
   enabled?: boolean;
   timer?: number;
   department: Departments;
   sphere_status: Sphere;
   started_at?: string;
   finished_at?: string;
-}
+};
 
 export const useStatsBrigadaCateg = ({
   enabled = true,
@@ -38,12 +38,15 @@ export const useStatsBrigadaCateg = ({
     ],
     queryFn: () =>
       apiClient
-        .get("/v1/stats/brigada/category", {
-          department,
-          sphere_status,
-          started_at,
-          finished_at,
-          timer,
+        .get({
+          url: "/v1/stats/brigada/category",
+          params: {
+            department,
+            sphere_status,
+            started_at,
+            finished_at,
+            timer,
+          },
         })
         .then(({ data: response }) => {
           return response as BrigadaCategStatTypes;

@@ -11,24 +11,14 @@ interface Props {
   id?: string | number;
 }
 
-export const useCatProducts = ({
-  enabled = true,
-  size,
-  page = 1,
-  name,
-  category_id,
-  id,
-}: Props) => {
+export const useCatProducts = ({ enabled = true, ...params }: Props) => {
   return useQuery({
-    queryKey: ["category_products", category_id, page, name, id],
+    queryKey: ["category_products", params],
     queryFn: () =>
       apiClient
-        .get("/v1/cat/product", {
-          size,
-          page,
-          name,
-          category_id,
-          id,
+        .get({
+          url: "/v1/cat/product",
+          params,
         })
         .then(({ data: response }) => response as CategoryProducts[]),
     enabled,

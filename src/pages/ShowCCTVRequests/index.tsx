@@ -30,7 +30,7 @@ const ShowCCTVRequests = () => {
   const navigateParams = useNavigateParams();
   const modal = Number(useQueryString("modal"));
   const removeParams = useRemoveParams();
-  const { mutate: attach, isLoading: attaching } = attachBrigadaMutation();
+  const { mutate: attach, isPending: attaching } = attachBrigadaMutation();
   const handleModal = (type: ModalTypes) => () =>
     navigateParams({ modal: type });
   const { getValues, register } = useForm();
@@ -206,14 +206,11 @@ const ShowCCTVRequests = () => {
         <div className="content">
           <div className="row">
             <div className="col-md-6">
-              <table
-                id="w0"
-                className="table table-striped table-bordered detail-view"
-              >
+              <table className="table table-striped table-bordered detail-view">
                 <tbody>
                   <tr>
                     <th>Клиент</th>
-                    <td>{order?.user?.full_name}</td>
+                    <td className="w-1/2"> {order?.user?.full_name}</td>
                   </tr>
                   <tr>
                     <th>Номер телефона</th>
@@ -268,7 +265,9 @@ const ShowCCTVRequests = () => {
                 <tbody>
                   <tr>
                     <th>Срочно</th>
-                    <td>{!order?.category?.urgent ? "Нет" : "Да"}</td>
+                    <td className="w-1/2">
+                      {!order?.category?.urgent ? "Нет" : "Да"}
+                    </td>
                   </tr>
                   <tr>
                     <th>Изменил</th>

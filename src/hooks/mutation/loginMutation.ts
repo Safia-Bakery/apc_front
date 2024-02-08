@@ -11,12 +11,12 @@ interface LoginTypes {
 const loginMutation = () => {
   const contentType = "application/x-www-form-urlencoded";
 
-  return useMutation(
-    ["login"],
-    (body: { username: string; password: string }) =>
+  return useMutation({
+    mutationKey: ["login"],
+    mutationFn: (body: { username: string; password: string }) =>
       apiClient
         .post({ url: "/login", body, contentType })
-        .then(({ data }) => data as unknown as LoginTypes)
-  );
+        .then(({ data }) => data as unknown as LoginTypes),
+  });
 };
 export default loginMutation;
