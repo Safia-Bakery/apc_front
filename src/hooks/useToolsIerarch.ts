@@ -12,8 +12,11 @@ export const useToolsIerarch = ({ parent_id, enabled }: Props) => {
     queryKey: ["tools_ierarch", parent_id],
     queryFn: () =>
       apiClient
-        .get("/tool/iarch", {
-          parent_id,
+        .get({
+          url: "/tool/iarch",
+          params: {
+            parent_id,
+          },
         })
         .then(({ data: response }) => response as ToolsEarchType),
     enabled,

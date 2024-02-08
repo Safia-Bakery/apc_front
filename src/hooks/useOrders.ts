@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/main";
-import { OrderType, RequestFilter } from "@/utils/types";
+import { OrderType } from "@/utils/types";
 
 interface Body {
   enabled?: boolean;
@@ -21,63 +21,16 @@ interface Body {
   rate?: boolean;
 }
 
-export const useOrders = ({
-  enabled = true,
-  size,
-  page = 1,
-  sub_id,
-  department,
-  sphere_status,
-  is_bot,
-  arrival_date,
-  category_id,
-  urgent,
-  fillial_id,
-  created_at,
-  request_status,
-  user,
-  id,
-  rate,
-}: Body) => {
+export const useOrders = ({ enabled, ...params }: Body) => {
   return useQuery({
-    queryKey: [
-      "requests",
-      page,
-      sub_id,
-      department,
-      sphere_status,
-      arrival_date,
-      category_id,
-      urgent,
-      fillial_id,
-      created_at,
-      request_status,
-      user,
-      id,
-      rate,
-    ],
+    queryKey: ["requests", params],
     queryFn: () =>
       apiClient
-        .get("/request", {
-          page,
-          size,
-          sub_id,
-          department,
-          sphere_status,
-          is_bot,
-          arrival_date,
-          category_id,
-          urgent,
-          fillial_id,
-          created_at,
-          request_status,
-          user,
-          id,
-          rate,
-        })
+        .get({ url: "/request", params })
         .then(({ data: response }) => (response as OrderType) || null),
     enabled,
-    // refetchOnMount: true,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   });
 };
 export default useOrders;

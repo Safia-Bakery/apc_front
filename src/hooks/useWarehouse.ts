@@ -2,32 +2,21 @@ import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/main";
 import { BranchTypes } from "@/utils/types";
 
-interface BodyTypes {
-  name?: string;
-  country?: string;
-  latitude?: number;
-  longitude?: number;
-  fillial_status?: number | string;
-}
-
-export const useWarehouse = ({
-  enabled = true,
-  size,
-  page = 1,
-}: {
+type Params = {
   enabled?: boolean;
   size?: number;
   page?: number;
-}) => {
+};
+export const useWarehouse = (params: Params) => {
   return useQuery({
-    queryKey: ["warehouse"],
+    queryKey: ["warehouse", params],
     queryFn: () =>
       apiClient
-        .get("/get/fillial/fabrica", { page, size })
+        .get({ url: "/get/fillial/fabrica", params })
         .then(({ data: response }) => {
           return response as BranchTypes;
         }),
-    enabled,
+    enabled: params.enabled,
   });
 };
 export default useWarehouse;

@@ -27,7 +27,7 @@ const Login = () => {
     getValues,
   } = useForm();
 
-  const { mutate, isLoading } = loginMutation();
+  const { mutate, isPending } = loginMutation();
 
   const onSubmit = () => {
     const { username, password } = getValues();
@@ -50,7 +50,7 @@ const Login = () => {
     if (token) navigate(savedLink);
   }, [token]);
 
-  if (isLoading || tokenLoading) return <Loading absolute />;
+  if (isPending || tokenLoading) return <Loading absolute />;
 
   return (
     <div className={styles.login_wrap}>

@@ -34,7 +34,7 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
   const { id } = useParams();
   const permissions = useAppSelector(permissionSelector);
   const navigate = useNavigateParams();
-  const { mutate, isLoading } = syncExpenditure();
+  const { mutate, isPending: isLoading } = syncExpenditure();
   const { mutate: deleteExp } = deleteExpenditureMutation();
 
   const { data: products, refetch } = useOrder({

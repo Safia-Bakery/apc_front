@@ -16,7 +16,7 @@ export const useBranch = ({
     queryKey: ["branch", id],
     queryFn: () =>
       apiClient
-        .get(`/fillials/${id}`)
+        .get({ url: `/fillials/${id}` })
         .then(({ data: response }) => (response as BranchType) || null),
     enabled: !!id && enabled && perm?.[MainPermissions.get_fillials_list],
     refetchOnMount: true,

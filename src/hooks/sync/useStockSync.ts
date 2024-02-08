@@ -17,7 +17,7 @@ export const useStockSync = ({
     queryKey: ["stock_sync"],
     queryFn: () =>
       apiClient
-        .get("/v1/synch/left", { store_id }, config)
+        .get({ url: "/v1/synch/left", params: { store_id }, config })
         .then(({ data: response }) => {
           successToast("Синхронизировано");
           response as BranchTypes;

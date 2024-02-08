@@ -66,19 +66,22 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
     category_status: 1,
   });
   const removeParams = useRemoveParams();
-  const { mutate: attach, isLoading: attachLoading } = attachBrigadaMutation();
-  const { refetch: brigadasRefetch, isFetching: brigadaFetching } = useBrigadas(
-    {
-      department: Departments.it,
-      ...(!!sphere && { sphere }),
-    }
-  );
+  const { mutate: attach, isPending: attachLoading } = attachBrigadaMutation();
+
   const {
     data: order,
     refetch: orderRefetch,
     isLoading: orderLoading,
     isFetching: orderFetching,
   } = useOrder({ id: Number(id) });
+
+  const { isFetching: brigadaFetching, refetch: brigadasRefetch } = useBrigadas(
+    {
+      enabled: !!order?.status.toString() && order?.status < RequestStatus.done,
+      department: Departments.it,
+      ...(!!sphere && { sphere }),
+    }
+  );
 
   const handleModal = (modal: ModalTypes) => () => navigateParams({ modal });
 
@@ -90,11 +93,11 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   const isNew = order?.status === RequestStatus.new;
   const inputRef = useRef<any>(null);
   const upladedFiles = useAppSelector(reportImgSelector);
-  const { mutate: synIIco, isLoading } = syncExpenditure();
+  const { mutate: synIIco, isPending } = syncExpenditure();
 
-  const { mutate: msgMutation, isLoading: msgLoading } = orderMsgMutation();
+  const { mutate: msgMutation, isPending: msgLoading } = orderMsgMutation();
 
-  const { mutate, isLoading: uploadLoading } = uploadFileMutation();
+  const { mutate, isPending: uploadLoading } = uploadFileMutation();
 
   const handleBack = () => navigate(`/requests-it/${sphere}`);
 
@@ -317,14 +320,14 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                   })}
                   className="btn btn-success btn-fill"
                 >
-                  Починил {isLoading && <Loading />}
+                  Починил {isPending && <Loading />}
                 </button>
               </div>
             )}
           </div>
         </div>
       );
-  }, [permissions, order?.status, isLoading]);
+  }, [permissions, order?.status, isPending]);
 
   const renderAssignment = useMemo(() => {
     if (permissions?.[attaching] && order?.status! <= RequestStatus.confirmed) {
@@ -384,13 +387,8 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
 
   const closeModal = () => removeParams(["changeModal"]);
 
-  useEffect(() => {
-    if (!!order?.status.toString() && order?.status <= RequestStatus.confirmed)
-      brigadasRefetch();
-  }, [order?.status]);
-
   if (
-    isLoading ||
+    isPending ||
     uploadLoading ||
     attachLoading ||
     orderLoading ||

@@ -23,10 +23,13 @@ export const useMarketingStatDep = ({
     queryKey: ["stats_marketing_dep", started_at, finished_at],
     queryFn: () =>
       apiClient
-        .get("/v1/stats/marketing/pie", {
-          timer,
-          created_at: started_at,
-          finished_at,
+        .get({
+          url: "/v1/stats/marketing/pie",
+          params: {
+            timer,
+            created_at: started_at,
+            finished_at,
+          },
         })
         .then(({ data: response }) => {
           return response as MarketingDepartmentTypes;

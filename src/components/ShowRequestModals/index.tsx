@@ -33,9 +33,9 @@ const ShowRequestModals = () => {
   const sphere_status = Number(useQueryString("sphere_status"));
   const dep = Number(useQueryString("dep"));
   const removeParams = useRemoveParams();
-  const { mutate: reassign, isLoading: reassigning } =
+  const { mutate: reassign, isPending: reassigning } =
     marketingReassignMutation();
-  const { mutate: attach, isLoading: attaching } = attachBrigadaMutation();
+  const { mutate: attach, isPending: attaching } = attachBrigadaMutation();
   const { register, getValues, watch, handleSubmit } = useForm();
 
   const { data: categories, isLoading: categoriesLoading } = useCategories({

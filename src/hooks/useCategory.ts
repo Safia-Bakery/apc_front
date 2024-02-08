@@ -13,7 +13,7 @@ export const useCategory = ({
     queryKey: ["category", id],
     queryFn: () =>
       apiClient
-        .get(`/category/${id}`)
+        .get({ url: `/category/${id}` })
         .then(({ data: response }) => (response as Category) || null),
     enabled: !!id && enabled,
     refetchOnMount: true,

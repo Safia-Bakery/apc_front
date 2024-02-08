@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/main";
-import { CommentTypes } from "@/utils/types";
 
 interface Params {
   enabled?: boolean;
@@ -9,24 +8,20 @@ interface Params {
   file?: boolean;
 }
 
-export const useStaffExcell = ({
-  enabled = true,
-  page = 1,
-  date,
-  file,
-}: Params) => {
+type Res = {
+  success: boolean;
+  url: string;
+  total_food: number;
+  total_bread: number;
+};
+
+export const useStaffExcell = ({ enabled, ...params }: Params) => {
   return useQuery({
-    queryKey: ["staff_excell_totals", page, date, file],
+    queryKey: ["staff_excell_totals", params],
     queryFn: () =>
-      apiClient.get("/v1/excell", { page, date, file }).then(
-        ({ data: response }) =>
-          response as {
-            success: boolean;
-            url: string;
-            total_food: number;
-            total_bread: number;
-          }
-      ),
+      apiClient
+        .get({ url: "/v1/excell", params })
+        .then(({ data: response }) => response as Res),
     enabled,
     refetchOnMount: true,
   });

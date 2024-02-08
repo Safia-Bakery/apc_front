@@ -94,9 +94,9 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
     ...(!!rate && { rate: !!rate }),
   });
 
-  useEffect(() => {
-    refetch();
-  }, [currentPage, sphere_status]);
+  // useEffect(() => {
+  //   refetch();
+  // }, [currentPage, sphere_status]);
 
   return (
     <Card>

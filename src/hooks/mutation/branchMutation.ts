@@ -2,18 +2,20 @@ import { useMutation } from "@tanstack/react-query";
 import apiClient from "@/main";
 import { errorToast } from "@/utils/toast";
 
+type Body = {
+  name: string;
+  longtitude: number;
+  id?: string;
+  latitude: number;
+  country?: string;
+  status: number;
+  is_fabrica?: boolean;
+};
+
 const branchMutation = () => {
-  return useMutation(
-    ["handle_branch"],
-    (body: {
-      name: string;
-      longtitude: number;
-      id?: string;
-      latitude: number;
-      country?: string;
-      status: number;
-      is_fabrica?: boolean;
-    }) => {
+  return useMutation({
+    mutationKey: ["handle_branch"],
+    mutationFn: (body: Body) => {
       if (!body.id)
         return apiClient
           .post({ url: "/fillials", body })
@@ -23,7 +25,7 @@ const branchMutation = () => {
           .put({ url: "/fillials", body })
           .then(({ data }) => data);
     },
-    { onError: (e: Error) => errorToast(e.message) }
-  );
+    onError: (e) => errorToast(e.message),
+  });
 };
 export default branchMutation;

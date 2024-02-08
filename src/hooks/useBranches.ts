@@ -30,7 +30,7 @@ export const useBranches = ({
     queryKey: ["branches", origin, body, page],
     queryFn: () =>
       apiClient
-        .get("/fillials", { page, size, origin, ...body })
+        .get({ url: "/fillials", params: { page, size, origin, ...body } })
         .then(({ data: response }) => response as BranchTypes),
     enabled: enabled && permmission?.[MainPermissions.get_fillials_list],
   });

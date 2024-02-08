@@ -15,7 +15,6 @@ import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import { MainPermissions } from "@/utils/types";
 import useUpdateEffect from "custom/useUpdateEffect";
-import "react-datepicker/dist/react-datepicker.css";
 
 interface Props {
   sub_id?: number | string;

@@ -8,11 +8,13 @@ interface Body {
 }
 
 const branchDepartmentMutation = () => {
-  return useMutation(["expenditure_sync"], (body: Body) =>
-    apiClient
-      .put({ url: "/deparment/update", body })
-      .then((data) => data)
-      .catch((e: Error) => errorToast(e.message))
-  );
+  return useMutation({
+    mutationKey: ["expenditure_sync"],
+    mutationFn: (body: Body) =>
+      apiClient
+        .put({ url: "/deparment/update", body })
+        .then((data) => data)
+        .catch((e: Error) => errorToast(e.message)),
+  });
 };
 export default branchDepartmentMutation;

@@ -11,24 +11,14 @@ interface Props {
   id?: number;
 }
 
-export const useCars = ({
-  enabled = true,
-  size,
-  page = 1,
-  name,
-  status,
-  id,
-}: Props) => {
+export const useCars = ({ enabled = true, ...params }: Props) => {
   return useQuery({
-    queryKey: ["logystics_cars", name, status, id, page],
+    queryKey: ["logystics_cars", params],
     queryFn: () =>
       apiClient
-        .get("/v1/cars", {
-          size,
-          page,
-          name,
-          status,
-          id,
+        .get({
+          url: "/v1/cars",
+          params,
         })
         .then(({ data: response }) => response as CarsTypes[]),
     enabled,

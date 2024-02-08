@@ -21,7 +21,7 @@ import { clientCommentCategoryId as category_id } from "@/utils/keys";
 
 const CreateClientsComments = () => {
   const [files, $files] = useState<FileItem[]>();
-  const { mutate, isLoading } = requestMutation();
+  const { mutate, isPending } = requestMutation();
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
   const perm = useAppSelector(permissionSelector);
@@ -80,7 +80,7 @@ const CreateClientsComments = () => {
     }
   }, []);
 
-  if (isLoading) return <Loading absolute />;
+  if (isPending) return <Loading absolute />;
 
   return (
     <Card>

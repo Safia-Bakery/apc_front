@@ -36,7 +36,7 @@ const InventoryRemains = () => {
 
   const parent_id = useQueryString("parent_id");
   const parent_name = useQueryString("parent_name");
-  const { data, isLoading, isFetching, refetch } = useToolsIerarch({
+  const { data, isLoading, isFetching } = useToolsIerarch({
     ...(!!parent_id && { parent_id }),
   });
 
@@ -53,9 +53,9 @@ const InventoryRemains = () => {
 
   const handleMins = () => navigate("/inventory-remains?mins=1");
 
-  useEffect(() => {
-    refetch();
-  }, []);
+  // useEffect(() => {
+  //   refetch();
+  // }, []);
 
   if (isLoading) return <Loading absolute />;
 

@@ -34,7 +34,7 @@ const AddProductModal = ({ addExp }: Props) => {
     enabled: false,
   });
 
-  const { mutate, isLoading } = usedItemsMutation();
+  const { mutate, isPending: isLoading } = usedItemsMutation();
   const { refetch: orderRefetch } = useOrder({
     id: Number(id),
     enabled: false,

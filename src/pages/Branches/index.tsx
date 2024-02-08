@@ -2,7 +2,7 @@ import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { useNavigate } from "react-router-dom";
 import Pagination from "@/components/Pagination";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { BranchType, MainPermissions } from "@/utils/types";
 import { handleIdx } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
@@ -47,12 +47,7 @@ const Branches = () => {
 
   const iikoBtn = permisisons?.[MainPermissions.synch_fillials_iiko];
 
-  const {
-    data: branches,
-    refetch,
-    isFetching,
-    isLoading,
-  } = useBranches({
+  const { data: branches, isFetching } = useBranches({
     page: currentPage,
     enabled: true,
     origin: 0,
@@ -70,10 +65,6 @@ const Branches = () => {
   const renderFilter = useMemo(() => {
     return <BranchesFilter />;
   }, [name, country, fillial_status]);
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   return (
     <Card>

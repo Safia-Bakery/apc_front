@@ -9,12 +9,16 @@ interface RegisterTypes {
 }
 
 const registerMutation = () => {
-  return useMutation(
-    ["register"],
-    (body: { username: string; password: string; full_name: string }) =>
+  return useMutation({
+    mutationKey: ["register"],
+    mutationFn: (body: {
+      username: string;
+      password: string;
+      full_name: string;
+    }) =>
       apiClient
         .post({ url: "/register", body })
-        .then(({ data }) => data as unknown as RegisterTypes)
-  );
+        .then(({ data }) => data as unknown as RegisterTypes),
+  });
 };
 export default registerMutation;

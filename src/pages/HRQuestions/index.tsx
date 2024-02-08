@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
@@ -27,18 +27,15 @@ const FAQQuestions = () => {
   const [sort, $sort] = useState<FAQTypes[]>();
   const permission = useAppSelector(permissionSelector);
   const page = Number(useQueryString("page")) || 1;
-  const {
-    data: faqs,
-    isLoading,
-    refetch,
-  } = useFAQ({
+  const { data: faqs, isLoading } = useFAQ({
     page,
   });
   const handleNavigate = (route: string) => () => navigate(route);
 
-  useEffect(() => {
-    refetch();
-  }, []);
+  // useEffect(() => {
+  //   refetch();
+  // }, []);
+
   if (isLoading) return <Loading absolute />;
   return (
     <Card>

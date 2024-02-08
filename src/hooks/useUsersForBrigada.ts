@@ -10,20 +10,14 @@ interface Params {
   department?: Departments;
 }
 
-export const useUsersForBrigada = ({
-  enabled = true,
-  id,
-  name,
-  sphere_status,
-  department,
-}: Params) => {
+export const useUsersForBrigada = (params: Params) => {
   return useQuery({
-    queryKey: ["users_for_brigada", id, name, sphere_status, department],
+    queryKey: ["users_for_brigada", params],
     queryFn: () =>
       apiClient
-        .get(`/users/for/brigada/${id}`, { name, sphere_status, department })
+        .get({ url: `/users/for/brigada/${params.id}`, params })
         .then(({ data: response }) => response as UsersTypes),
-    enabled,
+    enabled: params.enabled,
     refetchOnMount: true,
   });
 };

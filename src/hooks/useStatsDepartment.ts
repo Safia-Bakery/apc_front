@@ -37,11 +37,14 @@ export const useStatsDepartment = ({
     ],
     queryFn: () =>
       apiClient
-        .get("/v1/stats/department", {
-          department,
-          sphere_status,
-          started_at,
-          finished_at,
+        .get({
+          url: "/v1/stats/department",
+          params: {
+            department,
+            sphere_status,
+            started_at,
+            finished_at,
+          },
         })
         .then(({ data: response }) => {
           return response as DepartmentStatTypes[];

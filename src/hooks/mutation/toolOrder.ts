@@ -7,9 +7,12 @@ interface Body {
 }
 
 const toolOrderMutation = () => {
-  return useMutation(["update_tools_order"], async (body: Body) => {
-    const { data } = await apiClient.put({ url: "/toolorder", body });
-    return data;
+  return useMutation({
+    mutationKey: ["update_tools_order"],
+    mutationFn: async (body: Body) => {
+      const { data } = await apiClient.put({ url: "/toolorder", body });
+      return data;
+    },
   });
 };
 export default toolOrderMutation;

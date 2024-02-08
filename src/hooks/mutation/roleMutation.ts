@@ -2,9 +2,9 @@ import { useMutation } from "@tanstack/react-query";
 import apiClient from "@/main";
 
 const roleMutation = () => {
-  return useMutation(
-    ["post_role"],
-    ({
+  return useMutation({
+    mutationKey: ["post_role"],
+    mutationFn: ({
       name,
       status = 1,
       id,
@@ -21,7 +21,7 @@ const roleMutation = () => {
         return apiClient
           .post({ url: "/user/roles", body: { name, status } })
           .then(({ data }) => data);
-    }
-  );
+    },
+  });
 };
 export default roleMutation;

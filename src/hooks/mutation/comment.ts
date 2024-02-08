@@ -9,8 +9,10 @@ interface Body {
 }
 
 const commentMutation = () => {
-  return useMutation(["post_comment"], (body: Body) =>
-    apiClient.post({ url: "/v1/comments", body }).then(({ data }) => data)
-  );
+  return useMutation({
+    mutationKey: ["post_comment"],
+    mutationFn: (body: Body) =>
+      apiClient.post({ url: "/v1/comments", body }).then(({ data }) => data),
+  });
 };
 export default commentMutation;

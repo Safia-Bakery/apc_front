@@ -13,7 +13,7 @@ export const useBrigada = ({
     queryKey: ["brigada", id],
     queryFn: () =>
       apiClient
-        .get(`/brigadas/${id}`)
+        .get({ url: `/brigadas/${id}` })
         .then(({ data: response }) => (response as BrigadaType) || null),
     enabled: !!id && enabled,
     refetchOnMount: true,

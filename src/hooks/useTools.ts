@@ -12,26 +12,14 @@ interface Body {
   few_amounts?: boolean;
 }
 
-export const useTools = ({
-  enabled = true,
-  size,
-  page,
-  name,
-  department,
-  few_amounts,
-  id,
-}: Body) => {
+export const useTools = ({ enabled = true, ...params }: Body) => {
   return useQuery({
-    queryKey: ["tools", name, department, page, id, few_amounts],
+    queryKey: ["tools", params],
     queryFn: () =>
       apiClient
-        .get("/tools/", {
-          name,
-          department,
-          id,
-          page,
-          size,
-          few_amounts,
+        .get({
+          url: "/tools/",
+          params,
         })
         .then(({ data: response }) => {
           return response as ToolTypes;

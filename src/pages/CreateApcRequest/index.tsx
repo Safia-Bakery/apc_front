@@ -23,7 +23,7 @@ import { permissionSelector } from "reducers/sidebar";
 
 const CreateApcRequest = () => {
   const [files, $files] = useState<FileItem[]>();
-  const { mutate, isLoading } = requestMutation();
+  const { mutate, isPending } = requestMutation();
   const branchJson = useQueryString("branch");
   const sphere_status = Number(useQueryString("sphere_status"));
   const branch = branchJson && JSON.parse(branchJson);
@@ -80,7 +80,7 @@ const CreateApcRequest = () => {
     }
   }, [sphere_status]);
 
-  if (isLoading || categoryLoading) return <Loading absolute />;
+  if (isPending || categoryLoading) return <Loading absolute />;
 
   return (
     <Card>

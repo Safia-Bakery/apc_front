@@ -14,9 +14,12 @@ interface Body {
 }
 
 const updateToolsMutation = () => {
-  return useMutation(["update_tools"], async (body: Body) => {
-    const { data } = await apiClient.put({ url: "/tools/", body });
-    return data;
+  return useMutation({
+    mutationKey: ["update_tools"],
+    mutationFn: async (body: Body) => {
+      const { data } = await apiClient.put({ url: "/tools/", body });
+      return data;
+    },
   });
 };
 export default updateToolsMutation;

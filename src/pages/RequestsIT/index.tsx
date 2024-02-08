@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 
@@ -54,7 +54,6 @@ const RequestsIT = () => {
     data: requests,
     isLoading: orderLoading,
     isFetching: orderFetching,
-    refetch,
   } = useOrders({
     department: Departments.it,
     sphere_status: Number(sphere),
@@ -78,10 +77,6 @@ const RequestsIT = () => {
     sheet: "Заявки ИТ",
   });
   const downloadAsPdf = () => onDownload();
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   return (
     <Card>

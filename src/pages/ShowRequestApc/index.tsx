@@ -51,11 +51,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
   const dispatch = useAppDispatch();
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
-  const { mutate: attach, isLoading: attachLoading } = attachBrigadaMutation();
-  const { refetch: brigadasRefetch } = useBrigadas({
-    enabled: false,
-    sphere_status,
-  });
+  const { mutate: attach, isPending: attachLoading } = attachBrigadaMutation();
   const handleModal = (type: ModalTypes) => () => {
     navigateParams({ modal: type });
   };
@@ -66,12 +62,17 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
     isLoading: orderLoading,
     isFetching: orderFetching,
   } = useOrder({ id: Number(id) });
+
+  const { data: brigadas } = useBrigadas({
+    enabled: order?.status! <= 1,
+    sphere_status,
+  });
   const isNew = order?.status === RequestStatus.new;
   const inputRef = useRef<any>(null);
   const upladedFiles = useAppSelector(reportImgSelector);
-  const { mutate: synIIco, isLoading } = syncExpenditure();
+  const { mutate: synIIco, isPending } = syncExpenditure();
 
-  const { mutate, isLoading: uploadLoading } = uploadFileMutation();
+  const { mutate, isPending: uploadLoading } = uploadFileMutation();
 
   const handleBack = () => navigate(`/requests-apc-${Sphere[sphere_status!]}`);
 
@@ -208,13 +209,13 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                 })}
                 className="btn btn-success btn-fill"
               >
-                Починил {isLoading && <Loading />}
+                Починил {isPending && <Loading />}
               </button>
             )}
           </div>
         </div>
       );
-  }, [permissions, order?.status, isLoading]);
+  }, [permissions, order?.status, isPending]);
 
   const renderAssignment = useMemo(() => {
     if (attaching && permissions?.[attaching] && order?.status! <= 1) {
@@ -275,20 +276,20 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
       (order?.status < RequestStatus.done || modal === ModalTypes.showPhoto)
     )
       return <ShowRequestModals />;
-  }, [order?.status, modal]);
+  }, [order?.status, modal, brigadas]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  useEffect(() => {
-    if (order?.status! <= 1) {
-      brigadasRefetch();
-    }
-  }, [order?.status]);
+  // useEffect(() => {
+  //   if (order?.status! <= 1) {
+  //     brigadasRefetch();
+  //   }
+  // }, [order?.status]);
 
   if (
-    isLoading ||
+    isPending ||
     uploadLoading ||
     attachLoading ||
     orderLoading ||

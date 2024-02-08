@@ -12,29 +12,34 @@ interface Body {
   sphere_status?: Sphere;
   files?: any;
   ftime?: number;
+  parent_id?: number;
+  is_child?: boolean;
 }
 
 const categoryMutation = () => {
   const contentType = "multipart/form-data";
   const config = { timeout: 100000 };
-  return useMutation(["handle_category"], async (body: Body) => {
-    if (!body.id) {
-      const { data } = await apiClient.post({
-        url: "/category",
-        body,
-        config,
-        contentType,
-      });
-      return data;
-    } else {
-      const { data } = await apiClient.put({
-        url: "/category",
-        body,
-        config,
-        contentType,
-      });
-      return data;
-    }
+  return useMutation({
+    mutationKey: ["handle_category"],
+    mutationFn: async (body: Body) => {
+      if (!body.id) {
+        const { data } = await apiClient.post({
+          url: "/category",
+          body,
+          config,
+          contentType,
+        });
+        return data;
+      } else {
+        const { data } = await apiClient.put({
+          url: "/category",
+          body,
+          config,
+          contentType,
+        });
+        return data;
+      }
+    },
   });
 };
 export default categoryMutation;
