@@ -77,7 +77,6 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
     data: requests,
     isLoading: orderLoading,
     isFetching: orderFetching,
-    refetch,
   } = useOrders({
     department: Departments.apc,
     page: currentPage,
@@ -94,9 +93,9 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
     ...(!!rate && { rate: !!rate }),
   });
 
-  // useEffect(() => {
-  //   refetch();
-  // }, [currentPage, sphere_status]);
+  const renderFilter = useMemo(() => {
+    return <RequestsFilter sphere_status={sphere_status} />;
+  }, [sphere_status]);
 
   return (
     <Card>
@@ -113,7 +112,6 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
               navigate(`add?sphere_status=${sphere_status}&addExp=${addExp}`)
             }
             className="btn btn-success btn-fill"
-            id="add_request"
           >
             Добавить
           </button>
@@ -122,13 +120,13 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
 
       <div className="table-responsive grid-view content">
         <ItemsCount data={requests} />
-        <table className="table table-hover" ref={tableRef}>
+        <table className="table table-hover table-bordered" ref={tableRef}>
           <TableHead
             column={column}
             onSort={(data) => $sort(data)}
             data={requests?.items}
           >
-            <RequestsFilter />
+            {renderFilter}
           </TableHead>
           <tbody>
             {!!requests?.items?.length &&
@@ -171,7 +169,9 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                       : "Не задано"}
                   </td>
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
-                  <td>{order?.comments?.[0]?.rating}</td>
+                  <td className="text-center" width={50}>
+                    {order?.comments?.[0]?.rating}
+                  </td>
                   <td>
                     {handleStatus({
                       status: order?.status,

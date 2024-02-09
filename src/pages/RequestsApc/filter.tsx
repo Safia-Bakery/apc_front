@@ -17,11 +17,14 @@ import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
 import useUpdateEffect from "custom/useUpdateEffect";
 
-const ApcFilter: FC = () => {
+interface Props {
+  sphere_status?: Sphere;
+}
+
+const ApcFilter: FC<Props> = ({ sphere_status }) => {
   const navigate = useNavigateParams();
   const deleteParam = useRemoveParams();
   const perm = useAppSelector(permissionSelector);
-  const sphere_status = Number(useQueryString("sphere_status"));
 
   const { data: categories, refetch: catRefetch } = useCategories({
     department: Departments.apc,
@@ -37,7 +40,6 @@ const ApcFilter: FC = () => {
   const request_status = useQueryString("request_status");
   const rate = useQueryString("rate");
   const category_id = Number(useQueryString("category_id"));
-  const urgent = useQueryString("urgent");
   const created_at = useQueryString("created_at");
   const userQ = useQueryString("user");
   const idQ = useQueryString("id");
@@ -86,6 +88,7 @@ const ApcFilter: FC = () => {
           />
         </BaseInput>
       </td>
+
       {sphere_status === Sphere.fabric && (
         <td className="p-0">
           <BaseInput className="!m-1">

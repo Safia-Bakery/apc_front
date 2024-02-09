@@ -97,7 +97,7 @@ const RequestsIT = () => {
 
       <div className="table-responsive grid-view content ">
         <ItemsCount data={requests} />
-        <table ref={tableRef} className="table table-hover">
+        <table ref={tableRef} className="table table-hover table-bordered">
           <TableHead
             column={column}
             onSort={(data) => $sort(data)}
@@ -135,7 +135,9 @@ const RequestsIT = () => {
                       {order?.description}
                     </div>
                   </td>
-                  <td>{order?.comments?.[0]?.rating}</td>
+                  <td width={50} className="text-center">
+                    {order?.comments?.[0]?.rating}
+                  </td>
                   <td>
                     {handleStatus({
                       status: order?.status,

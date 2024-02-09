@@ -56,6 +56,9 @@ const requestMutation = () => {
       });
       return data;
     },
+    retry: 3,
+    retryDelay: 1000,
+
     onError: (e: Error) => errorToast(e.message),
   });
 };

@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import apiClient from "@/main";
 import { errorToast } from "@/utils/toast";
 import { RequestStatus } from "@/utils/types";
+import async from "node_modules/react-select/dist/declarations/src/async";
 
 interface Body {
   request_id: number;
@@ -17,14 +18,15 @@ interface Body {
 const attachBrigadaMutation = () => {
   return useMutation({
     mutationKey: ["attach_brigada_to_request"],
-    mutationFn: (body: Body) =>
-      apiClient
-        .put({ url: "/request/attach/brigada", body })
-        .then((res) => res)
-        .catch((e: Error) => errorToast(e.message)),
-
-    // retry: true, // todo
-    // retryDelay: 1000,
+    mutationFn: async (body: Body) => {
+      const { data } = await apiClient.put({
+        url: "/request/attach/brigada",
+        body,
+      });
+      return data;
+    },
+    retry: 3,
+    retryDelay: 1000,
   });
 };
 export default attachBrigadaMutation;

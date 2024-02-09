@@ -282,12 +282,6 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
     window.scrollTo(0, 0);
   }, []);
 
-  // useEffect(() => {
-  //   if (order?.status! <= 1) {
-  //     brigadasRefetch();
-  //   }
-  // }, [order?.status]);
-
   if (
     isPending ||
     uploadLoading ||
@@ -331,7 +325,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
               >
                 <tbody>
                   <tr>
-                    <th>Клиент</th>
+                    <th className="w-1/3">Клиент</th>
                     <td>{order?.user?.full_name}</td>
                   </tr>
                   <tr>
@@ -421,7 +415,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
               >
                 <tbody>
                   <tr>
-                    <th>Срочно</th>
+                    <th className="w-1/3">Срочно</th>
                     <td>{!order?.category?.urgent ? "Нет" : "Да"}</td>
                   </tr>
                   <tr>
