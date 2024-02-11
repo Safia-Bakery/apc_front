@@ -134,12 +134,10 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
             ...(categ && { category_id }),
           },
           {
-            onSuccess: (data: any) => {
-              if (data.status === 200) {
-                orderRefetch();
-                successToast("assigned");
-                removeParams(["branch", "changeModal"]);
-              }
+            onSuccess: () => {
+              orderRefetch();
+              successToast("assigned");
+              removeParams(["branch", "changeModal"]);
             },
             onError: (e: any) => errorToast(e.message),
           }
@@ -170,11 +168,9 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                     deny_reason: getValues("cancel_reason"),
                   },
                   {
-                    onSuccess: (data: any) => {
-                      if (data.status === 200) {
-                        orderRefetch();
-                        successToast("assigned");
-                      }
+                    onSuccess: () => {
+                      orderRefetch();
+                      successToast("assigned");
                     },
                   }
                 );
@@ -192,10 +188,8 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
           },
           {
             onSuccess: (data: any) => {
-              if (data.status === 200) {
-                orderRefetch();
-                successToast("assigned");
-              }
+              orderRefetch();
+              successToast("assigned");
             },
             onError: (e: any) => errorToast(e.message),
           }

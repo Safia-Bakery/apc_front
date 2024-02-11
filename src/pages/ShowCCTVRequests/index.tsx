@@ -70,11 +70,9 @@ const ShowCCTVRequests = () => {
           deny_reason: getValues("cancel_reason"),
         },
         {
-          onSuccess: (data: any) => {
-            if (data.status === 200) {
-              orderRefetch();
-              successToast("assigned");
-            }
+          onSuccess: () => {
+            orderRefetch();
+            successToast("assigned");
           },
           onError: (e: any) => errorToast(e.message),
         }
@@ -92,12 +90,10 @@ const ShowCCTVRequests = () => {
         status: RequestStatus.done,
       },
       {
-        onSuccess: (data: any) => {
-          if (data.status === 200) {
-            orderRefetch();
-            successToast("assigned");
-            closeModal();
-          }
+        onSuccess: () => {
+          orderRefetch();
+          successToast("assigned");
+          closeModal();
         },
         onError: (e: any) => errorToast(e.message),
       }

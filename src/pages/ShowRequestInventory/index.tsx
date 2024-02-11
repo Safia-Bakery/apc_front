@@ -72,10 +72,8 @@ const ShowRequestInventory = () => {
           },
           {
             onSuccess: (data: any) => {
-              if (data.status === 200) {
-                orderRefetch();
-                successToast("assigned");
-              }
+              orderRefetch();
+              successToast("assigned");
             },
             onError: (e: any) => errorToast(e.message),
           }

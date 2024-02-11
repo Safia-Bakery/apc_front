@@ -40,11 +40,9 @@ const ShowRequestStaff = () => {
           deny_reason: getValues("cancel_reason"),
         },
         {
-          onSuccess: (data: any) => {
-            if (data.status === 200) {
-              orderRefetch();
-              successToast("assigned");
-            }
+          onSuccess: () => {
+            orderRefetch();
+            successToast("assigned");
           },
           onError: (e: any) => errorToast(e.message),
         }
