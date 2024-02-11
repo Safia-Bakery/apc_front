@@ -25,7 +25,7 @@ const ShowRequestStaff = lazy(() => import("@/pages/ShowRequestStaff"));
 const LogysticsLogs = lazy(() => import("@/pages/LogysticsLogs"));
 const RequestsLogystics = lazy(() => import("@/pages/RequestsLogystics"));
 const CreateLogRequests = lazy(() => import("@/pages/CreateLogRequests"));
-const ShowLogRequests = lazy(() => import("@/pages/ShowCCTVRequests"));
+const ShowLogRequests = lazy(() => import("@/pages/ShowLogRequests"));
 const Masters = lazy(() => import("@/pages/Masters"));
 const ShowConsumption = lazy(() => import("@/pages/ShowConsumption"));
 const Logs = lazy(() => import("@/pages/LogsScreen"));
