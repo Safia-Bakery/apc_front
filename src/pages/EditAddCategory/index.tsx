@@ -176,9 +176,11 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
 
         <MainCheckBox label="Активный" register={register("status")} />
 
-        <MainCheckBox label="Последний" register={register("is_child")} />
+        {dep === Departments.apc && (
+          <MainCheckBox label="Последний" register={register("is_child")} />
+        )}
 
-        {Number(dep) === Departments.marketing && (
+        {dep === Departments.marketing && (
           <BaseInput label="ЗАГРУЗИТЬ ФОТО" className="relative">
             <MainInput
               value={

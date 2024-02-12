@@ -50,12 +50,11 @@ const AddMarketingRequest = () => {
     $files(data);
   };
   const onSubmit = () => {
-    const { category_id, description, product } = getValues();
+    const { category_id, description } = getValues();
     if (!filemsg)
       mutate(
         {
           category_id,
-          product,
           description,
           fillial_id: branch?.id,
           files,

@@ -52,13 +52,21 @@ const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
     <Card>
       <Header title={"Категории"}>
         {permission?.[add] && (
-          <button
-            className="btn btn-success btn-fill"
-            onClick={handleNavigate(`add`)}
-            id="add_category"
-          >
-            Добавить
-          </button>
+          <div className="flex gap-2">
+            <button
+              className="btn btn-success btn-fill"
+              onClick={handleNavigate("add")}
+              id="add_category"
+            >
+              Добавить
+            </button>
+            <button
+              onClick={() => navigate(-1)}
+              className="btn btn-primary btn-fill"
+            >
+              Назад
+            </button>
+          </div>
         )}
       </Header>
 

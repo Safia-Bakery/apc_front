@@ -95,7 +95,7 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
                     <tr key={idx} className="bg-blue">
                       <td width="40">{handleIdx(idx)}</td>
                       <td>
-                        {!category.is_child ? (
+                        {!category.is_child && dep === Departments.apc ? (
                           <Link
                             to={`?parent_id=${category.id}&parent_name=${category.name}`}
                           >

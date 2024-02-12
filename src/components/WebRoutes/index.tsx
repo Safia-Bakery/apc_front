@@ -12,7 +12,6 @@ import {
   sidebarItemsHandler,
   sidebatItemsSelector,
 } from "reducers/sidebar";
-import useUpdateEffect from "custom/useUpdateEffect";
 import useOrderCounts from "@/hooks/useOrderCounts";
 
 // const normalizeURL = (path: string) =>

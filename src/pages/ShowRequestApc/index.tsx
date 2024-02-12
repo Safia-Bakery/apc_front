@@ -375,27 +375,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                       })}
                     </td>
                   </tr>
-                  <tr>
-                    <th id="photo_report">Фотоотчёт</th>
-                    <td className="flex flex-col !border-none">
-                      {order?.file?.map((item, index) => {
-                        if (item.status === 1)
-                          return (
-                            <div
-                              className={cl(
-                                "text-link cursor-pointer max-w-[150px] w-full text-truncate"
-                              )}
-                              onClick={handleShowPhoto(
-                                `${baseURL}/${item.url}`
-                              )}
-                              key={item.url + index}
-                            >
-                              файл - {index + 1}
-                            </div>
-                          );
-                      })}
-                    </td>
-                  </tr>
+
                   <tr>
                     <th>Примичание</th>
                     <td>{order?.description}</td>
@@ -454,6 +434,27 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                   <tr>
                     <th className="font-bold">Ответственный</th>
                     <td>{renderAssignment}</td>
+                  </tr>
+                  <tr>
+                    <th id="photo_report">Фотоотчёт</th>
+                    <td className="flex flex-col !border-none">
+                      {order?.file?.map((item, index) => {
+                        if (item.status === 1)
+                          return (
+                            <div
+                              className={cl(
+                                "text-link cursor-pointer max-w-[150px] w-full text-truncate"
+                              )}
+                              onClick={handleShowPhoto(
+                                `${baseURL}/${item.url}`
+                              )}
+                              key={item.url + index}
+                            >
+                              файл - {index + 1}
+                            </div>
+                          );
+                      })}
+                    </td>
                   </tr>
                   {order?.comments?.[0]?.rating && (
                     <tr>

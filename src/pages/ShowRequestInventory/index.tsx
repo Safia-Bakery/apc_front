@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import cl from "classnames";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { useForm } from "react-hook-form";
 import Card from "@/components/Card";
@@ -48,7 +48,6 @@ const ShowRequestInventory = () => {
   } = useOrder({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
   const navigate = useNavigate();
-  const { state } = useLocation();
 
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);

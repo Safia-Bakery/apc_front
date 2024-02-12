@@ -132,7 +132,7 @@ const ShowRequestModals = () => {
                   .filter((item) => !!item.user!?.length)
                   .map((item, idx) => (
                     <div key={idx} className={styles.item}>
-                      <h6>{item?.name}</h6>
+                      <h6 className="text-lg">{item?.name}</h6>
                       <button
                         id="attach_to_bridaga"
                         onClick={handleBrigada({
@@ -152,7 +152,7 @@ const ShowRequestModals = () => {
       case ModalTypes.cars:
         return (
           <div className={styles.birgadesModal}>
-            <Header title="Выберите исполнителя">
+            <Header title="Выберите Грузовика">
               <button onClick={() => removeParams(["modal"])} className="close">
                 <span aria-hidden="true">&times;</span>
               </button>

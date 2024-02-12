@@ -39,15 +39,23 @@ const CategoryProducts = () => {
     <Card>
       <Header title={`Продукты(${category_name})`}>
         {permission?.[MainPermissions.edit_categ_it] && (
-          <button
-            className="btn btn-success btn-fill"
-            onClick={handleNavigate(
-              `/categories-it/${sphere}/${id}/add-product`
-            )}
-            id="add_category"
-          >
-            Добавить
-          </button>
+          <div className="flex gap-2">
+            <button
+              className="btn btn-success btn-fill"
+              onClick={handleNavigate(
+                `/categories-it/${sphere}/${id}/add-product`
+              )}
+              id="add_category"
+            >
+              Добавить
+            </button>
+            <button
+              onClick={() => navigate(-1)}
+              className="btn btn-primary btn-fill"
+            >
+              Назад
+            </button>
+          </div>
         )}
       </Header>
 

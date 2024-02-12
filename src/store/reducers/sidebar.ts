@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../rootConfig";
 import { Departments, MainPermissions, SidebarType } from "@/utils/types";
-import { routes } from "@/utils/helpers";
+import { sidebarRoutes } from "@/utils/routeObjs";
 
 interface State {
   sidebarItems?: SidebarType[];
@@ -28,7 +28,7 @@ export const sidebarReducer = createSlice({
       const { permissions } = state;
       const filteredRoutes: SidebarType[] = [];
 
-      routes?.forEach((route) => {
+      sidebarRoutes?.forEach((route) => {
         const updatedRoute = { ...route };
         updatedRoute.count = payload?.find((item) =>
           item[0] === Departments.apc

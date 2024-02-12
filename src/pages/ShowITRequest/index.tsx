@@ -633,7 +633,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
 
       {!!order?.request_orpr?.length && <AddedProductsIT />}
       {renderRequestModals}
-      <Modal isOpen={!!changeModal} onClose={closeModal}>
+      <Modal isOpen={!!changeModal} onClose={closeModal} className="!max-w-sm">
         <Header title="Изменить">
           <button onClick={closeModal} className="close">
             <span>&times;</span>

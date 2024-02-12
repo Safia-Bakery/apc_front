@@ -21,12 +21,9 @@ const userMutation = () => {
     mutationKey: ["create_update_user"],
     mutationFn: (body: Body) => {
       if (body.user_id)
-        return apiClient
-          .put({ url: "/users", body })
-          .then((res) => {
-            if (res.status === 200) return res;
-          })
-          .catch((e) => errorToast(e.message));
+        return apiClient.put({ url: "/users", body }).then((res) => {
+          return res;
+        });
       return apiClient
         .post({
           url: "/register",
@@ -36,7 +33,8 @@ const userMutation = () => {
           if (res.status === 200) return res;
         });
     },
-
+    retry: 3,
+    retryDelay: 2000,
     onError: (e: any) =>
       errorToast(e.response?.data.detail ? e.response?.data.detail : e.message),
   });

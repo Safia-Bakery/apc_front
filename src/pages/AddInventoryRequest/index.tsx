@@ -53,7 +53,6 @@ const column = [
 
 const AddInventoryRequest = () => {
   const navigate = useNavigate();
-  const { refetch } = useOrders({ enabled: false });
   const [btn, $btn] = useState(false);
 
   const {
@@ -101,7 +100,6 @@ const AddInventoryRequest = () => {
               $btn(true);
               TelegramApp.toMainScreen();
             } else {
-              refetch();
               navigate("/requests-inventory");
               successToast("created");
             }

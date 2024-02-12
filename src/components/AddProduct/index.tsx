@@ -10,7 +10,7 @@ import syncExpenditure from "@/hooks/mutation/syncExpenditure";
 import { errorToast, successToast } from "@/utils/toast";
 import { useNavigateParams } from "custom/useCustomNavigate";
 import deleteExpenditureMutation from "@/hooks/mutation/deleteExpenditure";
-import { MainPermissions } from "@/utils/types";
+import { MainPermissions, RequestStatus } from "@/utils/types";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
@@ -41,7 +41,7 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
     id: Number(id),
     enabled: false,
   });
-  const isFinished = products?.status && products?.status < 3;
+  const isFinished = products?.status && products?.status < RequestStatus.done;
 
   const handleDelete = (id: number) => () => {
     deleteExp(id, {
@@ -99,46 +99,44 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
           </button>
         )}
       </Header>
-      <div className="content">
-        <div className="content table-responsive table-full-width overflow-hidden">
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                {column.map(({ name }) => {
-                  return (
-                    <th className={"bg-primary text-white"} key={name}>
-                      {name}
-                    </th>
-                  );
-                })}
+      <div className="content table-responsive table-full-width overflow-hidden">
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              {column.map(({ name }) => {
+                return (
+                  <th className={"bg-primary text-white"} key={name}>
+                    {name}
+                  </th>
+                );
+              })}
+            </tr>
+          </thead>
+
+          <tbody>
+            {products?.expanditure?.map((item, idx) => (
+              <tr className="bg-blue" key={item.id}>
+                <td width="40">{idx + 1}</td>
+                <td>{item?.tool?.name}</td>
+                <td>{item?.amount}</td>
+                <td>{item?.comment}</td>
+                <td>{dayjs(item?.created_at).format("DD.MM.YYYY HH:mm")}</td>
+                <td>{item?.user?.full_name}</td>
+                <td width={50}>
+                  <div
+                    className="flex justify-content-center pointer"
+                    onClick={handleDelete(item?.id)}
+                  >
+                    <img src="/assets/icons/delete.svg" alt="delete" />
+                  </div>
+                </td>
               </tr>
-            </thead>
+            ))}
+          </tbody>
+        </table>
+        <hr />
 
-            <tbody>
-              {products?.expanditure?.map((item, idx) => (
-                <tr className="bg-blue" key={item.id}>
-                  <td width="40">{idx + 1}</td>
-                  <td>{item?.tool?.name}</td>
-                  <td>{item?.amount}</td>
-                  <td>{item?.comment}</td>
-                  <td>{dayjs(item?.created_at).format("DD.MM.YYYY HH:mm")}</td>
-                  <td>{item?.user?.full_name}</td>
-                  <td width={50}>
-                    <div
-                      className="flex justify-content-center pointer"
-                      onClick={handleDelete(item?.id)}
-                    >
-                      <img src="/assets/icons/delete.svg" alt="delete" />
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <hr />
-
-          {children}
-        </div>
+        {children}
       </div>
       {addExp && <AddProductModal addExp={addExp} />}
     </Card>

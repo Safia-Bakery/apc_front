@@ -45,6 +45,8 @@ const EditAddUser = () => {
       status,
     } = getValues();
 
+    console.log(fixedString(phone_number), "fixedString(phone_number)");
+
     mutate(
       {
         full_name,
@@ -52,20 +54,22 @@ const EditAddUser = () => {
         group_id,
         password,
         status: !status ? 2 : 0,
-        phone_number: fixedString(phone_number),
         sphere_status: sphere_status ? Sphere.fabric : Sphere.retail,
+        ...(fixedString(phone_number).length > 5 && {
+          phone_number: fixedString(phone_number),
+        }),
         ...(!!email && { email }),
         ...(brigada_id && { brigada_id }),
         ...(!!telegram_id && { telegram_id }),
         ...(!!id && { user_id: Number(id) }),
       },
       {
-        onSuccess: (data: any) => {
+        onSuccess: () => {
           navigate(!client ? "/users" : "/clients");
           successToast(!!id ? "successfully updated" : "successfully created");
           if (!!id) userRefetch();
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };
@@ -119,7 +123,7 @@ const EditAddUser = () => {
                 })}
               />
             </BaseInputs>
-            <BaseInputs label="ТЕЛЕФОН">
+            <BaseInputs label="ТЕЛЕФОН" error={errors.phone_number}>
               <InputMask
                 className="form-control mb-2"
                 mask="(999-99)-999-99-99"
