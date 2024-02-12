@@ -44,15 +44,11 @@ const EditClient = () => {
         ...(!!id && { user_id: Number(id) }),
       },
       {
-        onSuccess: (data: any) => {
-          if (data.status === 200) {
-            usersRefetch();
-            navigate(`/clients?client=true`);
-            successToast(
-              !!id ? "successfully updated" : "successfully created"
-            );
-            if (!!id) userRefetch();
-          }
+        onSuccess: () => {
+          usersRefetch();
+          navigate(`/clients?client=true`);
+          successToast(!!id ? "successfully updated" : "successfully created");
+          if (!!id) userRefetch();
         },
         onError: (e: any) => errorToast(e.message),
       }

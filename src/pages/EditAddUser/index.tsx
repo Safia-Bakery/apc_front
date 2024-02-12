@@ -61,13 +61,9 @@ const EditAddUser = () => {
       },
       {
         onSuccess: (data: any) => {
-          if (data.status === 200) {
-            navigate(!client ? "/users" : "/clients");
-            successToast(
-              !!id ? "successfully updated" : "successfully created"
-            );
-            if (!!id) userRefetch();
-          }
+          navigate(!client ? "/users" : "/clients");
+          successToast(!!id ? "successfully updated" : "successfully created");
+          if (!!id) userRefetch();
         },
         onError: (e: any) => errorToast(e.message),
       }
