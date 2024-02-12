@@ -34,6 +34,7 @@ const TelegramAddProduct = () => {
   const inputRef = useRef<any>(null);
   const upladedFiles = useAppSelector(reportImgSelector);
   const [count, $count] = useState(1);
+  const [btn, $btn] = useState(false);
 
   const { refetch: syncWithIiko, isFetching } = useSyncExpanditure({
     enabled: false,
@@ -97,11 +98,10 @@ const TelegramAddProduct = () => {
           status,
         },
         {
-          onSuccess: (data: any) => {
-            if (data.status === 200) {
-              successToast("Успешно закончен");
-              TelegramApp.toMainScreen();
-            }
+          onSuccess: () => {
+            successToast("Успешно закончен");
+            $btn(true);
+            TelegramApp.toMainScreen();
           },
           onError: (e: any) => errorToast(e.message),
         }
@@ -256,13 +256,15 @@ const TelegramAddProduct = () => {
         </BaseInput>
 
         <div className={styles.footer}>
-          <button
-            type="button"
-            onClick={handleFinishOrder({ status: RequestStatus.done })}
-            className="btn btn-success btn-fill w-full"
-          >
-            Починил
-          </button>
+          {!btn && (
+            <button
+              type="button"
+              onClick={handleFinishOrder({ status: RequestStatus.done })}
+              className="btn btn-success btn-fill w-full"
+            >
+              Починил
+            </button>
+          )}
         </div>
       </div>
 
