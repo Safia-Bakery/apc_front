@@ -11,22 +11,25 @@ import { MainPermissions, Sphere } from "@/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import Suspend from "./components/Suspend";
 import TgRoutes from "./components/TgRoutes";
-import { routes } from "./utils/routeObjs";
+import {
+  APCStatRoutes,
+  ITStatsRoutes,
+  InventoryStatsRoutes,
+  MarketingStatsRoutes,
+  routes,
+} from "./utils/routeObjs";
 
 const ControlPanel = lazy(() => import("@/pages/ControlPanel"));
 const TgRating = lazy(() => import("@/pages/TgRating"));
 
 const ShowConsumption = lazy(() => import("@/pages/ShowConsumption"));
-const ConsumptionStat = lazy(
-  () => import("@/pages/StatisticsApc/ConsumptionStat")
-);
+const ConsumptionStat = lazy(() => import("@/pages/StatsApc/ConsumptionStat"));
 const Login = lazy(() => import("@/pages/Login"));
 
 const TelegramAddProduct = lazy(() => import("@/pages/TelegramAddProduct"));
 const AddInventoryRequest = lazy(() => import("@/pages/AddInventoryRequest"));
-const StatisticsApc = lazy(() => import("@/pages/StatisticsApc"));
+const BaseStatsBlock = lazy(() => import("./components/BaseStatsBlock"));
 
-const StatsMarketing = lazy(() => import("@/pages/StatsMarketing"));
 const MarketingStatCategory = lazy(
   () => import("@/pages/StatsMarketing/StatCategory")
 );
@@ -35,14 +38,15 @@ const DepartmentStat = lazy(
   () => import("@/pages/StatsMarketing/DepartmentStat")
 );
 
-const CategoryStat = lazy(() => import("@/pages/StatisticsApc/CategoryStat"));
-const FillialStat = lazy(() => import("@/pages/StatisticsApc/FillialStat"));
+const CategoryStat = lazy(() => import("@/pages/StatsApc/CategoryStat"));
+const FillialStat = lazy(() => import("@/pages/StatsApc/FillialStat"));
 const BrigadaCategStat = lazy(
-  () => import("@/pages/StatisticsApc/BrigadaCategStat")
+  () => import("@/pages/StatsApc/BrigadaCategStat")
 );
-const BrigadaStat = lazy(() => import("@/pages/StatisticsApc/BrigadaStat"));
-
-const StatsIT = lazy(() => import("@/pages/StatsIT"));
+const BrigadaStat = lazy(() => import("@/pages/StatsApc/BrigadaStat"));
+const InventoryServiceStats = lazy(
+  () => import("@/pages/StatsInventory/ServiceStats")
+);
 
 dayjs.locale("ru");
 
@@ -94,13 +98,17 @@ const App = () => {
           }
           path={"*"}
         />
+        {renderScreen}
 
         {permission?.[MainPermissions.stats_apc_retail] && (
           <Route
             path="/statistics-apc-retail"
             element={
               <Suspend>
-                <StatisticsApc />
+                <BaseStatsBlock
+                  routesArr={APCStatRoutes}
+                  title={"Статистика"}
+                />
               </Suspend>
             }
           >
@@ -160,7 +168,10 @@ const App = () => {
             path="/statistics-apc-fabric"
             element={
               <Suspend>
-                <StatisticsApc />
+                <BaseStatsBlock
+                  routesArr={APCStatRoutes}
+                  title={"Статистика"}
+                />
               </Suspend>
             }
           >
@@ -221,7 +232,10 @@ const App = () => {
             path="/statistics-it"
             element={
               <Suspend>
-                <StatsIT />
+                <BaseStatsBlock
+                  routesArr={ITStatsRoutes}
+                  title={"Статистика IT"}
+                />
               </Suspend>
             }
           >
@@ -242,7 +256,10 @@ const App = () => {
             path="/statistics-marketing"
             element={
               <Suspend>
-                <StatsMarketing />
+                <BaseStatsBlock
+                  routesArr={MarketingStatsRoutes}
+                  title={"Статистика Маркетинг"}
+                />
               </Suspend>
             }
           >
@@ -274,7 +291,29 @@ const App = () => {
             />
           </Route>
         )}
-        {renderScreen}
+        {permission?.[MainPermissions.inventory_reports] && (
+          <Route
+            path="/statistics-inventory"
+            element={
+              <Suspend>
+                <BaseStatsBlock
+                  routesArr={InventoryStatsRoutes}
+                  title={"Статистика Инвентарь"}
+                />
+              </Suspend>
+            }
+          >
+            <Route
+              index
+              path="service_level"
+              element={
+                <Suspend>
+                  <InventoryServiceStats />
+                </Suspend>
+              }
+            />
+          </Route>
+        )}
       </Route>
 
       <Route path="/tg" element={<TgRoutes />}>

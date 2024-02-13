@@ -5,37 +5,24 @@ import StatBar from "@/components/StatBar";
 import DateRangeBlock from "@/components/DateRangeBlock";
 import useQueryString from "@/hooks/custom/useQueryString";
 
-const routesArr = [
-  {
-    name: "По категориям",
-    url: "category",
-  },
-  {
-    name: "По филиалам",
-    url: "fillial",
-  },
-  {
-    name: "По бригадам",
-    url: "brigada",
-  },
-  {
-    name: "Бригады по категориям",
-    url: "brigade_categ",
-  },
-  {
-    name: "По расходам",
-    url: "consumptions",
-  },
-];
+type RoutesArrType = {
+  name: string;
+  url: string;
+};
 
-const StatisticsApc = () => {
+interface Props {
+  routesArr: RoutesArrType[];
+  title: string;
+}
+
+const BaseStatsBlock = ({ routesArr, title }: Props) => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
-  const cons_title = useQueryString("cons_title");
+  const sub_title = useQueryString("sub_title");
 
   return (
     <Card>
-      <Header title={!!cons_title ? cons_title : "Статистика"}>
+      <Header title={sub_title || title}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           Назад
         </button>
@@ -57,4 +44,4 @@ const StatisticsApc = () => {
   );
 };
 
-export default StatisticsApc;
+export default BaseStatsBlock;

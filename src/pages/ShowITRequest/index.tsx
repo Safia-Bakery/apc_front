@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useRef, KeyboardEvent } from "react";
+import { FC, useMemo, useRef, KeyboardEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
@@ -584,7 +584,6 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                     <th className="font-bold">Комментарии</th>
                     <td className={styles.tableRow}>
                       <div className="flex items-center justify-between">
-                        {/* <span>{order?.fillial?.parentfillial?.name}</span> */}
                         <div className="flex flex-col">
                           {!!order?.communication?.length &&
                             order?.communication.map((item) => (

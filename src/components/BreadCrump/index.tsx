@@ -60,6 +60,8 @@ const routeNameMappings: { [key: string]: string } = {
   "requests-cctv": "Видеонаблюдение",
   "categories-cctv": "Категории видеонаблюдении",
   request: "Заявки",
+  service_level: "Уровень сервиса",
+  "statistics-inventory": "Статистика Инвентарь",
 };
 
 const Breadcrumbs: FC = () => {

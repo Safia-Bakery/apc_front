@@ -1,8 +1,4 @@
-import {
-  Departments,
-  ServiceStatsType,
-  ServiceStatsTypes,
-} from "@/utils/types";
+import { Departments, ServiceStatsType } from "@/utils/types";
 import { Fragment, useEffect, useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import EmptyList from "@/components/EmptyList";
