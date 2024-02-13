@@ -1206,3 +1206,55 @@ export const routes = [
 
   // ===========================================================
 ];
+
+export const APCStatRoutes = [
+  {
+    name: "По категориям",
+    url: "category",
+  },
+  {
+    name: "По филиалам",
+    url: "fillial",
+  },
+  {
+    name: "По бригадам",
+    url: "brigada",
+  },
+  {
+    name: "Бригады по категориям",
+    url: "brigade_categ",
+  },
+  {
+    name: "По расходам",
+    url: "consumptions",
+  },
+];
+
+export const MarketingStatsRoutes = [
+  {
+    name: "По уровнем сервиса",
+    url: "service_level",
+  },
+  {
+    name: "Отчет по направлениям",
+    url: "department",
+  },
+  {
+    name: "По категориям",
+    url: "category",
+  },
+];
+export const ITStatsRoutes = [
+  {
+    name: "По уровнем сервиса",
+    url: "service_level",
+  },
+  {
+    name: "Отчет по направлениям",
+    url: "department",
+  },
+  {
+    name: "По категориям",
+    url: "category",
+  },
+];

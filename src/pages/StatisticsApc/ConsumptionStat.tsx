@@ -80,7 +80,7 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
               <td width="50">{idx + 1}</td>
 
               <td>
-                <Link to={`${item?.id.toString()}?cons_title=${item?.name}`}>
+                <Link to={`${item?.id.toString()}?sub_title=${item?.name}`}>
                   {item?.name}
                 </Link>
               </td>

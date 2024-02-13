@@ -20,15 +20,15 @@ const ShowConsumption = () => {
   const { id } = useParams();
   const [sort, $sort] = useState<ExpenditureType[]>();
   const { data, isLoading } = useExpenditure({ id: Number(id) });
-  const cons_title = useQueryString("cons_title");
+  const sub_title = useQueryString("sub_title");
 
   const tableRef = useRef(null);
   const btnAction = document.getElementById("export_to_excell");
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef?.current,
-    filename: cons_title || "Расходы",
-    sheet: cons_title || "Расходы",
+    filename: sub_title || "Расходы",
+    sheet: sub_title || "Расходы",
   });
 
   useEffect(() => {

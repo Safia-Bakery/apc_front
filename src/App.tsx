@@ -11,7 +11,13 @@ import { MainPermissions, Sphere } from "@/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import Suspend from "./components/Suspend";
 import TgRoutes from "./components/TgRoutes";
-import { routes } from "./utils/routeObjs";
+import {
+  APCStatRoutes,
+  ITStatsRoutes,
+  MarketingStatsRoutes,
+  routes,
+} from "./utils/routeObjs";
+import BaseStatsBlock from "./components/BaseStatsBlock";
 
 const ControlPanel = lazy(() => import("@/pages/ControlPanel"));
 const TgRating = lazy(() => import("@/pages/TgRating"));
@@ -100,7 +106,10 @@ const App = () => {
             path="/statistics-apc-retail"
             element={
               <Suspend>
-                <StatisticsApc />
+                <BaseStatsBlock
+                  routesArr={APCStatRoutes}
+                  title={"Статистика"}
+                />
               </Suspend>
             }
           >
@@ -160,7 +169,10 @@ const App = () => {
             path="/statistics-apc-fabric"
             element={
               <Suspend>
-                <StatisticsApc />
+                <BaseStatsBlock
+                  routesArr={APCStatRoutes}
+                  title={"Статистика"}
+                />
               </Suspend>
             }
           >
@@ -221,7 +233,10 @@ const App = () => {
             path="/statistics-it"
             element={
               <Suspend>
-                <StatsIT />
+                <BaseStatsBlock
+                  routesArr={ITStatsRoutes}
+                  title={"Статистика IT"}
+                />
               </Suspend>
             }
           >
@@ -242,7 +257,10 @@ const App = () => {
             path="/statistics-marketing"
             element={
               <Suspend>
-                <StatsMarketing />
+                <BaseStatsBlock
+                  routesArr={MarketingStatsRoutes}
+                  title={"Статистика Маркетинг"}
+                />
               </Suspend>
             }
           >
