@@ -526,7 +526,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                     </td>
                   </tr>
                   <tr>
-                    <th>Примичание</th>
+                    <th>Текст заявки</th>
                     <td>{order?.description}</td>
                   </tr>
                 </tbody>
@@ -581,7 +581,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                     <td className={styles.tableRow}>{renderAssignment}</td>
                   </tr>
                   <tr>
-                    <th className="font-bold">Оставить комментария</th>
+                    <th className="font-bold">Комментарии</th>
                     <td className={styles.tableRow}>
                       <div className="flex items-center justify-between">
                         {/* <span>{order?.fillial?.parentfillial?.name}</span> */}
