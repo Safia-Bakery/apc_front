@@ -766,3 +766,18 @@ export interface ServiceStatsType {
 export interface ServiceStatsTypes {
   [key: number]: ServiceStatsType[];
 }
+
+export interface InvServiceStatType {
+  total_tools: number;
+  on_time_requests: number;
+  not_finishedontime: number;
+  not_even_started: number;
+  not_finishedon_time_percent: number;
+  on_time_requests_percent: number;
+  not_started_percent: number;
+  avg_finishing: number;
+}
+
+export interface InvServiceStatTypes {
+  [key: string]: InvServiceStatType;
+}

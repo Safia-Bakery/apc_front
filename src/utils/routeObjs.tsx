@@ -37,7 +37,6 @@ const AddInventoryRequest = lazy(() => import("@/pages/AddInventoryRequest"));
 const RequestsInventory = lazy(() => import("@/pages/RequestsInventory"));
 const ShowRequestInventory = lazy(() => import("@/pages/ShowRequestInventory"));
 const YandexMap = lazy(() => import("@/pages/Map"));
-const StatisticsApc = lazy(() => import("@/pages/StatisticsApc"));
 
 const Categories = lazy(() => import("@/pages/Categories"));
 const EditAddCategory = lazy(() => import("@/pages/EditAddCategory"));
@@ -242,6 +241,13 @@ export const sidebarRoutes: SidebarType[] = [
         url: "/order-products-inventory",
         icon: "/assets/icons/products.svg",
         screen: MainPermissions.get_inventory_purchase_prods,
+      },
+      {
+        name: "Статистика",
+        url: "/statistics-inventory",
+        param: "/service_level",
+        icon: "/assets/icons/statistics.svg",
+        screen: MainPermissions.inventory_reports,
       },
     ],
   },
@@ -714,11 +720,11 @@ export const routes = [
   //   path: "/statistics",
   //   screen: MainPermissions.stats_apc_retail,
   // },
-  {
-    element: <StatisticsApc />,
-    path: "/statistics-apc-fabric",
-    screen: MainPermissions.stats_apc_fabric,
-  },
+  // {
+  //   element: <StatisticsApc />,
+  //   path: "/statistics-apc-fabric",
+  //   screen: MainPermissions.stats_apc_fabric,
+  // },
   {
     element: (
       <Categories
@@ -1256,5 +1262,12 @@ export const ITStatsRoutes = [
   {
     name: "По категориям",
     url: "category",
+  },
+];
+
+export const InventoryStatsRoutes = [
+  {
+    name: "По уровнем сервиса",
+    url: "service_level",
   },
 ];
