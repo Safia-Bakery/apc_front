@@ -479,10 +479,10 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                       </div>
                     </td>
                   </tr>
-                  <tr>
+                  {/* <tr>
                     <th>Продукт</th>
                     <td>{order?.product}</td>
-                  </tr>
+                  </tr> */}
                   <tr>
                     <th>Файл</th>
                     <td className="flex flex-col !border-none">
