@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
+import cl from "classnames";
 import { MainPermissions } from "@/utils/types";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import { sidebarHandler, toggleSidebar } from "reducers/selects";
 import { logoutHandler } from "reducers/auth";
 import useToken from "@/hooks/useToken";
 import { sidebatItemsSelector } from "reducers/sidebar";
-import cl from "classnames";
 import { isMobile } from "@/utils/helpers";
 import styles from "./index.module.scss";
 import CountItem from "./CountItem";
@@ -29,6 +29,10 @@ const CustomSidebar = () => {
 
   const { data: me } = useToken({ enabled: false });
 
+  const closeSidebar = () => {
+    if (isMobile) dispatch(sidebarHandler(false));
+  };
+
   return (
     <>
       {collapsed && <div className={styles.overlay} onClick={handleOverlay} />}
@@ -45,12 +49,12 @@ const CustomSidebar = () => {
             </div>
           </div>
           <ul className="nav flex-col flex">
-            <li className={cl("nav-item")}>
-              <Link
-                className={cl("nav-link flex align-center", styles.link, {
+            <li className={styles.navItem}>
+              <NavLink
+                className={cl(styles.link, {
                   [styles.active]: pathname === "/home",
                 })}
-                onClick={() => isMobile && dispatch(sidebarHandler(false))}
+                onClick={closeSidebar}
                 to={"/home"}
               >
                 <img
@@ -60,21 +64,16 @@ const CustomSidebar = () => {
                   className={styles.routeIcon}
                 />
                 <div className={styles.content}>Панель управления</div>
-              </Link>
+              </NavLink>
             </li>
-            {routes?.map((route) => {
-              if (route?.subroutes?.length) {
-                const activeRoute = menuItem === route.screen;
-                return (
-                  <li className="nav-item" key={route.url + route.name}>
+            {routes?.map((route) => (
+              <li className={styles.navItem} key={route.url + route.name}>
+                {!!route?.subroutes?.length ? (
+                  <>
                     <div
-                      className={cl(
-                        "nav-link flex cursor-pointer",
-                        styles.link,
-                        {
-                          ["show"]: activeRoute,
-                        }
-                      )}
+                      className={cl(styles.link, {
+                        ["show"]: menuItem === route.screen,
+                      })}
                       onClick={() => toggleSubItems(route.screen)}
                     >
                       <img
@@ -91,7 +90,7 @@ const CustomSidebar = () => {
                             src="/assets/icons/arrow.svg"
                             alt="arrow"
                             className={cl({
-                              [styles.activeImage]: activeRoute,
+                              [styles.activeImage]: menuItem === route.screen,
                             })}
                             width={15}
                             height={15}
@@ -101,29 +100,23 @@ const CustomSidebar = () => {
                     </div>
                     <div
                       className={cl("collapse", {
-                        ["show"]: activeRoute,
+                        ["show"]: menuItem === route.screen,
                       })}
                       id="subItems"
                     >
                       <ul className={cl("nav flex-col", styles.submenu)}>
                         {route?.subroutes?.map((subroute) => (
                           <li
-                            className={cl("nav-item")}
+                            className={styles.navItem}
                             key={subroute.url + subroute.name}
                           >
-                            <Link
-                              className={cl(
-                                "nav-link flex align-center",
-                                styles.link,
-                                {
-                                  [styles.active]: pathname.includes(
-                                    subroute.url!
-                                  ),
-                                }
-                              )}
-                              onClick={() =>
-                                isMobile && dispatch(sidebarHandler(false))
-                              }
+                            <NavLink
+                              className={cl(styles.link, {
+                                [styles.active]: pathname.includes(
+                                  subroute.url!
+                                ),
+                              })}
+                              onClick={closeSidebar}
                               to={`${subroute.url}${
                                 !!subroute?.param ? subroute?.param : ""
                               }`}
@@ -138,23 +131,19 @@ const CustomSidebar = () => {
                               <div className={styles.content}>
                                 {subroute.name}
                               </div>
-                            </Link>
+                            </NavLink>
                           </li>
                         ))}
                       </ul>
                     </div>
-                  </li>
-                );
-              } else
-                return (
-                  <li className={cl("nav-item")} key={route.url + route.name}>
-                    <Link
-                      className={cl("nav-link flex align-center", styles.link, {
+                  </>
+                ) : (
+                  <>
+                    <NavLink
+                      className={cl(styles.link, {
                         [styles.active]: pathname.includes(route.url!),
                       })}
-                      onClick={() =>
-                        isMobile && dispatch(sidebarHandler(false))
-                      }
+                      onClick={closeSidebar}
                       to={`${route.url}${!!route?.param ? route?.param : ""}`}
                       state={{ name: route.name }}
                     >
@@ -168,10 +157,11 @@ const CustomSidebar = () => {
                         {route.name}
                         {!!route?.count && <CountItem count={route.count} />}
                       </div>
-                    </Link>
-                  </li>
-                );
-            })}
+                    </NavLink>
+                  </>
+                )}
+              </li>
+            ))}
           </ul>
         </div>
         <span onClick={handleLogout} className={styles.logout}>
