@@ -41,7 +41,7 @@ const options = {
 
 const column = [
   { name: "№", key: "id" },
-  { name: "Категория", key: "category" },
+  { name: "category", key: "category" },
   { name: "Количество (шт)", key: "amount" },
   {
     name: "Время обработки (м)",

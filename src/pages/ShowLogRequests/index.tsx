@@ -25,8 +25,10 @@ import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import cl from "classnames";
 import Loading from "@/components/Loader";
 import useQueryString from "@/hooks/custom/useQueryString";
+import { useTranslation } from "react-i18next";
 
 const ShowLogRequests = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigateParams = useNavigateParams();
   const modal = Number(useQueryString("modal"));
@@ -147,7 +149,7 @@ const ShowLogRequests = () => {
             Логи
           </button>
           <button onClick={handleBack} className="btn btn-primary btn-fill">
-            Назад
+            {t("back")}
           </button>
         </Header>
         <div className="content">

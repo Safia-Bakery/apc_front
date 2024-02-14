@@ -15,7 +15,7 @@ import EmptyList from "@/components/EmptyList";
 const column = [
   { name: "№", key: "" },
   { name: "Название", key: "name" },
-  { name: "Статус", key: "status" },
+  { name: "status", key: "status" },
   { name: "", key: "" },
 ];
 

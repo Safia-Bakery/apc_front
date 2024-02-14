@@ -14,8 +14,10 @@ import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 import { Departments } from "@/utils/types";
 import MainRadioBtns from "@/components/BaseInputs/MainRadioBtns";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const EditAddBranch = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate("/branches");
@@ -92,7 +94,7 @@ const EditAddBranch = () => {
     <Card>
       <Header title={!id ? "Добавить" : `Изменить филиал ${branch?.name}`}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 

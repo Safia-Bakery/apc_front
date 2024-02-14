@@ -24,8 +24,10 @@ import BaseInput from "@/components/BaseInputs";
 import MainSelect from "@/components/BaseInputs/MainSelect";
 import useCategories from "@/hooks/useCategories";
 import Modal from "@/components/Modal";
+import { useTranslation } from "react-i18next";
 
 const ShowCCTVRequests = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigateParams = useNavigateParams();
   const modal = Number(useQueryString("modal"));
@@ -196,7 +198,7 @@ const ShowCCTVRequests = () => {
             Логи
           </button>
           <button onClick={handleBack} className="btn btn-primary btn-fill">
-            Назад
+            {t("back")}
           </button>
         </Header>
         <div className="content">

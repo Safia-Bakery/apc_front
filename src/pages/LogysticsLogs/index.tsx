@@ -5,16 +5,18 @@ import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
 import { RequestStatus } from "@/utils/types";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№" },
   { name: "Действие" },
-  { name: "Сотрудник" },
-  { name: "Дата" },
+  { name: "employee" },
+  { name: "date" },
   { name: "Длительность" },
 ];
 
 const LogysticsLogs = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const handleNavigate = () => navigate(-1);
@@ -26,7 +28,7 @@ const LogysticsLogs = () => {
     <Card>
       <Header title={"Логи"}>
         <button onClick={handleNavigate} className="btn btn-primary btn-fill">
-          Назад
+          {t("back")}
         </button>
       </Header>
 

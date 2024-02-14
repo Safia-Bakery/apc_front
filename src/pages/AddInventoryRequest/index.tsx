@@ -19,6 +19,7 @@ import { TelegramApp } from "@/utils/tgHelpers";
 import Loading from "@/components/Loader";
 import { useState } from "react";
 import { inventoryCategoryId } from "@/utils/keys";
+import { useTranslation } from "react-i18next";
 
 interface InventoryFields {
   product:
@@ -52,6 +53,7 @@ const column = [
 ];
 
 const AddInventoryRequest = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [btn, $btn] = useState(false);
 
@@ -127,7 +129,7 @@ const AddInventoryRequest = () => {
             onClick={() => navigate("/requests-inventory")}
             className="btn btn-primary btn-fill"
           >
-            Назад
+            {t("back")}
           </button>
         )}
       </Header>
@@ -140,7 +142,7 @@ const AddInventoryRequest = () => {
             // permission={MainPermissions.get_fillials_list}
           />
         </BaseInputs>
-        <h2 className="font-weight-normal">Товары</h2>
+        <h2 className="font-weight-normal">products</h2>
         <div className={styles.table}>
           <table className={"table table-hover"}>
             <TableHead column={column} />

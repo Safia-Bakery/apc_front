@@ -15,24 +15,26 @@ import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
 import { useDownloadExcel } from "react-export-table-to-excel";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Номер", key: "id" },
-  { name: "Сотрудник", key: "type" },
-  { name: "Исполнитель", key: "fillial.name" },
-  { name: "Филиал", key: "fillial.name" },
-  { name: "Категория", key: "fillial.name" },
-  { name: "Комментарий", key: "fillial.name" },
-  { name: "Рейтинг", key: "rate" },
+  { name: "num", key: "id" },
+  { name: "employee", key: "type" },
+  { name: "executor", key: "fillial.name" },
+  { name: "branch", key: "fillial.name" },
+  { name: "category", key: "fillial.name" },
+  { name: "comment", key: "fillial.name" },
+  { name: "rate", key: "rate" },
   {
-    name: "Статус",
+    name: "status",
     key: "status",
   },
-  { name: "Дата", key: "category.name" },
+  { name: "date", key: "category.name" },
 ];
 
 const RequestsIT = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const tableRef = useRef(null);
   const [sort, $sort] = useState<Order[]>();
@@ -73,8 +75,8 @@ const RequestsIT = () => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "Заявки ИТ",
-    sheet: "Заявки ИТ",
+    filename: t("requests_it"),
+    sheet: t("requests_it"),
   });
   const downloadAsPdf = () => onDownload();
 
@@ -85,13 +87,13 @@ const RequestsIT = () => {
           onClick={downloadAsPdf}
           className="btn btn-primary btn-fill mr-2"
         >
-          Экспорт в Excel
+          {t("export_to_excel")}
         </button>
         <button
           onClick={() => navigate("add")}
           className="btn btn-success btn-fill"
         >
-          Добавить
+          {t("add")}
         </button>
       </Header>
 

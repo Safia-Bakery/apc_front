@@ -19,8 +19,10 @@ import { Departments } from "@/utils/types";
 import Loading from "@/components/Loader";
 import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 
 const CreateLogRequests = () => {
+  const { t } = useTranslation();
   const [files, $files] = useState<FileItem[]>();
   const { mutate, isPending } = requestMutation();
   const branchJson = useQueryString("branch");
@@ -82,7 +84,7 @@ const CreateLogRequests = () => {
     <Card>
       <Header title={"Создать заказ"}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 

@@ -22,10 +22,10 @@ const column = [
   { name: "Имя", key: "type" },
   { name: "Номер телефона", key: "fillial.name" },
   { name: "Подкатегория", key: "fillial.name" },
-  { name: "Филиал", key: "fillial.name" },
+  { name: "branch", key: "fillial.name" },
   { name: "Дата оформления", key: "fillial.name" },
-  { name: "Рейтинг", key: "rate" },
-  { name: "Статус", key: "status" },
+  { name: "rate", key: "rate" },
+  { name: "status", key: "status" },
   { name: "Изменил", key: "category.name" },
 ];
 

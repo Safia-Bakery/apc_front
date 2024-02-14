@@ -56,7 +56,7 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
       { name: "Название", key: "name" },
       { name: renderDep?.tableTitle, key: "name" },
       { name: "Описание", key: "description" },
-      { name: "Статус", key: "status" },
+      { name: "status", key: "status" },
       { name: "", key: "" },
     ];
   }, []);

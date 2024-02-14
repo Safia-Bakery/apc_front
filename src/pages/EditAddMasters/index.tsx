@@ -16,6 +16,7 @@ import Select from "react-select";
 import useDebounce from "@/hooks/custom/useDebounce";
 import Loading from "@/components/Loader";
 import { Departments, Sphere } from "@/utils/types";
+import { useTranslation } from "react-i18next";
 
 interface SelectValue {
   value: number | string;
@@ -23,6 +24,7 @@ interface SelectValue {
 }
 
 const EditAddMasters = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
@@ -171,7 +173,7 @@ const EditAddMasters = () => {
     <Card>
       <Header title={!id ? "Добавить" : renderDep.mainTitle}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 

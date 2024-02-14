@@ -17,8 +17,10 @@ import Loading from "@/components/Loader";
 import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
 import dayjs from "dayjs";
 import { CCTVCategoryId } from "@/utils/keys";
+import { useTranslation } from "react-i18next";
 
 const CreateCCTVRequest = () => {
+  const { t } = useTranslation();
   const [files, $files] = useState<FileItem[]>();
   const { mutate, isPending } = requestMutation();
   const branchJson = useQueryString("branch");
@@ -77,7 +79,7 @@ const CreateCCTVRequest = () => {
     <Card>
       <Header title={"Создать заказ"}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 

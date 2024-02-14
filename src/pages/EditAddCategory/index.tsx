@@ -17,6 +17,7 @@ import MainSelect from "@/components/BaseInputs/MainSelect";
 import { imageConverter } from "@/utils/helpers";
 import { baseURL } from "@/main";
 import useQueryString from "@/hooks/custom/useQueryString";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   sphere_status?: Sphere;
@@ -24,6 +25,7 @@ interface Props {
 }
 
 const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
+  const { t } = useTranslation();
   const { id, sphere } = useParams();
   const navigate = useNavigate();
   const parent_id = Number(useQueryString("parent_id"));
@@ -134,7 +136,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
     <Card className="overflow-hidden pb-3">
       <Header title={renderTitle}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>

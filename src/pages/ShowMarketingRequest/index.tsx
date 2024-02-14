@@ -30,8 +30,10 @@ import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
 import cl from "classnames";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const ShowMarketingRequest = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const permissions = useAppSelector(permissionSelector);
   const modal = Number(useQueryString("modal"));
@@ -168,7 +170,7 @@ const ShowMarketingRequest = () => {
             </button>
             {MarketingSubDep[sub_id] && (
               <button onClick={handleBack} className="btn btn-primary btn-fill">
-                Назад
+                {t("back")}
               </button>
             )}
           </div>

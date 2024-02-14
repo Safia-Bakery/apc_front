@@ -43,6 +43,7 @@ import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
 import orderMsgMutation from "@/hooks/mutation/orderMsg";
 import TableViewBtn from "@/components/TableViewBtn";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   edit: MainPermissions;
@@ -50,6 +51,7 @@ interface Props {
 }
 
 const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
+  const { t } = useTranslation();
   const { id, sphere } = useParams();
   const navigate = useNavigate();
   const modal = useQueryString("modal");
@@ -409,7 +411,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
               Логи
             </button>
             <button onClick={handleBack} className="btn btn-primary btn-fill">
-              Назад
+              {t("back")}
             </button>
           </div>
         </Header>

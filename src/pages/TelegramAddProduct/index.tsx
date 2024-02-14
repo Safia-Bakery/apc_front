@@ -23,7 +23,7 @@ import BaseInputs from "@/components/BaseInputs";
 import { SelectWrapper } from "@/components/InputWrappers";
 import Loading from "@/components/Loader";
 
-const column = [{ name: "Наименование" }, { name: "Количество" }, { name: "" }];
+const column = [{ name: "name_in_table" }, { name: "quantity" }, { name: "" }];
 
 const TelegramAddProduct = () => {
   const { id } = useParams();

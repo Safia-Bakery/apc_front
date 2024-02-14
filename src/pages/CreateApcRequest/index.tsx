@@ -20,8 +20,10 @@ import WarehouseSelect from "@/components/WarehouseSelect";
 import Loading from "@/components/Loader";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
+import { useTranslation } from "react-i18next";
 
 const CreateApcRequest = () => {
+  const { t } = useTranslation();
   const [files, $files] = useState<FileItem[]>();
   const { mutate, isPending } = requestMutation();
   const branchJson = useQueryString("branch");
@@ -86,7 +88,7 @@ const CreateApcRequest = () => {
     <Card>
       <Header title={"Создать заказ"}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 

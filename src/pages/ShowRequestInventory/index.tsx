@@ -27,8 +27,10 @@ import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { permissionSelector } from "reducers/sidebar";
 import AddedInventoryProducts from "@/components/AddedInventoryProducts";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const ShowRequestInventory = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const permissions = useAppSelector(permissionSelector);
   const [changed, $changed] = useState(false);
@@ -131,7 +133,7 @@ const ShowRequestInventory = () => {
             Логи
           </button>
           <button onClick={handleBack} className="btn btn-primary btn-fill">
-            Назад
+            {t("back")}
           </button>
         </Header>
         <div className="content">

@@ -22,7 +22,7 @@ const column = [
   { name: "Логин", key: "username" },
   { name: "Роль", key: "group.name" },
   { name: "Телефон", key: "phone_number" },
-  { name: "Статус", key: "status" },
+  { name: "status", key: "status" },
   { name: "", key: "" },
 ];
 

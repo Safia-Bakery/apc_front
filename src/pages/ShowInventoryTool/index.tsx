@@ -14,6 +14,7 @@ import EmptyList from "@/components/EmptyList";
 import toolOrderMutation from "@/hooks/mutation/toolOrder";
 import useInventoryOrders from "@/hooks/useInventoryOrders";
 import { errorToast, successToast } from "@/utils/toast";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
@@ -26,6 +27,7 @@ const column = [
 ];
 
 const ShowInventoryTool = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const tableRef = useRef(null);
   const { mutate } = toolOrderMutation();
@@ -94,7 +96,7 @@ const ShowInventoryTool = () => {
             Export Excel
           </button>
           <button onClick={handleBack} className="btn btn-primary btn-fill">
-            Назад
+            {t("back")}
           </button>
         </Header>
         <div className="content">

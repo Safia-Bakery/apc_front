@@ -16,6 +16,7 @@ import { permissionSelector } from "reducers/sidebar";
 import CategoriesITFilter from "./filter";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   sphere_status?: number;
@@ -29,11 +30,12 @@ const column = [
   { name: "Наименование", key: "name" },
   { name: "Отдел", key: "department" },
   { name: "Время исполнении", key: "ftime" },
-  { name: "Статус", key: "status" },
+  { name: "status", key: "status" },
   { name: "", key: "" },
 ];
 
 const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
+  const { t } = useTranslation();
   const { sphere } = useParams();
   const navigate = useNavigate();
   const [sort, $sort] = useState<Category[]>();
@@ -64,7 +66,7 @@ const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
               onClick={() => navigate(-1)}
               className="btn btn-primary btn-fill"
             >
-              Назад
+              {t("back")}
             </button>
           </div>
         )}

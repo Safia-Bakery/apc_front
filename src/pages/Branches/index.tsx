@@ -16,6 +16,7 @@ import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "id" },
@@ -34,6 +35,7 @@ const column = [
 ];
 
 const Branches = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [sort, $sort] = useState<BranchType[]>();
   const { refetch: branchSync, isFetching: syncFetching } = useBranchSync({
@@ -83,7 +85,7 @@ const Branches = () => {
                 alt="sync"
                 className="mr-2"
               />
-              Синхронизировать с iiko
+              {t("sync_with_iico")}
             </button>
           )}
           {permisisons?.[MainPermissions.add_fillials] && (

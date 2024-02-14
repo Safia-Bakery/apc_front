@@ -20,22 +20,24 @@ import Loading from "@/components/Loader";
 import useStaffExcell from "@/hooks/useStaffExcell";
 import { baseURL } from "@/main";
 import { staffCategoryId } from "@/utils/keys";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
   { name: "Номер заявки", key: "id" },
   { name: "Клиент", key: "user" },
-  { name: "Филиал", key: "name" },
+  { name: "branch", key: "name" },
   { name: "Порция еды", key: "size" },
   { name: "Порции хлеба", key: "bread_size" },
   { name: "Дата поставки", key: "arrival_date" },
-  { name: "Статус", key: "status" },
+  { name: "status", key: "status" },
 ];
 
 const today = new Date();
 const tomorrow = today.setDate(today.getDate() + 1);
 
 const RequestsStaff = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [sort, $sort] = useState<Order[]>();
   const [excelFile, $excelFile] = useState(false);
@@ -132,7 +134,7 @@ const RequestsStaff = () => {
           </div>
           <div className="flex flex-col gap-2 justify-between">
             <button className="btn btn-success btn-fill" onClick={handleExcell}>
-              Экспорт в Excel
+              {t("export_to_excel")}
             </button>
             {permission?.[MainPermissions.staff_modal_time] && (
               <button

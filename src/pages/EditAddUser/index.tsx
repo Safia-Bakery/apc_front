@@ -19,8 +19,10 @@ import useRoles from "@/hooks/useRoles";
 import MainRadioBtns from "@/components/BaseInputs/MainRadioBtns";
 import { Sphere } from "@/utils/types";
 import useQueryString from "custom/useQueryString";
+import { useTranslation } from "react-i18next";
 
 const EditAddUser = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
@@ -99,7 +101,7 @@ const EditAddUser = () => {
     <Card>
       <Header title={!id ? "Добавить" : `Изменить пользователь №${id}`}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 

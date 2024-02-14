@@ -17,21 +17,7 @@ import { ChangeEvent, useMemo, useState } from "react";
 import Loading from "@/components/Loader";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "@/store/reducers/sidebar";
-
-enum Months {
-  "Январь",
-  "февраль",
-  "март",
-  "апрель",
-  "May",
-  "июнь",
-  "июль",
-  "Август",
-  "Сентябрь",
-  "Октябрь",
-  "Ноябрь",
-  "Декабрь",
-}
+import { Months } from "@/utils/keys";
 
 const options = {
   legend: {

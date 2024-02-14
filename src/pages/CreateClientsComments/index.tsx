@@ -18,8 +18,10 @@ import Loading from "@/components/Loader";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import { clientCommentCategoryId as category_id } from "@/utils/keys";
+import { useTranslation } from "react-i18next";
 
 const CreateClientsComments = () => {
+  const { t } = useTranslation();
   const [files, $files] = useState<FileItem[]>();
   const { mutate, isPending } = requestMutation();
   const branchJson = useQueryString("branch");
@@ -86,7 +88,7 @@ const CreateClientsComments = () => {
     <Card>
       <Header title={"Создать заказ"}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 

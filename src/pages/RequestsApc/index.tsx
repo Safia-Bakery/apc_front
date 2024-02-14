@@ -59,8 +59,8 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
       { name: "Срочно", key: "urgent" },
       { name: "Бригада", key: "brigada" },
       { name: "Дата поступления", key: "created_at" },
-      { name: "Рейтинг", key: "rate" },
-      { name: "Статус", key: "status" },
+      { name: "rate", key: "rate" },
+      { name: "status", key: "status" },
       { name: "Изменил", key: "user_manager" },
     ];
 

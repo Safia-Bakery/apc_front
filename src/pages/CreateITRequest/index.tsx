@@ -27,8 +27,8 @@ import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import useCatProducts from "@/hooks/useCatProducts";
 import TableHead from "@/components/TableHead";
-import MainInput from "@/components/BaseInputs/MainInput";
 import { InputWrapper } from "@/components/InputWrappers";
+import { useTranslation } from "react-i18next";
 
 interface InventoryFields {
   product: string;
@@ -52,7 +52,7 @@ const initialInventory: InventoryFields | undefined = {
 
 const column = [
   { name: "№", key: "" },
-  { name: "КАТЕГОРИЕ", key: "category_id" },
+  { name: "category", key: "category_id" },
   { name: "ТОВАР", key: "product_id" },
   { name: "КОЛИЧЕСТВО", key: "count" },
   { name: "", key: "remove" },
@@ -77,6 +77,7 @@ const SelectWrapper = forwardRef<
 });
 
 const CreateITRequest = () => {
+  const { t } = useTranslation();
   const [files, $files] = useState<FileItem[]>();
   const { mutate, isPending } = requestMutation();
   const { sphere } = useParams();
@@ -192,7 +193,7 @@ const CreateITRequest = () => {
     <Card>
       <Header title="Создать заказ">
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 

@@ -20,12 +20,14 @@ import { SelectWrapper } from "../InputWrappers";
 import cl from "classnames";
 import Loading from "../Loader";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   addExp: MainPermissions;
 }
 
 const AddProductModal = ({ addExp }: Props) => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const removeRoute = useRemoveParams();
   const modal = useQueryString("add_product_modal");
@@ -86,7 +88,7 @@ const AddProductModal = ({ addExp }: Props) => {
       onClose={handleModal}
     >
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <Header title="Добавить расходной товар">
+        <Header title={t("add_used_products")}>
           <button onClick={handleModal} className="close ml-2">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -103,7 +105,7 @@ const AddProductModal = ({ addExp }: Props) => {
                 <Loading />
               </div>
             ) : (
-              "Синхронизировать с iiko"
+              t("sync_with_iico")
             )}
           </button>
           <div className={styles.modalBody}>
@@ -113,7 +115,7 @@ const AddProductModal = ({ addExp }: Props) => {
                   name={"product"}
                   control={control}
                   render={({ field }) => (
-                    <BaseInputs className="!mb-0 mt-4" label="Выберите продукт">
+                    <BaseInputs className="!mb-0 mt-4" label="select_product">
                       <SelectWrapper
                         department={Departments.apc}
                         field={field}
@@ -129,7 +131,7 @@ const AddProductModal = ({ addExp }: Props) => {
               <MainInput type="number" register={register("count")} />
             </BaseInput> */}
 
-            <BaseInput label="Количество">
+            <BaseInput label="quantity">
               <div className="flex gap-4 w-full">
                 <button
                   type="button"
@@ -155,7 +157,7 @@ const AddProductModal = ({ addExp }: Props) => {
               </div>
             </BaseInput>
 
-            <BaseInput label="Примичание">
+            <BaseInput label="comment">
               <MainTextArea register={register("comment")} />
             </BaseInput>
           </div>
@@ -168,7 +170,7 @@ const AddProductModal = ({ addExp }: Props) => {
               type="submit"
               className="btn btn-success btn-fill"
             >
-              Добавить
+              {t("add")}
             </button>
           </div>
         </div>

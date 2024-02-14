@@ -15,8 +15,8 @@ import useCars from "@/hooks/useCars";
 const column = [
   { name: "№", key: "" },
   { name: "Модель машины", key: "name" },
-  { name: "Номер", key: "car_number" },
-  { name: "Статус", key: "status" },
+  { name: "num", key: "car_number" },
+  { name: "status", key: "status" },
   { name: "", key: "" },
 ];
 

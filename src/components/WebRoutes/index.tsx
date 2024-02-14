@@ -13,6 +13,9 @@ import {
   sidebatItemsSelector,
 } from "reducers/sidebar";
 import useOrderCounts from "@/hooks/useOrderCounts";
+import { langSelector } from "@/store/reducers/selects";
+import i18n from "@/localization";
+import { Language } from "@/utils/keys";
 
 // const normalizeURL = (path: string) =>
 //   path.replace(/\/+/g, "/").replace(/\/$/, "");
@@ -22,6 +25,7 @@ const WebRooutes = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const permission = useAppSelector(permissionSelector);
+  const lang = useAppSelector(langSelector);
 
   const { error, data: user, isLoading } = useToken({});
 
@@ -59,6 +63,10 @@ const WebRooutes = () => {
     if (!!user?.permissions.length && !!token)
       dispatch(permissionHandler(user?.permissions));
   }, [user?.permissions, token]);
+
+  useEffect(() => {
+    i18n.changeLanguage(lang);
+  }, [lang]);
 
   useEffect(() => {
     if (permission && counts?.length) dispatch(sidebarItemsHandler(counts));

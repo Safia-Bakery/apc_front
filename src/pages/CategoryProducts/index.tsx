@@ -14,16 +14,18 @@ import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import { CategoryProducts as CategoryProductsTypes } from "@/utils/types";
 import EmptyList from "@/components/EmptyList";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
   { name: "Наименование", key: "name" },
   { name: "Отдел", key: "department" },
-  { name: "Статус", key: "status" },
+  { name: "status", key: "status" },
   { name: "", key: "" },
 ];
 
 const CategoryProducts = () => {
+  const { t } = useTranslation();
   const { id, sphere } = useParams();
   const { data: products, isLoading } = useCatProducts({
     category_id: Number(id),
@@ -53,7 +55,7 @@ const CategoryProducts = () => {
               onClick={() => navigate(-1)}
               className="btn btn-primary btn-fill"
             >
-              Назад
+              {t("back")}
             </button>
           </div>
         )}

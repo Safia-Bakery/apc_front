@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import { Outlet, useNavigate } from "react-router-dom";
 import StatBar from "@/components/StatBar";
 import DateRangeBlock from "@/components/DateRangeBlock";
+import { useTranslation } from "react-i18next";
 
 const routesArr = [
   {
@@ -20,6 +21,7 @@ const routesArr = [
 ];
 
 const StatsIT = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
 
@@ -27,11 +29,11 @@ const StatsIT = () => {
     <Card>
       <Header title="Статистика IT">
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
 
         <button className="btn btn-success btn-fill ml-2" id="export_to_excell">
-          Экспорт в Excel
+          {t("export_to_excel")}
         </button>
       </Header>
 

@@ -19,8 +19,10 @@ import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import dayjs from "dayjs";
 import { staffCategoryId } from "@/utils/keys";
+import { useTranslation } from "react-i18next";
 
 const AddStaffRequest = () => {
+  const { t } = useTranslation();
   const { mutate, isPending } = requestMutation();
   const branchJson = useQueryString("branch");
   const sphere_status = Number(useQueryString("sphere_status"));
@@ -79,7 +81,7 @@ const AddStaffRequest = () => {
     <Card>
       <Header title={"Создать заказ"}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 

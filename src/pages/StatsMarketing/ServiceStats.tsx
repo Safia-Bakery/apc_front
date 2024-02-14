@@ -10,7 +10,7 @@ import { handleDepartment, numberWithCommas as fixedN } from "@/utils/helpers";
 const column = [
   { name: "№" },
   { name: "Отдел" },
-  { name: "Категория" },
+  { name: "category" },
   { name: "Поступило" },
   { name: "Обработанных во время", colSpan: 2, className: "!bg-tableSuccess" },
   { name: "Обработанных не во время", colSpan: 2, className: "!bg-tableWarn" },

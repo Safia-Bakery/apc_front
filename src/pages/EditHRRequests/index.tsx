@@ -13,8 +13,10 @@ import BaseInput from "@/components/BaseInputs";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import { useForm } from "react-hook-form";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const EditHRRequests = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
@@ -72,7 +74,7 @@ const EditHRRequests = () => {
         subTitle={`Статус: ${handleHRStatus(faq?.status!)}`}
       >
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
       <div className="content !pb-12">

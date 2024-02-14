@@ -13,15 +13,15 @@ import deleteExpenditureMutation from "@/hooks/mutation/deleteExpenditure";
 import { MainPermissions, RequestStatus } from "@/utils/types";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
-import useQueryString from "custom/useQueryString";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№" },
-  { name: "Наименование" },
-  { name: "Количество" },
-  { name: "Примичание" },
-  { name: "Дата" },
-  { name: "Автор" },
+  { name: "name_in_table" },
+  { name: "quantity" },
+  { name: "comment" },
+  { name: "date" },
+  { name: "author" },
   { name: "" },
 ];
 
@@ -31,6 +31,7 @@ interface Props extends PropsWithChildren {
 }
 
 const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const permissions = useAppSelector(permissionSelector);
   const navigate = useNavigateParams();
@@ -72,7 +73,7 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
 
   return (
     <Card>
-      <Header title="Товары">
+      <Header title="products">
         {synciiko && permissions?.[synciiko] && (
           <button
             disabled={isLoading}
@@ -86,7 +87,7 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
               alt="sync"
               className="mr-2"
             />
-            Синхронизировать с iiko
+            {t("sync_with_iico")}
           </button>
         )}
         {addExp && isFinished && permissions?.[addExp] && (
@@ -95,7 +96,7 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
             onClick={handleModal}
             id={"add_expenditure"}
           >
-            Добавить
+            {t("add")}
           </button>
         )}
       </Header>

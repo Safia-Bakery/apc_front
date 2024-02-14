@@ -9,8 +9,10 @@ import useRoles from "@/hooks/useRoles";
 import useRolePermission from "@/hooks/useRolePermission";
 import BaseInputs from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
+import { useTranslation } from "react-i18next";
 
 const EditAddRole = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate("/users");
@@ -58,7 +60,7 @@ const EditAddRole = () => {
     <Card>
       <Header title={!id ? "Добавить" : `Изменить роль №${id}`}>
         <button className="btn btn-success btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 

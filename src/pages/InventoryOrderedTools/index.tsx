@@ -17,10 +17,10 @@ import Loading from "@/components/Loader";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Номер", key: "id" },
-  { name: "Автор", key: "user" },
-  { name: "Статус", key: "status" },
-  { name: "Дата", key: "created_at" },
+  { name: "num", key: "id" },
+  { name: "author", key: "user" },
+  { name: "status", key: "status" },
+  { name: "date", key: "created_at" },
 ];
 
 const InventoryOrderedTools = () => {

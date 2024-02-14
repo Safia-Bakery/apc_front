@@ -8,8 +8,10 @@ import MainInput from "@/components/BaseInputs/MainInput";
 import BaseInputs from "@/components/BaseInputs";
 import updateToolsMutation from "@/hooks/mutation/updateTools";
 import useTools from "@/hooks/useTools";
+import { useTranslation } from "react-i18next";
 
 const EditInventoryProd = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
@@ -56,7 +58,7 @@ const EditInventoryProd = () => {
     <Card>
       <Header title={`Изменить ${tool?.name}`}>
         <button className="btn btn-primary" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 

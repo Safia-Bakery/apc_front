@@ -8,7 +8,7 @@ import useUpdateQueryStr from "custom/useUpdateQueryStr";
 const column = [
   { name: "№", key: "id" as keyof Order["id"] },
   { name: "Бригада", key: "purchaser" as keyof Order["status"] },
-  { name: "Категория", key: "category" as keyof Order["status"] },
+  { name: "category", key: "category" as keyof Order["status"] },
   {
     name: "Кол-во",
     key: "qnt" as keyof Order["status"],

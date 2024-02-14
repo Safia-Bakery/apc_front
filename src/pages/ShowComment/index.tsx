@@ -11,8 +11,10 @@ import { baseURL } from "@/main";
 import cl from "classnames";
 import ShowRequestModals from "@/components/ShowRequestModals";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const ShowComment = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const navigateParams = useNavigateParams();
@@ -39,7 +41,7 @@ const ShowComment = () => {
       <Card>
         <Header title={`№${id}`}>
           <button className="btn btn-primary btn-fill" onClick={goBack}>
-            Назад
+            {t("back")}
           </button>
         </Header>
         <div className="content">

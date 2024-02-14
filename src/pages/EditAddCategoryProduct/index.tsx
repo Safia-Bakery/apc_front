@@ -12,8 +12,10 @@ import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 import { imageConverter } from "@/utils/helpers";
 import { baseURL } from "@/main";
 import categoryProductMutation from "@/hooks/mutation/categoryProduct";
+import { useTranslation } from "react-i18next";
 
 const EditAddCategoryProduct = () => {
+  const { t } = useTranslation();
   const { id: category_id, product_id } = useParams();
 
   const {
@@ -110,7 +112,7 @@ const EditAddCategoryProduct = () => {
         title={!category_id ? "Добавить" : `Изменить категори  №${category_id}`}
       >
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>

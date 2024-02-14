@@ -7,15 +7,17 @@ import { useNavigateParams } from "custom/useCustomNavigate";
 import { FileType, ModalTypes } from "@/utils/types";
 import { baseURL } from "@/main";
 import cl from "classnames";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№" },
-  { name: "Наименование" },
-  { name: "Количество" },
-  { name: "Фото" },
+  { name: "name_in_table" },
+  { name: "quantity" },
+  { name: "photo" },
 ];
 
 const AddedProductsIT = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigateParams = useNavigateParams();
 
@@ -30,7 +32,7 @@ const AddedProductsIT = () => {
 
   return (
     <Card>
-      <Header title="Товары" />
+      <Header title="products" />
 
       <div className="content table-responsive table-full-width overflow-hidden">
         <table className="table table-hover">
@@ -62,7 +64,7 @@ const AddedProductsIT = () => {
                         `${baseURL}/${item?.orpr_product?.image}`
                       )}
                     >
-                      Файл
+                      {t("file")}
                     </div>
                   )}
                 </td>

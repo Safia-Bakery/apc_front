@@ -31,7 +31,7 @@ const column = [
   { name: "Группа проблем", key: "category?.name" },
   { name: "Срочно", key: "urgent" },
   { name: "Дата поступления", key: "created_at" },
-  { name: "Статус", key: "status" },
+  { name: "status", key: "status" },
   { name: "Изменил", key: "user_manager" },
 ];
 

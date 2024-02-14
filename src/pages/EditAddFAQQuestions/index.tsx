@@ -3,18 +3,17 @@ import Header from "@/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import roleMutation from "@/hooks/mutation/roleMutation";
 import { errorToast, successToast } from "@/utils/toast";
-import useRoles from "@/hooks/useRoles";
-import useRolePermission from "@/hooks/useRolePermission";
 import BaseInputs from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
 import faqsMutation from "@/hooks/mutation/faqs";
 import useFAQ from "@/hooks/useFAQ";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
+import { useTranslation } from "react-i18next";
 
 const EditAddFAQQuestions = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
@@ -64,7 +63,7 @@ const EditAddFAQQuestions = () => {
     <Card>
       <Header title={!id ? "Добавить" : `Изменить №${id}`}>
         <button className="btn btn-success btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 

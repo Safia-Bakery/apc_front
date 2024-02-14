@@ -23,7 +23,7 @@ import Loading from "@/components/Loader";
 const column = [
   { name: "№", key: "" },
   { name: "Вопрос", key: "name" },
-  { name: "Статус", key: "status" },
+  { name: "status", key: "status" },
   { name: "", key: "" },
 ];
 

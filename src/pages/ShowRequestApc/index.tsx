@@ -35,6 +35,7 @@ import syncExpenditure from "@/hooks/mutation/syncExpenditure";
 import Loading from "@/components/Loader";
 import cl from "classnames";
 import { permissionSelector } from "reducers/sidebar";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   edit?: MainPermissions;
@@ -43,6 +44,7 @@ interface Props {
 }
 
 const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const modal = Number(useQueryString("modal"));
@@ -308,7 +310,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
               onClick={handleBack}
               className="btn btn-primary btn-fill ml-2"
             >
-              Назад
+              {t("back")}
             </button>
           )}
         </Header>

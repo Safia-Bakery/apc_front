@@ -14,8 +14,10 @@ import {
 import { Departments, ModalTypes, RequestStatus } from "@/utils/types";
 import { useForm } from "react-hook-form";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
+import { useTranslation } from "react-i18next";
 
 const ShowRequestStaff = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
@@ -99,7 +101,7 @@ const ShowRequestStaff = () => {
             Логи
           </button>
           <button onClick={handleBack} className="btn btn-primary btn-fill">
-            Назад
+            {t("back")}
           </button>
         </Header>
         <div className="content">

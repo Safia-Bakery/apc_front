@@ -9,8 +9,10 @@ import MainInput from "@/components/BaseInputs/MainInput";
 import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 import useCars from "@/hooks/useCars";
 import carsMutation from "@/hooks/mutation/cars";
+import { useTranslation } from "react-i18next";
 
 const EditAddLogCars = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
@@ -62,7 +64,7 @@ const EditAddLogCars = () => {
     <Card>
       <Header title={!id ? "Добавить" : `Изменить роль №${id}`}>
         <button className="btn btn-success btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 
