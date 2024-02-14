@@ -126,8 +126,25 @@
 }
 .link {
   display: flex;
-  flex: 4;
   align-items: center;
+  cursor: pointer;
+
+  line-height: 15px;
+  padding: 10px;
+  margin: 5px;
+  background: transparent;
+
+  opacity: 0.86;
+  border-radius: 4px;
+
+  line-height: 31px;
+  font-size: 12px;
+  font-weight: 600;
+
+  @media (max-width: 960px) {
+    padding: 2px 5px !important;
+    margin: 2px 5px !important;
+  }
 
   &:hover {
     background: rgba(255, 255, 255, 0.23) !important;
@@ -214,4 +231,15 @@
   position: absolute;
   top: -5px;
   right: -5px;
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  a {
+    @media (max-width: 960px) {
+      height: 40px;
+    }
+  }
 }

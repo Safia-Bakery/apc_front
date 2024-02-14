@@ -45,8 +45,6 @@ const EditAddUser = () => {
       status,
     } = getValues();
 
-    console.log(fixedString(phone_number), "fixedString(phone_number)");
-
     mutate(
       {
         full_name,

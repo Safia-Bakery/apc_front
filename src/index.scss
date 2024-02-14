@@ -157,11 +157,6 @@ input::-webkit-inner-spin-button {
     margin-top: 0;
   }
 
-  .nav li .nav-link {
-    padding: 10px;
-    margin: 5px;
-  }
-
   &::before,
   &::after {
     content: none !important;
@@ -187,29 +182,6 @@ input::-webkit-inner-spin-button {
   max-height: 1000px;
 }
 
-.sidebar .nav li:hover .nav-link {
-  background: transparent;
-}
-.sidebar .nav .nav-link {
-  line-height: 15px;
-  padding: 10px;
-  margin: 5px;
-
-  @media (max-width: 960px) {
-    padding: 2px 5px !important;
-    margin: 2px 5px !important;
-  }
-}
-.nav-item {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  a {
-    @media (max-width: 960px) {
-      height: 40px;
-    }
-  }
-}
 .react-datepicker-popper[data-placement^="bottom"]
   .react-datepicker__triangle::after {
   display: none !important;
@@ -271,35 +243,12 @@ hr {
 .form-group {
   margin-bottom: 1rem;
 }
-.nav-item {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-.sidebar .nav li .nav-link,
-body > .navbar-collapse .nav li .nav-link {
-  color: #ffffff;
-  padding: 10px;
-  margin: 5px;
-  opacity: 0.86;
-  border-radius: 4px;
-  background: 0 0;
-  border: 0;
-}
 .sidebar .nav,
 body > .navbar-collapse .nav {
   float: none;
   display: block;
 }
-.sidebar .nav li .nav-link p,
-body > .navbar-collapse .nav li .nav-link p {
-  margin: 0;
-  line-height: 31px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  display: inline-flex;
-}
+
 table {
   width: 100%;
   margin-bottom: 1rem;
