@@ -171,7 +171,7 @@ const EditAddMasters = () => {
 
   return (
     <Card>
-      <Header title={!id ? "Добавить" : renderDep.mainTitle}>
+      <Header title={!id ? "{t('add')}" : renderDep.mainTitle}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           {t("back")}
         </button>
@@ -186,7 +186,7 @@ const EditAddMasters = () => {
           >
             <MainInput
               register={register("brigada_name", {
-                required: "Обязательное поле",
+                required: t("required_field"),
               })}
             />
           </BaseInputs>
@@ -200,7 +200,7 @@ const EditAddMasters = () => {
         <MainCheckBox label="Активный" register={register("status")} />
 
         <button type="submit" className="btn btn-success btn-fill">
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

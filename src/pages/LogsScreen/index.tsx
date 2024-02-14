@@ -55,7 +55,7 @@ const Logs = () => {
                   ? dayjs(order?.update_time?.[RequestStatus.new]).format(
                       "DD.MM.YYYY HH:mm"
                     )
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
               <td>-------</td>
             </tr>
@@ -68,7 +68,7 @@ const Logs = () => {
                   ? dayjs(order?.update_time?.[RequestStatus.confirmed]).format(
                       "DD.MM.YYYY HH:mm"
                     )
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
               <td>
                 {!!dayjs(order?.update_time?.[RequestStatus.confirmed]).diff(
@@ -79,7 +79,7 @@ const Logs = () => {
                       order?.update_time?.[RequestStatus.new],
                       "minutes"
                     )
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
             </tr>
 
@@ -92,7 +92,7 @@ const Logs = () => {
                   ? dayjs(order?.update_time?.[RequestStatus.done]).format(
                       "DD.MM.YYYY HH:mm"
                     )
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
               <td>
                 {!!dayjs(order?.update_time?.[RequestStatus.done]).diff(
@@ -106,7 +106,7 @@ const Logs = () => {
                       order?.update_time?.[RequestStatus.confirmed],
                       "hours"
                     )} часов)`
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
             </tr>
             <tr className="bg-blue">
@@ -118,7 +118,7 @@ const Logs = () => {
                   ? dayjs(order?.update_time?.[RequestStatus.rejected]).format(
                       "DD.MM.YYYY HH:mm"
                     )
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
               <td>
                 {!!dayjs(order?.update_time?.[RequestStatus.confirmed]).diff(
@@ -129,7 +129,7 @@ const Logs = () => {
                       order?.update_time?.[RequestStatus.rejected],
                       "minutes"
                     )
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
             </tr>
           </tbody>

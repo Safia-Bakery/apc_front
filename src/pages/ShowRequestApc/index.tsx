@@ -236,7 +236,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
           onClick={handleModal(ModalTypes.assign)}
           className="btn btn-success btn-fill float-end"
         >
-          Назначить
+          {t("assign")}
         </button>
       );
     }
@@ -260,7 +260,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                 id={"save_report"}
                 className="btn btn-success float-end btn-fill my-3"
               >
-                Сохранить
+                {t("save")}
               </button>
             )}
           </div>
@@ -405,7 +405,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                     <td>
                       {!!order?.user_manager
                         ? order?.user_manager
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
 
@@ -414,7 +414,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                     <td>
                       {order?.created_at
                         ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
@@ -422,15 +422,15 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                     <td>
                       {order?.started_at
                         ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата выполнения:</th>
+                    <th>{t("completion_date")}:</th>
                     <td>
                       {order?.finished_at
                         ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>

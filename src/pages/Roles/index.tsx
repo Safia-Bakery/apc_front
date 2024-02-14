@@ -11,6 +11,7 @@ import useRoles from "@/hooks/useRoles";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import EmptyList from "@/components/EmptyList";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
@@ -20,6 +21,7 @@ const column = [
 ];
 
 const Roles = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const handleNavigate = (route: string) => () => navigate(route);
   const permission = useAppSelector(permissionSelector);
@@ -36,7 +38,7 @@ const Roles = () => {
             className="btn btn-success btn-fill"
             onClick={handleNavigate("add")}
           >
-            Добавить
+            {t("add")}
           </button>
         )}
       </Header>

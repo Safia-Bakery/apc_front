@@ -218,7 +218,7 @@ const ShowRequestInventory = () => {
                     <td>
                       {!!order?.user_manager
                         ? order?.user_manager
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
@@ -226,7 +226,7 @@ const ShowRequestInventory = () => {
                     <td>
                       {order?.created_at
                         ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
@@ -234,15 +234,15 @@ const ShowRequestInventory = () => {
                     <td>
                       {order?.started_at
                         ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата выполнения:</th>
+                    <th>{t("completion_date")}:</th>
                     <td>
                       {order?.finished_at
                         ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
@@ -252,7 +252,7 @@ const ShowRequestInventory = () => {
                         ? dayjs(order?.finishing_time).format(
                             "DD.MM.YYYY HH:mm"
                           )
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   {order?.comments?.[0]?.rating && (

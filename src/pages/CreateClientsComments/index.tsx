@@ -86,7 +86,7 @@ const CreateClientsComments = () => {
 
   return (
     <Card>
-      <Header title={"Создать заказ"}>
+      <Header title={"create_order"}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           {t("back")}
         </button>
@@ -96,7 +96,7 @@ const CreateClientsComments = () => {
         className={cl("content", styles.form)}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <BaseInputs className="relative" label="ФИЛИАЛ">
+        <BaseInputs className="relative" label={t("branch")}>
           {renderBranchSelect}
         </BaseInputs>
 
@@ -104,7 +104,7 @@ const CreateClientsComments = () => {
           <MainInput register={register("product")} />
         </BaseInputs>
 
-        <BaseInputs label="Комментарии">
+        <BaseInputs label="comments">
           <MainTextArea
             register={register("description")}
             placeholder="Комментарии"
@@ -117,7 +117,7 @@ const CreateClientsComments = () => {
             type="submit"
             className={`btn btn-info btn-fill float-end ${styles.btn}`}
           >
-            Создать
+            {t("create")}
           </button>
         </div>
       </form>

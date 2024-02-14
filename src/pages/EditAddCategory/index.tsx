@@ -143,7 +143,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
         {Number(dep) === Departments.marketing && (
           <BaseInput label="ОТДЕЛ" error={errors.name}>
             <MainSelect
-              register={register("sub_id", { required: "Обязательное поле" })}
+              register={register("sub_id", { required: t("required_field") })}
               values={MarketingSubDepRu}
             />
           </BaseInput>
@@ -151,7 +151,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
 
         <BaseInput label="НАИМЕНОВАНИЕ" error={errors.name}>
           <MainInput
-            register={register("name", { required: "Обязательное поле" })}
+            register={register("name", { required: t("required_field") })}
           />
         </BaseInput>
 
@@ -160,7 +160,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
           Number(dep) === Departments.marketing) && (
           <BaseInput label="Время исполнении (в часах)" error={errors.time}>
             <MainInput
-              register={register("time", { required: "Обязательное поле" })}
+              register={register("time", { required: t("required_field") })}
               type="number"
             />
           </BaseInput>
@@ -201,7 +201,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
         {renderImage}
 
         <button type="submit" className="btn btn-success btn-fill float-end">
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

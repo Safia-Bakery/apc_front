@@ -112,7 +112,7 @@ const ShowRole = () => {
           type="submit"
           id="save_permission"
         >
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

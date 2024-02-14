@@ -74,7 +74,7 @@ const EditInventoryProd = () => {
         </BaseInputs>
 
         <button type="submit" className="btn btn-success mt-3">
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

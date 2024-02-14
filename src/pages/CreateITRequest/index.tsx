@@ -166,7 +166,11 @@ const CreateITRequest = () => {
 
   const renderBranches = useMemo(() => {
     return (
-      <BaseInputs className="relative" label="ФИЛИАЛ" error={errors.fillial_id}>
+      <BaseInputs
+        className="relative"
+        label={t("branch")}
+        error={errors.fillial_id}
+      >
         {perm?.[MainPermissions.get_fillials_list] && (
           <BranchSelect origin={1} enabled />
         )}
@@ -191,7 +195,7 @@ const CreateITRequest = () => {
 
   return (
     <Card>
-      <Header title="Создать заказ">
+      <Header title="create_order">
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           {t("back")}
         </button>
@@ -224,7 +228,7 @@ const CreateITRequest = () => {
                             register={register(
                               `inputFields.${index}.category_id`,
                               {
-                                required: "Обязательное поле",
+                                required: t("required_field"),
                               }
                             )}
                           />
@@ -244,7 +248,7 @@ const CreateITRequest = () => {
                             field={field}
                             error={errors.inputFields?.[index]?.product}
                             register={register(`inputFields.${index}.product`, {
-                              required: "Обязательное поле",
+                              required: t("required_field"),
                             })}
                           />
                         )}
@@ -273,7 +277,7 @@ const CreateITRequest = () => {
                                 field={field}
                                 error={errors.inputFields?.[index]?.qnt}
                                 register={register(`inputFields.${index}.qnt`, {
-                                  required: "Обязательное поле",
+                                  required: t("required_field"),
                                 })}
                               />
                             )}
@@ -306,7 +310,7 @@ const CreateITRequest = () => {
                         className={cl("btn btn-primary w-min")}
                         onClick={addInputFields}
                       >
-                        Добавить
+                        {t("add")}
                       </button>
                     </td>
                   </tr>
@@ -319,13 +323,13 @@ const CreateITRequest = () => {
             <MainSelect
               values={categories?.items}
               register={register("category_id", {
-                required: "Обязательное поле",
+                required: t("required_field"),
               })}
             />
           </BaseInputs>
         )}
 
-        <BaseInputs label="Комментарии" error={errors.description}>
+        <BaseInputs label="comments" error={errors.description}>
           <MainTextArea
             register={register("description")}
             placeholder="Комментарии"
@@ -343,7 +347,7 @@ const CreateITRequest = () => {
             type="submit"
             className={`btn btn-info btn-fill float-end ${styles.btn}`}
           >
-            Создать
+            {t("create")}
           </button>
         </div>
       </form>

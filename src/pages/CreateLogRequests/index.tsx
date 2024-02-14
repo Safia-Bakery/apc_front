@@ -82,7 +82,7 @@ const CreateLogRequests = () => {
 
   return (
     <Card>
-      <Header title={"Создать заказ"}>
+      <Header title={"create_order"}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           {t("back")}
         </button>
@@ -94,7 +94,7 @@ const CreateLogRequests = () => {
       >
         <BaseInputs
           className="relative"
-          label="ФИЛИАЛ"
+          label={t("branch")}
           error={errors.fillial_id}
         >
           <BranchSelect origin={1} enabled />
@@ -104,7 +104,7 @@ const CreateLogRequests = () => {
           <MainSelect
             values={categories?.items}
             register={register("category_id", {
-              required: "Обязательное поле",
+              required: t("required_field"),
             })}
           />
         </BaseInputs>
@@ -112,7 +112,7 @@ const CreateLogRequests = () => {
         <BaseInputs error={errors.size} label="Укажите вес/размер">
           <MainInput
             register={register("size", {
-              required: "Обязательное поле",
+              required: t("required_field"),
             })}
           />
         </BaseInputs>
@@ -133,7 +133,7 @@ const CreateLogRequests = () => {
           )}
         </BaseInputs>
 
-        <BaseInputs label="Комментарии">
+        <BaseInputs label="comments">
           <MainTextArea
             register={register("description")}
             placeholder="Комментарии"
@@ -152,7 +152,7 @@ const CreateLogRequests = () => {
             type="submit"
             className={`btn btn-info btn-fill float-end ${styles.btn}`}
           >
-            Создать
+            {t("create")}
           </button>
         </div>
       </form>

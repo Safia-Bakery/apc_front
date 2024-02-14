@@ -60,7 +60,7 @@ const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
               onClick={handleNavigate("add")}
               id="add_category"
             >
-              Добавить
+              {t("add")}
             </button>
             <button
               onClick={() => navigate(-1)}

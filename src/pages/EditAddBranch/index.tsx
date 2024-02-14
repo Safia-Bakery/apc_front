@@ -92,7 +92,7 @@ const EditAddBranch = () => {
   if (isLoading) return <Loading absolute />;
   return (
     <Card>
-      <Header title={!id ? "Добавить" : `Изменить филиал ${branch?.name}`}>
+      <Header title={!id ? "{t('add')}" : `Изменить филиал ${branch?.name}`}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           {t("back")}
         </button>
@@ -101,14 +101,14 @@ const EditAddBranch = () => {
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
         <BaseInputs label="НАЗВАНИЕ" error={errors.name}>
           <MainInput
-            register={register("name", { required: "Обязательное поле" })}
+            register={register("name", { required: t("required_field") })}
             // disabled={!!id}
           />
         </BaseInputs>
 
         <BaseInputs label="РЕГИОН" error={errors.region}>
           <MainInput
-            register={register("region", { required: "Обязательное поле" })}
+            register={register("region", { required: t("required_field") })}
             // disabled={!!id}
           />
         </BaseInputs>
@@ -157,7 +157,7 @@ const EditAddBranch = () => {
           />
         </BaseInputs>
         <button type="submit" className="btn btn-success btn-fill">
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

@@ -94,7 +94,7 @@ const Branches = () => {
               onClick={handleNavigate("add")}
               id="add_branch"
             >
-              Добавить
+              {t("add")}
             </button>
           )}
         </div>

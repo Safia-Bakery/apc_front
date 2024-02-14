@@ -5,7 +5,6 @@ import { logoutHandler } from "reducers/auth";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import { changeLanguage, langSelector, sidebarHandler } from "reducers/selects";
 import useToken from "@/hooks/useToken";
-import MainSelect from "../BaseInputs/MainSelect";
 import { Language } from "@/utils/keys";
 import { useTranslation } from "react-i18next";
 
@@ -113,7 +112,7 @@ const Breadcrumbs: FC = () => {
           </button>
           {window.location.pathname !== "/home" && (
             <li>
-              <Link to="/home">Главная</Link>
+              <Link to="/home">{t("main")}</Link>
             </li>
           )}
           {breadcrumbs.map((breadcrumb, index) => (

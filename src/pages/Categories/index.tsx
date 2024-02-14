@@ -68,7 +68,7 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
               onClick={() => handleNavigate(`add${search}`)}
               id="add_category"
             >
-              Добавить
+              {t("add")}
             </button>
             <button
               onClick={() => navigate(-1)}

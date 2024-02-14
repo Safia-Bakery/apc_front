@@ -83,7 +83,7 @@ const ClientsComments = () => {
             id="add_master"
             onClick={() => navigate("add")}
           >
-            Добавить
+            {t("add")}
           </button>
         )}
       </Header>

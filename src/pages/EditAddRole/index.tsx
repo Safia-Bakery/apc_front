@@ -58,7 +58,7 @@ const EditAddRole = () => {
 
   return (
     <Card>
-      <Header title={!id ? "Добавить" : `Изменить роль №${id}`}>
+      <Header title={!id ? "{t('add')}" : `Изменить роль №${id}`}>
         <button className="btn btn-success btn-fill" onClick={goBack}>
           {t("back")}
         </button>
@@ -68,12 +68,12 @@ const EditAddRole = () => {
         <BaseInputs label="НАИМЕНОВАНИЕ" error={errors.name}>
           <MainInput
             autoFocus
-            register={register("name", { required: "Обязательное поле" })}
+            register={register("name", { required: t("required_field") })}
           />
         </BaseInputs>
 
         <button type="submit" className="btn btn-success btn-fill">
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

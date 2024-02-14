@@ -262,7 +262,7 @@ const ShowLogRequests = () => {
                     <td>
                       {!!order?.user_manager
                         ? order?.user_manager
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
 
@@ -271,7 +271,7 @@ const ShowLogRequests = () => {
                     <td>
                       {order?.created_at
                         ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
@@ -279,34 +279,34 @@ const ShowLogRequests = () => {
                     <td>
                       {order?.started_at
                         ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата выполнения:</th>
+                    <th>{t("completion_date")}:</th>
                     <td>
                       {order?.finished_at
                         ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата поставки:</th>
+                    <th>{t("delivery_date")}:</th>
                     <td>
                       {order?.arrival_date
                         ? dayjs(order?.arrival_date).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   {!!order?.cars?.name && (
                     <tr>
-                      <th>Назначенный грузовик</th>
+                      <th>{t("assigned_truck")}</th>
                       <td>{order?.cars?.name}</td>
                     </tr>
                   )}
                   {order?.deny_reason && (
                     <tr>
-                      <th className="font-bold">Причина отмены</th>
+                      <th className="font-bold">{"deny_reason"}</th>
                       <td>{order?.deny_reason}</td>
                     </tr>
                   )}

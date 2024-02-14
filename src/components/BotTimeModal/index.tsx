@@ -12,8 +12,10 @@ import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import Loading from "../Loader";
 import { errorToast } from "@/utils/toast";
+import { useTranslation } from "react-i18next";
 
 const BotTimeModal = () => {
+  const { t } = useTranslation();
   const { mutate } = botWorkingTime();
   const modal = useQueryString("time_modal");
   const removeParams = useRemoveParams();
@@ -50,7 +52,7 @@ const BotTimeModal = () => {
   return (
     <Modal onClose={closeModal} isOpen={!!modal}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Header title="Изменить время работы бота">
+        <Header title={t("change_working_time")}>
           <button onClick={closeModal} className="close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -73,7 +75,9 @@ const BotTimeModal = () => {
                 {...register("to_time")}
               />
             </BaseInput>
-            <button className="btn btn-fill h-40 btn-primary">Сохранить</button>
+            <button className="btn btn-fill h-40 btn-primary">
+              {t("save")}
+            </button>
           </div>
         )}
       </form>

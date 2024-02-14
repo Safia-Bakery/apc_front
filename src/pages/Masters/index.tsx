@@ -20,6 +20,7 @@ import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   dep: Departments;
@@ -29,6 +30,7 @@ interface Props {
 }
 
 const Masters = ({ dep, sphere_status, add, edit }: Props) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const permission = useAppSelector(permissionSelector);
   const currentPage = Number(useQueryString("page")) || 1;
@@ -89,7 +91,7 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
               `add?dep=${dep}&sphere_status=${sphere_status}`
             )}
           >
-            Добавить
+            {t("add")}
           </button>
         )}
       </Header>
@@ -108,7 +110,7 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
                   <td>
                     {!!order.user?.length
                       ? order.user?.[0]?.full_name
-                      : "Не задано"}
+                      : t("not_given")}
                   </td>
                   <td>{order.description}</td>
                   <td>{!!order.status ? "Активный" : "Неактивный"}</td>

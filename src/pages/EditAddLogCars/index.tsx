@@ -62,7 +62,7 @@ const EditAddLogCars = () => {
 
   return (
     <Card>
-      <Header title={!id ? "Добавить" : `Изменить роль №${id}`}>
+      <Header title={!id ? "{t('add')}" : `Изменить роль №${id}`}>
         <button className="btn btn-success btn-fill" onClick={goBack}>
           {t("back")}
         </button>
@@ -71,13 +71,13 @@ const EditAddLogCars = () => {
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
         <BaseInputs label="Модель машины" error={errors.name}>
           <MainInput
-            register={register("car_model", { required: "Обязательное поле" })}
+            register={register("car_model", { required: t("required_field") })}
           />
         </BaseInputs>
 
         <BaseInputs label="Номер" error={errors.name}>
           <MainInput
-            register={register("car_number", { required: "Обязательное поле" })}
+            register={register("car_number", { required: t("required_field") })}
           />
         </BaseInputs>
 
@@ -86,7 +86,7 @@ const EditAddLogCars = () => {
         </BaseInputs>
 
         <button type="submit" className="btn btn-success btn-fill">
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

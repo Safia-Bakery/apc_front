@@ -15,6 +15,7 @@ import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
@@ -37,6 +38,7 @@ interface Props {
 }
 
 const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [sort, $sort] = useState<Order[]>();
   const permission = useAppSelector(permissionSelector);
@@ -86,7 +88,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
             className="btn btn-success btn-fill"
             id="add_request"
           >
-            Добавить
+            {t("add")}
           </button>
         )}
       </Header>
@@ -132,7 +134,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
                     })}
                   </td>
                   <td>
-                    {order?.user_manager ? order?.user_manager : "Не задано"}
+                    {order?.user_manager ? order?.user_manager : t("not_given")}
                   </td>
                 </tr>
               ))}

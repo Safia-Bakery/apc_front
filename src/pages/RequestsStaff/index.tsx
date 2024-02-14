@@ -118,7 +118,7 @@ const RequestsStaff = () => {
 
   return (
     <Card>
-      <Header title={"Заявки"}>
+      <Header title={t("requests")}>
         <div className="flex gap-2">
           <div className="p-2 btn btn-warning flex flex-col justify-between">
             <h4>Количество еды</h4>
@@ -150,7 +150,7 @@ const RequestsStaff = () => {
                 className="btn btn-success btn-fill"
                 id="add_request"
               >
-                Добавить
+                {t("add")}
               </button>
             )}
           </div>

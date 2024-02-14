@@ -80,7 +80,7 @@ const EditClient = () => {
 
   return (
     <Card>
-      <Header title={!id ? "Добавить" : `Изменить пользователь №${id}`}>
+      <Header title={!id ? "{t('add')}" : `Изменить пользователь №${id}`}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           {t("back")}
         </button>
@@ -93,7 +93,7 @@ const EditClient = () => {
               <MainInput
                 disabled
                 register={register("full_name", {
-                  required: "Обязательное поле",
+                  required: t("required_field"),
                 })}
               />
             </BaseInputs>
@@ -138,7 +138,7 @@ const EditClient = () => {
         </div>
 
         <button type="submit" className="btn btn-success btn-fill mt-3">
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

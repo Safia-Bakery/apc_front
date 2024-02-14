@@ -54,7 +54,7 @@ const LogysticsLogs = () => {
                   ? dayjs(order?.update_time?.[RequestStatus.new]).format(
                       "DD.MM.YYYY HH:mm"
                     )
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
               <td>-------</td>
             </tr>
@@ -67,7 +67,7 @@ const LogysticsLogs = () => {
                   ? dayjs(order?.update_time?.[RequestStatus.confirmed]).format(
                       "DD.MM.YYYY HH:mm"
                     )
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
               <td>
                 {!!dayjs(order?.update_time?.[RequestStatus.confirmed]).diff(
@@ -78,7 +78,7 @@ const LogysticsLogs = () => {
                       order?.update_time?.[RequestStatus.new],
                       "minutes"
                     ) + " минута"
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
             </tr>
 
@@ -91,7 +91,7 @@ const LogysticsLogs = () => {
                   ? dayjs(
                       order?.update_time?.[RequestStatus.sendToRepair]
                     ).format("DD.MM.YYYY HH:mm")
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
               <td>
                 {!!dayjs(order?.update_time?.[RequestStatus.sendToRepair]).diff(
@@ -104,7 +104,7 @@ const LogysticsLogs = () => {
                       order?.update_time?.[RequestStatus.confirmed],
                       "hours"
                     ) + " часов"
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
             </tr>
             <tr className="bg-blue">
@@ -116,7 +116,7 @@ const LogysticsLogs = () => {
                   ? dayjs(order?.update_time?.[RequestStatus.done]).format(
                       "DD.MM.YYYY HH:mm"
                     )
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
               <td>
                 {!!dayjs(order?.update_time?.[RequestStatus.done]).diff(
@@ -127,7 +127,7 @@ const LogysticsLogs = () => {
                       order?.update_time?.[RequestStatus.sendToRepair],
                       "hours"
                     ) + " часов"
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
             </tr>
             <tr className="bg-blue">
@@ -139,7 +139,7 @@ const LogysticsLogs = () => {
                   ? dayjs(order?.update_time?.[RequestStatus.rejected]).format(
                       "DD.MM.YYYY HH:mm"
                     )
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
               <td>
                 {!!dayjs(order?.update_time?.[RequestStatus.confirmed]).diff(
@@ -150,7 +150,7 @@ const LogysticsLogs = () => {
                       order?.update_time?.[RequestStatus.rejected],
                       "minutes"
                     )
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
             </tr>
             <tr className="bg-blue">
@@ -160,7 +160,7 @@ const LogysticsLogs = () => {
               <td>
                 {order?.arrival_date
                   ? dayjs(order?.arrival_date).format("DD.MM.YYYY HH:mm")
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
               <td>Не задано</td>
             </tr>

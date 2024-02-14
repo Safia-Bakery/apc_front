@@ -179,7 +179,7 @@ const ShowRequestStaff = () => {
                     <td>
                       {!!order?.user_manager
                         ? order?.user_manager
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
 
@@ -188,7 +188,7 @@ const ShowRequestStaff = () => {
                     <td>
                       {order?.created_at
                         ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
@@ -196,23 +196,23 @@ const ShowRequestStaff = () => {
                     <td>
                       {order?.started_at
                         ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата выполнения:</th>
+                    <th>{t("completion_date")}:</th>
                     <td>
                       {order?.finished_at
                         ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата поставки:</th>
+                    <th>{t("delivery_date")}:</th>
                     <td>
                       {order?.arrival_date
                         ? dayjs(order?.arrival_date).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   {!!order?.cars?.name && (

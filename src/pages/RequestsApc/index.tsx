@@ -17,6 +17,7 @@ import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
 import { useDownloadExcel } from "react-export-table-to-excel";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   add: MainPermissions;
@@ -26,6 +27,7 @@ interface Props {
 }
 
 const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [sort, $sort] = useState<Order[]>();
   const permission = useAppSelector(permissionSelector);
@@ -35,8 +37,8 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "Заявки на APC розница",
-    sheet: "Заявки на APC розница",
+    filename: t("requests_apc_retail"),
+    sheet: t("requests_apc_retail"),
   });
 
   const user = useQueryString("user");
@@ -99,7 +101,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
 
   return (
     <Card>
-      <Header title={"Заявки"}>
+      <Header title={t("requests")}>
         <button
           className="btn btn-primary btn-fill mr-2"
           onClick={downloadAsPdf}
@@ -113,7 +115,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
             }
             className="btn btn-success btn-fill"
           >
-            Добавить
+            {t("add")}
           </button>
         )}
       </Header>
@@ -166,7 +168,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                   <td>
                     {!!order?.brigada?.name
                       ? order?.brigada?.name
-                      : "Не задано"}
+                      : t("not_given")}
                   </td>
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
                   <td className="text-center" width={50}>
@@ -179,7 +181,9 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                     })}
                   </td>
                   <td>
-                    {!!order?.user_manager ? order?.user_manager : "Не задано"}
+                    {!!order?.user_manager
+                      ? order?.user_manager
+                      : t("not_given")}
                   </td>
                 </tr>
               ))}

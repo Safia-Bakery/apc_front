@@ -172,7 +172,7 @@ const ShowCCTVRequests = () => {
       return dayjs(date).isValid()
         ? dayjs(date).format("DD.MM.YYYY HH:mm")
         : date;
-    } else return "Не задано";
+    } else return t("not_given");
   };
 
   useEffect(() => {
@@ -272,7 +272,7 @@ const ShowCCTVRequests = () => {
                     <td>
                       {!!order?.user_manager
                         ? order?.user_manager
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
 
@@ -281,7 +281,7 @@ const ShowCCTVRequests = () => {
                     <td>
                       {order?.created_at
                         ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>

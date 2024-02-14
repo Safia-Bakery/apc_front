@@ -14,6 +14,7 @@ import { permissionSelector } from "reducers/sidebar";
 import EmptyList from "@/components/EmptyList";
 import useFAQ from "@/hooks/useFAQ";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
@@ -23,6 +24,7 @@ const column = [
 ];
 
 const FAQQuestions = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [sort, $sort] = useState<FAQTypes[]>();
   const permission = useAppSelector(permissionSelector);
@@ -46,7 +48,7 @@ const FAQQuestions = () => {
             onClick={handleNavigate(`add`)}
             id="add_category"
           >
-            Добавить
+            {t("add")}
           </button>
         )}
       </Header>

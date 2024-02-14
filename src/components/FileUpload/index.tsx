@@ -2,6 +2,7 @@ import { ChangeEvent, FC, useEffect, useState } from "react";
 import { reportImgSelector } from "reducers/selects";
 import { useAppSelector } from "@/store/utils/types";
 import cl from "classnames";
+import { useTranslation } from "react-i18next";
 
 export interface FileItem {
   file: File;
@@ -18,6 +19,7 @@ const UploadComponent: FC<FileUploaderProps> = ({
   inputRef,
   tableHead,
 }) => {
+  const { t } = useTranslation();
   const [fileList, setFileList] = useState<FileItem[]>([]);
   const [fileIdCounter, setFileIdCounter] = useState(0);
   const upladedFiles = useAppSelector(reportImgSelector);
@@ -65,7 +67,7 @@ const UploadComponent: FC<FileUploaderProps> = ({
           <thead>
             <tr>
               <th className={cl("bg-primary py-3 border", tableHead)}>
-                Загруженные файлы
+                {t("uploaded_files")}
               </th>
               <th className={cl("bg-primary py-3 border", tableHead)}></th>
             </tr>

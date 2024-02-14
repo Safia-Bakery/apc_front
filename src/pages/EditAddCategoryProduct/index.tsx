@@ -118,7 +118,7 @@ const EditAddCategoryProduct = () => {
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
         <BaseInput label="НАИМЕНОВАНИЕ" error={errors.name}>
           <MainInput
-            register={register("name", { required: "Обязательное поле" })}
+            register={register("name", { required: t("required_field") })}
           />
         </BaseInput>
 
@@ -145,7 +145,7 @@ const EditAddCategoryProduct = () => {
         {renderImage}
 
         <button type="submit" className="btn btn-success btn-fill float-end">
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

@@ -16,6 +16,7 @@ import useQueryString from "custom/useQueryString";
 import LogFilter from "./filter";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   add: MainPermissions;
@@ -36,6 +37,7 @@ const column = [
 ];
 
 const RequestsLogystics: FC<Props> = ({ add, edit }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [sort, $sort] = useState<Order[]>();
   const permission = useAppSelector(permissionSelector);
@@ -87,7 +89,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
             className="btn btn-success btn-fill"
             id="add_request"
           >
-            Добавить
+            {t("add")}
           </button>
         )}
       </Header>
@@ -152,7 +154,9 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
                     })}
                   </td>
                   <td>
-                    {!!order?.user_manager ? order?.user_manager : "Не задано"}
+                    {!!order?.user_manager
+                      ? order?.user_manager
+                      : t("not_given")}
                   </td>
                 </tr>
               ))}

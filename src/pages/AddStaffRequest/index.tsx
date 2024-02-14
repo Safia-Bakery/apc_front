@@ -79,7 +79,7 @@ const AddStaffRequest = () => {
 
   return (
     <Card>
-      <Header title={"Создать заказ"}>
+      <Header title={"create_order"}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           {t("back")}
         </button>
@@ -91,19 +91,19 @@ const AddStaffRequest = () => {
       >
         <BaseInputs
           className="relative"
-          label="ФИЛИАЛ"
+          label="branch"
           error={errors.fillial_id}
         >
           {renderBranchSelect}
         </BaseInputs>
 
-        <BaseInputs label="Порция еды">
+        <BaseInputs label="food_portion">
           <MainInput register={register("product")} type="number" />
         </BaseInputs>
-        <BaseInputs label="Порции хлеба">
+        <BaseInputs label="bread_portion">
           <MainInput register={register("bread")} type="number" />
         </BaseInputs>
-        <BaseInputs label="Дата поставки">
+        <BaseInputs label="delivery_date">
           <input
             className="form-control mb-2"
             value={dayjs(date).format("YYYY-MM-DD")}
@@ -112,7 +112,7 @@ const AddStaffRequest = () => {
           />
         </BaseInputs>
 
-        <BaseInputs label="Комментарии">
+        <BaseInputs label="comments">
           <MainTextArea
             register={register("description")}
             placeholder="Комментарии"
@@ -124,7 +124,7 @@ const AddStaffRequest = () => {
             type="submit"
             className={`btn btn-info btn-fill float-end ${styles.btn}`}
           >
-            Создать
+            {t("create")}
           </button>
         </div>
       </form>

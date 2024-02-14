@@ -49,7 +49,7 @@ const CategoryProducts = () => {
               )}
               id="add_category"
             >
-              Добавить
+              {t("add")}
             </button>
             <button
               onClick={() => navigate(-1)}

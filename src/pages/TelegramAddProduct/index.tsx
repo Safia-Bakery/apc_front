@@ -22,10 +22,12 @@ import { TelegramApp } from "@/utils/tgHelpers";
 import BaseInputs from "@/components/BaseInputs";
 import { SelectWrapper } from "@/components/InputWrappers";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const column = [{ name: "name_in_table" }, { name: "quantity" }, { name: "" }];
 
 const TelegramAddProduct = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const removeRoute = useRemoveParams();
   const dispatch = useAppDispatch();
@@ -192,7 +194,7 @@ const TelegramAddProduct = () => {
             </button>
 
             <button type="submit" className="btn btn-primary mb-0 float-end">
-              Добавить
+              {t("add")}
             </button>
           </div>
 
@@ -245,7 +247,7 @@ const TelegramAddProduct = () => {
               type="button"
               className="btn btn-success float-end btn-fill my-3"
             >
-              Сохранить
+              {t("save")}
             </button>
           </div>
         </div>

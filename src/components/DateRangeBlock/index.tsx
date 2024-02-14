@@ -4,8 +4,10 @@ import useQueryString from "custom/useQueryString";
 import { useForm } from "react-hook-form";
 import cl from "classnames";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const DateRangeBlock = () => {
+  const { t } = useTranslation();
   const start =
     useQueryString("start") || dayjs().startOf("month").format("YYYY-MM-DD");
   const end = useQueryString("end") || dayjs().format("YYYY-MM-DD");
@@ -49,7 +51,7 @@ const DateRangeBlock = () => {
         type="button"
         onClick={handleDate}
       >
-        Показать
+        {t("show")}
       </button>
     </form>
   );

@@ -99,7 +99,7 @@ const EditAddUser = () => {
 
   return (
     <Card>
-      <Header title={!id ? "Добавить" : `Изменить пользователь №${id}`}>
+      <Header title={!id ? "{t('add')}" : `Изменить пользователь №${id}`}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           {t("back")}
         </button>
@@ -111,7 +111,7 @@ const EditAddUser = () => {
             <BaseInputs label="ФИО" error={errors.full_name}>
               <MainInput
                 register={register("full_name", {
-                  required: "Обязательное поле",
+                  required: t("required_field"),
                 })}
               />
             </BaseInputs>
@@ -119,7 +119,7 @@ const EditAddUser = () => {
             <BaseInputs label="ЛОГИН" error={errors.username}>
               <MainInput
                 register={register("username", {
-                  required: "Обязательное поле",
+                  required: t("required_field"),
                 })}
               />
             </BaseInputs>
@@ -158,7 +158,7 @@ const EditAddUser = () => {
               <MainInput
                 type={"password"}
                 register={register("password", {
-                  required: "Обязательное поле",
+                  required: t("required_field"),
                   minLength: {
                     value: 6,
                     message: "Надо ввести минимум 6 символов",
@@ -181,7 +181,7 @@ const EditAddUser = () => {
         </BaseInput>
 
         <button type="submit" className="btn btn-success btn-fill mt-3">
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

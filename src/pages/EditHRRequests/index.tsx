@@ -90,12 +90,12 @@ const EditHRRequests = () => {
               <td>
                 {faq?.created_at
                   ? dayjs(faq?.created_at).format("DD.MM.YYYY HH:mm")
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
             </tr>
             <tr>
               <th>Ответ</th>
-              <td>{faq?.answer ? faq.answer : "Не задано"}</td>
+              <td>{faq?.answer ? faq.answer : t("not_given")}</td>
             </tr>
           </tbody>
         </table>
@@ -110,7 +110,7 @@ const EditHRRequests = () => {
           </button>
         </Header>
         <div className="px-4">
-          <BaseInput label="Комментарии">
+          <BaseInput label="comments">
             <MainTextArea register={register("answer")} />
           </BaseInput>
 

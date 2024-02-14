@@ -61,7 +61,7 @@ const EditAddFAQQuestions = () => {
 
   return (
     <Card>
-      <Header title={!id ? "Добавить" : `Изменить №${id}`}>
+      <Header title={!id ? "{t('add')}" : `Изменить №${id}`}>
         <button className="btn btn-success btn-fill" onClick={goBack}>
           {t("back")}
         </button>
@@ -70,13 +70,13 @@ const EditAddFAQQuestions = () => {
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
         <BaseInputs label="Вопрос" error={errors.question}>
           <MainInput
-            register={register("question", { required: "Обязательное поле" })}
+            register={register("question", { required: t("required_field") })}
           />
         </BaseInputs>
         <BaseInputs label="Ответ" error={errors.answer}>
           <MainTextArea
             placeholder="Ответ"
-            register={register("answer", { required: "Обязательное поле" })}
+            register={register("answer", { required: t("required_field") })}
           />
         </BaseInputs>
 
@@ -85,7 +85,7 @@ const EditAddFAQQuestions = () => {
         </BaseInputs>
 
         <button type="submit" className="btn btn-success btn-fill">
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

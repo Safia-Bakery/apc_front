@@ -89,7 +89,7 @@ export const sidebarRoutes: SidebarType[] = [
     sphere_status: Sphere.retail,
     subroutes: [
       {
-        name: "Заявки на APC розница",
+        name: "requests_apc_retail",
         url: "/requests-apc-retail",
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_requests_apc,
@@ -178,7 +178,7 @@ export const sidebarRoutes: SidebarType[] = [
       //   screen: MainPermissions.get_it_requests,
       // },
       {
-        name: "Заявки", // Поддержка
+        name: "requests", // Поддержка
         url: `/requests-it/${Sphere.fix}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_it_requests,
@@ -225,7 +225,7 @@ export const sidebarRoutes: SidebarType[] = [
     screen: MainPermissions.get_requests_inventory,
     subroutes: [
       {
-        name: "Заявки",
+        name: "requests",
         url: "/requests-inventory",
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_requests_inventory,
@@ -387,7 +387,7 @@ export const sidebarRoutes: SidebarType[] = [
     department: Departments.cctv,
     subroutes: [
       {
-        name: "Заявки",
+        name: "requests",
         url: "/requests-cctv",
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_requests_cctv,

@@ -15,6 +15,7 @@ import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
@@ -32,6 +33,7 @@ interface Props {
 }
 
 const Users: FC<Props> = ({ add, edit }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const handleNavigate = (route: string) => () => navigate(route);
   const { pathname } = useLocation();
@@ -78,7 +80,7 @@ const Users: FC<Props> = ({ add, edit }) => {
             className="btn btn-success btn-fill"
             onClick={handleNavigate("add")}
           >
-            Добавить
+            {t("add")}
           </button>
         )}
       </Header>
