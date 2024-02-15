@@ -7,7 +7,6 @@ import { Language } from "@/utils/keys";
 i18n.use(initReactI18next).init({
   resources,
   lng: Language.ru,
-  returnNull: true,
   keySeparator: false,
   interpolation: {
     escapeValue: false,
