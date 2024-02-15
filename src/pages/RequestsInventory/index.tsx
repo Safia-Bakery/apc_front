@@ -13,23 +13,25 @@ import InventoryFilter from "./filter";
 import ItemsCount from "@/components/ItemsCount";
 import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Номер", key: "id" },
-  { name: "ОТПРАВИТЕЛЬ", key: "type" },
-  { name: "ПОЛУЧАТЕЛЬ", key: "fillial.name" },
-  { name: "ТОВАРЫ", key: "expenditures" },
-  { name: "Дата", key: "created_at" },
+  { name: "num", key: "id" },
+  { name: "sender", key: "type" },
+  { name: "receiver", key: "fillial.name" },
+  { name: "products", key: "expenditures" },
+  { name: "date", key: "created_at" },
 
   {
-    name: "Статус",
+    name: "status",
     key: "status",
   },
-  { name: "Автор", key: "user.name" },
+  { name: "author", key: "user.name" },
 ];
 
 const RequestsInventory = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const currentPage = Number(useQueryString("page")) || 1;
   const [sort, $sort] = useState<Order[]>();
@@ -57,18 +59,14 @@ const RequestsInventory = () => {
     ...(!!id && { id }),
   });
 
-  // useEffect(() => {
-  //   refetch();
-  // }, []);
-
   return (
     <Card>
-      <Header title={"Заявки на инвентарь"}>
+      <Header title={t("requests_for_inventory")}>
         <button
           onClick={() => navigate("add")}
           className="btn btn-success btn-fill"
         >
-          Добавить
+          {t("add")}
         </button>
       </Header>
 
@@ -109,10 +107,12 @@ const RequestsInventory = () => {
                   </td>
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
                   <td>
-                    {handleStatus({
-                      status: order?.status,
-                      dep: Departments.inventory,
-                    })}
+                    {t(
+                      handleStatus({
+                        status: order?.status,
+                        dep: Departments.inventory,
+                      })
+                    )}
                   </td>
                   <td>{order?.user_manager}</td>
                 </tr>

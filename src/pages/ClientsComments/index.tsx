@@ -24,18 +24,20 @@ import useOrders from "@/hooks/useOrders";
 import { baseURL } from "@/main";
 import { useNavigateParams } from "custom/useCustomNavigate";
 import ShowRequestModals from "@/components/ShowRequestModals";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "id" },
   { name: "Заявка", key: "id" },
-  { name: "Сотрудник", key: "purchaser" },
-  { name: "Филиал", key: "status" },
-  { name: "Дата поступления", key: "status" },
-  { name: "Фотография", key: "status" },
+  { name: "employee", key: "purchaser" },
+  { name: "branch", key: "status" },
+  { name: "receip_date", key: "status" },
+  { name: "photo", key: "status" },
   { name: "Текст", key: "status" },
 ];
 
 const ClientsComments = () => {
+  const { t } = useTranslation();
   const tableRef = useRef(null);
   const navigate = useNavigate();
   const navigateParams = useNavigateParams();
@@ -49,8 +51,8 @@ const ClientsComments = () => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "Отзывы гостей",
-    sheet: "Отзывы гостей",
+    filename: t("clients_comments"),
+    sheet: t("clients_comments"),
   });
 
   const renderModal = useMemo(() => {
@@ -68,12 +70,12 @@ const ClientsComments = () => {
 
   return (
     <Card>
-      <Header title="Отзывы гостей">
+      <Header title="clients_comments">
         <button
           className="btn btn-primary btn-fill mr-2"
           onClick={downloadAsPdf}
         >
-          Экспорт в Excel
+          {t("export_to_excel")}
         </button>
         {permission?.[MainPermissions.add_client_comment] && (
           <button
@@ -81,7 +83,7 @@ const ClientsComments = () => {
             id="add_master"
             onClick={() => navigate("add")}
           >
-            Добавить
+            {t("add")}
           </button>
         )}
       </Header>

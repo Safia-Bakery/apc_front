@@ -11,16 +11,16 @@ import useQueryString from "custom/useQueryString";
 export const itemsPerPage = 50;
 
 export const StatusName = [
-  { name: "Активный", id: 1 },
-  { name: "Не активный", id: 0 },
+  { name: "active", id: 1 },
+  { name: "not_active", id: 0 },
 ];
 export const OrderTypeNames = [
   { name: "АРС", id: "АРС" },
   { name: "IT", id: "IT" },
 ];
 export const UrgentNames = [
-  { name: "Срочный", id: 1 },
-  { name: "Несрочный", id: 0 },
+  { name: "urgentt", id: 1 },
+  { name: "not_urgent", id: 0 },
 ];
 export const RegionNames = [
   { name: "Uzbekistan", id: "Uzbekistan" },
@@ -30,10 +30,10 @@ type CancelReasonType = {
   [key: number]: string;
 };
 export const CancelReason: CancelReasonType = {
-  1: "Не правильная заявка",
-  2: "Повторная заявка",
-  3: "Тестовая заявка",
-  4: "Другое",
+  1: "incorrect_request",
+  2: "re_application",
+  3: "test_request",
+  4: "other",
 };
 
 export const numberWithCommas = (val: number) => {
@@ -77,52 +77,52 @@ export const handleStatus = ({
 }) => {
   switch (status) {
     case RequestStatus.confirmed: {
-      if (dep === Departments.logystics) return "Принят в работу";
-      else return "Принят";
+      if (dep === Departments.logystics) return "received_for_work";
+      else return "received";
     }
     case RequestStatus.done:
-      return "Закончен";
+      return "finished";
     case RequestStatus.sendToRepair: {
-      if (dep === Departments.logystics) return "В пути";
-      if (dep === Departments.marketing) return "Отправлен заказчику";
-      else return "Отправлен для ремонта";
+      if (dep === Departments.logystics) return "in_the_way";
+      if (dep === Departments.marketing) return "sent_to_orderer";
+      else return "sent_to_fix";
     }
     case RequestStatus.rejected:
-      return "Отклонён";
+      return "denied";
 
     default:
-      return "Новый";
+      return "new";
   }
 };
 
 export const RequestStatusArr = [
-  { id: RequestStatus.new, name: "Новый" },
-  { id: RequestStatus.confirmed, name: "Принят" },
-  { id: RequestStatus.sendToRepair, name: "Отправлен для ремонта" },
-  { id: RequestStatus.done, name: "Закончен" },
-  { id: RequestStatus.rejected, name: "Отклонён" },
+  { id: RequestStatus.new, name: "new" },
+  { id: RequestStatus.confirmed, name: "received" },
+  { id: RequestStatus.sendToRepair, name: "sent_to_fix" },
+  { id: RequestStatus.done, name: "finished" },
+  { id: RequestStatus.rejected, name: "denied" },
 ];
 
-export const RatingFilterVals = [{ id: 1, name: "Фильтровать" }];
+export const RatingFilterVals = [{ id: 1, name: "to_filter" }];
 
 export const RequestMarkStatusArr = [
-  { id: RequestStatus.new, name: "Новый" },
-  { id: RequestStatus.confirmed, name: "Принят" },
-  { id: RequestStatus.sendToRepair, name: "Отправлен заказчику" },
-  { id: RequestStatus.done, name: "Закончен" },
-  { id: RequestStatus.rejected, name: "Отклонён" },
+  { id: RequestStatus.new, name: "new" },
+  { id: RequestStatus.confirmed, name: "received" },
+  { id: RequestStatus.sendToRepair, name: "sent_to_orderer" },
+  { id: RequestStatus.done, name: "finished" },
+  { id: RequestStatus.rejected, name: "denied" },
 ];
 
 export const RequestLogStatusArr = [
-  { id: RequestStatus.new, name: "Новый" },
-  { id: RequestStatus.confirmed, name: "Принят в работу" },
-  { id: RequestStatus.sendToRepair, name: "В пути" },
-  { id: RequestStatus.done, name: "Закончен" },
-  { id: RequestStatus.rejected, name: "Отклонён" },
+  { id: RequestStatus.new, name: "new" },
+  { id: RequestStatus.confirmed, name: "received_for_work" },
+  { id: RequestStatus.sendToRepair, name: "in_the_way" },
+  { id: RequestStatus.done, name: "finished" },
+  { id: RequestStatus.rejected, name: "denied" },
 ];
 export const SystemArr = [
-  { id: 0, name: "Веб-сайт" },
-  { id: 1, name: "Телеграм-бот" },
+  { id: 0, name: "web_site" },
+  { id: 1, name: "tg_bot" },
 ];
 export const requestRows = (status: RequestStatus) => {
   switch (status) {
@@ -178,39 +178,39 @@ export const handleDepartment = ({
       case Departments.apc:
         return "АРС";
       case Departments.inventory:
-        return "Инвентарь";
+        return "inventory";
       case Departments.marketing:
-        return "Маркетинг";
+        return "marketing";
       case Departments.it:
         return "IT";
       case Departments.logystics:
-        return "Запрос машин";
+        return "car_requests";
       case Departments.staff:
-        return "Заявки на еду";
+        return "request_for_food";
       case Departments.cctv:
-        return "Видеонаблюдение";
+        return "cctv";
       default:
-        break;
+        return "";
     }
   else
     switch (sub) {
       case MarketingSubDep.designers:
-        return "Проектная работа для дизайнеров";
+        return "project_works";
       case MarketingSubDep.complects:
-        return "Комплекты";
+        return "complects";
       case MarketingSubDep.local_marketing:
-        return "Локальный маркетинг";
+        return "local_marketingg";
       case MarketingSubDep.promo_production:
-        return "Промо-продукция";
+        return "promo_production";
       case MarketingSubDep.pos:
-        return "POS-Материалы";
+        return "pos";
       case MarketingSubDep.branchEnv:
-        return "Внешний вид филиала";
+        return "branch_env";
       case MarketingSubDep.nonstandartAdv:
-        return "Для Тер.Менеджеров";
+        return "ter_manakgers";
 
       default:
-        break;
+        return "";
     }
 };
 
@@ -246,11 +246,11 @@ export const handleIdx = (index: number) => {
 export const handleHRStatus = (dep: RequestStatus) => {
   switch (dep) {
     case RequestStatus.new:
-      return "Новый";
+      return "new";
     case RequestStatus.confirmed:
-      return "Отвечен";
+      return "answered";
     case RequestStatus.rejected:
-      return "Отклонён";
+      return "denied";
 
     default:
       break;

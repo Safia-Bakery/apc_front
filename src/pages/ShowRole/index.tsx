@@ -9,8 +9,10 @@ import usePermissions from "@/hooks/usePermissions";
 import { useForm } from "react-hook-form";
 import { errorToast, successToast } from "@/utils/toast";
 import useQueryString from "@/hooks/custom/useQueryString";
+import { useTranslation } from "react-i18next";
 
 const ShowRole = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams();
   const view_ids = useQueryString("view_ids");
@@ -64,7 +66,7 @@ const ShowRole = () => {
           className="btn btn-primary btn-fill"
           onClick={() => navigate(-1)}
         >
-          Назад
+          {t("back")}
         </button>
       </Header>
 
@@ -110,7 +112,7 @@ const ShowRole = () => {
           type="submit"
           id="save_permission"
         >
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

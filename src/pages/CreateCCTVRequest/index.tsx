@@ -17,8 +17,10 @@ import Loading from "@/components/Loader";
 import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
 import dayjs from "dayjs";
 import { CCTVCategoryId } from "@/utils/keys";
+import { useTranslation } from "react-i18next";
 
 const CreateCCTVRequest = () => {
+  const { t } = useTranslation();
   const [files, $files] = useState<FileItem[]>();
   const { mutate, isPending } = requestMutation();
   const branchJson = useQueryString("branch");
@@ -44,7 +46,7 @@ const CreateCCTVRequest = () => {
 
   const onSubmit = () => {
     const { description } = getValues();
-    if (!end || !start) return alert("Выберите дату!");
+    if (!end || !start) return alert(t("select_date"));
     else
       mutate(
         {
@@ -75,9 +77,9 @@ const CreateCCTVRequest = () => {
 
   return (
     <Card>
-      <Header title={"Создать заказ"}>
+      <Header title={"create_order"}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 
@@ -87,14 +89,14 @@ const CreateCCTVRequest = () => {
       >
         <BaseInputs
           className="relative"
-          label="ФИЛИАЛ"
+          label={t("branch")}
           error={errors.fillial_id}
         >
           <BranchSelect origin={1} enabled />
         </BaseInputs>
 
         <BaseInputs
-          label="Укажите дата и время начало событий"
+          label="select_date_time_of_event_start"
           className="relative"
         >
           <MainDatePicker
@@ -104,10 +106,7 @@ const CreateCCTVRequest = () => {
             onChange={handleDateStart}
           />
         </BaseInputs>
-        <BaseInputs
-          label="Укажите дата и время конец событий"
-          className="relative"
-        >
+        <BaseInputs label="select_date_time_of_event_end" className="relative">
           <MainDatePicker
             className="z-10"
             showTimeSelect
@@ -116,16 +115,16 @@ const CreateCCTVRequest = () => {
           />
         </BaseInputs>
 
-        <BaseInputs label="Описание события в детялях">
+        <BaseInputs label="event_description">
           <MainTextArea
             register={register("description")}
-            placeholder="Комментарии"
+            placeholder={t("comments")}
           />
         </BaseInputs>
 
         <BaseInputs
           className={`mb-4 ${styles.uploadImage}`}
-          label="При желании отправить фото"
+          label="send_photo_if_needed"
         >
           <UploadComponent onFilesSelected={handleFilesSelected} />
         </BaseInputs>
@@ -134,7 +133,7 @@ const CreateCCTVRequest = () => {
             type="submit"
             className={`btn btn-info btn-fill float-end ${styles.btn}`}
           >
-            Создать
+            {t("create")}
           </button>
         </div>
       </form>

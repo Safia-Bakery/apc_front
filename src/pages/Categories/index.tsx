@@ -14,6 +14,7 @@ import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   sphere_status?: number;
@@ -24,13 +25,14 @@ interface Props {
 
 const column = [
   { name: "№", key: "" },
-  { name: "Наименование", key: "name" },
-  { name: "Отдел", key: "department" },
-  { name: "Статус", key: "status" },
+  { name: "name_in_table", key: "name" },
+  { name: "department", key: "department" },
+  { name: "status", key: "status" },
   { name: "", key: "" },
 ];
 
 const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [sort, $sort] = useState<Category[]>();
   const { search } = useLocation();
@@ -58,7 +60,7 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
 
   return (
     <Card>
-      <Header title={parent_name || "Категории"}>
+      <Header title={parent_name || "categories"}>
         {permission?.[add] && (
           <div className="flex gap-2">
             <button
@@ -66,13 +68,13 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
               onClick={() => handleNavigate(`add${search}`)}
               id="add_category"
             >
-              Добавить
+              {t("add")}
             </button>
             <button
               onClick={() => navigate(-1)}
               className="btn btn-primary btn-fill"
             >
-              Назад
+              {t("back")}
             </button>
           </div>
         )}
@@ -106,13 +108,17 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
                         )}
                       </td>
                       <td>
-                        {handleDepartment({
-                          ...(!!category?.sub_id
-                            ? { sub: category?.sub_id }
-                            : { dep: category?.department }),
-                        })}
+                        {t(
+                          handleDepartment({
+                            ...(!!category?.sub_id
+                              ? { sub: category?.sub_id }
+                              : { dep: category?.department }),
+                          })
+                        )}
                       </td>
-                      <td>{category?.status ? "Активный" : "Неактивный"}</td>
+                      <td>
+                        {category?.status ? t("active") : t("not_active")}
+                      </td>
                       <td width={40}>
                         {permission?.[edit] && (
                           <TableViewBtn onClick={() => handleEdit(category)} />

@@ -43,6 +43,7 @@ import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
 import orderMsgMutation from "@/hooks/mutation/orderMsg";
 import TableViewBtn from "@/components/TableViewBtn";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   edit: MainPermissions;
@@ -50,6 +51,7 @@ interface Props {
 }
 
 const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
+  const { t } = useTranslation();
   const { id, sphere } = useParams();
   const navigate = useNavigate();
   const modal = useQueryString("modal");
@@ -75,13 +77,11 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
     isFetching: orderFetching,
   } = useOrder({ id: Number(id) });
 
-  const { isFetching: brigadaFetching, refetch: brigadasRefetch } = useBrigadas(
-    {
-      enabled: !!order?.status.toString() && order?.status < RequestStatus.done,
-      department: Departments.it,
-      ...(!!sphere && { sphere }),
-    }
-  );
+  const { isFetching: brigadaFetching } = useBrigadas({
+    enabled: !!order?.status.toString() && order?.status < RequestStatus.done,
+    department: Departments.it,
+    ...(!!sphere && { sphere }),
+  });
 
   const handleModal = (modal: ModalTypes) => () => navigateParams({ modal });
 
@@ -232,7 +232,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
       case ModalTypes.changeBranch:
         return (
           <>
-            <BaseInput label="Выберите филиал">
+            <BaseInput label="select_branch">
               <BranchSelect enabled />
             </BaseInput>
 
@@ -240,14 +240,14 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
               className="btn btn-success btn-fill w-full"
               onClick={handleChange({ filial: true })}
             >
-              Применить
+              {t("apply")}
             </button>
           </>
         );
       case ModalTypes.changeCateg:
         return (
           <>
-            <BaseInput label="Выберите группу проблем">
+            <BaseInput label="select_group_problem">
               <MainSelect
                 values={categories?.items}
                 register={register("category")}
@@ -258,14 +258,14 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
               className="btn btn-success btn-fill w-full"
               onClick={handleChange({ categ: true })}
             >
-              Применить
+              {t("apply")}
             </button>
           </>
         );
       case ModalTypes.leaveMessage:
         return (
           <>
-            <BaseInput label="Оставить комментария">
+            <BaseInput label="leave_comment">
               <MainTextArea
                 autoFocus
                 onKeyDown={handleKeyDown}
@@ -277,7 +277,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
               className="btn btn-success btn-fill w-full"
               onClick={handleMessage}
             >
-              Применить
+              {t("apply")}
             </button>
           </>
         );
@@ -294,7 +294,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
             onClick={handleModal(ModalTypes.cancelRequest)}
             className="btn btn-danger btn-fill"
           >
-            Отменить
+            {t("cancel")}
           </button>
           <div>
             {order?.status! > RequestStatus.new && (
@@ -305,7 +305,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                   })}
                   className="btn btn-warning btn-fill"
                 >
-                  Забрать на ремонт
+                  {t("pick_to_repair")}
                 </button>
                 <button
                   id={"fixed"}
@@ -314,7 +314,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                   })}
                   className="btn btn-success btn-fill"
                 >
-                  Починил {isPending && <Loading />}
+                  {t("fixed")} {isPending && <Loading />}
                 </button>
               </div>
             )}
@@ -336,7 +336,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                 styles.changeBtn
               )}
             >
-              Переназначить
+              {t("reassign")}
             </button>
           </>
         );
@@ -347,7 +347,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
           onClick={handleModal(ModalTypes.assign)}
           className="btn btn-success btn-fill float-end"
         >
-          Назначить
+          {t("assign")}
         </button>
       );
     }
@@ -358,7 +358,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
     if (permissions?.[addExp] && !isNew && order?.status !== 4)
       return (
         <Card className="overflow-hidden">
-          <Header title={"Добавить фотоотчёт"} />
+          <Header title={"add_photo_report"} />
           <div className="m-3">
             <UploadComponent
               onFilesSelected={handleFilesSelected}
@@ -371,7 +371,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                 id={"save_report"}
                 className="btn btn-success float-end btn-fill my-3"
               >
-                Сохранить
+                {t("save")}
               </button>
             )}
           </div>
@@ -395,21 +395,23 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
     <>
       <Card className="overflow-hidden">
         <Header
-          title={`Заказ №${id}`}
-          subTitle={`Статус: ${handleStatus({
-            status: order?.status,
-            dep: Departments.apc,
-          })}`}
+          title={`${t("order")} №${id}`}
+          subTitle={`${t("status")}: ${t(
+            handleStatus({
+              status: order?.status,
+              dep: Departments.it,
+            })
+          )}`}
         >
           <div className="flex gap-2">
             <button
               className="btn btn-warning btn-fill "
               onClick={() => navigate(`/request/logs/${id}`)}
             >
-              Логи
+              {t("logs")}
             </button>
             <button onClick={handleBack} className="btn btn-primary btn-fill">
-              Назад
+              {t("back")}
             </button>
           </div>
         </Header>
@@ -422,11 +424,11 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
               >
                 <tbody>
                   <tr>
-                    <th className="w-1/3">Клиент</th>
+                    <th className="w-1/3">{t("client")}</th>
                     <td>{order?.user?.full_name}</td>
                   </tr>
                   <tr>
-                    <th>Номер телефона</th>
+                    <th>{t("phone_number")}</th>
                     <td>
                       <a href={`tel:+${order?.user.phone_number}`}>
                         +{order?.user.phone_number}
@@ -434,17 +436,19 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                     </td>
                   </tr>
                   <tr>
-                    <th>Тип</th>
+                    <th>{t("type")}</th>
                     <td>
-                      {handleDepartment({
-                        ...(!!order?.category?.sub_id
-                          ? { sub: order?.category?.sub_id }
-                          : { dep: order?.category?.department }),
-                      })}
+                      {t(
+                        handleDepartment({
+                          ...(!!order?.category?.sub_id
+                            ? { sub: order?.category?.sub_id }
+                            : { dep: order?.category?.department }),
+                        })
+                      )}
                     </td>
                   </tr>
                   <tr>
-                    <th>Группа проблем</th>
+                    <th>{t("group_problem")}</th>
                     <td className={styles.tableRow}>
                       <div className="flex items-center justify-between">
                         <span>{order?.category?.name}</span>
@@ -456,13 +460,13 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                           )}
                           onClick={handleChangeModal(ModalTypes.changeCateg)}
                         >
-                          Изменить
+                          {t("change")}
                         </button>
                       </div>
                     </td>
                   </tr>
                   <tr>
-                    <th>Филиал</th>
+                    <th>{t("branch")}</th>
                     <td className={styles.tableRow}>
                       <div className="flex items-center justify-between">
                         <span>{order?.fillial?.parentfillial?.name}</span>
@@ -474,7 +478,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                             styles.changeBtn
                           )}
                         >
-                          Изменить
+                          {t("change")}
                         </button>
                       </div>
                     </td>
@@ -484,7 +488,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                     <td>{order?.product}</td>
                   </tr> */}
                   <tr>
-                    <th>Файл</th>
+                    <th>{t("file")}</th>
                     <td className="flex flex-col !border-none">
                       {order?.file?.map((item, index) => {
                         if (item.status === 0)
@@ -498,14 +502,14 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                               )}
                               key={item.url + index}
                             >
-                              файл - {index + 1}
+                              {t("file")} - {index + 1}
                             </div>
                           );
                       })}
                     </td>
                   </tr>
                   <tr>
-                    <th id="photo_report">Фотоотчёт</th>
+                    <th id="photo_report">{t("photo_report")}</th>
                     <td className="flex flex-col !border-none">
                       {order?.file?.map((item, index) => {
                         if (item.status === 1)
@@ -519,14 +523,14 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                               )}
                               key={item.url + index}
                             >
-                              файл - {index + 1}
+                              {t("file")} - {index + 1}
                             </div>
                           );
                       })}
                     </td>
                   </tr>
                   <tr>
-                    <th>Текст заявки</th>
+                    <th>{t("text_order")}</th>
                     <td>{order?.description}</td>
                   </tr>
                 </tbody>
@@ -540,48 +544,48 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
               >
                 <tbody>
                   <tr>
-                    <th className="w-1/3">Срочно</th>
+                    <th className="w-1/3">{t("urgent")}</th>
                     <td>{!order?.category?.urgent ? "Нет" : "Да"}</td>
                   </tr>
                   <tr>
-                    <th>Изменил</th>
+                    <th>{t("changed")}</th>
                     <td>
                       {!!order?.user_manager
                         ? order?.user_manager
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
 
                   <tr>
-                    <th>Дата поступления</th>
+                    <th>{t("receip_date")}</th>
                     <td>
                       {order?.created_at
                         ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата изменения</th>
+                    <th>{t("changed_date")}</th>
                     <td>
                       {order?.started_at
                         ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата выполнения</th>
+                    <th>{t("completion_date")}</th>
                     <td>
                       {order?.finished_at
                         ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
-                    <th className="font-bold">Ответственный</th>
+                    <th className="font-bold">{t("responsible")}</th>
                     <td className={styles.tableRow}>{renderAssignment}</td>
                   </tr>
                   <tr>
-                    <th className="font-bold">Комментарии</th>
+                    <th className="font-bold">{t("comments")}</th>
                     <td className={styles.tableRow}>
                       <div className="flex items-center justify-between">
                         <div className="flex flex-col">
@@ -591,7 +595,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                                 <span className="font-bold flex">
                                   {item.user.full_name}:
                                 </span>
-                                <span className="">{item.message}</span>
+                                <span>{item.message}</span>
                               </div>
                             ))}
                         </div>
@@ -603,19 +607,19 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                   </tr>
                   {order?.comments?.[0]?.rating && (
                     <tr>
-                      <th className="font-bold">Рейтинг(отзыв)</th>
+                      <th className="font-bold">{t("rate_comment")}</th>
                       <td>{order?.comments?.[0]?.rating}</td>
                     </tr>
                   )}
                   {order?.comments?.[0]?.comment && (
                     <tr>
-                      <th className="font-bold">Коммент</th>
+                      <th className="font-bold">{t("commentt")}</th>
                       <td>{order?.comments?.[0]?.comment}</td>
                     </tr>
                   )}
                   {order?.deny_reason && (
                     <tr>
-                      <th className="font-bold">Причина отмены</th>
+                      <th className="font-bold">{t("deny_reason")}</th>
                       <td>{order?.deny_reason}</td>
                     </tr>
                   )}
@@ -633,7 +637,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
       {!!order?.request_orpr?.length && <AddedProductsIT />}
       {renderRequestModals}
       <Modal isOpen={!!changeModal} onClose={closeModal} className="!max-w-sm">
-        <Header title="Изменить">
+        <Header title="change">
           <button onClick={closeModal} className="close">
             <span>&times;</span>
           </button>

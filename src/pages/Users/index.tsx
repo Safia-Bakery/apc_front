@@ -15,6 +15,7 @@ import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
@@ -22,7 +23,7 @@ const column = [
   { name: "Логин", key: "username" },
   { name: "Роль", key: "group.name" },
   { name: "Телефон", key: "phone_number" },
-  { name: "Статус", key: "status" },
+  { name: "status", key: "status" },
   { name: "", key: "" },
 ];
 
@@ -32,6 +33,7 @@ interface Props {
 }
 
 const Users: FC<Props> = ({ add, edit }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const handleNavigate = (route: string) => () => navigate(route);
   const { pathname } = useLocation();
@@ -58,27 +60,23 @@ const Users: FC<Props> = ({ add, edit }) => {
 
   const userStatus = (item: number) => {
     if (item === 1) return "суперадмин";
-    if (item === 2) return "Неактивный";
-    if (item === 0) return "Активный";
+    if (item === 2) return t("not_active");
+    if (item === 0) return t("active");
   };
 
   const renderFilter = useMemo(() => {
     return <UsersFilter currentPage={currentPage} />;
   }, [full_name, user_status, role_id, username, phone_number]);
 
-  // useEffect(() => {
-  //   refetch();
-  // }, []);
-
   return (
     <Card>
-      <Header title={!client ? "Пользователи" : "Клиенты"}>
+      <Header title={!client ? "users" : "client"}>
         {permission?.[add] && (
           <button
             className="btn btn-success btn-fill"
             onClick={handleNavigate("add")}
           >
-            Добавить
+            {t("add")}
           </button>
         )}
       </Header>

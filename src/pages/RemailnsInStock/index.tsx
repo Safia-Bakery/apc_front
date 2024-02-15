@@ -14,16 +14,18 @@ import useStockSync from "@/hooks/sync/useStockSync";
 import { StockItem } from "@/utils/types";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Наименование", key: "name" },
+  { name: "name_in_table", key: "name" },
   { name: "Синх.", key: "last_update" },
   { name: "Остались на складе", key: "amount_left" },
   { name: "Общая цена", key: "total_price" },
 ];
 
 const RemainsInStock = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
   const currentPage = Number(useQueryString("page")) || 1;
@@ -63,10 +65,10 @@ const RemainsInStock = () => {
               alt="sync"
               className="mr-2"
             />
-            Синхронизировать с iiko
+            {t("sync_with_iico")}
           </button>
           <button className="btn btn-primary btn-fill" onClick={goBack}>
-            Назад
+            {t("back")}
           </button>
         </div>
       </Header>

@@ -1,5 +1,6 @@
 import cl from "classnames";
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
 }
 
 const StatBar: FC<Props> = ({ arr }) => {
+  const { t } = useTranslation();
   const { pathname, search } = useLocation();
 
   return (
@@ -21,7 +23,7 @@ const StatBar: FC<Props> = ({ arr }) => {
             })}
             to={route.url + search}
           >
-            {route.name}
+            {t(route.name)}
           </Link>
         ))}
       </div>

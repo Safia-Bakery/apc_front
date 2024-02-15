@@ -14,15 +14,17 @@ import { permissionSelector } from "reducers/sidebar";
 import EmptyList from "@/components/EmptyList";
 import useFAQ from "@/hooks/useFAQ";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Вопрос", key: "name" },
-  { name: "Статус", key: "status" },
+  { name: "question", key: "name" },
+  { name: "status", key: "status" },
   { name: "", key: "" },
 ];
 
 const FAQQuestions = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [sort, $sort] = useState<FAQTypes[]>();
   const permission = useAppSelector(permissionSelector);
@@ -32,21 +34,17 @@ const FAQQuestions = () => {
   });
   const handleNavigate = (route: string) => () => navigate(route);
 
-  // useEffect(() => {
-  //   refetch();
-  // }, []);
-
   if (isLoading) return <Loading absolute />;
   return (
     <Card>
-      <Header title={"Вопросы"}>
+      <Header title={"questions"}>
         {permission?.[MainPermissions.add_faq] && (
           <button
             className="btn btn-success btn-fill"
             onClick={handleNavigate(`add`)}
             id="add_category"
           >
-            Добавить
+            {t("add")}
           </button>
         )}
       </Header>
@@ -67,7 +65,7 @@ const FAQQuestions = () => {
                   <tr key={idx} className="bg-blue">
                     <td width="40">{handleIdx(idx)}</td>
                     <td>{faq?.question}</td>
-                    <td>{faq?.status ? "Активный" : "Неактивный"}</td>
+                    <td>{faq?.status ? t("active") : t("not_active")}</td>
                     <td width={40}>
                       {permission?.[MainPermissions.edit_faq] && (
                         <TableViewBtn onClick={handleNavigate(`${faq.id}`)} />

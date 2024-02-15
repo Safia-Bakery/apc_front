@@ -4,6 +4,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import StatBar from "@/components/StatBar";
 import DateRangeBlock from "@/components/DateRangeBlock";
 import useQueryString from "@/hooks/custom/useQueryString";
+import { useTranslation } from "react-i18next";
 
 type RoutesArrType = {
   name: string;
@@ -19,16 +20,17 @@ const BaseStatsBlock = ({ routesArr, title }: Props) => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
   const sub_title = useQueryString("sub_title");
+  const { t } = useTranslation();
 
   return (
     <Card>
-      <Header title={sub_title || title}>
+      <Header title={sub_title || t(title)}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
 
         <button className="btn btn-success btn-fill ml-2" id="export_to_excell">
-          Экспорт в Excel
+          {t("export_to_excel")}
         </button>
       </Header>
 

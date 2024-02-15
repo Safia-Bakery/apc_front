@@ -9,17 +9,19 @@ import ItemsCount from "@/components/ItemsCount";
 import useComments from "@/hooks/useComments";
 import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "id" },
-  { name: "Сотрудник", key: "purchaser" },
+  { name: "employee", key: "purchaser" },
   { name: "Заявка", key: "id" },
   { name: "Оценка", key: "rate" },
   { name: "Текст", key: "status" },
-  { name: "Дата", key: "date" },
+  { name: "date", key: "date" },
 ];
 
 const Comments = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
   const currentPage = Number(useQueryString("page")) || 1;
@@ -30,9 +32,9 @@ const Comments = () => {
 
   return (
     <Card>
-      <Header title="Отзывы">
+      <Header title="reviews">
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 

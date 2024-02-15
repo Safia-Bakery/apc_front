@@ -3,18 +3,17 @@ import Header from "@/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import roleMutation from "@/hooks/mutation/roleMutation";
 import { errorToast, successToast } from "@/utils/toast";
-import useRoles from "@/hooks/useRoles";
-import useRolePermission from "@/hooks/useRolePermission";
 import BaseInputs from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
 import faqsMutation from "@/hooks/mutation/faqs";
 import useFAQ from "@/hooks/useFAQ";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
+import { useTranslation } from "react-i18next";
 
 const EditAddFAQQuestions = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
@@ -62,31 +61,31 @@ const EditAddFAQQuestions = () => {
 
   return (
     <Card>
-      <Header title={!id ? "Добавить" : `Изменить №${id}`}>
+      <Header title={!id ? t("add") : `${t("edit")} №${id}`}>
         <button className="btn btn-success btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
-        <BaseInputs label="Вопрос" error={errors.question}>
+        <BaseInputs label="question" error={errors.question}>
           <MainInput
-            register={register("question", { required: "Обязательное поле" })}
+            register={register("question", { required: t("required_field") })}
           />
         </BaseInputs>
-        <BaseInputs label="Ответ" error={errors.answer}>
+        <BaseInputs label="answer" error={errors.answer}>
           <MainTextArea
-            placeholder="Ответ"
-            register={register("answer", { required: "Обязательное поле" })}
+            placeholder={t("answer")}
+            register={register("answer", { required: t("required_field") })}
           />
         </BaseInputs>
 
-        <BaseInputs label="статус">
-          <MainCheckBox label="Активный" register={register("status")} />
+        <BaseInputs label="status">
+          <MainCheckBox label={"active"} register={register("status")} />
         </BaseInputs>
 
         <button type="submit" className="btn btn-success btn-fill">
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

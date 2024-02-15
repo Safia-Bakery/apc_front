@@ -4,17 +4,18 @@ import { FC, Fragment, useEffect, useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "id" as keyof Order["id"] },
-  { name: "Бригада", key: "purchaser" as keyof Order["status"] },
-  { name: "Категория", key: "category" as keyof Order["status"] },
+  { name: "brigade", key: "purchaser" as keyof Order["status"] },
+  { name: "category", key: "category" as keyof Order["status"] },
   {
-    name: "Кол-во",
+    name: "qnt",
     key: "qnt" as keyof Order["status"],
   },
   {
-    name: "Среднее обработка заявков (мин)",
+    name: "avg_request_progress",
     key: "duration" as keyof Order["status"],
   },
 ];
@@ -23,6 +24,7 @@ interface Props {
 }
 
 const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
+  const { t } = useTranslation();
   const start = useUpdateQueryStr("start");
   const end = useUpdateQueryStr("end");
 
@@ -31,7 +33,7 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "статистика бригады по категориям",
+    filename: t("stats_brigade_categ"),
     sheet: "categories",
   });
 
@@ -67,7 +69,7 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
           <tr className="hover:bg-transparent">
             {column.map(({ name, key }) => (
               <th key={key} className={"border-dark"}>
-                {name}
+                {t(name)}
               </th>
             ))}
           </tr>
@@ -94,7 +96,7 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
                   </Fragment>
                 ))}
                 <tr className="bg-green-400 hover:bg-green-400">
-                  <th className="text-center text-lg">Общее</th>
+                  <th className="text-center text-lg">{t("total")}</th>
                   <th className="text-center  text-lg">
                     {calculator(2, mainKey[1])}
                   </th>

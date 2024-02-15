@@ -7,3 +7,23 @@ export const staffCategoryId = 36;
 export const clientCommentCategoryId = 56;
 export const inventoryCategoryId = 59; // prod - 59, local - 52 todo
 export const CCTVCategoryId = 60; // prod - 60, local -  todo
+
+export enum Language {
+  ru = "ru",
+  uz = "uz",
+}
+
+export enum Months {
+  "Январь",
+  "февраль",
+  "март",
+  "апрель",
+  "May",
+  "июнь",
+  "июль",
+  "Август",
+  "Сентябрь",
+  "Октябрь",
+  "Ноябрь",
+  "Декабрь",
+}

@@ -14,26 +14,24 @@ import { useAppSelector } from "@/store/utils/types";
 import TableViewBtn from "@/components/TableViewBtn";
 import useTools from "@/hooks/useTools";
 import cl from "classnames";
-import {
-  useNavigateParams,
-  useRemoveParams,
-} from "@/hooks/custom/useCustomNavigate";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import inventoryMinsMutation from "@/hooks/mutation/inventoryMins";
 import { errorToast, successToast } from "@/utils/toast";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Наименование", key: "name" },
-  { name: "Остаток", key: "amount_left", center: true },
-  { name: "Минимум", key: "min_amount", center: true },
-  { name: "Максимум", key: "max_amount", center: true },
-  { name: "Дедлайн", key: "deadline", center: true },
+  { name: "name_in_table", key: "name" },
+  { name: "remains", key: "amount_left", center: true },
+  { name: "min", key: "min_amount", center: true },
+  { name: "max", key: "max_amount", center: true },
+  { name: "deadline", key: "deadline", center: true },
   { name: "", key: "view" },
 ];
 
 const InventoryRemainsMins = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const tableRef = useRef(null);
   const [sort, $sort] = useState<ToolTypes["items"]>();
@@ -58,8 +56,8 @@ const InventoryRemainsMins = () => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "Остатки на складах",
-    sheet: "Остатки на складах",
+    filename: t("remains_in_stock"),
+    sheet: t("remains_in_stock"),
   });
 
   const downloadAsPdf = () => onDownload();
@@ -81,17 +79,17 @@ const InventoryRemainsMins = () => {
 
   return (
     <Card>
-      <Header title="Остатки на складах">
+      <Header title="remains_in_stock">
         {!!mins && (
           <button className="btn btn-warning mr-2" onClick={handleRequestsMins}>
-            Заявка на минимумы
+            {t("request_for_mins")}
           </button>
         )}
         <button className="btn btn-success mr-2" onClick={downloadAsPdf}>
-          Export Excel
+          {t("export_to_excel")}
         </button>
         <button className="btn btn-primary" onClick={handleMins}>
-          {!mins ? "Загрузить минимумы" : "Загрузить все"}
+          {!mins ? t("upload_mins") : t("upload_all")}
         </button>
       </Header>
 

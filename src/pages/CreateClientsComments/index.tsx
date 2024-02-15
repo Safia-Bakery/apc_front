@@ -18,8 +18,10 @@ import Loading from "@/components/Loader";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import { clientCommentCategoryId as category_id } from "@/utils/keys";
+import { useTranslation } from "react-i18next";
 
 const CreateClientsComments = () => {
+  const { t } = useTranslation();
   const [files, $files] = useState<FileItem[]>();
   const { mutate, isPending } = requestMutation();
   const branchJson = useQueryString("branch");
@@ -66,7 +68,7 @@ const CreateClientsComments = () => {
     return (
       <BaseInputs
         className={`mb-4 ${styles.uploadImage}`}
-        label="Добавить файл"
+        label="add_file"
         error={errors.image}
       >
         <UploadComponent onFilesSelected={handleFilesSelected} />
@@ -84,9 +86,9 @@ const CreateClientsComments = () => {
 
   return (
     <Card>
-      <Header title={"Создать заказ"}>
+      <Header title={"create_order"}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 
@@ -94,18 +96,18 @@ const CreateClientsComments = () => {
         className={cl("content", styles.form)}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <BaseInputs className="relative" label="ФИЛИАЛ">
+        <BaseInputs className="relative" label={t("branch")}>
           {renderBranchSelect}
         </BaseInputs>
 
-        <BaseInputs label="Сотрудник">
+        <BaseInputs label="employee">
           <MainInput register={register("product")} />
         </BaseInputs>
 
-        <BaseInputs label="Комментарии">
+        <BaseInputs label="comments">
           <MainTextArea
             register={register("description")}
-            placeholder="Комментарии"
+            placeholder={t("comments")}
           />
         </BaseInputs>
 
@@ -115,7 +117,7 @@ const CreateClientsComments = () => {
             type="submit"
             className={`btn btn-info btn-fill float-end ${styles.btn}`}
           >
-            Создать
+            {t("create")}
           </button>
         </div>
       </form>

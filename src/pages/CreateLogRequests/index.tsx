@@ -19,8 +19,10 @@ import { Departments } from "@/utils/types";
 import Loading from "@/components/Loader";
 import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 
 const CreateLogRequests = () => {
+  const { t } = useTranslation();
   const [files, $files] = useState<FileItem[]>();
   const { mutate, isPending } = requestMutation();
   const branchJson = useQueryString("branch");
@@ -54,7 +56,7 @@ const CreateLogRequests = () => {
 
   const onSubmit = () => {
     const { category_id, description, size } = getValues();
-    if (!start) $error("Обязательное поле");
+    if (!start) $error(t("required_field"));
     else {
       mutate(
         {
@@ -80,9 +82,9 @@ const CreateLogRequests = () => {
 
   return (
     <Card>
-      <Header title={"Создать заказ"}>
+      <Header title={"create_order"}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 
@@ -92,33 +94,30 @@ const CreateLogRequests = () => {
       >
         <BaseInputs
           className="relative"
-          label="ФИЛИАЛ"
+          label={t("branch")}
           error={errors.fillial_id}
         >
           <BranchSelect origin={1} enabled />
         </BaseInputs>
 
-        <BaseInputs label="КАТЕГОРИЕ" error={errors.category_id}>
+        <BaseInputs label="category" error={errors.category_id}>
           <MainSelect
             values={categories?.items}
             register={register("category_id", {
-              required: "Обязательное поле",
+              required: t("required_field"),
             })}
           />
         </BaseInputs>
 
-        <BaseInputs error={errors.size} label="Укажите вес/размер">
+        <BaseInputs error={errors.size} label="show_weight_size">
           <MainInput
             register={register("size", {
-              required: "Обязательное поле",
+              required: t("required_field"),
             })}
           />
         </BaseInputs>
 
-        <BaseInputs
-          label="Укажите в какое время вам нужна машина"
-          className="relative"
-        >
+        <BaseInputs label="select_needed_time" className="relative">
           <MainDatePicker
             showTimeSelect
             selected={!!start ? dayjs(start || undefined).toDate() : undefined}
@@ -131,16 +130,16 @@ const CreateLogRequests = () => {
           )}
         </BaseInputs>
 
-        <BaseInputs label="Комментарии">
+        <BaseInputs label="comments">
           <MainTextArea
             register={register("description")}
-            placeholder="Комментарии"
+            placeholder={t("comments")}
           />
         </BaseInputs>
 
         <BaseInputs
           className={`mb-4 ${styles.uploadImage}`}
-          label="Добавить файл"
+          label="add_file"
           error={errors.image}
         >
           <UploadComponent onFilesSelected={handleFilesSelected} />
@@ -150,7 +149,7 @@ const CreateLogRequests = () => {
             type="submit"
             className={`btn btn-info btn-fill float-end ${styles.btn}`}
           >
-            Создать
+            {t("create")}
           </button>
         </div>
       </form>

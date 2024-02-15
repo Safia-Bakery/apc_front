@@ -15,20 +15,22 @@ import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
 import { useDownloadExcel } from "react-export-table-to-excel";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Номер", key: "id" },
-  { name: "Клиент", key: "fillial.name" },
-  { name: "Филиал", key: "fillial.name" },
-  { name: "Категория", key: "category" },
-  { name: "Рейтинг", key: "rate" },
-  { name: "Статус", key: "status" },
-  { name: "Дата", key: "date" },
-  { name: "Автор", key: "user_manager" },
+  { name: "num", key: "id" },
+  { name: "client", key: "fillial.name" },
+  { name: "branch", key: "fillial.name" },
+  { name: "category", key: "category" },
+  { name: "rate", key: "rate" },
+  { name: "status", key: "status" },
+  { name: "date", key: "date" },
+  { name: "author", key: "user_manager" },
 ];
 
 const RequestsCCTV = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const tableRef = useRef(null);
   const [sort, $sort] = useState<Order[]>();
@@ -68,8 +70,8 @@ const RequestsCCTV = () => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "Заявки на Видеонаблюдение",
-    sheet: "Заявки на Видеонаблюдение",
+    filename: t("requests_for_cctv"),
+    sheet: t("requests_for_cctv"),
   });
   const downloadAsPdf = () => onDownload();
 
@@ -83,18 +85,18 @@ const RequestsCCTV = () => {
 
   return (
     <Card>
-      <Header title={"Заявки на Видеонаблюдение"}>
+      <Header title={t("requests_for_cctv")}>
         <button
           onClick={downloadAsPdf}
           className="btn btn-primary btn-fill mr-2"
         >
-          Экспорт в Excel
+          {t("export_to_excel")}
         </button>
         <button
           onClick={() => navigate("add")}
           className="btn btn-success btn-fill"
         >
-          Добавить
+          {t("add")}
         </button>
       </Header>
 
@@ -126,13 +128,17 @@ const RequestsCCTV = () => {
                   <td>{order?.category?.name}</td>
                   <td>{order?.comments?.[0]?.rating}</td>
                   <td>
-                    {handleStatus({
-                      status: order?.status,
-                    })}
+                    {t(
+                      handleStatus({
+                        status: order?.status,
+                      })
+                    )}
                   </td>
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
                   <td>
-                    {!!order?.user_manager ? order?.user_manager : "Не задано"}
+                    {!!order?.user_manager
+                      ? order?.user_manager
+                      : t("not_given")}
                   </td>
                 </tr>
               ))}

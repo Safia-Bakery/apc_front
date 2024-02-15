@@ -1,6 +1,7 @@
 import { FC } from "react";
 import Modal from "../Modal";
 import Card from "../Card";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   title: string;
@@ -13,12 +14,13 @@ interface Props {
 
 const ConfirmModal: FC<Props> = ({
   title,
-  confirmLabel = "Да",
-  rejectLabel = "Отменить",
+  confirmLabel,
+  rejectLabel,
   onConfirm,
   isOpen,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const handleReject = () => {
     onClose(false);
     return;
@@ -35,10 +37,10 @@ const ConfirmModal: FC<Props> = ({
         <h3>{title}</h3>
         <div>
           <button className="btn-danger" onClick={handleReject}>
-            {rejectLabel}
+            {rejectLabel || t("calcel")}
           </button>
           <button className="btn-primary" onClick={handleConfirm}>
-            {confirmLabel}
+            {confirmLabel || t("yes")}
           </button>
         </div>
       </Card>

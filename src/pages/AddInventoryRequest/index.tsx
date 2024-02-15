@@ -19,6 +19,7 @@ import { TelegramApp } from "@/utils/tgHelpers";
 import Loading from "@/components/Loader";
 import { useState } from "react";
 import { inventoryCategoryId } from "@/utils/keys";
+import { useTranslation } from "react-i18next";
 
 interface InventoryFields {
   product:
@@ -44,14 +45,15 @@ const initialInventory: InventoryFields = {
 
 const column = [
   { name: "№", key: "" },
-  { name: "ТОВАР", key: "id" },
-  { name: "КОЛИЧЕСТВО", key: "fillial.name" },
-  { name: "ПРИМЕЧАНИЕ", key: "category.name" },
+  { name: "product", key: "id" },
+  { name: "quantity", key: "fillial.name" },
+  { name: "comment", key: "category.name" },
   { name: "", key: "remove" },
   { name: "", key: "add" },
 ];
 
 const AddInventoryRequest = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [btn, $btn] = useState(false);
 
@@ -79,7 +81,7 @@ const AddInventoryRequest = () => {
   const onSubmit = (data: FormData) => {
     const { main_comment, inputFields } = data;
     if (inputFields.find((item) => !item.product?.value))
-      return alert("Необходимо выбрать товар!");
+      return alert(t("product_is_required"));
     else {
       const expenditure = inputFields.reduce((acc: any, item) => {
         if (item?.product?.value)
@@ -121,26 +123,26 @@ const AddInventoryRequest = () => {
 
   return (
     <Card>
-      <Header title={"Добавить"}>
+      <Header title={"add"}>
         {!isMobile && (
           <button
             onClick={() => navigate("/requests-inventory")}
             className="btn btn-primary btn-fill"
           >
-            Назад
+            {t("back")}
           </button>
         )}
       </Header>
 
       <form onSubmit={handleSubmit(onSubmit)} className="content w-full">
-        <BaseInputs className="relative" label="ФИЛИАЛ">
+        <BaseInputs className="relative" label="branch">
           <BranchSelect
             enabled
             origin={1}
             // permission={MainPermissions.get_fillials_list}
           />
         </BaseInputs>
-        <h2 className="font-weight-normal">Товары</h2>
+        <h2 className="font-weight-normal">{t("products")}</h2>
         <div className={styles.table}>
           <table className={"table table-hover"}>
             <TableHead column={column} />
@@ -186,7 +188,7 @@ const AddInventoryRequest = () => {
                               field={field}
                               error={errors.inputFields?.[index]?.qnt}
                               register={register(`inputFields.${index}.qnt`, {
-                                required: "Обязательное поле",
+                                required: t("required_field"),
                               })}
                             />
                           )}
@@ -215,7 +217,7 @@ const AddInventoryRequest = () => {
                       onClick={() => (fields.length > 1 ? remove(index) : null)}
                       className="btn bg-danger text-white"
                     >
-                      Удалить
+                      {t("remove")}
                     </button>
                   </td>
                   {!isMobile && (
@@ -225,7 +227,7 @@ const AddInventoryRequest = () => {
                         className={cl("btn btn-primary w-min")}
                         onClick={addInputFields}
                       >
-                        Добавить
+                        {t("add")}
                       </button>
                     </td>
                   )}
@@ -241,12 +243,12 @@ const AddInventoryRequest = () => {
               className={cl("btn btn-primary w-min")}
               onClick={addInputFields}
             >
-              Добавить
+              {t("add")}
             </button>
           </div>
         )}
 
-        <BaseInputs label="ПРИМЕЧАНИЕ" className="z-10 relative">
+        <BaseInputs label="comment" className="z-10 relative">
           <MainTextArea register={register("main_comment")} />
         </BaseInputs>
         {!btn && (
@@ -255,7 +257,7 @@ const AddInventoryRequest = () => {
             disabled={mutating}
             className="btn btn-success btn-fill z-10 relative"
           >
-            Сохранить
+            {t("save")}
           </button>
         )}
       </form>

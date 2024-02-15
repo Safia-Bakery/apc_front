@@ -17,6 +17,7 @@ import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
 import { useDownloadExcel } from "react-export-table-to-excel";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   add: MainPermissions;
@@ -26,6 +27,7 @@ interface Props {
 }
 
 const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [sort, $sort] = useState<Order[]>();
   const permission = useAppSelector(permissionSelector);
@@ -35,8 +37,8 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "Заявки на APC розница",
-    sheet: "Заявки на APC розница",
+    filename: t("requests_apc_retail"),
+    sheet: t("requests_apc_retail"),
   });
 
   const user = useQueryString("user");
@@ -52,16 +54,16 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
   const column = useMemo(() => {
     const columns = [
       { name: "№", key: "" },
-      { name: "Номер заявки", key: "id" },
-      { name: "Клиент", key: "user" },
-      { name: "Филиал/Отдел", key: "name" },
-      { name: "Группа проблем", key: "category?.name" },
-      { name: "Срочно", key: "urgent" },
-      { name: "Бригада", key: "brigada" },
-      { name: "Дата поступления", key: "created_at" },
-      { name: "Рейтинг", key: "rate" },
-      { name: "Статус", key: "status" },
-      { name: "Изменил", key: "user_manager" },
+      { name: "request_number", key: "id" },
+      { name: "client", key: "user" },
+      { name: "branch_dep", key: "name" },
+      { name: "group_problem", key: "category?.name" },
+      { name: "urgent", key: "urgent" },
+      { name: "brigade", key: "brigada" },
+      { name: "receip_date", key: "created_at" },
+      { name: "rate", key: "rate" },
+      { name: "status", key: "status" },
+      { name: "changed", key: "user_manager" },
     ];
 
     if (Number(sphere_status) === Sphere.fabric) {
@@ -99,7 +101,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
 
   return (
     <Card>
-      <Header title={"Заявки"}>
+      <Header title={t("requests")}>
         <button
           className="btn btn-primary btn-fill mr-2"
           onClick={downloadAsPdf}
@@ -113,7 +115,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
             }
             className="btn btn-success btn-fill"
           >
-            Добавить
+            {t("add")}
           </button>
         )}
       </Header>
@@ -147,7 +149,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                     )}
                   </td>
                   {Number(sphere_status) === Sphere.fabric && (
-                    <td>{order?.is_bot ? "Телеграм-бот" : "Веб-сайт"}</td>
+                    <td>{order?.is_bot ? t("tg_bot") : t("web_site")}</td>
                   )}
                   <td>{order?.user?.full_name}</td>
                   <td>
@@ -162,24 +164,30 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                   >
                     {order?.category?.name}
                   </td>
-                  <td>{!order?.category?.urgent ? "Несрочный" : "Срочный"}</td>
+                  <td>
+                    {!order?.category?.urgent ? t("not_urgent") : t("urgentt")}
+                  </td>
                   <td>
                     {!!order?.brigada?.name
                       ? order?.brigada?.name
-                      : "Не задано"}
+                      : t("not_given")}
                   </td>
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
                   <td className="text-center" width={50}>
                     {order?.comments?.[0]?.rating}
                   </td>
                   <td>
-                    {handleStatus({
-                      status: order?.status,
-                      dep: Departments.apc,
-                    })}
+                    {t(
+                      handleStatus({
+                        status: order?.status,
+                        dep: Departments.apc,
+                      })
+                    )}
                   </td>
                   <td>
-                    {!!order?.user_manager ? order?.user_manager : "Не задано"}
+                    {!!order?.user_manager
+                      ? order?.user_manager
+                      : t("not_given")}
                   </td>
                 </tr>
               ))}

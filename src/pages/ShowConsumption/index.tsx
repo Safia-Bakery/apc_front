@@ -11,8 +11,8 @@ import useQueryString from "@/hooks/custom/useQueryString";
 
 const column = [
   { name: "№", key: "name" },
-  { name: "Номер заявки", key: "request_id" },
-  { name: "Количество (шт)", key: "amount" },
+  { name: "request_number", key: "request_id" },
+  { name: "quantity", key: "amount" },
   { name: "Дата использование", key: "created_at" },
 ];
 

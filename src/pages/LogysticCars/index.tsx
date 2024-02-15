@@ -11,16 +11,18 @@ import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import EmptyList from "@/components/EmptyList";
 import useCars from "@/hooks/useCars";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Модель машины", key: "name" },
-  { name: "Номер", key: "car_number" },
-  { name: "Статус", key: "status" },
+  { name: "car_model", key: "name" },
+  { name: "num", key: "car_number" },
+  { name: "status", key: "status" },
   { name: "", key: "" },
 ];
 
 const LogysticCars = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const handleNavigate = (route: string) => () => navigate(route);
   const permission = useAppSelector(permissionSelector);
@@ -32,13 +34,13 @@ const LogysticCars = () => {
 
   return (
     <Card>
-      <Header title="Грузовики">
+      <Header title="tracks">
         {permission?.[MainPermissions.add_log_cars] && (
           <button
             className="btn btn-success btn-fill"
             onClick={handleNavigate("add")}
           >
-            Добавить грузовика
+            {t("add_track")}
           </button>
         )}
       </Header>
@@ -58,7 +60,7 @@ const LogysticCars = () => {
                   <td width="40">{idx + 1}</td>
                   <td>{car?.name}</td>
                   <td>{car?.number}</td>
-                  <td>{!car.status ? "Не активный" : "Активный"}</td>
+                  <td>{!car.status ? t("not_active") : t("active")}</td>
                   <td width={40}>
                     {permission?.[MainPermissions.edit_log_cars] && (
                       <TableViewBtn onClick={handleNavigate(`${car.id}`)} />

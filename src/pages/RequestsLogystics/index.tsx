@@ -16,6 +16,7 @@ import useQueryString from "custom/useQueryString";
 import LogFilter from "./filter";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   add: MainPermissions;
@@ -24,18 +25,19 @@ interface Props {
 
 const column = [
   { name: "№", key: "" },
-  { name: "Номер заявки", key: "id" },
-  { name: "Тип", key: "type" },
-  { name: "Клиент", key: "user" },
-  { name: "Филиал/Отдел", key: "name" },
-  { name: "Группа проблем", key: "category?.name" },
-  { name: "Срочно", key: "urgent" },
-  { name: "Дата поступления", key: "created_at" },
-  { name: "Статус", key: "status" },
-  { name: "Изменил", key: "user_manager" },
+  { name: "request_number", key: "id" },
+  { name: "type", key: "type" },
+  { name: "client", key: "user" },
+  { name: "branch_dep", key: "name" },
+  { name: "group_problem", key: "category?.name" },
+  { name: "urgent", key: "urgent" },
+  { name: "receip_date", key: "created_at" },
+  { name: "status", key: "status" },
+  { name: "changed", key: "user_manager" },
 ];
 
 const RequestsLogystics: FC<Props> = ({ add, edit }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [sort, $sort] = useState<Order[]>();
   const permission = useAppSelector(permissionSelector);
@@ -79,15 +81,17 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
 
   return (
     <Card>
-      <Header title="Заявки на Запрос машин">
-        <button className="btn btn-primary btn-fill mr-2">Экспорт</button>
+      <Header title="requests_for_logystics">
+        <button className="btn btn-primary btn-fill mr-2">
+          {t("export_to_excel")}
+        </button>
         {permission?.[add] && (
           <button
             onClick={() => navigate("add")}
             className="btn btn-success btn-fill"
             id="add_request"
           >
-            Добавить
+            {t("add")}
           </button>
         )}
       </Header>
@@ -143,16 +147,22 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
                   >
                     {order?.category?.name}
                   </td>
-                  <td>{!order?.category?.urgent ? "Несрочный" : "Срочный"}</td>
+                  <td>
+                    {!order?.category?.urgent ? t("not_urgent") : t("urgentt")}
+                  </td>
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}</td>
                   <td>
-                    {handleStatus({
-                      status: order?.status,
-                      dep: Departments.logystics,
-                    })}
+                    {t(
+                      handleStatus({
+                        status: order?.status,
+                        dep: Departments.logystics,
+                      })
+                    )}
                   </td>
                   <td>
-                    {!!order?.user_manager ? order?.user_manager : "Не задано"}
+                    {!!order?.user_manager
+                      ? order?.user_manager
+                      : t("not_given")}
                   </td>
                 </tr>
               ))}

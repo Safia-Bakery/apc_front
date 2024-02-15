@@ -9,8 +9,10 @@ import useRoles from "@/hooks/useRoles";
 import useRolePermission from "@/hooks/useRolePermission";
 import BaseInputs from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
+import { useTranslation } from "react-i18next";
 
 const EditAddRole = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate("/users");
@@ -56,22 +58,22 @@ const EditAddRole = () => {
 
   return (
     <Card>
-      <Header title={!id ? "Добавить" : `Изменить роль №${id}`}>
+      <Header title={!id ? t("add") : `${t("edit_role")} №${id}`}>
         <button className="btn btn-success btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
-        <BaseInputs label="НАИМЕНОВАНИЕ" error={errors.name}>
+        <BaseInputs label="name_in_table" error={errors.name}>
           <MainInput
             autoFocus
-            register={register("name", { required: "Обязательное поле" })}
+            register={register("name", { required: t("required_field") })}
           />
         </BaseInputs>
 
         <button type="submit" className="btn btn-success btn-fill">
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

@@ -17,6 +17,7 @@ import MainSelect from "@/components/BaseInputs/MainSelect";
 import { imageConverter } from "@/utils/helpers";
 import { baseURL } from "@/main";
 import useQueryString from "@/hooks/custom/useQueryString";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   sphere_status?: Sphere;
@@ -24,6 +25,7 @@ interface Props {
 }
 
 const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
+  const { t } = useTranslation();
   const { id, sphere } = useParams();
   const navigate = useNavigate();
   const parent_id = Number(useQueryString("parent_id"));
@@ -77,7 +79,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
       {
         onSuccess: () => {
           categoryRefetch();
-          successToast(!!id ? "successfully updated" : "successfully created");
+          successToast(!!id ? "updated" : "created");
           goBack();
           if (id) refetch();
         },
@@ -124,8 +126,8 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
   }, [watch("files"), category?.file, id]);
 
   const renderTitle = useMemo(() => {
-    if (id) return `Изменить категорие №${id}`;
-    else return parent_name ? `Добавить на ${parent_name}` : "Добавить";
+    if (id) return `${t("edit_category")} №${id}`;
+    else return parent_name ? `${t("add_to")} ${parent_name}` : "add";
   }, []);
 
   if (isLoading && !!id) return;
@@ -134,54 +136,54 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
     <Card className="overflow-hidden pb-3">
       <Header title={renderTitle}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
         {Number(dep) === Departments.marketing && (
-          <BaseInput label="ОТДЕЛ" error={errors.name}>
+          <BaseInput label="department" error={errors.name}>
             <MainSelect
-              register={register("sub_id", { required: "Обязательное поле" })}
+              register={register("sub_id", { required: t("required_field") })}
               values={MarketingSubDepRu}
             />
           </BaseInput>
         )}
 
-        <BaseInput label="НАИМЕНОВАНИЕ" error={errors.name}>
+        <BaseInput label="name_in_table" error={errors.name}>
           <MainInput
-            register={register("name", { required: "Обязательное поле" })}
+            register={register("name", { required: t("required_field") })}
           />
         </BaseInput>
 
         {(Number(dep) === Departments.it ||
           Number(dep) === Departments.apc ||
           Number(dep) === Departments.marketing) && (
-          <BaseInput label="Время исполнении (в часах)" error={errors.time}>
+          <BaseInput label="execution_time_hoours" error={errors.time}>
             <MainInput
-              register={register("time", { required: "Обязательное поле" })}
+              register={register("time", { required: t("required_field") })}
               type="number"
             />
           </BaseInput>
         )}
 
-        <BaseInput label="ОПИСАНИЕ">
+        <BaseInput label="description">
           <MainTextArea register={register("description")} />
         </BaseInput>
 
         <MainCheckBox
-          label="Срочно"
+          label="urgent"
           register={register("urgent")}
           value={!!category?.urgent}
         />
 
-        <MainCheckBox label="Активный" register={register("status")} />
+        <MainCheckBox label={"active"} register={register("status")} />
 
         {dep === Departments.apc && (
-          <MainCheckBox label="Последний" register={register("is_child")} />
+          <MainCheckBox label="last" register={register("is_child")} />
         )}
 
         {dep === Departments.marketing && (
-          <BaseInput label="ЗАГРУЗИТЬ ФОТО" className="relative">
+          <BaseInput label="upload_photo" className="relative">
             <MainInput
               value={
                 !!watch("files")?.length ? `${watch("files")?.[0].name}` : ""
@@ -199,7 +201,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
         {renderImage}
 
         <button type="submit" className="btn btn-success btn-fill float-end">
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

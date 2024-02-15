@@ -10,8 +10,10 @@ import { sidebatItemsSelector } from "reducers/sidebar";
 import { isMobile } from "@/utils/helpers";
 import styles from "./index.module.scss";
 import CountItem from "./CountItem";
+import { useTranslation } from "react-i18next";
 
 const CustomSidebar = () => {
+  const { t } = useTranslation();
   const collapsed = useAppSelector(toggleSidebar);
   const dispatch = useAppDispatch();
   const handleOverlay = () => dispatch(sidebarHandler(!collapsed));
@@ -63,7 +65,7 @@ const CustomSidebar = () => {
                   src={"/assets/icons/controlPanel.svg"}
                   className={styles.routeIcon}
                 />
-                <div className={styles.content}>Панель управления</div>
+                <div className={styles.content}>{t("control_panel")}</div>
               </NavLink>
             </li>
             {routes?.map((route) => (
@@ -83,7 +85,7 @@ const CustomSidebar = () => {
                         className={styles.routeIcon}
                       />
                       <div className={styles.content}>
-                        {route.name}
+                        {t(route.name)}
                         <div className="flex">
                           {!!route?.count && <CountItem count={route?.count} />}
                           <img
@@ -129,7 +131,7 @@ const CustomSidebar = () => {
                                 className={styles.routeIcon}
                               />
                               <div className={styles.content}>
-                                {subroute.name}
+                                {t(subroute.name)}
                               </div>
                             </NavLink>
                           </li>
@@ -154,7 +156,7 @@ const CustomSidebar = () => {
                         className={styles.routeIcon}
                       />
                       <div className={styles.content}>
-                        {route.name}
+                        {t(route.name)}
                         {!!route?.count && <CountItem count={route.count} />}
                       </div>
                     </NavLink>
@@ -165,7 +167,7 @@ const CustomSidebar = () => {
           </ul>
         </div>
         <span onClick={handleLogout} className={styles.logout}>
-          Выйти ({me?.username})
+          {t("leave")} ({me?.username})
         </span>
       </div>
     </>

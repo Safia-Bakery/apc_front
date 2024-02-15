@@ -16,6 +16,7 @@ import Select from "react-select";
 import useDebounce from "@/hooks/custom/useDebounce";
 import Loading from "@/components/Loader";
 import { Departments, Sphere } from "@/utils/types";
+import { useTranslation } from "react-i18next";
 
 interface SelectValue {
   value: number | string;
@@ -23,6 +24,7 @@ interface SelectValue {
 }
 
 const EditAddMasters = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
@@ -169,9 +171,9 @@ const EditAddMasters = () => {
 
   return (
     <Card>
-      <Header title={!id ? "Добавить" : renderDep.mainTitle}>
+      <Header title={!id ? t("add") : renderDep.mainTitle}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 
@@ -184,21 +186,21 @@ const EditAddMasters = () => {
           >
             <MainInput
               register={register("brigada_name", {
-                required: "Обязательное поле",
+                required: t("required_field"),
               })}
             />
           </BaseInputs>
         </div>
 
         {renderUsers}
-        <BaseInputs label="ОПИСАНИЕ">
+        <BaseInputs label="description">
           <MainTextArea register={register("brigada_description")} />
         </BaseInputs>
 
-        <MainCheckBox label="Активный" register={register("status")} />
+        <MainCheckBox label={"active"} register={register("status")} />
 
         <button type="submit" className="btn btn-success btn-fill">
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

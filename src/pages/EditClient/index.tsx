@@ -16,8 +16,10 @@ import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 import MainRadioBtns from "@/components/BaseInputs/MainRadioBtns";
 import { Sphere } from "@/utils/types";
 import useRoles from "@/hooks/useRoles";
+import { useTranslation } from "react-i18next";
 
 const EditClient = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
@@ -78,9 +80,9 @@ const EditClient = () => {
 
   return (
     <Card>
-      <Header title={!id ? "Добавить" : `Изменить пользователь №${id}`}>
+      <Header title={!id ? t("add") : `${t("edit_user")} №${id}`}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 
@@ -91,12 +93,12 @@ const EditClient = () => {
               <MainInput
                 disabled
                 register={register("full_name", {
-                  required: "Обязательное поле",
+                  required: t("required_field"),
                 })}
               />
             </BaseInputs>
 
-            <BaseInputs label="ТЕЛЕФОН">
+            <BaseInputs label="phone">
               <InputMask
                 className="form-control mb-2"
                 mask="(999-99)-999-99-99"
@@ -108,35 +110,35 @@ const EditClient = () => {
               />
             </BaseInputs>
 
-            <BaseInputs label="Сфера">
+            <BaseInputs label="sphere">
               <MainRadioBtns
                 onChange={(e) => $sphere_status(e)}
                 value={sphere_status}
                 values={[
-                  { id: 0, name: "Розница" },
-                  { id: 1, name: "Фабрика" },
+                  { id: 0, name: t("retail") },
+                  { id: 1, name: t("fabric") },
                 ]}
               />
             </BaseInputs>
           </div>
           <div className="col-md-6">
-            <BaseInput label="РОЛЬ" error={errors.department}>
+            <BaseInput label="role" error={errors.department}>
               <MainSelect values={roles} register={register("group_id")} />
             </BaseInput>
             {!!id && (
-              <BaseInputs label="Телеграм ID" error={errors.telegram_id}>
+              <BaseInputs label="telegram_id" error={errors.telegram_id}>
                 <MainInput disabled register={register("telegram_id")} />
               </BaseInputs>
             )}
 
-            <BaseInput label="статус">
-              <MainCheckBox label="Активный" register={register("status")} />
+            <BaseInput label="status">
+              <MainCheckBox label={"active"} register={register("status")} />
             </BaseInput>
           </div>
         </div>
 
         <button type="submit" className="btn btn-success btn-fill mt-3">
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

@@ -7,14 +7,16 @@ import useFAQRequests from "@/hooks/useFaqRequests";
 import dayjs from "dayjs";
 import hrRequestsMutation from "@/hooks/mutation/hrRequest";
 import { RequestStatus } from "@/utils/types";
-import { handleHRStatus, handleStatus } from "@/utils/helpers";
+import { handleHRStatus } from "@/utils/helpers";
 import Modal from "@/components/Modal";
 import BaseInput from "@/components/BaseInputs";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import { useForm } from "react-hook-form";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const EditHRRequests = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
@@ -54,7 +56,7 @@ const EditHRRequests = () => {
             onClick={() => onSubmit(RequestStatus.rejected)}
             className="btn btn-danger btn-fill mr-2"
           >
-            Отклонить
+            {t("deny")}
           </button>
           <button onClick={toggleModal} className="btn btn-success btn-fill">
             Ответить
@@ -68,32 +70,32 @@ const EditHRRequests = () => {
   return (
     <Card>
       <Header
-        title={`Изменить №${id}`}
-        subTitle={`Статус: ${handleHRStatus(faq?.status!)}`}
+        title={`${t("edit")} №${id}`}
+        subTitle={`${t("status")}: ${t(handleHRStatus(faq?.status!) || "")}`}
       >
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
       <div className="content !pb-12">
         <table className="table table-striped table-bordered">
           <tbody>
             <tr>
-              <th>Вопрос</th>
+              <th>{t("question")}</th>
               <td>{faq?.comments}</td>
             </tr>
 
             <tr>
-              <th>Поступлен в</th>
+              <th>{t("created_at")}</th>
               <td>
                 {faq?.created_at
                   ? dayjs(faq?.created_at).format("DD.MM.YYYY HH:mm")
-                  : "Не задано"}
+                  : t("not_given")}
               </td>
             </tr>
             <tr>
-              <th>Ответ</th>
-              <td>{faq?.answer ? faq.answer : "Не задано"}</td>
+              <th>{t("answer")}</th>
+              <td>{faq?.answer ? faq.answer : t("not_given")}</td>
             </tr>
           </tbody>
         </table>
@@ -102,13 +104,13 @@ const EditHRRequests = () => {
       </div>
 
       <Modal isOpen={answerModal} onClose={toggleModal}>
-        <Header title="Ответить">
+        <Header title="to_answer">
           <button onClick={toggleModal} className="close">
             <span aria-hidden="true">&times;</span>
           </button>
         </Header>
         <div className="px-4">
-          <BaseInput label="Комментарии">
+          <BaseInput label="comments">
             <MainTextArea register={register("answer")} />
           </BaseInput>
 
@@ -116,7 +118,7 @@ const EditHRRequests = () => {
             className="btn btn-success w-full"
             onClick={() => onSubmit(RequestStatus.confirmed)}
           >
-            Отправить
+            {t("send")}
           </button>
         </div>
       </Modal>

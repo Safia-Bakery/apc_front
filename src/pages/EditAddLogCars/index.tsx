@@ -9,8 +9,10 @@ import MainInput from "@/components/BaseInputs/MainInput";
 import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 import useCars from "@/hooks/useCars";
 import carsMutation from "@/hooks/mutation/cars";
+import { useTranslation } from "react-i18next";
 
 const EditAddLogCars = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
@@ -60,31 +62,31 @@ const EditAddLogCars = () => {
 
   return (
     <Card>
-      <Header title={!id ? "Добавить" : `Изменить роль №${id}`}>
+      <Header title={!id ? t("add") : `${t("edit_role")} №${id}`}>
         <button className="btn btn-success btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
-        <BaseInputs label="Модель машины" error={errors.name}>
+        <BaseInputs label="car_model" error={errors.name}>
           <MainInput
-            register={register("car_model", { required: "Обязательное поле" })}
+            register={register("car_model", { required: t("required_field") })}
           />
         </BaseInputs>
 
-        <BaseInputs label="Номер" error={errors.name}>
+        <BaseInputs label="num" error={errors.name}>
           <MainInput
-            register={register("car_number", { required: "Обязательное поле" })}
+            register={register("car_number", { required: t("required_field") })}
           />
         </BaseInputs>
 
-        <BaseInputs label="статус">
-          <MainCheckBox label="Активный" register={register("status")} />
+        <BaseInputs label="status">
+          <MainCheckBox label={"active"} register={register("status")} />
         </BaseInputs>
 
         <button type="submit" className="btn btn-success btn-fill">
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

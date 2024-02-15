@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import BaseInput from "@/components/BaseInputs";
 import BaseInputs from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
@@ -8,17 +8,14 @@ import useDebounce from "custom/useDebounce";
 import useQueryString from "custom/useQueryString";
 import useRoles from "@/hooks/useRoles";
 import useUpdateEffect from "custom/useUpdateEffect";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   currentPage: number;
 }
 
-const StatusName = [
-  { name: "Активный", id: 0 },
-  { name: "Не активный", id: 2 },
-];
-
 const UsersFilter: FC<Props> = () => {
+  const { t } = useTranslation();
   const navigate = useNavigateParams();
   const [full_name, $full_name] = useDebounce("");
   const [username, $username] = useDebounce("");
@@ -26,6 +23,13 @@ const UsersFilter: FC<Props> = () => {
   const { data: roles, refetch: rolesRefetch } = useRoles({ enabled: false });
   const user_status = useQueryString("user_status");
   const role_id = useQueryString("role_id");
+
+  const StatusName = useMemo(() => {
+    return [
+      { name: t("active"), id: 0 },
+      { name: t("not_active"), id: 2 },
+    ];
+  }, []);
 
   useUpdateEffect(() => {
     navigate({ full_name });

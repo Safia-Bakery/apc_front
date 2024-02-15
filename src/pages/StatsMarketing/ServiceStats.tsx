@@ -6,19 +6,21 @@ import useUpdateQueryStr from "custom/useUpdateQueryStr";
 import cl from "classnames";
 import useServiceMarkStats from "@/hooks/useServiceMarkStats";
 import { handleDepartment, numberWithCommas as fixedN } from "@/utils/helpers";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№" },
-  { name: "Отдел" },
-  { name: "Категория" },
-  { name: "Поступило" },
-  { name: "Обработанных во время", colSpan: 2, className: "!bg-tableSuccess" },
-  { name: "Обработанных не во время", colSpan: 2, className: "!bg-tableWarn" },
-  { name: "Не обработано", colSpan: 2, className: "!bg-tableDanger" },
-  { name: "Среднее время обработки (минут)" },
+  { name: "department" },
+  { name: "category" },
+  { name: "receivedd" },
+  { name: "handled_on_time", colSpan: 2, className: "!bg-tableSuccess" },
+  { name: "not_handled_on_time", colSpan: 2, className: "!bg-tableWarn" },
+  { name: "not_handled", colSpan: 2, className: "!bg-tableDanger" },
+  { name: "avg_handling_time_mins" },
 ];
 
 const ServiceStats = () => {
+  const { t } = useTranslation();
   const start = useUpdateQueryStr("start");
   const end = useUpdateQueryStr("end");
 
@@ -27,8 +29,8 @@ const ServiceStats = () => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "статистика по уровнем сервиса",
-    sheet: "уровень сервиса",
+    filename: t("servise_level_stats"),
+    sheet: t("service_level"),
   });
 
   const downloadAsPdf = () => onDownload();
@@ -76,7 +78,7 @@ const ServiceStats = () => {
                 className={cl("border-dark", className)}
                 colSpan={colSpan}
               >
-                {name}
+                {t(name)}
               </th>
             ))}
           </tr>
@@ -88,7 +90,7 @@ const ServiceStats = () => {
                 <tr className="hover:bg-transparent">
                   <td rowSpan={mainKey[1].length + 1}>{idx + 1}</td>
                   <td rowSpan={mainKey[1].length + 1}>
-                    {handleDepartment({ sub: +mainKey[0] })}
+                    {t(handleDepartment({ sub: +mainKey[0] }))}
                   </td>
 
                   <td>{mainKey[1][0].category}</td>
@@ -150,7 +152,7 @@ const ServiceStats = () => {
                     </Fragment>
                   ))}
                 <tr className="hover:bg-transparent">
-                  <th className="text-center text-lg">Общее / Среднее(%):</th>
+                  <th className="text-center text-lg">{t("total_avg")}:</th>
                   <th className="text-center text-lg">
                     {calculator(mainKey[0], "total_requests")}
                   </th>
@@ -185,7 +187,7 @@ const ServiceStats = () => {
                     {(
                       averageCalculator(mainKey[0], "avg_finishing") / 60
                     ).toFixed(2)}
-                    часов)
+                    {t("hours")})
                   </th>
                 </tr>
               </Fragment>

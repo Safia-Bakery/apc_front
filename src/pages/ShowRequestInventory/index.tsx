@@ -27,8 +27,10 @@ import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { permissionSelector } from "reducers/sidebar";
 import AddedInventoryProducts from "@/components/AddedInventoryProducts";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const ShowRequestInventory = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const permissions = useAppSelector(permissionSelector);
   const [changed, $changed] = useState(false);
@@ -88,7 +90,7 @@ const ShowRequestInventory = () => {
             onClick={handleModal(ModalTypes.cancelRequest)}
             className="btn btn-danger btn-fill mx-2"
           >
-            Отклонить
+            {t("deny")}
           </button>
           <button
             onClick={handleRequest({
@@ -96,7 +98,7 @@ const ShowRequestInventory = () => {
             })}
             className="btn btn-success btn-fill"
           >
-            Завершить
+            {t("finish")}
           </button>
         </div>
       );
@@ -118,20 +120,22 @@ const ShowRequestInventory = () => {
     <>
       <Card className="overflow-hidden">
         <Header
-          title={`Заказ №${id}`}
-          subTitle={`Статус: ${handleStatus({
-            status: order?.status,
-            dep: Departments.marketing,
-          })}`}
+          title={`${t("order")} №${id}`}
+          subTitle={`${t("status")}: ${t(
+            handleStatus({
+              status: order?.status,
+              dep: Departments.inventory,
+            })
+          )}`}
         >
           <button
             className="btn btn-warning btn-fill mr-2"
             onClick={() => navigate(`/request/logs/${id}`)}
           >
-            Логи
+            {t("logs")}
           </button>
           <button onClick={handleBack} className="btn btn-primary btn-fill">
-            Назад
+            {t("back")}
           </button>
         </Header>
         <div className="content">
@@ -143,11 +147,11 @@ const ShowRequestInventory = () => {
               >
                 <tbody>
                   <tr>
-                    <th>Клиент</th>
+                    <th>{t("client")}</th>
                     <td>{order?.user?.full_name}</td>
                   </tr>
                   <tr>
-                    <th>Номер телефона</th>
+                    <th>{t("phone_number")}</th>
                     <td>
                       <a href={`tel:+${order?.user?.phone_number}`}>
                         +{order?.user?.phone_number}
@@ -155,25 +159,27 @@ const ShowRequestInventory = () => {
                     </td>
                   </tr>
                   <tr>
-                    <th>Тип</th>
+                    <th>{t("type")}</th>
                     <td>
-                      {handleDepartment({
-                        ...(!!order?.category?.sub_id
-                          ? { sub: order?.category?.sub_id }
-                          : { dep: order?.category?.department }),
-                      })}
+                      {t(
+                        handleDepartment({
+                          ...(!!order?.category?.sub_id
+                            ? { sub: order?.category?.sub_id }
+                            : { dep: order?.category?.department }),
+                        })
+                      )}
                     </td>
                   </tr>
                   <tr>
-                    <th>Группа проблем</th>
+                    <th>{t("group_problem")}</th>
                     <td>{order?.category?.name}</td>
                   </tr>
                   <tr>
-                    <th>Отдел</th>
+                    <th>{t("department")}</th>
                     <td>{order?.fillial?.parentfillial?.name}</td>
                   </tr>
                   <tr>
-                    <th>Файл</th>
+                    <th>{t("file")}</th>
                     <td className="flex flex-col !border-none">
                       {order?.file?.map((item, index) => {
                         if (item.status === 0)
@@ -187,14 +193,14 @@ const ShowRequestInventory = () => {
                               )}
                               key={item.url + index}
                             >
-                              файл - {index + 1}
+                              {t("file")} - {index + 1}
                             </div>
                           );
                       })}
                     </td>
                   </tr>
                   <tr>
-                    <th>Примичание</th>
+                    <th>{t("comment")}</th>
                     <td>{order?.description}</td>
                   </tr>
                 </tbody>
@@ -208,66 +214,66 @@ const ShowRequestInventory = () => {
               >
                 <tbody>
                   <tr>
-                    <th>Срочно</th>
+                    <th>{t("urgent")}</th>
                     <td>{!order?.category?.urgent ? "Нет" : "Да"}</td>
                   </tr>
                   <tr>
-                    <th>Изменил</th>
+                    <th>{t("changed")}</th>
                     <td>
                       {!!order?.user_manager
                         ? order?.user_manager
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата поступления:</th>
+                    <th>{t("receip_date")}:</th>
                     <td>
                       {order?.created_at
                         ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата изменения:</th>
+                    <th>{t("changed_date")}:</th>
                     <td>
                       {order?.started_at
                         ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата выполнения:</th>
+                    <th>{t("completion_date")}:</th>
                     <td>
                       {order?.finished_at
                         ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
-                    <th>Дедлайн:</th>
+                    <th>{t("deadline")}</th>
                     <td>
                       {order?.finishing_time
                         ? dayjs(order?.finishing_time).format(
                             "DD.MM.YYYY HH:mm"
                           )
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   {order?.comments?.[0]?.rating && (
                     <tr>
-                      <th className="font-bold">Рейтинг(отзыв)</th>
+                      <th className="font-bold">{t("rate_comment")}</th>
                       <td>{order?.comments?.[0]?.rating}</td>
                     </tr>
                   )}
                   {order?.comments?.[0]?.comment && (
                     <tr>
-                      <th className="font-bold">Коммент</th>
+                      <th className="font-bold">{t("commentt")}</th>
                       <td>{order?.comments?.[0]?.comment}</td>
                     </tr>
                   )}
                   {order?.deny_reason && (
                     <tr>
-                      <th className="font-bold">Причина отмены</th>
+                      <th className="font-bold">{t("deny_reason")}</th>
                       <td>{order?.deny_reason}</td>
                     </tr>
                   )}

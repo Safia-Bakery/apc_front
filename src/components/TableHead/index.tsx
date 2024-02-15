@@ -1,6 +1,7 @@
 import { FC, PropsWithChildren, useCallback, useState } from "react";
 import useUpdateEffect from "custom/useUpdateEffect";
 import cl from "classnames";
+import { useTranslation } from "react-i18next";
 
 interface Props extends PropsWithChildren {
   column: { name: string; key: any; center?: boolean }[];
@@ -9,6 +10,7 @@ interface Props extends PropsWithChildren {
 }
 
 const TableHead: FC<Props> = ({ column, children, data, onSort }) => {
+  const { t } = useTranslation();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [sortKey, setSortKey] = useState();
   const handleSort = (key: any) => () => {
@@ -47,7 +49,7 @@ const TableHead: FC<Props> = ({ column, children, data, onSort }) => {
               })}
               key={name + key}
             >
-              {name}{" "}
+              {t(name)}{" "}
               {sortKey === key && (
                 <span>{sortOrder === "asc" ? "▲" : "▼"}</span>
               )}

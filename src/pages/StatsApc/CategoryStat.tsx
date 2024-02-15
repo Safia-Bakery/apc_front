@@ -5,10 +5,8 @@ import Chart from "react-apexcharts";
 import useStatsCategory from "@/hooks/useStatsCategory";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 import EmptyList from "@/components/EmptyList";
-import dayjs from "dayjs";
-import { useLocation, useParams } from "react-router-dom";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
-import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 interface SortTypes {
   category: string;
@@ -41,15 +39,16 @@ const options = {
 
 const column = [
   { name: "№", key: "id" },
-  { name: "Категория", key: "category" },
-  { name: "Количество (шт)", key: "amount" },
+  { name: "category", key: "category" },
+  { name: "quantity", key: "amount" },
   {
-    name: "Время обработки (м)",
+    name: "handling_time_m",
     key: "time",
   },
 ];
 
 const CategoryStat: FC<Props> = ({ sphere_status }) => {
+  const { t } = useTranslation();
   const start = useUpdateQueryStr("start");
   const end = useUpdateQueryStr("end");
   const tableRef = useRef(null);
@@ -58,7 +57,7 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "статистика по категориям",
+    filename: t("stats_by_categ"),
     sheet: "categories",
   });
 
@@ -122,11 +121,11 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
             <>
               <tr>
                 <td></td>
-                <th className="text-2xl">В Общем: </th>
+                <th className="text-2xl">{t("in_total")}: </th>
                 <td className="text-2xl">{renderAvarage?.totalAmount} шт</td>
                 <td className="text-2xl">
                   {renderAvarage?.totalTime} м (
-                  {(renderAvarage?.totalTime / 60).toFixed(3)} часов)
+                  {(renderAvarage?.totalTime / 60).toFixed(3)} {t("hours")})
                 </td>
               </tr>
               <tr>

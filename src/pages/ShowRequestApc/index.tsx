@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo, useRef } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AddItems from "@/components/AddProduct";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
@@ -29,12 +29,12 @@ import { reportImgSelector, uploadReport } from "reducers/selects";
 import useQueryString from "custom/useQueryString";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import uploadFileMutation from "@/hooks/mutation/uploadFile";
-import { loginHandler } from "reducers/auth";
 import useBrigadas from "@/hooks/useBrigadas";
 import syncExpenditure from "@/hooks/mutation/syncExpenditure";
 import Loading from "@/components/Loader";
 import cl from "classnames";
 import { permissionSelector } from "reducers/sidebar";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   edit?: MainPermissions;
@@ -43,6 +43,7 @@ interface Props {
 }
 
 const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const modal = Number(useQueryString("modal"));
@@ -105,7 +106,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                     deny_reason: getValues("cancel_reason"),
                   },
                   {
-                    onSuccess: (data: any) => {
+                    onSuccess: () => {
                       orderRefetch();
                       successToast("assigned");
                     },
@@ -168,7 +169,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
             onClick={handleModal(ModalTypes.cancelRequest)}
             className="btn btn-danger btn-fill"
           >
-            Отклонить
+            {t("deny")}
           </button>
         </div>
       );
@@ -183,7 +184,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
               onClick={handleModal(ModalTypes.cancelRequest)}
               className="btn btn-danger btn-fill"
             >
-              Отменить
+              {t("cancel")}
             </button>
           )}
           <div className="flex gap-2">
@@ -194,7 +195,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                 })}
                 className="btn btn-warning btn-fill "
               >
-                Забрать для ремонта
+                {t("pick_to_repair")}
               </button>
             )}
             {order?.status! < RequestStatus.done && (
@@ -205,7 +206,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                 })}
                 className="btn btn-success btn-fill"
               >
-                Починил {isPending && <Loading />}
+                {t("fixed")} {isPending && <Loading />}
               </button>
             )}
           </div>
@@ -223,7 +224,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
               onClick={handleModal(ModalTypes.assign)}
               className="btn btn-primary btn-fill float-end"
             >
-              Переназначить
+              {t("reassign")}
             </button>
           </>
         );
@@ -234,7 +235,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
           onClick={handleModal(ModalTypes.assign)}
           className="btn btn-success btn-fill float-end"
         >
-          Назначить
+          {t("assign")}
         </button>
       );
     }
@@ -245,7 +246,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
     if (addExp && permissions?.[addExp] && !isNew && order?.status !== 4)
       return (
         <Card className="overflow-hidden">
-          <Header title={"Добавить фотоотчёт"} />
+          <Header title={"add_photo_report"} />
           <div className="m-3">
             <UploadComponent
               onFilesSelected={handleFilesSelected}
@@ -258,7 +259,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                 id={"save_report"}
                 className="btn btn-success float-end btn-fill my-3"
               >
-                Сохранить
+                {t("save")}
               </button>
             )}
           </div>
@@ -291,24 +292,26 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
     <>
       <Card className="overflow-hidden">
         <Header
-          title={`Заказ №${id}`}
-          subTitle={`Статус: ${handleStatus({
-            status: order?.status,
-            dep: Departments.apc,
-          })}`}
+          title={`${t("order")} №${id}`}
+          subTitle={`${t("status")}: ${t(
+            handleStatus({
+              status: order?.status,
+              dep: Departments.apc,
+            })
+          )}`}
         >
           <button
             className="btn btn-warning btn-fill"
             onClick={() => navigate(`/request/logs/${id}`)}
           >
-            Логи
+            {t("logs")}
           </button>
           {!!sphere_status && (
             <button
               onClick={handleBack}
               className="btn btn-primary btn-fill ml-2"
             >
-              Назад
+              {t("back")}
             </button>
           )}
         </Header>
@@ -321,11 +324,11 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
               >
                 <tbody>
                   <tr>
-                    <th className="w-1/3">Клиент</th>
+                    <th className="w-1/3">{t("client")}</th>
                     <td>{order?.user?.full_name}</td>
                   </tr>
                   <tr>
-                    <th>Номер телефона</th>
+                    <th>{t("phone_number")}</th>
                     <td>
                       <a href={`tel:+${order?.user.phone_number}`}>
                         +{order?.user.phone_number}
@@ -333,29 +336,31 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                     </td>
                   </tr>
                   <tr>
-                    <th>Тип</th>
+                    <th>{t("type")}</th>
                     <td>
-                      {handleDepartment({
-                        ...(!!order?.category?.sub_id
-                          ? { sub: order?.category?.sub_id }
-                          : { dep: order?.category?.department }),
-                      })}
+                      {t(
+                        handleDepartment({
+                          ...(!!order?.category?.sub_id
+                            ? { sub: order?.category?.sub_id }
+                            : { dep: order?.category?.department }),
+                        })
+                      )}
                     </td>
                   </tr>
                   <tr>
-                    <th>Группа проблем</th>
+                    <th>{t("group_problem")}</th>
                     <td>{order?.category?.name}</td>
                   </tr>
                   <tr>
-                    <th>Отдел</th>
+                    <th>{t("department")}</th>
                     <td>{order?.fillial?.parentfillial?.name}</td>
                   </tr>
                   <tr>
-                    <th>Продукт</th>
+                    <th>{t("productt")}</th>
                     <td>{order?.product}</td>
                   </tr>
                   <tr>
-                    <th>Файл</th>
+                    <th>{t("file")}</th>
                     <td className="flex flex-col !border-none">
                       {order?.file?.map((item, index) => {
                         if (item.status === 0)
@@ -369,7 +374,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                               )}
                               key={item.url + index}
                             >
-                              файл - {index + 1}
+                              {t("file")} - {index + 1}
                             </div>
                           );
                       })}
@@ -377,7 +382,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                   </tr>
 
                   <tr>
-                    <th>Примичание</th>
+                    <th>{t("comment")}</th>
                     <td>{order?.description}</td>
                   </tr>
                 </tbody>
@@ -391,52 +396,48 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
               >
                 <tbody>
                   <tr>
-                    <th className="w-1/3">Срочно</th>
+                    <th className="w-1/3">{t("urgent")}</th>
                     <td>{!order?.category?.urgent ? "Нет" : "Да"}</td>
                   </tr>
                   <tr>
-                    <th>Забрал для</th>
-                    <td>---------</td>
-                  </tr>
-                  <tr>
-                    <th>Изменил</th>
+                    <th>{t("changed")}</th>
                     <td>
                       {!!order?.user_manager
                         ? order?.user_manager
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
 
                   <tr>
-                    <th>Дата поступления:</th>
+                    <th>{t("receip_date")}:</th>
                     <td>
                       {order?.created_at
                         ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата изменения:</th>
+                    <th>{t("changed_date")}:</th>
                     <td>
                       {order?.started_at
                         ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
-                    <th>Дата выполнения:</th>
+                    <th>{t("completion_date")}:</th>
                     <td>
                       {order?.finished_at
                         ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
-                        : "Не задано"}
+                        : t("not_given")}
                     </td>
                   </tr>
                   <tr>
-                    <th className="font-bold">Ответственный</th>
+                    <th className="font-bold">{t("responsible")}</th>
                     <td>{renderAssignment}</td>
                   </tr>
                   <tr>
-                    <th id="photo_report">Фотоотчёт</th>
+                    <th id="photo_report">{t("photo_report")}</th>
                     <td className="flex flex-col !border-none">
                       {order?.file?.map((item, index) => {
                         if (item.status === 1)
@@ -450,7 +451,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                               )}
                               key={item.url + index}
                             >
-                              файл - {index + 1}
+                              {t("file")} - {index + 1}
                             </div>
                           );
                       })}
@@ -458,19 +459,19 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                   </tr>
                   {order?.comments?.[0]?.rating && (
                     <tr>
-                      <th className="font-bold">Рейтинг(отзыв)</th>
+                      <th className="font-bold">{t("rate_comment")}</th>
                       <td>{order?.comments?.[0]?.rating}</td>
                     </tr>
                   )}
                   {order?.comments?.[0]?.comment && (
                     <tr>
-                      <th className="font-bold">Коммент</th>
+                      <th className="font-bold">{t("commentt")}</th>
                       <td>{order?.comments?.[0]?.comment}</td>
                     </tr>
                   )}
                   {order?.deny_reason && (
                     <tr>
-                      <th className="font-bold">Причина отмены</th>
+                      <th className="font-bold">{t("deny_reason")}</th>
                       <td>{order?.deny_reason}</td>
                     </tr>
                   )}

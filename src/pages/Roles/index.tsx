@@ -11,15 +11,17 @@ import useRoles from "@/hooks/useRoles";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import EmptyList from "@/components/EmptyList";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Название", key: "name" },
-  { name: "Статус", key: "status" },
+  { name: "name", key: "name" },
+  { name: "status", key: "status" },
   { name: "", key: "" },
 ];
 
 const Roles = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const handleNavigate = (route: string) => () => navigate(route);
   const permission = useAppSelector(permissionSelector);
@@ -30,13 +32,13 @@ const Roles = () => {
 
   return (
     <Card>
-      <Header title={"Роли"}>
+      <Header title={"roles"}>
         {permission?.[MainPermissions.add_role] && (
           <button
             className="btn btn-success btn-fill"
             onClick={handleNavigate("add")}
           >
-            Добавить
+            {t("add")}
           </button>
         )}
       </Header>
@@ -61,7 +63,7 @@ const Roles = () => {
                       <span>{role?.name}</span>
                     )}
                   </td>
-                  <td>{!role.status ? "Не активный" : "Активный"}</td>
+                  <td>{!role.status ? t("not_active") : t("active")}</td>
                   <td width={40}>
                     {permission?.[MainPermissions.edit_roles] && (
                       <TableViewBtn

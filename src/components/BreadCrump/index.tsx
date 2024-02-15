@@ -1,10 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import styles from "./index.module.scss";
-import { FC } from "react";
+import { ChangeEvent, FC } from "react";
 import { logoutHandler } from "reducers/auth";
-import { useAppDispatch } from "@/store/utils/types";
-import { sidebarHandler } from "reducers/selects";
+import { useAppDispatch, useAppSelector } from "@/store/utils/types";
+import { changeLanguage, langSelector, sidebarHandler } from "reducers/selects";
 import useToken from "@/hooks/useToken";
+import { Language } from "@/utils/keys";
+import { useTranslation } from "react-i18next";
 
 interface Breadcrumb {
   path: string;
@@ -65,12 +67,17 @@ const routeNameMappings: { [key: string]: string } = {
 };
 
 const Breadcrumbs: FC = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const pathname = location.pathname;
   const dispatch = useAppDispatch();
   const handleLogout = () => dispatch(logoutHandler());
+  const lang = useAppSelector(langSelector);
 
   const { data: me } = useToken({ enabled: false });
+
+  const handleLang = (e: ChangeEvent<HTMLSelectElement>) =>
+    dispatch(changeLanguage(e.target.value as Language));
 
   const breadcrumbs: Breadcrumb[] = [];
 
@@ -105,7 +112,7 @@ const Breadcrumbs: FC = () => {
           </button>
           {window.location.pathname !== "/home" && (
             <li>
-              <Link to="/home">Главная</Link>
+              <Link to="/home">{t("main")}</Link>
             </li>
           )}
           {breadcrumbs.map((breadcrumb, index) => (
@@ -121,9 +128,24 @@ const Breadcrumbs: FC = () => {
           ))}
         </ul>
 
-        <span onClick={handleLogout} id="logout_btn" className={styles.logout}>
-          Выйти ({me?.username})
-        </span>
+        <div className="flex md:gap-4 gap-2">
+          <select
+            onChange={handleLang}
+            value={lang}
+            className="!bg-transparent"
+          >
+            {Object.keys(Language).map((item) => (
+              <option key={item}>{item}</option>
+            ))}
+          </select>
+          <span
+            onClick={handleLogout}
+            id="logout_btn"
+            className={styles.logout}
+          >
+            {t("leave")} ({me?.username})
+          </span>
+        </div>
       </div>
     </div>
   );

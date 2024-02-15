@@ -16,24 +16,26 @@ import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "id" },
-  { name: "Название", key: "name" },
-  { name: "Регион", key: "country" },
+  { name: "name", key: "name" },
+  { name: "region", key: "country" },
   {
-    name: "Широта",
+    name: "latitude",
     key: "latitude",
   },
   {
-    name: "Долгота",
+    name: "longtitude",
     key: "longtitude",
   },
-  { name: "Актив", key: "status" },
+  { name: "is_active", key: "status" },
   { name: "", key: "" },
 ];
 
 const Branches = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [sort, $sort] = useState<BranchType[]>();
   const { refetch: branchSync, isFetching: syncFetching } = useBranchSync({
@@ -68,7 +70,7 @@ const Branches = () => {
 
   return (
     <Card>
-      <Header title={"Филиалы"}>
+      <Header title={"branches"}>
         <div className="flex">
           {iikoBtn && (
             <button
@@ -83,7 +85,7 @@ const Branches = () => {
                 alt="sync"
                 className="mr-2"
               />
-              Синхронизировать с iiko
+              {t("sync_with_iico")}
             </button>
           )}
           {permisisons?.[MainPermissions.add_fillials] && (
@@ -92,7 +94,7 @@ const Branches = () => {
               onClick={handleNavigate("add")}
               id="add_branch"
             >
-              Добавить
+              {t("add")}
             </button>
           )}
         </div>
@@ -119,7 +121,7 @@ const Branches = () => {
                   <td>{branch.country}</td>
                   <td>{branch.latitude}</td>
                   <td>{branch.longtitude}</td>
-                  <td>{!branch.status ? "Не активный" : "Активный"}</td>
+                  <td>{!branch.status ? t("not_active") : t("active")}</td>
                   <td width={40}>
                     {permisisons?.[MainPermissions.edit_fillials] && (
                       <TableViewBtn

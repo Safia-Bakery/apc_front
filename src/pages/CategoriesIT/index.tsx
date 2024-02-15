@@ -16,6 +16,7 @@ import { permissionSelector } from "reducers/sidebar";
 import CategoriesITFilter from "./filter";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   sphere_status?: number;
@@ -26,14 +27,15 @@ interface Props {
 
 const column = [
   { name: "№", key: "" },
-  { name: "Наименование", key: "name" },
-  { name: "Отдел", key: "department" },
+  { name: "name_in_table", key: "name" },
+  { name: "department", key: "department" },
   { name: "Время исполнении", key: "ftime" },
-  { name: "Статус", key: "status" },
+  { name: "status", key: "status" },
   { name: "", key: "" },
 ];
 
 const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
+  const { t } = useTranslation();
   const { sphere } = useParams();
   const navigate = useNavigate();
   const [sort, $sort] = useState<Category[]>();
@@ -50,7 +52,7 @@ const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
 
   return (
     <Card>
-      <Header title={"Категории"}>
+      <Header title={"categories"}>
         {permission?.[add] && (
           <div className="flex gap-2">
             <button
@@ -58,13 +60,13 @@ const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
               onClick={handleNavigate("add")}
               id="add_category"
             >
-              Добавить
+              {t("add")}
             </button>
             <button
               onClick={() => navigate(-1)}
               className="btn btn-primary btn-fill"
             >
-              Назад
+              {t("back")}
             </button>
           </div>
         )}
@@ -99,9 +101,15 @@ const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
                           category?.name
                         )}
                       </td>
-                      <td>{handleDepartment({ dep: category?.department })}</td>
-                      <td>{category.ftime} часов</td>
-                      <td>{category?.status ? "Активный" : "Неактивный"}</td>
+                      <td>
+                        {t(handleDepartment({ dep: category?.department }))}
+                      </td>
+                      <td>
+                        {category.ftime} {t("hours")}
+                      </td>
+                      <td>
+                        {category?.status ? t("active") : t("not_active")}
+                      </td>
                       <td width={40}>
                         {permission?.[edit] && (
                           <TableViewBtn

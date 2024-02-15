@@ -27,8 +27,8 @@ import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import useCatProducts from "@/hooks/useCatProducts";
 import TableHead from "@/components/TableHead";
-import MainInput from "@/components/BaseInputs/MainInput";
 import { InputWrapper } from "@/components/InputWrappers";
+import { useTranslation } from "react-i18next";
 
 interface InventoryFields {
   product: string;
@@ -52,9 +52,9 @@ const initialInventory: InventoryFields | undefined = {
 
 const column = [
   { name: "№", key: "" },
-  { name: "КАТЕГОРИЕ", key: "category_id" },
-  { name: "ТОВАР", key: "product_id" },
-  { name: "КОЛИЧЕСТВО", key: "count" },
+  { name: "category", key: "category_id" },
+  { name: "product", key: "product_id" },
+  { name: "quantity", key: "count" },
   { name: "", key: "remove" },
   { name: "", key: "add" },
 ];
@@ -77,6 +77,7 @@ const SelectWrapper = forwardRef<
 });
 
 const CreateITRequest = () => {
+  const { t } = useTranslation();
   const [files, $files] = useState<FileItem[]>();
   const { mutate, isPending } = requestMutation();
   const { sphere } = useParams();
@@ -165,7 +166,11 @@ const CreateITRequest = () => {
 
   const renderBranches = useMemo(() => {
     return (
-      <BaseInputs className="relative" label="ФИЛИАЛ" error={errors.fillial_id}>
+      <BaseInputs
+        className="relative"
+        label={t("branch")}
+        error={errors.fillial_id}
+      >
         {perm?.[MainPermissions.get_fillials_list] && (
           <BranchSelect origin={1} enabled />
         )}
@@ -190,9 +195,9 @@ const CreateITRequest = () => {
 
   return (
     <Card>
-      <Header title="Создать заказ">
+      <Header title="create_order">
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 
@@ -223,7 +228,7 @@ const CreateITRequest = () => {
                             register={register(
                               `inputFields.${index}.category_id`,
                               {
-                                required: "Обязательное поле",
+                                required: t("required_field"),
                               }
                             )}
                           />
@@ -243,7 +248,7 @@ const CreateITRequest = () => {
                             field={field}
                             error={errors.inputFields?.[index]?.product}
                             register={register(`inputFields.${index}.product`, {
-                              required: "Обязательное поле",
+                              required: t("required_field"),
                             })}
                           />
                         )}
@@ -272,7 +277,7 @@ const CreateITRequest = () => {
                                 field={field}
                                 error={errors.inputFields?.[index]?.qnt}
                                 register={register(`inputFields.${index}.qnt`, {
-                                  required: "Обязательное поле",
+                                  required: t("required_field"),
                                 })}
                               />
                             )}
@@ -296,7 +301,7 @@ const CreateITRequest = () => {
                         }
                         className="btn bg-danger text-white"
                       >
-                        Удалить
+                        {t("remove")}
                       </button>
                     </td>
                     <td className="align-top" width={100}>
@@ -305,7 +310,7 @@ const CreateITRequest = () => {
                         className={cl("btn btn-primary w-min")}
                         onClick={addInputFields}
                       >
-                        Добавить
+                        {t("add")}
                       </button>
                     </td>
                   </tr>
@@ -314,27 +319,24 @@ const CreateITRequest = () => {
             </table>
           </>
         ) : (
-          <BaseInputs label="Категорие" error={errors.category_id}>
+          <BaseInputs label="category" error={errors.category_id}>
             <MainSelect
               values={categories?.items}
               register={register("category_id", {
-                required: "Обязательное поле",
+                required: t("required_field"),
               })}
             />
           </BaseInputs>
         )}
 
-        <BaseInputs label="Комментарии" error={errors.description}>
+        <BaseInputs label="comments" error={errors.description}>
           <MainTextArea
             register={register("description")}
-            placeholder="Комментарии"
+            placeholder={t("comments")}
           />
         </BaseInputs>
 
-        <BaseInputs
-          className={`mb-4 ${styles.uploadImage}`}
-          label="Добавить файл"
-        >
+        <BaseInputs className={`mb-4 ${styles.uploadImage}`} label="add_file">
           <UploadComponent onFilesSelected={handleFilesSelected} />
         </BaseInputs>
         <div>
@@ -342,7 +344,7 @@ const CreateITRequest = () => {
             type="submit"
             className={`btn btn-info btn-fill float-end ${styles.btn}`}
           >
-            Создать
+            {t("create")}
           </button>
         </div>
       </form>

@@ -20,8 +20,10 @@ import WarehouseSelect from "@/components/WarehouseSelect";
 import Loading from "@/components/Loader";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
+import { useTranslation } from "react-i18next";
 
 const CreateApcRequest = () => {
+  const { t } = useTranslation();
   const [files, $files] = useState<FileItem[]>();
   const { mutate, isPending } = requestMutation();
   const branchJson = useQueryString("branch");
@@ -84,9 +86,9 @@ const CreateApcRequest = () => {
 
   return (
     <Card>
-      <Header title={"Создать заказ"}>
+      <Header title={"create_order"}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 
@@ -96,34 +98,34 @@ const CreateApcRequest = () => {
       >
         <BaseInputs
           className="relative"
-          label="ФИЛИАЛ"
+          label={t("branch")}
           error={errors.fillial_id}
         >
           {renderBranchSelect}
         </BaseInputs>
-        <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
+        <BaseInputs label="category" error={errors.department}>
           <MainSelect
             values={categories?.items}
             register={register("category_id", {
-              required: "Обязательное поле",
+              required: t("required_field"),
             })}
           />
         </BaseInputs>
 
-        <BaseInputs label="Продукт">
+        <BaseInputs label="productt">
           <MainInput register={register("product")} />
         </BaseInputs>
 
-        <BaseInputs label="Комментарии">
+        <BaseInputs label="comments">
           <MainTextArea
             register={register("description")}
-            placeholder="Комментарии"
+            placeholder={t("comments")}
           />
         </BaseInputs>
 
         <BaseInputs
           className={`mb-4 ${styles.uploadImage}`}
-          label="Добавить файл"
+          label="add_file"
           error={errors.image}
         >
           <UploadComponent onFilesSelected={handleFilesSelected} />
@@ -133,7 +135,7 @@ const CreateApcRequest = () => {
             type="submit"
             className={`btn btn-info btn-fill float-end ${styles.btn}`}
           >
-            Создать
+            {t("create")}
           </button>
         </div>
       </form>

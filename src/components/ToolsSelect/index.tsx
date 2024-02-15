@@ -5,6 +5,7 @@ import useDebounce from "custom/useDebounce";
 import { Departments } from "@/utils/types";
 import Select from "react-select";
 import { UseFormRegisterReturn } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   department?: Departments;
@@ -22,6 +23,7 @@ const ToolsSelect: FC<Props> = ({
   paginate = false,
   ...others
 }) => {
+  const { t } = useTranslation();
   const [query, $query] = useDebounce("");
   const [page, $page] = useState(1);
 
@@ -61,7 +63,7 @@ const ToolsSelect: FC<Props> = ({
       options={items}
       isLoading={isFetching}
       onMenuScrollToBottom={() => (paginate ? pageIncrement() : null)}
-      placeholder="Выбрать товар"
+      placeholder={t("select_product")}
       onInputChange={(e) => $query(e)}
       {...others}
     />

@@ -19,8 +19,10 @@ import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import dayjs from "dayjs";
 import { staffCategoryId } from "@/utils/keys";
+import { useTranslation } from "react-i18next";
 
 const AddStaffRequest = () => {
+  const { t } = useTranslation();
   const { mutate, isPending } = requestMutation();
   const branchJson = useQueryString("branch");
   const sphere_status = Number(useQueryString("sphere_status"));
@@ -77,9 +79,9 @@ const AddStaffRequest = () => {
 
   return (
     <Card>
-      <Header title={"Создать заказ"}>
+      <Header title={"create_order"}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 
@@ -89,19 +91,19 @@ const AddStaffRequest = () => {
       >
         <BaseInputs
           className="relative"
-          label="ФИЛИАЛ"
+          label="branch"
           error={errors.fillial_id}
         >
           {renderBranchSelect}
         </BaseInputs>
 
-        <BaseInputs label="Порция еды">
+        <BaseInputs label="food_portion">
           <MainInput register={register("product")} type="number" />
         </BaseInputs>
-        <BaseInputs label="Порции хлеба">
+        <BaseInputs label="bread_portion">
           <MainInput register={register("bread")} type="number" />
         </BaseInputs>
-        <BaseInputs label="Дата поставки">
+        <BaseInputs label="delivery_date">
           <input
             className="form-control mb-2"
             value={dayjs(date).format("YYYY-MM-DD")}
@@ -110,10 +112,10 @@ const AddStaffRequest = () => {
           />
         </BaseInputs>
 
-        <BaseInputs label="Комментарии">
+        <BaseInputs label="comments">
           <MainTextArea
             register={register("description")}
-            placeholder="Комментарии"
+            placeholder={t("comments")}
           />
         </BaseInputs>
 
@@ -122,7 +124,7 @@ const AddStaffRequest = () => {
             type="submit"
             className={`btn btn-info btn-fill float-end ${styles.btn}`}
           >
-            Создать
+            {t("create")}
           </button>
         </div>
       </form>

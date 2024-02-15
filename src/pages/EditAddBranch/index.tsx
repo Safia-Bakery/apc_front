@@ -14,8 +14,10 @@ import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 import { Departments } from "@/utils/types";
 import MainRadioBtns from "@/components/BaseInputs/MainRadioBtns";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const EditAddBranch = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate("/branches");
@@ -90,40 +92,40 @@ const EditAddBranch = () => {
   if (isLoading) return <Loading absolute />;
   return (
     <Card>
-      <Header title={!id ? "Добавить" : `Изменить филиал ${branch?.name}`}>
+      <Header title={!id ? t("add") : `${t("edit_branch")} ${branch?.name}`}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
         <BaseInputs label="НАЗВАНИЕ" error={errors.name}>
           <MainInput
-            register={register("name", { required: "Обязательное поле" })}
+            register={register("name", { required: t("required_field") })}
             // disabled={!!id}
           />
         </BaseInputs>
 
-        <BaseInputs label="РЕГИОН" error={errors.region}>
+        <BaseInputs label="region" error={errors.region}>
           <MainInput
-            register={register("region", { required: "Обязательное поле" })}
+            register={register("region", { required: t("required_field") })}
             // disabled={!!id}
           />
         </BaseInputs>
 
-        <BaseInputs label="ШИРОТА">
+        <BaseInputs label="latitude">
           <MainInput register={register("lat")} />
         </BaseInputs>
 
-        <BaseInputs label="ДОЛГОТА">
+        <BaseInputs label="longtitude">
           <MainInput register={register("lng")} />
         </BaseInputs>
 
-        <BaseInputs label="Статус">
-          <MainCheckBox label="Активный" register={register("status")} />
+        <BaseInputs label="status">
+          <MainCheckBox label={"active"} register={register("status")} />
         </BaseInputs>
 
-        <BaseInputs label="Сфера">
+        <BaseInputs label="sphere">
           <MainRadioBtns
             onChange={(e) => $is_fabrica(e)}
             value={is_fabrica}
@@ -142,7 +144,7 @@ const EditAddBranch = () => {
             values={branch?.fillial_department}
           />
         </BaseInputs>
-        <BaseInputs label={"Инвентарь"}>
+        <BaseInputs label={"inventory"}>
           <MainSelect
             onChange={(e) =>
               handleDep({
@@ -155,7 +157,7 @@ const EditAddBranch = () => {
           />
         </BaseInputs>
         <button type="submit" className="btn btn-success btn-fill">
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

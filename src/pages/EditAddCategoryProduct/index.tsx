@@ -12,8 +12,10 @@ import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 import { imageConverter } from "@/utils/helpers";
 import { baseURL } from "@/main";
 import categoryProductMutation from "@/hooks/mutation/categoryProduct";
+import { useTranslation } from "react-i18next";
 
 const EditAddCategoryProduct = () => {
+  const { t } = useTranslation();
   const { id: category_id, product_id } = useParams();
 
   const {
@@ -59,9 +61,7 @@ const EditAddCategoryProduct = () => {
       {
         onSuccess: () => {
           refetch();
-          successToast(
-            !!category_id ? "successfully updated" : "successfully created"
-          );
+          successToast(!!category_id ? "updated" : "created");
           goBack();
           if (product_id) productRefetch();
         },
@@ -107,26 +107,26 @@ const EditAddCategoryProduct = () => {
   return (
     <Card className="overflow-hidden pb-3">
       <Header
-        title={!category_id ? "Добавить" : `Изменить категори  №${category_id}`}
+        title={!category_id ? "add" : `${t("edit_category")} №${category_id}`}
       >
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
-        <BaseInput label="НАИМЕНОВАНИЕ" error={errors.name}>
+        <BaseInput label="name_in_table" error={errors.name}>
           <MainInput
-            register={register("name", { required: "Обязательное поле" })}
+            register={register("name", { required: t("required_field") })}
           />
         </BaseInput>
 
-        <BaseInput label="ОПИСАНИЕ">
+        <BaseInput label="description">
           <MainTextArea register={register("description")} />
         </BaseInput>
 
-        <MainCheckBox label="Активный" register={register("status")} />
+        <MainCheckBox label={"active"} register={register("status")} />
 
-        <BaseInput label="ЗАГРУЗИТЬ ФОТО" className="relative">
+        <BaseInput label="upload_photo" className="relative">
           <MainInput
             value={
               !!watch("files")?.length ? `${watch("files")?.[0].name}` : ""
@@ -143,7 +143,7 @@ const EditAddCategoryProduct = () => {
         {renderImage}
 
         <button type="submit" className="btn btn-success btn-fill float-end">
-          Сохранить
+          {t("save")}
         </button>
       </form>
     </Card>

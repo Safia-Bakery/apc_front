@@ -25,8 +25,10 @@ import Loading from "../Loader";
 import marketingReassignMutation from "@/hooks/mutation/marketingReassign";
 import useCategories from "@/hooks/useCategories";
 import useCars from "@/hooks/useCars";
+import { useTranslation } from "react-i18next";
 
 const ShowRequestModals = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const modal = Number(useQueryString("modal"));
   const photo = useQueryString("photo");
@@ -99,7 +101,7 @@ const ShowRequestModals = () => {
           ...(status === RequestStatus.rejected && {
             deny_reason:
               fixedReason < 4
-                ? CancelReason[fixedReason]
+                ? t(CancelReason[fixedReason])
                 : getValues("cancel_reason"),
           }),
         },
@@ -119,7 +121,7 @@ const ShowRequestModals = () => {
       case ModalTypes.assign:
         return (
           <div className={styles.birgadesModal}>
-            <Header title="Выберите исполнителя">
+            <Header title="select_handler">
               <button onClick={() => removeParams(["modal"])} className="close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -141,7 +143,7 @@ const ShowRequestModals = () => {
                         })}
                         className="btn btn-success btn-fill btn-sm"
                       >
-                        Назначить
+                        {t("assign")}
                       </button>
                     </div>
                   ))
@@ -152,7 +154,7 @@ const ShowRequestModals = () => {
       case ModalTypes.cars:
         return (
           <div className={styles.birgadesModal}>
-            <Header title="Выберите Грузовика">
+            <Header title="select_truck">
               <button onClick={() => removeParams(["modal"])} className="close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -176,7 +178,7 @@ const ShowRequestModals = () => {
                         })}
                         className="btn btn-success btn-fill btn-sm"
                       >
-                        Назначить
+                        {t("assign")}
                       </button>
                     </div>
                   ))
@@ -192,36 +194,36 @@ const ShowRequestModals = () => {
             )}
             className={styles.birgadesModal}
           >
-            <Header title="Причина отклонении">
+            <Header title="deny_reason">
               <button onClick={() => removeParams(["modal"])} className="close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </Header>
             <div className="p-3">
-              <BaseInput label="Выберите причину">
+              <BaseInput label="select_reason">
                 <MainSelect
                   register={register("fixedReason", {
-                    required: "Обязательное поле",
+                    required: t("required_field"),
                   })}
                 >
                   <option value={undefined} />
 
                   {Object.keys(CancelReason).map((item) => (
                     <option key={item} value={item}>
-                      {CancelReason[+item]}
+                      {t(CancelReason[+item])}
                     </option>
                   ))}
                 </MainSelect>
               </BaseInput>
 
               {watch("fixedReason") == 4 && (
-                <BaseInput label="Комментарии">
+                <BaseInput label="comments">
                   <MainTextArea register={register("cancel_reason")} />
                 </BaseInput>
               )}
 
               <button className="btn btn-success" type="submit">
-                Отправить
+                {t("send")}
               </button>
             </div>
           </form>
@@ -274,18 +276,18 @@ const ShowRequestModals = () => {
       case ModalTypes.reassign:
         return (
           <div className="min-w-[380px] p-4">
-            <BaseInput label="Выберите направление">
+            <BaseInput label="select_direction">
               <MainSelect
                 values={MarketingSubDepRu}
                 register={register("direction")}
               />
             </BaseInput>
 
-            <BaseInput label="Выберите категорию">
+            <BaseInput label="select_category">
               <MainSelect
                 values={categories?.items || []}
                 register={register("category_id", {
-                  required: "Обязательное поле",
+                  required: t("required_field"),
                 })}
               />
             </BaseInput>
@@ -294,7 +296,7 @@ const ShowRequestModals = () => {
               onClick={handleReassign}
               className="btn btn-success btn-fill btn-sm float-end"
             >
-              Перенаправлять
+              {t("redirect")}
             </button>
           </div>
         );

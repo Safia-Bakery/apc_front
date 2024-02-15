@@ -18,8 +18,10 @@ import Loading from "@/components/Loader";
 import { MainPermissions, MarketingSubDep } from "@/utils/types";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
+import { useTranslation } from "react-i18next";
 
 const AddMarketingRequest = () => {
+  const { t } = useTranslation();
   const [files, $files] = useState<FileItem[]>();
   const { mutate } = requestMutation();
   const branchJson = useQueryString("branch");
@@ -45,7 +47,7 @@ const AddMarketingRequest = () => {
   const goBack = () => back(`/marketing-${MarketingSubDep[sub_id]}`);
 
   const handleFilesSelected = (data: FileItem[]) => {
-    if (data.length < 2) $filemsg("Добавьте минимум два файла");
+    if (data.length < 2) $filemsg(t("add_min_two_files"));
     if (data.length >= 2) $filemsg(undefined);
     $files(data);
   };
@@ -79,9 +81,9 @@ const AddMarketingRequest = () => {
 
   return (
     <Card>
-      <Header title={"Создать заказ"}>
+      <Header title={"create_order"}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
-          Назад
+          {t("back")}
         </button>
       </Header>
 
@@ -89,34 +91,34 @@ const AddMarketingRequest = () => {
         className={cl("content", styles.form)}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <BaseInputs className="relative" label="ФИЛИАЛ" error={errors.fillial}>
+        <BaseInputs
+          className="relative"
+          label={t("branch")}
+          error={errors.fillial}
+        >
           {perm?.[MainPermissions.get_fillials_list] && (
             <BranchSelect enabled />
           )}
         </BaseInputs>
-        <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
+        <BaseInputs label="categories" error={errors.department}>
           <MainSelect
             values={categories?.items || []}
             register={register("category_id", {
-              required: "Обязательное поле",
+              required: t("required_field"),
             })}
           />
         </BaseInputs>
 
-        <BaseInputs label="Комментарии" error={errors.description}>
+        <BaseInputs label="comments" error={errors.description}>
           <MainTextArea
             register={register("description", {
-              required: "Обязательное поле",
-              minLength: { value: 60, message: "Минимум 60 символов" },
+              required: t("required_field"),
             })}
-            placeholder="Комментарии"
+            placeholder={t("comments")}
           />
         </BaseInputs>
 
-        <BaseInputs
-          className={`mb-4 ${styles.uploadImage}`}
-          label="Добавить файл"
-        >
+        <BaseInputs className={`mb-4 ${styles.uploadImage}`} label="add_file">
           <UploadComponent onFilesSelected={handleFilesSelected} />
           {filemsg && (
             <div className="alert alert-danger p-2" role="alert">
@@ -129,7 +131,7 @@ const AddMarketingRequest = () => {
             type="submit"
             className={`btn btn-info btn-fill float-end ${styles.btn}`}
           >
-            Создать
+            {t("create")}
           </button>
         </div>
       </form>

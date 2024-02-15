@@ -17,21 +17,8 @@ import { ChangeEvent, useMemo, useState } from "react";
 import Loading from "@/components/Loader";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "@/store/reducers/sidebar";
-
-enum Months {
-  "Январь",
-  "февраль",
-  "март",
-  "апрель",
-  "May",
-  "июнь",
-  "июль",
-  "Август",
-  "Сентябрь",
-  "Октябрь",
-  "Ноябрь",
-  "Декабрь",
-}
+import { Months } from "@/utils/keys";
+import { useTranslation } from "react-i18next";
 
 const options = {
   legend: {
@@ -65,16 +52,16 @@ interface DepTypes {
 
 const btnArr = [
   {
-    title: "Новые",
+    title: "news",
     url: "/marketing-all-requests?request_status=0",
   },
   {
-    title: "Принятые",
+    title: "receiveds",
     url: "/marketing-all-requests?request_status=1",
     className: "table-primary",
   },
   {
-    title: "Отправленные заказчикам",
+    title: "sent_to_clients",
     url: "/marketing-all-requests?request_status=2",
     className: "table-warning",
   },
@@ -140,6 +127,7 @@ enum MonthVals {
 }
 
 const ControlPanel = () => {
+  const { t } = useTranslation();
   const { data: user } = useToken({ enabled: false });
   const perms = new Set(user?.permissions);
   const mainDep: DepType = Object.entries(mainDeps).find((item) =>
@@ -169,96 +157,96 @@ const ControlPanel = () => {
         case Departments.apc:
           if (mainDep.sphere === Sphere.fabric)
             return {
-              title: "АРС - фабрика",
+              title: "apc_fabric",
               teamUrl: "/statistics-apc-fabric/brigada",
               newOrders: "/requests-apc-fabric?request_status=0",
               ratingUrl: "/requests-apc-fabric?rate=1",
             };
           else
             return {
-              title: "АРС - розница",
+              title: "apc_retail",
               teamUrl: "/statistics-apc-retail/brigada",
               newOrders: "/requests-apc-retail?request_status=0",
               ratingUrl: "/requests-apc-retail?rate=1",
             };
         case Departments.inventory:
           return {
-            title: "Инвентарь",
+            title: "inventory",
             newOrders: "/requests-inventory?request_status=0",
           };
         case Departments.marketing:
           if (isMarkAdmin)
             return {
-              title: "Маркетинг",
+              title: "marketing",
               ratingUrl: "/marketing-all-requests?rate=1",
             };
           if (mainDep.sub_id === MarketingSubDep.branchEnv)
             return {
-              title: "Маркетинг(Внешний вид филиала)",
+              title: "marketing_branch_env",
               newOrders: "/marketing-branchEnv?request_status=0",
               ratingUrl: "/marketing-branchEnv?rate=1",
             };
           if (mainDep.sub_id === MarketingSubDep.complects)
             return {
-              title: "Маркетинг(Комплекты)",
+              title: "marketing_complects",
               newOrders: "/marketing-complects?request_status=0",
               ratingUrl: "/marketing-complects?rate=1",
             };
           if (mainDep.sub_id === MarketingSubDep.designers)
             return {
-              title: "Маркетинг(Проектная работа для дизайнеров)",
+              title: "marketing_project_works",
               newOrders: "/marketing-designers?request_status=0",
               ratingUrl: "/marketing-designers?rate=1",
             };
           if (mainDep.sub_id === MarketingSubDep.local_marketing)
             return {
-              title: "Маркетинг(Локальный маркетинг)",
+              title: "local_marketing",
               newOrders: "/marketing-local_marketing?request_status=0",
               ratingUrl: "/marketing-local_marketing?rate=1",
             };
           if (mainDep.sub_id === MarketingSubDep.nonstandartAdv)
             return {
-              title: "Маркетинг(Для Тер.Менеджеров)",
+              title: "marketing_ter_manakgers",
               newOrders: "/marketing-nonstandartAdv?request_status=0",
               ratingUrl: "/marketing-nonstandartAdv?rate=1",
             };
           if (mainDep.sub_id === MarketingSubDep.pos)
             return {
-              title: "Маркетинг(POS-Материалы)",
+              title: "marketing_pos",
               newOrders: "/marketing-pos?request_status=0",
               ratingUrl: "/marketing-pos?rate=1",
             };
           if (mainDep.sub_id === MarketingSubDep.promo_production)
             return {
-              title: "Маркетинг(Промо-продукция)",
+              title: "marketing_promo_production",
               newOrders: "/marketing-promo_production?request_status=0",
               ratingUrl: "/marketing-promo_production?rate=1",
             };
-          else return { title: "Маркетинг" };
+          else return { title: "marketing" };
         case Departments.it:
           if (mainDep.sphere === Sphere.purchase)
             return {
-              title: "IT - закуп",
+              title: "it_purchase",
               newOrders: `/requests-it/${Sphere.purchase}?request_status=0`,
               ratingUrl: `/requests-it/${Sphere.purchase}?rate=1`,
             };
           else
             return {
-              title: "IT - поддержка",
+              title: "it_support",
               newOrders: `/requests-it/${Sphere.fix}?request_status=0`,
               ratingUrl: `/requests-it/${Sphere.fix}?rate=1`,
             };
         case Departments.logystics:
           return {
-            title: "Запрос машин",
+            title: "car_requests",
             newOrders: "/requests-logystics?request_status=0",
           };
         case Departments.staff:
-          return { title: "Заявки на еду", newOrders: "/requests-staff" };
+          return { title: "request_for_food", newOrders: "/requests-staff" };
 
         case Departments.cctv:
           return {
-            title: "Видеонаблюдение",
+            title: "cctv",
             newOrders: "/requests-cctv?request_status=0",
           };
         default:
@@ -311,11 +299,11 @@ const ControlPanel = () => {
             >
               <div className="flex"></div>
               <div className="text-base font-bold flex items-center justify-center text-center">
-                {item.title}
+                {t(item.title)}
               </div>
 
               <div className="w-full flex justify-end mt-3">
-                открыть список{" "}
+                {t("open_list")}{" "}
                 <img
                   src="/assets/icons/arrowBlack.svg"
                   alt=""
@@ -336,10 +324,12 @@ const ControlPanel = () => {
     <>
       <Card className={cl(styles.card, "!mb-2")}>
         <div className="header text-center">
-          <h4 className="title m-0">Добро пожаловать {user?.full_name}</h4>
+          <h4 className="title m-0">
+            {t("welcome")} {user?.full_name}
+          </h4>
           <p className={styles.category}>{user?.role?.toString()}</p>
 
-          <p>{renderDep?.title}</p>
+          <p>{t(renderDep?.title || "")}</p>
         </div>
 
         <div>
@@ -351,7 +341,7 @@ const ControlPanel = () => {
           <Container>
             <div className="flex flex-[6] gap-2 ">
               <div className={cl(styles.blockItem)}>
-                <h3 className="text-center mb-4">Моя команда</h3>
+                <h3 className="text-center mb-4">{t("my_team")}</h3>
                 {renderChart}
 
                 <div className="w-full flex justify-end">
@@ -360,7 +350,7 @@ const ControlPanel = () => {
                       to={renderDep?.teamUrl}
                       className="flex text-gray-400"
                     >
-                      Перейти{" "}
+                      {t("go")}{" "}
                       <img
                         src="/assets/icons/arrowBlack.svg"
                         alt=""
@@ -374,8 +364,8 @@ const ControlPanel = () => {
 
                 <hr className={styles.hr} />
 
-                <p className="">
-                  Количество заявок в обработке:{" "}
+                <p>
+                  {t("request_qnt_in_process")}:{" "}
                   <span className="text-xl text-blue-500">
                     {stats?.in_progress}
                   </span>
@@ -391,7 +381,7 @@ const ControlPanel = () => {
                     className={cl(styles.blockItem, "flex-1 justify-between")}
                   >
                     <h3 className="text-base h-12">
-                      Заявки без исполнителя Новые
+                      {t("not_assigned_requests")}
                     </h3>
                     <h2 className="text-center mt-2">{stats?.new_requests}</h2>
 
@@ -401,7 +391,7 @@ const ControlPanel = () => {
                           to={renderDep?.newOrders}
                           className="flex text-gray-400 text-xs"
                         >
-                          открыть список{" "}
+                          {t("open_list")}{" "}
                           <img
                             src="/assets/icons/arrowBlack.svg"
                             alt=""
@@ -418,7 +408,7 @@ const ControlPanel = () => {
                     <div
                       className={cl(styles.blockItem, "flex-1 justify-between")}
                     >
-                      <h3 className="text-base h-12">Средний рейтинг</h3>
+                      <h3 className="text-base h-12">{t("avg_rating")}</h3>
                       <h2 className="text-center mt-2">{stats?.avg_rating}</h2>
 
                       <div className="w-full flex justify-end mt-3">
@@ -427,7 +417,7 @@ const ControlPanel = () => {
                             to={renderDep?.ratingUrl}
                             className="flex text-gray-400 text-xs "
                           >
-                            открыть все оценки{" "}
+                            {"open_all_rtates"}{" "}
                             <img
                               src="/assets/icons/arrowBlack.svg"
                               alt=""
@@ -444,15 +434,15 @@ const ControlPanel = () => {
                   <div
                     className={cl(styles.blockItem, "flex-1 justify-between")}
                   >
-                    <h3 className="text-base h-12">Среднее время обработки</h3>
+                    <h3 className="text-base h-12">{t("avg_time")}</h3>
                     <div className="text-center flex items-center justify-center mt-2">
                       {stats?.avg_time && (
                         <h3 className="text-lg">
-                          {Math.floor(stats?.avg_time / 60)} ч.{" "}
-                          {stats?.avg_time % 60} мин
+                          {Math.floor(stats?.avg_time / 60)} {t("h")}.{" "}
+                          {stats?.avg_time % 60} {t("minutes")}
                         </h3>
                       )}{" "}
-                      /<p className="text-xs"> 1 заяка</p>
+                      /<p className="text-xs"> 1 {t("request")}</p>
                     </div>
 
                     <div className="mt-3 h-4" />
@@ -464,15 +454,17 @@ const ControlPanel = () => {
                     <h3 className="text-base h-12">
                       <select onChange={handleMonth} value={selectMonth}>
                         <option value={MonthVals.last_month}>
-                          Обработано за текущий месяц
+                          {t("handled_curr_month")}
                         </option>
                         <option value={MonthVals.last_30}>
-                          Обработано за последние 30 дней
+                          {t("handled_last_30")}
                         </option>
                       </select>
                     </h3>
                     <div className="text-center flex items-center justify-center mt-2">
-                      <h3 className="text-lg">{stats?.[selectMonth]} заявок</h3>
+                      <h3 className="text-lg">
+                        {stats?.[selectMonth]} {t("requests")}
+                      </h3>
                     </div>
 
                     <div className="mt-3 h-4" />
@@ -484,7 +476,7 @@ const ControlPanel = () => {
                   <h3 className="text-base capitalize">
                     {Months[dayjs().get("M")]}
                   </h3>
-                  <p className="text-xl">Статистика по заказам</p>
+                  <p className="text-xl">{"request_stats"}</p>
                 </div>
                 {renderMarketingContent}
               </div>
