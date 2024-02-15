@@ -8,11 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
-import {
-  detectFileType,
-  handleDepartment,
-  handleStatus,
-} from "@/utils/helpers";
+import { detectFileType, handleDepartment } from "@/utils/helpers";
 import { useForm } from "react-hook-form";
 import {
   Departments,
@@ -44,6 +40,27 @@ import orderMsgMutation from "@/hooks/mutation/orderMsg";
 import TableViewBtn from "@/components/TableViewBtn";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import { useTranslation } from "react-i18next";
+
+const handleStatus = (status: RequestStatus | undefined) => {
+  switch (status) {
+    case RequestStatus.confirmed:
+      return "received";
+    case RequestStatus.done:
+      return "finished";
+    case RequestStatus.sendToRepair:
+      return "sent_to_fix";
+
+    case RequestStatus.rejected:
+      return "denied";
+    case RequestStatus.paused:
+      return "paused";
+    case RequestStatus.solved:
+      return "solved";
+
+    default:
+      return "new";
+  }
+};
 
 interface Props {
   edit: MainPermissions;
@@ -228,94 +245,126 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   }, [modal]);
 
   const renderChangeModals = useMemo(() => {
-    switch (changeModal) {
-      case ModalTypes.changeBranch:
-        return (
-          <>
-            <BaseInput label="select_branch">
-              <BranchSelect enabled />
-            </BaseInput>
+    if (order?.status! < RequestStatus.solved)
+      switch (changeModal) {
+        case ModalTypes.changeBranch:
+          return (
+            <>
+              <BaseInput label="select_branch">
+                <BranchSelect enabled />
+              </BaseInput>
 
-            <button
-              className="btn btn-success btn-fill w-full"
-              onClick={handleChange({ filial: true })}
-            >
-              {t("apply")}
-            </button>
-          </>
-        );
-      case ModalTypes.changeCateg:
-        return (
-          <>
-            <BaseInput label="select_group_problem">
-              <MainSelect
-                values={categories?.items}
-                register={register("category")}
-              />
-            </BaseInput>
+              <button
+                className="btn btn-success btn-fill w-full"
+                onClick={handleChange({ filial: true })}
+              >
+                {t("apply")}
+              </button>
+            </>
+          );
+        case ModalTypes.changeCateg:
+          return (
+            <>
+              <BaseInput label="select_group_problem">
+                <MainSelect
+                  values={categories?.items}
+                  register={register("category")}
+                />
+              </BaseInput>
 
-            <button
-              className="btn btn-success btn-fill w-full"
-              onClick={handleChange({ categ: true })}
-            >
-              {t("apply")}
-            </button>
-          </>
-        );
-      case ModalTypes.leaveMessage:
-        return (
-          <>
-            <BaseInput label="leave_comment">
-              <MainTextArea
-                autoFocus
-                onKeyDown={handleKeyDown}
-                register={register("left_comment")}
-              />
-            </BaseInput>
+              <button
+                className="btn btn-success btn-fill w-full"
+                onClick={handleChange({ categ: true })}
+              >
+                {t("apply")}
+              </button>
+            </>
+          );
+        case ModalTypes.leaveMessage:
+          return (
+            <>
+              <BaseInput label="leave_comment">
+                <MainTextArea
+                  autoFocus
+                  onKeyDown={handleKeyDown}
+                  register={register("left_comment")}
+                />
+              </BaseInput>
 
-            <button
-              className="btn btn-success btn-fill w-full"
-              onClick={handleMessage}
-            >
-              {t("apply")}
-            </button>
-          </>
-        );
-      default:
-        break;
-    }
-  }, [categoryLoading, changeModal, categories, branch]);
+              <button
+                className="btn btn-success btn-fill w-full"
+                onClick={handleMessage}
+              >
+                {t("apply")}
+              </button>
+            </>
+          );
+        default:
+          break;
+      }
+  }, [categoryLoading, changeModal, categories, branch, order?.status]);
 
   const renderSubmit = useMemo(() => {
-    if (permissions?.[edit])
+    if (
+      permissions?.[edit] &&
+      order?.status &&
+      order.status < RequestStatus.solved
+    )
       return (
         <div className="flex justify-between mb10 gap-2">
-          <button
-            onClick={handleModal(ModalTypes.cancelRequest)}
-            className="btn btn-danger btn-fill"
-          >
-            {t("cancel")}
-          </button>
+          {order.status !== RequestStatus.done && (
+            <button
+              onClick={handleModal(ModalTypes.cancelRequest)}
+              className="btn btn-danger btn-fill"
+            >
+              {t("cancelation")}
+            </button>
+          )}
           <div>
             {order?.status! > RequestStatus.new && (
               <div className="flex gap-2">
-                <button
-                  onClick={handleBrigada({
-                    status: RequestStatus.sendToRepair,
-                  })}
-                  className="btn btn-warning btn-fill"
-                >
-                  {t("pick_to_repair")}
-                </button>
-                <button
-                  id={"fixed"}
-                  onClick={handleBrigada({
-                    status: RequestStatus.done,
-                  })}
-                  className="btn btn-success btn-fill"
-                >
-                  {t("fixed")} {isPending && <Loading />}
-                </button>
+                {order?.status! === RequestStatus.done ||
+                order?.status! === RequestStatus.paused ? (
+                  <button
+                    onClick={handleBrigada({
+                      status: RequestStatus.confirmed,
+                    })}
+                    className="btn btn-warning btn-fill"
+                  >
+                    {t("resume")}
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleBrigada({
+                      status: RequestStatus.paused,
+                    })}
+                    className="btn btn-danger btn-fill"
+                  >
+                    {t("pause")}
+                  </button>
+                )}
+                {order.status !== RequestStatus.done &&
+                  order.status !== RequestStatus.paused && (
+                    <>
+                      <button
+                        onClick={handleBrigada({
+                          status: RequestStatus.sendToRepair,
+                        })}
+                        className="btn btn-warning btn-fill"
+                      >
+                        {t("pick_to_repair")}
+                      </button>
+                      <button
+                        id={"fixed"}
+                        onClick={handleBrigada({
+                          status: RequestStatus.done,
+                        })}
+                        className="btn btn-success btn-fill"
+                      >
+                        {t("fixed")} {isPending && <Loading />}
+                      </button>
+                    </>
+                  )}
               </div>
             )}
           </div>
@@ -396,12 +445,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
       <Card className="overflow-hidden">
         <Header
           title={`${t("order")} №${id}`}
-          subTitle={`${t("status")}: ${t(
-            handleStatus({
-              status: order?.status,
-              dep: Departments.it,
-            })
-          )}`}
+          subTitle={`${t("status")}: ${t(handleStatus(order?.status))}`}
         >
           <div className="flex gap-2">
             <button
@@ -453,15 +497,17 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                       <div className="flex items-center justify-between">
                         <span>{order?.category?.name}</span>
 
-                        <button
-                          className={cl(
-                            "btn btn-primary btn-fill",
-                            styles.changeBtn
-                          )}
-                          onClick={handleChangeModal(ModalTypes.changeCateg)}
-                        >
-                          {t("change")}
-                        </button>
+                        {order?.status! < RequestStatus.solved && (
+                          <button
+                            className={cl(
+                              "btn btn-primary btn-fill",
+                              styles.changeBtn
+                            )}
+                            onClick={handleChangeModal(ModalTypes.changeCateg)}
+                          >
+                            {t("change")}
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -471,15 +517,17 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                       <div className="flex items-center justify-between">
                         <span>{order?.fillial?.parentfillial?.name}</span>
 
-                        <button
-                          onClick={handleChangeModal(ModalTypes.changeBranch)}
-                          className={cl(
-                            "btn btn-primary btn-fill",
-                            styles.changeBtn
-                          )}
-                        >
-                          {t("change")}
-                        </button>
+                        {order?.status! < RequestStatus.solved && (
+                          <button
+                            onClick={handleChangeModal(ModalTypes.changeBranch)}
+                            className={cl(
+                              "btn btn-primary btn-fill",
+                              styles.changeBtn
+                            )}
+                          >
+                            {t("change")}
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -599,9 +647,11 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                               </div>
                             ))}
                         </div>
-                        <TableViewBtn
-                          onClick={handleChangeModal(ModalTypes.leaveMessage)}
-                        />
+                        {order?.status! < RequestStatus.solved && (
+                          <TableViewBtn
+                            onClick={handleChangeModal(ModalTypes.leaveMessage)}
+                          />
+                        )}
                       </div>
                     </td>
                   </tr>

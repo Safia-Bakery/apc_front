@@ -301,6 +301,8 @@ export enum RequestStatus {
   sendToRepair,
   done,
   rejected,
+  paused,
+  solved,
 }
 export type RequestFilter = {
   id?: number | string;
