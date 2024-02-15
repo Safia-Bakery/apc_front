@@ -67,13 +67,13 @@ const options = {
 const column = [
   { name: "№", key: "id" },
   { name: "category", key: "category" },
-  { name: "Количество поступивших заявок", key: "amount" },
+  { name: "received_requests_qnt", key: "amount" },
   {
-    name: "Количество выполненных заявок",
+    name: "finished_requests_qnt",
     key: "time",
   },
   {
-    name: "Процент выполнения",
+    name: "made_percent",
     key: "time",
   },
 ];
@@ -86,7 +86,7 @@ const StatCategory = () => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "Отчёт по категориям",
+    filename: "category_report",
     sheet: "categories",
   });
 

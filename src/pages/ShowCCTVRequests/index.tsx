@@ -107,7 +107,7 @@ const ShowCCTVRequests = () => {
       case ModalTypes.changeCateg:
         return (
           <>
-            <BaseInput label="Выберите группу проблем">
+            <BaseInput label="select_group_problem">
               <MainSelect
                 values={categories?.items}
                 register={register("category")}
@@ -118,7 +118,7 @@ const ShowCCTVRequests = () => {
               className="btn btn-success btn-fill w-full"
               onClick={handleChange}
             >
-              Применить
+              {t("apply")}
             </button>
           </>
         );
@@ -133,14 +133,14 @@ const ShowCCTVRequests = () => {
             onClick={handleModal(ModalTypes.cancelRequest)}
             className="btn btn-danger btn-fill mr-2"
           >
-            Отклонить
+            {t("deny")}
           </button>
           <button
             onClick={handleBrigada({ status: RequestStatus.confirmed })}
             className="btn btn-success btn-fill"
             id="recieve_request"
           >
-            Принять
+            {t("receive")}
           </button>
         </div>
       );
@@ -152,7 +152,7 @@ const ShowCCTVRequests = () => {
               onClick={handleChangeModal(ModalTypes.changeCateg)}
               className="btn btn-success btn-fill"
             >
-              Завершить
+              {t("finish")}
             </button>
           )}
         </div>
@@ -185,17 +185,19 @@ const ShowCCTVRequests = () => {
     <>
       <Card className="overflow-hidden">
         <Header
-          title={`Заказ №${id}`}
-          subTitle={`Статус: ${handleStatus({
-            status: order?.status,
-            dep: Departments.marketing,
-          })}`}
+          title={`${t("order")} №${id}`}
+          subTitle={`${t("status")}: ${t(
+            handleStatus({
+              status: order?.status,
+              dep: Departments.marketing,
+            })
+          )}`}
         >
           <button
             className="btn btn-warning btn-fill mr-2"
             onClick={() => navigate(`/request/logs/${id}`)}
           >
-            Логи
+            {t("logs")}
           </button>
           <button onClick={handleBack} className="btn btn-primary btn-fill">
             {t("back")}
@@ -207,11 +209,11 @@ const ShowCCTVRequests = () => {
               <table className="table table-striped table-bordered detail-view">
                 <tbody>
                   <tr>
-                    <th>Клиент</th>
+                    <th>{"client"}</th>
                     <td className="w-1/2"> {order?.user?.full_name}</td>
                   </tr>
                   <tr>
-                    <th>Номер телефона</th>
+                    <th>{t("phone_number")}</th>
                     <td>
                       <a href={`tel:+${order?.user?.phone_number}`}>
                         +{order?.user?.phone_number}
@@ -219,15 +221,15 @@ const ShowCCTVRequests = () => {
                     </td>
                   </tr>
                   <tr>
-                    <th>Группа проблем</th>
+                    <th>{t("group_problem")}</th>
                     <td>{order?.category?.name}</td>
                   </tr>
                   <tr>
-                    <th>Отдел</th>
+                    <th>{t("department")}</th>
                     <td>{order?.fillial?.parentfillial?.name}</td>
                   </tr>
                   <tr>
-                    <th>Файл</th>
+                    <th>{t("file")}</th>
                     <td className="flex flex-col !border-none">
                       {order?.file?.map((item, index) => {
                         if (item.status === 0)
@@ -241,14 +243,14 @@ const ShowCCTVRequests = () => {
                               )}
                               key={item.url + index}
                             >
-                              файл - {index + 1}
+                              {t("file")} - {index + 1}
                             </div>
                           );
                       })}
                     </td>
                   </tr>
                   <tr>
-                    <th>Описание события</th>
+                    <th>{t("event_description")}</th>
                     <td>{order?.description}</td>
                   </tr>
                 </tbody>
@@ -262,13 +264,13 @@ const ShowCCTVRequests = () => {
               >
                 <tbody>
                   <tr>
-                    <th>Срочно</th>
+                    <th>{t("urgent")}</th>
                     <td className="w-1/2">
                       {!order?.category?.urgent ? "Нет" : "Да"}
                     </td>
                   </tr>
                   <tr>
-                    <th>Изменил</th>
+                    <th>{t("changed")}</th>
                     <td>
                       {!!order?.user_manager
                         ? order?.user_manager
@@ -277,7 +279,7 @@ const ShowCCTVRequests = () => {
                   </tr>
 
                   <tr>
-                    <th>Дата поступления:</th>
+                    <th>{t("receip_date")}:</th>
                     <td>
                       {order?.created_at
                         ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
@@ -294,7 +296,7 @@ const ShowCCTVRequests = () => {
                   </tr>
                   {order?.deny_reason && (
                     <tr>
-                      <th className="font-bold">Причина отмены</th>
+                      <th className="font-bold">{t("deny_reason")}</th>
                       <td>{order?.deny_reason}</td>
                     </tr>
                   )}
@@ -308,7 +310,7 @@ const ShowCCTVRequests = () => {
       </Card>
       {renderModals}
       <Modal isOpen={!!changeModal} onClose={closeModal}>
-        <Header title="Изменить">
+        <Header title="change">
           <button onClick={closeModal} className="close">
             <span>&times;</span>
           </button>

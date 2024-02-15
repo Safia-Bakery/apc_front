@@ -61,27 +61,27 @@ const EditAddFAQQuestions = () => {
 
   return (
     <Card>
-      <Header title={!id ? "{t('add')}" : `Изменить №${id}`}>
+      <Header title={!id ? t("add") : `${t("edit")} №${id}`}>
         <button className="btn btn-success btn-fill" onClick={goBack}>
           {t("back")}
         </button>
       </Header>
 
       <form className="p-3" onSubmit={handleSubmit(onSubmit)}>
-        <BaseInputs label="Вопрос" error={errors.question}>
+        <BaseInputs label="question" error={errors.question}>
           <MainInput
             register={register("question", { required: t("required_field") })}
           />
         </BaseInputs>
-        <BaseInputs label="Ответ" error={errors.answer}>
+        <BaseInputs label="answer" error={errors.answer}>
           <MainTextArea
-            placeholder="Ответ"
+            placeholder={t("answer")}
             register={register("answer", { required: t("required_field") })}
           />
         </BaseInputs>
 
-        <BaseInputs label="статус">
-          <MainCheckBox label="Активный" register={register("status")} />
+        <BaseInputs label="status">
+          <MainCheckBox label={"active"} register={register("status")} />
         </BaseInputs>
 
         <button type="submit" className="btn btn-success btn-fill">

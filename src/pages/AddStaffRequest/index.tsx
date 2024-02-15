@@ -115,7 +115,7 @@ const AddStaffRequest = () => {
         <BaseInputs label="comments">
           <MainTextArea
             register={register("description")}
-            placeholder="Комментарии"
+            placeholder={t("comments")}
           />
         </BaseInputs>
 

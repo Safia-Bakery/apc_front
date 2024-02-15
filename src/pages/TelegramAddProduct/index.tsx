@@ -1,8 +1,7 @@
 import styles from "./index.module.scss";
 import { Controller, useForm } from "react-hook-form";
-import useTools from "@/hooks/useTools";
 import { useParams } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import usedItemsMutation from "@/hooks/mutation/usedItems";
 import { errorToast, successToast } from "@/utils/toast";
 import useOrder from "@/hooks/useOrder";
@@ -50,10 +49,6 @@ const TelegramAddProduct = () => {
   const { data: order, refetch } = useOrder({
     id: Number(id),
   });
-
-  // const { refetch: iearchRefetch } = useTools({
-  //   enabled: false,
-  // });
 
   const { register, handleSubmit, getValues, reset, control } = useForm();
 
@@ -133,14 +128,10 @@ const TelegramAddProduct = () => {
   const handleIncrement = () => $count((prev) => prev + 1);
   const handleDecrement = () => $count((prev) => prev - 1);
 
-  // useEffect(() => {
-  //   iearchRefetch();
-  // }, []);
-
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <div className={styles.header}>
-        <h2 className={styles.title}>Добавить расходной товар</h2>
+        <h2 className={styles.title}>{t("add_used_products")}</h2>
       </div>
 
       <div className={styles.block}>
@@ -151,14 +142,14 @@ const TelegramAddProduct = () => {
               className="btn btn-primary z-3 relative"
               onClick={() => syncWithIiko()}
             >
-              Обновить
+              {t("refresh")}
             </button>
           </div>
           <Controller
             name={"product"}
             control={control}
             render={({ field }) => (
-              <BaseInputs label="Выберите продукт">
+              <BaseInputs label="select_product">
                 <SelectWrapper
                   field={field}
                   register={register("product")}
@@ -168,9 +159,8 @@ const TelegramAddProduct = () => {
             )}
           />
 
-          {/* <BaseInput label="Количество"> */}
           <div className="flex gap-2 my-4">
-            <span className={styles.label}>Количество</span>
+            <span className={styles.label}>{t("quantity")}</span>
             <button
               type="button"
               className={styles.increment}
@@ -205,7 +195,7 @@ const TelegramAddProduct = () => {
                   {column.map(({ name }) => {
                     return (
                       <th className={"bg-primary text-white"} key={name}>
-                        {name}
+                        {t(name)}
                       </th>
                     );
                   })}
@@ -235,7 +225,7 @@ const TelegramAddProduct = () => {
         <hr className={styles.hr} />
 
         <div className={styles.uploadPhoto}>
-          <Header title={"Добавить фотоотчёт"} />
+          <Header title={"add_photo_report"} />
           <div className="m-3">
             <UploadComponent
               tableHead={"bg-primary text-white"}
@@ -264,7 +254,7 @@ const TelegramAddProduct = () => {
               onClick={handleFinishOrder({ status: RequestStatus.done })}
               className="btn btn-success btn-fill w-full"
             >
-              Починил
+              {t("fixed")}
             </button>
           )}
         </div>

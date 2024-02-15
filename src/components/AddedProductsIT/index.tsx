@@ -41,7 +41,7 @@ const AddedProductsIT = () => {
               {column.map(({ name }) => {
                 return (
                   <th className={"bg-primary text-white"} key={name}>
-                    {name}
+                    {t(name)}
                   </th>
                 );
               })}

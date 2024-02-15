@@ -9,10 +9,10 @@ import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№" },
-  { name: "Действие" },
+  { name: "action" },
   { name: "employee" },
   { name: "date" },
-  { name: "Минут" },
+  { name: "minute" },
 ];
 
 const Logs = () => {
@@ -27,7 +27,7 @@ const Logs = () => {
 
   return (
     <Card>
-      <Header title={"Логи"}>
+      <Header title={"logs"}>
         <button onClick={handleNavigate} className="btn btn-primary btn-fill">
           {t("back")}
         </button>
@@ -39,7 +39,7 @@ const Logs = () => {
             <tr>
               {column.map(({ name }) => (
                 <th className={"bg-primary  text-white"} key={name}>
-                  {name}
+                  {t(name)}
                 </th>
               ))}
             </tr>
@@ -48,8 +48,8 @@ const Logs = () => {
           <tbody>
             <tr className="bg-blue">
               <td width="40">1</td>
-              <td>Поступление заявки</td>
-              <td>{order?.is_bot ? "Телеграм-бот" : "Веб-сайт"}</td>
+              <td>{t("receipt_request")}</td>
+              <td>{order?.is_bot ? t("tg_bot") : t("web_site")}</td>
               <td>
                 {order?.update_time?.[RequestStatus.new]
                   ? dayjs(order?.update_time?.[RequestStatus.new]).format(
@@ -61,7 +61,7 @@ const Logs = () => {
             </tr>
             <tr className="bg-blue">
               <td width="40">2</td>
-              <td>Назначение</td>
+              <td>{"assignation"}</td>
               <td>{order?.user_manager}</td>
               <td>
                 {order?.update_time?.[RequestStatus.confirmed]
@@ -85,7 +85,7 @@ const Logs = () => {
 
             <tr className="bg-blue">
               <td width="40">3</td>
-              <td>Завершение</td>
+              <td>{t("finishing")}</td>
               <td>{order?.brigada?.name}</td>
               <td>
                 {order?.update_time?.[RequestStatus.done]
@@ -105,13 +105,13 @@ const Logs = () => {
                     )} (${dayjs(order?.update_time?.[RequestStatus.done]).diff(
                       order?.update_time?.[RequestStatus.confirmed],
                       "hours"
-                    )} часов)`
+                    )} ${t("hours")})`
                   : t("not_given")}
               </td>
             </tr>
             <tr className="bg-blue">
               <td width="40">4</td>
-              <td>Отмена</td>
+              <td>{t("cancelation")}</td>
               <td>{order?.user_manager}</td>
               <td>
                 {order?.update_time?.[RequestStatus.rejected]

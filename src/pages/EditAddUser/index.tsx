@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import userMutation from "@/hooks/mutation/userMutation";
 import { errorToast, successToast } from "@/utils/toast";
-import useUsers from "@/hooks/useUsers";
 import useUser from "@/hooks/useUser";
 import InputMask from "react-input-mask";
 import { fixedString } from "@/utils/helpers";
@@ -99,7 +98,7 @@ const EditAddUser = () => {
 
   return (
     <Card>
-      <Header title={!id ? "{t('add')}" : `Изменить пользователь №${id}`}>
+      <Header title={!id ? t("add") : `${t("edit_user")} №${id}`}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           {t("back")}
         </button>
@@ -108,7 +107,7 @@ const EditAddUser = () => {
       <form className="content" onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
           <div className="col-md-6">
-            <BaseInputs label="ФИО" error={errors.full_name}>
+            <BaseInputs label="full_name" error={errors.full_name}>
               <MainInput
                 register={register("full_name", {
                   required: t("required_field"),
@@ -116,14 +115,14 @@ const EditAddUser = () => {
               />
             </BaseInputs>
 
-            <BaseInputs label="ЛОГИН" error={errors.username}>
+            <BaseInputs label="login" error={errors.username}>
               <MainInput
                 register={register("username", {
                   required: t("required_field"),
                 })}
               />
             </BaseInputs>
-            <BaseInputs label="ТЕЛЕФОН" error={errors.phone_number}>
+            <BaseInputs label="phone" error={errors.phone_number}>
               <InputMask
                 className="form-control mb-2"
                 mask="(999-99)-999-99-99"
@@ -134,34 +133,34 @@ const EditAddUser = () => {
               />
             </BaseInputs>
 
-            <BaseInputs label="Сфера">
+            <BaseInputs label="sphere">
               <MainRadioBtns
                 onChange={(e) => $sphere_status(e)}
                 value={sphere_status}
                 values={[
-                  { id: 0, name: "Розница" },
-                  { id: 1, name: "Фабрика" },
+                  { id: 0, name: t("retail") },
+                  { id: 1, name: t("fabric") },
                 ]}
               />
             </BaseInputs>
             {!!id && (
-              <BaseInputs label="Телеграм ID" error={errors.telegram_id}>
+              <BaseInputs label="telegram_id" error={errors.telegram_id}>
                 <MainInput register={register("telegram_id")} />
               </BaseInputs>
             )}
           </div>
           <div className="col-md-6">
-            <BaseInput label="РОЛЬ" error={errors.department}>
+            <BaseInput label="role" error={errors.department}>
               <MainSelect values={roles} register={register("group_id")} />
             </BaseInput>
-            <BaseInput error={errors.password} label="ПАРОЛЬ">
+            <BaseInput error={errors.password} label="password">
               <MainInput
                 type={"password"}
                 register={register("password", {
                   required: t("required_field"),
                   minLength: {
                     value: 6,
-                    message: "Надо ввести минимум 6 символов",
+                    message: t("six_symbols_required"),
                   },
                 })}
               />
@@ -171,12 +170,12 @@ const EditAddUser = () => {
               <MainInput register={register("email")} />
             </BaseInput>
 
-            <BaseInput label="статус">
-              <MainCheckBox label="Активный" register={register("status")} />
+            <BaseInput label="status">
+              <MainCheckBox label={"active"} register={register("status")} />
             </BaseInput>
           </div>
         </div>
-        <BaseInput label="ОПИСАНИЕ">
+        <BaseInput label="description">
           <MainTextArea register={register("description")} />
         </BaseInput>
 

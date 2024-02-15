@@ -25,8 +25,8 @@ interface Props {
 
 const column = [
   { name: "№", key: "" },
-  { name: "Наименование", key: "name" },
-  { name: "Отдел", key: "department" },
+  { name: "name_in_table", key: "name" },
+  { name: "department", key: "department" },
   { name: "status", key: "status" },
   { name: "", key: "" },
 ];
@@ -60,7 +60,7 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
 
   return (
     <Card>
-      <Header title={parent_name || "Категории"}>
+      <Header title={parent_name || "categories"}>
         {permission?.[add] && (
           <div className="flex gap-2">
             <button
@@ -108,13 +108,17 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
                         )}
                       </td>
                       <td>
-                        {handleDepartment({
-                          ...(!!category?.sub_id
-                            ? { sub: category?.sub_id }
-                            : { dep: category?.department }),
-                        })}
+                        {t(
+                          handleDepartment({
+                            ...(!!category?.sub_id
+                              ? { sub: category?.sub_id }
+                              : { dep: category?.department }),
+                          })
+                        )}
                       </td>
-                      <td>{category?.status ? "Активный" : "Неактивный"}</td>
+                      <td>
+                        {category?.status ? t("active") : t("not_active")}
+                      </td>
                       <td width={40}>
                         {permission?.[edit] && (
                           <TableViewBtn onClick={() => handleEdit(category)} />

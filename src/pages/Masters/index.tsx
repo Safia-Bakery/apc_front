@@ -55,7 +55,7 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
   const column = useMemo(() => {
     return [
       { name: "№", key: "id" },
-      { name: "Название", key: "name" },
+      { name: "name", key: "name" },
       { name: renderDep?.tableTitle, key: "name" },
       { name: "Описание", key: "description" },
       { name: "status", key: "status" },
@@ -113,7 +113,7 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
                       : t("not_given")}
                   </td>
                   <td>{order.description}</td>
-                  <td>{!!order.status ? "Активный" : "Неактивный"}</td>
+                  <td>{!!order.status ? t("active") : t("not_active")}</td>
                   <td width={40}>
                     {permission?.[edit] && (
                       <TableViewBtn

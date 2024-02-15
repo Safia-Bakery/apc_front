@@ -103,7 +103,7 @@ const CreateApcRequest = () => {
         >
           {renderBranchSelect}
         </BaseInputs>
-        <BaseInputs label="КАТЕГОРИЕ" error={errors.department}>
+        <BaseInputs label="category" error={errors.department}>
           <MainSelect
             values={categories?.items}
             register={register("category_id", {
@@ -112,20 +112,20 @@ const CreateApcRequest = () => {
           />
         </BaseInputs>
 
-        <BaseInputs label="Продукт">
+        <BaseInputs label="productt">
           <MainInput register={register("product")} />
         </BaseInputs>
 
         <BaseInputs label="comments">
           <MainTextArea
             register={register("description")}
-            placeholder="Комментарии"
+            placeholder={t("comments")}
           />
         </BaseInputs>
 
         <BaseInputs
           className={`mb-4 ${styles.uploadImage}`}
-          label="Добавить файл"
+          label="add_file"
           error={errors.image}
         >
           <UploadComponent onFilesSelected={handleFilesSelected} />

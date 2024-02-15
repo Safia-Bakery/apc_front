@@ -25,15 +25,15 @@ interface Props {
 
 const column = [
   { name: "№", key: "" },
-  { name: "Номер заявки", key: "id" },
-  { name: "Тип", key: "type" },
-  { name: "Клиент", key: "user" },
-  { name: "Филиал/Отдел", key: "name" },
-  { name: "Группа проблем", key: "category?.name" },
-  { name: "Срочно", key: "urgent" },
-  { name: "Дата поступления", key: "created_at" },
+  { name: "request_number", key: "id" },
+  { name: "type", key: "type" },
+  { name: "client", key: "user" },
+  { name: "branch_dep", key: "name" },
+  { name: "group_problem", key: "category?.name" },
+  { name: "urgent", key: "urgent" },
+  { name: "receip_date", key: "created_at" },
   { name: "status", key: "status" },
-  { name: "Изменил", key: "user_manager" },
+  { name: "changed", key: "user_manager" },
 ];
 
 const RequestsLogystics: FC<Props> = ({ add, edit }) => {
@@ -81,8 +81,10 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
 
   return (
     <Card>
-      <Header title="Заявки на Запрос машин">
-        <button className="btn btn-primary btn-fill mr-2">Экспорт</button>
+      <Header title="requests_for_logystics">
+        <button className="btn btn-primary btn-fill mr-2">
+          {t("export_to_excel")}
+        </button>
         {permission?.[add] && (
           <button
             onClick={() => navigate("add")}
@@ -145,13 +147,17 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
                   >
                     {order?.category?.name}
                   </td>
-                  <td>{!order?.category?.urgent ? "Несрочный" : "Срочный"}</td>
+                  <td>
+                    {!order?.category?.urgent ? t("not_urgent") : t("urgentt")}
+                  </td>
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}</td>
                   <td>
-                    {handleStatus({
-                      status: order?.status,
-                      dep: Departments.logystics,
-                    })}
+                    {t(
+                      handleStatus({
+                        status: order?.status,
+                        dep: Departments.logystics,
+                      })
+                    )}
                   </td>
                   <td>
                     {!!order?.user_manager

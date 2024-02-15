@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Название", key: "name" },
+  { name: "name", key: "name" },
   { name: "status", key: "status" },
   { name: "", key: "" },
 ];
@@ -32,7 +32,7 @@ const Roles = () => {
 
   return (
     <Card>
-      <Header title={"Роли"}>
+      <Header title={"roles"}>
         {permission?.[MainPermissions.add_role] && (
           <button
             className="btn btn-success btn-fill"
@@ -63,7 +63,7 @@ const Roles = () => {
                       <span>{role?.name}</span>
                     )}
                   </td>
-                  <td>{!role.status ? "Не активный" : "Активный"}</td>
+                  <td>{!role.status ? t("not_active") : t("active")}</td>
                   <td width={40}>
                     {permission?.[MainPermissions.edit_roles] && (
                       <TableViewBtn

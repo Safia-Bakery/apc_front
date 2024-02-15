@@ -7,6 +7,7 @@ import useMarketingStatDep from "@/hooks/useMarketingStatDep";
 import { handleDepartment } from "@/utils/helpers";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
+import { useTranslation } from "react-i18next";
 
 const options = {
   chart: {
@@ -41,16 +42,17 @@ const options = {
 
 const column = [
   { name: "№", key: "id" },
-  { name: "Направления", key: "category" },
-  { name: "Количество открытых заявок", key: "amount" },
-  { name: "Количество закрытых заявок", key: "amount" },
+  { name: "direction", key: "category" },
+  { name: "open_req_qnt", key: "amount" },
+  { name: "closed_req_qnt", key: "amount" },
   {
-    name: "Время обработки (ч)",
+    name: "handling_time_h",
     key: "time",
   },
 ];
 
 const DepartmentStat = () => {
+  const { t } = useTranslation();
   const start = useUpdateQueryStr("start");
   const end = useUpdateQueryStr("end");
   const tableRef = useRef(null);
@@ -58,7 +60,7 @@ const DepartmentStat = () => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "Отчёт по отделам",
+    filename: t("departments_reports"),
     sheet: "departments",
   });
 
@@ -74,7 +76,9 @@ const DepartmentStat = () => {
           Math.round(data.pie[item][1])
         ),
         labels: Object.keys(data?.pie).map((item) =>
-          handleDepartment({ sub: +item as unknown as MarketingSubDep })
+          t(
+            handleDepartment({ sub: +item as unknown as MarketingSubDep }) || ""
+          )
         ),
       };
   }, [data?.pie]);
@@ -94,9 +98,11 @@ const DepartmentStat = () => {
         <tr key={idx} className="bg-blue">
           <td width="40">{idx + 1}</td>
           <td>
-            {handleDepartment({
-              sub: +item[0] as unknown as MarketingSubDep,
-            })}
+            {t(
+              handleDepartment({
+                sub: +item[0] as unknown as MarketingSubDep,
+              })
+            )}
           </td>
           {/* insert open date */}
           <td>{item[1][2]}</td>

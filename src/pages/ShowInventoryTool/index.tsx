@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Наименование", key: "name" },
+  { name: "name_in_table", key: "name" },
   { name: "Остаток", key: "amount_left", center: true },
   { name: "Максимум", key: "max_amount", center: true },
   { name: "Минимум", key: "min_amount", center: true },
@@ -75,7 +75,7 @@ const ShowInventoryTool = () => {
             onClick={() => onSubmit(RequestStatus.done)}
             className="btn btn-success btn-fill"
           >
-            Завершить
+            {t("finish")}
           </button>
         </div>
       );
@@ -87,13 +87,15 @@ const ShowInventoryTool = () => {
     <>
       <Card className="overflow-hidden">
         <Header
-          title={`Заявки на закуп №${id}`}
-          subTitle={`Статус: ${handleStatus({
-            status: order?.status,
-          })}`}
+          title={`${t("purchasing_requests")} №${id}`}
+          subTitle={`${t("status")}: ${t(
+            handleStatus({
+              status: order?.status,
+            })
+          )}`}
         >
           <button className="btn btn-success mr-2" onClick={downloadAsPdf}>
-            Export Excel
+            {t("export_to_excel")}
           </button>
           <button onClick={handleBack} className="btn btn-primary btn-fill">
             {t("back")}

@@ -6,6 +6,7 @@ import useStatsBrigada from "@/hooks/useStatsBrigada";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   sphere_status: Sphere;
@@ -40,15 +41,16 @@ const options = {
 
 const column = [
   { name: "№", key: "" },
-  { name: "Бригада", key: "" },
-  { name: "Количество заявок", key: "" },
+  { name: "brigade", key: "" },
+  { name: "requests_qnt", key: "" },
   {
-    name: "Среднее обработка заявков (мин)",
+    name: "avg_request_progress",
     key: "",
   },
 ];
 
 const BrigadaStat: FC<Props> = ({ sphere_status }) => {
+  const { t } = useTranslation();
   const start = useUpdateQueryStr("start");
   const end = useUpdateQueryStr("end");
   const [sort, $sort] = useState<DepartmentStatTypes[]>();
@@ -58,7 +60,7 @@ const BrigadaStat: FC<Props> = ({ sphere_status }) => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "статистика по бригадам",
+    filename: t("brigade_stats"),
     sheet: "categories",
   });
 
@@ -109,7 +111,7 @@ const BrigadaStat: FC<Props> = ({ sphere_status }) => {
           ))}
           <tr>
             <td></td>
-            <th className="text-lg">В общем:</th>
+            <th className="text-lg">{t("in_total")}:</th>
             <th className="text-lg">{renderProductCount}</th>
             <td></td>
           </tr>

@@ -19,10 +19,11 @@ import { permissionSelector } from "reducers/sidebar";
 import EmptyList from "@/components/EmptyList";
 import useFAQRequests from "@/hooks/useFaqRequests";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Вопрос", key: "name" },
+  { name: "question", key: "name" },
   { name: "status", key: "status" },
   { name: "", key: "" },
 ];
@@ -30,11 +31,11 @@ const column = [
 const handleTitle = (dep: HRRequestTypes) => {
   switch (dep) {
     case HRRequestTypes.asked_questions:
-      return "Заданные вопросы";
+      return "asked_questions";
     case HRRequestTypes.objections:
-      return "Возражении";
+      return "objections";
     case HRRequestTypes.offers:
-      return "Предложении";
+      return "offers";
 
     default:
       break;
@@ -42,25 +43,18 @@ const handleTitle = (dep: HRRequestTypes) => {
 };
 
 const HRRequests = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [sort, $sort] = useState<FAQRequestTypes["items"]>();
   const permission = useAppSelector(permissionSelector);
   const page = Number(useQueryString("page")) || 1;
   const sphere = Number(useQueryString("sphere"));
 
-  const {
-    data: faqs,
-    isLoading,
-    // refetch,
-  } = useFAQRequests({
+  const { data: faqs, isLoading } = useFAQRequests({
     page,
     ...(!!sphere && { sphere }),
   });
   const handleNavigate = (route: string) => () => navigate(route);
-
-  // useEffect(() => {
-  //   refetch();
-  // }, []);
 
   return (
     <Card>
@@ -81,7 +75,7 @@ const HRRequests = () => {
                 <tr key={idx} className={requestRows(faq.status)}>
                   <td width="40">{handleIdx(idx)}</td>
                   <td>{faq?.comments}</td>
-                  <td>{handleHRStatus(faq?.status)}</td>
+                  <td>{t(handleHRStatus(faq?.status) || "")}</td>
                   <td width={40}>
                     {permission?.[MainPermissions.edit_faq] && (
                       <TableViewBtn onClick={handleNavigate(`${faq.id}`)} />

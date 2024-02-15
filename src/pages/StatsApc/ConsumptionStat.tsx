@@ -7,8 +7,7 @@ import { Departments, Sphere } from "@/utils/types";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
 import { numberWithCommas } from "@/utils/helpers";
-import Loading from "@/components/Loader";
-import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
+import { useTranslation } from "react-i18next";
 
 interface ItemType {
   amount: number;
@@ -19,18 +18,18 @@ interface ItemType {
 
 const column = [
   { name: "№", key: "" },
-  { name: "Материал", key: "name" },
-  { name: "Цена", key: "price" },
-  { name: "Количество (шт)", key: "amount" },
-  { name: "Сумма", key: "total" },
+  { name: "material", key: "name" },
+  { name: "price", key: "price" },
+  { name: "quantity", key: "amount" },
+  { name: "summ", key: "total" },
 ];
 interface Props {
   sphere_status: Sphere;
 }
 
 const ConsumptionStat = ({ sphere_status }: Props) => {
+  const { t } = useTranslation();
   const [sort, $sort] = useState<ItemType[]>();
-  const navigateParams = useNavigateParams();
 
   const start = useUpdateQueryStr("start");
   const end = useUpdateQueryStr("end");
@@ -47,7 +46,7 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "статистика по расходам",
+    filename: t("stats_cunsumption"),
     sheet: "categories",
   });
 
@@ -95,7 +94,7 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
           ))}
           <tr>
             <th colSpan={4} className="text-lg">
-              В общем:
+              {t("in_total")}:
             </th>
             <th className="text-lg">{numberWithCommas(renderProductCount!)}</th>
           </tr>

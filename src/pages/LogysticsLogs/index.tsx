@@ -9,10 +9,10 @@ import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№" },
-  { name: "Действие" },
+  { name: "action" },
   { name: "employee" },
   { name: "date" },
-  { name: "Длительность" },
+  { name: "duration" },
 ];
 
 const LogysticsLogs = () => {
@@ -26,7 +26,7 @@ const LogysticsLogs = () => {
   if (isLoading) return <Loading absolute />;
   return (
     <Card>
-      <Header title={"Логи"}>
+      <Header title={"logs"}>
         <button onClick={handleNavigate} className="btn btn-primary btn-fill">
           {t("back")}
         </button>
@@ -38,7 +38,7 @@ const LogysticsLogs = () => {
             <tr>
               {column.map(({ name }) => (
                 <th className={"bg-primary text-white"} key={name}>
-                  {name}
+                  {t(name)}
                 </th>
               ))}
             </tr>
@@ -47,8 +47,8 @@ const LogysticsLogs = () => {
           <tbody>
             <tr className="bg-blue">
               <td width="40">1</td>
-              <td>Поступление заявки</td>
-              <td>{order?.is_bot ? "Телеграм-бот" : "Веб-сайт"}</td>
+              <td>{t("receipt_request")}</td>
+              <td>{order?.is_bot ? t("tg_bot") : t("web_site")}</td>
               <td>
                 {order?.update_time?.[RequestStatus.new]
                   ? dayjs(order?.update_time?.[RequestStatus.new]).format(
@@ -60,7 +60,7 @@ const LogysticsLogs = () => {
             </tr>
             <tr className="bg-blue">
               <td width="40">2</td>
-              <td>Принят в работу</td>
+              <td>{t("received_for_work")}</td>
               <td>{order?.user_manager}</td>
               <td>
                 {order?.update_time?.[RequestStatus.confirmed]
@@ -103,7 +103,7 @@ const LogysticsLogs = () => {
                     ).diff(
                       order?.update_time?.[RequestStatus.confirmed],
                       "hours"
-                    ) + " часов"
+                    ) + t("hours")
                   : t("not_given")}
               </td>
             </tr>
@@ -126,7 +126,7 @@ const LogysticsLogs = () => {
                   ? dayjs(order?.update_time?.[RequestStatus.done]).diff(
                       order?.update_time?.[RequestStatus.sendToRepair],
                       "hours"
-                    ) + " часов"
+                    ) + ` ${t("hours")}`
                   : t("not_given")}
               </td>
             </tr>

@@ -50,26 +50,22 @@ const EditInventoryProd = () => {
     });
   }, [tool]);
 
-  // useEffect(() => {
-  //   toolRefetch();
-  // }, []);
-
   return (
     <Card>
-      <Header title={`Изменить ${tool?.name}`}>
+      <Header title={`${t("edit")} ${tool?.name}`}>
         <button className="btn btn-primary" onClick={goBack}>
           {t("back")}
         </button>
       </Header>
 
       <form className="content" onSubmit={handleSubmit(onSubmit)}>
-        <BaseInputs label="Минимум">
+        <BaseInputs label="min">
           <MainInput register={register("min_amount")} />
         </BaseInputs>
-        <BaseInputs label="Максимум">
+        <BaseInputs label="max">
           <MainInput register={register("max_amount")} />
         </BaseInputs>
-        <BaseInputs label="Дедлайн(в часах)">
+        <BaseInputs label="deadline_in_hours">
           <MainInput register={register("deadline")} />
         </BaseInputs>
 

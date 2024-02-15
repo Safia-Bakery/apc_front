@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Вопрос", key: "name" },
+  { name: "question", key: "name" },
   { name: "status", key: "status" },
   { name: "", key: "" },
 ];
@@ -34,14 +34,10 @@ const FAQQuestions = () => {
   });
   const handleNavigate = (route: string) => () => navigate(route);
 
-  // useEffect(() => {
-  //   refetch();
-  // }, []);
-
   if (isLoading) return <Loading absolute />;
   return (
     <Card>
-      <Header title={"Вопросы"}>
+      <Header title={"questions"}>
         {permission?.[MainPermissions.add_faq] && (
           <button
             className="btn btn-success btn-fill"
@@ -69,7 +65,7 @@ const FAQQuestions = () => {
                   <tr key={idx} className="bg-blue">
                     <td width="40">{handleIdx(idx)}</td>
                     <td>{faq?.question}</td>
-                    <td>{faq?.status ? "Активный" : "Неактивный"}</td>
+                    <td>{faq?.status ? t("active") : t("not_active")}</td>
                     <td width={40}>
                       {permission?.[MainPermissions.edit_faq] && (
                         <TableViewBtn onClick={handleNavigate(`${faq.id}`)} />

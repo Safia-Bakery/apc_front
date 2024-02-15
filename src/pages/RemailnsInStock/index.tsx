@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Наименование", key: "name" },
+  { name: "name_in_table", key: "name" },
   { name: "Синх.", key: "last_update" },
   { name: "Остались на складе", key: "amount_left" },
   { name: "Общая цена", key: "total_price" },

@@ -24,12 +24,12 @@ import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Номер заявки", key: "id" },
-  { name: "Клиент", key: "user" },
+  { name: "request_number", key: "id" },
+  { name: "client", key: "user" },
   { name: "branch", key: "name" },
-  { name: "Порция еды", key: "size" },
-  { name: "Порции хлеба", key: "bread_size" },
-  { name: "Дата поставки", key: "arrival_date" },
+  { name: "food_portion", key: "size" },
+  { name: "bread_portion", key: "bread_size" },
+  { name: "delivery_date", key: "arrival_date" },
   { name: "status", key: "status" },
 ];
 
@@ -110,10 +110,6 @@ const RequestsStaff = () => {
     return <BotTimeModal />;
   }, []);
 
-  // useEffect(() => {
-  //   refetch();
-  // }, []);
-
   if (excellLoading) return <Loading absolute />;
 
   return (
@@ -121,13 +117,13 @@ const RequestsStaff = () => {
       <Header title={t("requests")}>
         <div className="flex gap-2">
           <div className="p-2 btn btn-warning flex flex-col justify-between">
-            <h4>Количество еды</h4>
+            <h4>{t("food_qnt")}</h4>
             <h2 className={"flex text-3xl justify-end"}>
               {totals?.total_food}
             </h2>
           </div>
           <div className="p-2 btn btn-primary flex flex-col justify-between">
-            <h4>Количество хлеба</h4>
+            <h4>{"bread_qnt"}</h4>
             <h2 className={"flex text-3xl justify-end"}>
               {totals?.total_bread}
             </h2>
@@ -141,7 +137,7 @@ const RequestsStaff = () => {
                 onClick={() => navigateParams({ time_modal: 1 })}
                 className="btn btn-primary btn-fill"
               >
-                Настройки бота
+                {"bot_settings"}
               </button>
             )}
             {permission?.[MainPermissions.add_staff_requests] && (
@@ -196,10 +192,12 @@ const RequestsStaff = () => {
                   <td>{order?.bread_size}</td>
                   <td>{dayjs(order?.arrival_date).format("DD.MM.YYYY")}</td>
                   <td>
-                    {handleStatus({
-                      status: order?.status,
-                      dep: Departments.apc,
-                    })}
+                    {t(
+                      handleStatus({
+                        status: order?.status,
+                        dep: Departments.apc,
+                      })
+                    )}
                   </td>
                 </tr>
               ))}

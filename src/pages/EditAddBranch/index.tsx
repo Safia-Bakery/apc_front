@@ -92,7 +92,7 @@ const EditAddBranch = () => {
   if (isLoading) return <Loading absolute />;
   return (
     <Card>
-      <Header title={!id ? "{t('add')}" : `Изменить филиал ${branch?.name}`}>
+      <Header title={!id ? t("add") : `${t("edit_branch")} ${branch?.name}`}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           {t("back")}
         </button>
@@ -106,26 +106,26 @@ const EditAddBranch = () => {
           />
         </BaseInputs>
 
-        <BaseInputs label="РЕГИОН" error={errors.region}>
+        <BaseInputs label="region" error={errors.region}>
           <MainInput
             register={register("region", { required: t("required_field") })}
             // disabled={!!id}
           />
         </BaseInputs>
 
-        <BaseInputs label="ШИРОТА">
+        <BaseInputs label="latitude">
           <MainInput register={register("lat")} />
         </BaseInputs>
 
-        <BaseInputs label="ДОЛГОТА">
+        <BaseInputs label="longtitude">
           <MainInput register={register("lng")} />
         </BaseInputs>
 
-        <BaseInputs label="Статус">
-          <MainCheckBox label="Активный" register={register("status")} />
+        <BaseInputs label="status">
+          <MainCheckBox label={"active"} register={register("status")} />
         </BaseInputs>
 
-        <BaseInputs label="Сфера">
+        <BaseInputs label="sphere">
           <MainRadioBtns
             onChange={(e) => $is_fabrica(e)}
             value={is_fabrica}
@@ -144,7 +144,7 @@ const EditAddBranch = () => {
             values={branch?.fillial_department}
           />
         </BaseInputs>
-        <BaseInputs label={"Инвентарь"}>
+        <BaseInputs label={"inventory"}>
           <MainSelect
             onChange={(e) =>
               handleDep({

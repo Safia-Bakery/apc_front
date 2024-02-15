@@ -107,7 +107,7 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
               {column.map(({ name }) => {
                 return (
                   <th className={"bg-primary text-white"} key={name}>
-                    {name}
+                    {t(name)}
                   </th>
                 );
               })}

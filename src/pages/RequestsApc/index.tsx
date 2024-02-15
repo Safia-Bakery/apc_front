@@ -54,16 +54,16 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
   const column = useMemo(() => {
     const columns = [
       { name: "№", key: "" },
-      { name: "Номер заявки", key: "id" },
-      { name: "Клиент", key: "user" },
-      { name: "Филиал/Отдел", key: "name" },
-      { name: "Группа проблем", key: "category?.name" },
-      { name: "Срочно", key: "urgent" },
-      { name: "Бригада", key: "brigada" },
-      { name: "Дата поступления", key: "created_at" },
+      { name: "request_number", key: "id" },
+      { name: "client", key: "user" },
+      { name: "branch_dep", key: "name" },
+      { name: "group_problem", key: "category?.name" },
+      { name: "urgent", key: "urgent" },
+      { name: "brigade", key: "brigada" },
+      { name: "receip_date", key: "created_at" },
       { name: "rate", key: "rate" },
       { name: "status", key: "status" },
-      { name: "Изменил", key: "user_manager" },
+      { name: "changed", key: "user_manager" },
     ];
 
     if (Number(sphere_status) === Sphere.fabric) {
@@ -149,7 +149,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                     )}
                   </td>
                   {Number(sphere_status) === Sphere.fabric && (
-                    <td>{order?.is_bot ? "Телеграм-бот" : "Веб-сайт"}</td>
+                    <td>{order?.is_bot ? t("tg_bot") : t("web_site")}</td>
                   )}
                   <td>{order?.user?.full_name}</td>
                   <td>
@@ -164,7 +164,9 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                   >
                     {order?.category?.name}
                   </td>
-                  <td>{!order?.category?.urgent ? "Несрочный" : "Срочный"}</td>
+                  <td>
+                    {!order?.category?.urgent ? t("not_urgent") : t("urgentt")}
+                  </td>
                   <td>
                     {!!order?.brigada?.name
                       ? order?.brigada?.name
@@ -175,10 +177,12 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                     {order?.comments?.[0]?.rating}
                   </td>
                   <td>
-                    {handleStatus({
-                      status: order?.status,
-                      dep: Departments.apc,
-                    })}
+                    {t(
+                      handleStatus({
+                        status: order?.status,
+                        dep: Departments.apc,
+                      })
+                    )}
                   </td>
                   <td>
                     {!!order?.user_manager

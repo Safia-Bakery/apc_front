@@ -31,7 +31,7 @@ const column = [
   { name: "Заявка", key: "id" },
   { name: "employee", key: "purchaser" },
   { name: "branch", key: "status" },
-  { name: "Дата поступления", key: "status" },
+  { name: "receip_date", key: "status" },
   { name: "photo", key: "status" },
   { name: "Текст", key: "status" },
 ];
@@ -51,8 +51,8 @@ const ClientsComments = () => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "Отзывы гостей",
-    sheet: "Отзывы гостей",
+    filename: t("clients_comments"),
+    sheet: t("clients_comments"),
   });
 
   const renderModal = useMemo(() => {
@@ -70,7 +70,7 @@ const ClientsComments = () => {
 
   return (
     <Card>
-      <Header title="Отзывы гостей">
+      <Header title="clients_comments">
         <button
           className="btn btn-primary btn-fill mr-2"
           onClick={downloadAsPdf}

@@ -32,7 +32,7 @@ const Comments = () => {
 
   return (
     <Card>
-      <Header title="Отзывы">
+      <Header title="reviews">
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           {t("back")}
         </button>

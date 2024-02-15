@@ -24,7 +24,7 @@ const BaseStatsBlock = ({ routesArr, title }: Props) => {
 
   return (
     <Card>
-      <Header title={sub_title || title}>
+      <Header title={sub_title || t(title)}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           {t("back")}
         </button>

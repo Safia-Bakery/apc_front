@@ -13,20 +13,22 @@ import { permissionSelector } from "@/store/reducers/sidebar";
 import { MainPermissions } from "@/utils/types";
 import TableViewBtn from "@/components/TableViewBtn";
 import TableHead from "@/components/TableHead";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Наименование", key: "name" },
-  { name: "Остаток", key: "amount_left", center: true },
-  { name: "Минимум", key: "min_amount", center: true },
-  { name: "Максимум", key: "max_amount", center: true },
-  { name: "Дедлайн(в часах)", key: "ftime", center: true },
+  { name: "name_in_table", key: "name" },
+  { name: "remains", key: "amount_left", center: true },
+  { name: "min", key: "min_amount", center: true },
+  { name: "max", key: "max_amount", center: true },
+  { name: "deadline_in_hours", key: "ftime", center: true },
   { name: "", key: "view" },
 ];
 
 const InventoryRemains = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const tableRef = useRef(null);
   const navigateParams = useNavigateParams();
@@ -45,17 +47,13 @@ const InventoryRemains = () => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "Остатки на складах",
-    sheet: "Остатки на складах",
+    filename: t("remains_in_stock"),
+    sheet: t("remains_in_stock"),
   });
 
   const downloadAsPdf = () => onDownload();
 
   const handleMins = () => navigate("/inventory-remains?mins=1");
-
-  // useEffect(() => {
-  //   refetch();
-  // }, []);
 
   if (isLoading) return <Loading absolute />;
 
@@ -63,10 +61,10 @@ const InventoryRemains = () => {
     <Card className="pb-4">
       <Header title={!parent_name ? "Инвентарь / Товары" : parent_name}>
         <button className="btn btn-success mr-2" onClick={downloadAsPdf}>
-          Export Excel
+          {t("export_to_excel")}
         </button>
         <button className="btn btn-primary" onClick={handleMins}>
-          {!mins ? "Загрузить минимумы" : "Загрузить все"}
+          {!mins ? t("upload_mins") : t("upload_all")}
         </button>
       </Header>
 

@@ -46,7 +46,7 @@ const CreateCCTVRequest = () => {
 
   const onSubmit = () => {
     const { description } = getValues();
-    if (!end || !start) return alert("Выберите дату!");
+    if (!end || !start) return alert(t("select_date"));
     else
       mutate(
         {
@@ -96,7 +96,7 @@ const CreateCCTVRequest = () => {
         </BaseInputs>
 
         <BaseInputs
-          label="Укажите дата и время начало событий"
+          label="select_date_time_of_event_start"
           className="relative"
         >
           <MainDatePicker
@@ -106,10 +106,7 @@ const CreateCCTVRequest = () => {
             onChange={handleDateStart}
           />
         </BaseInputs>
-        <BaseInputs
-          label="Укажите дата и время конец событий"
-          className="relative"
-        >
+        <BaseInputs label="select_date_time_of_event_end" className="relative">
           <MainDatePicker
             className="z-10"
             showTimeSelect
@@ -118,16 +115,16 @@ const CreateCCTVRequest = () => {
           />
         </BaseInputs>
 
-        <BaseInputs label="Описание события в детялях">
+        <BaseInputs label="event_description">
           <MainTextArea
             register={register("description")}
-            placeholder="Комментарии"
+            placeholder={t("comments")}
           />
         </BaseInputs>
 
         <BaseInputs
           className={`mb-4 ${styles.uploadImage}`}
-          label="При желании отправить фото"
+          label="send_photo_if_needed"
         >
           <UploadComponent onFilesSelected={handleFilesSelected} />
         </BaseInputs>

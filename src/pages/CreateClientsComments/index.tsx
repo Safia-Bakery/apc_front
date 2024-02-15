@@ -68,7 +68,7 @@ const CreateClientsComments = () => {
     return (
       <BaseInputs
         className={`mb-4 ${styles.uploadImage}`}
-        label="Добавить файл"
+        label="add_file"
         error={errors.image}
       >
         <UploadComponent onFilesSelected={handleFilesSelected} />
@@ -100,14 +100,14 @@ const CreateClientsComments = () => {
           {renderBranchSelect}
         </BaseInputs>
 
-        <BaseInputs label="Сотрудник">
+        <BaseInputs label="employee">
           <MainInput register={register("product")} />
         </BaseInputs>
 
         <BaseInputs label="comments">
           <MainTextArea
             register={register("description")}
-            placeholder="Комментарии"
+            placeholder={t("comments")}
           />
         </BaseInputs>
 

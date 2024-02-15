@@ -80,7 +80,7 @@ const EditClient = () => {
 
   return (
     <Card>
-      <Header title={!id ? "{t('add')}" : `Изменить пользователь №${id}`}>
+      <Header title={!id ? t("add") : `${t("edit_user")} №${id}`}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           {t("back")}
         </button>
@@ -98,7 +98,7 @@ const EditClient = () => {
               />
             </BaseInputs>
 
-            <BaseInputs label="ТЕЛЕФОН">
+            <BaseInputs label="phone">
               <InputMask
                 className="form-control mb-2"
                 mask="(999-99)-999-99-99"
@@ -110,29 +110,29 @@ const EditClient = () => {
               />
             </BaseInputs>
 
-            <BaseInputs label="Сфера">
+            <BaseInputs label="sphere">
               <MainRadioBtns
                 onChange={(e) => $sphere_status(e)}
                 value={sphere_status}
                 values={[
-                  { id: 0, name: "Розница" },
-                  { id: 1, name: "Фабрика" },
+                  { id: 0, name: t("retail") },
+                  { id: 1, name: t("fabric") },
                 ]}
               />
             </BaseInputs>
           </div>
           <div className="col-md-6">
-            <BaseInput label="РОЛЬ" error={errors.department}>
+            <BaseInput label="role" error={errors.department}>
               <MainSelect values={roles} register={register("group_id")} />
             </BaseInput>
             {!!id && (
-              <BaseInputs label="Телеграм ID" error={errors.telegram_id}>
+              <BaseInputs label="telegram_id" error={errors.telegram_id}>
                 <MainInput disabled register={register("telegram_id")} />
               </BaseInputs>
             )}
 
-            <BaseInput label="статус">
-              <MainCheckBox label="Активный" register={register("status")} />
+            <BaseInput label="status">
+              <MainCheckBox label={"active"} register={register("status")} />
             </BaseInput>
           </div>
         </div>

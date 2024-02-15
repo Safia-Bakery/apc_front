@@ -50,7 +50,7 @@ const ShowComment = () => {
               <table className="table table-striped table-bordered detail-view">
                 <tbody>
                   <tr>
-                    <th>Сотрудник</th>
+                    <th>{t("employee")}</th>
                     <td width={450}>{order?.product}</td>
                   </tr>
                   <tr>
@@ -58,7 +58,7 @@ const ShowComment = () => {
                     <td>{order?.fillial?.parentfillial?.name}</td>
                   </tr>
                   <tr>
-                    <th>Файл</th>
+                    <th>{t("file")}</th>
                     <td className="flex flex-col !border-none">
                       {order?.file?.map((item, index) => {
                         if (item.status === 0)
@@ -72,7 +72,7 @@ const ShowComment = () => {
                               )}
                               key={item.url + index}
                             >
-                              файл - {index + 1}
+                              {t("file")} - {index + 1}
                             </div>
                           );
                       })}
@@ -90,7 +90,7 @@ const ShowComment = () => {
                     <td width={450}>{order?.user?.full_name}</td>
                   </tr>
                   <tr>
-                    <th>Дата поступления </th>
+                    <th>{t("receip_date")} </th>
                     <td>
                       {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
                     </td>
@@ -108,7 +108,7 @@ const ShowComment = () => {
       {renderModal}
 
       {/* <Card>
-        <Header title="Отзывы" />
+        <Header title="reviews" />
         <div className="content">
           <table className="table table-hover">
             <TableHead

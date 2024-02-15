@@ -171,7 +171,7 @@ const EditAddMasters = () => {
 
   return (
     <Card>
-      <Header title={!id ? "{t('add')}" : renderDep.mainTitle}>
+      <Header title={!id ? t("add") : renderDep.mainTitle}>
         <button className="btn btn-primary btn-fill" onClick={goBack}>
           {t("back")}
         </button>
@@ -193,11 +193,11 @@ const EditAddMasters = () => {
         </div>
 
         {renderUsers}
-        <BaseInputs label="ОПИСАНИЕ">
+        <BaseInputs label="description">
           <MainTextArea register={register("brigada_description")} />
         </BaseInputs>
 
-        <MainCheckBox label="Активный" register={register("status")} />
+        <MainCheckBox label={"active"} register={register("status")} />
 
         <button type="submit" className="btn btn-success btn-fill">
           {t("save")}

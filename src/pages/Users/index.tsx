@@ -60,21 +60,17 @@ const Users: FC<Props> = ({ add, edit }) => {
 
   const userStatus = (item: number) => {
     if (item === 1) return "суперадмин";
-    if (item === 2) return "Неактивный";
-    if (item === 0) return "Активный";
+    if (item === 2) return t("not_active");
+    if (item === 0) return t("active");
   };
 
   const renderFilter = useMemo(() => {
     return <UsersFilter currentPage={currentPage} />;
   }, [full_name, user_status, role_id, username, phone_number]);
 
-  // useEffect(() => {
-  //   refetch();
-  // }, []);
-
   return (
     <Card>
-      <Header title={!client ? "Пользователи" : "Клиенты"}>
+      <Header title={!client ? "users" : "client"}>
         {permission?.[add] && (
           <button
             className="btn btn-success btn-fill"

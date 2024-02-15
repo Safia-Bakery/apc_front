@@ -76,13 +76,13 @@ const ShowCCTVRequests = lazy(() => import("@/pages/ShowCCTVRequests"));
 
 export const sidebarRoutes: SidebarType[] = [
   {
-    name: "Тепловая карта",
+    name: "heat_map",
     url: "/map",
     icon: "/assets/icons/map.svg",
     screen: MainPermissions.get_map,
   },
   {
-    name: "АРС розница",
+    name: "apc_retail",
     icon: "/assets/icons/apc.svg",
     screen: MainPermissions.get_requests_apc,
     department: Departments.apc,
@@ -95,26 +95,26 @@ export const sidebarRoutes: SidebarType[] = [
         screen: MainPermissions.get_requests_apc,
       },
       {
-        name: "Бригады",
+        name: "brigades",
         url: "/brigades",
         icon: "/assets/icons/brigades.svg",
         screen: MainPermissions.get_brigadas,
       },
       {
-        name: "Остатки на складах",
+        name: "remains_in_stock",
         url: "/items-in-stock",
         icon: "/assets/icons/remains-in-stock.svg",
         param: `/${stockStores.retail}`,
         screen: MainPermissions.get_warehouse_retail,
       },
       {
-        name: "Категории",
+        name: "categories",
         url: `/categories-apc-retail`,
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_apc_category,
       },
       {
-        name: "Статистика",
+        name: "statistics",
         url: "/statistics-apc-retail",
         param: "/category",
         icon: "/assets/icons/statistics.svg",
@@ -123,40 +123,40 @@ export const sidebarRoutes: SidebarType[] = [
     ],
   },
   {
-    name: "АРС фабрика",
+    name: "apc_fabric",
     icon: "/assets/icons/apc.svg",
     screen: MainPermissions.get_fabric_requests,
     department: Departments.apc,
     sphere_status: Sphere.fabric,
     subroutes: [
       {
-        name: "Заявки на APC фабрика",
+        name: "requests_apc_fabric",
         url: "/requests-apc-fabric",
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_fabric_requests,
       },
       {
-        name: "Мастера",
+        name: "masters",
         url: "/masters",
         icon: "/assets/icons/brigades.svg",
         screen: MainPermissions.get_master,
       },
       {
-        name: "Категории",
+        name: "categories",
         url: `/categories-apc-fabric`,
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_categ_fab,
       },
 
       {
-        name: "Остатки на складах",
+        name: "remains_in_stock",
         url: "/items-in-stock",
         icon: "/assets/icons/remains-in-stock.svg",
         param: `/${stockStores.fabric}`,
         screen: MainPermissions.get_warehouse_fabric,
       },
       {
-        name: "Статистика",
+        name: "statistics",
         url: "/statistics-apc-fabric",
         icon: "/assets/icons/statistics.svg",
         param: "/category",
@@ -184,7 +184,7 @@ export const sidebarRoutes: SidebarType[] = [
         screen: MainPermissions.get_it_requests,
       },
       {
-        name: "ИТ специалисты",
+        name: "it_specialists",
         url: "/masters-it",
         icon: "/assets/icons/users.svg",
         screen: MainPermissions.it_get_masters,
@@ -196,20 +196,20 @@ export const sidebarRoutes: SidebarType[] = [
       //   screen: MainPermissions.get_categ_it,
       // },
       {
-        name: "Категории", // Поддержка
+        name: "categories", // Поддержка
         url: `/categories-it/${Sphere.fix}`,
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_categ_it,
       },
 
       // {
-      //   name: "Остатки на складах",
+      //   name: "remains_in_stock",
       //   url: "/items-in-stock-it",
       //   icon: "/assets/icons/remains-in-stock.svg",
       //   screen: MainPermissions.it_remains_in_stock,
       // },
       // {
-      //   name: "Статистика",
+      //   name: "statistics",
       //   url: "/statistics-it",
       //   icon: "/assets/icons/statistics.svg",
       //   // param: "/category",
@@ -219,7 +219,7 @@ export const sidebarRoutes: SidebarType[] = [
   },
 
   {
-    name: "Инвентарь",
+    name: "inventory",
     icon: "/assets/icons/inventary.svg",
     department: Departments.inventory,
     screen: MainPermissions.get_requests_inventory,
@@ -231,19 +231,19 @@ export const sidebarRoutes: SidebarType[] = [
         screen: MainPermissions.get_requests_inventory,
       },
       {
-        name: "Инвентарь / Товары",
+        name: "inventory_products",
         url: "/products-ierarch",
         icon: "/assets/icons/products.svg",
         screen: MainPermissions.get_product_inventory,
       },
       {
-        name: "Заявки на закуп",
+        name: "purchasing_requests",
         url: "/order-products-inventory",
         icon: "/assets/icons/products.svg",
         screen: MainPermissions.get_inventory_purchase_prods,
       },
       {
-        name: "Статистика",
+        name: "statistics",
         url: "/statistics-inventory",
         param: "/service_level",
         icon: "/assets/icons/statistics.svg",
@@ -252,67 +252,67 @@ export const sidebarRoutes: SidebarType[] = [
     ],
   },
   {
-    name: "Маркетинг",
+    name: "marketing",
     icon: "/assets/icons/marketing.svg",
     screen: MainPermissions.get_design_request,
     department: Departments.marketing,
     subroutes: [
       {
-        name: "Все Заявки",
+        name: "all_requests",
         url: "/marketing-all-requests",
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.marketing_all_requests,
       },
       {
-        name: "Проектная работа для дизайнеров",
+        name: "project_works",
         url: `/marketing-${MarketingSubDep[1]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_design_request,
       },
       {
-        name: "Локальный маркетинг",
+        name: "local_marketingg",
         url: `/marketing-${MarketingSubDep[2]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_locmar_requests,
       },
       {
-        name: "Промо-продукция",
+        name: "promo_production",
         url: `/marketing-${MarketingSubDep[3]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_promo_requests,
       },
       {
-        name: "POS-Материалы",
+        name: "pos",
         url: `/marketing-${MarketingSubDep[4]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_pos_requests,
       },
       {
-        name: "Комплекты",
+        name: "complects",
         url: `/marketing-${MarketingSubDep[5]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_complect_requests,
       },
       {
-        name: "Для Тер.Менеджеров",
+        name: "ter_manakgers",
         url: `/marketing-${MarketingSubDep[6]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_nostandard_requests,
       },
       {
-        name: "Внешний вид филиала",
+        name: "branch_env",
         url: `/marketing-${MarketingSubDep[7]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_stock_env_requests,
       },
       {
-        name: "Категории",
+        name: "categories",
         url: `/categories-marketing`,
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_mark_category,
       },
       {
-        name: "Статистика",
+        name: "statistics",
         url: "/statistics-marketing",
         param: "/service_level",
         icon: "/assets/icons/statistics.svg",
@@ -321,25 +321,25 @@ export const sidebarRoutes: SidebarType[] = [
     ],
   },
   {
-    name: "Запрос машин",
+    name: "car_requests",
     icon: "/assets/icons/logystics.svg",
     screen: MainPermissions.get_log_requests,
     department: Departments.logystics,
     subroutes: [
       {
-        name: "Запрос машин",
+        name: "car_requests",
         url: "/requests-logystics",
         icon: "/assets/icons/logystics.svg",
         screen: MainPermissions.get_log_requests,
       },
       {
-        name: "Категории",
+        name: "categories",
         url: `/categories-logystics`,
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_log_categs,
       },
       {
-        name: "Грузовики",
+        name: "tracks",
         url: `/logystics-cars`,
         icon: "/assets/icons/truck.svg",
         screen: MainPermissions.get_log_requests,
@@ -347,32 +347,32 @@ export const sidebarRoutes: SidebarType[] = [
     ],
   },
   {
-    name: "HR Заявки",
+    name: "hr_requests",
     icon: "/assets/icons/comments.svg",
     screen: MainPermissions.get_faq_requests,
     subroutes: [
       {
-        name: "Вопросы и ответы",
+        name: "questions_and_answers",
         url: "/faq",
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_faq,
       },
       {
-        name: "Предложении 🧠",
+        name: "offers",
         url: "/hr-offers",
         icon: "/assets/icons/comments.svg",
         screen: MainPermissions.get_faq_requests,
         param: `?sphere=${HRRequestTypes.offers}`,
       },
       {
-        name: "Возражении 📝",
+        name: "objections",
         url: "/hr-objections",
         icon: "/assets/icons/comments.svg",
         screen: MainPermissions.get_faq_requests,
         param: `?sphere=${HRRequestTypes.objections}`,
       },
       {
-        name: "Заданные вопросы ❔",
+        name: "asked_questions",
         url: "/hr-asked-questions",
         icon: "/assets/icons/comments.svg",
         screen: MainPermissions.get_faq_requests,
@@ -381,7 +381,7 @@ export const sidebarRoutes: SidebarType[] = [
     ],
   },
   {
-    name: "Видеонаблюдение",
+    name: "cctv",
     icon: "/assets/icons/camera.svg",
     screen: MainPermissions.get_requests_cctv,
     department: Departments.cctv,
@@ -393,7 +393,7 @@ export const sidebarRoutes: SidebarType[] = [
         screen: MainPermissions.get_requests_cctv,
       },
       {
-        name: "Категории",
+        name: "categories",
         url: `/categories-cctv`,
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_cetagories_cctv,
@@ -401,50 +401,50 @@ export const sidebarRoutes: SidebarType[] = [
     ],
   },
   {
-    name: "Заявки на еду",
+    name: "request_for_food",
     url: "/requests-staff",
     icon: "/assets/icons/staff.svg",
     screen: MainPermissions.get_staff_requests,
     department: Departments.staff,
   },
   {
-    name: "Пользователи",
+    name: "users",
     url: "/users",
     icon: "/assets/icons/users.svg",
     screen: MainPermissions.get_users,
   },
   {
-    name: "Клиенты",
+    name: "clients",
     url: "/clients",
     icon: "/assets/icons/clients.svg",
     screen: MainPermissions.get_clients,
     param: "?client=true",
   },
   {
-    name: "Роли",
+    name: "roles",
     url: "/roles",
     icon: "/assets/icons/roles.svg",
     screen: MainPermissions.get_roles,
   },
   {
-    name: "Отзывы",
+    name: "reviews",
     url: "/comments",
     icon: "/assets/icons/comments.svg",
     screen: MainPermissions.get_comments_list,
   },
   {
-    name: "Отзывы гостей",
+    name: "clients_comments",
     url: "/client-comments",
     icon: "/assets/icons/clientComment.svg",
     screen: MainPermissions.get_client_comment,
   },
   {
-    name: "Настройки",
+    name: "settings",
     icon: "/assets/icons/settings.svg",
     screen: MainPermissions.get_fillials_list,
     subroutes: [
       {
-        name: "Филиалы",
+        name: "branches",
         url: "/branches",
         icon: "/assets/icons/branch.svg",
         screen: MainPermissions.get_fillials_list,
@@ -1215,59 +1215,59 @@ export const routes = [
 
 export const APCStatRoutes = [
   {
-    name: "По категориям",
+    name: "with_category",
     url: "category",
   },
   {
-    name: "По филиалам",
+    name: "with_branch",
     url: "fillial",
   },
   {
-    name: "По бригадам",
+    name: "with_brigada",
     url: "brigada",
   },
   {
-    name: "Бригады по категориям",
+    name: "with_brigada_category",
     url: "brigade_categ",
   },
   {
-    name: "По расходам",
+    name: "with_consumption",
     url: "consumptions",
   },
 ];
 
 export const MarketingStatsRoutes = [
   {
-    name: "По уровнем сервиса",
+    name: "with_service_level",
     url: "service_level",
   },
   {
-    name: "Отчет по направлениям",
+    name: "direction_report",
     url: "department",
   },
   {
-    name: "По категориям",
+    name: "with_category",
     url: "category",
   },
 ];
 export const ITStatsRoutes = [
   {
-    name: "По уровнем сервиса",
+    name: "with_service_level",
     url: "service_level",
   },
   {
-    name: "Отчет по направлениям",
+    name: "direction_report",
     url: "department",
   },
   {
-    name: "По категориям",
+    name: "with_category",
     url: "category",
   },
 ];
 
 export const InventoryStatsRoutes = [
   {
-    name: "По уровнем сервиса",
+    name: "with_service_level",
     url: "service_level",
   },
 ];

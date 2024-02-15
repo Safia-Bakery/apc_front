@@ -7,11 +7,12 @@ import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
 import { handleIdx } from "@/utils/helpers";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Филиалы", key: "name" },
-  { name: "Количество (шт)", key: "amount" },
+  { name: "branches", key: "name" },
+  { name: "quantity", key: "amount" },
 ];
 
 interface Props {
@@ -19,6 +20,7 @@ interface Props {
 }
 
 const BranchStat: FC<Props> = ({ sphere_status }) => {
+  const { t } = useTranslation();
   const start = useUpdateQueryStr("start");
   const end = useUpdateQueryStr("end");
   const [sort, $sort] = useState<DepartmentStatTypes[]>();
@@ -28,7 +30,7 @@ const BranchStat: FC<Props> = ({ sphere_status }) => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "статистика по филиалам",
+    filename: t("branch_stats"),
     sheet: "categories",
   });
 
@@ -69,7 +71,7 @@ const BranchStat: FC<Props> = ({ sphere_status }) => {
 
           <tr>
             <th></th>
-            <th className="text-lg">В общем:</th>
+            <th className="text-lg">{t("in_total")}:</th>
             <th className="text-lg">{renderProductCount}</th>
           </tr>
         </tbody>

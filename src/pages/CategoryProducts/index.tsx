@@ -18,8 +18,8 @@ import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Наименование", key: "name" },
-  { name: "Отдел", key: "department" },
+  { name: "name_in_table", key: "name" },
+  { name: "department", key: "department" },
   { name: "status", key: "status" },
   { name: "", key: "" },
 ];
@@ -39,7 +39,7 @@ const CategoryProducts = () => {
 
   return (
     <Card>
-      <Header title={`Продукты(${category_name})`}>
+      <Header title={`${t("products")}(${category_name})`}>
         {permission?.[MainPermissions.edit_categ_it] && (
           <div className="flex gap-2">
             <button
@@ -77,7 +77,7 @@ const CategoryProducts = () => {
                     <td width="40">{handleIdx(idx)}</td>
                     <td>{category?.name}</td>
                     <td>some</td>
-                    <td>{category?.status ? "Активный" : "Неактивный"}</td>
+                    <td>{category?.status ? t("active") : t("not_active")}</td>
                     <td width={40}>
                       {permission?.[MainPermissions.edit_categ_it] && (
                         <TableViewBtn

@@ -12,8 +12,10 @@ import { handleDepartment } from "@/utils/helpers";
 import { TelegramApp } from "@/utils/tgHelpers";
 import { errorToast } from "@/utils/toast";
 import { Departments } from "@/utils/types";
+import { useTranslation } from "react-i18next";
 
 const TgRating = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [rate, $rate] = useState(0);
   const [btnState, $btnState] = useState(true);
@@ -32,15 +34,15 @@ const TgRating = () => {
   const renderTitle = useMemo(() => {
     switch (rate) {
       case 1:
-        return "Плохо";
+        return "bad";
       case 2:
-        return "Ниже среднего";
+        return "less_avg";
       case 3:
-        return "Удовлетворительно";
+        return "satisfactorily";
       case 4:
-        return "Хорошо";
+        return "good";
       case 5:
-        return "Отлично";
+        return "excelent";
 
       default:
         return "";
@@ -72,7 +74,7 @@ const TgRating = () => {
     >
       <Header
         title={`Заказ №${id}`}
-        subTitle={handleDepartment({ dep: department, sub: sub_id })}
+        subTitle={t(handleDepartment({ dep: department, sub: sub_id }))}
       >
         <div
           onClick={() => TelegramApp.close()}
@@ -97,11 +99,11 @@ const TgRating = () => {
               { ["hidden"]: !rate }
             )}
           >
-            {renderTitle}
+            {t(renderTitle)}
           </h5>
           {!rate && (
             <h4 className="font-bold text-xl justify-center items-center text-center flex my-10">
-              Оставьте свой отзыв и помогите нам стать ещё лучше
+              {t("leave_comment_to_be_better")}
             </h4>
           )}
 
@@ -115,7 +117,7 @@ const TgRating = () => {
 
           {rate > 0 && (
             <h4 className="font-bold text-xl justify-center items-center text-center flex mb-10">
-              {rate < 5 ? "Что вас разочаровало?" : "Что мы можем улучшить?"}
+              {rate < 5 ? t("what_disappointed_you") : t("what_canna_updated")}
             </h4>
           )}
 
@@ -124,7 +126,7 @@ const TgRating = () => {
               <MainInput
                 className="!bg-darkGray"
                 register={register("comment")}
-                placeholder={"Ваш комментарий..."}
+                placeholder={t("your_comment")}
               />
             </BaseInput>
           )}
@@ -135,7 +137,7 @@ const TgRating = () => {
           type="submit"
           className="btn btn-primary absolute bottom-0 right-0 left-0"
         >
-          Готово
+          {t("ready")}
         </button>
       )}
     </form>

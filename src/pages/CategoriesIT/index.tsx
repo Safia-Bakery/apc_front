@@ -27,8 +27,8 @@ interface Props {
 
 const column = [
   { name: "№", key: "" },
-  { name: "Наименование", key: "name" },
-  { name: "Отдел", key: "department" },
+  { name: "name_in_table", key: "name" },
+  { name: "department", key: "department" },
   { name: "Время исполнении", key: "ftime" },
   { name: "status", key: "status" },
   { name: "", key: "" },
@@ -52,7 +52,7 @@ const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
 
   return (
     <Card>
-      <Header title={"Категории"}>
+      <Header title={"categories"}>
         {permission?.[add] && (
           <div className="flex gap-2">
             <button
@@ -101,9 +101,15 @@ const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
                           category?.name
                         )}
                       </td>
-                      <td>{handleDepartment({ dep: category?.department })}</td>
-                      <td>{category.ftime} часов</td>
-                      <td>{category?.status ? "Активный" : "Неактивный"}</td>
+                      <td>
+                        {t(handleDepartment({ dep: category?.department }))}
+                      </td>
+                      <td>
+                        {category.ftime} {t("hours")}
+                      </td>
+                      <td>
+                        {category?.status ? t("active") : t("not_active")}
+                      </td>
                       <td width={40}>
                         {permission?.[edit] && (
                           <TableViewBtn

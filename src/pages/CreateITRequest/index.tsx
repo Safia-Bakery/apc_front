@@ -53,8 +53,8 @@ const initialInventory: InventoryFields | undefined = {
 const column = [
   { name: "№", key: "" },
   { name: "category", key: "category_id" },
-  { name: "ТОВАР", key: "product_id" },
-  { name: "КОЛИЧЕСТВО", key: "count" },
+  { name: "product", key: "product_id" },
+  { name: "quantity", key: "count" },
   { name: "", key: "remove" },
   { name: "", key: "add" },
 ];
@@ -301,7 +301,7 @@ const CreateITRequest = () => {
                         }
                         className="btn bg-danger text-white"
                       >
-                        Удалить
+                        {t("remove")}
                       </button>
                     </td>
                     <td className="align-top" width={100}>
@@ -319,7 +319,7 @@ const CreateITRequest = () => {
             </table>
           </>
         ) : (
-          <BaseInputs label="Категорие" error={errors.category_id}>
+          <BaseInputs label="category" error={errors.category_id}>
             <MainSelect
               values={categories?.items}
               register={register("category_id", {
@@ -332,14 +332,11 @@ const CreateITRequest = () => {
         <BaseInputs label="comments" error={errors.description}>
           <MainTextArea
             register={register("description")}
-            placeholder="Комментарии"
+            placeholder={t("comments")}
           />
         </BaseInputs>
 
-        <BaseInputs
-          className={`mb-4 ${styles.uploadImage}`}
-          label="Добавить файл"
-        >
+        <BaseInputs className={`mb-4 ${styles.uploadImage}`} label="add_file">
           <UploadComponent onFilesSelected={handleFilesSelected} />
         </BaseInputs>
         <div>

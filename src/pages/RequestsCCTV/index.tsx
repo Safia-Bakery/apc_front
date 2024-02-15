@@ -20,7 +20,7 @@ import { useTranslation } from "react-i18next";
 const column = [
   { name: "№", key: "" },
   { name: "num", key: "id" },
-  { name: "Клиент", key: "fillial.name" },
+  { name: "client", key: "fillial.name" },
   { name: "branch", key: "fillial.name" },
   { name: "category", key: "category" },
   { name: "rate", key: "rate" },
@@ -128,9 +128,11 @@ const RequestsCCTV = () => {
                   <td>{order?.category?.name}</td>
                   <td>{order?.comments?.[0]?.rating}</td>
                   <td>
-                    {handleStatus({
-                      status: order?.status,
-                    })}
+                    {t(
+                      handleStatus({
+                        status: order?.status,
+                      })
+                    )}
                   </td>
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
                   <td>

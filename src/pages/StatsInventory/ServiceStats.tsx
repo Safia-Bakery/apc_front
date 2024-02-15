@@ -5,18 +5,20 @@ import useUpdateQueryStr from "custom/useUpdateQueryStr";
 import cl from "classnames";
 import useInventoryServiseDtats from "@/hooks/useInventoryServiseDtats";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const column = [
-  { name: "Отдел" },
-  { name: "Группы" },
-  { name: "Поступило" },
-  { name: "Обработанных во время", colSpan: 2, className: "!bg-tableSuccess" },
-  { name: "Обработанных не во время", colSpan: 2, className: "!bg-tableWarn" },
-  { name: "Не обработано", colSpan: 2, className: "!bg-tableDanger" },
-  { name: "Среднее время обработки (минут)" },
+  { name: "department" },
+  { name: "groups" },
+  { name: "receivedd" },
+  { name: "handled_on_time", colSpan: 2, className: "!bg-tableSuccess" },
+  { name: "not_handled_on_time", colSpan: 2, className: "!bg-tableWarn" },
+  { name: "not_handled", colSpan: 2, className: "!bg-tableDanger" },
+  { name: "avg_handling_time_mins" },
 ];
 
 const InventoryServiceStats = () => {
+  const { t } = useTranslation();
   const start = useUpdateQueryStr("start");
   const end = useUpdateQueryStr("end");
 
@@ -25,8 +27,8 @@ const InventoryServiceStats = () => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "статистика по уровнем сервиса",
-    sheet: "уровень сервиса",
+    filename: t("servise_level_stats"),
+    sheet: t("service_level"),
   });
 
   const downloadAsPdf = () => onDownload();
@@ -103,14 +105,16 @@ const InventoryServiceStats = () => {
                     className={cl("border-dark", className)}
                     colSpan={colSpan}
                   >
-                    {name}
+                    {t(name)}
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
               <tr className="hover:bg-transparent">
-                <td rowSpan={Object.values(data!).length}>Инвентарь розница</td>
+                <td rowSpan={Object.values(data!).length}>
+                  {t("inventory_retail")}
+                </td>
                 {[Object.entries(data!)?.[0]]?.map((item) => (
                   <Fragment key={item[0]}>
                     <td>{item[0]}</td>
@@ -167,7 +171,7 @@ const InventoryServiceStats = () => {
                 ))}
               <tr>
                 <th className="text-center" colSpan={2}>
-                  Общее / Среднее(%):
+                  {t("total_avg")}:
                 </th>
                 <td>{renderAvgCalculator?.total_req}</td>
                 <td className="!bg-tableSuccess">

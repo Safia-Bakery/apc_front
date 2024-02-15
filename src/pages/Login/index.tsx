@@ -11,8 +11,10 @@ import { successToast } from "@/utils/toast";
 import BaseInput from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const token = useAppSelector(tokenSelector);
@@ -38,7 +40,7 @@ const Login = () => {
         onSuccess: (data) => {
           dispatch(loginHandler(data.access_token));
           refetch();
-          successToast("Добро пожаловать");
+          successToast(t("welcome"));
           if (error) $error(false);
         },
         onError: () => $error(true),
@@ -56,14 +58,14 @@ const Login = () => {
     <div className={styles.login_wrap}>
       <div className={styles.overlay} />
       <div className={cl(styles.content, "shadow rounded")}>
-        <h3 className="text-center mb-3">Авторизация</h3>
+        <h3 className="text-center mb-3">{t("auth")}</h3>
         <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
           <BaseInput className="mb-0" error={errors.username}>
             <MainInput
               register={register("username", { required: "required" })}
               autoFocus
               className={styles.input}
-              placeholder={"Логин"}
+              placeholder={t("login")}
             />
           </BaseInput>
           <BaseInput className="mb-0" error={errors.password}>
@@ -71,17 +73,13 @@ const Login = () => {
               register={register("password", { required: "required" })}
               type="password"
               className={cl(styles.input, "mb-4")}
-              placeholder={"Пароль"}
+              placeholder={t("password")}
             />
-            {error && (
-              <p className={styles.error}>
-                Неправильное имя пользователя или пароль.
-              </p>
-            )}
+            {error && <p className={styles.error}>{t("incorrect_username")}</p>}
           </BaseInput>
 
           <button type="submit" className="btn btn-primary btn-fill float-end">
-            Логин
+            {t("login")}
           </button>
         </form>
       </div>

@@ -56,7 +56,7 @@ const CreateLogRequests = () => {
 
   const onSubmit = () => {
     const { category_id, description, size } = getValues();
-    if (!start) $error("Обязательное поле");
+    if (!start) $error(t("required_field"));
     else {
       mutate(
         {
@@ -100,7 +100,7 @@ const CreateLogRequests = () => {
           <BranchSelect origin={1} enabled />
         </BaseInputs>
 
-        <BaseInputs label="КАТЕГОРИЕ" error={errors.category_id}>
+        <BaseInputs label="category" error={errors.category_id}>
           <MainSelect
             values={categories?.items}
             register={register("category_id", {
@@ -109,7 +109,7 @@ const CreateLogRequests = () => {
           />
         </BaseInputs>
 
-        <BaseInputs error={errors.size} label="Укажите вес/размер">
+        <BaseInputs error={errors.size} label="show_weight_size">
           <MainInput
             register={register("size", {
               required: t("required_field"),
@@ -117,10 +117,7 @@ const CreateLogRequests = () => {
           />
         </BaseInputs>
 
-        <BaseInputs
-          label="Укажите в какое время вам нужна машина"
-          className="relative"
-        >
+        <BaseInputs label="select_needed_time" className="relative">
           <MainDatePicker
             showTimeSelect
             selected={!!start ? dayjs(start || undefined).toDate() : undefined}
@@ -136,13 +133,13 @@ const CreateLogRequests = () => {
         <BaseInputs label="comments">
           <MainTextArea
             register={register("description")}
-            placeholder="Комментарии"
+            placeholder={t("comments")}
           />
         </BaseInputs>
 
         <BaseInputs
           className={`mb-4 ${styles.uploadImage}`}
-          label="Добавить файл"
+          label="add_file"
           error={errors.image}
         >
           <UploadComponent onFilesSelected={handleFilesSelected} />

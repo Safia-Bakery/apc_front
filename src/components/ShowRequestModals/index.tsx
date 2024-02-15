@@ -101,7 +101,7 @@ const ShowRequestModals = () => {
           ...(status === RequestStatus.rejected && {
             deny_reason:
               fixedReason < 4
-                ? CancelReason[fixedReason]
+                ? t(CancelReason[fixedReason])
                 : getValues("cancel_reason"),
           }),
         },
@@ -210,7 +210,7 @@ const ShowRequestModals = () => {
 
                   {Object.keys(CancelReason).map((item) => (
                     <option key={item} value={item}>
-                      {CancelReason[+item]}
+                      {t(CancelReason[+item])}
                     </option>
                   ))}
                 </MainSelect>

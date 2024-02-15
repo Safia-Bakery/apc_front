@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Departments, MainPermissions, Order } from "@/utils/types";
 import Pagination from "@/components/Pagination";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
@@ -19,15 +19,15 @@ import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
-  { name: "Номер заявки", key: "id" },
-  { name: "Имя", key: "type" },
-  { name: "Номер телефона", key: "fillial.name" },
-  { name: "Подкатегория", key: "fillial.name" },
+  { name: "request_number", key: "id" },
+  { name: "person_name", key: "person_name" },
+  { name: "phone_number", key: "fillial.name" },
+  { name: "subcategory", key: "fillial.name" },
   { name: "branch", key: "fillial.name" },
-  { name: "Дата оформления", key: "fillial.name" },
+  { name: "issue_date", key: "fillial.name" },
   { name: "rate", key: "rate" },
   { name: "status", key: "status" },
-  { name: "Изменил", key: "category.name" },
+  { name: "changed", key: "category.name" },
 ];
 
 interface Props {
@@ -74,10 +74,6 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
     ...(!!user && { user }),
     ...(!!rate && { rate: !!rate }),
   });
-
-  // useEffect(() => {
-  //   refetch();
-  // }, [sub_id]);
 
   return (
     <Card className="overflow-hidden">
@@ -128,10 +124,12 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}</td>
                   <td>{order?.comments?.[0]?.rating}</td>
                   <td>
-                    {handleStatus({
-                      status: order?.status,
-                      dep: Departments.marketing,
-                    })}
+                    {t(
+                      handleStatus({
+                        status: order?.status,
+                        dep: Departments.marketing,
+                      })
+                    )}
                   </td>
                   <td>
                     {order?.user_manager ? order?.user_manager : t("not_given")}

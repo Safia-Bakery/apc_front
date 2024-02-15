@@ -14,6 +14,7 @@ import { useDownloadExcel } from "react-export-table-to-excel";
 import useInventoryOrders from "@/hooks/useInventoryOrders";
 import dayjs from "dayjs";
 import Loading from "@/components/Loader";
+import { useTranslation } from "react-i18next";
 
 const column = [
   { name: "№", key: "" },
@@ -24,6 +25,7 @@ const column = [
 ];
 
 const InventoryOrderedTools = () => {
+  const { t } = useTranslation();
   const tableRef = useRef(null);
   const [sort, $sort] = useState<InventoryOrders["items"]>();
   const page = Number(useQueryString("page")) || 1;
@@ -36,21 +38,17 @@ const InventoryOrderedTools = () => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "Заявки на закуп",
-    sheet: "Заявки на закуп",
+    filename: t("purchasing_requests"),
+    sheet: t("purchasing_requests"),
   });
 
   const downloadAsPdf = () => onDownload();
 
-  // useEffect(() => {
-  //   refetch();
-  // }, []);
-
   return (
     <Card>
-      <Header title="Заявки на закуп">
+      <Header title="purchasing_requests">
         <button className="btn btn-success mr-2" onClick={downloadAsPdf}>
-          Export Excel
+          {t("export_to_excel")}
         </button>
       </Header>
 
@@ -81,7 +79,7 @@ const InventoryOrderedTools = () => {
                   <td>{order?.user?.full_name}</td>
                   <td>
                     {!!order.status.toString() &&
-                      handleStatus({ status: order?.status })}
+                      t(handleStatus({ status: order?.status }))}
                   </td>
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
                 </tr>
