@@ -59,6 +59,7 @@ const InventoryRemainsMins = () => {
     filename: t("remains_in_stock"),
     sheet: t("remains_in_stock"),
   });
+  const goBack = () => navigate(-1);
 
   const downloadAsPdf = () => onDownload();
 
@@ -80,17 +81,22 @@ const InventoryRemainsMins = () => {
   return (
     <Card>
       <Header title="remains_in_stock">
-        {!!mins && (
-          <button className="btn btn-warning mr-2" onClick={handleRequestsMins}>
-            {t("request_for_mins")}
+        <div className="flex gap-2">
+          {!!mins && (
+            <button className="btn btn-warning" onClick={handleRequestsMins}>
+              {t("request_for_mins")}
+            </button>
+          )}
+          <button className="btn btn-success" onClick={downloadAsPdf}>
+            {t("export_to_excel")}
           </button>
-        )}
-        <button className="btn btn-success mr-2" onClick={downloadAsPdf}>
-          {t("export_to_excel")}
-        </button>
-        <button className="btn btn-primary" onClick={handleMins}>
-          {!mins ? t("upload_mins") : t("upload_all")}
-        </button>
+          <button className="btn btn-primary" onClick={handleMins}>
+            {!mins ? t("upload_mins") : t("upload_all")}
+          </button>
+          <button className="btn btn-primary" onClick={goBack}>
+            {t("back")}
+          </button>
+        </div>
       </Header>
 
       <div className="content">

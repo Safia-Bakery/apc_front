@@ -47,6 +47,8 @@ const InventoryRemains = () => {
     ...(!!parent_id && { parent_id }),
   });
 
+  const goBack = () => navigate(-1);
+
   const handleParentId = (id: string, name: string) => () =>
     navigateParams({ parent_id: id, parent_name: name });
 
@@ -84,12 +86,17 @@ const InventoryRemains = () => {
   return (
     <Card className="pb-4">
       <Header title={!parent_name ? "Инвентарь / Товары" : parent_name}>
-        <button className="btn btn-success mr-2" onClick={downloadAsPdf}>
-          {t("export_to_excel")}
-        </button>
-        <button className="btn btn-primary" onClick={handleMins}>
-          {!mins ? t("upload_mins") : t("upload_all")}
-        </button>
+        <div className="flex gap-2">
+          <button className="btn btn-success" onClick={downloadAsPdf}>
+            {t("export_to_excel")}
+          </button>
+          <button className="btn btn-primary" onClick={handleMins}>
+            {!mins ? t("upload_mins") : t("upload_all")}
+          </button>
+          <button className="btn btn-primary" onClick={goBack}>
+            {t("back")}
+          </button>
+        </div>
       </Header>
 
       <ul>

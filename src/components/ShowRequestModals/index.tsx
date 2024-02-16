@@ -245,7 +245,7 @@ const ShowRequestModals = () => {
             </Header>
             <div className="p-3">
               <BaseInput label="comments">
-                <MainTextArea register={register("pause_reason")} />
+                <MainTextArea register={register("pause_reason")} autoFocus />
               </BaseInput>
 
               <button className="btn btn-success" type="submit">
