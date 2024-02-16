@@ -71,6 +71,7 @@ export interface Order {
     status: number;
     photo?: string;
     user: UsersType;
+    created_at: string;
   }[];
   file: {
     url: string;

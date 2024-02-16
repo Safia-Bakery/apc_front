@@ -7,7 +7,6 @@ const config = { timeout: 100000 };
 
 export const useStockSync = ({
   enabled = true,
-
   store_id,
 }: {
   enabled?: boolean;
