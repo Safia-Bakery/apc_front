@@ -1,21 +1,21 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 
 import { Departments, Order } from "@/utils/types";
 import Pagination from "@/components/Pagination";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx, handleStatus, requestRows } from "@/utils/helpers";
+import { handleIdx, handleStatusIT, requestRows } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import ITFilter from "./filter";
 import ItemsCount from "@/components/ItemsCount";
 import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
-import { useDownloadExcel } from "react-export-table-to-excel";
-import { useTranslation } from "react-i18next";
+import DownloadExcell from "@/components/DownloadExcell";
 
 const column = [
   { name: "№", key: "" },
@@ -23,8 +23,8 @@ const column = [
   { name: "employee", key: "type" },
   { name: "executor", key: "fillial.name" },
   { name: "branch", key: "fillial.name" },
-  { name: "category", key: "fillial.name" },
-  { name: "comment", key: "fillial.name" },
+  { name: "category", key: "category" },
+  { name: "comment", key: "comment" },
   { name: "rate", key: "rate" },
   {
     name: "status",
@@ -43,7 +43,7 @@ const RequestsIT = () => {
 
   const user = useQueryString("user");
   const id = Number(useQueryString("id"));
-  const responsible = useQueryString("responsible");
+  const responsible = Number(useQueryString("responsible"));
   const category_id = Number(useQueryString("category_id"));
   const urgent = useQueryString("urgent");
   const created_at = useQueryString("created_at");
@@ -68,33 +68,27 @@ const RequestsIT = () => {
     ...(!!branch?.id && { fillial_id: branch?.id }),
     ...(!!request_status && { request_status }),
     ...(!!user && { user }),
-    ...(!!responsible && { responsible }),
+    ...(!!responsible && { brigada_id: responsible }),
     ...(!!rate && { rate: !!rate }),
     ...(!!urgent?.toString() && { urgent: !!urgent }),
   });
 
-  const { onDownload } = useDownloadExcel({
-    currentTableRef: tableRef.current,
-    filename: t("requests_it"),
-    sheet: t("requests_it"),
-  });
-  const downloadAsPdf = () => onDownload();
+  const renderFilter = useMemo(() => {
+    return <ITFilter />;
+  }, []);
 
   return (
     <Card>
-      <Header title={"Заявка на IT"}>
-        <button
-          onClick={downloadAsPdf}
-          className="btn btn-primary btn-fill mr-2"
-        >
-          {t("export_to_excel")}
-        </button>
-        <button
-          onClick={() => navigate("add")}
-          className="btn btn-success btn-fill"
-        >
-          {t("add")}
-        </button>
+      <Header title={"it_requests"}>
+        <div className="flex">
+          <DownloadExcell />
+          <button
+            onClick={() => navigate("add")}
+            className="btn btn-success btn-fill"
+          >
+            {t("add")}
+          </button>
+        </div>
       </Header>
 
       <div className="table-responsive grid-view content ">
@@ -105,7 +99,7 @@ const RequestsIT = () => {
             onSort={(data) => $sort(data)}
             data={requests?.items}
           >
-            <ITFilter />
+            {renderFilter}
           </TableHead>
 
           <tbody>
@@ -140,14 +134,7 @@ const RequestsIT = () => {
                   <td width={50} className="text-center">
                     {order?.comments?.[0]?.rating}
                   </td>
-                  <td>
-                    {t(
-                      handleStatus({
-                        status: order?.status,
-                        dep: Departments.it,
-                      })
-                    )}
-                  </td>
+                  <td>{t(handleStatusIT(order?.status))}</td>
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
                 </tr>
               ))}

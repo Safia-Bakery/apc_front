@@ -1,4 +1,4 @@
-import { FC, useMemo, useRef, KeyboardEvent } from "react";
+import { FC, useMemo, useRef, KeyboardEvent, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
@@ -8,7 +8,11 @@ import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
-import { detectFileType, handleDepartment } from "@/utils/helpers";
+import {
+  detectFileType,
+  handleDepartment,
+  handleStatusIT,
+} from "@/utils/helpers";
 import { useForm } from "react-hook-form";
 import {
   Departments,
@@ -40,27 +44,8 @@ import orderMsgMutation from "@/hooks/mutation/orderMsg";
 import TableViewBtn from "@/components/TableViewBtn";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import { useTranslation } from "react-i18next";
-
-const handleStatus = (status: RequestStatus | undefined) => {
-  switch (status) {
-    case RequestStatus.confirmed:
-      return "received";
-    case RequestStatus.done:
-      return "finished";
-    case RequestStatus.sendToRepair:
-      return "sent_to_fix";
-
-    case RequestStatus.rejected:
-      return "denied";
-    case RequestStatus.paused:
-      return "paused";
-    case RequestStatus.solved:
-      return "solved";
-
-    default:
-      return "new";
-  }
-};
+import MainInput from "@/components/BaseInputs/MainInput";
+import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
 
 interface Props {
   edit: MainPermissions;
@@ -71,6 +56,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   const { t } = useTranslation();
   const { id, sphere } = useParams();
   const navigate = useNavigate();
+  const [deadline, $deadline] = useState<Date>();
   const modal = useQueryString("modal");
   const changeModal = Number(useQueryString("changeModal"));
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
@@ -86,6 +72,8 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   });
   const removeParams = useRemoveParams();
   const { mutate: attach, isPending: attachLoading } = attachBrigadaMutation();
+
+  const handleDeadline = (event: Date) => $deadline(event);
 
   const {
     data: order,
@@ -122,10 +110,12 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
     dispatch(uploadReport(data));
 
   const handleMessage = () => {
+    const { left_comment, uploaded_photo } = getValues();
     msgMutation(
       {
         request_id: Number(id),
-        message: getValues("left_comment"),
+        message: left_comment,
+        photo: uploaded_photo[0],
       },
       {
         onSuccess: () => {
@@ -167,50 +157,24 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   };
 
   const handleBrigada =
-    ({ status }: { status: RequestStatus }) =>
+    ({ status, time }: { status?: RequestStatus; time?: string }) =>
     () => {
-      if (status === RequestStatus.done) {
-        synIIco(
-          {
-            request_id: Number(id),
+      attach(
+        {
+          request_id: Number(id),
+          status,
+          deny_reason: getValues("cancel_reason"),
+          ...(!!time && { finishing_time: time }),
+        },
+        {
+          onSuccess: () => {
+            orderRefetch();
+            successToast("assigned");
+            removeParams(["changeModal"]);
           },
-          {
-            onSuccess: (data: any) => {
-              if (data.status == 200) {
-                successToast("Успешно синхронизировано");
-                attach(
-                  {
-                    request_id: Number(id),
-                    status,
-                    deny_reason: getValues("cancel_reason"),
-                  },
-                  {
-                    onSuccess: () => {
-                      orderRefetch();
-                      successToast("assigned");
-                    },
-                  }
-                );
-              }
-            },
-            onError: (e: any) => errorToast(e.message),
-          }
-        );
-      } else
-        attach(
-          {
-            request_id: Number(id),
-            status,
-            deny_reason: getValues("cancel_reason"),
-          },
-          {
-            onSuccess: (data: any) => {
-              orderRefetch();
-              successToast("assigned");
-            },
-            onError: (e: any) => errorToast(e.message),
-          }
-        );
+          onError: (e: any) => errorToast(e.message),
+        }
+      );
       removeParams(["modal"]);
     };
 
@@ -239,6 +203,19 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
       handleMessage();
     }
   };
+
+  // const renderDeadline = useMemo(() => {
+  //   if (order?.category.ftime) {
+  //     const time = order?.finishing_time?.toISOString();
+
+  //     const className =
+  //       dayjs(time).isAfter(new Date()) && order.status < RequestStatus.solved
+  //         ? "!bg-red-300"
+  //         : "";
+
+  //     return { time: time.format("DD.MM.YYYY HH:mm"), className };
+  //   }
+  // }, [order?.status]);
 
   const renderRequestModals = useMemo(() => {
     return <ShowRequestModals />;
@@ -291,6 +268,10 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                 />
               </BaseInput>
 
+              <BaseInput label="upload_photo">
+                <MainInput type="file" register={register("uploaded_photo")} />
+              </BaseInput>
+
               <button
                 className="btn btn-success btn-fill w-full"
                 onClick={handleMessage}
@@ -299,10 +280,45 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
               </button>
             </>
           );
+
+        case ModalTypes.assingDeadline:
+          return (
+            <>
+              <div>
+                <BaseInput label="select_deadline">
+                  <MainDatePicker
+                    showTimeSelect
+                    selected={
+                      !!deadline
+                        ? dayjs(deadline || order?.finishing_time).toDate()
+                        : undefined
+                    }
+                    onChange={handleDeadline}
+                  />
+                </BaseInput>
+
+                <button
+                  onClick={handleBrigada({
+                    time: deadline?.toISOString(),
+                  })}
+                  className="btn btn-success btn-fill w-full"
+                >
+                  Принять
+                </button>
+              </div>
+            </>
+          );
         default:
           break;
       }
-  }, [categoryLoading, changeModal, categories, branch, order?.status]);
+  }, [
+    categoryLoading,
+    changeModal,
+    categories,
+    branch,
+    order?.status,
+    deadline,
+  ]);
 
   const renderSubmit = useMemo(() => {
     if (
@@ -335,9 +351,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                   </button>
                 ) : (
                   <button
-                    onClick={handleBrigada({
-                      status: RequestStatus.paused,
-                    })}
+                    onClick={handleModal(ModalTypes.pause)}
                     className="btn btn-danger btn-fill"
                   >
                     {t("pause")}
@@ -444,8 +458,9 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
     <>
       <Card className="overflow-hidden">
         <Header
+          // className={renderDeadline?.className}
           title={`${t("order")} №${id}`}
-          subTitle={`${t("status")}: ${t(handleStatus(order?.status))}`}
+          subTitle={`${t("status")}: ${t(handleStatusIT(order?.status))}`}
         >
           <div className="flex gap-2">
             <button
@@ -509,6 +524,13 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                           </button>
                         )}
                       </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th>{t("execution_time_hoours")}</th>
+                    <td>
+                      {order?.category.ftime} {t("hours")}
                     </td>
                   </tr>
                   <tr>
@@ -586,10 +608,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
             </div>
 
             <div className="col-md-6">
-              <table
-                id="w1"
-                className="table table-striped table-bordered detail-view"
-              >
+              <table className="table table-striped table-bordered detail-view">
                 <tbody>
                   <tr>
                     <th className="w-1/3">{t("urgent")}</th>
@@ -603,9 +622,29 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                         : t("not_given")}
                     </td>
                   </tr>
+                  <tr>
+                    <th>{t("deadline")}</th>
+                    <td className="font-bold">
+                      <div className="flex w-full justify-between">
+                        <span>
+                          {dayjs(order?.finishing_time).format(
+                            "DD.MM.YYYY HH:mm"
+                          )}
+                        </span>
+
+                        {order?.status! < RequestStatus.solved && (
+                          <TableViewBtn
+                            onClick={handleChangeModal(
+                              ModalTypes.assingDeadline
+                            )}
+                          />
+                        )}
+                      </div>
+                    </td>
+                  </tr>
 
                   <tr>
-                    <th>{t("receip_date")}</th>
+                    <th>{t("receipt_date")}</th>
                     <td>
                       {order?.created_at
                         ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
@@ -633,7 +672,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                     <td className={styles.tableRow}>{renderAssignment}</td>
                   </tr>
                   <tr>
-                    <th className="font-bold">{t("comments")}</th>
+                    <th className="font-bold">{t("leave_comment")}</th>
                     <td className={styles.tableRow}>
                       <div className="flex items-center justify-between">
                         <div className="flex flex-col">
@@ -643,6 +682,19 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                                 <span className="font-bold flex">
                                   {item.user.full_name}:
                                 </span>
+                                {!!item.photo && (
+                                  <span
+                                    onClick={handleShowPhoto(
+                                      `${baseURL}/${item.photo}`
+                                    )}
+                                    className="cursor-pointer"
+                                  >
+                                    <img
+                                      src="/assets/icons/attached.svg"
+                                      alt="file"
+                                    />
+                                  </span>
+                                )}
                                 <span>{item.message}</span>
                               </div>
                             ))}
@@ -671,6 +723,12 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                     <tr>
                       <th className="font-bold">{t("deny_reason")}</th>
                       <td>{order?.deny_reason}</td>
+                    </tr>
+                  )}
+                  {order?.pause_reason && (
+                    <tr>
+                      <th className="font-bold">{t("pause_reason")}</th>
+                      <td>{order?.pause_reason}</td>
                     </tr>
                   )}
                 </tbody>

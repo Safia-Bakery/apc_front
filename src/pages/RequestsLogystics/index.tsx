@@ -31,7 +31,7 @@ const column = [
   { name: "branch_dep", key: "name" },
   { name: "group_problem", key: "category?.name" },
   { name: "urgent", key: "urgent" },
-  { name: "receip_date", key: "created_at" },
+  { name: "receipt_date", key: "created_at" },
   { name: "status", key: "status" },
   { name: "changed", key: "user_manager" },
 ];

@@ -95,12 +95,43 @@ export const handleStatus = ({
   }
 };
 
+export const handleStatusIT = (status: RequestStatus | undefined) => {
+  switch (status) {
+    case RequestStatus.confirmed:
+      return "received";
+    case RequestStatus.done:
+      return "solved";
+    case RequestStatus.sendToRepair:
+      return "sent_to_fix";
+
+    case RequestStatus.rejected:
+      return "denied";
+    case RequestStatus.paused:
+      return "paused";
+    case RequestStatus.solved:
+      return "finished";
+
+    default:
+      return "new";
+  }
+};
+
 export const RequestStatusArr = [
   { id: RequestStatus.new, name: "new" },
   { id: RequestStatus.confirmed, name: "received" },
   { id: RequestStatus.sendToRepair, name: "sent_to_fix" },
   { id: RequestStatus.done, name: "finished" },
   { id: RequestStatus.rejected, name: "denied" },
+];
+
+export const ITRequestStatusArr = [
+  { id: RequestStatus.new, name: "new" },
+  { id: RequestStatus.confirmed, name: "received" },
+  { id: RequestStatus.sendToRepair, name: "sent_to_fix" },
+  { id: RequestStatus.done, name: "solved" },
+  { id: RequestStatus.rejected, name: "denied" },
+  { id: RequestStatus.paused, name: "paused" },
+  { id: RequestStatus.solved, name: "finished" },
 ];
 
 export const RatingFilterVals = [{ id: 1, name: "to_filter" }];
@@ -136,8 +167,12 @@ export const requestRows = (status: RequestStatus) => {
       return "table-danger";
     case RequestStatus.sendToRepair:
       return "table-warning";
+    case RequestStatus.paused:
+      return "table-gray";
+    case RequestStatus.solved:
+      return "table-green";
     default:
-      return "table-info";
+      return "";
   }
 };
 export const detectFileType = (url: string) => {

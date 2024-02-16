@@ -7,15 +7,16 @@ import { useTranslation } from "react-i18next";
 interface Props extends PropsWithChildren {
   title?: string;
   subTitle?: string;
+  className?: string;
 }
 
-const Header: FC<Props> = ({ children, title, subTitle }) => {
+const Header: FC<Props> = ({ children, title, subTitle, className }) => {
   const location = useLocation();
   const { t } = useTranslation();
 
   return (
     <>
-      <div className={cl(styles.header)}>
+      <div className={cl(styles.header, className)}>
         <div className="pull-left">
           <h2 className={styles.title}>{t(title || location?.state?.name)}</h2>
           {subTitle && <p className="mb-0">{subTitle}</p>}

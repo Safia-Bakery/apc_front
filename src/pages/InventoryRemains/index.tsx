@@ -16,15 +16,19 @@ import TableHead from "@/components/TableHead";
 import { useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import { useTranslation } from "react-i18next";
+import deleteProductMutation from "@/hooks/mutation/deleteProduct";
+import { successToast } from "@/utils/toast";
 
 const column = [
   { name: "№", key: "" },
   { name: "name_in_table", key: "name" },
+  { name: "num", key: "num", center: true },
   { name: "remains", key: "amount_left", center: true },
   { name: "min", key: "min_amount", center: true },
   { name: "max", key: "max_amount", center: true },
   { name: "deadline_in_hours", key: "ftime", center: true },
   { name: "", key: "view" },
+  { name: "", key: "delete" },
 ];
 
 const InventoryRemains = () => {
@@ -35,10 +39,11 @@ const InventoryRemains = () => {
   const permission = useAppSelector(permissionSelector);
   const handleNavigate = (route: string) => () => navigate(route);
   const mins = useQueryString("mins");
+  const { mutate: deleteProd } = deleteProductMutation();
 
   const parent_id = useQueryString("parent_id");
   const parent_name = useQueryString("parent_name");
-  const { data, isLoading, isFetching } = useToolsIerarch({
+  const { data, isLoading, isFetching, refetch } = useToolsIerarch({
     ...(!!parent_id && { parent_id }),
   });
 
@@ -54,6 +59,25 @@ const InventoryRemains = () => {
   const downloadAsPdf = () => onDownload();
 
   const handleMins = () => navigate("/inventory-remains?mins=1");
+
+  const handleDelete = (id: number) => {
+    deleteProd(
+      { id },
+      {
+        onSuccess: () => {
+          refetch();
+          successToast("success");
+        },
+      }
+    );
+  };
+
+  const openModal = ({ id, name }: { id: number; name: string }) => {
+    const check = confirm(`${t("remove")} ${name}?`);
+
+    if (check) handleDelete(id);
+    else return;
+  };
 
   if (isLoading) return <Loading absolute />;
 
@@ -97,6 +121,9 @@ const InventoryRemains = () => {
                   <td width="40">{idx + 1}</td>
                   <td>{tool?.name}</td>
                   <td width={150} className="text-center">
+                    {tool?.num}
+                  </td>
+                  <td width={150} className="text-center">
                     {tool?.amount_left}
                   </td>
                   <td width={150} className="text-center">
@@ -117,12 +144,31 @@ const InventoryRemains = () => {
                       />
                     )}
                   </td>
+                  <td width={40}>
+                    {permission?.[MainPermissions.edit_product_inventory] && (
+                      <div
+                        className="cursor-pointer"
+                        onClick={() =>
+                          openModal({ id: tool.id, name: tool.name })
+                        }
+                      >
+                        <img src="/assets/icons/delete.svg" alt="edit" />
+                      </div>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         )}
       </ul>
+
+      {/* <ConfirmModal
+        title={`${t("remove")} ${confirmModal}`}
+        onConfirm={handleDelete(confirmModal)}
+        isOpen={!!confirmModal}
+        onClose={() => removeParams(["confirmModal"])}
+      /> */}
       {!data?.folders.length && !data?.tools.length && <EmptyList />}
       {!isLoading && isFetching && <Loading absolute />}
     </Card>

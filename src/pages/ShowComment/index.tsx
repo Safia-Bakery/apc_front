@@ -90,7 +90,7 @@ const ShowComment = () => {
                     <td width={450}>{order?.user?.full_name}</td>
                   </tr>
                   <tr>
-                    <th>{t("receip_date")} </th>
+                    <th>{t("receipt_date")} </th>
                     <td>
                       {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
                     </td>

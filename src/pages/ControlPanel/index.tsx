@@ -476,7 +476,7 @@ const ControlPanel = () => {
                   <h3 className="text-base capitalize">
                     {Months[dayjs().get("M")]}
                   </h3>
-                  <p className="text-xl">{"request_stats"}</p>
+                  <p className="text-xl">{t("request_stats")}</p>
                 </div>
                 {renderMarketingContent}
               </div>

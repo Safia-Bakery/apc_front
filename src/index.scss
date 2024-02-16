@@ -122,6 +122,20 @@ input {
     --bs-table-hover-bg: #87cb16 !important;
   }
 }
+.table-gray {
+  background-color: #dacfb5 !important;
+
+  &:hover {
+    opacity: 0.6;
+  }
+}
+.table-green {
+  background-color: #8ad6cc !important;
+
+  &:hover {
+    opacity: 0.6;
+  }
+}
 .table-responsive {
   overflow-x: auto;
 }

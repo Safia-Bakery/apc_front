@@ -31,7 +31,7 @@ const column = [
   { name: "Заявка", key: "id" },
   { name: "employee", key: "purchaser" },
   { name: "branch", key: "status" },
-  { name: "receip_date", key: "status" },
+  { name: "receipt_date", key: "status" },
   { name: "photo", key: "status" },
   { name: "Текст", key: "status" },
 ];

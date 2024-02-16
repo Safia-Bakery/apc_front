@@ -19,6 +19,7 @@ interface Body {
   user?: string;
   id?: string | number;
   rate?: boolean;
+  brigada_id?: number;
 }
 
 export const useOrders = ({ enabled, ...params }: Body) => {

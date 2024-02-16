@@ -40,6 +40,7 @@ export interface Order {
   created_at: Date;
   started_at: Date;
   deny_reason: string | null;
+  pause_reason: string | null;
   status: number;
   urgent: boolean;
   user: UserTypes;
@@ -68,6 +69,7 @@ export interface Order {
     id: number;
     message: string;
     status: number;
+    photo?: string;
     user: UsersType;
   }[];
   file: {
@@ -105,7 +107,7 @@ export interface Order {
   arrival_date: Date;
   bread_size?: string;
   update_time: { [key: number | string]: string };
-  finishing_time?: string;
+  finishing_time?: Date;
   comments: [
     {
       id: 3;
@@ -602,6 +604,7 @@ export const enum ModalTypes {
   changeBranch,
   changeCateg,
   leaveMessage,
+  pause,
 }
 
 export interface CountTypes {

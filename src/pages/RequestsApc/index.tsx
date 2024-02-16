@@ -60,7 +60,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
       { name: "group_problem", key: "category?.name" },
       { name: "urgent", key: "urgent" },
       { name: "brigade", key: "brigada" },
-      { name: "receip_date", key: "created_at" },
+      { name: "receipt_date", key: "created_at" },
       { name: "rate", key: "rate" },
       { name: "status", key: "status" },
       { name: "changed", key: "user_manager" },

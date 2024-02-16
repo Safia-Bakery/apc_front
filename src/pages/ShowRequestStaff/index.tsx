@@ -188,7 +188,7 @@ const ShowRequestStaff = () => {
                   </tr>
 
                   <tr>
-                    <th>{t("receip_date")}:</th>
+                    <th>{t("receipt_date")}:</th>
                     <td>
                       {order?.created_at
                         ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")

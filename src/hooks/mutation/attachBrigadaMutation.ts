@@ -1,8 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import apiClient from "@/main";
-import { errorToast } from "@/utils/toast";
 import { RequestStatus } from "@/utils/types";
-import async from "node_modules/react-select/dist/declarations/src/async";
 
 interface Body {
   request_id: number;
@@ -13,6 +11,7 @@ interface Body {
   car_id?: number;
   fillial_id?: string;
   category_id?: string | number;
+  pause_reason?: string;
 }
 
 const attachBrigadaMutation = () => {

@@ -9,11 +9,13 @@ interface PaginationProps {
   refetch?: () => void;
 }
 
-const Pagination: FC<PaginationProps> = ({ totalPages }) => {
+const Pagination: FC<PaginationProps> = ({ totalPages = 1 }) => {
   const navigate = useNavigateParams();
   const currentPage = Number(useQueryString("page")) || 1;
   const handleChange = ({ selected }: { selected: number }) =>
     navigate({ page: selected + 1 });
+
+  if (totalPages < 2) return;
 
   return (
     <nav>

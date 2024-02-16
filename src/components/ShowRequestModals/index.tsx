@@ -26,6 +26,9 @@ import marketingReassignMutation from "@/hooks/mutation/marketingReassign";
 import useCategories from "@/hooks/useCategories";
 import useCars from "@/hooks/useCars";
 import { useTranslation } from "react-i18next";
+import MainDatePicker from "../BaseInputs/MainDatePicker";
+import dayjs from "dayjs";
+import { useState } from "react";
 
 const ShowRequestModals = () => {
   const { t } = useTranslation();
@@ -84,25 +87,24 @@ const ShowRequestModals = () => {
       time,
       car_id,
     }: {
-      status: RequestStatus;
+      status?: RequestStatus;
       item?: BrigadaType;
       time?: string;
       car_id?: number;
     }) =>
     () => {
-      const { fixedReason } = getValues();
+      const { fixedReason, cancel_reason, pause_reason } = getValues();
       attach(
         {
           request_id: Number(id),
           status,
           ...(!!time && { finishing_time: time }),
           ...(!!car_id && { car_id }),
+          ...(!!pause_reason && { pause_reason }),
           ...(!!item && { brigada_id: Number(item?.id) }),
           ...(status === RequestStatus.rejected && {
             deny_reason:
-              fixedReason < 4
-                ? t(CancelReason[fixedReason])
-                : getValues("cancel_reason"),
+              fixedReason < 4 ? t(CancelReason[fixedReason]) : cancel_reason,
           }),
         },
         {
@@ -228,6 +230,30 @@ const ShowRequestModals = () => {
             </div>
           </form>
         );
+      case ModalTypes.pause:
+        return (
+          <form
+            onSubmit={handleSubmit(
+              handleBrigada({ status: RequestStatus.paused })
+            )}
+            className={styles.birgadesModal}
+          >
+            <Header title="pause_reason">
+              <button onClick={() => removeParams(["modal"])} className="close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </Header>
+            <div className="p-3">
+              <BaseInput label="comments">
+                <MainTextArea register={register("pause_reason")} />
+              </BaseInput>
+
+              <button className="btn btn-success" type="submit">
+                {t("send")}
+              </button>
+            </div>
+          </form>
+        );
 
       case ModalTypes.showPhoto:
         return (
@@ -250,27 +276,35 @@ const ShowRequestModals = () => {
 
       // case ModalTypes.assingDeadline:
       //   return (
-      //     <div className="min-w-[380px] p-4 ">
-      //       <BaseInput label="Выберите дедлайн">
-      //         <MainDatePicker
-      //           showTimeSelect
-      //           selected={
-      //             !!deadline ? dayjs(deadline || undefined).toDate() : undefined
-      //           }
-      //           onChange={handleDeadline}
-      //         />
-      //       </BaseInput>
+      //     <>
+      //       <Header title="edit_deadline">
+      //         <button onClick={() => removeParams(["modal"])} className="close">
+      //           <span aria-hidden="true">&times;</span>
+      //         </button>
+      //       </Header>
+      //       <div className="min-w-[380px] p-4">
+      //         <BaseInput label="Выберите дедлайн">
+      //           <MainDatePicker
+      //             showTimeSelect
+      //             selected={
+      //               !!deadline
+      //                 ? dayjs(deadline || undefined).toDate()
+      //                 : undefined
+      //             }
+      //             onChange={handleDeadline}
+      //           />
+      //         </BaseInput>
 
-      //       <button
-      //         onClick={handleBrigada({
-      //           status: RequestStatus.confirmed,
-      //           time: deadline?.toISOString(),
-      //         })}
-      //         className="btn btn-success btn-fill btn-sm float-end"
-      //       >
-      //         Принять
-      //       </button>
-      //     </div>
+      //         <button
+      //           onClick={handleBrigada({
+      //             time: deadline?.toISOString(),
+      //           })}
+      //           className="btn btn-success btn-fill btn-sm float-end"
+      //         >
+      //           Принять
+      //         </button>
+      //       </div>
+      //     </>
       //   );
 
       case ModalTypes.reassign:

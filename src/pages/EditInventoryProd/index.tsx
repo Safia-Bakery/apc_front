@@ -9,12 +9,14 @@ import BaseInputs from "@/components/BaseInputs";
 import updateToolsMutation from "@/hooks/mutation/updateTools";
 import useTools from "@/hooks/useTools";
 import { useTranslation } from "react-i18next";
+import deleteProductMutation from "@/hooks/mutation/deleteProduct";
 
 const EditInventoryProd = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
+  const { mutate: deleteProd } = deleteProductMutation();
 
   const { data } = useTools({ id });
   const tool = data?.items?.[0];
@@ -42,6 +44,22 @@ const EditInventoryProd = () => {
   };
   const { register, handleSubmit, getValues, reset } = useForm();
 
+  const openModal = () => {
+    const check = confirm(`${t("remove")}?`);
+
+    if (check)
+      deleteProd(
+        { id: Number(id) },
+        {
+          onSuccess: () => {
+            goBack();
+            successToast("success");
+          },
+        }
+      );
+    else return;
+  };
+
   useEffect(() => {
     reset({
       min_amount: tool?.min_amount,
@@ -68,10 +86,18 @@ const EditInventoryProd = () => {
         <BaseInputs label="deadline_in_hours">
           <MainInput register={register("deadline")} />
         </BaseInputs>
-
-        <button type="submit" className="btn btn-success mt-3">
-          {t("save")}
-        </button>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={openModal}
+            className="btn btn-danger btn-fill mt-3"
+          >
+            {t("remove")}
+          </button>
+          <button type="submit" className="btn btn-success mt-3">
+            {t("save")}
+          </button>
+        </div>
       </form>
     </Card>
   );

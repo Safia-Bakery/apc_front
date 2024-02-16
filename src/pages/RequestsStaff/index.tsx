@@ -123,7 +123,7 @@ const RequestsStaff = () => {
             </h2>
           </div>
           <div className="p-2 btn btn-primary flex flex-col justify-between">
-            <h4>{"bread_qnt"}</h4>
+            <h4>{t("bread_qnt")}</h4>
             <h2 className={"flex text-3xl justify-end"}>
               {totals?.total_bread}
             </h2>
@@ -137,7 +137,7 @@ const RequestsStaff = () => {
                 onClick={() => navigateParams({ time_modal: 1 })}
                 className="btn btn-primary btn-fill"
               >
-                {"bot_settings"}
+                {t("bot_settings")}
               </button>
             )}
             {permission?.[MainPermissions.add_staff_requests] && (
