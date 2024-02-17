@@ -5,17 +5,19 @@ import { ToolsEarchType } from "@/utils/types";
 interface Props {
   parent_id?: string;
   enabled?: boolean;
+  name?: string;
 }
 
-export const useToolsIerarch = ({ parent_id, enabled }: Props) => {
+export const useToolsIerarch = ({ parent_id, enabled, name }: Props) => {
   return useQuery({
-    queryKey: ["tools_ierarch", parent_id],
+    queryKey: ["tools_ierarch", parent_id, name],
     queryFn: () =>
       apiClient
         .get({
           url: "/tool/iarch",
           params: {
             parent_id,
+            name,
           },
         })
         .then(({ data: response }) => response as ToolsEarchType),

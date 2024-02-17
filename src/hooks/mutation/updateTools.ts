@@ -11,6 +11,7 @@ interface Body {
   max_amount?: number;
   ftime?: number | string;
   image?: string;
+  status?: number;
 }
 
 const updateToolsMutation = () => {

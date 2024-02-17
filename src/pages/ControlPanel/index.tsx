@@ -417,7 +417,7 @@ const ControlPanel = () => {
                             to={renderDep?.ratingUrl}
                             className="flex text-gray-400 text-xs "
                           >
-                            {"open_all_rtates"}{" "}
+                            {t("open_all_rtates")}{" "}
                             <img
                               src="/assets/icons/arrowBlack.svg"
                               alt=""

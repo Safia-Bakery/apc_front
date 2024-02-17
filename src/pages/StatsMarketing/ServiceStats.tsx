@@ -15,8 +15,8 @@ const column = [
   { name: "receivedd" },
   { name: "handled_on_time", colSpan: 2, className: "!bg-tableSuccess" },
   { name: "not_handled_on_time", colSpan: 2, className: "!bg-tableWarn" },
-  { name: "not_handled", colSpan: 2, className: "!bg-tableDanger" },
-  { name: "avg_handling_time_mins" },
+  { name: "not_handled_in_process", colSpan: 2, className: "!bg-tableDanger" },
+  { name: "avg_handling_time_days_hours" },
 ];
 
 const ServiceStats = () => {
@@ -75,7 +75,7 @@ const ServiceStats = () => {
             {column.map(({ name, colSpan, className }) => (
               <th
                 key={name}
-                className={cl("border-dark", className)}
+                className={cl("border-dark text-center", className)}
                 colSpan={colSpan}
               >
                 {t(name)}
@@ -147,7 +147,12 @@ const ServiceStats = () => {
                           {fixedN(item.percentage_status_zero)}%
                         </td>
 
-                        <td className="text-center">{item.avg_finishing}</td>
+                        <td className="text-center">
+                          {(item.avg_finishing / 60).toFixed(2)} ({" "}
+                          {(item.avg_finishing / 1440) // 60*24 to get days from minutes
+                            .toFixed(2)}
+                          {t("days")})
+                        </td>
                       </tr>
                     </Fragment>
                   ))}
@@ -183,11 +188,13 @@ const ServiceStats = () => {
                     {averageCalculator(mainKey[0], "percentage_status_zero")}%
                   </th>
                   <th className="text-center">
-                    {averageCalculator(mainKey[0], "avg_finishing")} (
                     {(
                       averageCalculator(mainKey[0], "avg_finishing") / 60
-                    ).toFixed(2)}
-                    {t("hours")})
+                    ).toFixed(2)}{" "}
+                    (
+                    {(averageCalculator(mainKey[0], "avg_finishing") / 1440) // 60*24 to get days from minutes
+                      .toFixed(2)}
+                    {t("days")})
                   </th>
                 </tr>
               </Fragment>

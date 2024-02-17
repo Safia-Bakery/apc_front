@@ -390,7 +390,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
     if (permissions?.[attaching] && order?.status! <= RequestStatus.confirmed) {
       if (order?.brigada?.name) {
         return (
-          <>
+          <div className="flex items-center justify-between">
             <span>{order?.brigada?.name}</span>
             <button
               onClick={handleModal(ModalTypes.assign)}
@@ -401,7 +401,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
             >
               {t("reassign")}
             </button>
-          </>
+          </div>
         );
       }
       return (

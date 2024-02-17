@@ -51,7 +51,7 @@ const RemainsInStock = () => {
 
   return (
     <Card>
-      <Header title={"Остатки на складах"}>
+      <Header title={"remains_in_stock"}>
         <div className="flex">
           <button
             onClick={handleSync}

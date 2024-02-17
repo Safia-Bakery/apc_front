@@ -30,11 +30,7 @@ const ITFilter: FC = () => {
     ...(!!sphere_status && { sphere_status }),
   });
 
-  const {
-    data: brigades,
-    isFetching: brigadaLoading,
-    refetch: masterRefetch,
-  } = useBrigadas({
+  const { data: brigades, refetch: masterRefetch } = useBrigadas({
     enabled: false,
     department: Departments.it,
   });

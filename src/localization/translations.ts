@@ -249,6 +249,7 @@ const localization = {
       brigade_stats: "статистика по бригадам",
       in_total: "В общем",
       avg_handling_time_mins: "Среднее время обработки (минут)",
+      avg_handling_time_days_hours: "Среднее время обработки (Часы / День)",
       handling_time_m: "Время обработки (м)",
       handling_time_h: "Время обработки (ч)",
       open_req_qnt: "Количество открытых заявок",
@@ -326,6 +327,15 @@ const localization = {
       resume: "возобновлять",
       solved: "Решён",
       pause_reason: "Причина паузы",
+      mark_requests: "Заявки Маркетинг",
+
+      one_day: "1 день",
+      three_days: "3 дня",
+      two_days: "2 дня",
+      ten_days: "10 дней",
+      days: "дней",
+
+      not_handled_in_process: "Не обработано / В процессе",
     },
   },
   uz: {

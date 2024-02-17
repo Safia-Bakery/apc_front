@@ -27,6 +27,7 @@ const column = [
   { name: "min", key: "min_amount", center: true },
   { name: "max", key: "max_amount", center: true },
   { name: "deadline", key: "deadline", center: true },
+  { name: "status", key: "status", center: true },
   { name: "", key: "view" },
 ];
 
@@ -133,6 +134,9 @@ const InventoryRemainsMins = () => {
                   </td>
                   <td width={150} className="text-center">
                     {tool?.ftime}
+                  </td>
+                  <td width={150} className="text-center">
+                    {!!tool?.status ? t("active") : t("not_active")}
                   </td>
                   <td width={40}>
                     {permission?.[MainPermissions.edit_product_inventory] && (

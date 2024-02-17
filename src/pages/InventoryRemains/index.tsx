@@ -13,11 +13,10 @@ import { permissionSelector } from "@/store/reducers/sidebar";
 import { MainPermissions } from "@/utils/types";
 import TableViewBtn from "@/components/TableViewBtn";
 import TableHead from "@/components/TableHead";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import { useTranslation } from "react-i18next";
-import deleteProductMutation from "@/hooks/mutation/deleteProduct";
-import { successToast } from "@/utils/toast";
+import InventoryRemainsFilter from "./filter";
 
 const column = [
   { name: "№", key: "" },
@@ -27,8 +26,8 @@ const column = [
   { name: "min", key: "min_amount", center: true },
   { name: "max", key: "max_amount", center: true },
   { name: "deadline_in_hours", key: "ftime", center: true },
+  { name: "status", key: "status", center: true },
   { name: "", key: "view" },
-  { name: "", key: "delete" },
 ];
 
 const InventoryRemains = () => {
@@ -39,12 +38,13 @@ const InventoryRemains = () => {
   const permission = useAppSelector(permissionSelector);
   const handleNavigate = (route: string) => () => navigate(route);
   const mins = useQueryString("mins");
-  const { mutate: deleteProd } = deleteProductMutation();
+  const name = useQueryString("name");
 
   const parent_id = useQueryString("parent_id");
   const parent_name = useQueryString("parent_name");
-  const { data, isLoading, isFetching, refetch } = useToolsIerarch({
+  const { data, isLoading, isFetching } = useToolsIerarch({
     ...(!!parent_id && { parent_id }),
+    ...(!!name && { name }),
   });
 
   const goBack = () => navigate(-1);
@@ -60,28 +60,61 @@ const InventoryRemains = () => {
 
   const downloadAsPdf = () => onDownload();
 
+  const renderFilter = useMemo(() => {
+    return <InventoryRemainsFilter />;
+  }, []);
+
+  const renderItems = useMemo(() => {
+    if (!!parent_id)
+      return (
+        <table className="table table-bordered" ref={tableRef}>
+          <TableHead column={column}>{renderFilter}</TableHead>
+          <tbody>
+            {data?.tools?.map((tool, idx) => (
+              <tr
+                key={idx}
+                className={cl("transition-colors", {
+                  ["table-danger"]:
+                    tool.min_amount && tool.amount_left < tool.min_amount,
+                  ["table-success"]:
+                    tool.min_amount && tool.amount_left > tool.min_amount,
+                })}
+              >
+                <td width="40">{idx + 1}</td>
+                <td>{tool?.name}</td>
+                <td width={150} className="text-center">
+                  {tool?.num}
+                </td>
+                <td width={150} className="text-center">
+                  {tool?.amount_left}
+                </td>
+                <td width={150} className="text-center">
+                  {tool?.min_amount}
+                </td>
+                <td width={150} className="text-center">
+                  {tool?.max_amount}
+                </td>
+                <td width={150} className="text-center">
+                  {tool?.ftime}
+                </td>
+                <td width={150} className="text-center">
+                  {!!tool?.status ? t("active") : t("not_active")}
+                </td>
+                <td width={40}>
+                  {permission?.[MainPermissions.edit_product_inventory] && (
+                    <TableViewBtn
+                      onClick={handleNavigate(`/inventory-remains/${tool.id}`)}
+                    />
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      );
+  }, [data?.tools]);
+
   const handleMins = () => navigate("/inventory-remains?mins=1");
-
-  const handleDelete = (id: number) => {
-    deleteProd(
-      { id },
-      {
-        onSuccess: () => {
-          refetch();
-          successToast("success");
-        },
-      }
-    );
-  };
-
-  const openModal = ({ id, name }: { id: number; name: string }) => {
-    const check = confirm(`${t("remove")} ${name}?`);
-
-    if (check) handleDelete(id);
-    else return;
-  };
-
-  if (isLoading) return <Loading absolute />;
 
   return (
     <Card className="pb-4">
@@ -111,73 +144,11 @@ const InventoryRemains = () => {
           </li>
         ))}
         <hr />
-        {!!data?.tools?.length && (
-          <table className="table table-bordered" ref={tableRef}>
-            <TableHead column={column} />
-            <tbody>
-              {data?.tools?.map((tool, idx) => (
-                <tr
-                  key={idx}
-                  className={cl("transition-colors", {
-                    ["table-danger"]:
-                      tool.min_amount && tool.amount_left < tool.min_amount,
-                    ["table-success"]:
-                      tool.min_amount && tool.amount_left > tool.min_amount,
-                  })}
-                >
-                  <td width="40">{idx + 1}</td>
-                  <td>{tool?.name}</td>
-                  <td width={150} className="text-center">
-                    {tool?.num}
-                  </td>
-                  <td width={150} className="text-center">
-                    {tool?.amount_left}
-                  </td>
-                  <td width={150} className="text-center">
-                    {tool?.min_amount}
-                  </td>
-                  <td width={150} className="text-center">
-                    {tool?.max_amount}
-                  </td>
-                  <td width={150} className="text-center">
-                    {tool?.ftime}
-                  </td>
-                  <td width={40}>
-                    {permission?.[MainPermissions.edit_product_inventory] && (
-                      <TableViewBtn
-                        onClick={handleNavigate(
-                          `/inventory-remains/${tool.id}`
-                        )}
-                      />
-                    )}
-                  </td>
-                  <td width={40}>
-                    {permission?.[MainPermissions.edit_product_inventory] && (
-                      <div
-                        className="cursor-pointer"
-                        onClick={() =>
-                          openModal({ id: tool.id, name: tool.name })
-                        }
-                      >
-                        <img src="/assets/icons/delete.svg" alt="edit" />
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+        {renderItems}
       </ul>
 
-      {/* <ConfirmModal
-        title={`${t("remove")} ${confirmModal}`}
-        onConfirm={handleDelete(confirmModal)}
-        isOpen={!!confirmModal}
-        onClose={() => removeParams(["confirmModal"])}
-      /> */}
-      {!data?.folders.length && !data?.tools.length && <EmptyList />}
-      {!isLoading && isFetching && <Loading absolute />}
+      {!data?.tools?.length && <EmptyList />}
+      {(isLoading || isFetching) && <Loading absolute />}
     </Card>
   );
 };

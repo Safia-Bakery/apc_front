@@ -67,6 +67,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
   const { data: brigadas } = useBrigadas({
     enabled: order?.status! <= 1,
     sphere_status,
+    department: Departments.apc,
   });
   const isNew = order?.status === RequestStatus.new;
   const inputRef = useRef<any>(null);
@@ -218,7 +219,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
     if (attaching && permissions?.[attaching] && order?.status! <= 1) {
       if (order?.brigada?.name) {
         return (
-          <>
+          <div className="flex items-center justify-between">
             <span>{order?.brigada?.name}</span>
             <button
               onClick={handleModal(ModalTypes.assign)}
@@ -226,7 +227,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
             >
               {t("reassign")}
             </button>
-          </>
+          </div>
         );
       }
       return (

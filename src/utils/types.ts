@@ -341,6 +341,7 @@ export interface ToolTypes extends BasePaginatedRes {
     min_amount: number | null;
     max_amount: number | null;
     ftime?: string | number;
+    status: number;
   }[];
 }
 
@@ -649,6 +650,7 @@ export interface ToolsEarchType {
     min_amount: string;
     image: string;
     ftime?: number | null;
+    status?: number;
   }[];
 }
 

@@ -209,7 +209,7 @@ const ShowCCTVRequests = () => {
               <table className="table table-striped table-bordered detail-view">
                 <tbody>
                   <tr>
-                    <th>{"client"}</th>
+                    <th>{t("client")}</th>
                     <td className="w-1/2"> {order?.user?.full_name}</td>
                   </tr>
                   <tr>

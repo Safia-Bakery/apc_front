@@ -9,22 +9,27 @@ import BaseInputs from "@/components/BaseInputs";
 import updateToolsMutation from "@/hooks/mutation/updateTools";
 import useTools from "@/hooks/useTools";
 import { useTranslation } from "react-i18next";
-import deleteProductMutation from "@/hooks/mutation/deleteProduct";
+import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
+import MainSelect from "@/components/BaseInputs/MainSelect";
+
+const SelectDates = [
+  { id: 24, name: "one_day" },
+  { id: 48, name: "two_days" },
+];
 
 const EditInventoryProd = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
-  const { mutate: deleteProd } = deleteProductMutation();
 
-  const { data } = useTools({ id });
+  const { data, refetch } = useTools({ id });
   const tool = data?.items?.[0];
 
   const { mutate } = updateToolsMutation();
 
   const onSubmit = () => {
-    const { min_amount, max_amount, deadline } = getValues();
+    const { min_amount, max_amount, deadline, status } = getValues();
 
     mutate(
       {
@@ -32,9 +37,11 @@ const EditInventoryProd = () => {
         min_amount,
         max_amount,
         ftime: deadline,
+        status: Number(status),
       },
       {
         onSuccess: () => {
+          refetch();
           goBack();
           successToast("successfully updated");
         },
@@ -44,27 +51,12 @@ const EditInventoryProd = () => {
   };
   const { register, handleSubmit, getValues, reset } = useForm();
 
-  const openModal = () => {
-    const check = confirm(`${t("remove")}?`);
-
-    if (check)
-      deleteProd(
-        { id: Number(id) },
-        {
-          onSuccess: () => {
-            goBack();
-            successToast("success");
-          },
-        }
-      );
-    else return;
-  };
-
   useEffect(() => {
     reset({
       min_amount: tool?.min_amount,
       max_amount: tool?.max_amount,
       deadline: tool?.ftime,
+      status: !!tool?.status,
     });
   }, [tool]);
 
@@ -84,16 +76,12 @@ const EditInventoryProd = () => {
           <MainInput register={register("max_amount")} />
         </BaseInputs>
         <BaseInputs label="deadline_in_hours">
-          <MainInput register={register("deadline")} />
+          <MainSelect values={SelectDates} register={register("deadline")} />
+        </BaseInputs>
+        <BaseInputs label="status">
+          <MainCheckBox label={"active"} register={register("status")} />
         </BaseInputs>
         <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={openModal}
-            className="btn btn-danger btn-fill mt-3"
-          >
-            {t("remove")}
-          </button>
           <button type="submit" className="btn btn-success mt-3">
             {t("save")}
           </button>

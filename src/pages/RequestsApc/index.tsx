@@ -106,7 +106,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
           className="btn btn-primary btn-fill mr-2"
           onClick={downloadAsPdf}
         >
-          Экспорт
+          {t("export_to_excel")}
         </button>
         {permission?.[add] && (
           <button
@@ -139,7 +139,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                   <td width="80">
                     {permission?.[edit] ? (
                       <Link
-                        to={`/requests-apc-${Sphere[sphere_status]}/${order?.id}?sphere_status=${sphere_status}`}
+                        to={`/requests-apc-${Sphere[sphere_status]}/${order?.id}?sphere_status=${sphere_status}&dep=${Departments.apc}`}
                         state={{ prevPath: pathname + search }}
                       >
                         {order?.id}
