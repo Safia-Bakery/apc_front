@@ -58,7 +58,7 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
     filename: t("stats_by_categ"),
-    sheet: "categories",
+    sheet: t("stats_by_categ"),
   });
 
   const { data, isLoading } = useStatsCategory({

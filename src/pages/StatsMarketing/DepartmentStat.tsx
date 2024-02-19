@@ -61,7 +61,7 @@ const DepartmentStat = () => {
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
     filename: t("departments_reports"),
-    sheet: "departments",
+    sheet: t("departments"),
   });
 
   const { data, isLoading } = useMarketingStatDep({

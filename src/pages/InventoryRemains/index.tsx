@@ -78,7 +78,6 @@ const InventoryRemains = () => {
                     tool.min_amount && tool.amount_left < tool.min_amount,
                   ["table-success"]:
                     tool.min_amount && tool.amount_left > tool.min_amount,
-                  ["bg-gray-300"]: !tool.status,
                 })}
               >
                 <td width="40">{idx + 1}</td>

@@ -47,7 +47,7 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
     filename: t("stats_cunsumption"),
-    sheet: "categories",
+    sheet: t("stats_cunsumption"),
   });
 
   const renderProductCount = useMemo(() => {

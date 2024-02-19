@@ -6,6 +6,7 @@ import useUpdateEffect from "custom/useUpdateEffect";
 import useMarketingStatCat from "@/hooks/useMarketingStatCat";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
+import { useTranslation } from "react-i18next";
 
 const optionsBar = {
   options: {
@@ -79,6 +80,7 @@ const column = [
 ];
 
 const StatCategory = () => {
+  const { t } = useTranslation();
   const start = useUpdateQueryStr("start");
   const end = useUpdateQueryStr("end");
   const tableRef = useRef(null);
@@ -86,8 +88,8 @@ const StatCategory = () => {
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
-    filename: "category_report",
-    sheet: "categories",
+    filename: t("category_report"),
+    sheet: t("categories"),
   });
 
   const { data, isLoading } = useMarketingStatCat({

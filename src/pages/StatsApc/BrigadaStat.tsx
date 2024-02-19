@@ -61,7 +61,7 @@ const BrigadaStat: FC<Props> = ({ sphere_status }) => {
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
     filename: t("brigade_stats"),
-    sheet: "categories",
+    sheet: t("brigade_stats"),
   });
 
   const downloadAsPdf = () => onDownload();

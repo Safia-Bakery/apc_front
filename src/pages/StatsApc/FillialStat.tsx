@@ -31,7 +31,7 @@ const BranchStat: FC<Props> = ({ sphere_status }) => {
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
     filename: t("branch_stats"),
-    sheet: "categories",
+    sheet: t("branch_stats"),
   });
 
   useEffect(() => {
