@@ -5,6 +5,7 @@ import useQueryString from "@/hooks/custom/useQueryString";
 import ITExcellMutation from "@/hooks/mutation/ITExcell";
 import { useTranslation } from "react-i18next";
 import { baseURL } from "@/main";
+import Loading from "../Loader";
 
 const DownloadExcell = () => {
   const { t } = useTranslation();
@@ -12,7 +13,7 @@ const DownloadExcell = () => {
   const request_status = Number(useQueryString("request_status"));
   const { register, getValues } = useForm();
 
-  const { mutate } = ITExcellMutation();
+  const { mutate, isPending } = ITExcellMutation();
 
   const handleActive = () => {
     if (active) {
@@ -65,6 +66,8 @@ const DownloadExcell = () => {
       >
         {t("export_to_excel")}
       </button>
+
+      {isPending && <Loading absolute />}
     </form>
   );
 };
