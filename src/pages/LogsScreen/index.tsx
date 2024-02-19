@@ -102,7 +102,7 @@ const Logs = () => {
               </tr>
               <tr className="bg-blue">
                 <td width="40">2</td>
-                <td>{"assignation"}</td>
+                <td>{t("assignation")}</td>
                 <td>{order?.user_manager}</td>
                 <td>
                   {order?.update_time?.[RequestStatus.confirmed]

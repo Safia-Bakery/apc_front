@@ -503,31 +503,31 @@ export enum MarketingSubDep {
 export const MarketingSubDepRu = [
   {
     name: "Проектная работа для дизайнеров",
-    id: MarketingSubDep.designers,
+    id: MarketingSubDep.designers, // 1
   },
   {
     name: "Локальный маркетинг",
-    id: MarketingSubDep.local_marketing,
+    id: MarketingSubDep.local_marketing, // 2
   },
   {
     name: "Промо-продукция",
-    id: MarketingSubDep.promo_production,
+    id: MarketingSubDep.promo_production, // 3
   },
   {
     name: "POS-Материалы",
-    id: MarketingSubDep.pos,
+    id: MarketingSubDep.pos, // 4
   },
   {
     name: "Комплекты",
-    id: MarketingSubDep.complects,
+    id: MarketingSubDep.complects, // 5
   },
   {
     name: "Для Тер.Менеджеров",
-    id: MarketingSubDep.nonstandartAdv,
+    id: MarketingSubDep.nonstandartAdv, // 6
   },
   {
     name: "Внешний вид филиала",
-    id: MarketingSubDep.branchEnv,
+    id: MarketingSubDep.branchEnv, // 7
   },
 ];
 export enum Departments {

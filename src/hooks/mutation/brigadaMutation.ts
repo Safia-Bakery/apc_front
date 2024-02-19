@@ -18,7 +18,7 @@ const brigadaMutation = () => {
     mutationKey: ["update_brigada"],
     mutationFn: async (body: BodyType) => {
       const { id, users } = body;
-      if (id && users) {
+      if (id || users) {
         const { data } = await apiClient.put({
           url: "/brigadas",
           body,

@@ -11,7 +11,7 @@ import { baseURL } from "@/main";
 import {
   detectFileType,
   handleDepartment,
-  handleStatusIT,
+  handleStatus,
 } from "@/utils/helpers";
 import { useForm } from "react-hook-form";
 import {
@@ -28,7 +28,6 @@ import useQueryString from "custom/useQueryString";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import uploadFileMutation from "@/hooks/mutation/uploadFile";
 import useBrigadas from "@/hooks/useBrigadas";
-import syncExpenditure from "@/hooks/mutation/syncExpenditure";
 import Loading from "@/components/Loader";
 import cl from "classnames";
 import { permissionSelector } from "reducers/sidebar";
@@ -57,7 +56,6 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   const { id, sphere } = useParams();
   const navigate = useNavigate();
   const [deadline, $deadline] = useState<Date>();
-  const modal = useQueryString("modal");
   const changeModal = Number(useQueryString("changeModal"));
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const permissions = useAppSelector(permissionSelector);
@@ -98,7 +96,6 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   const isNew = order?.status === RequestStatus.new;
   const inputRef = useRef<any>(null);
   const upladedFiles = useAppSelector(reportImgSelector);
-  const { mutate: synIIco, isPending } = syncExpenditure();
 
   const { mutate: msgMutation, isPending: msgLoading } = orderMsgMutation();
 
@@ -219,10 +216,10 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
 
   const renderRequestModals = useMemo(() => {
     return <ShowRequestModals />;
-  }, [modal]);
+  }, []);
 
   const renderChangeModals = useMemo(() => {
-    if (order?.status! < RequestStatus.solved)
+    if (order?.status! !== RequestStatus.done)
       switch (changeModal) {
         case ModalTypes.changeBranch:
           return (
@@ -289,7 +286,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                   <MainDatePicker
                     showTimeSelect
                     selected={
-                      !!deadline
+                      !!deadline || order?.finishing_time
                         ? dayjs(deadline || order?.finishing_time).toDate()
                         : undefined
                     }
@@ -323,23 +320,25 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   const renderSubmit = useMemo(() => {
     if (
       permissions?.[edit] &&
-      order?.status &&
-      order.status < RequestStatus.solved
+      !!order?.status.toString() &&
+      order.status !== RequestStatus.done
     )
       return (
         <div className="flex justify-between mb10 gap-2">
-          {order.status !== RequestStatus.done && (
+          {order.status !== RequestStatus.done ? (
             <button
               onClick={handleModal(ModalTypes.cancelRequest)}
               className="btn btn-danger btn-fill"
             >
-              {t("cancelation")}
+              {t("calcel")}
             </button>
+          ) : (
+            <div />
           )}
           <div>
             {order?.status! > RequestStatus.new && (
               <div className="flex gap-2">
-                {order?.status! === RequestStatus.done ||
+                {order?.status! === RequestStatus.solved ||
                 order?.status! === RequestStatus.paused ? (
                   <button
                     onClick={handleBrigada({
@@ -352,39 +351,29 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                 ) : (
                   <button
                     onClick={handleModal(ModalTypes.pause)}
-                    className="btn btn-danger btn-fill"
+                    className="btn btn-warning btn-fill"
                   >
                     {t("pause")}
                   </button>
                 )}
-                {order.status !== RequestStatus.done &&
+                {order.status !== RequestStatus.solved &&
                   order.status !== RequestStatus.paused && (
-                    <>
-                      <button
-                        onClick={handleBrigada({
-                          status: RequestStatus.sendToRepair,
-                        })}
-                        className="btn btn-warning btn-fill"
-                      >
-                        {t("pick_to_repair")}
-                      </button>
-                      <button
-                        id={"fixed"}
-                        onClick={handleBrigada({
-                          status: RequestStatus.done,
-                        })}
-                        className="btn btn-success btn-fill"
-                      >
-                        {t("fixed")} {isPending && <Loading />}
-                      </button>
-                    </>
+                    <button
+                      id={"fixed"}
+                      onClick={handleBrigada({
+                        status: RequestStatus.solved,
+                      })}
+                      className="btn btn-success btn-fill"
+                    >
+                      {t("fixed")}
+                    </button>
                   )}
               </div>
             )}
           </div>
         </div>
       );
-  }, [permissions, order?.status, isPending]);
+  }, [permissions, order?.status]);
 
   const renderAssignment = useMemo(() => {
     if (permissions?.[attaching] && order?.status! <= RequestStatus.confirmed) {
@@ -445,7 +434,6 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   const closeModal = () => removeParams(["changeModal"]);
 
   if (
-    isPending ||
     uploadLoading ||
     attachLoading ||
     orderLoading ||
@@ -458,9 +446,10 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
     <>
       <Card className="overflow-hidden">
         <Header
-          // className={renderDeadline?.className}
           title={`${t("order")} №${id}`}
-          subTitle={`${t("status")}: ${t(handleStatusIT(order?.status))}`}
+          subTitle={`${t("status")}: ${t(
+            handleStatus({ status: order?.status })
+          )}`}
         >
           <div className="flex gap-2">
             <button
@@ -512,7 +501,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                       <div className="flex items-center justify-between">
                         <span>{order?.category?.name}</span>
 
-                        {order?.status! < RequestStatus.solved && (
+                        {order?.status! !== RequestStatus.done && (
                           <button
                             className={cl(
                               "btn btn-primary btn-fill",
@@ -539,7 +528,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                       <div className="flex items-center justify-between">
                         <span>{order?.fillial?.parentfillial?.name}</span>
 
-                        {order?.status! < RequestStatus.solved && (
+                        {order?.status! !== RequestStatus.done && (
                           <button
                             onClick={handleChangeModal(ModalTypes.changeBranch)}
                             className={cl(
@@ -632,7 +621,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                           )}
                         </span>
 
-                        {order?.status! < RequestStatus.solved && (
+                        {order?.status! !== RequestStatus.done && (
                           <TableViewBtn
                             onClick={handleChangeModal(
                               ModalTypes.assingDeadline
@@ -699,7 +688,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                               </div>
                             ))}
                         </div>
-                        {order?.status! < RequestStatus.solved && (
+                        {order?.status! !== RequestStatus.done && (
                           <TableViewBtn
                             onClick={handleChangeModal(ModalTypes.leaveMessage)}
                           />

@@ -8,7 +8,7 @@ import Pagination from "@/components/Pagination";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx, handleStatusIT, requestRows } from "@/utils/helpers";
+import { handleIdx, handleStatus, requestRows } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import ITFilter from "./filter";
 import ItemsCount from "@/components/ItemsCount";
@@ -24,6 +24,7 @@ const column = [
   { name: "executor", key: "fillial.name" },
   { name: "branch", key: "fillial.name" },
   { name: "category", key: "category" },
+  { name: "urgent", key: "urgent" },
   { name: "comment", key: "comment" },
   { name: "rate", key: "rate" },
   {
@@ -122,6 +123,7 @@ const RequestsIT = () => {
                   </td>
                   <td>{order?.fillial?.parentfillial?.name}</td>
                   <td>{order?.category?.name}</td>
+                  <td>{!!order?.category?.urgent ? t("yes") : t("no")}</td>
                   <td>
                     <div
                       className={
@@ -134,7 +136,7 @@ const RequestsIT = () => {
                   <td width={50} className="text-center">
                     {order?.comments?.[0]?.rating}
                   </td>
-                  <td>{t(handleStatusIT(order?.status))}</td>
+                  <td>{t(handleStatus({ status: order?.status }))}</td>
                   <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
                 </tr>
               ))}

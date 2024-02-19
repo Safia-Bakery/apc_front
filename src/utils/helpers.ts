@@ -89,27 +89,10 @@ export const handleStatus = ({
     }
     case RequestStatus.rejected:
       return "denied";
-
-    default:
-      return "new";
-  }
-};
-
-export const handleStatusIT = (status: RequestStatus | undefined) => {
-  switch (status) {
-    case RequestStatus.confirmed:
-      return "received";
-    case RequestStatus.done:
-      return "solved";
-    case RequestStatus.sendToRepair:
-      return "sent_to_fix";
-
-    case RequestStatus.rejected:
-      return "denied";
     case RequestStatus.paused:
       return "paused";
     case RequestStatus.solved:
-      return "finished";
+      return "solved";
 
     default:
       return "new";

@@ -185,7 +185,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
               onClick={handleModal(ModalTypes.cancelRequest)}
               className="btn btn-danger btn-fill"
             >
-              {t("cancelation")}
+              {t("calcel")}
             </button>
           )}
           <div className="flex gap-2">

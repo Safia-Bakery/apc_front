@@ -130,6 +130,11 @@ const ITFilter: FC = () => {
           />
         </BaseInputs>
       </td>
+      <td className="p-0">
+        <BaseInputs className="!m-1">
+          <MainInput disabled className="!mb-0" />
+        </BaseInputs>
+      </td>
 
       <td className="p-0">
         <BaseInput className="!m-1">
