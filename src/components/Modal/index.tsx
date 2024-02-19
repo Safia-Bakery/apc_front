@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useEffect } from "react";
 import clx from "classnames";
 import styles from "./index.module.scss";
 
@@ -17,6 +17,16 @@ const Modal: FC<Props> = ({
   children,
   className,
 }) => {
+  useEffect(() => {
+    const closeOnEscapePressed = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", closeOnEscapePressed);
+    return () => window.removeEventListener("keydown", closeOnEscapePressed);
+  }, []);
+
   return (
     <>
       <div
