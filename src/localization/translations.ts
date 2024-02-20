@@ -325,6 +325,8 @@ const localization = {
       stats_inventory: "Статистика Инвентарь",
       pause: "Приостоновить",
       paused: "Остановлен",
+      pausedd: "Приостановлен",
+      canceled: "Отменен",
       resume: "Возобновить",
       solved: "Решён",
       pause_reason: "Причина паузы",

@@ -895,6 +895,22 @@ export const routes = [
     screen: MainPermissions.get_brigadas,
   },
   {
+    element: <Logs />,
+    path: "/request/logs/:id",
+    screen: MainPermissions.edit_it_requests,
+  },
+  {
+    element: <Logs />,
+    path: "/request/logs/:id",
+    screen: MainPermissions.edit_request_apc,
+  },
+  {
+    element: <Logs />,
+    path: "/request/logs/:id",
+    screen: MainPermissions.edit_fabric_requests,
+  },
+
+  {
     element: (
       <Masters
         dep={Departments.it}

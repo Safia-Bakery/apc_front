@@ -1,4 +1,8 @@
-import { ITRequestStatusArr, RatingFilterVals } from "@/utils/helpers";
+import {
+  ITRequestStatusArr,
+  RatingFilterVals,
+  UrgentValsArr,
+} from "@/utils/helpers";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import useDebounce from "custom/useDebounce";
 import BaseInputs from "@/components/BaseInputs";
@@ -46,6 +50,8 @@ const ITFilter: FC = () => {
   const userQ = useQueryString("user");
   const idQ = useQueryString("id");
   const rate = useQueryString("rate");
+  const urgent = useQueryString("urgent");
+  const paused = useQueryString("paused");
 
   const startRange = (start: Date | null) => {
     if (start === undefined) deleteParam(["created_at"]);
@@ -132,7 +138,20 @@ const ITFilter: FC = () => {
       </td>
       <td className="p-0">
         <BaseInputs className="!m-1">
-          <MainInput disabled className="!mb-0" />
+          <MainSelect
+            values={UrgentValsArr}
+            value={urgent?.toString()}
+            onChange={(e) => navigate({ urgent: e.target.value })}
+          />
+        </BaseInputs>
+      </td>
+      <td className="p-0">
+        <BaseInputs className="!m-1">
+          <MainSelect
+            values={UrgentValsArr}
+            value={paused?.toString()}
+            onChange={(e) => navigate({ paused: e.target.value })}
+          />
         </BaseInputs>
       </td>
 

@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 
-import { Departments, Order } from "@/utils/types";
+import { Departments, Order, RequestStatus } from "@/utils/types";
 import Pagination from "@/components/Pagination";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
@@ -25,6 +25,7 @@ const column = [
   { name: "branch", key: "fillial.name" },
   { name: "category", key: "category" },
   { name: "urgent", key: "urgent" },
+  { name: "pausedd", key: "paused" },
   { name: "comment", key: "comment" },
   { name: "rate", key: "rate" },
   {
@@ -47,6 +48,7 @@ const RequestsIT = () => {
   const responsible = Number(useQueryString("responsible"));
   const category_id = Number(useQueryString("category_id"));
   const urgent = useQueryString("urgent");
+  const paused = useQueryString("paused");
   const created_at = useQueryString("created_at");
   const request_status = useQueryString("request_status");
   const rate = useQueryString("rate");
@@ -70,8 +72,9 @@ const RequestsIT = () => {
     ...(!!request_status && { request_status }),
     ...(!!user && { user }),
     ...(!!responsible && { brigada_id: responsible }),
-    ...(!!rate && { rate: !!rate }),
-    ...(!!urgent?.toString() && { urgent: !!urgent }),
+    ...(!!rate?.toString() && { rate: !!rate }),
+    ...(!!urgent?.toString() && { urgent: !!Number(urgent) }),
+    ...(!!paused?.toString() && { paused: !!Number(paused) }),
   });
 
   const renderFilter = useMemo(() => {
@@ -124,6 +127,11 @@ const RequestsIT = () => {
                   <td>{order?.fillial?.parentfillial?.name}</td>
                   <td>{order?.category?.name}</td>
                   <td>{!!order?.category?.urgent ? t("yes") : t("no")}</td>
+                  <td>
+                    {!!order?.update_time[RequestStatus.paused]
+                      ? t("yes")
+                      : t("no")}
+                  </td>
                   <td>
                     <div
                       className={

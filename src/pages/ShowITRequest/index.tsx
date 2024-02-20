@@ -317,20 +317,17 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
     deadline,
   ]);
 
-  const renderSubmit = useMemo(() => {
-    if (
-      permissions?.[edit] &&
-      !!order?.status.toString() &&
-      order.status !== RequestStatus.done
-    )
+  const renderBtns = useMemo(() => {
+    if (!!order?.status.toString() && order.status !== RequestStatus.done)
       return (
         <div className="flex justify-between mb10 gap-2">
-          {order.status !== RequestStatus.done ? (
+          {order.status !== RequestStatus.done &&
+          order.status !== RequestStatus.rejected ? (
             <button
               onClick={handleModal(ModalTypes.cancelRequest)}
               className="btn btn-danger btn-fill"
             >
-              {t("calcel")}
+              {t("cancelation")}
             </button>
           ) : (
             <div />
@@ -339,6 +336,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
             {order?.status! > RequestStatus.new && (
               <div className="flex gap-2">
                 {order?.status! === RequestStatus.solved ||
+                order?.status! === RequestStatus.rejected ||
                 order?.status! === RequestStatus.paused ? (
                   <button
                     onClick={handleBrigada({
@@ -357,6 +355,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                   </button>
                 )}
                 {order.status !== RequestStatus.solved &&
+                  order.status !== RequestStatus.rejected &&
                   order.status !== RequestStatus.paused && (
                     <button
                       id={"fixed"}
@@ -365,7 +364,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                       })}
                       className="btn btn-success btn-fill"
                     >
-                      {t("fixed")}
+                      {t("solved")}
                     </button>
                   )}
               </div>
@@ -657,6 +656,36 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                     </td>
                   </tr>
                   <tr>
+                    <th>{t("pausedd")}</th>
+                    <td>
+                      {order?.update_time[RequestStatus.paused]
+                        ? dayjs(
+                            order?.update_time[RequestStatus.paused]
+                          ).format("DD.MM.YYYY HH:mm")
+                        : t("not_given")}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>{t("solved")}</th>
+                    <td>
+                      {order?.update_time[RequestStatus.solved]
+                        ? dayjs(
+                            order?.update_time[RequestStatus.solved]
+                          ).format("DD.MM.YYYY HH:mm")
+                        : t("not_given")}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>{t("canceled")}</th>
+                    <td>
+                      {order?.update_time[RequestStatus.rejected]
+                        ? dayjs(
+                            order?.update_time[RequestStatus.rejected]
+                          ).format("DD.MM.YYYY HH:mm")
+                        : t("not_given")}
+                    </td>
+                  </tr>
+                  <tr>
                     <th className="font-bold">{t("responsible")}</th>
                     <td className={styles.tableRow}>{renderAssignment}</td>
                   </tr>
@@ -725,7 +754,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
             </div>
           </div>
           <hr />
-          <div className="p-2">{renderSubmit}</div>
+          <div className="p-2">{renderBtns}</div>
         </div>
       </Card>
 

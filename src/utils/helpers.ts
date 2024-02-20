@@ -117,6 +117,11 @@ export const ITRequestStatusArr = [
   { id: RequestStatus.solved, name: "finished" },
 ];
 
+export const UrgentValsArr = [
+  { id: 0, name: "no" },
+  { id: 1, name: "yes" },
+];
+
 export const RatingFilterVals = [{ id: 1, name: "to_filter" }];
 
 export const RequestMarkStatusArr = [
