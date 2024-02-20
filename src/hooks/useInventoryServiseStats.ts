@@ -9,7 +9,7 @@ interface Params {
   started_at?: string;
 }
 
-export const useInventoryServiseDtats = ({
+export const useInventoryServiseStats = ({
   enabled,
   started_at = dayjs().startOf("month").format("YYYY-MM-DD"),
   finished_at = dayjs().format("YYYY-MM-DD"),
@@ -32,4 +32,4 @@ export const useInventoryServiseDtats = ({
     refetchOnMount: true,
   });
 };
-export default useInventoryServiseDtats;
+export default useInventoryServiseStats;

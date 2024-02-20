@@ -3,13 +3,14 @@ import { useDownloadExcel } from "react-export-table-to-excel";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
 import cl from "classnames";
-import useInventoryServiseStats from "@/hooks/useInventoryServiseStats";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
+import useITServiseStats from "@/hooks/useITServiceStats";
 
 const column = [
-  { name: "department" },
-  { name: "groups" },
+  { name: "№" },
+  { name: "directionn" },
+  { name: "category" },
   { name: "receivedd" },
   { name: "handled_on_time", colSpan: 2, className: "!bg-tableSuccess" },
   { name: "not_handled_on_time", colSpan: 2, className: "!bg-tableWarn" },
@@ -17,7 +18,7 @@ const column = [
   { name: "avg_handling_time_mins" },
 ];
 
-const InventoryServiceStats = () => {
+const ServiceStatsIT = () => {
   const { t } = useTranslation();
   const start = useUpdateQueryStr("start");
   const end = useUpdateQueryStr("end");
@@ -33,7 +34,7 @@ const InventoryServiceStats = () => {
 
   const downloadAsPdf = () => onDownload();
 
-  const { isLoading, data } = useInventoryServiseStats({
+  const { isLoading, data } = useITServiseStats({
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),
   });
@@ -112,9 +113,8 @@ const InventoryServiceStats = () => {
             </thead>
             <tbody>
               <tr className="hover:bg-transparent">
-                <td rowSpan={Object.values(data!).length}>
-                  {t("inventory_retail")}
-                </td>
+                <td rowSpan={Object.values(data!).length + 1}>1</td>
+                <td rowSpan={Object.values(data!).length}>{t("support")}</td>
                 {[Object.entries(data!)?.[0]]?.map((item) => (
                   <Fragment key={item[0]}>
                     <td>{item[0]}</td>
@@ -215,4 +215,4 @@ const InventoryServiceStats = () => {
   );
 };
 
-export default InventoryServiceStats;
+export default ServiceStatsIT;

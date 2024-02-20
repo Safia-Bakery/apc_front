@@ -33,7 +33,10 @@ const BaseStatsBlock = lazy(() => import("./components/BaseStatsBlock"));
 const MarketingStatCategory = lazy(
   () => import("@/pages/StatsMarketing/StatCategory")
 );
-const ServiceStats = lazy(() => import("@/pages/StatsMarketing/ServiceStats"));
+const ServiceStatsMarketing = lazy(
+  () => import("@/pages/StatsMarketing/ServiceStats")
+);
+const ServiceStatsIT = lazy(() => import("@/pages/StatsIT/ServiceStatsIT"));
 const DepartmentStat = lazy(
   () => import("@/pages/StatsMarketing/DepartmentStat")
 );
@@ -244,7 +247,7 @@ const App = () => {
               path="service_level"
               element={
                 <Suspend>
-                  <ServiceStats />
+                  <ServiceStatsIT />
                 </Suspend>
               }
             />
@@ -268,7 +271,7 @@ const App = () => {
               path="service_level"
               element={
                 <Suspend>
-                  <ServiceStats />
+                  <ServiceStatsMarketing />
                 </Suspend>
               }
             />

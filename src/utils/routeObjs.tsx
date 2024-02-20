@@ -208,13 +208,13 @@ export const sidebarRoutes: SidebarType[] = [
       //   icon: "/assets/icons/remains-in-stock.svg",
       //   screen: MainPermissions.it_remains_in_stock,
       // },
-      // {
-      //   name: "statistics",
-      //   url: "/statistics-it",
-      //   icon: "/assets/icons/statistics.svg",
-      //   // param: "/category",
-      //   screen: MainPermissions.it_statistics,
-      // },
+      {
+        name: "statistics",
+        url: "/statistics-it",
+        icon: "/assets/icons/statistics.svg",
+        param: "/service_level",
+        screen: MainPermissions.it_statistics,
+      },
     ],
   },
 
@@ -1271,14 +1271,14 @@ export const ITStatsRoutes = [
     name: "with_service_level",
     url: "service_level",
   },
-  {
-    name: "direction_report",
-    url: "department",
-  },
-  {
-    name: "with_category",
-    url: "category",
-  },
+  // {
+  //   name: "direction_report",
+  //   url: "department",
+  // },
+  // {
+  //   name: "with_category",
+  //   url: "category",
+  // },
 ];
 
 export const InventoryStatsRoutes = [
