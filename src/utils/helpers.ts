@@ -110,7 +110,6 @@ export const RequestStatusArr = [
 export const ITRequestStatusArr = [
   { id: RequestStatus.new, name: "new" },
   { id: RequestStatus.confirmed, name: "received" },
-  { id: RequestStatus.sendToRepair, name: "sent_to_fix" },
   { id: RequestStatus.done, name: "solved" },
   { id: RequestStatus.rejected, name: "denied" },
   { id: RequestStatus.paused, name: "paused" },
