@@ -37,6 +37,7 @@ const ServiceStatsIT = () => {
   const { isLoading, data } = useITServiseStats({
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),
+    enabled: false,
   });
   const renderAvgCalculator = useMemo(() => {
     if (!!data) {
