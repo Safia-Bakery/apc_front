@@ -1,12 +1,13 @@
-import { Departments, ServiceStatsType } from "@/utils/types";
+import { ServiceStatsType } from "@/utils/types";
 import { Fragment, useEffect, useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
 import cl from "classnames";
-import useServiceMarkStats from "@/hooks/useMarkServiceStats";
-import { handleDepartment, numberWithCommas as fixedN } from "@/utils/helpers";
+
+import { numberWithCommas as fixedN } from "@/utils/helpers";
 import { useTranslation } from "react-i18next";
+import useApcServiceStats from "@/hooks/useApcServiceStats";
 import Loading from "@/components/Loader";
 
 const column = [
@@ -20,7 +21,7 @@ const column = [
   { name: "avg_handling_time_days_hours" },
 ];
 
-const ServiceStatsMarketing = () => {
+const ServiceStatsApc = () => {
   const { t } = useTranslation();
   const start = useUpdateQueryStr("start");
   const end = useUpdateQueryStr("end");
@@ -36,8 +37,7 @@ const ServiceStatsMarketing = () => {
 
   const downloadAsPdf = () => onDownload();
 
-  const { isLoading, data } = useServiceMarkStats({
-    department: Departments.marketing,
+  const { isLoading, data } = useApcServiceStats({
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),
   });
@@ -93,33 +93,35 @@ const ServiceStatsMarketing = () => {
                     {idx + 1}
                   </td>
                   <td rowSpan={!!mainKey[1].length ? mainKey[1].length + 1 : 2}>
-                    {t(handleDepartment({ sub: +mainKey[0] }))}
+                    {mainKey[0]}
                   </td>
 
-                  <td>{mainKey[1][0].category}</td>
+                  <td>{mainKey[1][0]?.category}</td>
                   <td className="text-center">
-                    {mainKey[1][0].total_requests}
+                    {mainKey[1][0]?.total_requests}
                   </td>
 
                   <td className="text-center !bg-tableSuccess">
-                    {mainKey[1][0].finished_on_time}
+                    {mainKey[1][0]?.finished_on_time}
                   </td>
                   <td className="text-center !bg-tableSuccess">
-                    {fixedN(mainKey[1][0].percentage_finished_on_time)}%
+                    {fixedN(mainKey[1][0]?.percentage_finished_on_time)}%
                   </td>
                   <td className="text-center !bg-tableWarn">
-                    {mainKey[1][0].not_finished_on_time}
+                    {mainKey[1][0]?.not_finished_on_time}
                   </td>
                   <td className="text-center !bg-tableWarn">
-                    {fixedN(mainKey[1][0].percentage_not_finished_on_time)}%
+                    {fixedN(mainKey[1][0]?.percentage_not_finished_on_time)}%
                   </td>
                   <td className="text-center !bg-tableDanger">
-                    {mainKey[1][0].status_zero}
+                    {mainKey[1][0]?.status_zero}
                   </td>
                   <td className="text-center !bg-tableDanger">
-                    {fixedN(mainKey[1][0].percentage_status_zero)}%
+                    {fixedN(mainKey[1][0]?.percentage_status_zero)}%
                   </td>
-                  <td className="text-center">{mainKey[1][0].avg_finishing}</td>
+                  <td className="text-center">
+                    {mainKey[1][0]?.avg_finishing}
+                  </td>
                 </tr>
                 {mainKey[1]
                   ?.slice(1)
@@ -204,9 +206,7 @@ const ServiceStatsMarketing = () => {
             ))}
         </tbody>
       </table>
-
       {isLoading && <Loading absolute />}
-
       {!data && !isLoading && <EmptyList />}
       <button id={"service_stat"} className="hidden" onClick={downloadAsPdf}>
         download
@@ -215,4 +215,4 @@ const ServiceStatsMarketing = () => {
   );
 };
 
-export default ServiceStatsMarketing;
+export default ServiceStatsApc;

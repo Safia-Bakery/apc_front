@@ -50,6 +50,7 @@ const BrigadaStat = lazy(() => import("@/pages/StatsApc/BrigadaStat"));
 const InventoryServiceStats = lazy(
   () => import("@/pages/StatsInventory/ServiceStats")
 );
+const ServiceStatsApc = lazy(() => import("@/pages/StatsApc/ServiceStats"));
 
 dayjs.locale("ru");
 
@@ -164,6 +165,14 @@ const App = () => {
                 </Suspend>
               }
             />
+            <Route
+              path="service_level"
+              element={
+                <Suspend>
+                  <ServiceStatsApc />
+                </Suspend>
+              }
+            />
           </Route>
         )}
         {permission?.[MainPermissions.stats_apc_fabric] && (
@@ -224,6 +233,14 @@ const App = () => {
               element={
                 <Suspend>
                   <ShowConsumption />
+                </Suspend>
+              }
+            />
+            <Route
+              path="service_level"
+              element={
+                <Suspend>
+                  <ServiceStatsApc />
                 </Suspend>
               }
             />

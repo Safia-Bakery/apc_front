@@ -116,7 +116,7 @@ export const sidebarRoutes: SidebarType[] = [
       {
         name: "statistics",
         url: "/statistics-apc-retail",
-        param: "/category",
+        param: "/service_level",
         icon: "/assets/icons/statistics.svg",
         screen: MainPermissions.stats_apc_retail,
       },
@@ -159,7 +159,7 @@ export const sidebarRoutes: SidebarType[] = [
         name: "statistics",
         url: "/statistics-apc-fabric",
         icon: "/assets/icons/statistics.svg",
-        param: "/category",
+        param: "/service_level",
         screen: MainPermissions.stats_apc_fabric,
       },
     ],
@@ -1249,6 +1249,10 @@ export const APCStatRoutes = [
   {
     name: "with_consumption",
     url: "consumptions",
+  },
+  {
+    name: "with_service_level",
+    url: "service_level",
   },
 ];
 

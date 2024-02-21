@@ -772,7 +772,7 @@ export interface ServiceStatsType {
 }
 
 export interface ServiceStatsTypes {
-  [key: number]: ServiceStatsType[];
+  [key: number | string]: ServiceStatsType[];
 }
 
 export interface InvServiceStatType {
