@@ -20,6 +20,7 @@ import {
   MainPermissions,
   ModalTypes,
   RequestStatus,
+  Sphere,
 } from "@/utils/types";
 import UploadComponent, { FileItem } from "@/components/FileUpload";
 import ShowRequestModals from "@/components/ShowRequestModals";
@@ -66,6 +67,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
   const { data: categories, isLoading: categoryLoading } = useCategories({
     enabled: changeModal === ModalTypes.changeCateg,
     department: Departments.it,
+    sphere_status: Sphere.fix,
     category_status: 1,
   });
   const removeParams = useRemoveParams();
@@ -516,7 +518,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                   </tr>
 
                   <tr>
-                    <th>{t("execution_time_hoours")}</th>
+                    <th>{t("execution_time")}</th>
                     <td>
                       {order?.category.ftime} {t("hours")}
                     </td>
@@ -739,7 +741,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                   )}
                   {order?.deny_reason && (
                     <tr>
-                      <th className="font-bold">{t("deny_reason")}</th>
+                      <th className="font-bold">{t("deny_reasonn")}</th>
                       <td>{order?.deny_reason}</td>
                     </tr>
                   )}

@@ -25,13 +25,10 @@ const column = [
   { name: "branch", key: "fillial.name" },
   { name: "category", key: "category" },
   { name: "urgent", key: "urgent" },
-  { name: "pausedd", key: "paused" },
-  { name: "comment", key: "comment" },
+  { name: "reopened", key: "paused" },
+  { name: "comment_table", key: "comment" },
   { name: "rate", key: "rate" },
-  {
-    name: "status",
-    key: "status",
-  },
+  { name: "status", key: "status" },
   { name: "date", key: "category.name" },
 ];
 
