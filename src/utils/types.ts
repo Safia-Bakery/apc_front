@@ -38,6 +38,7 @@ export interface Order {
   size: string;
   id: number | string;
   created_at: Date;
+  updated_at: Date;
   started_at: Date;
   deny_reason: string | null;
   pause_reason: string | null;

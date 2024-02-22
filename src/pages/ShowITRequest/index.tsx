@@ -52,7 +52,7 @@ interface Props {
   attaching: MainPermissions;
 }
 
-const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
+const ShowITRequest: FC<Props> = ({ attaching }) => {
   const { t } = useTranslation();
   const { id, sphere } = useParams();
   const navigate = useNavigate();
@@ -241,7 +241,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
         case ModalTypes.changeCateg:
           return (
             <>
-              <BaseInput label="select_group_problem">
+              <BaseInput label="select_category">
                 <MainSelect
                   values={categories?.items}
                   register={register("category")}
@@ -366,7 +366,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                       })}
                       className="btn btn-success btn-fill"
                     >
-                      {t("solved")}
+                      {t("to_solve")}
                     </button>
                   )}
               </div>
@@ -447,7 +447,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
     <>
       <Card className="overflow-hidden">
         <Header
-          title={`${t("order")} №${id}`}
+          title={`${t("request")} №${id}`}
           subTitle={`${t("status")}: ${t(
             handleStatus({ status: order?.status })
           )}`}
@@ -497,7 +497,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                     </td>
                   </tr>
                   <tr>
-                    <th>{t("group_problem")}</th>
+                    <th>{t("category")}</th>
                     <td className={styles.tableRow}>
                       <div className="flex items-center justify-between">
                         <span>{order?.category?.name}</span>
@@ -644,21 +644,21 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                   <tr>
                     <th>{t("changed_date")}</th>
                     <td>
-                      {order?.started_at
-                        ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
+                      {order?.updated_at
+                        ? dayjs(order?.updated_at).format("DD.MM.YYYY HH:mm")
                         : t("not_given")}
                     </td>
                   </tr>
-                  <tr>
+                  {/* <tr>
                     <th>{t("completion_date")}</th>
                     <td>
                       {order?.finished_at
                         ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
                         : t("not_given")}
                     </td>
-                  </tr>
+                  </tr> */}
                   <tr>
-                    <th>{t("pausedd")}</th>
+                    <th>{t("date_of_pause")}</th>
                     <td>
                       {order?.update_time[RequestStatus.paused]
                         ? dayjs(
@@ -668,7 +668,7 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                     </td>
                   </tr>
                   <tr>
-                    <th>{t("solved")}</th>
+                    <th>{t("date_of_solving")}</th>
                     <td>
                       {order?.update_time[RequestStatus.solved]
                         ? dayjs(
@@ -677,14 +677,27 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                         : t("not_given")}
                     </td>
                   </tr>
+
                   <tr>
-                    <th>{t("canceled")}</th>
+                    <th>{t("date_of_canceling")}</th>
                     <td>
                       {order?.update_time[RequestStatus.rejected]
                         ? dayjs(
                             order?.update_time[RequestStatus.rejected]
                           ).format("DD.MM.YYYY HH:mm")
                         : t("not_given")}
+                    </td>
+                  </tr>
+                  <tr>
+                    {/* <th>{t("pausedd")}</th> */}
+                    <th>{t("reopen")}</th>
+                    <td>
+                      {order?.update_time[RequestStatus.paused] &&
+                      dayjs(order?.update_time[RequestStatus.paused]).isBefore(
+                        order?.update_time[RequestStatus.confirmed]
+                      )
+                        ? t("yes")
+                        : t("no")}
                     </td>
                   </tr>
                   <tr>
@@ -727,6 +740,12 @@ const ShowITRequest: FC<Props> = ({ edit, attaching }) => {
                       </div>
                     </td>
                   </tr>
+
+                  {/* {order?.update_time[RequestStatus.solved] &&order?.update_time[RequestStatus.]&&<tr>
+                      <th className="font-bold">{t("reopen")}</th>
+                      <td>{ order?.comments}</td>
+                    </tr>} */}
+
                   {order?.comments?.[0]?.rating && (
                     <tr>
                       <th className="font-bold">{t("rate_comment")}</th>

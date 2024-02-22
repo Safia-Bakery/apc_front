@@ -18,6 +18,8 @@ const localization = {
       comment: "Примечание",
       comment_table: "Примечания",
       reopened: "Переоткрыто",
+      reopen: "Переоткрыта",
+      reopenedd: "Переоткрыт",
       date: "Дата",
       author: "Автор",
       leave: "Выйти",
@@ -129,7 +131,7 @@ const localization = {
       avg_time: "Среднее время обработки",
       h: "ч", // hours, soat
       minutes: "мин",
-      request: "заяка",
+      request: "Заяка",
       handled_curr_month: "Обработано за текущий месяц",
       handled_last_30: "handled_curr_month",
       request_stats: "Статистика по заказам",
@@ -280,7 +282,7 @@ const localization = {
       servise_level_stats: "статистика по уровнем сервиса",
       service_level: "уровень сервиса",
       inventory_retail: "Инвентарь розница",
-      with_service_level: "По уровнем сервиса",
+      with_service_level: "Уровень сервиса",
       with_category: "По категориям",
       with_branch: "По филиалам",
       stats_it: "Статистика IT",
@@ -334,8 +336,8 @@ const localization = {
       pausedd: "Приостановлен",
       canceled: "Отменен",
       resume: "Возобновить",
-      solved: "Решён",
-      pause_reason: "Причина паузы",
+      solved: "Решен",
+      pause_reason: "Причина приостановки",
       mark_requests: "Заявки Маркетинг",
 
       one_day: "1 день",
@@ -345,6 +347,10 @@ const localization = {
       days: "дней",
 
       not_handled_in_process: "Не обработано / В процессе",
+      to_solve: "Решить",
+      date_of_pause: "Дата приостановки",
+      date_of_solving: "Дата решения",
+      date_of_canceling: "Дата отмены",
     },
   },
   uz: {
