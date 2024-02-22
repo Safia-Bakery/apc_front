@@ -60,6 +60,22 @@ const ShowRequestInventory = () => {
 
   const handleBack = () => navigate("/requests-inventory");
 
+  const handleReceive = () => {
+    attach(
+      {
+        request_id: Number(id),
+        status: RequestStatus.confirmed,
+      },
+      {
+        onSuccess: () => {
+          orderRefetch();
+          successToast("assigned");
+        },
+        onError: (e: any) => errorToast(e.message),
+      }
+    );
+  };
+
   const handleRequest =
     ({ status }: { status: RequestStatus }) =>
     () => {
@@ -72,7 +88,7 @@ const ShowRequestInventory = () => {
             deny_reason: getValues("cancel_reason"),
           },
           {
-            onSuccess: (data: any) => {
+            onSuccess: () => {
               orderRefetch();
               successToast("assigned");
             },
@@ -83,7 +99,11 @@ const ShowRequestInventory = () => {
     };
 
   const renderBtns = useMemo(() => {
-    if (permissions?.[MainPermissions.edit_requests_inventory] && isNew)
+    if (
+      permissions?.[MainPermissions.edit_requests_inventory] &&
+      !!order?.status.toString() &&
+      order?.status < RequestStatus.done
+    )
       return (
         <div className="float-end mb10">
           <button
@@ -92,14 +112,24 @@ const ShowRequestInventory = () => {
           >
             {t("deny")}
           </button>
-          <button
-            onClick={handleRequest({
-              status: RequestStatus.done,
-            })}
-            className="btn btn-success btn-fill"
-          >
-            {t("finish")}
-          </button>
+          {isNew ? (
+            <button
+              onClick={handleReceive}
+              className="btn btn-success btn-fill"
+              id="recieve_request"
+            >
+              {t("receive")}
+            </button>
+          ) : (
+            <button
+              onClick={handleRequest({
+                status: RequestStatus.done,
+              })}
+              className="btn btn-success btn-fill"
+            >
+              {t("finish")}
+            </button>
+          )}
         </div>
       );
   }, [permissions, order?.status, changed]);

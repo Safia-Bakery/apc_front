@@ -302,7 +302,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                   })}
                   className="btn btn-success btn-fill w-full"
                 >
-                  Принять
+                  {t("apply")}
                 </button>
               </div>
             </>
@@ -329,7 +329,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
               onClick={handleModal(ModalTypes.cancelRequest)}
               className="btn btn-danger btn-fill"
             >
-              {t("cancelation")}
+              {t("calcel")}
             </button>
           ) : (
             <div />
@@ -602,7 +602,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                 <tbody>
                   <tr>
                     <th className="w-1/3">{t("urgent")}</th>
-                    <td>{!order?.category?.urgent ? "Нет" : "Да"}</td>
+                    <td>{!order?.category?.urgent ? t("no") : t("yes")}</td>
                   </tr>
                   <tr>
                     <th>{t("changed")}</th>
@@ -693,9 +693,8 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                     <th>{t("reopen")}</th>
                     <td>
                       {order?.update_time[RequestStatus.paused] &&
-                      dayjs(order?.update_time[RequestStatus.paused]).isBefore(
-                        order?.update_time[RequestStatus.confirmed]
-                      )
+                      (order?.update_time[RequestStatus.done] ||
+                        order?.update_time[RequestStatus.confirmed])
                         ? t("yes")
                         : t("no")}
                     </td>

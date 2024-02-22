@@ -12,7 +12,7 @@ import MainInput from "@/components/BaseInputs/MainInput";
 import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
 import BranchSelect from "@/components/BranchSelect";
 import useQueryString from "custom/useQueryString";
-import { Departments, MainPermissions } from "@/utils/types";
+import { Departments, MainPermissions, Sphere } from "@/utils/types";
 import dayjs from "dayjs";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import useCategories from "@/hooks/useCategories";
@@ -26,12 +26,11 @@ const ITFilter: FC = () => {
   const navigate = useNavigateParams();
   const deleteParam = useRemoveParams();
   const perm = useAppSelector(permissionSelector);
-  const sphere_status = Number(useQueryString("sphere_status"));
 
   const { data: categories, refetch: catRefetch } = useCategories({
     department: Departments.it,
     enabled: false,
-    ...(!!sphere_status && { sphere_status }),
+    sphere_status: Sphere.fix,
   });
 
   const { data: brigades, refetch: masterRefetch } = useBrigadas({

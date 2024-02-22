@@ -24,9 +24,10 @@ const AddedInventoryProducts = () => {
   const { data: order, refetch } = useOrder({ id: Number(id) });
 
   const handleStatus = (status: number) => {
-    if (!order?.status && !status) return "new";
-    if (!!order?.status && !status) return "assing_to_new_request";
-    if (status) return "sent";
+    if (order?.status! < RequestStatus.done && !status) return "new";
+    if (order?.status === RequestStatus.done && !status)
+      return "assing_to_new_request";
+    if (!!status) return "sent";
     else return "";
   };
 
@@ -62,7 +63,7 @@ const AddedInventoryProducts = () => {
                 <td>{item?.comment}</td>
                 <td>{t(handleStatus(item?.status))}</td>
                 <td width={40}>
-                  {!item.status && order.status === RequestStatus.new && (
+                  {!item.status && order.status === RequestStatus.confirmed && (
                     <div
                       className="cursor-pointer"
                       onClick={handleUpdateProd(item.id)}

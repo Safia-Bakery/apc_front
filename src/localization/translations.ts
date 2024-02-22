@@ -179,7 +179,7 @@ const localization = {
       objections: "Возражении",
       offers: "Предложении",
       answered: "Отвечен",
-      denied: "Отклонён",
+      denied: "Отклонен",
       purchasing_requests: "Заявки на закуп",
       remains_in_stock: "Остатки на складах",
       request_for_mins: "Заявка на минимумы",
