@@ -17,10 +17,12 @@ import { useMemo, useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import { useTranslation } from "react-i18next";
 import InventoryRemainsFilter from "./filter";
+import { numberWithCommas } from "@/utils/helpers";
 
 const column = [
   { name: "№", key: "" },
   { name: "name_in_table", key: "name" },
+  { name: "price", key: "price", center: true },
   { name: "num", key: "num", center: true },
   { name: "remains", key: "amount_left", center: true },
   { name: "min", key: "min_amount", center: true },
@@ -82,6 +84,9 @@ const InventoryRemains = () => {
               >
                 <td width="40">{idx + 1}</td>
                 <td>{tool?.name}</td>
+                <td width={150} className="text-center">
+                  {numberWithCommas(tool?.price)}
+                </td>
                 <td width={150} className="text-center">
                   {tool?.num}
                 </td>

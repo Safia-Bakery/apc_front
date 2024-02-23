@@ -4,7 +4,7 @@ import { Departments, MainPermissions, ToolTypes } from "@/utils/types";
 import Pagination from "@/components/Pagination";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx } from "@/utils/helpers";
+import { handleIdx, numberWithCommas } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import ItemsCount from "@/components/ItemsCount";
 import useQueryString from "custom/useQueryString";
@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next";
 const column = [
   { name: "№", key: "" },
   { name: "name_in_table", key: "name" },
+  { name: "price", key: "price", center: true },
   { name: "remains", key: "amount_left", center: true },
   { name: "min", key: "min_amount", center: true },
   { name: "max", key: "max_amount", center: true },
@@ -123,6 +124,9 @@ const InventoryRemainsMins = () => {
                 >
                   <td width="40">{handleIdx(idx)}</td>
                   <td>{tool?.name}</td>
+                  <td width={150} className="text-center">
+                    {numberWithCommas(tool?.price)}
+                  </td>
                   <td width={150} className="text-center">
                     {tool?.amount_left}
                   </td>
