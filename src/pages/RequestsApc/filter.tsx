@@ -16,6 +16,7 @@ import useCategories from "@/hooks/useCategories";
 import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
 import useUpdateEffect from "custom/useUpdateEffect";
+import useBrigadas from "@/hooks/useBrigadas";
 
 interface Props {
   sphere_status?: Sphere;
@@ -42,12 +43,20 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
   const category_id = Number(useQueryString("category_id"));
   const created_at = useQueryString("created_at");
   const userQ = useQueryString("user");
+  const responsible = Number(useQueryString("responsible"));
   const idQ = useQueryString("id");
 
   const startRange = (start: Date | null) => {
     if (start === undefined) deleteParam(["created_at"]);
     if (!!start) navigate({ created_at: start });
   };
+
+  const { data: brigades, refetch: masterRefetch } = useBrigadas({
+    enabled: false,
+    department: Departments.apc,
+    sphere_status,
+  });
+
   const handleName = (e: ChangeEvent<HTMLInputElement>) =>
     $user(e.target.value);
 
@@ -137,9 +146,16 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
       </td>
       <td className="p-0">
         <BaseInput className="!m-1">
-          <MainInput
+          {/* <MainInput
             className="!mb-0"
             onChange={(e) => navigate({ user: e.target.value })}
+          /> */}
+
+          <MainSelect
+            values={brigades?.items}
+            onFocus={() => masterRefetch()}
+            value={responsible.toString()}
+            onChange={(e) => navigate({ responsible: e.target.value })}
           />
         </BaseInput>
       </td>

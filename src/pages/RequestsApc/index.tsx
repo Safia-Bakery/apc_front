@@ -50,6 +50,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
   const rate = useQueryString("rate");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
+  const responsible = Number(useQueryString("responsible"));
 
   const column = useMemo(() => {
     const columns = [
@@ -93,6 +94,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
     ...(!!request_status && { request_status }),
     ...(!!user && { user }),
     ...(!!rate && { rate: !!rate }),
+    ...(!!responsible && { brigada_id: responsible }),
   });
 
   const renderFilter = useMemo(() => {
