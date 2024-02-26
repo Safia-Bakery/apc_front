@@ -130,7 +130,7 @@ const ShowRequestModals = () => {
                 <Loading />
               ) : (
                 brigades?.items
-                  .filter((item) => !!item.user!?.length)
+                  .filter((item) => !!item.user!?.length && !!item.status)
                   .map((item, idx) => (
                     <div key={idx} className={styles.item}>
                       <h6 className="text-lg">{item?.name}</h6>

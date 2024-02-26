@@ -142,7 +142,7 @@ const RequestsIT = () => {
                     {order?.comments?.[0]?.rating}
                   </td>
                   <td>{t(handleStatus({ status: order?.status }))}</td>
-                  <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
+                  <td>{dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}</td>
                 </tr>
               ))}
           </tbody>
