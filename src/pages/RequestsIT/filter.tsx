@@ -108,7 +108,7 @@ const ITFilter: FC = () => {
             onChange={handleResponsible}
           /> */}
           <MainSelect
-            values={brigades?.items}
+            values={brigades?.items.filter((item) => !!item.status)}
             onFocus={() => masterRefetch()}
             value={responsible.toString()}
             onChange={(e) => navigate({ responsible: e.target.value })}

@@ -152,7 +152,7 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
           /> */}
 
           <MainSelect
-            values={brigades?.items}
+            values={brigades?.items.filter((item) => !!item.status)}
             onFocus={() => masterRefetch()}
             value={responsible.toString()}
             onChange={(e) => navigate({ responsible: e.target.value })}
