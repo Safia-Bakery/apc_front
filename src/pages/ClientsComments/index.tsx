@@ -25,6 +25,7 @@ import { baseURL } from "@/main";
 import { useNavigateParams } from "custom/useCustomNavigate";
 import ShowRequestModals from "@/components/ShowRequestModals";
 import { useTranslation } from "react-i18next";
+import { dateTimeFormat } from "@/utils/keys";
 
 const column = [
   { name: "№", key: "id" },
@@ -113,9 +114,7 @@ const ClientsComments = () => {
                     <td>{comment?.product}</td>
 
                     <td>{comment?.fillial?.parentfillial?.name}</td>
-                    <td>
-                      {dayjs(comment?.created_at).format("DD.MM.YYYY HH:mm")}
-                    </td>
+                    <td>{dayjs(comment?.created_at).format(dateTimeFormat)}</td>
                     <td>
                       {comment?.file?.[0]?.url && (
                         <div

@@ -15,6 +15,7 @@ import { StockItem } from "@/utils/types";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
+import { dateMonthYear } from "@/utils/keys";
 
 const column = [
   { name: "№", key: "" },
@@ -90,7 +91,7 @@ const RemainsInStock = () => {
                 <tr key={idx}>
                   <td width="40">{handleIdx(idx)}</td>
                   <td>{item?.name}</td>
-                  <td>{dayjs(item?.last_update).format("DD.MM.YYYY")}</td>
+                  <td>{dayjs(item?.last_update).format(dateMonthYear)}</td>
                   <td>{item?.amount_left}</td>
                   <td>{numberWithCommas(item?.total_price)}</td>
                 </tr>

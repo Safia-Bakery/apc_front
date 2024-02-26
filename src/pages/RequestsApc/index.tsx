@@ -18,6 +18,7 @@ import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import { useTranslation } from "react-i18next";
+import { dateMonthYear, yearMonthDate } from "@/utils/keys";
 
 interface Props {
   add: MainPermissions;
@@ -87,7 +88,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
     ...(!!system && { is_bot: !!system }),
     ...(!!category_id && { category_id }),
     ...(!!created_at && {
-      created_at: dayjs(created_at).format("YYYY-MM-DD"),
+      created_at: dayjs(created_at).format(yearMonthDate),
     }),
     ...(!!id && { id }),
     ...(!!branch?.id && { fillial_id: branch?.id }),
@@ -174,7 +175,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                       ? order?.brigada?.name
                       : t("not_given")}
                   </td>
-                  <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
+                  <td>{dayjs(order?.created_at).format(dateMonthYear)}</td>
                   <td className="text-center" width={50}>
                     {order?.comments?.[0]?.rating}
                   </td>

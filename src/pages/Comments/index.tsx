@@ -10,6 +10,7 @@ import useComments from "@/hooks/useComments";
 import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import { useTranslation } from "react-i18next";
+import { dateTimeFormat } from "@/utils/keys";
 
 const column = [
   { name: "№", key: "id" },
@@ -59,7 +60,7 @@ const Comments = () => {
                     <td>{comment?.comment}</td>
                     <td>
                       {dayjs(comment?.request?.finished_at).format(
-                        "DD.MM.YYYY HH:mm"
+                        dateTimeFormat
                       )}
                     </td>
                   </tr>

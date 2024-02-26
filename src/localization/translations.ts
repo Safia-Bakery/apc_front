@@ -218,6 +218,7 @@ const localization = {
       group_problem: "Группа проблем",
       receipt_date: "Дата поступления",
       changed: "Изменил",
+      has_changed: "Изменен",
       person_name: "Имя",
       phone_number: "Номер телефона",
       subcategory: "Подкатегория",

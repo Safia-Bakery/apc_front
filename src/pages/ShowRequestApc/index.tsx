@@ -35,6 +35,7 @@ import Loading from "@/components/Loader";
 import cl from "classnames";
 import { permissionSelector } from "reducers/sidebar";
 import { useTranslation } from "react-i18next";
+import { dateTimeFormat } from "@/utils/keys";
 
 interface Props {
   edit?: MainPermissions;
@@ -413,7 +414,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                     <th>{t("receipt_date")}:</th>
                     <td>
                       {order?.created_at
-                        ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.created_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>
@@ -421,7 +422,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                     <th>{t("changed_date")}:</th>
                     <td>
                       {order?.started_at
-                        ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.started_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>
@@ -429,7 +430,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                     <th>{t("completion_date")}:</th>
                     <td>
                       {order?.finished_at
-                        ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.finished_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>

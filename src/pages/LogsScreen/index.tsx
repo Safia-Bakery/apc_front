@@ -7,6 +7,7 @@ import { RequestStatus } from "@/utils/types";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
+import { dateTimeFormat } from "@/utils/keys";
 
 const column = [
   { name: "№" },
@@ -53,7 +54,7 @@ const Logs = () => {
                     <td width={40}>{idx + 1}</td>
                     <td>{item.message}</td>
                     <td>{item.user.full_name}</td>
-                    <td>{dayjs(item.created_at).format("DD.MM.YYYY HH:mm")}</td>
+                    <td>{dayjs(item.created_at).format(dateTimeFormat)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -94,7 +95,7 @@ const Logs = () => {
                 <td>
                   {order?.update_time?.[RequestStatus.new]
                     ? dayjs(order?.update_time?.[RequestStatus.new]).format(
-                        "DD.MM.YYYY HH:mm"
+                        dateTimeFormat
                       )
                     : t("not_given")}
                 </td>
@@ -108,7 +109,7 @@ const Logs = () => {
                   {order?.update_time?.[RequestStatus.confirmed]
                     ? dayjs(
                         order?.update_time?.[RequestStatus.confirmed]
-                      ).format("DD.MM.YYYY HH:mm")
+                      ).format(dateTimeFormat)
                     : t("not_given")}
                 </td>
                 <td>
@@ -131,7 +132,7 @@ const Logs = () => {
                 <td>
                   {order?.update_time?.[RequestStatus.done]
                     ? dayjs(order?.update_time?.[RequestStatus.done]).format(
-                        "DD.MM.YYYY HH:mm"
+                        dateTimeFormat
                       )
                     : t("not_given")}
                 </td>
@@ -160,7 +161,7 @@ const Logs = () => {
                   {order?.update_time?.[RequestStatus.rejected]
                     ? dayjs(
                         order?.update_time?.[RequestStatus.rejected]
-                      ).format("DD.MM.YYYY HH:mm")
+                      ).format(dateTimeFormat)
                     : t("not_given")}
                 </td>
                 <td>
@@ -184,7 +185,7 @@ const Logs = () => {
                     {order?.update_time?.[RequestStatus.paused]
                       ? dayjs(
                           order?.update_time?.[RequestStatus.paused]
-                        ).format("DD.MM.YYYY HH:mm")
+                        ).format(dateTimeFormat)
                       : t("not_given")}
                   </td>
                   <td>
@@ -213,7 +214,7 @@ const Logs = () => {
                     {order?.update_time?.[RequestStatus.solved]
                       ? dayjs(
                           order?.update_time?.[RequestStatus.solved]
-                        ).format("DD.MM.YYYY HH:mm")
+                        ).format(dateTimeFormat)
                       : t("not_given")}
                   </td>
                   <td>{t("not_given")}</td>

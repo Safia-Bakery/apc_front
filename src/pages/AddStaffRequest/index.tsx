@@ -18,7 +18,7 @@ import Loading from "@/components/Loader";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import dayjs from "dayjs";
-import { staffCategoryId } from "@/utils/keys";
+import { staffCategoryId, yearMonthDate } from "@/utils/keys";
 import { useTranslation } from "react-i18next";
 
 const AddStaffRequest = () => {
@@ -106,7 +106,7 @@ const AddStaffRequest = () => {
         <BaseInputs label="delivery_date">
           <input
             className="form-control mb-2"
-            value={dayjs(date).format("YYYY-MM-DD")}
+            value={dayjs(date).format(yearMonthDate)}
             type="date"
             onChange={handleDate}
           />

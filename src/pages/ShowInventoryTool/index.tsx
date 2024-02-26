@@ -15,6 +15,7 @@ import toolOrderMutation from "@/hooks/mutation/toolOrder";
 import useInventoryOrders from "@/hooks/useInventoryOrders";
 import { errorToast, successToast } from "@/utils/toast";
 import { useTranslation } from "react-i18next";
+import { dateMonthYear } from "@/utils/keys";
 
 const column = [
   { name: "№", key: "" },
@@ -123,7 +124,7 @@ const ShowInventoryTool = () => {
                     <td width={150} className="text-center">
                       {item?.ordered_amount}
                     </td>
-                    <td>{dayjs(item?.created_at).format("DD.MM.YYYY")}</td>
+                    <td>{dayjs(item?.created_at).format(dateMonthYear)}</td>
                   </tr>
                 ))}
             </tbody>

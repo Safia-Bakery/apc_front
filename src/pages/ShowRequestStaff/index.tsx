@@ -15,6 +15,7 @@ import { Departments, ModalTypes, RequestStatus } from "@/utils/types";
 import { useForm } from "react-hook-form";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { useTranslation } from "react-i18next";
+import { dateTimeFormat } from "@/utils/keys";
 
 const ShowRequestStaff = () => {
   const { t } = useTranslation();
@@ -191,7 +192,7 @@ const ShowRequestStaff = () => {
                     <th>{t("receipt_date")}:</th>
                     <td>
                       {order?.created_at
-                        ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.created_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>
@@ -199,7 +200,7 @@ const ShowRequestStaff = () => {
                     <th>{t("changed_date")}:</th>
                     <td>
                       {order?.started_at
-                        ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.started_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>
@@ -207,7 +208,7 @@ const ShowRequestStaff = () => {
                     <th>{t("completion_date")}:</th>
                     <td>
                       {order?.finished_at
-                        ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.finished_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>
@@ -215,7 +216,7 @@ const ShowRequestStaff = () => {
                     <th>{t("delivery_date")}:</th>
                     <td>
                       {order?.arrival_date
-                        ? dayjs(order?.arrival_date).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.arrival_date).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>

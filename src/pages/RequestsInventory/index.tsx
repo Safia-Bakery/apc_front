@@ -14,6 +14,7 @@ import ItemsCount from "@/components/ItemsCount";
 import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import { useTranslation } from "react-i18next";
+import { dateMonthYear, yearMonthDate } from "@/utils/keys";
 
 const column = [
   { name: "№", key: "" },
@@ -52,7 +53,7 @@ const RequestsInventory = () => {
     department: Departments.inventory,
     ...(!!request_status && { request_status }),
     ...(!!created_at && {
-      created_at: dayjs(created_at).format("YYYY-MM-DD"),
+      created_at: dayjs(created_at).format(yearMonthDate),
     }),
     ...(!!branch?.id && { fillial_id: branch?.id }),
     ...(!!user && { user }),
@@ -105,7 +106,7 @@ const RequestsInventory = () => {
                         ))}
                     </ul>
                   </td>
-                  <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
+                  <td>{dayjs(order?.created_at).format(dateMonthYear)}</td>
                   <td>
                     {t(
                       handleStatus({

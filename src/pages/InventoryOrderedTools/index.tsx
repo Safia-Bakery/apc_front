@@ -15,6 +15,7 @@ import useInventoryOrders from "@/hooks/useInventoryOrders";
 import dayjs from "dayjs";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
+import { dateMonthYear } from "@/utils/keys";
 
 const column = [
   { name: "№", key: "" },
@@ -81,7 +82,7 @@ const InventoryOrderedTools = () => {
                     {!!order.status.toString() &&
                       t(handleStatus({ status: order?.status }))}
                   </td>
-                  <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
+                  <td>{dayjs(order?.created_at).format(dateMonthYear)}</td>
                 </tr>
               ))}
           </tbody>

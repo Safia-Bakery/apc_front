@@ -79,6 +79,7 @@ export interface Order {
     status: number;
   }[];
   category: Category;
+  is_redirected?: boolean;
   location?: { from_loc: string; to_loc: string } | null;
   expanditure: {
     id: number;

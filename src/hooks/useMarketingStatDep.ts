@@ -4,6 +4,7 @@ import apiClient from "@/main";
 import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
 import { MarketingDepartmentTypes, MainPermissions } from "@/utils/types";
+import { yearMonthDate } from "@/utils/keys";
 
 interface BodyTypes {
   enabled?: boolean;
@@ -15,8 +16,8 @@ interface BodyTypes {
 export const useMarketingStatDep = ({
   enabled = true,
   timer = 3600,
-  started_at = dayjs().startOf("month").format("YYYY-MM-DD"),
-  finished_at = dayjs().format("YYYY-MM-DD"),
+  started_at = dayjs().startOf("month").format(yearMonthDate),
+  finished_at = dayjs().format(yearMonthDate),
 }: BodyTypes) => {
   const permmission = useAppSelector(permissionSelector);
   return useQuery({

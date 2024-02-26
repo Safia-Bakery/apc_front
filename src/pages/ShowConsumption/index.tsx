@@ -8,6 +8,7 @@ import { ExpenditureType } from "@/utils/types";
 import Loading from "@/components/Loader";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import useQueryString from "@/hooks/custom/useQueryString";
+import { dateTimeFormat } from "@/utils/keys";
 
 const column = [
   { name: "№", key: "name" },
@@ -65,7 +66,7 @@ const ShowConsumption = () => {
                 </Link>
               </td>
               <td>{item?.amount}</td>
-              <td>{dayjs(item?.created_at).format("DD.MM.YYYY HH:mm")}</td>
+              <td>{dayjs(item?.created_at).format(dateTimeFormat)}</td>
             </tr>
           ))}
         </tbody>

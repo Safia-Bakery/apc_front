@@ -17,6 +17,7 @@ import LogFilter from "./filter";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
+import { dateTimeFormat, yearMonthDate } from "@/utils/keys";
 
 interface Props {
   add: MainPermissions;
@@ -66,7 +67,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
     page: currentPage,
     ...(!!system && { is_bot: !!system }),
     ...(!!created_at && {
-      created_at: dayjs(created_at).format("YYYY-MM-DD"),
+      created_at: dayjs(created_at).format(yearMonthDate),
     }),
     ...(!!id && { id }),
     ...(!!department && { department }),
@@ -150,7 +151,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
                   <td>
                     {!order?.category?.urgent ? t("not_urgent") : t("urgentt")}
                   </td>
-                  <td>{dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}</td>
+                  <td>{dayjs(order?.created_at).format(dateTimeFormat)}</td>
                   <td>
                     {t(
                       handleStatus({

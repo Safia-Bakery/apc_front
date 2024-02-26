@@ -5,20 +5,21 @@ import { useForm } from "react-hook-form";
 import cl from "classnames";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { yearMonthDate } from "@/utils/keys";
 
 const DateRangeBlock = () => {
   const { t } = useTranslation();
   const start =
-    useQueryString("start") || dayjs().startOf("month").format("YYYY-MM-DD");
-  const end = useQueryString("end") || dayjs().format("YYYY-MM-DD");
+    useQueryString("start") || dayjs().startOf("month").format(yearMonthDate);
+  const end = useQueryString("end") || dayjs().format(yearMonthDate);
   const navigateParams = useNavigateParams();
   const { register, getValues, reset, setValue } = useForm();
 
   const handleDate = () => {
     const { end, start } = getValues();
     navigateParams({
-      end: dayjs(end).format("YYYY-MM-DD"),
-      start: dayjs(start).format("YYYY-MM-DD"),
+      end: dayjs(end).format(yearMonthDate),
+      start: dayjs(start).format(yearMonthDate),
     });
   };
 

@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import apiClient from "@/main";
 import { Departments, DistinctTypes, Sphere } from "@/utils/types";
+import { yearMonthDate } from "@/utils/keys";
 
 interface BodyTypes {
   enabled?: boolean;
@@ -16,8 +17,8 @@ export const useDistinct = ({
   enabled = true,
   department,
   sphere_status,
-  started_at = dayjs().startOf("month").format("YYYY-MM-DD"),
-  finished_at = dayjs().format("YYYY-MM-DD"),
+  started_at = dayjs().startOf("month").format(yearMonthDate),
+  finished_at = dayjs().format(yearMonthDate),
 }: BodyTypes) => {
   return useQuery({
     queryKey: [

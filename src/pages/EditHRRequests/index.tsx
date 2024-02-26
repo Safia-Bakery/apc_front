@@ -14,6 +14,7 @@ import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import { useForm } from "react-hook-form";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
+import { dateTimeFormat } from "@/utils/keys";
 
 const EditHRRequests = () => {
   const { t } = useTranslation();
@@ -89,7 +90,7 @@ const EditHRRequests = () => {
               <th>{t("created_at")}</th>
               <td>
                 {faq?.created_at
-                  ? dayjs(faq?.created_at).format("DD.MM.YYYY HH:mm")
+                  ? dayjs(faq?.created_at).format(dateTimeFormat)
                   : t("not_given")}
               </td>
             </tr>

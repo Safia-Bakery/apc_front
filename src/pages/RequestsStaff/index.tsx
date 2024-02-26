@@ -19,7 +19,7 @@ import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
 import useStaffExcell from "@/hooks/useStaffExcell";
 import { baseURL } from "@/main";
-import { staffCategoryId } from "@/utils/keys";
+import { dateMonthYear, staffCategoryId, yearMonthDate } from "@/utils/keys";
 import { useTranslation } from "react-i18next";
 
 const column = [
@@ -62,7 +62,7 @@ const RequestsStaff = () => {
     isFetching: excellFtching,
     isLoading: excellLoading,
   } = useStaffExcell({
-    date: dayjs(!!arrival_date ? arrival_date : tomorrow).format("YYYY-MM-DD"),
+    date: dayjs(!!arrival_date ? arrival_date : tomorrow).format(yearMonthDate),
     file: excelFile,
   });
 
@@ -74,7 +74,7 @@ const RequestsStaff = () => {
     enabled: true,
     page: currentPage,
     arrival_date: dayjs(!!arrival_date ? arrival_date : tomorrow).format(
-      "YYYY-MM-DD"
+      yearMonthDate
     ),
     category_id: staffCategoryId,
     ...(!!sphere_status && { sphere_status: Number(sphere_status) }),
@@ -190,7 +190,7 @@ const RequestsStaff = () => {
                   </td>
                   <td>{order?.size}</td>
                   <td>{order?.bread_size}</td>
-                  <td>{dayjs(order?.arrival_date).format("DD.MM.YYYY")}</td>
+                  <td>{dayjs(order?.arrival_date).format(dateMonthYear)}</td>
                   <td>
                     {t(
                       handleStatus({

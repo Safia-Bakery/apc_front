@@ -16,6 +16,7 @@ import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import { useTranslation } from "react-i18next";
+import { dateMonthYear, yearMonthDate } from "@/utils/keys";
 
 const column = [
   { name: "№", key: "" },
@@ -58,7 +59,7 @@ const RequestsCCTV = () => {
     ...(!!id && { id }),
     ...(!!category_id && { category_id }),
     ...(!!created_at && {
-      created_at: dayjs(created_at).format("YYYY-MM-DD"),
+      created_at: dayjs(created_at).format(yearMonthDate),
     }),
     ...(!!branch?.id && { fillial_id: branch?.id }),
     ...(!!request_status && { request_status }),
@@ -134,7 +135,7 @@ const RequestsCCTV = () => {
                       })
                     )}
                   </td>
-                  <td>{dayjs(order?.created_at).format("DD.MM.YYYY")}</td>
+                  <td>{dayjs(order?.created_at).format(dateMonthYear)}</td>
                   <td>
                     {!!order?.user_manager
                       ? order?.user_manager

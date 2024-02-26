@@ -46,6 +46,7 @@ import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import { useTranslation } from "react-i18next";
 import MainInput from "@/components/BaseInputs/MainInput";
 import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
+import { dateTimeFormat } from "@/utils/keys";
 
 interface Props {
   edit: MainPermissions;
@@ -212,7 +213,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
   //         ? "!bg-red-300"
   //         : "";
 
-  //     return { time: time.format("DD.MM.YYYY HH:mm"), className };
+  //     return { time: time.format(dateTimeFormat), className };
   //   }
   // }, [order?.status]);
 
@@ -500,7 +501,14 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                     <th>{t("category")}</th>
                     <td className={styles.tableRow}>
                       <div className="flex items-center justify-between">
-                        <span>{order?.category?.name}</span>
+                        <span>
+                          {order?.category?.name}{" "}
+                          {order?.is_redirected && (
+                            <span className="font-bold">
+                              ({t("has_changed")})
+                            </span>
+                          )}
+                        </span>
 
                         {order?.status! !== RequestStatus.done && (
                           <button
@@ -617,9 +625,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                     <td className="font-bold">
                       <div className="flex w-full justify-between">
                         <span>
-                          {dayjs(order?.finishing_time).format(
-                            "DD.MM.YYYY HH:mm"
-                          )}
+                          {dayjs(order?.finishing_time).format(dateTimeFormat)}
                         </span>
 
                         {order?.status! !== RequestStatus.done && (
@@ -637,7 +643,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                     <th>{t("receipt_date")}</th>
                     <td>
                       {order?.created_at
-                        ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.created_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>
@@ -645,7 +651,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                     <th>{t("changed_date")}</th>
                     <td>
                       {order?.updated_at
-                        ? dayjs(order?.updated_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.updated_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>
@@ -653,7 +659,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                     <th>{t("completion_date")}</th>
                     <td>
                       {order?.finished_at
-                        ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.finished_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr> */}
@@ -663,7 +669,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                       {order?.update_time[RequestStatus.paused]
                         ? dayjs(
                             order?.update_time[RequestStatus.paused]
-                          ).format("DD.MM.YYYY HH:mm")
+                          ).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>
@@ -673,7 +679,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                       {order?.update_time[RequestStatus.solved]
                         ? dayjs(
                             order?.update_time[RequestStatus.solved]
-                          ).format("DD.MM.YYYY HH:mm")
+                          ).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>
@@ -684,7 +690,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                       {order?.update_time[RequestStatus.rejected]
                         ? dayjs(
                             order?.update_time[RequestStatus.rejected]
-                          ).format("DD.MM.YYYY HH:mm")
+                          ).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>

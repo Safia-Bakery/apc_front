@@ -28,6 +28,7 @@ import { permissionSelector } from "reducers/sidebar";
 import AddedInventoryProducts from "@/components/AddedInventoryProducts";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
+import { dateTimeFormat } from "@/utils/keys";
 
 const ShowRequestInventory = () => {
   const { t } = useTranslation();
@@ -259,7 +260,7 @@ const ShowRequestInventory = () => {
                     <th>{t("receipt_date")}:</th>
                     <td>
                       {order?.created_at
-                        ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.created_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>
@@ -267,7 +268,7 @@ const ShowRequestInventory = () => {
                     <th>{t("changed_date")}:</th>
                     <td>
                       {order?.started_at
-                        ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.started_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>
@@ -275,7 +276,7 @@ const ShowRequestInventory = () => {
                     <th>{t("completion_date")}:</th>
                     <td>
                       {order?.finished_at
-                        ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.finished_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>
@@ -283,9 +284,7 @@ const ShowRequestInventory = () => {
                     <th>{t("deadline")}</th>
                     <td>
                       {order?.finishing_time
-                        ? dayjs(order?.finishing_time).format(
-                            "DD.MM.YYYY HH:mm"
-                          )
+                        ? dayjs(order?.finishing_time).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>

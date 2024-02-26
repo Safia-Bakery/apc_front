@@ -31,6 +31,7 @@ import useQueryString from "custom/useQueryString";
 import cl from "classnames";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
+import { dateTimeFormat } from "@/utils/keys";
 
 const ShowMarketingRequest = () => {
   const { t } = useTranslation();
@@ -211,7 +212,12 @@ const ShowMarketingRequest = () => {
                   </tr>
                   <tr>
                     <th>{t("group_problem")}</th>
-                    <td>{order?.category?.name}</td>
+                    <td>
+                      {!order?.category?.name}{" "}
+                      {order?.is_redirected && (
+                        <span className="font-bold"> ({t("has_changed")})</span>
+                      )}
+                    </td>
                   </tr>
                   <tr>
                     <th>{t("department")}</th>
@@ -268,7 +274,7 @@ const ShowMarketingRequest = () => {
                     <th>{t("receipt_date")}:</th>
                     <td>
                       {order?.created_at
-                        ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.created_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>
@@ -276,7 +282,7 @@ const ShowMarketingRequest = () => {
                     <th>{t("changed_date")}:</th>
                     <td>
                       {order?.started_at
-                        ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.started_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>
@@ -284,7 +290,7 @@ const ShowMarketingRequest = () => {
                     <th>{t("completion_date")}:</th>
                     <td>
                       {order?.finished_at
-                        ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.finished_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>

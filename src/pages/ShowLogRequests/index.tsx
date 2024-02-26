@@ -26,6 +26,7 @@ import cl from "classnames";
 import Loading from "@/components/Loader";
 import useQueryString from "@/hooks/custom/useQueryString";
 import { useTranslation } from "react-i18next";
+import { dateTimeFormat } from "@/utils/keys";
 
 const ShowLogRequests = () => {
   const { t } = useTranslation();
@@ -274,7 +275,7 @@ const ShowLogRequests = () => {
                     <th>{t("receipt_date")}:</th>
                     <td>
                       {order?.created_at
-                        ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.created_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>
@@ -282,7 +283,7 @@ const ShowLogRequests = () => {
                     <th>{t("changed_date")}:</th>
                     <td>
                       {order?.started_at
-                        ? dayjs(order?.started_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.started_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>
@@ -290,7 +291,7 @@ const ShowLogRequests = () => {
                     <th>{t("completion_date")}:</th>
                     <td>
                       {order?.finished_at
-                        ? dayjs(order?.finished_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.finished_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>
@@ -298,7 +299,7 @@ const ShowLogRequests = () => {
                     <th>{t("delivery_date")}:</th>
                     <td>
                       {order?.arrival_date
-                        ? dayjs(order?.arrival_date).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.arrival_date).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>

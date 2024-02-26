@@ -16,6 +16,7 @@ import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
 import DownloadExcell from "@/components/DownloadExcell";
+import { dateTimeFormat, yearMonthDate } from "@/utils/keys";
 
 const column = [
   { name: "№", key: "" },
@@ -63,7 +64,7 @@ const RequestsIT = () => {
     ...(!!id && { id }),
     ...(!!category_id && { category_id }),
     ...(!!created_at && {
-      created_at: dayjs(created_at).format("YYYY-MM-DD"),
+      created_at: dayjs(created_at).format(yearMonthDate),
     }),
     ...(!!branch?.id && { fillial_id: branch?.id }),
     ...(!!request_status && { request_status }),
@@ -142,7 +143,7 @@ const RequestsIT = () => {
                     {order?.comments?.[0]?.rating}
                   </td>
                   <td>{t(handleStatus({ status: order?.status }))}</td>
-                  <td>{dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}</td>
+                  <td>{dayjs(order?.created_at).format(dateTimeFormat)}</td>
                 </tr>
               ))}
           </tbody>

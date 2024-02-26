@@ -7,6 +7,7 @@ import {
   Sphere,
 } from "@/utils/types";
 import dayjs from "dayjs";
+import { yearMonthDate } from "@/utils/keys";
 
 interface Params {
   enabled?: boolean;
@@ -19,8 +20,8 @@ interface Params {
 
 export const useServiceMarkStats = ({
   enabled,
-  started_at = dayjs().startOf("month").format("YYYY-MM-DD"),
-  finished_at = dayjs().format("YYYY-MM-DD"),
+  started_at = dayjs().startOf("month").format(yearMonthDate),
+  finished_at = dayjs().format(yearMonthDate),
   ...params
 }: Params) => {
   return useQuery({

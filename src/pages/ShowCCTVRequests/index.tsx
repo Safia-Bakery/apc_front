@@ -25,6 +25,7 @@ import MainSelect from "@/components/BaseInputs/MainSelect";
 import useCategories from "@/hooks/useCategories";
 import Modal from "@/components/Modal";
 import { useTranslation } from "react-i18next";
+import { dateTimeFormat } from "@/utils/keys";
 
 const ShowCCTVRequests = () => {
   const { t } = useTranslation();
@@ -169,9 +170,7 @@ const ShowCCTVRequests = () => {
 
   const handleValidateDate = (date: string | undefined) => {
     if (date) {
-      return dayjs(date).isValid()
-        ? dayjs(date).format("DD.MM.YYYY HH:mm")
-        : date;
+      return dayjs(date).isValid() ? dayjs(date).format(dateTimeFormat) : date;
     } else return t("not_given");
   };
 
@@ -282,7 +281,7 @@ const ShowCCTVRequests = () => {
                     <th>{t("receipt_date")}:</th>
                     <td>
                       {order?.created_at
-                        ? dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")
+                        ? dayjs(order?.created_at).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
                   </tr>

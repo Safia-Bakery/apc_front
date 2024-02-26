@@ -27,3 +27,7 @@ export enum Months {
   "Ноябрь",
   "Декабрь",
 }
+
+export const dateTimeFormat = "DD.MM.YYYY HH:mm";
+export const dateMonthYear = "DD.MM.YYYY";
+export const yearMonthDate = "YYYY-MM-DD";

@@ -9,6 +9,7 @@ import {
   MainPermissions,
   Sphere,
 } from "@/utils/types";
+import { yearMonthDate } from "@/utils/keys";
 
 interface BodyTypes {
   enabled?: boolean;
@@ -24,8 +25,8 @@ export const useStatsCategory = ({
   timer = 60,
   department,
   sphere_status,
-  started_at = dayjs().startOf("month").format("YYYY-MM-DD"),
-  finished_at = dayjs().format("YYYY-MM-DD"),
+  started_at = dayjs().startOf("month").format(yearMonthDate),
+  finished_at = dayjs().format(yearMonthDate),
 }: BodyTypes) => {
   const permmission = useAppSelector(permissionSelector);
   return useQuery({

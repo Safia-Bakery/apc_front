@@ -12,6 +12,7 @@ import cl from "classnames";
 import ShowRequestModals from "@/components/ShowRequestModals";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
+import { dateTimeFormat } from "@/utils/keys";
 
 const ShowComment = () => {
   const { t } = useTranslation();
@@ -91,9 +92,7 @@ const ShowComment = () => {
                   </tr>
                   <tr>
                     <th>{t("receipt_date")} </th>
-                    <td>
-                      {dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}
-                    </td>
+                    <td>{dayjs(order?.created_at).format(dateTimeFormat)}</td>
                   </tr>
                   <tr>
                     <th>Комментарий</th>
@@ -126,7 +125,7 @@ const ShowComment = () => {
                     <td>rate - 5</td>
                     <td>text</td>
                     <td>
-                      {dayjs("order.time_created").format("DD.MM.YYYY HH:mm")}
+                      {dayjs("order.time_created").format(dateTimeFormat)}
                     </td>
                   </tr>
                 ))}

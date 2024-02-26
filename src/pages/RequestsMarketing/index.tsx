@@ -16,6 +16,7 @@ import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
+import { dateTimeFormat, yearMonthDate } from "@/utils/keys";
 
 const column = [
   { name: "№", key: "" },
@@ -64,7 +65,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
     sub_id,
 
     ...(!!created_at && {
-      created_at: dayjs(created_at).format("YYYY-MM-DD"),
+      created_at: dayjs(created_at).format(yearMonthDate),
     }),
     ...(!!id && { id }),
     ...(!!phone && { executor: phone }),
@@ -121,7 +122,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
                   <td>{order?.user?.phone_number}</td>
                   <td>{order?.category?.name}</td>
                   <td>{order?.fillial?.parentfillial?.name}</td>
-                  <td>{dayjs(order?.created_at).format("DD.MM.YYYY HH:mm")}</td>
+                  <td>{dayjs(order?.created_at).format(dateTimeFormat)}</td>
                   <td>{order?.comments?.[0]?.rating}</td>
                   <td>
                     {t(

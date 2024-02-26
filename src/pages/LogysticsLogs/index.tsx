@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { RequestStatus } from "@/utils/types";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
+import { dateTimeFormat } from "@/utils/keys";
 
 const column = [
   { name: "№" },
@@ -52,7 +53,7 @@ const LogysticsLogs = () => {
               <td>
                 {order?.update_time?.[RequestStatus.new]
                   ? dayjs(order?.update_time?.[RequestStatus.new]).format(
-                      "DD.MM.YYYY HH:mm"
+                      dateTimeFormat
                     )
                   : t("not_given")}
               </td>
@@ -65,7 +66,7 @@ const LogysticsLogs = () => {
               <td>
                 {order?.update_time?.[RequestStatus.confirmed]
                   ? dayjs(order?.update_time?.[RequestStatus.confirmed]).format(
-                      "DD.MM.YYYY HH:mm"
+                      dateTimeFormat
                     )
                   : t("not_given")}
               </td>
@@ -90,7 +91,7 @@ const LogysticsLogs = () => {
                 {order?.update_time?.[RequestStatus.sendToRepair]
                   ? dayjs(
                       order?.update_time?.[RequestStatus.sendToRepair]
-                    ).format("DD.MM.YYYY HH:mm")
+                    ).format(dateTimeFormat)
                   : t("not_given")}
               </td>
               <td>
@@ -114,7 +115,7 @@ const LogysticsLogs = () => {
               <td>
                 {order?.update_time?.[RequestStatus.done]
                   ? dayjs(order?.update_time?.[RequestStatus.done]).format(
-                      "DD.MM.YYYY HH:mm"
+                      dateTimeFormat
                     )
                   : t("not_given")}
               </td>
@@ -137,7 +138,7 @@ const LogysticsLogs = () => {
               <td>
                 {order?.update_time?.[RequestStatus.rejected]
                   ? dayjs(order?.update_time?.[RequestStatus.rejected]).format(
-                      "DD.MM.YYYY HH:mm"
+                      dateTimeFormat
                     )
                   : t("not_given")}
               </td>
@@ -159,7 +160,7 @@ const LogysticsLogs = () => {
               <td>{order?.user_manager}</td>
               <td>
                 {order?.arrival_date
-                  ? dayjs(order?.arrival_date).format("DD.MM.YYYY HH:mm")
+                  ? dayjs(order?.arrival_date).format(dateTimeFormat)
                   : t("not_given")}
               </td>
               <td>Не задано</td>

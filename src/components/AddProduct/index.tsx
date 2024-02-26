@@ -14,6 +14,7 @@ import { MainPermissions, RequestStatus } from "@/utils/types";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import { useTranslation } from "react-i18next";
+import { dateTimeFormat } from "@/utils/keys";
 
 const column = [
   { name: "№" },
@@ -121,7 +122,7 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
                 <td>{item?.tool?.name}</td>
                 <td>{item?.amount}</td>
                 <td>{item?.comment}</td>
-                <td>{dayjs(item?.created_at).format("DD.MM.YYYY HH:mm")}</td>
+                <td>{dayjs(item?.created_at).format(dateTimeFormat)}</td>
                 <td>{item?.user?.full_name}</td>
                 <td width={50}>
                   <div
