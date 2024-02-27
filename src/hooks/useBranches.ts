@@ -1,8 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/main";
-import { permissionSelector } from "reducers/sidebar";
-import { useAppSelector } from "@/store/utils/types";
-import { BranchTypes, MainPermissions } from "@/utils/types";
+import { BranchTypes } from "@/utils/types";
 
 interface BodyTypes {
   name?: string;
@@ -12,27 +10,36 @@ interface BodyTypes {
   fillial_status?: number | string;
 }
 
+interface Params {
+  enabled?: boolean;
+  size?: number;
+  page?: number;
+  body?: BodyTypes;
+  origin?: number;
+  warehouse?: boolean;
+}
+
+const config = { timeout: 5000 };
+
 export const useBranches = ({
   enabled = true,
   size,
   page = 1,
   body,
   origin = 0,
-}: {
-  enabled?: boolean;
-  size?: number;
-  page?: number;
-  body?: BodyTypes;
-  origin?: number;
-}) => {
-  const permmission = useAppSelector(permissionSelector);
+  warehouse,
+}: Params) => {
   return useQuery({
-    queryKey: ["branches", origin, body, page],
+    queryKey: ["branches", origin, body, page, warehouse],
     queryFn: () =>
       apiClient
-        .get({ url: "/fillials", params: { page, size, origin, ...body } })
+        .get({
+          url: warehouse ? "/get/fillial/fabrica" : "/fillials",
+          params: { page, size, origin, ...body },
+          config,
+        })
         .then(({ data: response }) => response as BranchTypes),
-    enabled: enabled && permmission?.[MainPermissions.get_fillials_list],
+    enabled,
   });
 };
 export default useBranches;

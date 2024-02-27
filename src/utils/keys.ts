@@ -31,3 +31,6 @@ export enum Months {
 export const dateTimeFormat = "DD.MM.YYYY HH:mm";
 export const dateMonthYear = "DD.MM.YYYY";
 export const yearMonthDate = "YYYY-MM-DD";
+
+export const screenHeight = window.screen.height;
+export const screenWidth = window.screen.width;
