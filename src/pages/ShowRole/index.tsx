@@ -42,7 +42,7 @@ const ShowRole = () => {
           refetch();
           successToast("successfully updated");
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };

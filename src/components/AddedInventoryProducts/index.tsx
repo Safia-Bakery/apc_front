@@ -34,7 +34,7 @@ const AddedInventoryProducts = () => {
   const handleUpdateProd = (id: number) => () =>
     mutate(
       { id, status: 1 },
-      { onSuccess: () => refetch(), onError: (e: any) => errorToast(e.message) }
+      { onSuccess: () => refetch(), onError: (e) => errorToast(e.message) }
     );
 
   return (

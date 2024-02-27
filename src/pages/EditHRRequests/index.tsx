@@ -42,7 +42,7 @@ const EditHRRequests = () => {
           navigate(`/hr-asked-questions?sphere=${faq?.sphere}`);
           if (!!id) refetch();
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };

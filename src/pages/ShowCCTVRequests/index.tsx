@@ -77,7 +77,7 @@ const ShowCCTVRequests = () => {
             orderRefetch();
             successToast("assigned");
           },
-          onError: (e: any) => errorToast(e.message),
+          onError: (e) => errorToast(e.message),
         }
       );
       removeParams(["modal"]);
@@ -98,7 +98,7 @@ const ShowCCTVRequests = () => {
           successToast("assigned");
           closeModal();
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };

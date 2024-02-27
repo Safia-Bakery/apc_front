@@ -62,7 +62,7 @@ const TgRating = () => {
           TelegramApp.toMainScreen();
           $btnState(false);
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };

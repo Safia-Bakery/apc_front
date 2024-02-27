@@ -72,7 +72,7 @@ const ShowRequestInventory = () => {
           orderRefetch();
           successToast("assigned");
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };
@@ -93,7 +93,7 @@ const ShowRequestInventory = () => {
               orderRefetch();
               successToast("assigned");
             },
-            onError: (e: any) => errorToast(e.message),
+            onError: (e) => errorToast(e.message),
           }
         );
       removeParams(["modal"]);

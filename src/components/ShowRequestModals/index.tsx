@@ -72,7 +72,7 @@ const ShowRequestModals = () => {
           successToast("assigned");
           removeParams(["modal"]);
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };
@@ -109,7 +109,7 @@ const ShowRequestModals = () => {
             orderRefetch();
             successToast("assigned");
           },
-          onError: (e: any) => errorToast(e.message),
+          onError: (e) => errorToast(e.message),
         }
       );
       removeParams(["modal"]);
@@ -221,7 +221,7 @@ const ShowRequestModals = () => {
                 </BaseInput>
               )}
 
-              <button className="btn btn-success" type="submit">
+              <button className="btn btn-success w-full" type="submit">
                 {t("send")}
               </button>
             </div>

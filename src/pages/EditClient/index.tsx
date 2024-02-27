@@ -52,7 +52,7 @@ const EditClient = () => {
           successToast(!!id ? "successfully updated" : "successfully created");
           if (!!id) userRefetch();
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };

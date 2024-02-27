@@ -43,7 +43,7 @@ const EditAddBranch = () => {
           refetch();
           successToast("Успешно изменено");
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       });
     }
   };
@@ -67,7 +67,7 @@ const EditAddBranch = () => {
           successToast(!!id ? "successfully updated" : "successfully created");
           goBack();
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };

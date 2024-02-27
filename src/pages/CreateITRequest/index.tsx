@@ -154,7 +154,7 @@ const CreateITRequest = () => {
           goBack();
           successToast("Заказ успешно создано");
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };

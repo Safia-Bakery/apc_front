@@ -68,20 +68,18 @@ const TelegramAddProduct = () => {
           reset();
           refetch();
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };
 
   const handleDelete = (id: number) => () => {
     deleteExp(id, {
-      onSuccess: (data: any) => {
-        if (data.success) {
-          successToast("Успешно удалено");
-          refetch();
-        }
+      onSuccess: () => {
+        successToast("Успешно удалено");
+        refetch();
       },
-      onError: (e: any) => errorToast(e.message),
+      onError: (e) => errorToast(e.message),
     });
   };
 
@@ -100,7 +98,7 @@ const TelegramAddProduct = () => {
             $btn(true);
             TelegramApp.toMainScreen();
           },
-          onError: (e: any) => errorToast(e.message),
+          onError: (e) => errorToast(e.message),
         }
       );
     };
@@ -118,7 +116,7 @@ const TelegramAddProduct = () => {
             inputRef.current.value = null;
             dispatch(uploadReport(null));
           },
-          onError: (e: any) => errorToast(e.message),
+          onError: (e) => errorToast(e.message),
         }
       );
   };

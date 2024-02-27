@@ -42,7 +42,7 @@ const EditAddRole = () => {
           usersRefetch();
           if (!!id) roleRefecth();
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };

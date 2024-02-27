@@ -45,7 +45,7 @@ const EditAddLogCars = () => {
           carsRefetch();
           if (!!id) carRefetch();
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };

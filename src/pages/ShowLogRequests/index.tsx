@@ -70,7 +70,7 @@ const ShowLogRequests = () => {
             orderRefetch();
             successToast("assigned");
           },
-          onError: (e: any) => errorToast(e.message),
+          onError: (e) => errorToast(e.message),
         }
       );
       removeParams(["modal"]);
