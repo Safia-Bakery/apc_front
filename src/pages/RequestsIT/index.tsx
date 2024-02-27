@@ -59,7 +59,7 @@ const RequestsIT = () => {
     isFetching: orderFetching,
   } = useOrders({
     department: Departments.it,
-    sphere_status: Number(sphere),
+    // sphere_status: Number(sphere),
     page: currentPage,
     ...(!!id && { id }),
     ...(!!category_id && { category_id }),
