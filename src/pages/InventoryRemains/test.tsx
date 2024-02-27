@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { createRoot } from 'react-dom/client';
+import * as React from "react";
+import { createRoot } from "react-dom/client";
 
-import { useVirtualizer } from '@tanstack/react-virtual';
+import { useVirtualizer } from "@tanstack/react-virtual";
 import {
   ColumnDef,
   flexRender,
@@ -10,9 +10,9 @@ import {
   Row,
   SortingState,
   useReactTable,
-} from '@tanstack/react-table';
-import { makeData, Person } from './makeData';
-import './index.css';
+} from "@tanstack/react-table";
+import { makeData, Person } from "./makeData";
+import "./index.css";
 
 function ReactTableVirtualized() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -20,42 +20,42 @@ function ReactTableVirtualized() {
   const columns = React.useMemo<ColumnDef<Person>[]>(
     () => [
       {
-        accessorKey: 'id',
-        header: 'ID',
+        accessorKey: "id",
+        header: "ID",
         size: 60,
       },
       {
-        accessorKey: 'firstName',
+        accessorKey: "firstName",
         cell: (info) => info.getValue(),
       },
       {
         accessorFn: (row) => row.lastName,
-        id: 'lastName',
+        id: "lastName",
         cell: (info) => info.getValue(),
         header: () => <span>Last Name</span>,
       },
       {
-        accessorKey: 'age',
-        header: () => 'Age',
+        accessorKey: "age",
+        header: () => "Age",
         size: 50,
       },
       {
-        accessorKey: 'visits',
+        accessorKey: "visits",
         header: () => <span>Visits</span>,
         size: 50,
       },
       {
-        accessorKey: 'status',
-        header: 'Status',
+        accessorKey: "status",
+        header: "Status",
       },
       {
-        accessorKey: 'progress',
-        header: 'Profile Progress',
+        accessorKey: "progress",
+        header: "Profile Progress",
         size: 80,
       },
       {
-        accessorKey: 'createdAt',
-        header: 'Created At',
+        accessorKey: "createdAt",
+        header: "Created At",
         cell: (info) => info.getValue<Date>().toLocaleString(),
       },
     ],
@@ -105,8 +105,8 @@ function ReactTableVirtualized() {
                         <div
                           {...{
                             className: header.column.getCanSort()
-                              ? 'cursor-pointer select-none'
-                              : '',
+                              ? "cursor-pointer select-none"
+                              : "",
                             onClick: header.column.getToggleSortingHandler(),
                           }}
                         >
@@ -115,8 +115,8 @@ function ReactTableVirtualized() {
                             header.getContext()
                           )}
                           {{
-                            asc: ' 🔼',
-                            desc: ' 🔽',
+                            asc: " 🔼",
+                            desc: " 🔽",
                           }[header.column.getIsSorted() as string] ?? null}
                         </div>
                       )}
@@ -171,7 +171,7 @@ function App() {
       <ReactTableVirtualized />
       <br />
       <br />
-      {process.env.NODE_ENV === 'development' ? (
+      {process.env.NODE_ENV === "development" ? (
         <p>
           <strong>Notice:</strong> You are currently running React in
           development mode. Rendering performance will be slightly degraded
@@ -182,7 +182,7 @@ function App() {
   );
 }
 
-const container = document.getElementById('root');
+const container = document.getElementById("root");
 const root = createRoot(container!);
 const { StrictMode } = React;
 
