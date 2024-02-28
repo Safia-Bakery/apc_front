@@ -83,7 +83,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
           goBack();
           if (id) refetch();
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };

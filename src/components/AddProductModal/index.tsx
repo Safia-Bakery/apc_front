@@ -66,7 +66,7 @@ const AddProductModal = ({ addExp }: Props) => {
           handleModal();
           orderRefetch();
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };

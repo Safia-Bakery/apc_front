@@ -74,6 +74,10 @@ const RequestsCCTV = lazy(() => import("@/pages/RequestsCCTV"));
 const CreateCCTVRequest = lazy(() => import("@/pages/CreateCCTVRequest"));
 const ShowCCTVRequests = lazy(() => import("@/pages/ShowCCTVRequests"));
 
+const ApcExpenseCategories = lazy(() => import("@/pages/ApcExpenseCategories"));
+const ApcExpenses = lazy(() => import("@/pages/ApcExpenses"));
+const EditAddApcExpense = lazy(() => import("@/pages/EditAddApcExpense"));
+
 export const sidebarRoutes: SidebarType[] = [
   {
     name: "heat_map",
@@ -119,6 +123,18 @@ export const sidebarRoutes: SidebarType[] = [
         param: "/service_level",
         icon: "/assets/icons/statistics.svg",
         screen: MainPermissions.stats_apc_retail,
+      },
+      {
+        name: "expence_categories",
+        url: "/expence-categories",
+        icon: "/assets/icons/categories.svg",
+        screen: MainPermissions.get_apc_expenses_categories,
+      },
+      {
+        name: "expence_for_outsource",
+        url: "/expence-for-outsource",
+        icon: "/assets/icons/categories.svg",
+        screen: MainPermissions.get_apc_expenses,
       },
     ],
   },
@@ -454,6 +470,26 @@ export const sidebarRoutes: SidebarType[] = [
 ];
 
 export const routes = [
+  {
+    element: <ApcExpenseCategories />,
+    path: "/expence-categories",
+    screen: MainPermissions.get_apc_expenses_categories,
+  },
+  {
+    element: <ApcExpenses />,
+    path: "/expence-for-outsource",
+    screen: MainPermissions.get_apc_expenses,
+  },
+  {
+    element: <EditAddApcExpense />,
+    path: "/expence-for-outsource/add",
+    screen: MainPermissions.add_apc_expenses,
+  },
+  {
+    element: <EditAddApcExpense />,
+    path: "/expence-for-outsource/:id",
+    screen: MainPermissions.edit_apc_expenses,
+  },
   {
     element: <CreateITRequest />,
     path: "/requests-it/:sphere/add",

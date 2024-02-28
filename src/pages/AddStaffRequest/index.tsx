@@ -53,7 +53,7 @@ const AddStaffRequest = () => {
           successToast("Заказ успешно создано");
           navigate("/requests-staff");
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };

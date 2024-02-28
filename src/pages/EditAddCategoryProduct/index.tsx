@@ -65,7 +65,7 @@ const EditAddCategoryProduct = () => {
           goBack();
           if (product_id) productRefetch();
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };

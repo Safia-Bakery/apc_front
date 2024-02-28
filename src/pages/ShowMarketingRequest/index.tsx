@@ -77,11 +77,11 @@ const ShowMarketingRequest = () => {
           deny_reason: getValues("cancel_reason"),
         },
         {
-          onSuccess: (data: any) => {
+          onSuccess: () => {
             orderRefetch();
             successToast("assigned");
           },
-          onError: (e: any) => errorToast(e.message),
+          onError: (e) => errorToast(e.message),
         }
       );
       removeParams(["modal"]);

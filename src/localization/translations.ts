@@ -352,6 +352,12 @@ const localization = {
       date_of_pause: "Дата приостановки",
       date_of_solving: "Дата решения",
       date_of_canceling: "Дата отмены",
+
+      from_date: "Начало",
+      to_date: "Конец",
+      expenses: "Расходы",
+      expence_categories: "Категории по расходам",
+      expence_for_outsource: "Расходы на оутсорсе",
     },
   },
   uz: {

@@ -491,6 +491,13 @@ export enum MainPermissions {
 
   stats_apc_retail = 113,
   stats_marketing = 7,
+
+  get_apc_expenses = 114,
+  edit_apc_expenses = 114,
+  add_apc_expenses = 114,
+  get_apc_expenses_categories = 114,
+  add_apc_expenses_categories = 114,
+  edit_apc_expenses_categories = 114,
 }
 export enum MarketingSubDep {
   designers = 1,
@@ -790,4 +797,22 @@ export interface InvServiceStatType {
 
 export interface InvServiceStatTypes {
   [key: string]: InvServiceStatType;
+}
+
+export interface ExpensesTypes {
+  id: number;
+  status: number;
+  from_date: string;
+  user_id: null | number;
+  description: string;
+  amount: number;
+  created_at: string;
+  to_date: string;
+  expensetype_id: number;
+}
+export interface ExpenseCategoriesTypes {
+  created_at: string;
+  id: number;
+  status: number;
+  name: string;
 }

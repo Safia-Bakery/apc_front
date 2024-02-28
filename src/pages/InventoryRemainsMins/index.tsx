@@ -71,7 +71,7 @@ const InventoryRemainsMins = () => {
         navigate("/order-products-inventory");
         successToast("created");
       },
-      onError: (e: any) => errorToast(e.message),
+      onError: (e) => errorToast(e.message),
     });
 
   const handleMins = () => navigate("/products-ierarch");

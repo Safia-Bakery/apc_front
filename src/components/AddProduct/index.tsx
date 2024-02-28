@@ -47,13 +47,11 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
 
   const handleDelete = (id: number) => () => {
     deleteExp(id, {
-      onSuccess: (data: any) => {
-        if (data.success) {
-          successToast("Успешно удалено");
-          refetch();
-        }
+      onSuccess: () => {
+        successToast("Успешно удалено");
+        refetch();
       },
-      onError: (e: any) => errorToast(e.message),
+      onError: (e) => errorToast(e.message),
     });
   };
 
@@ -66,7 +64,7 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
         onSuccess: (data: any) => {
           if (data.status == 200) successToast("Успешно синхронизировано");
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
 

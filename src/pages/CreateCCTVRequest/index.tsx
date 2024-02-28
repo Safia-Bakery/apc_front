@@ -62,7 +62,7 @@ const CreateCCTVRequest = () => {
             successToast("Заказ успешно создано");
             goBack();
           },
-          onError: (e: any) => errorToast(e.message),
+          onError: (e) => errorToast(e.message),
         }
       );
   };

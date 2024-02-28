@@ -116,7 +116,7 @@ const EditAddMasters = () => {
             brigadaRefetch();
           }
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };

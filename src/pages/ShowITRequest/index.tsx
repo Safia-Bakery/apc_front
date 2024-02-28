@@ -124,7 +124,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
           successToast("success");
           reset({});
         },
-        onError: (e: any) => errorToast(e.message),
+        onError: (e) => errorToast(e.message),
       }
     );
   };
@@ -146,7 +146,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
               successToast("assigned");
               removeParams(["branch", "changeModal"]);
             },
-            onError: (e: any) => errorToast(e.message),
+            onError: (e) => errorToast(e.message),
           }
         );
     };
@@ -172,7 +172,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
             successToast("assigned");
             removeParams(["changeModal"]);
           },
-          onError: (e: any) => errorToast(e.message),
+          onError: (e) => errorToast(e.message),
         }
       );
       removeParams(["modal"]);
@@ -192,7 +192,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
             inputRef.current.value = null;
             successToast("Сохранено");
           },
-          onError: (e: any) => errorToast(e.message),
+          onError: (e) => errorToast(e.message),
         }
       );
   };

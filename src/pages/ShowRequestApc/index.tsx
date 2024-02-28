@@ -1,11 +1,11 @@
-import { FC, useEffect, useMemo, useRef } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AddItems from "@/components/AddProduct";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
-import { useAppDispatch, useAppSelector } from "@/store/utils/types";
+import { useAppSelector } from "@/store/utils/types";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
@@ -23,12 +23,9 @@ import {
   RequestStatus,
   Sphere,
 } from "@/utils/types";
-import UploadComponent, { FileItem } from "@/components/FileUpload";
 import ShowRequestModals from "@/components/ShowRequestModals";
-import { reportImgSelector, uploadReport } from "reducers/selects";
 import useQueryString from "custom/useQueryString";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
-import uploadFileMutation from "@/hooks/mutation/uploadFile";
 import useBrigadas from "@/hooks/useBrigadas";
 import syncExpenditure from "@/hooks/mutation/syncExpenditure";
 import Loading from "@/components/Loader";
@@ -36,6 +33,11 @@ import cl from "classnames";
 import { permissionSelector } from "reducers/sidebar";
 import { useTranslation } from "react-i18next";
 import { dateTimeFormat } from "@/utils/keys";
+import Modal from "@/components/Modal";
+import BaseInput from "@/components/BaseInputs";
+import MainSelect from "@/components/BaseInputs/MainSelect";
+import useCategories from "@/hooks/useCategories";
+import RequestPhotoReport from "@/components/RequestPhotoReport";
 
 interface Props {
   edit?: MainPermissions;
@@ -49,15 +51,15 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
   const navigate = useNavigate();
   const modal = Number(useQueryString("modal"));
   const sphere_status = Number(useQueryString("sphere_status"));
+  const changeModal = Number(useQueryString("changeModal"));
   const permissions = useAppSelector(permissionSelector);
-  const dispatch = useAppDispatch();
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
   const { mutate: attach, isPending: attachLoading } = attachBrigadaMutation();
   const handleModal = (type: ModalTypes) => () => {
     navigateParams({ modal: type });
   };
-  const { getValues } = useForm();
+  const { getValues, register } = useForm();
   const {
     data: order,
     refetch: orderRefetch,
@@ -65,28 +67,33 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
     isFetching: orderFetching,
   } = useOrder({ id: Number(id) });
 
+  const { data: categories, isLoading: categoryLoading } = useCategories({
+    enabled:
+      !!order?.category?.id &&
+      order?.status === RequestStatus.new &&
+      sphere_status === Sphere.fabric,
+    department: Departments.apc,
+    sphere_status: Sphere.fabric,
+    parent_id: Number(order?.category?.id),
+    category_status: 1,
+  });
+
   const { data: brigadas } = useBrigadas({
-    enabled: order?.status! <= 1,
+    enabled: order?.status! <= RequestStatus.confirmed,
     sphere_status,
     department: Departments.apc,
   });
   const isNew = order?.status === RequestStatus.new;
-  const inputRef = useRef<any>(null);
-  const upladedFiles = useAppSelector(reportImgSelector);
+
   const { mutate: synIIco, isPending } = syncExpenditure();
 
-  const { mutate, isPending: uploadLoading } = uploadFileMutation();
+  const closeModal = () => removeParams(["changeModal"]);
 
   const handleBack = () => navigate(`/requests-apc-${Sphere[sphere_status!]}`);
 
-  const handleFilesSelected = (data: FileItem[]) =>
-    dispatch(uploadReport(data));
-
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
-    else {
-      navigateParams({ modal: ModalTypes.showPhoto, photo: file });
-    }
+    else navigateParams({ modal: ModalTypes.showPhoto, photo: file });
   };
 
   const handleBrigada =
@@ -98,24 +105,22 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
             request_id: Number(id),
           },
           {
-            onSuccess: (data: any) => {
-              if (data.status == 200) {
-                successToast("Успешно синхронизировано");
-                attach(
-                  {
-                    request_id: Number(id),
-                    status,
-                    deny_reason: getValues("cancel_reason"),
+            onSuccess: () => {
+              successToast("Успешно синхронизировано");
+              attach(
+                {
+                  request_id: Number(id),
+                  status,
+                  deny_reason: getValues("cancel_reason"),
+                },
+                {
+                  onSuccess: () => {
+                    orderRefetch();
+                    successToast("assigned");
                   },
-                  {
-                    onSuccess: () => {
-                      orderRefetch();
-                      successToast("assigned");
-                    },
-                    onError: (e: any) => errorToast(e.message),
-                  }
-                );
-              }
+                  onError: (e: any) => errorToast(e.message),
+                }
+              );
             },
             onError: (e: any) => errorToast(e.message),
           }
@@ -128,7 +133,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
             deny_reason: getValues("cancel_reason"),
           },
           {
-            onSuccess: (data: any) => {
+            onSuccess: () => {
               orderRefetch();
               successToast("assigned");
             },
@@ -138,23 +143,22 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
       removeParams(["modal"]);
     };
 
-  const handlerSubmitFile = () => {
-    if (upladedFiles?.length)
-      mutate(
-        {
-          request_id: Number(id),
-          files: upladedFiles,
+  const handleChangeCateg = () => {
+    const { category_id } = getValues();
+    attach(
+      {
+        request_id: Number(id),
+        ...(category_id && { category_id }),
+      },
+      {
+        onSuccess: () => {
+          navigateParams({ modal: ModalTypes.assign, changeModal: undefined });
+          orderRefetch();
+          successToast("assigned");
         },
-        {
-          onSuccess: () => {
-            orderRefetch();
-            dispatch(uploadReport([]));
-            inputRef.current.value = null;
-            successToast("Сохранено");
-          },
-          onError: (e: any) => errorToast(e.message),
-        }
-      );
+        onError: (e) => errorToast(e.message),
+      }
+    );
   };
 
   const renderBtns = useMemo(() => {
@@ -216,6 +220,41 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
       );
   }, [permissions, order?.status, isPending]);
 
+  const handleAssign = useCallback(() => {
+    navigateParams(
+      sphere_status === Sphere.fabric && !!categories?.items?.length
+        ? { changeModal: ModalTypes.changeCateg }
+        : { modal: ModalTypes.assign }
+    );
+  }, [categories?.items, sphere_status, order?.category]);
+
+  const renderChangeModals = useMemo(() => {
+    if (order?.status! !== RequestStatus.done)
+      switch (changeModal) {
+        case ModalTypes.changeCateg:
+          return (
+            <>
+              <BaseInput label="select_category">
+                <MainSelect
+                  values={categories?.items}
+                  register={register("category_id")}
+                />
+              </BaseInput>
+
+              <button
+                className="btn btn-success btn-fill w-full"
+                onClick={handleChangeCateg}
+              >
+                {t("apply")}
+              </button>
+            </>
+          );
+
+        default:
+          break;
+      }
+  }, [categoryLoading, changeModal, categories]);
+
   const renderAssignment = useMemo(() => {
     if (attaching && permissions?.[attaching] && order?.status! <= 1) {
       if (order?.brigada?.name) {
@@ -234,7 +273,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
       return (
         <button
           id="assign"
-          onClick={handleModal(ModalTypes.assign)}
+          onClick={handleAssign}
           className="btn btn-success btn-fill float-end"
         >
           {t("assign")}
@@ -242,32 +281,17 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
       );
     }
     return <span>{order?.brigada?.name}</span>;
-  }, [permissions, order?.status, order?.brigada?.name]);
+  }, [permissions, order?.status, order?.brigada?.name, handleAssign]);
 
   const renderfileUploader = useMemo(() => {
-    if (addExp && permissions?.[addExp] && !isNew && order?.status !== 4)
-      return (
-        <Card className="overflow-hidden">
-          <Header title={"add_photo_report"} />
-          <div className="m-3">
-            <UploadComponent
-              onFilesSelected={handleFilesSelected}
-              inputRef={inputRef}
-            />
-            {!!upladedFiles?.length && (
-              <button
-                onClick={handlerSubmitFile}
-                type="button"
-                id={"save_report"}
-                className="btn btn-success float-end btn-fill my-3"
-              >
-                {t("save")}
-              </button>
-            )}
-          </div>
-        </Card>
-      );
-  }, [upladedFiles, permissions, order?.status, order?.file]);
+    if (
+      addExp &&
+      permissions?.[addExp] &&
+      !isNew &&
+      order?.status !== RequestStatus.rejected
+    )
+      return <RequestPhotoReport />;
+  }, [permissions, order?.status, order?.file]);
 
   const renderModal = useMemo(() => {
     if (
@@ -277,16 +301,12 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
       return <ShowRequestModals />;
   }, [order?.status, modal, brigadas]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   if (
     isPending ||
-    uploadLoading ||
     attachLoading ||
     orderLoading ||
-    orderFetching
+    orderFetching ||
+    (categoryLoading && order?.status === RequestStatus.new)
   )
     return <Loading absolute />;
 
@@ -493,6 +513,14 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
           <div className="p-2">{renderSubmit}</div>
         </AddItems>
       )}
+      <Modal isOpen={!!changeModal} onClose={closeModal} className="!max-w-sm">
+        <Header title="select_category">
+          <button onClick={closeModal} className="close">
+            <span>&times;</span>
+          </button>
+        </Header>
+        <div className="p-2">{renderChangeModals}</div>
+      </Modal>
       {renderModal}
     </>
   );
