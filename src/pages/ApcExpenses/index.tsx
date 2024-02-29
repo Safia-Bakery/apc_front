@@ -33,13 +33,13 @@ const ApcExpenses = () => {
   const permission = useAppSelector(permissionSelector);
   const [sort, $sort] = useState<ExpensesTypes[]>();
 
-  const { data: expenses, isLoading: expenceLoading } = useExpensesApc({});
+  const { data: expenses, isLoading: expenseLoading } = useExpensesApc({});
 
-  if (expenceLoading) return <Loading absolute />;
+  if (expenseLoading) return <Loading absolute />;
 
   return (
     <Card>
-      <Header title={"expence_for_outsource"}>
+      <Header title={"expense_for_outsource"}>
         {permission?.[MainPermissions.add_apc_expenses] && (
           <button
             className="btn btn-success btn-fill"
@@ -60,18 +60,18 @@ const ApcExpenses = () => {
 
           {!!expenses?.length && (
             <tbody>
-              {(sort?.length ? sort : expenses)?.map((expence, idx) => (
-                <tr className="bg-blue" key={expence.id}>
+              {(sort?.length ? sort : expenses)?.map((expense, idx) => (
+                <tr className="bg-blue" key={expense.id}>
                   <td width="40">{idx + 1}</td>
-                  <td>{expence?.id}</td>
-                  <td>{numberWithCommas(expence?.amount)}</td>
-                  <td>{expence?.from_date}</td>
-                  <td>{expence?.to_date}</td>
-                  <td>{dayjs(expence?.created_at).format(dateMonthYear)}</td>
-                  <td>{!expence.status ? t("not_active") : t("active")}</td>
+                  <td>{expense?.id}</td>
+                  <td>{numberWithCommas(expense?.amount)}</td>
+                  <td>{expense?.from_date}</td>
+                  <td>{expense?.to_date}</td>
+                  <td>{dayjs(expense?.created_at).format(dateMonthYear)}</td>
+                  <td>{!expense.status ? t("not_active") : t("active")}</td>
                   <td width={40}>
                     {permission?.[MainPermissions.edit_apc_expenses] && (
-                      <TableViewBtn onClick={handleNavigate(`${expence.id}`)} />
+                      <TableViewBtn onClick={handleNavigate(`${expense.id}`)} />
                     )}
                   </td>
                 </tr>
@@ -79,7 +79,7 @@ const ApcExpenses = () => {
             </tbody>
           )}
         </table>
-        {!expenses?.length && !expenceLoading && <EmptyList />}
+        {!expenses?.length && !expenseLoading && <EmptyList />}
       </div>
     </Card>
   );

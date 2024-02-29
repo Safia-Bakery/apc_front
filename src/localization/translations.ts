@@ -359,9 +359,11 @@ const localization = {
       from_date: "Начало",
       to_date: "Конец",
       expenses: "Расходы",
-      expence_categories: "Категории по расходам",
-      expence_for_outsource: "Расходы на оутсорсе",
+      expense: "Расход",
+      expense_categories: "Категории по расходам",
+      expense_for_outsource: "Расходы на оутсорсе",
       is_outsource: "Аутсорс мастер",
+      add_expense: "Добавить расход",
     },
   },
   uz: {

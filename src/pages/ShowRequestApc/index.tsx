@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo } from "react";
+import { FC, lazy, useCallback, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AddItems from "@/components/AddProduct";
 import Card from "@/components/Card";
@@ -23,7 +23,6 @@ import {
   RequestStatus,
   Sphere,
 } from "@/utils/types";
-import ShowRequestModals from "@/components/ShowRequestModals";
 import useQueryString from "custom/useQueryString";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import useBrigadas from "@/hooks/useBrigadas";
@@ -33,11 +32,11 @@ import cl from "classnames";
 import { permissionSelector } from "reducers/sidebar";
 import { useTranslation } from "react-i18next";
 import { dateTimeFormat } from "@/utils/keys";
-import Modal from "@/components/Modal";
-import BaseInput from "@/components/BaseInputs";
-import MainSelect from "@/components/BaseInputs/MainSelect";
 import useCategories from "@/hooks/useCategories";
 import RequestPhotoReport from "@/components/RequestPhotoReport";
+import Suspend from "@/components/Suspend";
+
+const ApcModals = lazy(() => import("./modals"));
 
 interface Props {
   edit?: MainPermissions;
@@ -51,15 +50,14 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
   const navigate = useNavigate();
   const modal = Number(useQueryString("modal"));
   const sphere_status = Number(useQueryString("sphere_status"));
-  const changeModal = Number(useQueryString("changeModal"));
   const permissions = useAppSelector(permissionSelector);
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
   const { mutate: attach, isPending: attachLoading } = attachBrigadaMutation();
-  const handleModal = (type: ModalTypes) => () => {
+  const handleModal = (type: ModalTypes) => {
     navigateParams({ modal: type });
   };
-  const { getValues, register } = useForm();
+  const { getValues } = useForm();
   const {
     data: order,
     refetch: orderRefetch,
@@ -87,8 +85,6 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
 
   const { mutate: synIIco, isPending } = syncExpenditure();
 
-  const closeModal = () => removeParams(["changeModal"]);
-
   const handleBack = () => navigate(`/requests-apc-${Sphere[sphere_status!]}`);
 
   const handleShowPhoto = (file: string) => () => {
@@ -96,69 +92,49 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
     else navigateParams({ modal: ModalTypes.showPhoto, photo: file });
   };
 
-  const handleBrigada =
-    ({ status }: { status: RequestStatus }) =>
-    () => {
-      if (status === RequestStatus.done) {
-        synIIco(
-          {
-            request_id: Number(id),
-          },
-          {
-            onSuccess: () => {
-              successToast("Успешно синхронизировано");
-              attach(
-                {
-                  request_id: Number(id),
-                  status,
-                  deny_reason: getValues("cancel_reason"),
-                },
-                {
-                  onSuccess: () => {
-                    orderRefetch();
-                    successToast("assigned");
-                  },
-                  onError: (e: any) => errorToast(e.message),
-                }
-              );
-            },
-            onError: (e: any) => errorToast(e.message),
-          }
-        );
-      } else
-        attach(
-          {
-            request_id: Number(id),
-            status,
-            deny_reason: getValues("cancel_reason"),
-          },
-          {
-            onSuccess: () => {
-              orderRefetch();
-              successToast("assigned");
-            },
-            onError: (e: any) => errorToast(e.message),
-          }
-        );
-      removeParams(["modal"]);
-    };
-
-  const handleChangeCateg = () => {
-    const { category_id } = getValues();
-    attach(
-      {
-        request_id: Number(id),
-        ...(category_id && { category_id }),
-      },
-      {
-        onSuccess: () => {
-          navigateParams({ modal: ModalTypes.assign, changeModal: undefined });
-          orderRefetch();
-          successToast("assigned");
+  const handleBrigada = ({ status }: { status: RequestStatus }) => {
+    if (status === RequestStatus.done) {
+      synIIco(
+        {
+          request_id: Number(id),
         },
-        onError: (e) => errorToast(e.message),
-      }
-    );
+        {
+          onSuccess: () => {
+            successToast("Успешно синхронизировано");
+            attach(
+              {
+                request_id: Number(id),
+                status,
+                deny_reason: getValues("cancel_reason"),
+              },
+              {
+                onSuccess: () => {
+                  orderRefetch();
+                  successToast("assigned");
+                },
+                onError: (e: any) => errorToast(e.message),
+              }
+            );
+          },
+          onError: (e: any) => errorToast(e.message),
+        }
+      );
+    } else
+      attach(
+        {
+          request_id: Number(id),
+          status,
+          deny_reason: getValues("cancel_reason"),
+        },
+        {
+          onSuccess: () => {
+            orderRefetch();
+            successToast("assigned");
+          },
+          onError: (e: any) => errorToast(e.message),
+        }
+      );
+    removeParams(["modal"]);
   };
 
   const renderBtns = useMemo(() => {
@@ -172,7 +148,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
       return (
         <div className="float-end mb10">
           <button
-            onClick={handleModal(ModalTypes.cancelRequest)}
+            onClick={() => handleModal(ModalTypes.cancelRequest)}
             className="btn btn-danger btn-fill"
           >
             {t("deny")}
@@ -181,13 +157,21 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
       );
   }, [permissions, order?.status]);
 
+  const handleRequestClose = () => {
+    order?.brigada?.is_outsource
+      ? handleModal(ModalTypes.expense)
+      : handleBrigada({
+          status: RequestStatus.done,
+        });
+  };
+
   const renderSubmit = useMemo(() => {
     if (edit && !!order?.brigada?.name && permissions?.[edit])
       return (
         <div className="flex justify-between gap-2">
           {order?.status! < RequestStatus.done && (
             <button
-              onClick={handleModal(ModalTypes.cancelRequest)}
+              onClick={() => handleModal(ModalTypes.cancelRequest)}
               className="btn btn-danger btn-fill"
             >
               {t("calcel")}
@@ -196,9 +180,11 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
           <div className="flex gap-2">
             {order?.status! < RequestStatus.sendToRepair && (
               <button
-                onClick={handleBrigada({
-                  status: RequestStatus.sendToRepair,
-                })}
+                onClick={() =>
+                  handleBrigada({
+                    status: RequestStatus.sendToRepair,
+                  })
+                }
                 className="btn btn-warning btn-fill "
               >
                 {t("pick_to_repair")}
@@ -207,9 +193,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
             {order?.status! < RequestStatus.done && (
               <button
                 id="fixed"
-                onClick={handleBrigada({
-                  status: RequestStatus.done,
-                })}
+                onClick={handleRequestClose}
                 className="btn btn-success btn-fill"
               >
                 {t("fixed")} {isPending && <Loading />}
@@ -221,39 +205,13 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
   }, [permissions, order?.status, isPending]);
 
   const handleAssign = useCallback(() => {
-    navigateParams(
-      sphere_status === Sphere.fabric && !!categories?.items?.length
-        ? { changeModal: ModalTypes.changeCateg }
-        : { modal: ModalTypes.assign }
-    );
+    navigateParams({
+      modal:
+        sphere_status === Sphere.fabric && !!categories?.items?.length
+          ? ModalTypes.changeCateg
+          : ModalTypes.assign,
+    });
   }, [categories?.items, sphere_status, order?.category]);
-
-  const renderChangeModals = useMemo(() => {
-    if (order?.status! !== RequestStatus.done)
-      switch (changeModal) {
-        case ModalTypes.changeCateg:
-          return (
-            <>
-              <BaseInput label="select_category">
-                <MainSelect
-                  values={categories?.items}
-                  register={register("category_id")}
-                />
-              </BaseInput>
-
-              <button
-                className="btn btn-success btn-fill w-full"
-                onClick={handleChangeCateg}
-              >
-                {t("apply")}
-              </button>
-            </>
-          );
-
-        default:
-          break;
-      }
-  }, [categoryLoading, changeModal, categories]);
 
   const renderAssignment = useMemo(() => {
     if (attaching && permissions?.[attaching] && order?.status! <= 1) {
@@ -262,7 +220,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
           <div className="flex items-center justify-between">
             <span>{order?.brigada?.name}</span>
             <button
-              onClick={handleModal(ModalTypes.assign)}
+              onClick={() => handleModal(ModalTypes.assign)}
               className="btn btn-primary btn-fill float-end"
             >
               {t("reassign")}
@@ -298,7 +256,11 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
       !!order?.status.toString() &&
       (order?.status < RequestStatus.done || modal === ModalTypes.showPhoto)
     )
-      return <ShowRequestModals />;
+      return (
+        <Suspend>
+          <ApcModals />
+        </Suspend>
+      );
   }, [order?.status, modal, brigadas]);
 
   if (
@@ -407,6 +369,12 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                     <th>{t("comment")}</th>
                     <td>{order?.description}</td>
                   </tr>
+                  {order?.price && (
+                    <tr>
+                      <th>{t("expense")}</th>
+                      <td>{order?.price}</td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -513,14 +481,6 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
           <div className="p-2">{renderSubmit}</div>
         </AddItems>
       )}
-      <Modal isOpen={!!changeModal} onClose={closeModal} className="!max-w-sm">
-        <Header title="select_category">
-          <button onClick={closeModal} className="close">
-            <span>&times;</span>
-          </button>
-        </Header>
-        <div className="p-2">{renderChangeModals}</div>
-      </Modal>
       {renderModal}
     </>
   );

@@ -18,13 +18,13 @@ const ApcExpenseCategories = () => {
   const { t } = useTranslation();
   const [sort, $sort] = useState<ExpenseCategoriesTypes[]>();
 
-  const { data: expenses, isLoading: expenceLoading } = useExpenseApcTypes({});
+  const { data: expenses, isLoading: expenseLoading } = useExpenseApcTypes({});
 
-  if (expenceLoading) return <Loading absolute />;
+  if (expenseLoading) return <Loading absolute />;
 
   return (
     <Card>
-      <Header title={"expence_categories"} />
+      <Header title={"expense_categories"} />
 
       <div className="table-responsive grid-view content">
         <table className="table table-hover">
@@ -36,17 +36,17 @@ const ApcExpenseCategories = () => {
 
           {!!expenses?.length && (
             <tbody>
-              {(sort?.length ? sort : expenses)?.map((expence, idx) => (
-                <tr className="bg-blue" key={expence.id}>
+              {(sort?.length ? sort : expenses)?.map((expense, idx) => (
+                <tr className="bg-blue" key={expense.id}>
                   <td width="40">{idx + 1}</td>
-                  <td>{expence.name}</td>
-                  <td>{!expence.status ? t("not_active") : t("active")}</td>
+                  <td>{expense.name}</td>
+                  <td>{!expense.status ? t("not_active") : t("active")}</td>
                 </tr>
               ))}
             </tbody>
           )}
         </table>
-        {!expenses?.length && !expenceLoading && <EmptyList />}
+        {!expenses?.length && !expenseLoading && <EmptyList />}
       </div>
     </Card>
   );

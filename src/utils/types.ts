@@ -36,6 +36,7 @@ export interface Order {
   product: string;
   description: string;
   size: string;
+  price: number;
   id: number | string;
   created_at: Date;
   updated_at: Date;
@@ -65,6 +66,7 @@ export interface Order {
     description?: string;
     status?: number;
     order?: string;
+    is_outsource: boolean;
   };
   communication?: {
     id: number;
@@ -617,6 +619,7 @@ export const enum ModalTypes {
   changeCateg,
   leaveMessage,
   pause,
+  expense,
 }
 
 export interface CountTypes {

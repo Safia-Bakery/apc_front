@@ -19,16 +19,16 @@ const EditAddApcExpenseTypes = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
-  const { mutate: postExpence } = apcExpensesMutation();
+  const { mutate: postexpense } = apcExpensesMutation();
 
   const { data: categories } = useExpenseApcTypes({ status: 1 });
 
-  const { data, refetch: expenceRefetch } = useExpensesApc({
+  const { data, refetch: expenseRefetch } = useExpensesApc({
     id: Number(id),
     enabled: !!id,
   });
 
-  const expence = data?.[0];
+  const expense = data?.[0];
 
   const {
     register,
@@ -41,7 +41,7 @@ const EditAddApcExpenseTypes = () => {
   const onSubmit = () => {
     const { amount, description, from_date, to_date, expensetype_id, status } =
       getValues();
-    postExpence(
+    postexpense(
       {
         amount,
         description,
@@ -55,7 +55,7 @@ const EditAddApcExpenseTypes = () => {
         onSuccess: () => {
           successToast("success");
           goBack();
-          if (!!id) expenceRefetch();
+          if (!!id) expenseRefetch();
         },
         onError: (e) => errorToast(e.message),
       }
@@ -63,21 +63,21 @@ const EditAddApcExpenseTypes = () => {
   };
 
   useEffect(() => {
-    if (id && expence) {
+    if (id && expense) {
       reset({
-        amount: expence.amount,
-        description: expence.description,
-        from_date: expence.from_date,
-        to_date: expence.to_date,
-        expensetype_id: expence.expensetype_id,
-        status: !!expence.status,
+        amount: expense.amount,
+        description: expense.description,
+        from_date: expense.from_date,
+        to_date: expense.to_date,
+        expensetype_id: expense.expensetype_id,
+        status: !!expense.status,
       });
     }
-  }, [expence, id]);
+  }, [expense, id]);
 
   return (
     <Card>
-      <Header title={!id ? t("add") : `${t("edit_expence")} №${id}`}>
+      <Header title={!id ? t("add") : `${t("edit_expense")} №${id}`}>
         <button className="btn btn-success btn-fill" onClick={goBack}>
           {t("back")}
         </button>

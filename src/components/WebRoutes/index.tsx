@@ -74,7 +74,6 @@ const WebRooutes = () => {
 
   if (isLoading || !sidebarItems?.length || !permission || countLoading)
     return <Loading absolute />;
-
   return (
     <>
       {renderSidebar}

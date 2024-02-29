@@ -125,14 +125,14 @@ export const sidebarRoutes: SidebarType[] = [
         screen: MainPermissions.stats_apc_retail,
       },
       {
-        name: "expence_categories",
-        url: "/expence-categories",
+        name: "expense_categories",
+        url: "/expense-categories",
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_apc_expenses_categories,
       },
       {
-        name: "expence_for_outsource",
-        url: "/expence-for-outsource",
+        name: "expense_for_outsource",
+        url: "/expense-for-outsource",
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_apc_expenses,
       },
@@ -472,22 +472,22 @@ export const sidebarRoutes: SidebarType[] = [
 export const routes = [
   {
     element: <ApcExpenseCategories />,
-    path: "/expence-categories",
+    path: "/expense-categories",
     screen: MainPermissions.get_apc_expenses_categories,
   },
   {
     element: <ApcExpenses />,
-    path: "/expence-for-outsource",
+    path: "/expense-for-outsource",
     screen: MainPermissions.get_apc_expenses,
   },
   {
     element: <EditAddApcExpense />,
-    path: "/expence-for-outsource/add",
+    path: "/expense-for-outsource/add",
     screen: MainPermissions.add_apc_expenses,
   },
   {
     element: <EditAddApcExpense />,
-    path: "/expence-for-outsource/:id",
+    path: "/expense-for-outsource/:id",
     screen: MainPermissions.edit_apc_expenses,
   },
   {
