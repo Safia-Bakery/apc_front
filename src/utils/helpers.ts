@@ -110,10 +110,10 @@ export const RequestStatusArr = [
 export const ITRequestStatusArr = [
   { id: RequestStatus.new, name: "new" },
   { id: RequestStatus.confirmed, name: "received" },
-  { id: RequestStatus.done, name: "solved" },
+  { id: RequestStatus.solved, name: "solved" },
   { id: RequestStatus.rejected, name: "denied" },
   { id: RequestStatus.paused, name: "paused" },
-  { id: RequestStatus.solved, name: "finished" },
+  { id: RequestStatus.done, name: "finished" },
 ];
 
 export const UrgentValsArr = [
