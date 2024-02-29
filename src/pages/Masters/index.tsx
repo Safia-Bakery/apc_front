@@ -42,13 +42,13 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
     switch (dep) {
       case Departments.apc:
         if (sphere_status === Sphere.fabric)
-          return { mainTitle: "Мастера", tableTitle: "Мастер" };
-        else return { mainTitle: "Бригады", tableTitle: "Бригадир" };
+          return { mainTitle: "masters", tableTitle: "master" };
+        else return { mainTitle: "brigades", tableTitle: "brigadir" };
       case Departments.it:
-        return { mainTitle: "ИТ специалисты", tableTitle: "ИТ специалист" };
+        return { mainTitle: "it_specialists", tableTitle: "it_specialist" };
 
       default:
-        return { mainTitle: "Мастера", tableTitle: "Мастер" };
+        return { mainTitle: "masters", tableTitle: "master" };
     }
   }, [dep, sphere_status]);
 
@@ -57,7 +57,7 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
       { name: "№", key: "id" },
       { name: "name", key: "name" },
       { name: renderDep?.tableTitle, key: "name" },
-      { name: "Описание", key: "description" },
+      { name: "description", key: "description" },
       { name: "status", key: "status" },
       { name: "", key: "" },
     ];

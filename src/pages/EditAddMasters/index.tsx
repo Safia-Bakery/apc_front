@@ -95,13 +95,15 @@ const EditAddMasters = () => {
   } = useForm();
 
   const onSubmit = () => {
-    const { brigada_name, brigada_description, status } = getValues();
+    const { brigada_name, brigada_description, status, is_outsource } =
+      getValues();
 
     mutate(
       {
         status,
         description: brigada_description,
         name: brigada_name,
+        is_outsource,
         ...(id && { id: Number(id) }),
         ...(!!sphere_status && { sphere_status }),
         ...(!!dep && { department: dep }),
@@ -141,7 +143,7 @@ const EditAddMasters = () => {
   }, [users, selectedUser, usersLoading]);
 
   useEffect(() => {
-    if (data?.items.length)
+    if (data?.items?.length)
       $users(
         data.items.map((item) => {
           return {
@@ -163,11 +165,26 @@ const EditAddMasters = () => {
         brigada_name: brigada?.name,
         brigada_description: brigada?.description,
         status: !!brigada.status,
+        is_outsource: brigada.is_outsource,
       });
     }
   }, [brigada, id]);
 
-  if (!!id && brigadaLoading) return <Loading absolute />;
+  useEffect(() => {
+    return () => {
+      reset();
+      $selectedUser(undefined);
+    };
+  }, []);
+
+  if (
+    !!id &&
+    (brigadaLoading ||
+      usersLoading ||
+      (!!brigada?.user?.[0]?.id && !selectedUser) ||
+      (!!data?.items?.length && !users?.length))
+  )
+    return <Loading absolute />;
 
   return (
     <Card>
@@ -198,6 +215,12 @@ const EditAddMasters = () => {
         </BaseInputs>
 
         <MainCheckBox label={"active"} register={register("status")} />
+        {sphere_status === Sphere.retail && (
+          <MainCheckBox
+            label={"is_outsource"}
+            register={register("is_outsource")}
+          />
+        )}
 
         <button type="submit" className="btn btn-success btn-fill">
           {t("save")}

@@ -11,6 +11,7 @@ interface BodyType {
   users?: number[];
   sphere_status?: number;
   department?: Departments;
+  is_outsource?: boolean;
 }
 
 const brigadaMutation = () => {

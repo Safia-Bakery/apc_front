@@ -12,11 +12,8 @@ import MainInput from "@/components/BaseInputs/MainInput";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import useQueryString from "custom/useQueryString";
 import BranchSelect from "@/components/BranchSelect";
-import { MainPermissions, Sphere } from "@/utils/types";
-import WarehouseSelect from "@/components/WarehouseSelect";
+import { Sphere } from "@/utils/types";
 import Loading from "@/components/Loader";
-import { useAppSelector } from "@/store/utils/types";
-import { permissionSelector } from "reducers/sidebar";
 import dayjs from "dayjs";
 import { staffCategoryId, yearMonthDate } from "@/utils/keys";
 import { useTranslation } from "react-i18next";
@@ -27,7 +24,6 @@ const AddStaffRequest = () => {
   const branchJson = useQueryString("branch");
   const sphere_status = Number(useQueryString("sphere_status"));
   const branch = branchJson && JSON.parse(branchJson);
-  const perm = useAppSelector(permissionSelector);
   const [date, $date] = useState<string>(dayjs().add(1, "day").toISOString());
 
   const {
@@ -69,10 +65,13 @@ const AddStaffRequest = () => {
     $date(e.target.value);
 
   const renderBranchSelect = useMemo(() => {
-    if (perm?.[MainPermissions.get_fillials_list]) {
-      if (sphere_status === Sphere.fabric) return <WarehouseSelect />;
-      else return <BranchSelect origin={1} enabled />;
-    }
+    return (
+      <BranchSelect
+        origin={1}
+        enabled
+        warehouse={sphere_status === Sphere.fabric}
+      />
+    );
   }, [sphere_status]);
 
   if (isPending) return <Loading absolute />;
