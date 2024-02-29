@@ -157,6 +157,7 @@ export interface BrigadaType {
   name: string;
   description: string;
   status: number;
+  is_outsource: boolean;
   sphere_status: number;
   user?: {
     id: number | string;
