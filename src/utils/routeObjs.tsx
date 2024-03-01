@@ -124,12 +124,12 @@ export const sidebarRoutes: SidebarType[] = [
         icon: "/assets/icons/statistics.svg",
         screen: MainPermissions.stats_apc_retail,
       },
-      {
-        name: "expense_categories",
-        url: "/expense-categories",
-        icon: "/assets/icons/categories.svg",
-        screen: MainPermissions.get_apc_expenses_categories,
-      },
+      // {
+      //   name: "expense_categories",
+      //   url: "/expense-categories",
+      //   icon: "/assets/icons/categories.svg",
+      //   screen: MainPermissions.get_apc_expenses_categories,
+      // },
       {
         name: "expense_for_outsource",
         url: "/expense-for-outsource",

@@ -498,9 +498,9 @@ export enum MainPermissions {
   get_apc_expenses = 114,
   edit_apc_expenses = 114,
   add_apc_expenses = 114,
-  get_apc_expenses_categories = 114,
-  add_apc_expenses_categories = 114,
-  edit_apc_expenses_categories = 114,
+  get_apc_expenses_categories = 121,
+  add_apc_expenses_categories = 122,
+  edit_apc_expenses_categories = 123,
 }
 export enum MarketingSubDep {
   designers = 1,

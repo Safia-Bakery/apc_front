@@ -7,7 +7,7 @@ interface Body {
   from_date: string;
   to_date: string;
   expensetype_id: number;
-  status: number;
+  status?: number;
   id?: number;
 }
 

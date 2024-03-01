@@ -361,9 +361,10 @@ const localization = {
       expenses: "Расходы",
       expense: "Расход",
       expense_categories: "Категории по расходам",
-      expense_for_outsource: "Расходы на оутсорсе",
+      expense_for_outsource: "Расходы",
       is_outsource: "Аутсорс мастер",
       add_expense: "Добавить расход",
+      edit_expense: "Изменить расход",
     },
   },
   uz: {

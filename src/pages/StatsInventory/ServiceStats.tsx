@@ -116,28 +116,28 @@ const InventoryServiceStats = () => {
                   {t("inventory_retail")}
                 </td>
                 {[Object.entries(data!)?.[0]]?.map((item) => (
-                  <Fragment key={item[0]}>
-                    <td>{item[0]}</td>
-                    <td>{item[1].total_tools}</td>
+                  <Fragment key={item?.[0]}>
+                    <td>{item?.[0]}</td>
+                    <td>{item?.[1]?.total_tools}</td>
                     <td className="!bg-tableSuccess">
-                      {item[1].on_time_requests}
+                      {item?.[1]?.on_time_requests}
                     </td>
                     <td className="!bg-tableSuccess">
-                      {item[1].on_time_requests_percent.toFixed(2)}
+                      {item?.[1]?.on_time_requests_percent.toFixed(2)}
                     </td>
                     <td className="!bg-tableWarn">
-                      {item[1].not_finishedontime}
+                      {item?.[1]?.not_finishedontime}
                     </td>
                     <td className="!bg-tableWarn">
-                      {item[1].not_finishedon_time_percent.toFixed(2)}
+                      {item?.[1]?.not_finishedon_time_percent.toFixed(2)}
                     </td>
                     <td className="!bg-tableDanger">
-                      {item[1].not_even_started}
+                      {item?.[1]?.not_even_started}
                     </td>
                     <td className="!bg-tableDanger">
-                      {item[1].not_started_percent.toFixed(2)}
+                      {item?.[1]?.not_started_percent.toFixed(2)}
                     </td>
-                    <td>{item[1].avg_finishing.toFixed(2)}</td>
+                    <td>{item?.[1]?.avg_finishing.toFixed(2)}</td>
                   </Fragment>
                 ))}
               </tr>
@@ -145,28 +145,28 @@ const InventoryServiceStats = () => {
               {Object.entries(data!)
                 ?.splice(1)
                 ?.map((item) => (
-                  <tr key={item[0]} className="hover:bg-transparent">
-                    <td>{item[0]}</td>
-                    <td>{item[1].total_tools}</td>
+                  <tr key={item?.[0]} className="hover:bg-transparent">
+                    <td>{item?.[0]}</td>
+                    <td>{item?.[1]?.total_tools}</td>
                     <td className="!bg-tableSuccess">
-                      {item[1].on_time_requests}
+                      {item?.[1]?.on_time_requests}
                     </td>
                     <td className="!bg-tableSuccess">
-                      {item[1].on_time_requests_percent.toFixed(2)}
+                      {item?.[1]?.on_time_requests_percent.toFixed(2)}
                     </td>
                     <td className="!bg-tableWarn">
-                      {item[1].not_finishedontime}
+                      {item?.[1]?.not_finishedontime}
                     </td>
                     <td className="!bg-tableWarn">
-                      {item[1].not_finishedon_time_percent.toFixed(2)}
+                      {item?.[1]?.not_finishedon_time_percent.toFixed(2)}
                     </td>
                     <td className="!bg-tableDanger">
-                      {item[1].not_even_started}
+                      {item?.[1]?.not_even_started}
                     </td>
                     <td className="!bg-tableDanger">
-                      {item[1].not_started_percent.toFixed(2)}
+                      {item?.[1]?.not_started_percent.toFixed(2)}
                     </td>
-                    <td>{item[1].avg_finishing.toFixed(2)}</td>
+                    <td>{item?.[1]?.avg_finishing.toFixed(2)}</td>
                   </tr>
                 ))}
               <tr className="hover:!bg-transparent">
@@ -207,7 +207,7 @@ const InventoryServiceStats = () => {
         )}
       </table>
 
-      {!data && !isLoading && <EmptyList />}
+      {!Object.keys(data || {}) && !isLoading && <EmptyList />}
       <button id={"service_stat"} className="hidden" onClick={downloadAsPdf}>
         download
       </button>

@@ -17,7 +17,7 @@ import { numberWithCommas } from "@/utils/helpers";
 
 const column = [
   { name: "№", key: "" },
-  { name: "request_number", key: "id" },
+  // { name: "request_number", key: "id" },
   { name: "summ", key: "amount" },
   { name: "from_date", key: "from_date" },
   { name: "to_date", key: "to_date" },
@@ -63,7 +63,7 @@ const ApcExpenses = () => {
               {(sort?.length ? sort : expenses)?.map((expense, idx) => (
                 <tr className="bg-blue" key={expense.id}>
                   <td width="40">{idx + 1}</td>
-                  <td>{expense?.id}</td>
+                  {/* <td>{expense?.id}</td> */}
                   <td>{numberWithCommas(expense?.amount)}</td>
                   <td>{expense?.from_date}</td>
                   <td>{expense?.to_date}</td>
