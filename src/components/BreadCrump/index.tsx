@@ -79,9 +79,11 @@ const Breadcrumbs: FC = () => {
 
   const breadcrumbs: Breadcrumb[] = [];
 
-  const pathSegments = pathname.split("/").filter((segment) => segment !== "");
+  const pathSegments = pathname
+    .split("/")
+    .filter((segment: string) => segment !== "");
 
-  pathSegments.reduce((prevPath, currentPath) => {
+  pathSegments.reduce((prevPath: string, currentPath: string) => {
     const path = `${prevPath}/${currentPath}`;
     const name = location?.state?.name
       ? location.state?.name

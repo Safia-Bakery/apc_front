@@ -60,6 +60,7 @@ body {
 }
 
 tr {
+  transition: 200ms;
   &:hover {
     background: var(--hoverGray);
   }
@@ -101,6 +102,7 @@ input {
 }
 .table-danger {
   background-color: #f5c6cb !important;
+  transition: 200ms;
 
   &:hover {
     opacity: 0.6 !important;
@@ -109,6 +111,7 @@ input {
 }
 .table-primary {
   background-color: #b8daff !important;
+  transition: 200ms;
   &:hover {
     opacity: 0.6 !important;
     --bs-table-hover-bg: #87cb16 !important;
@@ -116,6 +119,7 @@ input {
 }
 .table-warning {
   background-color: #fff49eb0 !important;
+  transition: 200ms;
 
   &:hover {
     opacity: 0.6 !important;
@@ -124,6 +128,7 @@ input {
 }
 .table-gray {
   background-color: #dacfb5 !important;
+  transition: 200ms;
 
   &:hover {
     opacity: 0.6;
@@ -131,6 +136,7 @@ input {
 }
 .table-green {
   background-color: #8ad6cc !important;
+  transition: 200ms;
 
   &:hover {
     opacity: 0.6;
@@ -155,6 +161,7 @@ input::-webkit-inner-spin-button {
 .table-success {
   background-color: #90ee90 !important;
   opacity: 0.8;
+  transition: 200ms;
 
   &:hover {
     opacity: 0.6 !important;
