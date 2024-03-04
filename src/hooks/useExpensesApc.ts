@@ -17,7 +17,7 @@ export const useExpensesApc = ({ enabled = true, ...params }: Params) => {
     queryFn: () =>
       apiClient
         .get({ url: "/v1/expense", params })
-        .then(({ data: response }) => (response as ExpensesTypes[]) || null),
+        .then(({ data: response }) => (response as ExpensesTypes) || null),
     enabled,
     refetchOnMount: true,
   });

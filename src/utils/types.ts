@@ -803,16 +803,25 @@ export interface InvServiceStatTypes {
   [key: string]: InvServiceStatType;
 }
 
-export interface ExpensesTypes {
-  id: number;
-  status: number;
-  from_date: string;
-  user_id: null | number;
-  description: string;
+export interface BaseExpenseTypes {
   amount: number;
-  created_at: string;
+  description: string;
+  from_date: string;
   to_date: string;
   expensetype_id: number;
+  status: number;
+  created_at: string;
+  id: number;
+  expensetype: {
+    name: string;
+    status: number;
+    created_at: string;
+    id: number;
+  };
+}
+
+export interface ExpensesTypes extends BasePaginatedRes {
+  items: BaseExpenseTypes[];
 }
 export interface ExpenseCategoriesTypes {
   created_at: string;

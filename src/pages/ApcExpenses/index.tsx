@@ -1,7 +1,12 @@
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { useNavigate } from "react-router-dom";
-import { ExpensesTypes, MainPermissions, RoleTypes } from "@/utils/types";
+import {
+  BaseExpenseTypes,
+  ExpensesTypes,
+  MainPermissions,
+  RoleTypes,
+} from "@/utils/types";
 import Loading from "@/components/Loader";
 import { useState } from "react";
 import TableHead from "@/components/TableHead";
@@ -17,7 +22,7 @@ import { numberWithCommas } from "@/utils/helpers";
 
 const column = [
   { name: "№", key: "" },
-  // { name: "request_number", key: "id" },
+  { name: "type", key: "id" },
   { name: "summ", key: "amount" },
   { name: "from_date", key: "from_date" },
   { name: "to_date", key: "to_date" },
@@ -31,7 +36,7 @@ const ApcExpenses = () => {
   const navigate = useNavigate();
   const handleNavigate = (route: string) => () => navigate(route);
   const permission = useAppSelector(permissionSelector);
-  const [sort, $sort] = useState<ExpensesTypes[]>();
+  const [sort, $sort] = useState<BaseExpenseTypes[]>();
 
   const { data: expenses, isLoading: expenseLoading } = useExpensesApc({});
 
@@ -55,15 +60,15 @@ const ApcExpenses = () => {
           <TableHead
             column={column}
             onSort={(data) => $sort(data)}
-            data={expenses}
+            data={expenses?.items}
           />
 
-          {!!expenses?.length && (
+          {!!expenses?.items?.length && (
             <tbody>
-              {(sort?.length ? sort : expenses)?.map((expense, idx) => (
+              {(sort?.length ? sort : expenses?.items)?.map((expense, idx) => (
                 <tr className="bg-blue" key={expense.id}>
                   <td width="40">{idx + 1}</td>
-                  {/* <td>{expense?.id}</td> */}
+                  <td>{expense?.expensetype?.name}</td>
                   <td>{numberWithCommas(expense?.amount)}</td>
                   <td>{expense?.from_date}</td>
                   <td>{expense?.to_date}</td>
@@ -79,7 +84,7 @@ const ApcExpenses = () => {
             </tbody>
           )}
         </table>
-        {!expenses?.length && !expenseLoading && <EmptyList />}
+        {!expenses?.items?.length && !expenseLoading && <EmptyList />}
       </div>
     </Card>
   );

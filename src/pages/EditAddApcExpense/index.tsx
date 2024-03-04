@@ -36,7 +36,7 @@ const EditAddApcExpenseTypes = () => {
     enabled: !!id,
   });
 
-  const expense = data?.[0];
+  const expense = data?.items?.[0];
 
   const {
     register,
@@ -55,7 +55,7 @@ const EditAddApcExpenseTypes = () => {
         from_date: dayjs(start)!?.format(yearMonthDate),
         to_date: dayjs(end)!?.format(yearMonthDate),
         expensetype_id,
-        status: !!status.toString() ? status : 1,
+        status: !!status?.toString() ? status : 1,
 
         ...(id && { id: Number(id) }),
       },
