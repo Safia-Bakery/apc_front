@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import cl from "classnames";
 import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
-import { useForm } from "react-hook-form";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import useOrder from "@/hooks/useOrder";
@@ -23,7 +22,7 @@ import {
   RequestStatus,
 } from "@/utils/types";
 import ShowRequestModals from "@/components/ShowRequestModals";
-import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
+import { useNavigateParams } from "custom/useCustomNavigate";
 import { permissionSelector } from "reducers/sidebar";
 import AddedInventoryProducts from "@/components/AddedInventoryProducts";
 import Loading from "@/components/Loader";
@@ -34,15 +33,12 @@ const ShowRequestInventory = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const permissions = useAppSelector(permissionSelector);
-  const [changed, $changed] = useState(false);
 
   const navigateParams = useNavigateParams();
-  const removeParams = useRemoveParams();
   const { mutate: attach, isPending: attaching } = attachBrigadaMutation();
   const handleModal = (type: ModalTypes) => () => {
     navigateParams({ modal: type });
   };
-  const { getValues } = useForm();
   const {
     data: order,
     refetch: orderRefetch,
@@ -54,9 +50,7 @@ const ShowRequestInventory = () => {
 
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
-    else {
-      navigateParams({ modal: ModalTypes.showPhoto, photo: file });
-    }
+    else navigateParams({ modal: ModalTypes.showPhoto, photo: file });
   };
 
   const handleBack = () => navigate("/requests-inventory");
@@ -77,27 +71,21 @@ const ShowRequestInventory = () => {
     );
   };
 
-  const handleRequest =
-    ({ status }: { status: RequestStatus }) =>
-    () => {
-      if (changed) alert("Выберите товар!");
-      else
-        attach(
-          {
-            request_id: Number(id),
-            status,
-            deny_reason: getValues("cancel_reason"),
+  const handleFinish = useCallback(() => {
+    if (!order?.expanditure?.find((item) => !!item.status))
+      alert(t("select_productt"));
+    else
+      attach(
+        { request_id: Number(id), status: RequestStatus.done },
+        {
+          onSuccess: () => {
+            orderRefetch();
+            successToast("assigned");
           },
-          {
-            onSuccess: () => {
-              orderRefetch();
-              successToast("assigned");
-            },
-            onError: (e) => errorToast(e.message),
-          }
-        );
-      removeParams(["modal"]);
-    };
+          onError: (e) => errorToast(e.message),
+        }
+      );
+  }, [order?.expanditure, order?.status]);
 
   const renderBtns = useMemo(() => {
     if (
@@ -122,30 +110,20 @@ const ShowRequestInventory = () => {
               {t("receive")}
             </button>
           ) : (
-            <button
-              onClick={handleRequest({
-                status: RequestStatus.done,
-              })}
-              className="btn btn-success btn-fill"
-            >
+            <button onClick={handleFinish} className="btn btn-success btn-fill">
               {t("finish")}
             </button>
           )}
         </div>
       );
-  }, [permissions, order?.status, changed]);
+  }, [permissions, order?.status, handleFinish]);
 
   const renderModals = useMemo(() => {
     if (!!order?.status.toString() && order?.status < RequestStatus.done)
       return <ShowRequestModals />;
   }, [order?.status]);
 
-  useEffect(() => {
-    if (!order?.expanditure?.find((item) => !!item.status)) $changed(true);
-    else $changed(false);
-  }, [order?.expanditure]);
-
-  if (isLoading || isFetching) return <Loading absolute />;
+  if (isLoading || isFetching || attaching) return <Loading absolute />;
 
   return (
     <>

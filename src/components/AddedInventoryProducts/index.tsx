@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import useOrder from "@/hooks/useOrder";
 import updateInventoryProdMutation from "@/hooks/mutation/updateInventoryProd";
 import { RequestStatus } from "@/utils/types";
-import { errorToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import { useTranslation } from "react-i18next";
 
 const column = [
@@ -34,7 +34,13 @@ const AddedInventoryProducts = () => {
   const handleUpdateProd = (id: number) => () =>
     mutate(
       { id, status: 1 },
-      { onSuccess: () => refetch(), onError: (e) => errorToast(e.message) }
+      {
+        onSuccess: () => {
+          successToast("success");
+          refetch();
+        },
+        onError: (e) => errorToast(e.message),
+      }
     );
 
   return (
