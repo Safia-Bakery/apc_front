@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
               <App />
             </BrowserRouter>
             <ToastContainer autoClose={600} />
-            keys
           </QueryClientProvider>
         </PersistGate>
       </Provider>

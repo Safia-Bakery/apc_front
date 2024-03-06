@@ -30,8 +30,6 @@ export const useOrders = ({ enabled, ...params }: Body) => {
         .get({ url: "/request", params })
         .then(({ data: response }) => (response as OrderType) || null),
     enabled,
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
   });
 };
 export default useOrders;

@@ -62,8 +62,7 @@ export const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       gcTime: EPresetTimes.MINUTE * 10,
       staleTime: EPresetTimes.SECOND * 10,
-      refetchOnReconnect: true,
-      refetchOnMount: true,
+      // refetchOnReconnect: true,
     },
   },
 });

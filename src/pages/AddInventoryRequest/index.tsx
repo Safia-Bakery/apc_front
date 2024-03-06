@@ -12,8 +12,7 @@ import requestMutation from "@/hooks/mutation/orderMutation";
 import { isMobile } from "@/utils/helpers";
 import BranchSelect from "@/components/BranchSelect";
 import useQueryString from "@/hooks/custom/useQueryString";
-import { successToast } from "@/utils/toast";
-import useOrders from "@/hooks/useOrders";
+import { errorToast, successToast } from "@/utils/toast";
 import { InputWrapper, SelectWrapper } from "@/components/InputWrappers";
 import { TelegramApp } from "@/utils/tgHelpers";
 import Loading from "@/components/Loader";
@@ -106,6 +105,7 @@ const AddInventoryRequest = () => {
               successToast("created");
             }
           },
+          onError: (e) => errorToast(e.message),
         }
       );
     }
