@@ -41,8 +41,6 @@ const ShowConsumption = () => {
 
   const downloadAsPdf = () => onDownload();
 
-  if (isLoading) return <Loading absolute />;
-
   return (
     <>
       <table ref={tableRef} className="table table-hover">
@@ -52,24 +50,28 @@ const ShowConsumption = () => {
           data={data?.items}
         />
 
-        <tbody>
-          {(sort?.length ? sort : data?.items)?.map((item, idx) => (
-            <tr key={idx} className="bg-blue">
-              <td width="50">{idx + 1}</td>
+        {isLoading ? (
+          <Loading absolute />
+        ) : (
+          <tbody>
+            {(sort?.length ? sort : data?.items)?.map((item, idx) => (
+              <tr key={idx} className="bg-blue">
+                <td width="50">{idx + 1}</td>
 
-              <td width={150}>
-                <Link
-                  to={`/requests-apc/${item?.request_id}`}
-                  state={{ prevPath: window.location.pathname }}
-                >
-                  {item?.request_id}
-                </Link>
-              </td>
-              <td>{item?.amount}</td>
-              <td>{dayjs(item?.created_at).format(dateTimeFormat)}</td>
-            </tr>
-          ))}
-        </tbody>
+                <td width={150}>
+                  <Link
+                    to={`/requests-apc/${item?.request_id}`}
+                    state={{ prevPath: window.location.pathname }}
+                  >
+                    {item?.request_id}
+                  </Link>
+                </td>
+                <td>{item?.amount}</td>
+                <td>{dayjs(item?.created_at).format(dateTimeFormat)}</td>
+              </tr>
+            ))}
+          </tbody>
+        )}
       </table>
       {!data?.items?.length && !isLoading && <EmptyList />}
       <button id={"const_stat"} className="hidden" onClick={downloadAsPdf}>
