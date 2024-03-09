@@ -82,8 +82,6 @@ const ShowInventoryTool = () => {
       );
   }, [order?.order_need]);
 
-  if (isLoading || isFetching) return <Loading absolute />;
-
   return (
     <>
       <Card className="overflow-hidden">
@@ -106,28 +104,32 @@ const ShowInventoryTool = () => {
           <table className="table table-hover" ref={tableRef}>
             <TableHead column={column} />
 
-            <tbody>
-              {!!order?.order_need.length &&
-                order.order_need?.map((item, idx) => (
-                  <tr key={idx} className={cl("transition-colors")}>
-                    <td width="40">{handleIdx(idx)}</td>
-                    <td>{item?.need_tool?.name}</td>
-                    <td width={150} className="text-center">
-                      {item?.amount_last}
-                    </td>
-                    <td width={150} className="text-center">
-                      {item?.need_tool?.max_amount}
-                    </td>
-                    <td width={150} className="text-center">
-                      {item?.need_tool?.min_amount}
-                    </td>
-                    <td width={150} className="text-center">
-                      {item?.ordered_amount}
-                    </td>
-                    <td>{dayjs(item?.created_at).format(dateMonthYear)}</td>
-                  </tr>
-                ))}
-            </tbody>
+            {isLoading || isFetching ? (
+              <Loading absolute />
+            ) : (
+              <tbody>
+                {!!order?.order_need.length &&
+                  order.order_need?.map((item, idx) => (
+                    <tr key={idx} className={cl("transition-colors")}>
+                      <td width="40">{handleIdx(idx)}</td>
+                      <td>{item?.need_tool?.name}</td>
+                      <td width={150} className="text-center">
+                        {item?.amount_last}
+                      </td>
+                      <td width={150} className="text-center">
+                        {item?.need_tool?.max_amount}
+                      </td>
+                      <td width={150} className="text-center">
+                        {item?.need_tool?.min_amount}
+                      </td>
+                      <td width={150} className="text-center">
+                        {item?.ordered_amount}
+                      </td>
+                      <td>{dayjs(item?.created_at).format(dateMonthYear)}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            )}
           </table>
           {renderBtns}
           {!order?.order_need?.length && !isLoading && <EmptyList />}
