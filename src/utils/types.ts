@@ -495,9 +495,9 @@ export enum MainPermissions {
   stats_apc_retail = 113,
   stats_marketing = 7,
 
-  get_apc_expenses = 114,
-  edit_apc_expenses = 114,
-  add_apc_expenses = 114,
+  get_apc_expenses = 121,
+  edit_apc_expenses = 122,
+  add_apc_expenses = 123,
   get_apc_expenses_categories = 121,
   add_apc_expenses_categories = 122,
   edit_apc_expenses_categories = 123,

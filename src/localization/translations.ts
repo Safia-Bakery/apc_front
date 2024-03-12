@@ -131,7 +131,7 @@ const localization = {
       avg_time: "Среднее время обработки",
       h: "ч", // hours, soat
       minutes: "мин",
-      request: "Заяка",
+      request: "Заявка",
       handled_curr_month: "Обработано за текущий месяц",
       handled_last_30: "handled_curr_month",
       request_stats: "Статистика по заказам",
