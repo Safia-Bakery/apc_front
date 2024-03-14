@@ -54,7 +54,7 @@ const ITFilter: FC = () => {
   const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
   const request_status = useQueryString("request_status");
-  const category_id = useQueryString("category_id");
+  const category_id = Number(useQueryString("category_id"));
   const created_at = useQueryString("created_at");
   const responsible = Number(useQueryString("responsible"));
   const userQ = useQueryString("user");
@@ -62,7 +62,6 @@ const ITFilter: FC = () => {
   const rate = useQueryString("rate");
   const urgent = useQueryString("urgent");
   const paused = useQueryString("paused");
-  const [selectCategs, $selectCategs] = useState<SelectValue[]>([]);
   const statusJson = request_status
     ? (JSON.parse(request_status) as SelectValue[])
     : [];
@@ -78,18 +77,6 @@ const ITFilter: FC = () => {
 
   const handleStatus = (e: any) =>
     navigate({ request_status: JSON.stringify(e) });
-
-  useEffect(() => {
-    if (categories?.items?.length)
-      $selectCategs(
-        categories.items.map((item) => {
-          return {
-            value: item.id,
-            label: item.name,
-          };
-        })
-      );
-  }, [categories]);
 
   useUpdateEffect(() => {
     navigate({ user });
@@ -152,15 +139,11 @@ const ITFilter: FC = () => {
       </td>
       <td className="p-0">
         <BaseInputs className="!m-1">
-          <Select
-            isMulti
-            isClearable
-            placeholder={""}
-            value={categoryJson}
-            onChange={handleStatus}
-            options={selectCategs}
-            isLoading={categoryLoading}
+          <MainSelect
+            values={categories?.items}
             onFocus={() => catRefetch()}
+            value={category_id.toString()}
+            onChange={(e) => navigate({ category_id: e.target.value })}
           />
         </BaseInputs>
       </td>
@@ -197,12 +180,17 @@ const ITFilter: FC = () => {
           />
         </BaseInputs>
       </td>
-      <td className="p-0">
+      <td width={130} className="p-0">
         <BaseInputs className="!m-1">
-          <MainSelect
-            values={ITRequestStatusArr}
-            value={request_status?.toString()}
-            onChange={(e) => navigate({ request_status: e.target.value })}
+          <Select
+            isMulti
+            isClearable={false}
+            placeholder={""}
+            value={statusJson}
+            onChange={handleStatus}
+            options={ITRequestStatusArr}
+            isLoading={categoryLoading}
+            onFocus={() => catRefetch()}
           />
         </BaseInputs>
       </td>

@@ -107,12 +107,13 @@ export const RequestStatusArr = [
 ];
 
 export const ITRequestStatusArr = [
-  { id: RequestStatus.new, name: "new" },
-  { id: RequestStatus.confirmed, name: "received" },
-  { id: RequestStatus.solved, name: "solved" },
-  { id: RequestStatus.rejected, name: "denied" },
-  { id: RequestStatus.paused, name: "paused" },
-  { id: RequestStatus.done, name: "finished" },
+  { value: RequestStatus.new, label: "Новый" },
+  { value: RequestStatus.confirmed, label: "Принятые" },
+  { value: RequestStatus.solved, label: "Решен" },
+  { value: RequestStatus.rejected_wating_confirmation, label: "Отменен" },
+  { value: RequestStatus.paused, label: "Остановлен" },
+  { value: RequestStatus.done, label: "Закончен" },
+  { value: RequestStatus.rejected, label: "Закрыт, отменен" },
 ];
 
 export const UrgentValsArr = [

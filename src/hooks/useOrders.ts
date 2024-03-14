@@ -15,19 +15,19 @@ interface Body {
   urgent?: boolean;
   fillial_id?: string;
   created_at?: string;
-  request_status?: string[];
+  request_status?: number[];
   user?: string;
   id?: string | number;
   rate?: boolean;
   brigada_id?: number;
 }
 
-export const useOrders = ({ enabled, ...params }: Body) => {
+export const useOrders = ({ enabled, request_status, ...params }: Body) => {
   return useQuery({
     queryKey: ["requests", params],
     queryFn: () =>
       apiClient
-        .get({ url: "/request", params })
+        .get({ url: "/request", params, body: request_status })
         .then(({ data: response }) => (response as OrderType) || null),
     enabled,
   });

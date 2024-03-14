@@ -8,7 +8,12 @@ import Pagination from "@/components/Pagination";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx, handleStatus, requestRows } from "@/utils/helpers";
+import {
+  ITRequestStatusArr,
+  handleIdx,
+  handleStatus,
+  requestRows,
+} from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import ITFilter from "./filter";
 import ItemsCount from "@/components/ItemsCount";
@@ -43,7 +48,7 @@ const RequestsIT = () => {
   const user = useQueryString("user");
   const id = Number(useQueryString("id"));
   const responsible = Number(useQueryString("responsible"));
-  const category_id = useQueryString("category_id");
+  const category_id = Number(useQueryString("category_id"));
   const urgent = useQueryString("urgent");
   const paused = useQueryString("paused");
   const created_at = useQueryString("created_at");
@@ -51,8 +56,8 @@ const RequestsIT = () => {
   const rate = useQueryString("rate");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
-  const categoryJson = category_id
-    ? (JSON.parse(category_id) as SelectValue[])
+  const statusJson = request_status
+    ? (JSON.parse(request_status) as typeof ITRequestStatusArr)
     : [];
 
   const {
@@ -69,7 +74,10 @@ const RequestsIT = () => {
       created_at: dayjs(created_at).format(yearMonthDate),
     }),
     ...(!!branch?.id && { fillial_id: branch?.id }),
-    ...(!!request_status && { request_status }),
+    ...(!!request_status &&
+      !!statusJson && {
+        request_status: statusJson.map((item) => item.value),
+      }),
     ...(!!user && { user }),
     ...(!!responsible && { brigada_id: responsible }),
     ...(!!rate?.toString() && { rate: !!rate }),
@@ -128,7 +136,10 @@ const RequestsIT = () => {
                   <td>{order?.category?.name}</td>
                   <td>{!!order?.category?.urgent ? t("yes") : t("no")}</td>
                   <td>
-                    {!!order?.update_time[RequestStatus.paused]
+                    {!!(
+                      order?.update_time[RequestStatus.paused] ||
+                      order?.update_time[RequestStatus.reopened]
+                    )
                       ? t("yes")
                       : t("no")}
                   </td>
@@ -144,7 +155,9 @@ const RequestsIT = () => {
                   <td width={50} className="text-center">
                     {order?.comments?.[0]?.rating}
                   </td>
-                  <td>{t(handleStatus({ status: order?.status }))}</td>
+                  <td width={100}>
+                    {t(handleStatus({ status: order?.status }))}
+                  </td>
                   <td>{dayjs(order?.created_at).format(dateTimeFormat)}</td>
                 </tr>
               ))}

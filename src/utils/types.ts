@@ -311,7 +311,7 @@ export enum RequestStatus {
   rejected,
   paused,
   solved,
-  reopen,
+  reopened,
   rejected_wating_confirmation,
 }
 export type RequestFilter = {

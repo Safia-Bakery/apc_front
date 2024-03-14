@@ -204,19 +204,6 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
     }
   };
 
-  // const renderDeadline = useMemo(() => {
-  //   if (order?.category.ftime) {
-  //     const time = order?.finishing_time?.toISOString();
-
-  //     const className =
-  //       dayjs(time).isAfter(new Date()) && order.status < RequestStatus.solved
-  //         ? "!bg-red-300"
-  //         : "";
-
-  //     return { time: time.format(dateTimeFormat), className };
-  //   }
-  // }, [order?.status]);
-
   const renderRequestModals = useMemo(() => {
     return <ShowRequestModals />;
   }, []);
