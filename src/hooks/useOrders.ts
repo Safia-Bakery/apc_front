@@ -15,7 +15,7 @@ interface Body {
   urgent?: boolean;
   fillial_id?: string;
   created_at?: string;
-  request_status?: string;
+  request_status?: string[];
   user?: string;
   id?: string | number;
   rate?: boolean;

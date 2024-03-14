@@ -39,12 +39,11 @@ const RequestsIT = () => {
   const tableRef = useRef(null);
   const [sort, $sort] = useState<Order[]>();
   const currentPage = Number(useQueryString("page")) || 1;
-  const { sphere } = useParams();
 
   const user = useQueryString("user");
   const id = Number(useQueryString("id"));
   const responsible = Number(useQueryString("responsible"));
-  const category_id = Number(useQueryString("category_id"));
+  const category_id = useQueryString("category_id");
   const urgent = useQueryString("urgent");
   const paused = useQueryString("paused");
   const created_at = useQueryString("created_at");
@@ -52,6 +51,9 @@ const RequestsIT = () => {
   const rate = useQueryString("rate");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
+  const categoryJson = category_id
+    ? (JSON.parse(category_id) as SelectValue[])
+    : [];
 
   const {
     data: requests,

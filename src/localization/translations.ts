@@ -68,6 +68,7 @@ const localization = {
       productt: "Продукт",
       product_is_required: "Необходимо выбрать товар!",
       remove: "Удалить",
+      to_select: "Выбрать",
       add_min_two_files: "Добавьте минимум два файла",
       create_order: "Создать заказ",
       order: "Заказ",

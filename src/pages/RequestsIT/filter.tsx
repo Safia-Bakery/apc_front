@@ -21,13 +21,24 @@ import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
 import useUpdateEffect from "custom/useUpdateEffect";
 import useBrigadas from "@/hooks/useBrigadas";
+import Select from "react-select";
+import { useTranslation } from "react-i18next";
+interface SelectValue {
+  value: number | string;
+  label: string;
+}
 
 const ITFilter: FC = () => {
   const navigate = useNavigateParams();
   const deleteParam = useRemoveParams();
   const perm = useAppSelector(permissionSelector);
+  const { t } = useTranslation();
 
-  const { data: categories, refetch: catRefetch } = useCategories({
+  const {
+    data: categories,
+    isLoading: categoryLoading,
+    refetch: catRefetch,
+  } = useCategories({
     department: Departments.it,
     enabled: false,
     sphere_status: Sphere.fix,
@@ -43,7 +54,7 @@ const ITFilter: FC = () => {
   const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
   const request_status = useQueryString("request_status");
-  const category_id = Number(useQueryString("category_id"));
+  const category_id = useQueryString("category_id");
   const created_at = useQueryString("created_at");
   const responsible = Number(useQueryString("responsible"));
   const userQ = useQueryString("user");
@@ -51,6 +62,10 @@ const ITFilter: FC = () => {
   const rate = useQueryString("rate");
   const urgent = useQueryString("urgent");
   const paused = useQueryString("paused");
+  const [selectCategs, $selectCategs] = useState<SelectValue[]>([]);
+  const statusJson = request_status
+    ? (JSON.parse(request_status) as SelectValue[])
+    : [];
 
   const startRange = (start: Date | null) => {
     if (start === undefined) deleteParam(["created_at"]);
@@ -60,6 +75,21 @@ const ITFilter: FC = () => {
     $user(e.target.value);
 
   const handleID = (e: ChangeEvent<HTMLInputElement>) => $id(e.target.value);
+
+  const handleStatus = (e: any) =>
+    navigate({ request_status: JSON.stringify(e) });
+
+  useEffect(() => {
+    if (categories?.items?.length)
+      $selectCategs(
+        categories.items.map((item) => {
+          return {
+            value: item.id,
+            label: item.name,
+          };
+        })
+      );
+  }, [categories]);
 
   useUpdateEffect(() => {
     navigate({ user });
@@ -102,11 +132,6 @@ const ITFilter: FC = () => {
       </td>
       <td className="p-0">
         <BaseInput className="!m-1">
-          {/* <MainInput
-            register={register("responsible")}
-            className="!mb-0"
-            onChange={handleResponsible}
-          /> */}
           <MainSelect
             values={brigades?.items.filter((item) => !!item.status)}
             onFocus={() => masterRefetch()}
@@ -127,11 +152,15 @@ const ITFilter: FC = () => {
       </td>
       <td className="p-0">
         <BaseInputs className="!m-1">
-          <MainSelect
-            values={categories?.items}
+          <Select
+            isMulti
+            isClearable
+            placeholder={""}
+            value={categoryJson}
+            onChange={handleStatus}
+            options={selectCategs}
+            isLoading={categoryLoading}
             onFocus={() => catRefetch()}
-            value={category_id.toString()}
-            onChange={(e) => navigate({ category_id: e.target.value })}
           />
         </BaseInputs>
       </td>
@@ -195,3 +224,6 @@ const ITFilter: FC = () => {
 };
 
 export default ITFilter;
+function SelectValue() {
+  throw new Error("Function not implemented.");
+}
