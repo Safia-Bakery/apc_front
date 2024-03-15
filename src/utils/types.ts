@@ -303,6 +303,7 @@ export interface ValueLabel {
   label: string;
   value: number;
 }
+
 export enum RequestStatus {
   new,
   confirmed,
@@ -311,6 +312,8 @@ export enum RequestStatus {
   rejected,
   paused,
   solved,
+  reopened,
+  rejected_wating_confirmation,
 }
 export type RequestFilter = {
   id?: number | string;

@@ -99,10 +99,7 @@ const MarketingFilter: FC<Props> = ({ sub_id }) => {
         </BaseInputs>
       </td>
       <td width={150} className="p-0 relative">
-        <div
-          onClick={() => $enabled(true)}
-          className={"absolute top-1 left-1 right-1"}
-        >
+        <div onClick={() => $enabled(true)} className={"m-1"}>
           {perm?.[MainPermissions.get_fillials_list] && (
             <BranchSelect enabled={enabled} />
           )}

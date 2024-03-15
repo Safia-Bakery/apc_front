@@ -1,7 +1,13 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Departments, MainPermissions, Order } from "@/utils/types";
+import {
+  Departments,
+  MainPermissions,
+  Order,
+  RequestStatus,
+  ValueLabel,
+} from "@/utils/types";
 import Pagination from "@/components/Pagination";
-import { FC, useRef, useState } from "react";
+import { FC, useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
@@ -19,6 +25,7 @@ import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
 import { dateTimeFormat, yearMonthDate } from "@/utils/keys";
 import { useDownloadExcel } from "react-export-table-to-excel";
+import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
 
 interface Props {
   add: MainPermissions;
@@ -38,10 +45,17 @@ const column = [
   { name: "changed", key: "user_manager" },
 ];
 
+const reqStatus = [
+  { value: RequestStatus.new },
+  { value: RequestStatus.confirmed },
+  { value: RequestStatus.sendToRepair },
+];
+
 const RequestsLogystics: FC<Props> = ({ add, edit }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [sort, $sort] = useState<Order[]>();
+  const navigateParams = useNavigateParams();
   const permission = useAppSelector(permissionSelector);
 
   const currentPage = Number(useQueryString("page")) || 1;
@@ -84,7 +98,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
     ...(!!branch?.id && { fillial_id: branch?.id }),
     ...(!!category_id && { category_id }),
     ...(!!request_status && { request_status }),
-    ...(!!user && { user: user }),
+    ...(!!user && { user }),
     ...(!!urgent && { urgent: !!urgent }),
   });
 

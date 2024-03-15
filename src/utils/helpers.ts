@@ -87,11 +87,15 @@ export const handleStatus = ({
       else return "sent_to_fix";
     }
     case RequestStatus.rejected:
-      return "denied";
+      return "closed_denied";
     case RequestStatus.paused:
       return "paused";
     case RequestStatus.solved:
       return "solved";
+    case RequestStatus.reopened:
+      return "resumed";
+    case RequestStatus.rejected_wating_confirmation:
+      return "denied";
 
     default:
       return "new";
@@ -99,20 +103,21 @@ export const handleStatus = ({
 };
 
 export const RequestStatusArr = [
-  { id: RequestStatus.new, name: "new" },
-  { id: RequestStatus.confirmed, name: "received" },
-  { id: RequestStatus.sendToRepair, name: "sent_to_fix" },
-  { id: RequestStatus.done, name: "finished" },
-  { id: RequestStatus.rejected, name: "denied" },
+  { value: RequestStatus.new, label: "Новый" },
+  { value: RequestStatus.confirmed, label: "Принят" },
+  { value: RequestStatus.sendToRepair, label: "Отправлен для ремонта" },
+  { value: RequestStatus.done, label: "Закончен" },
+  { value: RequestStatus.rejected, label: "Отклонен" },
 ];
 
 export const ITRequestStatusArr = [
-  { id: RequestStatus.new, name: "new" },
-  { id: RequestStatus.confirmed, name: "received" },
-  { id: RequestStatus.solved, name: "solved" },
-  { id: RequestStatus.rejected, name: "denied" },
-  { id: RequestStatus.paused, name: "paused" },
-  { id: RequestStatus.done, name: "finished" },
+  { value: RequestStatus.new, label: "Новый" },
+  { value: RequestStatus.confirmed, label: "Принятые" },
+  { value: RequestStatus.solved, label: "Решен" },
+  { value: RequestStatus.rejected_wating_confirmation, label: "Отменен" },
+  { value: RequestStatus.paused, label: "Остановлен" },
+  { value: RequestStatus.done, label: "Закончен" },
+  { value: RequestStatus.rejected, label: "Закрыт, отменен" },
 ];
 
 export const UrgentValsArr = [
@@ -131,11 +136,11 @@ export const RequestMarkStatusArr = [
 ];
 
 export const RequestLogStatusArr = [
-  { id: RequestStatus.new, name: "new" },
-  { id: RequestStatus.confirmed, name: "received_for_work" },
-  { id: RequestStatus.sendToRepair, name: "in_the_way" },
-  { id: RequestStatus.done, name: "finished" },
-  { id: RequestStatus.rejected, name: "denied" },
+  { value: RequestStatus.new, label: "Новый" },
+  { value: RequestStatus.confirmed, label: "Принят в работу" },
+  { value: RequestStatus.sendToRepair, label: "В пути" },
+  { value: RequestStatus.done, label: "Закончен" },
+  { value: RequestStatus.rejected, label: "Отклонен" },
 ];
 export const SystemArr = [
   { id: 0, name: "web_site" },
@@ -157,6 +162,10 @@ export const requestRows = (status: RequestStatus) => {
       return "table-gray";
     case RequestStatus.solved:
       return "table-green";
+    case RequestStatus.rejected_wating_confirmation:
+      return "table-waiting";
+    case RequestStatus.reopened:
+      return "table-warning";
     default:
       return "";
   }
@@ -169,9 +178,9 @@ export const detectFileType = (url: string) => {
     "png",
     "gif",
     "bmp",
-    "HEIC",
-    "IMG",
-    "TIFF",
+    "heic",
+    "img",
+    "tiff",
     "svg",
   ];
   const videoExtensions = ["mp4", "avi", "mkv", "mov", "webm"];

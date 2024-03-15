@@ -56,7 +56,7 @@ const requestMutation = () => {
       });
       return data;
     },
-
+    retry: 1,
     onError: (e: Error) => errorToast(e.message),
   });
 };

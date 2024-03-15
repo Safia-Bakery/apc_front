@@ -1,4 +1,4 @@
-import { FC, useMemo, useRef, KeyboardEvent, useState } from "react";
+import { FC, useMemo, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
@@ -13,7 +13,6 @@ import {
   handleDepartment,
   handleStatus,
 } from "@/utils/helpers";
-import { useForm } from "react-hook-form";
 import {
   Departments,
   FileType,
@@ -23,7 +22,6 @@ import {
   Sphere,
 } from "@/utils/types";
 import UploadComponent, { FileItem } from "@/components/FileUpload";
-import ShowRequestModals from "@/components/ShowRequestModals";
 import { reportImgSelector, uploadReport } from "reducers/selects";
 import useQueryString from "custom/useQueryString";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
@@ -33,20 +31,11 @@ import Loading from "@/components/Loader";
 import cl from "classnames";
 import { permissionSelector } from "reducers/sidebar";
 import AddedProductsIT from "@/components/AddedProductsIT";
-import Modal from "@/components/Modal";
-import BranchSelect from "@/components/BranchSelect";
-import BaseInput from "@/components/BaseInputs";
-import MainSelect from "@/components/BaseInputs/MainSelect";
-import useCategories from "@/hooks/useCategories";
 import styles from "./index.module.scss";
-import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
-import orderMsgMutation from "@/hooks/mutation/orderMsg";
 import TableViewBtn from "@/components/TableViewBtn";
-import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import { useTranslation } from "react-i18next";
-import MainInput from "@/components/BaseInputs/MainInput";
-import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
 import { dateTimeFormat } from "@/utils/keys";
+import ITModals from "./modals";
 
 interface Props {
   edit: MainPermissions;
@@ -57,24 +46,12 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
   const { t } = useTranslation();
   const { id, sphere } = useParams();
   const navigate = useNavigate();
-  const [deadline, $deadline] = useState<Date>();
-  const changeModal = Number(useQueryString("changeModal"));
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const permissions = useAppSelector(permissionSelector);
   const dispatch = useAppDispatch();
   const navigateParams = useNavigateParams();
-  const branchJson = useUpdateQueryStr("branch");
-  const branch = branchJson && JSON.parse(branchJson);
-  const { data: categories, isLoading: categoryLoading } = useCategories({
-    enabled: changeModal === ModalTypes.changeCateg,
-    department: Departments.it,
-    sphere_status: Sphere.fix,
-    category_status: 1,
-  });
   const removeParams = useRemoveParams();
   const { mutate: attach, isPending: attachLoading } = attachBrigadaMutation();
-
-  const handleDeadline = (event: Date) => $deadline(event);
 
   const {
     data: order,
@@ -91,16 +68,9 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
 
   const handleModal = (modal: ModalTypes) => () => navigateParams({ modal });
 
-  const handleChangeModal = (changeModal: ModalTypes) => () =>
-    navigateParams({ changeModal });
-
-  const { getValues, register, reset } = useForm();
-
   const isNew = order?.status === RequestStatus.new;
   const inputRef = useRef<any>(null);
   const upladedFiles = useAppSelector(reportImgSelector);
-
-  const { mutate: msgMutation, isPending: msgLoading } = orderMsgMutation();
 
   const { mutate, isPending: uploadLoading } = uploadFileMutation();
 
@@ -109,68 +79,23 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
   const handleFilesSelected = (data: FileItem[]) =>
     dispatch(uploadReport(data));
 
-  const handleMessage = () => {
-    const { left_comment, uploaded_photo } = getValues();
-    msgMutation(
-      {
-        request_id: Number(id),
-        message: left_comment,
-        photo: uploaded_photo[0],
-      },
-      {
-        onSuccess: () => {
-          orderRefetch();
-          closeModal();
-          successToast("success");
-          reset({});
-        },
-        onError: (e) => errorToast(e.message),
-      }
-    );
-  };
-
-  const handleChange =
-    ({ filial, categ }: { filial?: boolean; categ?: boolean }) =>
-    () => {
-      const { category: category_id } = getValues();
-      if (!!branch || category_id)
-        attach(
-          {
-            request_id: Number(id),
-            ...(!!branch?.id && filial && { fillial_id: branch.id }),
-            ...(categ && { category_id }),
-          },
-          {
-            onSuccess: () => {
-              orderRefetch();
-              successToast("assigned");
-              removeParams(["branch", "changeModal"]);
-            },
-            onError: (e) => errorToast(e.message),
-          }
-        );
-    };
-
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
     else navigateParams({ modal: ModalTypes.showPhoto, photo: file });
   };
 
   const handleBrigada =
-    ({ status, time }: { status?: RequestStatus; time?: string }) =>
+    ({ status }: { status?: RequestStatus }) =>
     () => {
       attach(
         {
           request_id: Number(id),
           status,
-          deny_reason: getValues("cancel_reason"),
-          ...(!!time && { finishing_time: time }),
         },
         {
           onSuccess: () => {
             orderRefetch();
             successToast("assigned");
-            removeParams(["changeModal"]);
           },
           onError: (e) => errorToast(e.message),
         }
@@ -197,135 +122,20 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
       );
   };
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      handleMessage();
-    }
-  };
-
-  // const renderDeadline = useMemo(() => {
-  //   if (order?.category.ftime) {
-  //     const time = order?.finishing_time?.toISOString();
-
-  //     const className =
-  //       dayjs(time).isAfter(new Date()) && order.status < RequestStatus.solved
-  //         ? "!bg-red-300"
-  //         : "";
-
-  //     return { time: time.format(dateTimeFormat), className };
-  //   }
-  // }, [order?.status]);
-
-  const renderRequestModals = useMemo(() => {
-    return <ShowRequestModals />;
+  const renderModals = useMemo(() => {
+    return <ITModals />;
   }, []);
 
-  const renderChangeModals = useMemo(() => {
-    if (order?.status! !== RequestStatus.done)
-      switch (changeModal) {
-        case ModalTypes.changeBranch:
-          return (
-            <>
-              <BaseInput label="select_branch">
-                <BranchSelect enabled />
-              </BaseInput>
-
-              <button
-                className="btn btn-success btn-fill w-full"
-                onClick={handleChange({ filial: true })}
-              >
-                {t("apply")}
-              </button>
-            </>
-          );
-        case ModalTypes.changeCateg:
-          return (
-            <>
-              <BaseInput label="select_category">
-                <MainSelect
-                  values={categories?.items}
-                  register={register("category")}
-                />
-              </BaseInput>
-
-              <button
-                className="btn btn-success btn-fill w-full"
-                onClick={handleChange({ categ: true })}
-              >
-                {t("apply")}
-              </button>
-            </>
-          );
-        case ModalTypes.leaveMessage:
-          return (
-            <>
-              <BaseInput label="leave_comment">
-                <MainTextArea
-                  autoFocus
-                  onKeyDown={handleKeyDown}
-                  register={register("left_comment")}
-                />
-              </BaseInput>
-
-              <BaseInput label="upload_photo">
-                <MainInput type="file" register={register("uploaded_photo")} />
-              </BaseInput>
-
-              <button
-                className="btn btn-success btn-fill w-full"
-                onClick={handleMessage}
-              >
-                {t("apply")}
-              </button>
-            </>
-          );
-
-        case ModalTypes.assingDeadline:
-          return (
-            <>
-              <div>
-                <BaseInput label="select_deadline">
-                  <MainDatePicker
-                    showTimeSelect
-                    selected={
-                      !!deadline || order?.finishing_time
-                        ? dayjs(deadline || order?.finishing_time).toDate()
-                        : undefined
-                    }
-                    onChange={handleDeadline}
-                  />
-                </BaseInput>
-
-                <button
-                  onClick={handleBrigada({
-                    time: deadline?.toISOString(),
-                  })}
-                  className="btn btn-success btn-fill w-full"
-                >
-                  {t("apply")}
-                </button>
-              </div>
-            </>
-          );
-        default:
-          break;
-      }
-  }, [
-    categoryLoading,
-    changeModal,
-    categories,
-    branch,
-    order?.status,
-    deadline,
-  ]);
-
   const renderBtns = useMemo(() => {
-    if (!!order?.status.toString() && order.status !== RequestStatus.done)
+    if (
+      !!order?.status.toString() &&
+      order.status !== RequestStatus.done &&
+      order.status !== RequestStatus.rejected
+    )
       return (
         <div className="flex justify-between mb10 gap-2">
           {order.status !== RequestStatus.done &&
-          order.status !== RequestStatus.rejected ? (
+          order.status !== RequestStatus.rejected_wating_confirmation ? (
             <button
               onClick={handleModal(ModalTypes.cancelRequest)}
               className="btn btn-danger btn-fill"
@@ -339,11 +149,11 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
             {order?.status! > RequestStatus.new && (
               <div className="flex gap-2">
                 {order?.status! === RequestStatus.solved ||
-                order?.status! === RequestStatus.rejected ||
+                order?.status! === RequestStatus.rejected_wating_confirmation ||
                 order?.status! === RequestStatus.paused ? (
                   <button
                     onClick={handleBrigada({
-                      status: RequestStatus.confirmed,
+                      status: RequestStatus.reopened,
                     })}
                     className="btn btn-warning btn-fill"
                   >
@@ -358,7 +168,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                   </button>
                 )}
                 {order.status !== RequestStatus.solved &&
-                  order.status !== RequestStatus.rejected &&
+                  order.status !== RequestStatus.rejected_wating_confirmation &&
                   order.status !== RequestStatus.paused && (
                     <button
                       id={"fixed"}
@@ -433,13 +243,10 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
       );
   }, [upladedFiles, permissions, order?.status, order?.file]);
 
-  const closeModal = () => removeParams(["changeModal"]);
-
   if (
     uploadLoading ||
     attachLoading ||
     orderLoading ||
-    msgLoading ||
     brigadaFetching ||
     orderFetching
   )
@@ -516,7 +323,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                               "btn btn-primary btn-fill",
                               styles.changeBtn
                             )}
-                            onClick={handleChangeModal(ModalTypes.changeCateg)}
+                            onClick={handleModal(ModalTypes.changeCateg)}
                           >
                             {t("change")}
                           </button>
@@ -539,7 +346,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
 
                         {order?.status! !== RequestStatus.done && (
                           <button
-                            onClick={handleChangeModal(ModalTypes.changeBranch)}
+                            onClick={handleModal(ModalTypes.changeBranch)}
                             className={cl(
                               "btn btn-primary btn-fill",
                               styles.changeBtn
@@ -551,10 +358,6 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                       </div>
                     </td>
                   </tr>
-                  {/* <tr>
-                    <th>Продукт</th>
-                    <td>{order?.product}</td>
-                  </tr> */}
                   <tr>
                     <th>{t("file")}</th>
                     <td className="flex flex-col !border-none">
@@ -630,9 +433,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
 
                         {order?.status! !== RequestStatus.done && (
                           <TableViewBtn
-                            onClick={handleChangeModal(
-                              ModalTypes.assingDeadline
-                            )}
+                            onClick={handleModal(ModalTypes.assingDeadline)}
                           />
                         )}
                       </div>
@@ -655,14 +456,6 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                         : t("not_given")}
                     </td>
                   </tr>
-                  {/* <tr>
-                    <th>{t("completion_date")}</th>
-                    <td>
-                      {order?.finished_at
-                        ? dayjs(order?.finished_at).format(dateTimeFormat)
-                        : t("not_given")}
-                    </td>
-                  </tr> */}
                   <tr>
                     <th>{t("date_of_pause")}</th>
                     <td>
@@ -695,7 +488,6 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                     </td>
                   </tr>
                   <tr>
-                    {/* <th>{t("pausedd")}</th> */}
                     <th>{t("reopen")}</th>
                     <td>
                       {order?.update_time[RequestStatus.paused] &&
@@ -739,17 +531,12 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                         </div>
                         {order?.status! !== RequestStatus.done && (
                           <TableViewBtn
-                            onClick={handleChangeModal(ModalTypes.leaveMessage)}
+                            onClick={handleModal(ModalTypes.leaveMessage)}
                           />
                         )}
                       </div>
                     </td>
                   </tr>
-
-                  {/* {order?.update_time[RequestStatus.solved] &&order?.update_time[RequestStatus.]&&<tr>
-                      <th className="font-bold">{t("reopen")}</th>
-                      <td>{ order?.comments}</td>
-                    </tr>} */}
 
                   {order?.comments?.[0]?.rating && (
                     <tr>
@@ -787,15 +574,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
       {renderfileUploader}
 
       {!!order?.request_orpr?.length && <AddedProductsIT />}
-      {renderRequestModals}
-      <Modal isOpen={!!changeModal} onClose={closeModal} className="!max-w-sm">
-        <Header title="change">
-          <button onClick={closeModal} className="close">
-            <span>&times;</span>
-          </button>
-        </Header>
-        <div className="p-2">{renderChangeModals}</div>
-      </Modal>
+      {renderModals}
     </>
   );
 };

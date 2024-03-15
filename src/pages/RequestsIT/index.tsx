@@ -1,8 +1,7 @@
 import { useMemo, useRef, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
-
 import { Departments, Order, RequestStatus } from "@/utils/types";
 import Pagination from "@/components/Pagination";
 import useOrders from "@/hooks/useOrders";
@@ -39,7 +38,6 @@ const RequestsIT = () => {
   const tableRef = useRef(null);
   const [sort, $sort] = useState<Order[]>();
   const currentPage = Number(useQueryString("page")) || 1;
-  const { sphere } = useParams();
 
   const user = useQueryString("user");
   const id = Number(useQueryString("id"));
@@ -59,7 +57,6 @@ const RequestsIT = () => {
     isFetching: orderFetching,
   } = useOrders({
     department: Departments.it,
-    // sphere_status: Number(sphere),
     page: currentPage,
     ...(!!id && { id }),
     ...(!!category_id && { category_id }),
@@ -126,7 +123,10 @@ const RequestsIT = () => {
                   <td>{order?.category?.name}</td>
                   <td>{!!order?.category?.urgent ? t("yes") : t("no")}</td>
                   <td>
-                    {!!order?.update_time[RequestStatus.paused]
+                    {!!(
+                      order?.update_time[RequestStatus.paused] ||
+                      order?.update_time[RequestStatus.reopened]
+                    )
                       ? t("yes")
                       : t("no")}
                   </td>

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/main";
-import { OrderType } from "@/utils/types";
+import { OrderType, ValueLabel } from "@/utils/types";
 
 interface Body {
   enabled?: boolean;
@@ -22,12 +22,23 @@ interface Body {
   brigada_id?: number;
 }
 
-export const useOrders = ({ enabled, ...params }: Body) => {
+export const useOrders = ({ enabled, request_status, ...params }: Body) => {
   return useQuery({
-    queryKey: ["requests", params],
+    queryKey: ["requests", params, request_status],
     queryFn: () =>
       apiClient
-        .get({ url: "/request", params })
+        .get({
+          url: "/request",
+          params: {
+            ...params,
+            ...(!!request_status &&
+              (JSON.parse(request_status) as ValueLabel[])?.length && {
+                request_status: (
+                  JSON.parse(request_status) as ValueLabel[]
+                ).map((item) => item.value),
+              }),
+          },
+        })
         .then(({ data: response }) => (response as OrderType) || null),
     enabled,
   });

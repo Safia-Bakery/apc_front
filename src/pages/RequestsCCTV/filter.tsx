@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
 import useUpdateEffect from "custom/useUpdateEffect";
+import StatusFilter from "@/components/StatusFilter";
 
 const CCTVFilter: FC = () => {
   const navigate = useNavigateParams();
@@ -34,7 +35,6 @@ const CCTVFilter: FC = () => {
   const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
   const [responsible, $responsible] = useDebounce<string>("");
-  const request_status = useQueryString("request_status");
   const category_id = Number(useQueryString("category_id"));
   const created_at = useQueryString("created_at");
   const userQ = useQueryString("user");
@@ -97,10 +97,7 @@ const CCTVFilter: FC = () => {
         </BaseInput>
       </td>
       <td width={150} className="p-0 relative">
-        <div
-          onClick={() => $enabled(true)}
-          className={"absolute top-1 left-1 right-1"}
-        >
+        <div onClick={() => $enabled(true)} className={"m-1"}>
           {perm?.[MainPermissions.get_fillials_list] && (
             <BranchSelect enabled={enabled} />
           )}
@@ -128,11 +125,7 @@ const CCTVFilter: FC = () => {
       </td>
       <td className="p-0">
         <BaseInputs className="!m-1">
-          <MainSelect
-            values={RequestStatusArr}
-            value={request_status?.toString()}
-            onChange={(e) => navigate({ request_status: e.target.value })}
-          />
+          <StatusFilter options={RequestStatusArr} />
         </BaseInputs>
       </td>
 
