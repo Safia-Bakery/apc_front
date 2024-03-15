@@ -341,6 +341,8 @@ const localization = {
       pausedd: "Приостановлен",
       canceled: "Отменен",
       resume: "Возобновить",
+      resumed: "Возобновлен",
+      closed_denied: "Закрыт, отменен",
       solved: "Решен",
       pause_reason: "Причина приостановки",
       mark_requests: "Заявки Маркетинг",

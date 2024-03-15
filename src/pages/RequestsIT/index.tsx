@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 
@@ -66,7 +66,6 @@ const RequestsIT = () => {
     isFetching: orderFetching,
   } = useOrders({
     department: Departments.it,
-    // sphere_status: Number(sphere),
     page: currentPage,
     ...(!!id && { id }),
     ...(!!category_id && { category_id }),

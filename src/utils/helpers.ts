@@ -87,11 +87,15 @@ export const handleStatus = ({
       else return "sent_to_fix";
     }
     case RequestStatus.rejected:
-      return "denied";
+      return "closed_denied";
     case RequestStatus.paused:
       return "paused";
     case RequestStatus.solved:
       return "solved";
+    case RequestStatus.reopened:
+      return "resumed";
+    case RequestStatus.rejected_wating_confirmation:
+      return "denied";
 
     default:
       return "new";
