@@ -12,33 +12,20 @@ import MainInput from "@/components/BaseInputs/MainInput";
 import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
 import BranchSelect from "@/components/BranchSelect";
 import useQueryString from "custom/useQueryString";
-import { Departments, MainPermissions, Sphere } from "@/utils/types";
+import { Departments, Sphere } from "@/utils/types";
 import dayjs from "dayjs";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import useCategories from "@/hooks/useCategories";
 import { useForm } from "react-hook-form";
-import { permissionSelector } from "reducers/sidebar";
-import { useAppSelector } from "@/store/utils/types";
 import useUpdateEffect from "custom/useUpdateEffect";
 import useBrigadas from "@/hooks/useBrigadas";
-import Select from "react-select";
-import { useTranslation } from "react-i18next";
-interface SelectValue {
-  value: number | string;
-  label: string;
-}
+import StatusFilter from "@/components/StatusFilter";
 
 const ITFilter: FC = () => {
   const navigate = useNavigateParams();
   const deleteParam = useRemoveParams();
-  const perm = useAppSelector(permissionSelector);
-  const { t } = useTranslation();
 
-  const {
-    data: categories,
-    isLoading: categoryLoading,
-    refetch: catRefetch,
-  } = useCategories({
+  const { data: categories, refetch: catRefetch } = useCategories({
     department: Departments.it,
     enabled: false,
     sphere_status: Sphere.fix,
@@ -53,7 +40,6 @@ const ITFilter: FC = () => {
   const [id, $id] = useDebounce<string>("");
   const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
-  const request_status = useQueryString("request_status");
   const category_id = Number(useQueryString("category_id"));
   const created_at = useQueryString("created_at");
   const responsible = Number(useQueryString("responsible"));
@@ -62,9 +48,6 @@ const ITFilter: FC = () => {
   const rate = useQueryString("rate");
   const urgent = useQueryString("urgent");
   const paused = useQueryString("paused");
-  const statusJson = request_status
-    ? (JSON.parse(request_status) as SelectValue[])
-    : [];
 
   const startRange = (start: Date | null) => {
     if (start === undefined) deleteParam(["created_at"]);
@@ -74,9 +57,6 @@ const ITFilter: FC = () => {
     $user(e.target.value);
 
   const handleID = (e: ChangeEvent<HTMLInputElement>) => $id(e.target.value);
-
-  const handleStatus = (e: any) =>
-    navigate({ request_status: JSON.stringify(e) });
 
   useUpdateEffect(() => {
     navigate({ user });
@@ -128,13 +108,8 @@ const ITFilter: FC = () => {
         </BaseInput>
       </td>
       <td width={150} className="p-0 relative">
-        <div
-          onClick={() => $enabled(true)}
-          className={"absolute top-1 left-1 right-1"}
-        >
-          {perm?.[MainPermissions.get_fillials_list] && (
-            <BranchSelect enabled={enabled} />
-          )}
+        <div onClick={() => $enabled(true)} className={"m-1"}>
+          <BranchSelect enabled={enabled} />
         </div>
       </td>
       <td className="p-0">
@@ -180,18 +155,9 @@ const ITFilter: FC = () => {
           />
         </BaseInputs>
       </td>
-      <td width={130} className="p-0">
+      <td className="p-0">
         <BaseInputs className="!m-1">
-          <Select
-            isMulti
-            isClearable={false}
-            placeholder={""}
-            value={statusJson}
-            onChange={handleStatus}
-            options={ITRequestStatusArr}
-            isLoading={categoryLoading}
-            onFocus={() => catRefetch()}
-          />
+          <StatusFilter options={ITRequestStatusArr} />
         </BaseInputs>
       </td>
 

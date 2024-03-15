@@ -1,4 +1,4 @@
-import { FC, useMemo, useRef, KeyboardEvent, useState } from "react";
+import { FC, useMemo, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
@@ -13,7 +13,6 @@ import {
   handleDepartment,
   handleStatus,
 } from "@/utils/helpers";
-import { useForm } from "react-hook-form";
 import {
   Departments,
   FileType,
@@ -23,7 +22,6 @@ import {
   Sphere,
 } from "@/utils/types";
 import UploadComponent, { FileItem } from "@/components/FileUpload";
-import ShowRequestModals from "@/components/ShowRequestModals";
 import { reportImgSelector, uploadReport } from "reducers/selects";
 import useQueryString from "custom/useQueryString";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
@@ -33,19 +31,9 @@ import Loading from "@/components/Loader";
 import cl from "classnames";
 import { permissionSelector } from "reducers/sidebar";
 import AddedProductsIT from "@/components/AddedProductsIT";
-import Modal from "@/components/Modal";
-import BranchSelect from "@/components/BranchSelect";
-import BaseInput from "@/components/BaseInputs";
-import MainSelect from "@/components/BaseInputs/MainSelect";
-import useCategories from "@/hooks/useCategories";
 import styles from "./index.module.scss";
-import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
-import orderMsgMutation from "@/hooks/mutation/orderMsg";
 import TableViewBtn from "@/components/TableViewBtn";
-import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import { useTranslation } from "react-i18next";
-import MainInput from "@/components/BaseInputs/MainInput";
-import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
 import { dateTimeFormat } from "@/utils/keys";
 import ITModals from "./modals";
 
@@ -139,11 +127,15 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
   }, []);
 
   const renderBtns = useMemo(() => {
-    if (!!order?.status.toString() && order.status !== RequestStatus.done)
+    if (
+      !!order?.status.toString() &&
+      order.status !== RequestStatus.done &&
+      order.status !== RequestStatus.rejected
+    )
       return (
         <div className="flex justify-between mb10 gap-2">
           {order.status !== RequestStatus.done &&
-          order.status !== RequestStatus.rejected ? (
+          order.status !== RequestStatus.rejected_wating_confirmation ? (
             <button
               onClick={handleModal(ModalTypes.cancelRequest)}
               className="btn btn-danger btn-fill"
@@ -157,7 +149,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
             {order?.status! > RequestStatus.new && (
               <div className="flex gap-2">
                 {order?.status! === RequestStatus.solved ||
-                order?.status! === RequestStatus.rejected ||
+                order?.status! === RequestStatus.rejected_wating_confirmation ||
                 order?.status! === RequestStatus.paused ? (
                   <button
                     onClick={handleBrigada({
@@ -176,7 +168,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                   </button>
                 )}
                 {order.status !== RequestStatus.solved &&
-                  order.status !== RequestStatus.rejected &&
+                  order.status !== RequestStatus.rejected_wating_confirmation &&
                   order.status !== RequestStatus.paused && (
                     <button
                       id={"fixed"}
@@ -366,10 +358,6 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                       </div>
                     </td>
                   </tr>
-                  {/* <tr>
-                    <th>Продукт</th>
-                    <td>{order?.product}</td>
-                  </tr> */}
                   <tr>
                     <th>{t("file")}</th>
                     <td className="flex flex-col !border-none">
@@ -468,14 +456,6 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                         : t("not_given")}
                     </td>
                   </tr>
-                  {/* <tr>
-                    <th>{t("completion_date")}</th>
-                    <td>
-                      {order?.finished_at
-                        ? dayjs(order?.finished_at).format(dateTimeFormat)
-                        : t("not_given")}
-                    </td>
-                  </tr> */}
                   <tr>
                     <th>{t("date_of_pause")}</th>
                     <td>
@@ -508,7 +488,6 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                     </td>
                   </tr>
                   <tr>
-                    {/* <th>{t("pausedd")}</th> */}
                     <th>{t("reopen")}</th>
                     <td>
                       {order?.update_time[RequestStatus.paused] &&
@@ -558,11 +537,6 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                       </div>
                     </td>
                   </tr>
-
-                  {/* {order?.update_time[RequestStatus.solved] &&order?.update_time[RequestStatus.]&&<tr>
-                      <th className="font-bold">{t("reopen")}</th>
-                      <td>{ order?.comments}</td>
-                    </tr>} */}
 
                   {order?.comments?.[0]?.rating && (
                     <tr>

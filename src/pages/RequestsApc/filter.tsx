@@ -17,6 +17,7 @@ import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
 import useUpdateEffect from "custom/useUpdateEffect";
 import useBrigadas from "@/hooks/useBrigadas";
+import StatusFilter from "@/components/StatusFilter";
 
 interface Props {
   sphere_status?: Sphere;
@@ -38,7 +39,6 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
   const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
   const system = useQueryString("system");
-  const request_status = useQueryString("request_status");
   const rate = useQueryString("rate");
   const category_id = Number(useQueryString("category_id"));
   const created_at = useQueryString("created_at");
@@ -120,13 +120,8 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
         </BaseInput>
       </td>
       <td width={150} className="p-0 relative">
-        <div
-          onClick={() => $enabled(true)}
-          className={"absolute top-1 left-1 right-1"}
-        >
-          {perm?.[MainPermissions.get_fillials_list] && (
-            <BranchSelect enabled={enabled} />
-          )}
+        <div onClick={() => $enabled(true)} className={"m-1"}>
+          <BranchSelect enabled={enabled} />
         </div>
       </td>
       <td className="p-0">
@@ -146,11 +141,6 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
       </td>
       <td className="p-0">
         <BaseInput className="!m-1">
-          {/* <MainInput
-            className="!mb-0"
-            onChange={(e) => navigate({ user: e.target.value })}
-          /> */}
-
           <MainSelect
             values={brigades?.items.filter((item) => !!item.status)}
             onFocus={() => masterRefetch()}
@@ -183,11 +173,7 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
       </td>
       <td className="p-0">
         <BaseInputs className="!m-1">
-          <MainSelect
-            values={RequestStatusArr}
-            value={request_status?.toString()}
-            onChange={(e) => navigate({ request_status: e.target.value })}
-          />
+          <StatusFilter options={RequestStatusArr} />
         </BaseInputs>
       </td>
       <td className="p-0">

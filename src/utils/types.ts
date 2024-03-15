@@ -303,6 +303,7 @@ export interface ValueLabel {
   label: string;
   value: number;
 }
+
 export enum RequestStatus {
   new,
   confirmed,

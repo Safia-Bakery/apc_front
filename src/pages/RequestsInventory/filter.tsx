@@ -2,7 +2,6 @@ import { RequestStatusArr } from "@/utils/helpers";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import useDebounce from "custom/useDebounce";
 import BaseInputs from "@/components/BaseInputs";
-import MainSelect from "@/components/BaseInputs/MainSelect";
 import BaseInput from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
 import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
@@ -15,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
 import useUpdateEffect from "custom/useUpdateEffect";
+import StatusFilter from "@/components/StatusFilter";
 
 const ITFilter: FC = () => {
   const navigate = useNavigateParams();
@@ -26,7 +26,6 @@ const ITFilter: FC = () => {
   const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
   const [reciever, $reciever] = useDebounce<string>("");
-  const request_status = useQueryString("request_status");
   const created_at = useQueryString("created_at");
   const userQ = useQueryString("user");
   const idQ = useQueryString("id");
@@ -85,10 +84,7 @@ const ITFilter: FC = () => {
         </BaseInput>
       </td>
       <td width={150} className="p-0 relative">
-        <div
-          onClick={() => $enabled(true)}
-          className={"absolute top-1 left-1 right-1"}
-        >
+        <div onClick={() => $enabled(true)} className={"m-1"}>
           {perm?.[MainPermissions.get_fillials_list] && (
             <BranchSelect enabled={enabled} />
           )}
@@ -111,29 +107,9 @@ const ITFilter: FC = () => {
           wrapperClassName={"m-1"}
         />
       </td>
-      {/* <td className="p-0">
-        <BaseInputs className="!m-1">
-          <MainSelect
-            values={categories?.items}
-            onFocus={() => catRefetch()}
-            value={category_id.toString()}
-            onChange={(e) => navigate({ category_id: e.target.value })}
-          />
-        </BaseInputs>
-      </td> */}
-
-      {/* <td className="p-0">
-        <BaseInput className="!m-1">
-          <MainInput register={register("comment")} className="!mb-0" />
-        </BaseInput>
-      </td> */}
       <td className="p-0">
         <BaseInputs className="!m-1">
-          <MainSelect
-            values={RequestStatusArr}
-            value={request_status?.toString()}
-            onChange={(e) => navigate({ request_status: e.target.value })}
-          />
+          <StatusFilter options={RequestStatusArr} />
         </BaseInputs>
       </td>
       <td></td>

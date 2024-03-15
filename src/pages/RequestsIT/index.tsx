@@ -2,18 +2,12 @@ import { useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
-
 import { Departments, Order, RequestStatus } from "@/utils/types";
 import Pagination from "@/components/Pagination";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import {
-  ITRequestStatusArr,
-  handleIdx,
-  handleStatus,
-  requestRows,
-} from "@/utils/helpers";
+import { handleIdx, handleStatus, requestRows } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import ITFilter from "./filter";
 import ItemsCount from "@/components/ItemsCount";
@@ -56,9 +50,6 @@ const RequestsIT = () => {
   const rate = useQueryString("rate");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
-  const statusJson = request_status
-    ? (JSON.parse(request_status) as typeof ITRequestStatusArr)
-    : [];
 
   const {
     data: requests,
@@ -73,10 +64,7 @@ const RequestsIT = () => {
       created_at: dayjs(created_at).format(yearMonthDate),
     }),
     ...(!!branch?.id && { fillial_id: branch?.id }),
-    ...(!!request_status &&
-      !!statusJson && {
-        request_status: statusJson.map((item) => item.value),
-      }),
+    ...(!!request_status && { request_status }),
     ...(!!user && { user }),
     ...(!!responsible && { brigada_id: responsible }),
     ...(!!rate?.toString() && { rate: !!rate }),
@@ -154,9 +142,7 @@ const RequestsIT = () => {
                   <td width={50} className="text-center">
                     {order?.comments?.[0]?.rating}
                   </td>
-                  <td width={100}>
-                    {t(handleStatus({ status: order?.status }))}
-                  </td>
+                  <td>{t(handleStatus({ status: order?.status }))}</td>
                   <td>{dayjs(order?.created_at).format(dateTimeFormat)}</td>
                 </tr>
               ))}

@@ -1,4 +1,4 @@
-import { FC, useMemo, useRef, KeyboardEvent, useState } from "react";
+import { KeyboardEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -20,7 +20,6 @@ import useBrigadas from "@/hooks/useBrigadas";
 
 import marketingReassignMutation from "@/hooks/mutation/marketingReassign";
 import useCategories from "@/hooks/useCategories";
-import useCars from "@/hooks/useCars";
 import Header from "@/components/Header";
 import Loading from "@/components/Loader";
 import BaseInput from "@/components/BaseInputs";
@@ -315,94 +314,91 @@ const ITModals = () => {
           </div>
         );
 
-      case ModalTypes.reassign:
-        return (
-          <div className="min-w-[380px] p-4">
-            <BaseInput label="select_direction">
-              <MainSelect
-                values={MarketingSubDepRu}
-                register={register("direction")}
-              />
-            </BaseInput>
-
-            <BaseInput label="select_category">
-              <MainSelect
-                values={categories?.items || []}
-                register={register("category_id", {
-                  required: t("required_field"),
-                })}
-              />
-            </BaseInput>
-
-            <button
-              onClick={handleReassign}
-              className="btn btn-success btn-fill btn-sm float-end"
-            >
-              {t("redirect")}
-            </button>
-          </div>
-        );
       case ModalTypes.changeBranch:
         return (
           <>
-            <BaseInput label="select_branch">
-              <BranchSelect enabled />
-            </BaseInput>
+            <Header title="change">
+              <button onClick={closeModal} className="close">
+                <span>&times;</span>
+              </button>
+            </Header>
+            <div className="min-w-96">
+              <BaseInput label="select_branch">
+                <BranchSelect enabled />
+              </BaseInput>
 
-            <button
-              className="btn btn-success btn-fill w-full"
-              onClick={handleChange({ filial: true })}
-            >
-              {t("apply")}
-            </button>
+              <button
+                className="btn btn-success btn-fill w-full"
+                onClick={handleChange({ filial: true })}
+              >
+                {t("apply")}
+              </button>
+            </div>
           </>
         );
       case ModalTypes.changeCateg:
         return (
           <>
+            {" "}
+            <Header title="change">
+              <button onClick={closeModal} className="close">
+                <span>&times;</span>
+              </button>
+            </Header>
             <BaseInput label="select_category">
               <MainSelect
                 values={categories?.items}
                 register={register("category")}
               />
             </BaseInput>
-
-            <button
-              className="btn btn-success btn-fill w-full"
-              onClick={handleChange({ categ: true })}
-            >
-              {t("apply")}
-            </button>
+            <div className="min-w-96">
+              <button
+                className="btn btn-success btn-fill w-full"
+                onClick={handleChange({ categ: true })}
+              >
+                {t("apply")}
+              </button>
+            </div>
           </>
         );
       case ModalTypes.leaveMessage:
         return (
           <>
-            <BaseInput label="leave_comment">
-              <MainTextArea
-                autoFocus
-                onKeyDown={handleKeyDown}
-                register={register("left_comment")}
-              />
-            </BaseInput>
-
-            <BaseInput label="upload_photo">
-              <MainInput type="file" register={register("uploaded_photo")} />
-            </BaseInput>
-
-            <button
-              className="btn btn-success btn-fill w-full"
-              onClick={handleMessage}
-            >
-              {t("apply")}
-            </button>
+            <Header title="leave_comment">
+              <button onClick={closeModal} className="close">
+                <span>&times;</span>
+              </button>
+            </Header>
+            <div className="p-1">
+              <BaseInput label="comments">
+                <MainTextArea
+                  autoFocus
+                  onKeyDown={handleKeyDown}
+                  register={register("left_comment")}
+                />
+              </BaseInput>
+              <BaseInput label="upload_photo">
+                <MainInput type="file" register={register("uploaded_photo")} />
+              </BaseInput>
+              <button
+                className="btn btn-success btn-fill w-full"
+                onClick={handleMessage}
+              >
+                {t("apply")}
+              </button>
+            </div>
           </>
         );
 
       case ModalTypes.assingDeadline:
         return (
           <>
-            <div>
+            <Header title="select_deadline">
+              <button onClick={closeModal} className="close">
+                <span>&times;</span>
+              </button>
+            </Header>
+            <div className="p-1">
               <BaseInput label="select_deadline">
                 <MainDatePicker
                   showTimeSelect

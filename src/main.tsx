@@ -15,8 +15,8 @@ import Loading from "./components/Loader/index.tsx";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.scss";
 
-// export const baseURL = "https://api.service.safiabakery.uz"; // todo
-export const baseURL = "http://10.0.3.234:8000";
+export const baseURL = "https://api.service.safiabakery.uz"; // todo
+// export const baseURL = "http://10.0.3.234:8000";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
