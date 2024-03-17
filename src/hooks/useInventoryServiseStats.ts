@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/main";
-import { InvServiceStatTypes } from "@/utils/types";
+import { EPresetTimes, InvServiceStatTypes } from "@/utils/types";
 import dayjs from "dayjs";
 import { yearMonthDate } from "@/utils/keys";
 
@@ -9,6 +9,8 @@ interface Params {
   finished_at?: string;
   started_at?: string;
 }
+
+const config = { timeout: EPresetTimes.SECOND * 10 };
 
 export const useInventoryServiseStats = ({
   enabled,
@@ -27,6 +29,7 @@ export const useInventoryServiseStats = ({
             started_at,
             ...params,
           },
+          config,
         })
         .then(({ data: response }) => response as InvServiceStatTypes),
     enabled,

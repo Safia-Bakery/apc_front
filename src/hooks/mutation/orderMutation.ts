@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import apiClient from "@/main";
 import { errorToast } from "@/utils/toast";
+import { EPresetTimes } from "@/utils/types";
 
 interface Body {
   product?: string;
@@ -21,7 +22,7 @@ interface Body {
 const requestMutation = () => {
   const contentType = "multipart/form-data";
 
-  const config = { timeout: 100000 };
+  const config = { timeout: EPresetTimes.MINUTE * 2 };
 
   return useMutation({
     mutationKey: ["create_order"],

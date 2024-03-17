@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { FileItem } from "@/components/FileUpload";
 import apiClient from "@/main";
+import { EPresetTimes } from "@/utils/types";
 
 interface RegisterTypes {
   request_id: number;
@@ -10,7 +11,7 @@ interface RegisterTypes {
 const uploadFileMutation = () => {
   const contentType = "multipart/form-data";
 
-  const config = { timeout: 100000 };
+  const config = { timeout: EPresetTimes.MINUTE * 2 };
   return useMutation({
     mutationKey: ["register"],
     mutationFn: ({ request_id, files }: RegisterTypes) => {

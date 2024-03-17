@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/main";
 import { errorToast, successToast } from "@/utils/toast";
-import { BranchTypes } from "@/utils/types";
+import { BranchTypes, EPresetTimes } from "@/utils/types";
 
-const config = { timeout: 100000 };
+const config = { timeout: EPresetTimes.MINUTE * 2 };
 
 export const useStockSync = ({
   enabled = true,

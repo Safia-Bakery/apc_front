@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/main";
-import { InvServiceStatTypes } from "@/utils/types";
+import { EPresetTimes, InvServiceStatTypes } from "@/utils/types";
 import dayjs from "dayjs";
 import { yearMonthDate } from "@/utils/keys";
 
@@ -9,7 +9,7 @@ interface Params {
   finished_at?: string;
   started_at?: string;
 }
-
+const config = { timeout: EPresetTimes.SECOND * 10 };
 export const useITServiseStats = ({
   enabled,
   started_at = dayjs().startOf("month").format(yearMonthDate),
@@ -21,15 +21,17 @@ export const useITServiseStats = ({
     queryFn: () =>
       apiClient
         .get({
-          url: "/v1/stats/inventory",
+          url: "/it/stats",
           params: {
             finished_at,
             started_at,
             ...params,
           },
+          config,
         })
         .then(({ data: response }) => response as InvServiceStatTypes),
     enabled,
+    retry: 2,
     refetchOnMount: true,
   });
 };

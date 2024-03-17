@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { Departments, Sphere } from "@/utils/types";
+import { Departments, EPresetTimes, Sphere } from "@/utils/types";
 import apiClient from "@/main";
 
 interface Body {
@@ -18,7 +18,7 @@ interface Body {
 
 const categoryMutation = () => {
   const contentType = "multipart/form-data";
-  const config = { timeout: 100000 };
+  const config = { timeout: EPresetTimes.MINUTE };
   return useMutation({
     mutationKey: ["handle_category"],
     mutationFn: async (body: Body) => {

@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/main";
 import {
   Departments,
+  EPresetTimes,
   MarketingSubDep,
   ServiceStatsTypes,
   Sphere,
@@ -17,6 +18,8 @@ interface Params {
   department: Departments;
   sphere_status?: Sphere;
 }
+
+const config = { timeout: EPresetTimes.SECOND * 10 };
 
 export const useServiceMarkStats = ({
   enabled,
@@ -35,6 +38,7 @@ export const useServiceMarkStats = ({
             started_at,
             ...params,
           },
+          config,
         })
         .then(({ data: response }) => response as ServiceStatsTypes),
     enabled,

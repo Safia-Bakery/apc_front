@@ -37,8 +37,9 @@ const ServiceStatsIT = () => {
   const { isLoading, data } = useITServiseStats({
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),
-    enabled: false,
   });
+
+  console.log("first");
   const renderAvgCalculator = useMemo(() => {
     if (!!data) {
       const mainObj = Object.values(data);
@@ -97,7 +98,7 @@ const ServiceStatsIT = () => {
   return (
     <>
       <table className="table table-bordered w-full border-dark" ref={tableRef}>
-        {!!data ? (
+        {!!data && !isLoading ? (
           <>
             <thead>
               <tr className="hover:bg-transparent">

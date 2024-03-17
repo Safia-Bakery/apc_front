@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/main";
-import { BranchTypes } from "@/utils/types";
+import { BranchTypes, EPresetTimes } from "@/utils/types";
 
 interface BodyTypes {
   name?: string;
@@ -19,7 +19,7 @@ interface Params {
   warehouse?: boolean;
 }
 
-const config = { timeout: 5000 };
+const config = { timeout: EPresetTimes.SECOND * 5 };
 
 export const useBranches = ({
   enabled = true,

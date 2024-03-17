@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/main";
-import { ServiceStatsTypes, Sphere } from "@/utils/types";
+import { EPresetTimes, ServiceStatsTypes, Sphere } from "@/utils/types";
 import dayjs from "dayjs";
 import { yearMonthDate } from "@/utils/keys";
 
@@ -10,7 +10,7 @@ interface Params {
   started_at?: string;
   sphere_status?: Sphere;
 }
-
+const config = { timeout: EPresetTimes.SECOND * 10 };
 export const useApcServiceStats = ({
   enabled,
   started_at = dayjs().startOf("month").format(yearMonthDate),
@@ -28,6 +28,7 @@ export const useApcServiceStats = ({
             started_at,
             ...params,
           },
+          config,
         })
         .then(({ data: response }) => response as ServiceStatsTypes),
     enabled,
