@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import cl from "classnames";
 import { MainPermissions } from "@/utils/types";
@@ -11,6 +11,7 @@ import { isMobile } from "@/utils/helpers";
 import styles from "./index.module.scss";
 import CountItem from "./CountItem";
 import { useTranslation } from "react-i18next";
+import Loading from "../Loader";
 
 const CustomSidebar = () => {
   const { t } = useTranslation();
@@ -19,12 +20,13 @@ const CustomSidebar = () => {
   const handleOverlay = () => dispatch(sidebarHandler(!collapsed));
   const routes = useAppSelector(sidebatItemsSelector);
   const { pathname } = useLocation();
+  const [isPending, startTransition] = useTransition();
 
   const [menuItem, $menuItem] = useState<MainPermissions>();
 
   const toggleSubItems = (item: MainPermissions) => {
     if (item === menuItem) $menuItem(undefined);
-    else $menuItem(item);
+    else startTransition(() => $menuItem(item));
   };
 
   const handleLogout = () => dispatch(logoutHandler());
@@ -170,6 +172,7 @@ const CustomSidebar = () => {
           {t("leave")} ({me?.username})
         </span>
       </div>
+      {isPending && <Loading absolute />}
     </>
   );
 };
