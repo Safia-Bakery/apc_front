@@ -17,7 +17,7 @@ import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
 import { ColumnDef } from "@tanstack/react-table";
-import VirtualTable from "@/components/VirtualTable ";
+import VirtualTable from "@/components/VirtualTable";
 
 const Branches = () => {
   const { t } = useTranslation();

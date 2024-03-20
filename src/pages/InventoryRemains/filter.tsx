@@ -8,20 +8,13 @@ import useQueryString from "@/hooks/custom/useQueryString";
 
 const InventoryRemainsFilter: FC = () => {
   const navigate = useNavigateParams();
-  const nameQ = useQueryString("name");
+  const name = useQueryString("name");
 
-  const { register, reset } = useForm();
-  const [name, $name] = useDebounce<string>("");
-
-  const handleName = (e: ChangeEvent<HTMLInputElement>) =>
-    $name(e.target.value);
+  const { register, reset, getValues } = useForm();
+  const handleSubmit = () => navigate({ name: getValues("name") });
 
   useEffect(() => {
-    navigate({ name });
-  }, [name]);
-
-  useEffect(() => {
-    if (!!name) reset({ name: nameQ });
+    if (!!name) reset({ name });
   }, []);
 
   return (
@@ -31,8 +24,8 @@ const InventoryRemainsFilter: FC = () => {
         <BaseInput className="!m-1">
           <MainInput
             register={register("name")}
+            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
             className="!mb-0"
-            onChange={handleName}
           />
         </BaseInput>
       </td>

@@ -334,23 +334,25 @@ export enum FileType {
   photo = "photo",
 }
 
+export type ToolItemType = {
+  name: string;
+  id: string;
+  code: string;
+  mainunit: string;
+  producttype: string;
+  iikoid: string;
+  price: number;
+  parentid: string;
+  total_price: number;
+  amount_left: number;
+  min_amount: number | null;
+  max_amount: number | null;
+  ftime?: string | number;
+  status: number;
+};
+
 export interface ToolTypes extends BasePaginatedRes {
-  items: {
-    name: string;
-    id: string;
-    code: string;
-    mainunit: string;
-    producttype: string;
-    iikoid: string;
-    price: number;
-    parentid: string;
-    total_price: number;
-    amount_left: number;
-    min_amount: number | null;
-    max_amount: number | null;
-    ftime?: string | number;
-    status: number;
-  }[];
+  items: ToolItemType[];
 }
 
 export interface CartProducts {
@@ -636,7 +638,27 @@ export interface CarsTypes {
   status: number;
   number: string;
 }
-
+export type InventoryTools = {
+  id: number;
+  code: string;
+  producttype: string;
+  parentid: string;
+  total_price: string;
+  sklad_id: string[];
+  department: Departments;
+  max_amount: string;
+  name: string;
+  num: string;
+  iikoid: string;
+  price: number;
+  mainunit: string;
+  amount_left: string;
+  last_update: string;
+  min_amount: string;
+  image: string;
+  ftime?: number | null;
+  status?: number;
+};
 export interface ToolsEarchType {
   folders: {
     num: string;
@@ -647,27 +669,7 @@ export interface ToolsEarchType {
     name: string;
     category: string;
   }[];
-  tools: {
-    id: number;
-    code: string;
-    producttype: string;
-    parentid: string;
-    total_price: string;
-    sklad_id: string[];
-    department: Departments;
-    max_amount: string;
-    name: string;
-    num: string;
-    iikoid: string;
-    price: number;
-    mainunit: string;
-    amount_left: string;
-    last_update: string;
-    min_amount: string;
-    image: string;
-    ftime?: number | null;
-    status?: number;
-  }[];
+  tools: InventoryTools[];
 }
 
 export interface InventoryOrders extends BasePaginatedRes {

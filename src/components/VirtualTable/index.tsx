@@ -15,9 +15,17 @@ interface Props<TData> {
   columns: ColumnDef<TData, any>[];
   className?: string;
   children?: ReactNode;
+  rowClassName?: (props: Row<TData>) => void;
+  // rowClassName?: (props: Row<TData>) => void;
 }
 
-function VirtualTable<T>({ data, columns, className, children }: Props<T>) {
+function VirtualTable<T>({
+  data,
+  columns,
+  className,
+  children,
+  rowClassName,
+}: Props<T>) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({
@@ -36,6 +44,8 @@ function VirtualTable<T>({ data, columns, className, children }: Props<T>) {
 
   const parentRef = React.useRef<HTMLDivElement>(null);
 
+  const handleRowStyles = (item: Row<T>) => rowClassName?.(item);
+
   const virtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => parentRef.current,
@@ -45,8 +55,11 @@ function VirtualTable<T>({ data, columns, className, children }: Props<T>) {
 
   return (
     <div ref={parentRef} className={`${className} w-full`}>
-      <div style={{ height: `${virtualizer.getTotalSize() + 120}px` }}>
-        <table>
+      <div
+        style={{ height: `${virtualizer.getTotalSize() + 120}px` }}
+        className="overflow-x-auto"
+      >
+        <table className="table table-bordered">
           <thead>
             {data &&
               table.getHeaderGroups().map((headerGroup) => (
@@ -90,6 +103,7 @@ function VirtualTable<T>({ data, columns, className, children }: Props<T>) {
               const row = rows[virtualRow.index] as Row<T>;
               return (
                 <tr
+                  className={`${handleRowStyles(row)}`}
                   key={row.id}
                   style={{
                     height: `${virtualRow.size}px`,

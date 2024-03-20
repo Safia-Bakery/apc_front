@@ -10,27 +10,15 @@ import EmptyList from "@/components/EmptyList";
 import cl from "classnames";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "@/store/reducers/sidebar";
-import { MainPermissions } from "@/utils/types";
+import { InventoryTools, MainPermissions } from "@/utils/types";
 import TableViewBtn from "@/components/TableViewBtn";
-import TableHead from "@/components/TableHead";
 import { useMemo, useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import { useTranslation } from "react-i18next";
 import InventoryRemainsFilter from "./filter";
 import { numberWithCommas } from "@/utils/helpers";
-
-const column = [
-  { name: "№", key: "" },
-  { name: "name_in_table", key: "name" },
-  { name: "price", key: "price", center: true },
-  { name: "num", key: "num", center: true },
-  { name: "remains", key: "amount_left", center: true },
-  { name: "min", key: "min_amount", center: true },
-  { name: "max", key: "max_amount", center: true },
-  { name: "deadline_in_hours", key: "ftime", center: true },
-  { name: "status", key: "status", center: true },
-  { name: "", key: "view" },
-];
+import VirtualTable from "@/components/VirtualTable";
+import { ColumnDef } from "@tanstack/table-core";
 
 const InventoryRemains = () => {
   const { t } = useTranslation();
@@ -39,11 +27,12 @@ const InventoryRemains = () => {
   const navigateParams = useNavigateParams();
   const permission = useAppSelector(permissionSelector);
   const handleNavigate = (route: string) => () => navigate(route);
+
   const mins = useQueryString("mins");
   const name = useQueryString("name");
-
   const parent_id = useQueryString("parent_id");
   const parent_name = useQueryString("parent_name");
+
   const { data, isLoading, isFetching } = useToolsIerarch({
     ...(!!parent_id && { parent_id }),
     ...(!!name && { name }),
@@ -59,8 +48,70 @@ const InventoryRemains = () => {
     filename: t("remains_in_stock"),
     sheet: t("remains_in_stock"),
   });
-
   const downloadAsPdf = () => onDownload();
+  const columns = useMemo<ColumnDef<InventoryTools>[]>(
+    () => [
+      {
+        accessorFn: (_, idx) => idx + 1,
+        cell: (props) => <div className="w-4">{props.row.index + 1}</div>,
+        header: "№",
+        size: 10,
+      },
+      {
+        accessorKey: "name",
+        header: t("name_in_table"),
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "price",
+        header: t("price"),
+        cell: ({ row }) => numberWithCommas(row.original?.price),
+      },
+      {
+        accessorKey: "num",
+        header: t("num"),
+      },
+      {
+        accessorKey: "amount_left",
+        header: t("remains"),
+      },
+      {
+        accessorKey: "min_amount",
+        header: t("min"),
+      },
+      {
+        accessorKey: "max_amount",
+        header: t("max"),
+      },
+      {
+        accessorKey: "ftime",
+        header: t("deadline_in_hours"),
+      },
+      {
+        accessorKey: "status",
+        header: t("status"),
+        cell: ({ row }) =>
+          !row.original.status ? t("not_active") : t("active"),
+      },
+      {
+        accessorKey: "action",
+        size: 30,
+        header: "",
+        cell: ({ row }) => {
+          return (
+            permission?.[MainPermissions.edit_product_inventory] && (
+              <TableViewBtn
+                onClick={handleNavigate(
+                  `/inventory-remains/${row.original.id}`
+                )}
+              />
+            )
+          );
+        },
+      },
+    ],
+    []
+  );
 
   const renderFilter = useMemo(() => {
     return <InventoryRemainsFilter />;
@@ -69,57 +120,28 @@ const InventoryRemains = () => {
   const renderItems = useMemo(() => {
     if (!!parent_id)
       return (
-        <table className="table table-bordered" ref={tableRef}>
-          <TableHead column={column}>{renderFilter}</TableHead>
-          <tbody>
-            {data?.tools?.map((tool, idx) => (
-              <tr
-                key={idx}
-                className={cl("transition-colors", {
-                  ["table-danger"]:
-                    tool.min_amount && tool.amount_left < tool.min_amount,
-                  ["table-success"]:
-                    tool.min_amount && tool.amount_left > tool.min_amount,
-                })}
-              >
-                <td width="40">{idx + 1}</td>
-                <td>{tool?.name}</td>
-                <td width={150} className="text-center">
-                  {numberWithCommas(tool?.price)}
-                </td>
-                <td width={150} className="text-center">
-                  {tool?.num}
-                </td>
-                <td width={150} className="text-center">
-                  {tool?.amount_left}
-                </td>
-                <td width={150} className="text-center">
-                  {tool?.min_amount}
-                </td>
-                <td width={150} className="text-center">
-                  {tool?.max_amount}
-                </td>
-                <td width={150} className="text-center">
-                  {tool?.ftime}
-                </td>
-                <td width={150} className="text-center">
-                  {!!tool?.status ? t("active") : t("not_active")}
-                </td>
-                <td width={40}>
-                  {permission?.[MainPermissions.edit_product_inventory] && (
-                    <TableViewBtn
-                      onClick={handleNavigate(`/inventory-remains/${tool.id}`)}
-                    />
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <VirtualTable
+          columns={columns}
+          data={data?.tools}
+          rowClassName={({ original: tool }) =>
+            cl({
+              ["table-danger"]:
+                tool.min_amount &&
+                tool.amount_left &&
+                tool.amount_left < tool.min_amount,
+              ["table-success"]:
+                tool.min_amount && tool.amount_left > tool.min_amount,
+            })
+          }
+        >
+          {renderFilter}
+        </VirtualTable>
       );
   }, [data?.tools]);
 
   const handleMins = () => navigate("/inventory-remains?mins=1");
+
+  if (isFetching || isLoading) return <Loading />;
 
   return (
     <Card className="pb-4">

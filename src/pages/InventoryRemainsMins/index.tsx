@@ -1,11 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Departments, MainPermissions, ToolTypes } from "@/utils/types";
+import {
+  Departments,
+  MainPermissions,
+  ToolItemType,
+  ToolTypes,
+} from "@/utils/types";
 import Pagination from "@/components/Pagination";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx, numberWithCommas } from "@/utils/helpers";
-import TableHead from "@/components/TableHead";
+import { numberWithCommas } from "@/utils/helpers";
 import ItemsCount from "@/components/ItemsCount";
 import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
@@ -13,24 +17,13 @@ import { permissionSelector } from "@/store/reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
 import TableViewBtn from "@/components/TableViewBtn";
 import useTools from "@/hooks/useTools";
-import cl from "classnames";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import inventoryMinsMutation from "@/hooks/mutation/inventoryMins";
 import { errorToast, successToast } from "@/utils/toast";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
-
-const column = [
-  { name: "№", key: "" },
-  { name: "name_in_table", key: "name" },
-  { name: "price", key: "price", center: true },
-  { name: "remains", key: "amount_left", center: true },
-  { name: "min", key: "min_amount", center: true },
-  { name: "max", key: "max_amount", center: true },
-  { name: "deadline", key: "deadline", center: true },
-  { name: "status", key: "status", center: true },
-  { name: "", key: "view" },
-];
+import { ColumnDef } from "@tanstack/table-core";
+import VirtualTable from "@/components/VirtualTable";
 
 const InventoryRemainsMins = () => {
   const { t } = useTranslation();
@@ -42,6 +35,66 @@ const InventoryRemainsMins = () => {
   const permission = useAppSelector(permissionSelector);
   const handleNavigate = (route: string) => () => navigate(route);
   const mins = useQueryString("mins");
+
+  const columns = useMemo<ColumnDef<ToolItemType>[]>(
+    () => [
+      {
+        accessorFn: (_, idx) => idx + 1,
+        cell: (props) => <div className="w-4">{props.row.index + 1}</div>,
+        header: "№",
+        size: 10,
+      },
+      {
+        accessorKey: "name",
+        header: t("name_in_table"),
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "price",
+        header: t("price"),
+        cell: ({ row }) => numberWithCommas(row.original?.price),
+      },
+      {
+        accessorKey: "num",
+        header: t("num"),
+      },
+      {
+        accessorKey: "amount_left",
+        header: t("remains"),
+      },
+      {
+        accessorKey: "min_amount",
+        header: t("min"),
+      },
+      {
+        accessorKey: "max_amount",
+        header: t("max"),
+      },
+      {
+        accessorKey: "ftime",
+        header: t("deadline_in_hours"),
+      },
+      {
+        accessorKey: "status",
+        header: t("status"),
+        cell: ({ row }) =>
+          !row.original.status ? t("not_active") : t("active"),
+      },
+      {
+        accessorKey: "action",
+        size: 30,
+        header: "",
+        cell: ({ row }) => {
+          return (
+            permission?.[MainPermissions.edit_product_inventory] && (
+              <TableViewBtn onClick={handleNavigate(`${row.original.id}`)} />
+            )
+          );
+        },
+      },
+    ],
+    []
+  );
 
   const { mutate: minsMutation } = inventoryMinsMutation();
 
@@ -103,54 +156,12 @@ const InventoryRemainsMins = () => {
 
       <div className="content">
         <ItemsCount data={tools} />
-        <table className="table table-hover table-bordered" ref={tableRef}>
-          <TableHead
-            column={column}
-            onSort={(data) => $sort(data)}
-            data={tools?.items}
-          />
+        <VirtualTable
+          columns={columns}
+          data={tools?.items}
+          rowClassName={(_) => "table-danger"}
+        />
 
-          <tbody>
-            {!!tools?.items?.length &&
-              (sort?.length ? sort : tools?.items)?.map((tool, idx) => (
-                <tr
-                  key={idx}
-                  className={cl("transition-colors", {
-                    ["table-danger"]:
-                      tool.min_amount && tool.amount_left < tool.min_amount,
-                    ["table-success"]:
-                      tool.min_amount && tool.amount_left > tool.min_amount,
-                  })}
-                >
-                  <td width="40">{handleIdx(idx)}</td>
-                  <td>{tool?.name}</td>
-                  <td width={150} className="text-center">
-                    {numberWithCommas(tool?.price)}
-                  </td>
-                  <td width={150} className="text-center">
-                    {tool?.amount_left}
-                  </td>
-                  <td width={150} className="text-center">
-                    {tool?.min_amount}
-                  </td>
-                  <td width={150} className="text-center">
-                    {tool?.max_amount}
-                  </td>
-                  <td width={150} className="text-center">
-                    {tool?.ftime}
-                  </td>
-                  <td width={150} className="text-center">
-                    {!!tool?.status ? t("active") : t("not_active")}
-                  </td>
-                  <td width={40}>
-                    {permission?.[MainPermissions.edit_product_inventory] && (
-                      <TableViewBtn onClick={handleNavigate(`${tool.id}`)} />
-                    )}
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
         {toolsLoading && <Loading />}
         {!tools?.items?.length && !toolsLoading && <EmptyList />}
         {!!tools && <Pagination totalPages={tools.pages} />}
