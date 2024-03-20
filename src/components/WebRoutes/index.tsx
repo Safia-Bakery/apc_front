@@ -4,7 +4,6 @@ import { logoutHandler, tokenSelector } from "reducers/auth";
 import { Outlet, useNavigate } from "react-router-dom";
 import useToken from "@/hooks/useToken";
 import Loading from "../Loader";
-import CustomSidebar from "../Sidebar";
 import BreadCrump from "../BreadCrump";
 import {
   permissionHandler,
@@ -15,7 +14,7 @@ import {
 import useOrderCounts from "@/hooks/useOrderCounts";
 import { langSelector } from "@/store/reducers/selects";
 import i18n from "@/localization";
-import { Language } from "@/utils/keys";
+import { Playground } from "../CustomSidebar";
 
 // const normalizeURL = (path: string) =>
 //   path.replace(/\/+/g, "/").replace(/\/$/, "");
@@ -44,7 +43,7 @@ const WebRooutes = () => {
     if (!!permission && !!token)
       return (
         <>
-          <CustomSidebar />
+          <Playground />
           <BreadCrump />
         </>
       );

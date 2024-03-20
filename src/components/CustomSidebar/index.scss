@@ -1,0 +1,15 @@
+.ps-menu-button {
+  &:hover {
+    background: rgba(255, 255, 255, 0.23) !important;
+  }
+}
+.ps-submenu-content {
+  background: #447df7;
+}
+.ps-menu-button.ps-active {
+  background: rgba(255, 255, 255, 0.23) !important;
+  border-radius: 7px;
+}
+.ps-menu-button {
+  padding-left: 20px !important;
+}

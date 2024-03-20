@@ -1,9 +1,9 @@
 .sidebar {
-  width: 80px;
-  min-width: 80px;
+  width: 80px !important;
+  min-width: 80px !important;
   z-index: 200;
   transition: 0.2s all ease-in-out;
-  position: fixed;
+  position: fixed !important;
   top: 0;
   bottom: 0;
   min-height: 100lvh;
@@ -16,9 +16,12 @@
   }
 
   &:hover {
+    & .counter {
+      opacity: 1;
+    }
     @media (min-width: 1200px) {
-      width: 260px;
-      min-width: 260px;
+      width: 260px !important;
+      min-width: 260px !important;
     }
 
     .content {
@@ -44,17 +47,13 @@
 }
 
 .collapsed {
-  width: 260px;
-  min-width: 260px;
+  width: 260px !important;
+  min-width: 260px !important;
 
   .title,
   .subTitle,
   .arrow {
     opacity: 1;
-  }
-  .content {
-    opacity: 1;
-    transform: translate3d(0px, 0, 0);
   }
 }
 .title,
@@ -117,8 +116,11 @@
 }
 
 .submenu {
-  background-color: rgba(0, 0, 0, 0.15);
-  padding: 5px;
+  ul {
+    background: #3d63b4 !important;
+    background: transparent;
+    padding: 5px;
+  }
 
   .link {
     margin-right: 0 !important;
@@ -195,18 +197,21 @@
   transform: rotate(180deg);
 }
 .content {
-  transform: translate3d(-25px, 0, 0);
-  opacity: 0;
-  transition: all 100ms linear;
+  // opacity: 0;
+  // transition: all 100ms linear;
   white-space: nowrap;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  flex: 1;
+  // display: flex;
+  // align-items: center;
+  // justify-content: space-between;
+  // width: 100%;
+  // flex: 1;
   color: #fff;
-  font-size: 16px;
+  // font-size: 16px;
   font-weight: 400;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.23) !important;
+  }
 }
 .routeIcon {
   height: 30px;
@@ -233,6 +238,9 @@
   position: absolute;
   top: -5px;
   right: -5px;
+  opacity: 0;
+  transition: all 200ms;
+  color: #fff;
 }
 
 .navItem {
