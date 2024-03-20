@@ -24,7 +24,7 @@ const LogysticsLogs = () => {
 
   const { data: order, isLoading } = useOrder({ id: Number(id) });
 
-  if (isLoading) return <Loading absolute />;
+  if (isLoading) return <Loading />;
   return (
     <Card>
       <Header title={"logs"}>

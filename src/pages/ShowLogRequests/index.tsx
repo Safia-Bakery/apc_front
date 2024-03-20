@@ -131,7 +131,7 @@ const ShowLogRequests = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (attaching || isLoading) return <Loading absolute />;
+  if (attaching || isLoading) return <Loading />;
 
   return (
     <>

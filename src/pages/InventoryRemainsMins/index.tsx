@@ -151,7 +151,7 @@ const InventoryRemainsMins = () => {
               ))}
           </tbody>
         </table>
-        {toolsLoading && <Loading absolute />}
+        {toolsLoading && <Loading />}
         {!tools?.items?.length && !toolsLoading && <EmptyList />}
         {!!tools && <Pagination totalPages={tools.pages} />}
       </div>

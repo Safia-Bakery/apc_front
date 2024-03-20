@@ -4,14 +4,14 @@ import cl from "classnames";
 import safiaLogo from "/assets/images/safia.png";
 
 interface Props {
-  absolute?: boolean;
+  is_static?: boolean;
   className?: string;
 }
 
-const Loading: FC<Props> = ({ absolute = false, className }) => {
+const Loading: FC<Props> = ({ is_static = false, className }) => {
   return (
     <div
-      className={cl(className, styles.wrap, { [styles.absolute]: absolute })}
+      className={cl(className, styles.wrap, { [styles.absolute]: !is_static })}
     >
       <img
         className={styles.loadingCircle}

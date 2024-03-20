@@ -258,7 +258,7 @@ const TelegramAddProduct = () => {
         </div>
       </div>
 
-      {isFetching && <Loading absolute />}
+      {isFetching && <Loading />}
     </form>
   );
 };

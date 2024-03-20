@@ -89,7 +89,7 @@ const EditAddBranch = () => {
       });
     }
   }, [branch, id]);
-  if (isLoading) return <Loading absolute />;
+  if (isLoading) return <Loading />;
   return (
     <Card>
       <Header title={!id ? t("add") : `${t("edit_branch")} ${branch?.name}`}>

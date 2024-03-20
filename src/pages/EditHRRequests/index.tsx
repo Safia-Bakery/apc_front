@@ -66,7 +66,7 @@ const EditHRRequests = () => {
       );
   }, [faq]);
 
-  if (isLoading) return <Loading absolute />;
+  if (isLoading) return <Loading />;
 
   return (
     <Card>
@@ -124,7 +124,7 @@ const EditHRRequests = () => {
         </div>
       </Modal>
 
-      {posting && <Loading absolute />}
+      {posting && <Loading />}
     </Card>
   );
 };

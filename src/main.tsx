@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const root = createRoot(container);
     root.render(
       <Provider store={store}>
-        <PersistGate persistor={persistor} loading={<Loading absolute />}>
+        <PersistGate persistor={persistor} loading={<Loading />}>
           <QueryClientProvider client={queryClient}>
             <BrowserRouter>
               <App />

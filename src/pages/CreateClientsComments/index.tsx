@@ -82,7 +82,7 @@ const CreateClientsComments = () => {
     }
   }, []);
 
-  if (isPending) return <Loading absolute />;
+  if (isPending) return <Loading />;
 
   return (
     <Card>

@@ -205,7 +205,7 @@ const ServiceStatsMarketing = () => {
         </tbody>
       </table>
 
-      {isLoading && <Loading absolute />}
+      {isLoading && <Loading />}
 
       {!data && !isLoading && <EmptyList />}
       <button id={"service_stat"} className="hidden" onClick={downloadAsPdf}>

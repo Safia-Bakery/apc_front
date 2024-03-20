@@ -148,7 +148,7 @@ const RequestsIT = () => {
               ))}
           </tbody>
         </table>
-        {(orderLoading || orderFetching) && <Loading absolute />}
+        {(orderLoading || orderFetching) && <Loading />}
         {!requests?.items?.length && !orderLoading && <EmptyList />}
         {!!requests && <Pagination totalPages={requests.pages} />}
       </div>

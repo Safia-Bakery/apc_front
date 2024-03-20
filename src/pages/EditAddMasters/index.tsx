@@ -184,7 +184,7 @@ const EditAddMasters = () => {
       (!!brigada?.user?.[0]?.id && !selectedUser) ||
       (!!data?.items?.length && !users?.length))
   )
-    return <Loading absolute />;
+    return <Loading />;
 
   return (
     <Card>

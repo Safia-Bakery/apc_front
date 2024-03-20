@@ -79,7 +79,7 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
     refetch();
   }, []);
 
-  if (orderLoading || isFetching) return <Loading absolute />;
+  if (orderLoading || isFetching) return <Loading />;
 
   return (
     <Card>

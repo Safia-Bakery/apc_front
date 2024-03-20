@@ -110,7 +110,7 @@ const RequestsStaff = () => {
     return <BotTimeModal />;
   }, []);
 
-  if (excellLoading) return <Loading absolute />;
+  if (excellLoading) return <Loading />;
 
   return (
     <Card>
@@ -203,7 +203,7 @@ const RequestsStaff = () => {
               ))}
           </tbody>
         </table>
-        {(isFetching || excellFtching) && <Loading absolute />}
+        {(isFetching || excellFtching) && <Loading />}
         {!requests?.items?.length && !isLoading && <EmptyList />}
         {!!requests && <Pagination totalPages={requests.pages} />}
       </div>

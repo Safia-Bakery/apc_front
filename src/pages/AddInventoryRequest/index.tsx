@@ -262,7 +262,7 @@ const AddInventoryRequest = () => {
         )}
       </form>
 
-      {mutating && <Loading absolute />}
+      {mutating && <Loading />}
     </Card>
   );
 };

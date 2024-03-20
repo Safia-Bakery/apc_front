@@ -153,7 +153,7 @@ const InventoryRemains = () => {
       </ul>
 
       {!data?.tools?.length && <EmptyList />}
-      {(isLoading || isFetching) && <Loading absolute />}
+      {(isLoading || isFetching) && <Loading />}
     </Card>
   );
 };

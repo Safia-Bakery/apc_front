@@ -133,7 +133,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
             <LogFilter />
           </TableHead>
           {orderLoading ? (
-            <Loading absolute />
+            <Loading />
           ) : (
             <tbody id="requests_body">
               {!!requests?.items?.length &&
@@ -203,7 +203,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
             </tbody>
           )}
         </table>
-        {isFetching && <Loading absolute />}
+        {isFetching && <Loading />}
         {!requests?.items?.length && !orderLoading && <EmptyList />}
         {!!requests && <Pagination totalPages={requests.pages} />}
       </div>

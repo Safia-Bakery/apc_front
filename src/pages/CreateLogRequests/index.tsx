@@ -78,7 +78,7 @@ const CreateLogRequests = () => {
     }
   };
 
-  if (isPending || categoryLoading) return <Loading absolute />;
+  if (isPending || categoryLoading) return <Loading />;
 
   return (
     <Card>

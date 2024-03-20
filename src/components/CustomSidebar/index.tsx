@@ -1,4 +1,6 @@
-import { ChangeEvent, FC, Fragment, useState, useTransition } from "react";
+import { FC, Fragment, useState, useTransition } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import cl from "classnames";
 import {
   Sidebar,
   Menu,
@@ -6,16 +8,14 @@ import {
   SubMenu,
   MenuItemStyles,
 } from "react-pro-sidebar";
+import { useTranslation } from "react-i18next";
 import CountItem from "./CountItem";
 import { sidebatItemsSelector } from "@/store/reducers/sidebar";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import styles from "./index.module.scss";
-import { useTranslation } from "react-i18next";
-import "./index.scss";
-import { useLocation, useNavigate } from "react-router-dom";
-import cl from "classnames";
 import { sidebarHandler, toggleSidebar } from "@/store/reducers/selects";
 import { MainPermissions } from "@/utils/types";
+import "./index.scss";
 
 const hexToRgba = (hex: string, alpha: number) => {
   const r = parseInt(hex.slice(1, 3), 16);
@@ -55,8 +55,6 @@ export const Playground: FC = () => {
   };
 
   const handleSidebar = () => dispatch(sidebarHandler(!collapsed));
-
-  console.log(collapsed, "collapsed");
 
   return (
     <>

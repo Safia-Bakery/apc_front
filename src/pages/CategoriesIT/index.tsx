@@ -122,7 +122,7 @@ const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
                 )}
             </tbody>
           </table>
-          {isLoading && <Loading absolute />}
+          {isLoading && <Loading />}
           {!categories?.items?.length && !isLoading && <EmptyList />}
           {!!categories && <Pagination totalPages={categories.pages} />}
         </div>

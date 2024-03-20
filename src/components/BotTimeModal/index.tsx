@@ -58,7 +58,7 @@ const BotTimeModal = () => {
           </button>
         </Header>
         {isLoading ? (
-          <Loading />
+          <Loading is_static />
         ) : (
           <div className="p-4 flex gap-3">
             <BaseInput>

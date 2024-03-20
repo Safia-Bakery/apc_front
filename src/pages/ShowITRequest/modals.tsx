@@ -188,7 +188,7 @@ const ITModals = () => {
             </Header>
             <div className={"overflow-y-auto max-h-80 h-full mt-2"}>
               {brigadaLoading ? (
-                <Loading />
+                <Loading is_static />
               ) : (
                 brigades?.items
                   .filter((item) => !!item.user!?.length && !!item.status)
@@ -434,7 +434,7 @@ const ITModals = () => {
     attaching ||
     reassigning
   )
-    return <Loading absolute />;
+    return <Loading />;
 
   return (
     <Modal

@@ -2,10 +2,9 @@ import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { useNavigate } from "react-router-dom";
 import Pagination from "@/components/Pagination";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { BranchType, MainPermissions } from "@/utils/types";
 import { handleIdx } from "@/utils/helpers";
-import TableHead from "@/components/TableHead";
 import TableViewBtn from "@/components/TableViewBtn";
 import useBranches from "@/hooks/useBranches";
 import BranchesFilter from "./filter";
@@ -17,27 +16,12 @@ import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
-
-const column = [
-  { name: "№", key: "id" },
-  { name: "name", key: "name" },
-  { name: "region", key: "country" },
-  {
-    name: "latitude",
-    key: "latitude",
-  },
-  {
-    name: "longtitude",
-    key: "longtitude",
-  },
-  { name: "is_active", key: "status" },
-  { name: "", key: "" },
-];
+import { ColumnDef } from "@tanstack/react-table";
+import VirtualTable from "@/components/VirtualTable ";
 
 const Branches = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [sort, $sort] = useState<BranchType[]>();
   const { refetch: branchSync, isFetching: syncFetching } = useBranchSync({
     enabled: false,
   });
@@ -47,9 +31,64 @@ const Branches = () => {
   const country = useQueryString("country");
   const name = useQueryString("name");
 
+  const columns = useMemo<ColumnDef<BranchType>[]>(
+    () => [
+      {
+        accessorFn: (_, idx) => idx + 1,
+        cell: (props) => (
+          <div className="w-4">{handleIdx(props.row.index)}</div>
+        ),
+        header: "№",
+        size: 10,
+      },
+      {
+        accessorKey: "name",
+        header: t("name_in_table"),
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "country",
+        header: t("region"),
+      },
+      {
+        accessorKey: "latitude",
+        header: t("latitude"),
+      },
+      {
+        accessorKey: "longtitude",
+        header: t("longtitude"),
+      },
+      {
+        accessorKey: "status",
+        header: t("status"),
+        cell: ({ row }) =>
+          !row.original.status ? t("not_active") : t("active"),
+      },
+      {
+        accessorKey: "action",
+        size: 30,
+        header: "",
+        cell: ({ row }) => {
+          return (
+            permisisons?.[MainPermissions.edit_fillials] && (
+              <TableViewBtn
+                onClick={handleNavigate(`/branches/${row.original.id}`)}
+              />
+            )
+          );
+        },
+      },
+    ],
+    []
+  );
+
   const iikoBtn = permisisons?.[MainPermissions.synch_fillials_iiko];
 
-  const { data: branches, isFetching } = useBranches({
+  const {
+    data: branches,
+    isFetching,
+    isLoading,
+  } = useBranches({
     page: currentPage,
     enabled: true,
     origin: 0,
@@ -67,6 +106,8 @@ const Branches = () => {
   const renderFilter = useMemo(() => {
     return <BranchesFilter />;
   }, [name, country, fillial_status]);
+
+  if (isFetching || isLoading) return <Loading />;
 
   return (
     <Card>
@@ -102,38 +143,11 @@ const Branches = () => {
 
       <div className="table-responsive grid-view content">
         <ItemsCount data={branches} />
-        <table className="table table-hover">
-          <TableHead
-            column={column}
-            onSort={(data) => $sort(data)}
-            data={branches?.items}
-          >
-            {renderFilter}
-          </TableHead>
+        <VirtualTable columns={columns} data={branches?.items}>
+          {renderFilter}
+        </VirtualTable>
 
-          <tbody id="branch_body">
-            {!!branches?.items?.length &&
-              !isFetching &&
-              (sort?.length ? sort : branches.items)?.map((branch, idx) => (
-                <tr key={idx} className="bg-blue">
-                  <td width="40">{handleIdx(idx)}</td>
-                  <td>{branch?.name}</td>
-                  <td>{branch.country}</td>
-                  <td>{branch.latitude}</td>
-                  <td>{branch.longtitude}</td>
-                  <td>{!branch.status ? t("not_active") : t("active")}</td>
-                  <td width={40}>
-                    {permisisons?.[MainPermissions.edit_fillials] && (
-                      <TableViewBtn
-                        onClick={handleNavigate(`/branches/${branch.id}`)}
-                      />
-                    )}
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-        {(isFetching || syncFetching) && <Loading absolute />}
+        {(isFetching || syncFetching) && <Loading />}
         {!branches?.items?.length && !isFetching && <EmptyList />}
         {!!branches && <Pagination totalPages={branches.pages} />}
       </div>

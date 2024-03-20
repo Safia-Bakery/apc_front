@@ -105,7 +105,7 @@ const ShowInventoryTool = () => {
             <TableHead column={column} />
 
             {isLoading || isFetching ? (
-              <Loading absolute />
+              <Loading />
             ) : (
               <tbody>
                 {!!order?.order_need.length &&

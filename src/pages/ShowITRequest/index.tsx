@@ -250,7 +250,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
     brigadaFetching ||
     orderFetching
   )
-    return <Loading absolute />;
+    return <Loading />;
   return (
     <>
       <Card className="overflow-hidden">

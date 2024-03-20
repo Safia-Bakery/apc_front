@@ -87,7 +87,7 @@ const InventoryOrderedTools = () => {
               ))}
           </tbody>
         </table>
-        {toolsLoading && <Loading absolute />}
+        {toolsLoading && <Loading />}
         {!orders?.items?.length && !toolsLoading && <EmptyList />}
         {!!orders && <Pagination totalPages={orders.pages} />}
       </div>

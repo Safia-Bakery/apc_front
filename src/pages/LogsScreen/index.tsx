@@ -64,7 +64,7 @@ const Logs = () => {
       );
   }, [order?.communication]);
 
-  if (isLoading) return <Loading absolute />;
+  if (isLoading) return <Loading />;
 
   return (
     <>

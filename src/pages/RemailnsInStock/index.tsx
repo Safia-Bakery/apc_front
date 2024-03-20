@@ -99,7 +99,7 @@ const RemainsInStock = () => {
             </tbody>
           )}
         </table>
-        {(syncLoading || itemsLoading) && <Loading absolute />}
+        {(syncLoading || itemsLoading) && <Loading />}
         {!products?.items?.length && !itemsLoading && <EmptyList />}
         {!!products && <Pagination totalPages={products.pages} />}
       </div>

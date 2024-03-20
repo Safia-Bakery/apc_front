@@ -35,7 +35,7 @@ const ShowComment = () => {
 
   const goBack = () => navigate(-1);
 
-  if (orderLoading) return <Loading absolute />;
+  if (orderLoading) return <Loading />;
 
   return (
     <>

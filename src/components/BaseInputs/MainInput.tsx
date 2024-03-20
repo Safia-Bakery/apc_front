@@ -22,6 +22,7 @@ interface Props {
   ref?: any;
   defaultValue?: any;
   onKeyDown?: KeyboardEventHandler;
+  onSubmit?: () => void;
 }
 
 const MainInput: FC<Props> = ({

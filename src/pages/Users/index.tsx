@@ -126,7 +126,7 @@ const Users: FC<Props> = ({ add, edit }) => {
                 ))}
           </tbody>
         </table>
-        {orderLoading && <Loading absolute />}
+        {orderLoading && <Loading />}
         {!users?.items?.length && !orderLoading && <EmptyList />}
         {!!users && <Pagination totalPages={users.pages} />}
       </div>

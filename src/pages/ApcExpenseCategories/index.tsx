@@ -20,7 +20,7 @@ const ApcExpenseCategories = () => {
 
   const { data: expenses, isLoading: expenseLoading } = useExpenseApcTypes({});
 
-  if (expenseLoading) return <Loading absolute />;
+  if (expenseLoading) return <Loading />;
 
   return (
     <Card>

@@ -40,7 +40,7 @@ const ApcExpenses = () => {
 
   const { data: expenses, isLoading: expenseLoading } = useExpensesApc({});
 
-  if (expenseLoading) return <Loading absolute />;
+  if (expenseLoading) return <Loading />;
 
   return (
     <Card>

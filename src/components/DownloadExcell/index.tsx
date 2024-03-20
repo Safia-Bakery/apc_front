@@ -67,7 +67,7 @@ const DownloadExcell = () => {
         {t("export_to_excel")}
       </button>
 
-      {isPending && <Loading absolute />}
+      {isPending && <Loading />}
     </form>
   );
 };

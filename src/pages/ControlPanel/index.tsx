@@ -318,7 +318,7 @@ const ControlPanel = () => {
       );
   }, [user?.permissions]);
 
-  if (isLoading && !!mainDep?.dep) return <Loading absolute />;
+  if (isLoading && !!mainDep?.dep) return <Loading />;
 
   return (
     <>

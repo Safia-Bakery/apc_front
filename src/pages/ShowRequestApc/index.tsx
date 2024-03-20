@@ -196,7 +196,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                 onClick={handleRequestClose}
                 className="btn btn-success btn-fill"
               >
-                {t("fixed")} {isPending && <Loading />}
+                {t("fixed")} {isPending && <Loading is_static />}
               </button>
             )}
           </div>
@@ -270,7 +270,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
     orderFetching ||
     (categoryLoading && order?.status === RequestStatus.new)
   )
-    return <Loading absolute />;
+    return <Loading />;
 
   return (
     <>

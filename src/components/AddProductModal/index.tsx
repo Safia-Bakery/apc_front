@@ -102,7 +102,7 @@ const AddProductModal = ({ addExp }: Props) => {
           >
             {isFetching ? (
               <div className="w-6 ">
-                <Loading />
+                <Loading is_static />
               </div>
             ) : (
               t("sync_with_iico")
@@ -175,7 +175,7 @@ const AddProductModal = ({ addExp }: Props) => {
           </div>
         </div>
       </form>
-      {isLoading && <Loading absolute />}
+      {isLoading && <Loading />}
     </Modal>
   );
 };

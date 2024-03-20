@@ -51,7 +51,7 @@ const ShowConsumption = () => {
         />
 
         {isLoading ? (
-          <Loading absolute />
+          <Loading />
         ) : (
           <tbody>
             {(sort?.length ? sort : data?.items)?.map((item, idx) => (

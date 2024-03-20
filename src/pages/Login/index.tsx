@@ -52,7 +52,7 @@ const Login = () => {
     if (token) navigate(savedLink);
   }, [token]);
 
-  if (isPending || tokenLoading) return <Loading absolute />;
+  if (isPending || tokenLoading) return <Loading />;
 
   return (
     <div className={styles.login_wrap}>

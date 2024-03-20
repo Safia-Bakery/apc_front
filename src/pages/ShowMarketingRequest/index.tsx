@@ -150,7 +150,7 @@ const ShowMarketingRequest = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (attaching || orderLoading || orderFetching) return <Loading absolute />;
+  if (attaching || orderLoading || orderFetching) return <Loading />;
 
   return (
     <>

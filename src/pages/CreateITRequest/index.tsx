@@ -191,7 +191,7 @@ const CreateITRequest = () => {
     (productLoading && !!category_id) ||
     (categoryLoading && !!sphere)
   )
-    return <Loading absolute />;
+    return <Loading />;
 
   return (
     <Card>

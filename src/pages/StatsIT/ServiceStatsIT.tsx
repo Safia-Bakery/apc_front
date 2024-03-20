@@ -39,7 +39,6 @@ const ServiceStatsIT = () => {
     ...(!!end && { finished_at: end }),
   });
 
-  console.log("first");
   const renderAvgCalculator = useMemo(() => {
     if (!!data) {
       const mainObj = Object.values(data);
@@ -202,7 +201,7 @@ const ServiceStatsIT = () => {
           <tbody>
             <tr>
               <td>
-                <Loading absolute />
+                <Loading />
               </td>
             </tr>
           </tbody>

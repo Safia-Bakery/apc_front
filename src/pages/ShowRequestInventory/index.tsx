@@ -123,7 +123,7 @@ const ShowRequestInventory = () => {
       return <ShowRequestModals />;
   }, [order?.status]);
 
-  if (isLoading || isFetching || attaching) return <Loading absolute />;
+  if (isLoading || isFetching || attaching) return <Loading />;
 
   return (
     <>
@@ -294,7 +294,7 @@ const ShowRequestInventory = () => {
           {renderBtns}
         </div>
       </Card>
-      {attaching && <Loading absolute />}
+      {attaching && <Loading />}
       {renderModals}
     </>
   );

@@ -121,7 +121,7 @@ const RequestsInventory = () => {
             </tbody>
           )}
         </table>
-        {(orderFetching || orderLoading) && <Loading absolute />}
+        {(orderFetching || orderLoading) && <Loading />}
         {!requests?.items?.length && !orderLoading && <EmptyList />}
         {!!requests && <Pagination totalPages={requests.pages} />}
       </div>

@@ -34,7 +34,7 @@ const FAQQuestions = () => {
   });
   const handleNavigate = (route: string) => () => navigate(route);
 
-  if (isLoading) return <Loading absolute />;
+  if (isLoading) return <Loading />;
   return (
     <Card>
       <Header title={"questions"}>

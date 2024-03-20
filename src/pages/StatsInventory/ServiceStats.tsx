@@ -200,7 +200,7 @@ const InventoryServiceStats = () => {
           <tbody>
             <tr>
               <td>
-                <Loading absolute />
+                <Loading />
               </td>
             </tr>
           </tbody>
