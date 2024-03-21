@@ -8,15 +8,17 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import React, { ReactNode, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
+
+type ReturnFunction<Tval> = (smt: Tval) => string;
+type RowClassName<T> = string | ReturnFunction<T>;
 
 interface Props<TData> {
   data?: TData[];
   columns: ColumnDef<TData, any>[];
   className?: string;
   children?: ReactNode;
-  rowClassName?: (props: Row<TData>) => void;
-  // rowClassName?: (props: Row<TData>) => void;
+  rowClassName?: RowClassName<Row<TData>>;
 }
 
 function VirtualTable<T>({
@@ -42,9 +44,10 @@ function VirtualTable<T>({
 
   const { rows } = table.getRowModel();
 
-  const parentRef = React.useRef<HTMLDivElement>(null);
+  const parentRef = useRef<HTMLDivElement>(null);
 
-  const handleRowStyles = (item: Row<T>) => rowClassName?.(item);
+  const handleRowStyles = (item: Row<T>) =>
+    typeof rowClassName === "function" ? rowClassName?.(item) : rowClassName;
 
   const virtualizer = useVirtualizer({
     count: rows.length,
