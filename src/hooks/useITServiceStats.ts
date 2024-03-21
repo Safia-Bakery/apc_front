@@ -31,6 +31,7 @@ export const useITServiseStats = ({
         })
         .then(({ data: response }) => response as InvServiceStatTypes),
     enabled,
+    staleTime: EPresetTimes.MINUTE * 10,
     retry: 2,
     refetchOnMount: true,
   });

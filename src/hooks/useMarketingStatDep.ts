@@ -3,7 +3,11 @@ import dayjs from "dayjs";
 import apiClient from "@/main";
 import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
-import { MarketingDepartmentTypes, MainPermissions } from "@/utils/types";
+import {
+  MarketingDepartmentTypes,
+  MainPermissions,
+  EPresetTimes,
+} from "@/utils/types";
 import { yearMonthDate } from "@/utils/keys";
 
 interface BodyTypes {
@@ -35,6 +39,7 @@ export const useMarketingStatDep = ({
         .then(({ data: response }) => {
           return response as MarketingDepartmentTypes;
         }),
+    staleTime: EPresetTimes.MINUTE * 10,
     enabled: enabled && permmission?.[MainPermissions.stats_marketing],
   });
 };

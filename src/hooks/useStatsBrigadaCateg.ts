@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import {
   BrigadaCategStatTypes,
   Departments,
+  EPresetTimes,
   MainPermissions,
   Sphere,
 } from "@/utils/types";
@@ -52,6 +53,7 @@ export const useStatsBrigadaCateg = ({
         .then(({ data: response }) => {
           return response as BrigadaCategStatTypes;
         }),
+    staleTime: EPresetTimes.MINUTE * 10,
     enabled:
       enabled &&
       (permmission?.[MainPermissions.stats_apc_fabric] ||

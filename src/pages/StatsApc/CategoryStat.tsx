@@ -7,6 +7,7 @@ import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
 import { useTranslation } from "react-i18next";
+import Loading from "@/components/Loader";
 
 interface SortTypes {
   category: string;
@@ -42,7 +43,7 @@ const column = [
   { name: "category", key: "category" },
   { name: "quantity", key: "amount" },
   {
-    name: "handling_time_m",
+    name: "handling_time_m_av",
     key: "time",
   },
 ];
@@ -86,7 +87,6 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
       );
 
       return totals;
-      // .toFixed(3);
     }
   }, [data?.table]);
 
@@ -132,9 +132,7 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
                 <td></td>
                 <th className="text-2xl">В среднем:</th>
                 <td colSpan={2} className="text-2xl">
-                  {(
-                    renderAvarage?.totalTime / renderAvarage?.totalAmount
-                  ).toFixed(3)}{" "}
+                  {(renderAvarage?.totalTime / data?.table.length!).toFixed(3)}{" "}
                   минут
                 </td>
               </tr>
@@ -155,6 +153,8 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
       <button id={"category_stat"} className="hidden" onClick={downloadAsPdf}>
         download
       </button>
+
+      {isLoading && <Loading />}
     </>
   );
 };

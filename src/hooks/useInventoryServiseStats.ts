@@ -33,6 +33,7 @@ export const useInventoryServiseStats = ({
         })
         .then(({ data: response }) => response as InvServiceStatTypes),
     enabled,
+    staleTime: EPresetTimes.MINUTE * 10,
     refetchOnMount: true,
   });
 };

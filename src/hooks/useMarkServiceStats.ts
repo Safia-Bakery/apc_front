@@ -42,6 +42,7 @@ export const useServiceMarkStats = ({
         })
         .then(({ data: response }) => response as ServiceStatsTypes),
     enabled,
+    staleTime: EPresetTimes.MINUTE * 10,
     refetchOnMount: true,
   });
 };

@@ -261,7 +261,7 @@ const localization = {
       in_total: "В общем",
       avg_handling_time_mins: "Среднее время обработки (минут)",
       avg_handling_time_days_hours: "Среднее время обработки (Часы / День)",
-      handling_time_m: "Время обработки (м)",
+      handling_time_m_av: "Время обработки в среднем(м)",
       handling_time_h: "Время обработки (ч)",
       open_req_qnt: "Количество открытых заявок",
       closed_req_qnt: "Количество закрытых заявок",

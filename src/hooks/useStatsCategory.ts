@@ -6,6 +6,7 @@ import { useAppSelector } from "@/store/utils/types";
 import {
   CategoryStatTypes,
   Departments,
+  EPresetTimes,
   MainPermissions,
   Sphere,
 } from "@/utils/types";
@@ -52,6 +53,7 @@ export const useStatsCategory = ({
         .then(({ data: response }) => {
           return response as CategoryStatTypes;
         }),
+    staleTime: EPresetTimes.MINUTE * 10,
     enabled:
       enabled &&
       (permmission?.[MainPermissions.stats_apc_fabric] ||
