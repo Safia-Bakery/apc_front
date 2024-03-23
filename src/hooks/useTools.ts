@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/main";
-import { Departments, ToolTypes } from "@/utils/types";
+import { Departments, EPresetTimes, ToolTypes } from "@/utils/types";
 
 interface Body {
   enabled?: boolean;
@@ -12,6 +12,8 @@ interface Body {
   few_amounts?: boolean;
 }
 
+const config = { timeout: EPresetTimes.SECOND * 15 };
+
 export const useTools = ({ enabled = true, ...params }: Body) => {
   return useQuery({
     queryKey: ["tools", params],
@@ -20,6 +22,7 @@ export const useTools = ({ enabled = true, ...params }: Body) => {
         .get({
           url: "/tools/",
           params,
+          config,
         })
         .then(({ data: response }) => {
           return response as ToolTypes;

@@ -19,7 +19,7 @@ interface Params {
   warehouse?: boolean;
 }
 
-const config = { timeout: EPresetTimes.SECOND * 5 };
+const config = { timeout: EPresetTimes.SECOND * 15 };
 
 export const useBranches = ({
   enabled = true,

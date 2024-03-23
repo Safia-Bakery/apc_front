@@ -58,9 +58,10 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled, warehouse }) => {
     <Select
       options={items}
       isLoading={isFetching || isLoading}
+      // loadingMessage={'loading'}
       onChange={handleChange}
       className="z-50"
-      onMenuScrollToBottom={() => $page((prev) => prev + 1)}
+      // onMenuScrollToBottom={() => $page((prev) => prev + 1)}
       onInputChange={(e) => $query(e)}
       isClearable
       placeholder={""}
