@@ -368,6 +368,7 @@ const localization = {
       is_outsource: "Аутсорс мастер",
       add_expense: "Добавить расход",
       edit_expense: "Изменить расход",
+      search: "Поиск",
 
       select_productt: "Выберите товар!",
     },

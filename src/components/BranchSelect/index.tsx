@@ -9,12 +9,18 @@ interface Props {
   origin?: number;
   enabled?: boolean;
   warehouse?: boolean;
+  placeholdeer?: string;
 }
 interface SelectValue {
   value: string;
   label: string;
 }
-const BranchSelect: FC<Props> = ({ origin = 0, enabled, warehouse }) => {
+const BranchSelect: FC<Props> = ({
+  origin = 0,
+  enabled,
+  warehouse,
+  placeholdeer = "",
+}) => {
   const navigate = useNavigateParams();
   const [query, $query] = useDebounce("");
   const [page, $page] = useState(1);
@@ -64,7 +70,7 @@ const BranchSelect: FC<Props> = ({ origin = 0, enabled, warehouse }) => {
       // onMenuScrollToBottom={() => $page((prev) => prev + 1)}
       onInputChange={(e) => $query(e)}
       isClearable
-      placeholder={""}
+      placeholder={placeholdeer}
     />
   );
 };

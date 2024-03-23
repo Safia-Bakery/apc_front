@@ -139,6 +139,7 @@ const AddInventoryRequest = () => {
           <BranchSelect
             enabled
             origin={1}
+            placeholdeer={t("search")}
             // permission={MainPermissions.get_fillials_list}
           />
         </BaseInputs>
