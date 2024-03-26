@@ -1,14 +1,15 @@
-import { KeyboardEvent, useState } from "react";
+import { KeyboardEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import cl from "classnames";
 import {
   BrigadaType,
+  Departments,
   FileType,
-  MarketingSubDepRu,
   ModalTypes,
   RequestStatus,
+  Sphere,
 } from "@/utils/types";
 import { CancelReason, detectFileType } from "@/utils/helpers";
 import { errorToast, successToast } from "@/utils/toast";
@@ -17,8 +18,6 @@ import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import useQueryString from "custom/useQueryString";
 import { useRemoveParams } from "custom/useCustomNavigate";
 import useBrigadas from "@/hooks/useBrigadas";
-
-import marketingReassignMutation from "@/hooks/mutation/marketingReassign";
 import useCategories from "@/hooks/useCategories";
 import Header from "@/components/Header";
 import Loading from "@/components/Loader";
@@ -42,18 +41,17 @@ const ITModals = () => {
   const sphere_status = Number(useQueryString("sphere_status"));
   const dep = Number(useQueryString("dep"));
   const removeParams = useRemoveParams();
-  const { mutate: reassign, isPending: reassigning } =
-    marketingReassignMutation();
   const { mutate: attach, isPending: attaching } = attachBrigadaMutation();
   const { register, getValues, watch, handleSubmit, reset } = useForm();
   const branchJson = useUpdateQueryStr("branch");
   const branch = branchJson && JSON.parse(branchJson);
 
-  const closeModal = () => removeParams(["changeModal"]);
+  const closeModal = () => removeParams(["modal"]);
 
   const { data: categories, isLoading: categoriesLoading } = useCategories({
-    sub_id: Number(watch("direction")),
-    enabled: !!watch("direction"),
+    enabled: modal === ModalTypes.changeCateg,
+    department: Departments.it,
+    sphere_status: Sphere.fix,
     category_status: 1,
   });
 
@@ -72,22 +70,6 @@ const ITModals = () => {
   });
   const handleDeadline = (event: Date) => $deadline(event);
 
-  const handleReassign = () => {
-    reassign(
-      {
-        id: Number(id),
-        category_id: getValues("category_id"),
-      },
-      {
-        onSuccess: () => {
-          orderRefetch();
-          successToast("assigned");
-          removeParams(["modal"]);
-        },
-        onError: (e) => errorToast(e.message),
-      }
-    );
-  };
   const { mutate: msgMutation, isPending: msgLoading } = orderMsgMutation();
   const handleMessage = () => {
     const { left_comment, uploaded_photo } = getValues();
@@ -131,7 +113,7 @@ const ITModals = () => {
             onSuccess: () => {
               orderRefetch();
               successToast("assigned");
-              removeParams(["branch", "changeModal"]);
+              closeModal();
             },
             onError: (e) => errorToast(e.message),
           }
@@ -173,7 +155,7 @@ const ITModals = () => {
           onError: (e) => errorToast(e.message),
         }
       );
-      removeParams(["modal"]);
+      closeModal();
     };
 
   const renderModal = () => {
@@ -182,7 +164,7 @@ const ITModals = () => {
         return (
           <div className={"w-[420px]"}>
             <Header title="select_handler">
-              <button onClick={() => removeParams(["modal"])} className="close">
+              <button onClick={closeModal} className="close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </Header>
@@ -227,7 +209,7 @@ const ITModals = () => {
             className={"w-[420px]"}
           >
             <Header title="deny_reason">
-              <button onClick={() => removeParams(["modal"])} className="close">
+              <button onClick={closeModal} className="close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </Header>
@@ -269,7 +251,7 @@ const ITModals = () => {
             className={"w-[420px]"}
           >
             <Header title="pause_reason">
-              <button onClick={() => removeParams(["modal"])} className="close">
+              <button onClick={closeModal} className="close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </Header>
@@ -339,7 +321,6 @@ const ITModals = () => {
       case ModalTypes.changeCateg:
         return (
           <>
-            {" "}
             <Header title="change">
               <button onClick={closeModal} className="close">
                 <span>&times;</span>
@@ -398,7 +379,7 @@ const ITModals = () => {
                 <span>&times;</span>
               </button>
             </Header>
-            <div className="p-1">
+            <div className="p-1 w-96">
               <BaseInput label="select_deadline">
                 <MainDatePicker
                   showTimeSelect
@@ -428,11 +409,18 @@ const ITModals = () => {
     }
   };
 
+  useEffect(() => {
+    if (modal === ModalTypes.changeCateg)
+      reset({
+        category: order?.category.id,
+      });
+  }, [modal, order?.category]);
+
   if (
     orderFetching ||
-    (categoriesLoading && !!watch("direction")) ||
+    (categoriesLoading && modal === ModalTypes.changeCateg) ||
     attaching ||
-    reassigning
+    msgLoading
   )
     return <Loading />;
 

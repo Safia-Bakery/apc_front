@@ -25,7 +25,7 @@ class BaseAPIClient {
     this.cancelTokenSource = axios.CancelToken.source();
     this.axiosInstance = axios.create({
       baseURL,
-      timeout: 3000,
+      timeout: 5000,
     });
     this.store = store;
 
