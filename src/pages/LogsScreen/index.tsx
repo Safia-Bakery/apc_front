@@ -9,6 +9,10 @@ import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
 import { dateTimeFormat } from "@/utils/keys";
 
+const TimeLabels = {
+  1: "dd",
+};
+
 const column = [
   { name: "№" },
   { name: "action" },
@@ -88,6 +92,33 @@ const Logs = () => {
             </thead>
 
             <tbody>
+              {order?.update_time &&
+                Object.entries(order?.update_time).map((item, idx) => (
+                  <tr className="bg-blue">
+                    <td width="40">{idx + 1}</td>
+                    <td>{t("assignation")}</td>
+                    <td>{order?.user_manager}</td>
+                    <td>
+                      {order?.update_time?.[RequestStatus.confirmed]
+                        ? dayjs(
+                            order?.update_time?.[RequestStatus.confirmed]
+                          ).format(dateTimeFormat)
+                        : t("not_given")}
+                    </td>
+                    <td>
+                      {!!dayjs(
+                        order?.update_time?.[RequestStatus.confirmed]
+                      ).diff(order?.update_time?.[RequestStatus.new], "minutes")
+                        ? dayjs(
+                            order?.update_time?.[RequestStatus.confirmed]
+                          ).diff(
+                            order?.update_time?.[RequestStatus.new],
+                            "minutes"
+                          )
+                        : t("not_given")}
+                    </td>
+                  </tr>
+                ))}
               <tr className="bg-blue">
                 <td width="40">1</td>
                 <td>{t("receipt_request")}</td>
@@ -155,7 +186,7 @@ const Logs = () => {
               </tr>
               <tr className="bg-blue">
                 <td width="40">4</td>
-                <td>{t("cancelation")}</td>
+                <td>{t("closed_denied")}</td>
                 <td>{order?.user_manager}</td>
                 <td>
                   {order?.update_time?.[RequestStatus.rejected]
@@ -214,6 +245,27 @@ const Logs = () => {
                     {order?.update_time?.[RequestStatus.solved]
                       ? dayjs(
                           order?.update_time?.[RequestStatus.solved]
+                        ).format(dateTimeFormat)
+                      : t("not_given")}
+                  </td>
+                  <td>{t("not_given")}</td>
+                </tr>
+              )}
+              {order?.update_time?.[
+                RequestStatus.rejected_wating_confirmation
+              ] && (
+                <tr className="bg-blue">
+                  <td width="40">7</td>
+                  <td>{t("denied")}</td>
+                  <td>{order?.user_manager}</td>
+                  <td>
+                    {order?.update_time?.[
+                      RequestStatus.rejected_wating_confirmation
+                    ]
+                      ? dayjs(
+                          order?.update_time?.[
+                            RequestStatus.rejected_wating_confirmation
+                          ]
                         ).format(dateTimeFormat)
                       : t("not_given")}
                   </td>
