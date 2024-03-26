@@ -114,7 +114,7 @@ export const ITRequestStatusArr = [
   { value: RequestStatus.new, label: "Новый" },
   { value: RequestStatus.confirmed, label: "Принятые" },
   { value: RequestStatus.solved, label: "Решен" },
-  { value: RequestStatus.rejected_wating_confirmation, label: "Отменен" },
+  { value: RequestStatus.rejected_wating_confirmation, label: "Отклонен" },
   { value: RequestStatus.paused, label: "Остановлен" },
   { value: RequestStatus.done, label: "Закончен" },
   { value: RequestStatus.reopened, label: "Переоткрыт" },
