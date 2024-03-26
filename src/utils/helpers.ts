@@ -117,6 +117,7 @@ export const ITRequestStatusArr = [
   { value: RequestStatus.rejected_wating_confirmation, label: "Отменен" },
   { value: RequestStatus.paused, label: "Остановлен" },
   { value: RequestStatus.done, label: "Закончен" },
+  { value: RequestStatus.reopened, label: "Переоткрыт" },
   { value: RequestStatus.rejected, label: "Закрыт, отменен" },
 ];
 
