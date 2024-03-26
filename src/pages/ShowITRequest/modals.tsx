@@ -159,254 +159,262 @@ const ITModals = () => {
     };
 
   const renderModal = () => {
-    switch (modal) {
-      case ModalTypes.assign:
-        return (
-          <div className={"w-[420px]"}>
-            <Header title="select_handler">
-              <button onClick={closeModal} className="close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </Header>
-            <div className={"overflow-y-auto max-h-80 h-full mt-2"}>
-              {brigadaLoading ? (
-                <Loading is_static />
-              ) : (
-                brigades?.items
-                  .filter((item) => !!item.user!?.length && !!item.status)
-                  .map((item, idx) => (
-                    <div
-                      key={idx}
-                      className={
-                        "flex justify-between border-b border-b-black py-4 pr-1 pl-4 items-center"
-                      }
-                    >
-                      <h6 className="text-lg mb-0">{item?.name}</h6>
-                      <button
-                        id="attach_to_bridaga"
-                        onClick={handleBrigada({
-                          status: RequestStatus.confirmed,
-                          item,
-                        })}
-                        className="btn btn-success btn-fill btn-sm"
+    if (
+      (order?.status! !== RequestStatus.done &&
+        order?.status !== RequestStatus.rejected) ||
+      modal === ModalTypes.showPhoto
+    )
+      switch (modal) {
+        case ModalTypes.assign:
+          return (
+            <div className={"w-[420px]"}>
+              <Header title="select_handler">
+                <button onClick={closeModal} className="close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </Header>
+              <div className={"overflow-y-auto max-h-80 h-full mt-2"}>
+                {brigadaLoading ? (
+                  <Loading is_static />
+                ) : (
+                  brigades?.items
+                    .filter((item) => !!item.user!?.length && !!item.status)
+                    .map((item, idx) => (
+                      <div
+                        key={idx}
+                        className={
+                          "flex justify-between border-b border-b-black py-4 pr-1 pl-4 items-center"
+                        }
                       >
-                        {t("assign")}
-                      </button>
-                    </div>
-                  ))
-              )}
+                        <h6 className="text-lg mb-0">{item?.name}</h6>
+                        <button
+                          id="attach_to_bridaga"
+                          onClick={handleBrigada({
+                            status: RequestStatus.confirmed,
+                            item,
+                          })}
+                          className="btn btn-success btn-fill btn-sm"
+                        >
+                          {t("assign")}
+                        </button>
+                      </div>
+                    ))
+                )}
+              </div>
             </div>
-          </div>
-        );
-      case ModalTypes.cancelRequest:
-        return (
-          <form
-            onSubmit={handleSubmit(
-              handleBrigada({
-                status: RequestStatus.rejected_wating_confirmation,
-              })
-            )}
-            className={"w-[420px]"}
-          >
-            <Header title="deny_reason">
-              <button onClick={closeModal} className="close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </Header>
-            <div className="p-3">
-              <BaseInput label="select_reason">
-                <MainSelect
-                  register={register("fixedReason", {
-                    required: t("required_field"),
-                  })}
-                >
-                  <option value={undefined} />
-
-                  {Object.keys(CancelReason).map((item) => (
-                    <option key={item} value={item}>
-                      {t(CancelReason[+item])}
-                    </option>
-                  ))}
-                </MainSelect>
-              </BaseInput>
-
-              {watch("fixedReason") == 4 && (
-                <BaseInput label="comments">
-                  <MainTextArea register={register("cancel_reason")} />
-                </BaseInput>
+          );
+        case ModalTypes.cancelRequest:
+          return (
+            <form
+              onSubmit={handleSubmit(
+                handleBrigada({
+                  status: RequestStatus.rejected_wating_confirmation,
+                })
               )}
-
-              <button className="btn btn-success w-full" type="submit">
-                {t("send")}
-              </button>
-            </div>
-          </form>
-        );
-      case ModalTypes.pause:
-        return (
-          <form
-            onSubmit={handleSubmit(
-              handleBrigada({ status: RequestStatus.paused })
-            )}
-            className={"w-[420px]"}
-          >
-            <Header title="pause_reason">
-              <button onClick={closeModal} className="close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </Header>
-            <div className="p-3">
-              <BaseInput label="comments">
-                <MainTextArea register={register("pause_reason")} autoFocus />
-              </BaseInput>
-
-              <button className="btn btn-success" type="submit">
-                {t("send")}
-              </button>
-            </div>
-          </form>
-        );
-
-      case ModalTypes.showPhoto:
-        return (
-          <div className={"relative"}>
-            <button
-              onClick={() => removeParams(["modal", "photo"])}
-              className={cl(
-                "absolute top-2 right-2 w-5 h-5 rounded-full bg-gray-400 flex items-center justify-center border border-white"
-              )}
+              className={"w-[420px]"}
             >
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <Link to={photo || ""} target="_blank" rel="noopener noreferrer">
-              {photo && detectFileType(photo) === FileType.photo ? (
-                <img
-                  src={photo}
-                  className={"max-h-[80vh] max-w-[80vw] block h-full"}
-                  alt="uploaded-file"
-                />
-              ) : (
-                <video
-                  src={photo || ""}
-                  className={"max-h-[80vh] max-w-[80vw] block h-full"}
-                  controls
-                />
+              <Header title="deny_reason">
+                <button onClick={closeModal} className="close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </Header>
+              <div className="p-3">
+                <BaseInput label="select_reason">
+                  <MainSelect
+                    register={register("fixedReason", {
+                      required: t("required_field"),
+                    })}
+                  >
+                    <option value={undefined} />
+
+                    {Object.keys(CancelReason).map((item) => (
+                      <option key={item} value={item}>
+                        {t(CancelReason[+item])}
+                      </option>
+                    ))}
+                  </MainSelect>
+                </BaseInput>
+
+                {watch("fixedReason") == 4 && (
+                  <BaseInput label="comments">
+                    <MainTextArea register={register("cancel_reason")} />
+                  </BaseInput>
+                )}
+
+                <button className="btn btn-success w-full" type="submit">
+                  {t("send")}
+                </button>
+              </div>
+            </form>
+          );
+        case ModalTypes.pause:
+          return (
+            <form
+              onSubmit={handleSubmit(
+                handleBrigada({ status: RequestStatus.paused })
               )}
-            </Link>
-          </div>
-        );
+              className={"w-[420px]"}
+            >
+              <Header title="pause_reason">
+                <button onClick={closeModal} className="close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </Header>
+              <div className="p-3">
+                <BaseInput label="comments">
+                  <MainTextArea register={register("pause_reason")} autoFocus />
+                </BaseInput>
 
-      case ModalTypes.changeBranch:
-        return (
-          <>
-            <Header title="change">
-              <button onClick={closeModal} className="close">
-                <span>&times;</span>
-              </button>
-            </Header>
-            <div className="min-w-96">
-              <BaseInput label="select_branch">
-                <BranchSelect enabled />
-              </BaseInput>
+                <button className="btn btn-success" type="submit">
+                  {t("send")}
+                </button>
+              </div>
+            </form>
+          );
 
+        case ModalTypes.showPhoto:
+          return (
+            <div className={"relative"}>
               <button
-                className="btn btn-success btn-fill w-full"
-                onClick={handleChange({ filial: true })}
+                onClick={() => removeParams(["modal", "photo"])}
+                className={cl(
+                  "absolute top-2 right-2 w-5 h-5 rounded-full bg-gray-400 flex items-center justify-center border border-white"
+                )}
               >
-                {t("apply")}
+                <span aria-hidden="true">&times;</span>
               </button>
+              <Link to={photo || ""} target="_blank" rel="noopener noreferrer">
+                {photo && detectFileType(photo) === FileType.photo ? (
+                  <img
+                    src={photo}
+                    className={"max-h-[80vh] max-w-[80vw] block h-full"}
+                    alt="uploaded-file"
+                  />
+                ) : (
+                  <video
+                    src={photo || ""}
+                    className={"max-h-[80vh] max-w-[80vw] block h-full"}
+                    controls
+                  />
+                )}
+              </Link>
             </div>
-          </>
-        );
-      case ModalTypes.changeCateg:
-        return (
-          <>
-            <Header title="change">
-              <button onClick={closeModal} className="close">
-                <span>&times;</span>
-              </button>
-            </Header>
-            <BaseInput label="select_category">
-              <MainSelect
-                values={categories?.items}
-                register={register("category")}
-              />
-            </BaseInput>
-            <div className="min-w-96">
-              <button
-                className="btn btn-success btn-fill w-full"
-                onClick={handleChange({ categ: true })}
-              >
-                {t("apply")}
-              </button>
-            </div>
-          </>
-        );
-      case ModalTypes.leaveMessage:
-        return (
-          <>
-            <Header title="leave_comment">
-              <button onClick={closeModal} className="close">
-                <span>&times;</span>
-              </button>
-            </Header>
-            <div className="p-1">
-              <BaseInput label="comments">
-                <MainTextArea
-                  autoFocus
-                  onKeyDown={handleKeyDown}
-                  register={register("left_comment")}
+          );
+
+        case ModalTypes.changeBranch:
+          return (
+            <>
+              <Header title="change">
+                <button onClick={closeModal} className="close">
+                  <span>&times;</span>
+                </button>
+              </Header>
+              <div className="min-w-96">
+                <BaseInput label="select_branch">
+                  <BranchSelect enabled />
+                </BaseInput>
+
+                <button
+                  className="btn btn-success btn-fill w-full"
+                  onClick={handleChange({ filial: true })}
+                >
+                  {t("apply")}
+                </button>
+              </div>
+            </>
+          );
+        case ModalTypes.changeCateg:
+          return (
+            <>
+              <Header title="change">
+                <button onClick={closeModal} className="close">
+                  <span>&times;</span>
+                </button>
+              </Header>
+              <BaseInput label="select_category">
+                <MainSelect
+                  values={categories?.items}
+                  register={register("category")}
                 />
               </BaseInput>
-              <BaseInput label="upload_photo">
-                <MainInput type="file" register={register("uploaded_photo")} />
-              </BaseInput>
-              <button
-                className="btn btn-success btn-fill w-full"
-                onClick={handleMessage}
-              >
-                {t("apply")}
-              </button>
-            </div>
-          </>
-        );
+              <div className="min-w-96">
+                <button
+                  className="btn btn-success btn-fill w-full"
+                  onClick={handleChange({ categ: true })}
+                >
+                  {t("apply")}
+                </button>
+              </div>
+            </>
+          );
+        case ModalTypes.leaveMessage:
+          return (
+            <>
+              <Header title="leave_comment">
+                <button onClick={closeModal} className="close">
+                  <span>&times;</span>
+                </button>
+              </Header>
+              <div className="p-1">
+                <BaseInput label="comments">
+                  <MainTextArea
+                    autoFocus
+                    onKeyDown={handleKeyDown}
+                    register={register("left_comment")}
+                  />
+                </BaseInput>
+                <BaseInput label="upload_photo">
+                  <MainInput
+                    type="file"
+                    register={register("uploaded_photo")}
+                  />
+                </BaseInput>
+                <button
+                  className="btn btn-success btn-fill w-full"
+                  onClick={handleMessage}
+                >
+                  {t("apply")}
+                </button>
+              </div>
+            </>
+          );
 
-      case ModalTypes.assingDeadline:
-        return (
-          <>
-            <Header title="select_deadline">
-              <button onClick={closeModal} className="close">
-                <span>&times;</span>
-              </button>
-            </Header>
-            <div className="p-1 w-96">
-              <BaseInput label="select_deadline">
-                <MainDatePicker
-                  showTimeSelect
-                  selected={
-                    !!deadline || order?.finishing_time
-                      ? dayjs(deadline || order?.finishing_time).toDate()
-                      : undefined
-                  }
-                  onChange={handleDeadline}
-                />
-              </BaseInput>
+        case ModalTypes.assingDeadline:
+          return (
+            <>
+              <Header title="select_deadline">
+                <button onClick={closeModal} className="close">
+                  <span>&times;</span>
+                </button>
+              </Header>
+              <div className="p-1 w-96">
+                <BaseInput label="select_deadline">
+                  <MainDatePicker
+                    showTimeSelect
+                    selected={
+                      !!deadline || order?.finishing_time
+                        ? dayjs(deadline || order?.finishing_time).toDate()
+                        : undefined
+                    }
+                    onChange={handleDeadline}
+                  />
+                </BaseInput>
 
-              <button
-                onClick={handleBrigada({
-                  time: deadline?.toISOString(),
-                })}
-                className="btn btn-success btn-fill w-full"
-              >
-                {t("apply")}
-              </button>
-            </div>
-          </>
-        );
+                <button
+                  onClick={handleBrigada({
+                    time: deadline?.toISOString(),
+                  })}
+                  className="btn btn-success btn-fill w-full"
+                >
+                  {t("apply")}
+                </button>
+              </div>
+            </>
+          );
 
-      default:
-        return;
-    }
+        default:
+          return;
+      }
   };
 
   useEffect(() => {
