@@ -505,7 +505,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                     <th className="font-bold">{t("leave_comment")}</th>
                     <td className={styles.tableRow}>
                       <div className="flex items-center justify-between">
-                        <div className="flex flex-col">
+                        <div className="flex flex-col flex-1">
                           {!!order?.communication?.length &&
                             order?.communication.map((item) => (
                               <div className="mt-2 flex gap-1" key={item.id}>
