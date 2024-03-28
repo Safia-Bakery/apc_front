@@ -480,9 +480,13 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                   <tr>
                     <th>{t("date_of_canceling")}</th>
                     <td>
-                      {order?.update_time[RequestStatus.rejected]
+                      {order?.update_time[
+                        RequestStatus.rejected_wating_confirmation
+                      ]
                         ? dayjs(
-                            order?.update_time[RequestStatus.rejected]
+                            order?.update_time[
+                              RequestStatus.rejected_wating_confirmation
+                            ]
                           ).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
@@ -490,9 +494,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                   <tr>
                     <th>{t("reopen")}</th>
                     <td>
-                      {order?.update_time[RequestStatus.paused] &&
-                      (order?.update_time[RequestStatus.done] ||
-                        order?.update_time[RequestStatus.confirmed])
+                      {order?.update_time[RequestStatus.reopened]
                         ? t("yes")
                         : t("no")}
                     </td>
