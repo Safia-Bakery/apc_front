@@ -78,6 +78,21 @@ export const Playground: FC = () => {
               </div>
             </div>
             <Menu menuItemStyles={menuItemStyles}>
+              <MenuItem
+                className={cl(styles.content)}
+                active={pathname === "/home"}
+                onClick={() => navigate("/home")}
+                icon={
+                  <img
+                    className={styles.routeIcon}
+                    height={30}
+                    width={30}
+                    src={"/assets/icons/controlPanel.svg"}
+                  />
+                }
+              >
+                {t("control_panel")}
+              </MenuItem>
               {routes &&
                 routes.map((route) => (
                   <Fragment key={route.url + route.name}>
