@@ -34,10 +34,7 @@ const Roles = () => {
     <Card>
       <Header title={"roles"}>
         {permission?.[MainPermissions.add_role] && (
-          <button
-            className="btn btn-success btn-fill"
-            onClick={handleNavigate("add")}
-          >
+          <button className="btn btn-success  " onClick={handleNavigate("add")}>
             {t("add")}
           </button>
         )}

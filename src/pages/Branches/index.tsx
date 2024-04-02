@@ -117,7 +117,7 @@ const Branches = () => {
             <button
               onClick={handleSync}
               disabled={isFetching}
-              className="btn btn-primary btn-fill mr-2 !flex"
+              className="btn btn-primary   mr-2 !flex"
             >
               <img
                 src="/assets/icons/sync.svg"
@@ -131,7 +131,7 @@ const Branches = () => {
           )}
           {permisisons?.[MainPermissions.add_fillials] && (
             <button
-              className="btn btn-success btn-fill"
+              className="btn btn-success  "
               onClick={handleNavigate("add")}
               id="add_branch"
             >

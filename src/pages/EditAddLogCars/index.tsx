@@ -63,7 +63,7 @@ const EditAddLogCars = () => {
   return (
     <Card>
       <Header title={!id ? t("add") : `${t("edit_role")} №${id}`}>
-        <button className="btn btn-success btn-fill" onClick={goBack}>
+        <button className="btn btn-success  " onClick={goBack}>
           {t("back")}
         </button>
       </Header>
@@ -85,7 +85,7 @@ const EditAddLogCars = () => {
           <MainCheckBox label={"active"} register={register("status")} />
         </BaseInputs>
 
-        <button type="submit" className="btn btn-success btn-fill">
+        <button type="submit" className="btn btn-success  ">
           {t("save")}
         </button>
       </form>

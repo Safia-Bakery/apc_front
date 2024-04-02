@@ -787,6 +787,7 @@ export interface ServiceStatsType {
   percentage_status_zero: number;
   avg_finishing: number;
   category: string;
+  category_id: number;
 }
 
 export interface ServiceStatsTypes {

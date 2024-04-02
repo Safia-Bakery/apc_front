@@ -133,7 +133,13 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
                 <th className="text-2xl">В среднем:</th>
                 <td colSpan={2} className="text-2xl">
                   {(renderAvarage?.totalTime / data?.table.length!).toFixed(3)}{" "}
-                  минут
+                  минут (
+                  {(
+                    renderAvarage?.totalTime /
+                    data?.table.length! /
+                    60
+                  ).toFixed(3)}{" "}
+                  {t("hours")})
                 </td>
               </tr>
             </>

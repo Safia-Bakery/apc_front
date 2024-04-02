@@ -63,10 +63,7 @@ const RequestsInventory = () => {
   return (
     <Card>
       <Header title={t("requests_for_inventory")}>
-        <button
-          onClick={() => navigate("add")}
-          className="btn btn-success btn-fill"
-        >
+        <button onClick={() => navigate("add")} className="btn btn-success  ">
           {t("add")}
         </button>
       </Header>

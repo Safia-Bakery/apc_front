@@ -20,6 +20,8 @@ interface Body {
   id?: string | number;
   rate?: boolean;
   brigada_id?: number;
+  started_at?: string;
+  finished_at?: string;
 }
 
 export const useOrders = ({ enabled, request_status, ...params }: Body) => {

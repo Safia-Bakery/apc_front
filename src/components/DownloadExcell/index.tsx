@@ -60,7 +60,7 @@ const DownloadExcell = () => {
         />
       </div>
       <button
-        className="btn btn-primary btn-fill mr-2"
+        className="btn btn-primary   mr-2"
         type="button"
         onClick={handleActive}
       >

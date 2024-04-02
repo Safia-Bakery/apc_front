@@ -86,7 +86,7 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
       <Header title={renderDep?.mainTitle}>
         {permission?.[add] && (
           <button
-            className="btn btn-success btn-fill"
+            className="btn btn-success  "
             id="add_master"
             onClick={handleNavigate(
               `add?dep=${dep}&sphere_status=${sphere_status}`

@@ -36,10 +36,7 @@ const LogysticCars = () => {
     <Card>
       <Header title="tracks">
         {permission?.[MainPermissions.add_log_cars] && (
-          <button
-            className="btn btn-success btn-fill"
-            onClick={handleNavigate("add")}
-          >
+          <button className="btn btn-success  " onClick={handleNavigate("add")}>
             {t("add_track")}
           </button>
         )}

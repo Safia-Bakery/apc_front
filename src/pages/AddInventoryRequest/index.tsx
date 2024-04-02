@@ -127,7 +127,7 @@ const AddInventoryRequest = () => {
         {!isMobile && (
           <button
             onClick={() => navigate("/requests-inventory")}
-            className="btn btn-primary btn-fill"
+            className="btn btn-primary  "
           >
             {t("back")}
           </button>
@@ -256,7 +256,7 @@ const AddInventoryRequest = () => {
           <button
             type="submit"
             disabled={mutating}
-            className="btn btn-success btn-fill z-10 relative"
+            className="btn btn-success   z-10 relative"
           >
             {t("save")}
           </button>

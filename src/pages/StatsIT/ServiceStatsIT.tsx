@@ -6,6 +6,7 @@ import cl from "classnames";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
 import useITServiseStats from "@/hooks/useITServiceStats";
+import { Departments } from "@/utils/types";
 
 const column = [
   { name: "№" },
@@ -35,6 +36,7 @@ const ServiceStatsIT = () => {
   const downloadAsPdf = () => onDownload();
 
   const { isLoading, data } = useITServiseStats({
+    department: Departments.it,
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),
   });
@@ -201,14 +203,14 @@ const ServiceStatsIT = () => {
           <tbody>
             <tr>
               <td>
-                <Loading />
+                <EmptyList />
               </td>
             </tr>
           </tbody>
         )}
       </table>
 
-      {!data && !isLoading && <EmptyList />}
+      {isLoading && <Loading />}
       <button id={"service_stat"} className="hidden" onClick={downloadAsPdf}>
         download
       </button>

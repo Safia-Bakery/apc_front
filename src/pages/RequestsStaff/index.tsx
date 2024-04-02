@@ -129,13 +129,13 @@ const RequestsStaff = () => {
             </h2>
           </div>
           <div className="flex flex-col gap-2 justify-between">
-            <button className="btn btn-success btn-fill" onClick={handleExcell}>
+            <button className="btn btn-success  " onClick={handleExcell}>
               {t("export_to_excel")}
             </button>
             {permission?.[MainPermissions.staff_modal_time] && (
               <button
                 onClick={() => navigateParams({ time_modal: 1 })}
-                className="btn btn-primary btn-fill"
+                className="btn btn-primary  "
               >
                 {t("bot_settings")}
               </button>
@@ -143,7 +143,7 @@ const RequestsStaff = () => {
             {permission?.[MainPermissions.add_staff_requests] && (
               <button
                 onClick={() => navigate("add")}
-                className="btn btn-success btn-fill"
+                className="btn btn-success  "
                 id="add_request"
               >
                 {t("add")}

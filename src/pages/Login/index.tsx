@@ -78,7 +78,7 @@ const Login = () => {
             {error && <p className={styles.error}>{t("incorrect_username")}</p>}
           </BaseInput>
 
-          <button type="submit" className="btn btn-primary btn-fill float-end">
+          <button type="submit" className="btn btn-primary   float-end">
             {t("login")}
           </button>
         </form>

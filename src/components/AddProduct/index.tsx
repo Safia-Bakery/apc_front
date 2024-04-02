@@ -77,7 +77,7 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
           <button
             disabled={isLoading}
             onClick={handleSync}
-            className="btn btn-primary btn-fill btn-sm mr-2"
+            className="btn btn-primary   btn-sm mr-2"
           >
             <img
               src="/assets/icons/sync.svg"
@@ -91,7 +91,7 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
         )}
         {addExp && isFinished && permissions?.[addExp] && (
           <button
-            className="btn btn-success btn-fill btn-sm"
+            className="btn btn-success   btn-sm"
             onClick={handleModal}
             id={"add_expenditure"}
           >

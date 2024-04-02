@@ -56,16 +56,13 @@ const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
         {permission?.[add] && (
           <div className="flex gap-2">
             <button
-              className="btn btn-success btn-fill"
+              className="btn btn-success  "
               onClick={handleNavigate("add")}
               id="add_category"
             >
               {t("add")}
             </button>
-            <button
-              onClick={() => navigate(-1)}
-              className="btn btn-primary btn-fill"
-            >
+            <button onClick={() => navigate(-1)} className="btn btn-primary  ">
               {t("back")}
             </button>
           </div>

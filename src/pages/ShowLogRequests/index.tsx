@@ -82,13 +82,13 @@ const ShowLogRequests = () => {
         <div className="float-end mb10">
           <button
             onClick={handleModal(ModalTypes.cancelRequest)}
-            className="btn btn-danger btn-fill mr-2"
+            className="btn btn-danger   mr-2"
           >
             {t("deny")}
           </button>
           <button
             onClick={handleBrigada({ status: RequestStatus.confirmed })}
-            className="btn btn-success btn-fill"
+            className="btn btn-success  "
             id="recieve_request"
           >
             {t("receive_to_work")}
@@ -101,7 +101,7 @@ const ShowLogRequests = () => {
           {order?.status! < 2 && (
             <button
               onClick={handleModal(ModalTypes.cars)}
-              className="btn btn-warning btn-fill mr-2"
+              className="btn btn-warning   mr-2"
             >
               {t("send_to_way")}
             </button>
@@ -109,7 +109,7 @@ const ShowLogRequests = () => {
           {order?.status! < 3 && (
             <button
               onClick={handleBrigada({ status: RequestStatus.done })}
-              className="btn btn-success btn-fill"
+              className="btn btn-success  "
             >
               {t("finish")}
             </button>
@@ -146,12 +146,12 @@ const ShowLogRequests = () => {
           )}`}
         >
           <button
-            className="btn btn-warning btn-fill mr-2"
+            className="btn btn-warning   mr-2"
             onClick={() => navigate(`/request/logs/${id}`)}
           >
             {t("logs")}
           </button>
-          <button onClick={handleBack} className="btn btn-primary btn-fill">
+          <button onClick={handleBack} className="btn btn-primary  ">
             {t("back")}
           </button>
         </Header>

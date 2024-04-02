@@ -93,19 +93,19 @@ const ShowMarketingRequest = () => {
         <div className="float-end mb10">
           <button
             onClick={handleModal(ModalTypes.reassign)}
-            className="btn btn-primary btn-fill"
+            className="btn btn-primary  "
           >
             {t("redirect")}
           </button>
           <button
             onClick={handleModal(ModalTypes.cancelRequest)}
-            className="btn btn-danger btn-fill mx-2"
+            className="btn btn-danger   mx-2"
           >
             {t("deny")}
           </button>
           <button
             onClick={handleBrigada({ status: RequestStatus.confirmed })}
-            className="btn btn-success btn-fill"
+            className="btn btn-success  "
             id="recieve_request"
           >
             {t("receive")}
@@ -121,7 +121,7 @@ const ShowMarketingRequest = () => {
               onClick={handleBrigada({
                 status: RequestStatus.sendToRepair,
               })}
-              className="btn btn-warning btn-fill mr-2"
+              className="btn btn-warning   mr-2"
             >
               {t("send_to_orderer")}
             </button>
@@ -129,7 +129,7 @@ const ShowMarketingRequest = () => {
           {order?.status! < RequestStatus.done && (
             <button
               onClick={handleBrigada({ status: RequestStatus.done })}
-              className="btn btn-success btn-fill"
+              className="btn btn-success  "
             >
               {t("finish")}
             </button>
@@ -166,13 +166,13 @@ const ShowMarketingRequest = () => {
         >
           <div className="flex gap-2">
             <button
-              className="btn btn-warning btn-fill "
+              className="btn btn-warning   "
               onClick={() => navigate(`/request/logs/${id}`)}
             >
               {t("logs")}
             </button>
             {MarketingSubDep[sub_id] && (
-              <button onClick={handleBack} className="btn btn-primary btn-fill">
+              <button onClick={handleBack} className="btn btn-primary  ">
                 {t("back")}
               </button>
             )}

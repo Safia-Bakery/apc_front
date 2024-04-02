@@ -81,10 +81,7 @@ const RequestsIT = () => {
       <Header title={"it_requests"}>
         <div className="flex">
           <DownloadExcell />
-          <button
-            onClick={() => navigate("add")}
-            className="btn btn-success btn-fill"
-          >
+          <button onClick={() => navigate("add")} className="btn btn-success  ">
             {t("add")}
           </button>
         </div>

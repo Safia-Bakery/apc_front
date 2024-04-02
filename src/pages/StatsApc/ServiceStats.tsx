@@ -1,5 +1,5 @@
 import { ServiceStatsType } from "@/utils/types";
-import { Fragment, useEffect, useRef } from "react";
+import { Fragment, useEffect, useMemo, useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
@@ -9,6 +9,9 @@ import { numberWithCommas as fixedN } from "@/utils/helpers";
 import { useTranslation } from "react-i18next";
 import useApcServiceStats from "@/hooks/useApcServiceStats";
 import Loading from "@/components/Loader";
+import { Link } from "react-router-dom";
+import { yearMonthDate } from "@/utils/keys";
+import dayjs from "dayjs";
 
 const column = [
   { name: "№" },
@@ -41,6 +44,12 @@ const ServiceStatsApc = () => {
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),
   });
+
+  const renderUrl = useMemo(() => {
+    return `service_filter=1&started_at=${
+      !start ? dayjs().startOf("month").format(yearMonthDate) : start
+    }&finished_at=${!end ? dayjs().format(yearMonthDate) : end}`;
+  }, [data, end, start]);
 
   const calculator = (idx: any, key: keyof ServiceStatsType) => {
     const sumWithInitial = data?.[idx]?.reduce(
@@ -96,7 +105,13 @@ const ServiceStatsApc = () => {
                     {mainKey[0]}
                   </td>
 
-                  <td>{mainKey[1][0]?.category}</td>
+                  <td>
+                    <Link
+                      to={`/requests-apc-retail?category_id=${mainKey[1][0]?.category_id}&${renderUrl}`}
+                    >
+                      {mainKey[1][0]?.category}
+                    </Link>
+                  </td>
                   <td className="text-center">
                     {mainKey[1][0]?.total_requests}
                   </td>
@@ -128,7 +143,13 @@ const ServiceStatsApc = () => {
                   .map((item: ServiceStatsType, index: number) => (
                     <Fragment key={index}>
                       <tr className="hover:bg-transparent">
-                        <td>{item.category}</td>
+                        <td>
+                          <Link
+                            to={`/requests-apc-retail?category_id=${item?.category_id}&${renderUrl}`}
+                          >
+                            {item.category}
+                          </Link>
+                        </td>
                         <td className="text-center">{item.total_requests}</td>
 
                         <td className="text-center !bg-tableSuccess">

@@ -97,20 +97,20 @@ const ShowRequestInventory = () => {
         <div className="float-end mb10">
           <button
             onClick={handleModal(ModalTypes.cancelRequest)}
-            className="btn btn-danger btn-fill mx-2"
+            className="btn btn-danger   mx-2"
           >
             {t("deny")}
           </button>
           {isNew ? (
             <button
               onClick={handleReceive}
-              className="btn btn-success btn-fill"
+              className="btn btn-success  "
               id="recieve_request"
             >
               {t("receive")}
             </button>
           ) : (
-            <button onClick={handleFinish} className="btn btn-success btn-fill">
+            <button onClick={handleFinish} className="btn btn-success  ">
               {t("finish")}
             </button>
           )}
@@ -138,12 +138,12 @@ const ShowRequestInventory = () => {
           )}`}
         >
           <button
-            className="btn btn-warning btn-fill mr-2"
+            className="btn btn-warning   mr-2"
             onClick={() => navigate(`/request/logs/${id}`)}
           >
             {t("logs")}
           </button>
-          <button onClick={handleBack} className="btn btn-primary btn-fill">
+          <button onClick={handleBack} className="btn btn-primary  ">
             {t("back")}
           </button>
         </Header>

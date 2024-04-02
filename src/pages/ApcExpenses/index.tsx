@@ -46,10 +46,7 @@ const ApcExpenses = () => {
     <Card>
       <Header title={"expense_for_outsource"}>
         {permission?.[MainPermissions.add_apc_expenses] && (
-          <button
-            className="btn btn-success btn-fill"
-            onClick={handleNavigate("add")}
-          >
+          <button className="btn btn-success  " onClick={handleNavigate("add")}>
             {t("add")}
           </button>
         )}

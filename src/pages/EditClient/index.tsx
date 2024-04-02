@@ -81,7 +81,7 @@ const EditClient = () => {
   return (
     <Card>
       <Header title={!id ? t("add") : `${t("edit_user")} №${id}`}>
-        <button className="btn btn-primary btn-fill" onClick={goBack}>
+        <button className="btn btn-primary  " onClick={goBack}>
           {t("back")}
         </button>
       </Header>
@@ -137,7 +137,7 @@ const EditClient = () => {
           </div>
         </div>
 
-        <button type="submit" className="btn btn-success btn-fill mt-3">
+        <button type="submit" className="btn btn-success   mt-3">
           {t("save")}
         </button>
       </form>

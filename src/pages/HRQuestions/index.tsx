@@ -40,7 +40,7 @@ const FAQQuestions = () => {
       <Header title={"questions"}>
         {permission?.[MainPermissions.add_faq] && (
           <button
-            className="btn btn-success btn-fill"
+            className="btn btn-success  "
             onClick={handleNavigate(`add`)}
             id="add_category"
           >

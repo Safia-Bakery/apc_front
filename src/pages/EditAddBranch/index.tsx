@@ -93,7 +93,7 @@ const EditAddBranch = () => {
   return (
     <Card>
       <Header title={!id ? t("add") : `${t("edit_branch")} ${branch?.name}`}>
-        <button className="btn btn-primary btn-fill" onClick={goBack}>
+        <button className="btn btn-primary  " onClick={goBack}>
           {t("back")}
         </button>
       </Header>
@@ -156,7 +156,7 @@ const EditAddBranch = () => {
             values={branch?.fillial_department}
           />
         </BaseInputs>
-        <button type="submit" className="btn btn-success btn-fill">
+        <button type="submit" className="btn btn-success  ">
           {t("save")}
         </button>
       </form>

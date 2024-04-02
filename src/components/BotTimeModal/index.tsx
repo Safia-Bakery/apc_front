@@ -75,9 +75,7 @@ const BotTimeModal = () => {
                 {...register("to_time")}
               />
             </BaseInput>
-            <button className="btn btn-fill h-40 btn-primary">
-              {t("save")}
-            </button>
+            <button className="btn   h-40 btn-primary">{t("save")}</button>
           </div>
         )}
       </form>

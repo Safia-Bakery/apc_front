@@ -193,7 +193,7 @@ const ITModals = () => {
                             status: RequestStatus.confirmed,
                             item,
                           })}
-                          className="btn btn-success btn-fill btn-sm"
+                          className="btn btn-success   btn-sm"
                         >
                           {t("assign")}
                         </button>
@@ -315,7 +315,7 @@ const ITModals = () => {
                 </BaseInput>
 
                 <button
-                  className="btn btn-success btn-fill w-full"
+                  className="btn btn-success   w-full"
                   onClick={handleChange({ filial: true })}
                 >
                   {t("apply")}
@@ -339,7 +339,7 @@ const ITModals = () => {
               </BaseInput>
               <div className="min-w-96">
                 <button
-                  className="btn btn-success btn-fill w-full"
+                  className="btn btn-success   w-full"
                   onClick={handleChange({ categ: true })}
                 >
                   {t("apply")}
@@ -370,7 +370,7 @@ const ITModals = () => {
                   />
                 </BaseInput>
                 <button
-                  className="btn btn-success btn-fill w-full"
+                  className="btn btn-success   w-full"
                   onClick={handleMessage}
                 >
                   {t("apply")}
@@ -404,7 +404,7 @@ const ITModals = () => {
                   onClick={handleBrigada({
                     time: deadline?.toISOString(),
                   })}
-                  className="btn btn-success btn-fill w-full"
+                  className="btn btn-success   w-full"
                 >
                   {t("apply")}
                 </button>

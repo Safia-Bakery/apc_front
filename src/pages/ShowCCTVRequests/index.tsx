@@ -115,10 +115,7 @@ const ShowCCTVRequests = () => {
               />
             </BaseInput>
 
-            <button
-              className="btn btn-success btn-fill w-full"
-              onClick={handleChange}
-            >
+            <button className="btn btn-success   w-full" onClick={handleChange}>
               {t("apply")}
             </button>
           </>
@@ -132,13 +129,13 @@ const ShowCCTVRequests = () => {
         <div className="float-end mb10">
           <button
             onClick={handleModal(ModalTypes.cancelRequest)}
-            className="btn btn-danger btn-fill mr-2"
+            className="btn btn-danger   mr-2"
           >
             {t("deny")}
           </button>
           <button
             onClick={handleBrigada({ status: RequestStatus.confirmed })}
-            className="btn btn-success btn-fill"
+            className="btn btn-success  "
             id="recieve_request"
           >
             {t("receive")}
@@ -151,7 +148,7 @@ const ShowCCTVRequests = () => {
           {order?.status! < RequestStatus.done && (
             <button
               onClick={handleChangeModal(ModalTypes.changeCateg)}
-              className="btn btn-success btn-fill"
+              className="btn btn-success  "
             >
               {t("finish")}
             </button>
@@ -193,12 +190,12 @@ const ShowCCTVRequests = () => {
           )}`}
         >
           <button
-            className="btn btn-warning btn-fill mr-2"
+            className="btn btn-warning   mr-2"
             onClick={() => navigate(`/request/logs/${id}`)}
           >
             {t("logs")}
           </button>
-          <button onClick={handleBack} className="btn btn-primary btn-fill">
+          <button onClick={handleBack} className="btn btn-primary  ">
             {t("back")}
           </button>
         </Header>

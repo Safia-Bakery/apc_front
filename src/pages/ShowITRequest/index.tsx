@@ -138,7 +138,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
           order.status !== RequestStatus.rejected_wating_confirmation ? (
             <button
               onClick={handleModal(ModalTypes.cancelRequest)}
-              className="btn btn-danger btn-fill"
+              className="btn btn-danger  "
             >
               {t("calcel")}
             </button>
@@ -155,14 +155,14 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                     onClick={handleBrigada({
                       status: RequestStatus.reopened,
                     })}
-                    className="btn btn-warning btn-fill"
+                    className="btn btn-warning  "
                   >
                     {t("resume")}
                   </button>
                 ) : (
                   <button
                     onClick={handleModal(ModalTypes.pause)}
-                    className="btn btn-warning btn-fill"
+                    className="btn btn-warning  "
                   >
                     {t("pause")}
                   </button>
@@ -175,7 +175,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                       onClick={handleBrigada({
                         status: RequestStatus.solved,
                       })}
-                      className="btn btn-success btn-fill"
+                      className="btn btn-success  "
                     >
                       {t("to_solve")}
                     </button>
@@ -195,10 +195,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
             <span>{order?.brigada?.name}</span>
             <button
               onClick={handleModal(ModalTypes.assign)}
-              className={cl(
-                "btn btn-primary btn-fill float-end",
-                styles.changeBtn
-              )}
+              className={cl("btn btn-primary   float-end", styles.changeBtn)}
             >
               {t("reassign")}
             </button>
@@ -209,7 +206,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
         <button
           id="assign"
           onClick={handleModal(ModalTypes.assign)}
-          className="btn btn-success btn-fill float-end"
+          className="btn btn-success   float-end"
         >
           {t("assign")}
         </button>
@@ -233,7 +230,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                 onClick={handlerSubmitFile}
                 type="button"
                 id={"save_report"}
-                className="btn btn-success float-end btn-fill my-3"
+                className="btn btn-success float-end   my-3"
               >
                 {t("save")}
               </button>
@@ -262,12 +259,12 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
         >
           <div className="flex gap-2">
             <button
-              className="btn btn-warning btn-fill "
+              className="btn btn-warning   "
               onClick={() => navigate(`/request/logs/${id}`)}
             >
               {t("logs")}
             </button>
-            <button onClick={handleBack} className="btn btn-primary btn-fill">
+            <button onClick={handleBack} className="btn btn-primary  ">
               {t("back")}
             </button>
           </div>
@@ -320,7 +317,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                         {order?.status! !== RequestStatus.done && (
                           <button
                             className={cl(
-                              "btn btn-primary btn-fill",
+                              "btn btn-primary  ",
                               styles.changeBtn
                             )}
                             onClick={handleModal(ModalTypes.changeCateg)}
@@ -348,7 +345,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                           <button
                             onClick={handleModal(ModalTypes.changeBranch)}
                             className={cl(
-                              "btn btn-primary btn-fill",
+                              "btn btn-primary  ",
                               styles.changeBtn
                             )}
                           >

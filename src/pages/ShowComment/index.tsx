@@ -41,7 +41,7 @@ const ShowComment = () => {
     <>
       <Card>
         <Header title={`№${id}`}>
-          <button className="btn btn-primary btn-fill" onClick={goBack}>
+          <button className="btn btn-primary  " onClick={goBack}>
             {t("back")}
           </button>
         </Header>

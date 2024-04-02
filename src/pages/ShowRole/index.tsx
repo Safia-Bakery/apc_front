@@ -62,10 +62,7 @@ const ShowRole = () => {
   return (
     <Card className={"pb-11"}>
       <Header title={`${rolePermission?.role_name}`}>
-        <button
-          className="btn btn-primary btn-fill"
-          onClick={() => navigate(-1)}
-        >
+        <button className="btn btn-primary  " onClick={() => navigate(-1)}>
           {t("back")}
         </button>
       </Header>

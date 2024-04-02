@@ -56,7 +56,7 @@ const RemainsInStock = () => {
         <div className="flex">
           <button
             onClick={handleSync}
-            className="btn btn-primary btn-fill mr-2 !flex"
+            className="btn btn-primary   mr-2 !flex"
             disabled={syncLoading}
           >
             <img
@@ -68,7 +68,7 @@ const RemainsInStock = () => {
             />
             {t("sync_with_iico")}
           </button>
-          <button className="btn btn-primary btn-fill" onClick={goBack}>
+          <button className="btn btn-primary  " onClick={goBack}>
             {t("back")}
           </button>
         </div>

@@ -43,7 +43,7 @@ const CategoryProducts = () => {
         {permission?.[MainPermissions.edit_categ_it] && (
           <div className="flex gap-2">
             <button
-              className="btn btn-success btn-fill"
+              className="btn btn-success  "
               onClick={handleNavigate(
                 `/categories-it/${sphere}/${id}/add-product`
               )}
@@ -51,10 +51,7 @@ const CategoryProducts = () => {
             >
               {t("add")}
             </button>
-            <button
-              onClick={() => navigate(-1)}
-              className="btn btn-primary btn-fill"
-            >
+            <button onClick={() => navigate(-1)} className="btn btn-primary  ">
               {t("back")}
             </button>
           </div>

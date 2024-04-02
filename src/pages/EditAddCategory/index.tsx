@@ -135,7 +135,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
   return (
     <Card className="overflow-hidden pb-3">
       <Header title={renderTitle}>
-        <button className="btn btn-primary btn-fill" onClick={goBack}>
+        <button className="btn btn-primary  " onClick={goBack}>
           {t("back")}
         </button>
       </Header>
@@ -200,7 +200,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
 
         {renderImage}
 
-        <button type="submit" className="btn btn-success btn-fill float-end">
+        <button type="submit" className="btn btn-success   float-end">
           {t("save")}
         </button>
       </form>

@@ -28,7 +28,7 @@ const LogysticsLogs = () => {
   return (
     <Card>
       <Header title={"logs"}>
-        <button onClick={handleNavigate} className="btn btn-primary btn-fill">
+        <button onClick={handleNavigate} className="btn btn-primary  ">
           {t("back")}
         </button>
       </Header>

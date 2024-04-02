@@ -149,7 +149,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
         <div className="float-end mb10">
           <button
             onClick={() => handleModal(ModalTypes.cancelRequest)}
-            className="btn btn-danger btn-fill"
+            className="btn btn-danger  "
           >
             {t("deny")}
           </button>
@@ -172,7 +172,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
           {order?.status! < RequestStatus.done && (
             <button
               onClick={() => handleModal(ModalTypes.cancelRequest)}
-              className="btn btn-danger btn-fill"
+              className="btn btn-danger  "
             >
               {t("calcel")}
             </button>
@@ -185,7 +185,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                     status: RequestStatus.sendToRepair,
                   })
                 }
-                className="btn btn-warning btn-fill "
+                className="btn btn-warning   "
               >
                 {t("pick_to_repair")}
               </button>
@@ -194,7 +194,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
               <button
                 id="fixed"
                 onClick={handleRequestClose}
-                className="btn btn-success btn-fill"
+                className="btn btn-success  "
               >
                 {t("fixed")} {isPending && <Loading is_static />}
               </button>
@@ -221,7 +221,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
             <span>{order?.brigada?.name}</span>
             <button
               onClick={() => handleModal(ModalTypes.assign)}
-              className="btn btn-primary btn-fill float-end"
+              className="btn btn-primary   float-end"
             >
               {t("reassign")}
             </button>
@@ -232,7 +232,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
         <button
           id="assign"
           onClick={handleAssign}
-          className="btn btn-success btn-fill float-end"
+          className="btn btn-success   float-end"
         >
           {t("assign")}
         </button>
@@ -285,16 +285,13 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
           )}`}
         >
           <button
-            className="btn btn-warning btn-fill"
+            className="btn btn-warning  "
             onClick={() => navigate(`/request/logs/${id}`)}
           >
             {t("logs")}
           </button>
           {!!sphere_status && (
-            <button
-              onClick={handleBack}
-              className="btn btn-primary btn-fill ml-2"
-            >
+            <button onClick={handleBack} className="btn btn-primary   ml-2">
               {t("back")}
             </button>
           )}

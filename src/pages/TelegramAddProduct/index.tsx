@@ -233,7 +233,7 @@ const TelegramAddProduct = () => {
             <button
               onClick={handlerSubmitFile}
               type="button"
-              className="btn btn-success float-end btn-fill my-3"
+              className="btn btn-success float-end   my-3"
             >
               {t("save")}
             </button>
@@ -250,7 +250,7 @@ const TelegramAddProduct = () => {
             <button
               type="button"
               onClick={handleFinishOrder({ status: RequestStatus.done })}
-              className="btn btn-success btn-fill w-full"
+              className="btn btn-success   w-full"
             >
               {t("fixed")}
             </button>

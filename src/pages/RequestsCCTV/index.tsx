@@ -87,16 +87,10 @@ const RequestsCCTV = () => {
   return (
     <Card>
       <Header title={t("requests_for_cctv")}>
-        <button
-          onClick={downloadAsPdf}
-          className="btn btn-primary btn-fill mr-2"
-        >
+        <button onClick={downloadAsPdf} className="btn btn-primary   mr-2">
           {t("export_to_excel")}
         </button>
-        <button
-          onClick={() => navigate("add")}
-          className="btn btn-success btn-fill"
-        >
+        <button onClick={() => navigate("add")} className="btn btn-success  ">
           {t("add")}
         </button>
       </Header>

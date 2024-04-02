@@ -72,10 +72,7 @@ const Users: FC<Props> = ({ add, edit }) => {
     <Card>
       <Header title={!client ? "users" : "client"}>
         {permission?.[add] && (
-          <button
-            className="btn btn-success btn-fill"
-            onClick={handleNavigate("add")}
-          >
+          <button className="btn btn-success  " onClick={handleNavigate("add")}>
             {t("add")}
           </button>
         )}

@@ -168,7 +168,7 @@ const AddProductModal = ({ addExp }: Props) => {
             <button
               disabled={isLoading}
               type="submit"
-              className="btn btn-success btn-fill"
+              className="btn btn-success  "
             >
               {t("add")}
             </button>

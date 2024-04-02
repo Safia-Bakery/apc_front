@@ -10,14 +10,13 @@ import MainInput from "@/components/BaseInputs/MainInput";
 import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
 import BranchSelect from "@/components/BranchSelect";
 import useQueryString from "custom/useQueryString";
-import { Departments, MainPermissions, Sphere } from "@/utils/types";
+import { Departments, Sphere } from "@/utils/types";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import useCategories from "@/hooks/useCategories";
-import { permissionSelector } from "reducers/sidebar";
-import { useAppSelector } from "@/store/utils/types";
 import useUpdateEffect from "custom/useUpdateEffect";
 import useBrigadas from "@/hooks/useBrigadas";
 import StatusFilter from "@/components/StatusFilter";
+import { yearMonthDate } from "@/utils/keys";
 
 interface Props {
   sphere_status?: Sphere;
@@ -26,13 +25,6 @@ interface Props {
 const ApcFilter: FC<Props> = ({ sphere_status }) => {
   const navigate = useNavigateParams();
   const deleteParam = useRemoveParams();
-  const perm = useAppSelector(permissionSelector);
-
-  const { data: categories, refetch: catRefetch } = useCategories({
-    department: Departments.apc,
-    ...(!!sphere_status && { sphere_status }),
-    enabled: false,
-  });
 
   const { register, reset } = useForm();
   const [id, $id] = useDebounce<string>("");
@@ -42,17 +34,29 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
   const rate = useQueryString("rate");
   const category_id = Number(useQueryString("category_id"));
   const created_at = useQueryString("created_at");
+  const finished_at = useQueryString("finished_at");
   const userQ = useQueryString("user");
   const responsible = Number(useQueryString("responsible"));
   const idQ = useQueryString("id");
+
+  const { data: categories, refetch: catRefetch } = useCategories({
+    department: Departments.apc,
+    ...(!!sphere_status && { sphere_status }),
+    enabled: !!category_id,
+  });
 
   const startRange = (start: Date | null) => {
     if (start === undefined) deleteParam(["created_at"]);
     if (!!start) navigate({ created_at: start });
   };
 
+  const finishRange = (end: Date | null) => {
+    if (end === undefined) deleteParam(["finished_at"]);
+    if (!!end) navigate({ finished_at: dayjs(end).format(yearMonthDate) });
+  };
+
   const { data: brigades, refetch: masterRefetch } = useBrigadas({
-    enabled: false,
+    enabled: !!responsible,
     department: Departments.apc,
     sphere_status,
   });
@@ -129,7 +133,7 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
           <MainSelect
             values={categories?.items}
             onFocus={() => catRefetch()}
-            value={category_id.toString()}
+            value={category_id?.toString()}
             onChange={(e) => navigate({ category_id: e.target.value })}
           />
         </BaseInputs>
@@ -157,6 +161,18 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
               : undefined
           }
           onChange={startRange}
+          dateFormat="d.MM.yyyy"
+          wrapperClassName={"m-1"}
+        />
+      </td>
+      <td className="p-0">
+        <MainDatePicker
+          selected={
+            !!finished_at && finished_at !== "undefined"
+              ? dayjs(finished_at).toDate()
+              : undefined
+          }
+          onChange={finishRange}
           dateFormat="d.MM.yyyy"
           wrapperClassName={"m-1"}
         />

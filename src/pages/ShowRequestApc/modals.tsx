@@ -147,7 +147,7 @@ const ApcModals = () => {
                           status: RequestStatus.confirmed,
                           item,
                         })}
-                        className="btn btn-success btn-fill btn-sm"
+                        className="btn btn-success   btn-sm"
                       >
                         {t("assign")}
                       </button>
@@ -262,7 +262,7 @@ const ApcModals = () => {
             </BaseInput>
 
             <button
-              className="btn btn-success btn-fill w-full"
+              className="btn btn-success   w-full"
               onClick={handleChangeCateg}
             >
               {t("apply")}

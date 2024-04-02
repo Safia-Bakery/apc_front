@@ -109,7 +109,7 @@ const EditAddCategoryProduct = () => {
       <Header
         title={!category_id ? "add" : `${t("edit_category")} №${category_id}`}
       >
-        <button className="btn btn-primary btn-fill" onClick={goBack}>
+        <button className="btn btn-primary  " onClick={goBack}>
           {t("back")}
         </button>
       </Header>
@@ -142,7 +142,7 @@ const EditAddCategoryProduct = () => {
 
         {renderImage}
 
-        <button type="submit" className="btn btn-success btn-fill float-end">
+        <button type="submit" className="btn btn-success   float-end">
           {t("save")}
         </button>
       </form>

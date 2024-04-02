@@ -34,7 +34,7 @@ const Comments = () => {
   return (
     <Card>
       <Header title="reviews">
-        <button className="btn btn-primary btn-fill" onClick={goBack}>
+        <button className="btn btn-primary  " onClick={goBack}>
           {t("back")}
         </button>
       </Header>

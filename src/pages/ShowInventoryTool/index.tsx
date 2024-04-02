@@ -74,7 +74,7 @@ const ShowInventoryTool = () => {
         <div className="float-end mb10">
           <button
             onClick={() => onSubmit(RequestStatus.done)}
-            className="btn btn-success btn-fill"
+            className="btn btn-success  "
           >
             {t("finish")}
           </button>
@@ -96,7 +96,7 @@ const ShowInventoryTool = () => {
           <button className="btn btn-success mr-2" onClick={downloadAsPdf}>
             {t("export_to_excel")}
           </button>
-          <button onClick={handleBack} className="btn btn-primary btn-fill">
+          <button onClick={handleBack} className="btn btn-primary  ">
             {t("back")}
           </button>
         </Header>

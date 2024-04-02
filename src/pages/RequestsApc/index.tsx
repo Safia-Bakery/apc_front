@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Departments, MainPermissions, Order, Sphere } from "@/utils/types";
 import Pagination from "@/components/Pagination";
-import { FC, useEffect, useMemo, useRef, useState } from "react";
+import { FC, useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
@@ -19,6 +19,7 @@ import Loading from "@/components/Loader";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import { useTranslation } from "react-i18next";
 import { dateMonthYear, yearMonthDate } from "@/utils/keys";
+import { useForm } from "react-hook-form";
 
 interface Props {
   add: MainPermissions;
@@ -47,11 +48,15 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
   const system = useQueryString("system");
   const category_id = Number(useQueryString("category_id"));
   const created_at = useQueryString("created_at");
+  const started_at = useQueryString("started_at");
+  const finished_at = useQueryString("finished_at");
   const request_status = useQueryString("request_status");
   const rate = useQueryString("rate");
+  const service_filter = useQueryString("service_filter");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
   const responsible = Number(useQueryString("responsible"));
+  const { register, getValues } = useForm();
 
   const column = useMemo(() => {
     const columns = [
@@ -63,6 +68,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
       { name: "urgent", key: "urgent" },
       { name: "brigade", key: "brigada" },
       { name: "receipt_date", key: "created_at" },
+      { name: "finished", key: "finished_at" },
       { name: "rate", key: "rate" },
       { name: "status", key: "status" },
       { name: "changed", key: "user_manager" },
@@ -76,6 +82,17 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
   }, [sphere_status]);
 
   const downloadAsPdf = () => onDownload();
+  const handleServiceRow = (item: Order) => {
+    if (
+      dayjs(item.finished_at).diff(item.started_at, "h") < item?.category?.ftime
+    )
+      return "table-success";
+    else if (
+      dayjs(item.finished_at).diff(item.started_at, "h") > item?.category?.ftime
+    )
+      return "table-warning";
+    else return "table-danger";
+  };
 
   const {
     data: requests,
@@ -96,6 +113,8 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
     ...(!!user && { user }),
     ...(!!rate && { rate: !!rate }),
     ...(!!responsible && { brigada_id: responsible }),
+    ...(!!finished_at && { finished_at }),
+    ...(!!started_at && { started_at }),
   });
 
   const renderFilter = useMemo(() => {
@@ -137,7 +156,14 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
             {!!requests?.items?.length &&
               !orderLoading &&
               (sort?.length ? sort : requests?.items)?.map((order, idx) => (
-                <tr className={requestRows(order?.status)} key={idx}>
+                <tr
+                  className={
+                    !service_filter
+                      ? requestRows(order?.status)
+                      : handleServiceRow(order)
+                  }
+                  key={idx}
+                >
                   <td width="40">{handleIdx(idx)}</td>
                   <td width="80">
                     {permission?.[edit] ? (
@@ -176,9 +202,17 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                       : t("not_given")}
                   </td>
                   <td>{dayjs(order?.created_at).format(dateMonthYear)}</td>
+
+                  <td>
+                    {!!order?.finished_at
+                      ? dayjs(order?.finished_at).format(dateMonthYear)
+                      : t("not_given")}
+                  </td>
+
                   <td className="text-center" width={50}>
                     {order?.comments?.[0]?.rating}
                   </td>
+
                   <td>
                     {t(
                       handleStatus({
@@ -187,6 +221,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                       })
                     )}
                   </td>
+
                   <td>
                     {!!order?.user_manager
                       ? order?.user_manager

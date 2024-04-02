@@ -87,7 +87,7 @@ const CreateClientsComments = () => {
   return (
     <Card>
       <Header title={"create_order"}>
-        <button className="btn btn-primary btn-fill" onClick={goBack}>
+        <button className="btn btn-primary  " onClick={goBack}>
           {t("back")}
         </button>
       </Header>
@@ -115,7 +115,7 @@ const CreateClientsComments = () => {
         <div>
           <button
             type="submit"
-            className={`btn btn-info btn-fill float-end ${styles.btn}`}
+            className={`btn btn-info   float-end ${styles.btn}`}
           >
             {t("create")}
           </button>

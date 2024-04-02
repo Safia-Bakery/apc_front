@@ -144,7 +144,7 @@ const ShowRequestModals = () => {
                           status: RequestStatus.confirmed,
                           item,
                         })}
-                        className="btn btn-success btn-fill btn-sm"
+                        className="btn btn-success   btn-sm"
                       >
                         {t("assign")}
                       </button>
@@ -184,7 +184,7 @@ const ShowRequestModals = () => {
                           status: RequestStatus.sendToRepair,
                           car_id: item.id,
                         })}
-                        className="btn btn-success btn-fill btn-sm"
+                        className="btn btn-success   btn-sm"
                       >
                         {t("assign")}
                       </button>
@@ -315,7 +315,7 @@ const ShowRequestModals = () => {
       //           onClick={handleBrigada({
       //             time: deadline?.toISOString(),
       //           })}
-      //           className="btn btn-success btn-fill btn-sm float-end"
+      //           className="btn btn-success   btn-sm float-end"
       //         >
       //           Принять
       //         </button>
@@ -344,7 +344,7 @@ const ShowRequestModals = () => {
 
             <button
               onClick={handleReassign}
-              className="btn btn-success btn-fill btn-sm float-end"
+              className="btn btn-success   btn-sm float-end"
             >
               {t("redirect")}
             </button>

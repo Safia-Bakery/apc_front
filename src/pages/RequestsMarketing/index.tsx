@@ -82,7 +82,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
         {add && permission?.[add] && (
           <button
             onClick={() => navigate(`add?sub_id=${sub_id}`)}
-            className="btn btn-success btn-fill"
+            className="btn btn-success  "
             id="add_request"
           >
             {t("add")}

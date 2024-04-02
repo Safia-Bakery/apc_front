@@ -105,16 +105,13 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
   return (
     <Card>
       <Header title="requests_for_logystics">
-        <button
-          onClick={downloadAsPdf}
-          className="btn btn-primary btn-fill mr-2"
-        >
+        <button onClick={downloadAsPdf} className="btn btn-primary   mr-2">
           {t("export_to_excel")}
         </button>
         {permission?.[add] && (
           <button
             onClick={() => navigate("add")}
-            className="btn btn-success btn-fill"
+            className="btn btn-success  "
             id="add_request"
           >
             {t("add")}

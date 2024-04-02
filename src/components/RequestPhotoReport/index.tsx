@@ -57,7 +57,7 @@ const RequestPhotoReport = () => {
             onClick={handlerSubmitFile}
             type="button"
             id={"save_report"}
-            className="btn btn-success float-end btn-fill my-3"
+            className="btn btn-success float-end   my-3"
           >
             {t("save")}
           </button>
