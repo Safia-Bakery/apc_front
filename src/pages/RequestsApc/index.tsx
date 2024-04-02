@@ -19,7 +19,6 @@ import Loading from "@/components/Loader";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import { useTranslation } from "react-i18next";
 import { dateMonthYear, yearMonthDate } from "@/utils/keys";
-import { useForm } from "react-hook-form";
 
 interface Props {
   add: MainPermissions;
@@ -56,7 +55,6 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
   const responsible = Number(useQueryString("responsible"));
-  const { register, getValues } = useForm();
 
   const column = useMemo(() => {
     const columns = [
@@ -82,13 +80,15 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
   }, [sphere_status]);
 
   const downloadAsPdf = () => onDownload();
+
   const handleServiceRow = (item: Order) => {
     if (
       dayjs(item.finished_at).diff(item.started_at, "h") < item?.category?.ftime
     )
       return "table-success";
     else if (
-      dayjs(item.finished_at).diff(item.started_at, "h") > item?.category?.ftime
+      dayjs(item.finished_at).diff(item.started_at, "h") >=
+      item?.category?.ftime
     )
       return "table-warning";
     else return "table-danger";

@@ -50,7 +50,7 @@ const Logs = () => {
               </thead>
               <tbody>
                 {order?.communication.map((item, idx) => (
-                  <tr>
+                  <tr key={item.id}>
                     <td width={40}>{idx + 1}</td>
                     <td>{item.message}</td>
                     <td>{item.user.full_name}</td>

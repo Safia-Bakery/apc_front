@@ -50,6 +50,9 @@ const RequestsIT = () => {
   const rate = useQueryString("rate");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
+  const started_at = useQueryString("started_at");
+  const finished_at = useQueryString("finished_at");
+  const service_filter = useQueryString("service_filter");
 
   const {
     data: requests,
@@ -68,9 +71,24 @@ const RequestsIT = () => {
     ...(!!user && { user }),
     ...(!!responsible && { brigada_id: responsible }),
     ...(!!rate?.toString() && { rate: !!rate }),
+    ...(!!finished_at && { finished_at }),
+    ...(!!started_at && { started_at }),
     ...(!!urgent?.toString() && { urgent: !!Number(urgent) }),
     ...(!!paused?.toString() && { paused: !!Number(paused) }),
   });
+
+  const handleServiceRow = (item: Order) => {
+    if (
+      dayjs(item.finished_at).diff(item.started_at, "h") < item?.category?.ftime
+    )
+      return "table-success";
+    else if (
+      dayjs(item.finished_at).diff(item.started_at, "h") >=
+      item?.category?.ftime
+    )
+      return "table-warning";
+    else return "table-danger";
+  };
 
   const renderFilter = useMemo(() => {
     return <ITFilter />;
@@ -101,7 +119,14 @@ const RequestsIT = () => {
           <tbody>
             {!!requests?.items?.length &&
               (sort?.length ? sort : requests?.items)?.map((order, idx) => (
-                <tr className={requestRows(order.status)} key={idx}>
+                <tr
+                  className={
+                    !service_filter
+                      ? requestRows(order?.status)
+                      : handleServiceRow(order)
+                  }
+                  key={idx}
+                >
                   <td width="40">{handleIdx(idx)}</td>
                   <td width="80">
                     <Link to={`${order?.id}?dep=${Departments.it}`}>

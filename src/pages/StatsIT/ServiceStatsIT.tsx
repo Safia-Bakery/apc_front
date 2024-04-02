@@ -7,6 +7,9 @@ import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
 import useITServiseStats from "@/hooks/useITServiceStats";
 import { Departments } from "@/utils/types";
+import dayjs from "dayjs";
+import { yearMonthDate } from "@/utils/keys";
+import { Link } from "react-router-dom";
 
 const column = [
   { name: "№" },
@@ -90,6 +93,12 @@ const ServiceStatsIT = () => {
     }
   }, [data]);
 
+  const renderUrl = useMemo(() => {
+    return `service_filter=1&started_at=${
+      !start ? dayjs().startOf("month").format(yearMonthDate) : start
+    }&finished_at=${!end ? dayjs().format(yearMonthDate) : end}`;
+  }, [data, end, start]);
+
   useEffect(() => {
     if (btnAction)
       btnAction.addEventListener("click", () => {
@@ -121,7 +130,13 @@ const ServiceStatsIT = () => {
                 <td rowSpan={Object.values(data!).length}>{t("support")}</td>
                 {[Object.entries(data!)?.[0]]?.map((item) => (
                   <Fragment key={item[0]}>
-                    <td>{item[1].category}</td>
+                    <td>
+                      <Link
+                        to={`/requests-it/4?category_id=${item[0]}&${renderUrl}`}
+                      >
+                        {item[1].category}
+                      </Link>
+                    </td>
                     <td>{item[1].total_requests}</td>
                     <td className="!bg-tableSuccess">
                       {item[1].finished_on_time}
@@ -148,7 +163,13 @@ const ServiceStatsIT = () => {
                 ?.splice(1)
                 ?.map((item) => (
                   <tr key={item[0]} className="hover:bg-transparent">
-                    <td>{item[1].category}</td>
+                    <td>
+                      <Link
+                        to={`/requests-it/4?category_id=${item[0]}&${renderUrl}`}
+                      >
+                        {item[1].category}
+                      </Link>
+                    </td>
                     <td>{item[1].total_requests}</td>
                     <td className="!bg-tableSuccess">
                       {item[1].finished_on_time}
