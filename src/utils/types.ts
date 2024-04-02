@@ -809,6 +809,22 @@ export interface InvServiceStatTypes {
   [key: string]: InvServiceStatType;
 }
 
+export interface ItServiceStatType {
+  total_requests: number;
+  finished_on_time: number;
+  not_finished_on_time: number;
+  status_zero: number;
+  percentage_finished_on_time: number;
+  percentage_not_finished_on_time: number;
+  percentage_status_zero: number;
+  avg_finishing: null | number;
+  category: string;
+}
+
+export interface ItServiceStatTypes {
+  [key: string]: ItServiceStatType;
+}
+
 export interface BaseExpenseTypes {
   amount: number;
   description: string;

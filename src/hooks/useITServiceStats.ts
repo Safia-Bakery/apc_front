@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/main";
-import { Departments, EPresetTimes, InvServiceStatTypes } from "@/utils/types";
+import { Departments, EPresetTimes, ItServiceStatTypes } from "@/utils/types";
 import dayjs from "dayjs";
 import { yearMonthDate } from "@/utils/keys";
 
@@ -30,7 +30,7 @@ export const useITServiseStats = ({
           },
           config,
         })
-        .then(({ data: response }) => response as InvServiceStatTypes),
+        .then(({ data: response }) => response as ItServiceStatTypes),
     enabled,
     staleTime: EPresetTimes.MINUTE * 10,
     retry: 2,

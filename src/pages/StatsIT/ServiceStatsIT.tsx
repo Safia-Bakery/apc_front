@@ -46,15 +46,16 @@ const ServiceStatsIT = () => {
       const mainObj = Object.values(data);
       const totals = mainObj.reduce(
         (acc, curr) => {
-          acc.total_req += curr.total_tools;
-          acc.on_time_requests += curr.on_time_requests;
-          acc.total_on_time_requests_percent += curr.on_time_requests_percent; // per
-          acc.not_finishedontime += curr.not_finishedontime;
+          acc.total_req += curr.total_requests;
+          acc.on_time_requests += curr.finished_on_time;
+          acc.total_on_time_requests_percent +=
+            curr.percentage_finished_on_time; // per
+          acc.not_finishedontime += curr.not_finished_on_time;
           acc.total_not_finishedon_time_percent +=
-            curr.not_finishedon_time_percent; //per
-          acc.not_even_started += curr.not_even_started;
-          acc.total_not_started_percent += curr.not_started_percent; //per
-          acc.avg_finishing += curr.avg_finishing; //per
+            curr.percentage_not_finished_on_time; //per
+          acc.not_even_started += curr.status_zero;
+          acc.total_not_started_percent += curr.percentage_status_zero; //per
+          acc.avg_finishing += curr?.avg_finishing ?? 0; //per
 
           return acc;
         },
@@ -120,27 +121,25 @@ const ServiceStatsIT = () => {
                 <td rowSpan={Object.values(data!).length}>{t("support")}</td>
                 {[Object.entries(data!)?.[0]]?.map((item) => (
                   <Fragment key={item[0]}>
-                    <td>{item[0]}</td>
-                    <td>{item[1].total_tools}</td>
+                    <td>{item[1].category}</td>
+                    <td>{item[1].total_requests}</td>
                     <td className="!bg-tableSuccess">
-                      {item[1].on_time_requests}
+                      {item[1].finished_on_time}
                     </td>
                     <td className="!bg-tableSuccess">
-                      {item[1].on_time_requests_percent.toFixed(2)}
+                      {item[1].percentage_finished_on_time?.toFixed(2)}
                     </td>
                     <td className="!bg-tableWarn">
-                      {item[1].not_finishedontime}
+                      {item[1].not_finished_on_time}
                     </td>
                     <td className="!bg-tableWarn">
-                      {item[1].not_finishedon_time_percent.toFixed(2)}
+                      {item[1].percentage_not_finished_on_time.toFixed(2)}
                     </td>
+                    <td className="!bg-tableDanger">{item[1].status_zero}</td>
                     <td className="!bg-tableDanger">
-                      {item[1].not_even_started}
+                      {item[1].percentage_status_zero.toFixed(2)}
                     </td>
-                    <td className="!bg-tableDanger">
-                      {item[1].not_started_percent.toFixed(2)}
-                    </td>
-                    <td>{item[1].avg_finishing.toFixed(2)}</td>
+                    <td>{item[1].avg_finishing?.toFixed(2)}</td>
                   </Fragment>
                 ))}
               </tr>
@@ -149,27 +148,25 @@ const ServiceStatsIT = () => {
                 ?.splice(1)
                 ?.map((item) => (
                   <tr key={item[0]} className="hover:bg-transparent">
-                    <td>{item[0]}</td>
-                    <td>{item[1].total_tools}</td>
+                    <td>{item[1].category}</td>
+                    <td>{item[1].total_requests}</td>
                     <td className="!bg-tableSuccess">
-                      {item[1].on_time_requests}
+                      {item[1].finished_on_time}
                     </td>
                     <td className="!bg-tableSuccess">
-                      {item[1].on_time_requests_percent.toFixed(2)}
+                      {item[1].percentage_finished_on_time?.toFixed(2)}
                     </td>
                     <td className="!bg-tableWarn">
-                      {item[1].not_finishedontime}
+                      {item[1].not_finished_on_time}
                     </td>
                     <td className="!bg-tableWarn">
-                      {item[1].not_finishedon_time_percent.toFixed(2)}
+                      {item[1].percentage_not_finished_on_time?.toFixed(2)}
                     </td>
+                    <td className="!bg-tableDanger">{item[1].status_zero}</td>
                     <td className="!bg-tableDanger">
-                      {item[1].not_even_started}
+                      {item[1].percentage_status_zero?.toFixed(2)}
                     </td>
-                    <td className="!bg-tableDanger">
-                      {item[1].not_started_percent.toFixed(2)}
-                    </td>
-                    <td>{item[1].avg_finishing.toFixed(2)}</td>
+                    <td>{item[1].avg_finishing?.toFixed(2)}</td>
                   </tr>
                 ))}
               <tr className="hover:!bg-transparent">
