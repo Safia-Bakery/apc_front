@@ -67,10 +67,9 @@ const BranchSelect: FC<Props> = ({
       options={items}
       autoFocus={autoFocus}
       isLoading={isFetching || isLoading}
-      // loadingMessage={'loading'}
       onChange={handleChange}
       className="z-50"
-      // onMenuScrollToBottom={() => $page((prev) => prev + 1)}
+      defaultMenuIsOpen={autoFocus}
       onInputChange={(e) => $query(e)}
       isClearable
       placeholder={placeholdeer}
