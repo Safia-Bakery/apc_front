@@ -22,7 +22,7 @@ const TgRoutes = () => {
     setTimeout(() => {
       TelegramApp.confirmClose();
       TelegramApp.expand();
-    }, 300);
+    }, 400);
   }, []);
 
   useEffect(() => {
