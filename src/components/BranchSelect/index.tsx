@@ -60,6 +60,15 @@ const BranchSelect: FC<Props> = ({
       );
   }, [data?.items, query]);
 
+  useEffect(() => {
+    if (autoFocus) {
+      const element = document.getElementById("branch_input_id");
+      element?.addEventListener("focus", () => {
+        console.log("focused");
+      });
+    }
+  }, []);
+
   return (
     <Select
       options={items}
@@ -69,7 +78,9 @@ const BranchSelect: FC<Props> = ({
       onInputChange={(e) => $query(e)}
       isClearable
       autoFocus={autoFocus}
+      // autoFocus={true}
       placeholder={placeholdeer}
+      inputId="branch_input_id"
       defaultInputValue={autoFocus ? " " : ""}
     />
   );
