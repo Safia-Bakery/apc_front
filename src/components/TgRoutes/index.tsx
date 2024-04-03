@@ -24,7 +24,9 @@ const TgRoutes = () => {
     }, 400);
   }, []);
 
-  TelegramApp.confirmClose();
+  useEffect(() => {
+    TelegramApp.confirmClose();
+  }, []);
 
   useEffect(() => {
     const script = document.createElement("script");
