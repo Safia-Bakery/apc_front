@@ -137,9 +137,9 @@ const AddInventoryRequest = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="content w-full">
         <BaseInputs className="relative" label="branch">
           <BranchSelect
+            autoFocus={isMobile}
             enabled
             origin={1}
-            autoFocus={isMobile}
             placeholdeer={t("search")}
             // permission={MainPermissions.get_fillials_list}
           />
@@ -217,7 +217,7 @@ const AddInventoryRequest = () => {
                     <button
                       type="button"
                       onClick={() => (fields.length > 1 ? remove(index) : null)}
-                      className="btn bg-danger text-white"
+                      className="btn bg-danger text-white my-auto h-full"
                     >
                       {t("remove")}
                     </button>

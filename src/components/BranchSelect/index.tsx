@@ -25,11 +25,9 @@ const BranchSelect: FC<Props> = ({
 }) => {
   const navigate = useNavigateParams();
   const [query, $query] = useDebounce("");
-  const [page, $page] = useState(1);
 
   const { data, isFetching, isLoading } = useBranches({
     origin,
-    page,
     enabled,
     warehouse,
     ...(!!query && { body: { name: query } }),
@@ -65,14 +63,14 @@ const BranchSelect: FC<Props> = ({
   return (
     <Select
       options={items}
-      autoFocus={autoFocus}
       isLoading={isFetching || isLoading}
       onChange={handleChange}
       className="z-50"
-      defaultMenuIsOpen={autoFocus}
       onInputChange={(e) => $query(e)}
       isClearable
+      autoFocus={autoFocus}
       placeholder={placeholdeer}
+      defaultInputValue=" "
     />
   );
 };
