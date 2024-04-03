@@ -256,7 +256,7 @@ input::-webkit-inner-spin-button {
   background-color: #ff4a55;
   opacity: 1;
 }
-.btn-info{
+.btn-info {
   color: #ffffff;
   background-color: #1dc7ea;
   opacity: 1;
@@ -355,3 +355,8 @@ p {
 //   max-height: 35px;
 //   overflow-y: auto !important;
 // }
+.branch-select {
+  input {
+    min-width: 200px !important;
+  }
+}

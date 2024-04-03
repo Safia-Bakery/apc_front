@@ -137,7 +137,6 @@ const AddInventoryRequest = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="content w-full">
         <BaseInputs className="relative" label="branch">
           <BranchSelect
-            autoFocus={isMobile}
             enabled
             origin={1}
             placeholdeer={t("search")}

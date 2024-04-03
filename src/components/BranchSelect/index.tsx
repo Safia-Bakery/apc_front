@@ -60,28 +60,17 @@ const BranchSelect: FC<Props> = ({
       );
   }, [data?.items, query]);
 
-  useEffect(() => {
-    if (autoFocus) {
-      const element = document.getElementById("branch_input_id");
-      element?.addEventListener("focus", () => {
-        console.log("focused");
-      });
-    }
-  }, []);
-
   return (
     <Select
       options={items}
       isLoading={isFetching || isLoading}
       onChange={handleChange}
-      className="z-50"
+      className="z-50 branch-select"
       onInputChange={(e) => $query(e)}
       isClearable
       autoFocus={autoFocus}
       // autoFocus={true}
       placeholder={placeholdeer}
-      inputId="branch_input_id"
-      defaultInputValue={autoFocus ? " " : ""}
     />
   );
 };
