@@ -139,6 +139,7 @@ const AddInventoryRequest = () => {
           <BranchSelect
             enabled
             origin={1}
+            autoFocus={isMobile}
             placeholdeer={t("search")}
             // permission={MainPermissions.get_fillials_list}
           />

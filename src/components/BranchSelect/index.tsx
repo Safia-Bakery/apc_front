@@ -10,6 +10,7 @@ interface Props {
   enabled?: boolean;
   warehouse?: boolean;
   placeholdeer?: string;
+  autoFocus?: boolean;
 }
 interface SelectValue {
   value: string;
@@ -20,6 +21,7 @@ const BranchSelect: FC<Props> = ({
   enabled,
   warehouse,
   placeholdeer = "",
+  autoFocus = false,
 }) => {
   const navigate = useNavigateParams();
   const [query, $query] = useDebounce("");
@@ -63,6 +65,7 @@ const BranchSelect: FC<Props> = ({
   return (
     <Select
       options={items}
+      autoFocus={autoFocus}
       isLoading={isFetching || isLoading}
       // loadingMessage={'loading'}
       onChange={handleChange}
