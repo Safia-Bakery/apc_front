@@ -21,8 +21,8 @@ const TgRoutes = () => {
   useEffect(() => {
     setTimeout(() => {
       TelegramApp.expand();
+      TelegramApp.confirmClose();
     }, 400);
-    TelegramApp.confirmClose();
   }, []);
 
   useEffect(() => {

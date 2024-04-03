@@ -70,7 +70,7 @@ const BranchSelect: FC<Props> = ({
       isClearable
       autoFocus={autoFocus}
       placeholder={placeholdeer}
-      // defaultInputValue={autoFocus ? " " : ""}
+      defaultInputValue={autoFocus ? " " : ""}
     />
   );
 };
