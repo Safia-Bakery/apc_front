@@ -578,10 +578,18 @@ export interface CategoryStatTypes {
   }[];
 }
 
+export type BaseMarkObjType = {
+  [key: string | number]: number[];
+};
+
+export type BaseObjType = {
+  [key: string | number]: string;
+};
+
 export interface MarketingDepartmentTypes {
-  pie: { [key: string]: number[] };
-  table: { [key: string]: number[] };
-  tables: { [key: string]: number[] };
+  pie: BaseMarkObjType;
+  table: BaseMarkObjType;
+  tables: BaseMarkObjType;
 }
 
 export interface DepartmentStatTypes {

@@ -68,7 +68,7 @@ const InventoryOrderedTools = () => {
                   key={idx}
                   className={cl(
                     "transition-colors hover:bg-hoverGray",
-                    requestRows(order?.status)
+                    requestRows[order?.status]
                   )}
                 >
                   <td width="40">{handleIdx(idx)}</td>

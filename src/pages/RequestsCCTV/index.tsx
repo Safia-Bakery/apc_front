@@ -109,7 +109,7 @@ const RequestsCCTV = () => {
           <tbody>
             {!!requests?.items?.length &&
               (sort?.length ? sort : requests?.items)?.map((order, idx) => (
-                <tr className={requestRows(order.status)} key={idx}>
+                <tr className={requestRows[order.status]} key={idx}>
                   <td width="40">{handleIdx(idx)}</td>
                   <td width="80">
                     <Link to={`${order?.id}?dep=${Departments.cctv}`}>

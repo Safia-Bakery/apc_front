@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { FAQRequestTypes, MainPermissions } from "@/utils/types";
+import { BaseObjType, FAQRequestTypes, MainPermissions } from "@/utils/types";
 import Pagination from "@/components/Pagination";
 import {
   HRRequestTypes,
@@ -28,18 +28,10 @@ const column = [
   { name: "", key: "" },
 ];
 
-const handleTitle = (dep: HRRequestTypes) => {
-  switch (dep) {
-    case HRRequestTypes.asked_questions:
-      return "asked_questions";
-    case HRRequestTypes.objections:
-      return "objections";
-    case HRRequestTypes.offers:
-      return "offers";
-
-    default:
-      break;
-  }
+const handleTitle: BaseObjType = {
+  [HRRequestTypes.asked_questions]: "asked_questions",
+  [HRRequestTypes.objections]: "objections",
+  [HRRequestTypes.offers]: "offers",
 };
 
 const HRRequests = () => {
@@ -58,7 +50,7 @@ const HRRequests = () => {
 
   return (
     <Card>
-      <Header title={handleTitle(sphere)} />
+      <Header title={handleTitle[sphere]} />
 
       <div className="content">
         <ItemsCount data={faqs} />
@@ -72,10 +64,10 @@ const HRRequests = () => {
           <tbody>
             {!!faqs?.items?.length &&
               (sort?.length ? sort : faqs?.items)?.map((faq, idx) => (
-                <tr key={idx} className={requestRows(faq.status)}>
+                <tr key={idx} className={requestRows[faq.status]}>
                   <td width="40">{handleIdx(idx)}</td>
                   <td>{faq?.comments}</td>
-                  <td>{t(handleHRStatus(faq?.status) || "")}</td>
+                  <td>{t(handleHRStatus[faq?.status] || "")}</td>
                   <td width={40}>
                     {permission?.[MainPermissions.edit_faq] && (
                       <TableViewBtn onClick={handleNavigate(`${faq.id}`)} />

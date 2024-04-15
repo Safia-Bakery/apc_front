@@ -159,7 +159,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                 <tr
                   className={
                     !service_filter
-                      ? requestRows(order?.status)
+                      ? requestRows[order?.status]
                       : handleServiceRow(order)
                   }
                   key={idx}

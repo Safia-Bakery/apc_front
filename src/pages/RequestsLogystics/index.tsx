@@ -136,7 +136,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
               {!!requests?.items?.length &&
                 !orderLoading &&
                 (sort?.length ? sort : requests?.items)?.map((order, idx) => (
-                  <tr className={requestRows(order?.status)} key={idx}>
+                  <tr className={requestRows[order?.status]} key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
                       {permission?.[edit] ? (

@@ -1,5 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import {
+  BaseObjType,
   Departments,
   EPresetTimes,
   FileType,
@@ -147,29 +148,16 @@ export const SystemArr = [
   { id: 0, name: "web_site" },
   { id: 1, name: "tg_bot" },
 ];
-export const requestRows = (status: RequestStatus) => {
-  switch (status) {
-    case RequestStatus.done:
-      return "table-success";
-    case RequestStatus.confirmed:
-      return "table-primary";
-    case RequestStatus.new:
-      return "";
-    case RequestStatus.rejected:
-      return "table-danger";
-    case RequestStatus.sendToRepair:
-      return "table-warning";
-    case RequestStatus.paused:
-      return "table-gray";
-    case RequestStatus.solved:
-      return "table-green";
-    case RequestStatus.rejected_wating_confirmation:
-      return "table-waiting";
-    case RequestStatus.reopened:
-      return "table-warning";
-    default:
-      return "";
-  }
+export const requestRows: BaseObjType = {
+  [RequestStatus.done]: "table-success",
+  [RequestStatus.confirmed]: "table-primary",
+  [RequestStatus.new]: "",
+  [RequestStatus.rejected]: "table-danger",
+  [RequestStatus.sendToRepair]: "table-warning",
+  [RequestStatus.paused]: "table-gray",
+  [RequestStatus.solved]: "table-green",
+  [RequestStatus.rejected_wating_confirmation]: "table-waiting",
+  [RequestStatus.reopened]: "table-warning",
 };
 export const detectFileType = (url: string) => {
   const extension = url.split(".").pop()?.toLowerCase();
@@ -270,20 +258,13 @@ export const imageConverter = (img: File) => {
 
 export const handleIdx = (index: number) => {
   const currentPage = Number(useQueryString("page")) || 1;
-  if (currentPage === 1) return index + 1;
-  else return index + 1 + itemsPerPage * (currentPage - 1);
+  return currentPage === 1
+    ? index + 1
+    : index + 1 + itemsPerPage * (currentPage - 1);
 };
 
-export const handleHRStatus = (dep: RequestStatus) => {
-  switch (dep) {
-    case RequestStatus.new:
-      return "new";
-    case RequestStatus.confirmed:
-      return "answered";
-    case RequestStatus.rejected:
-      return "denied";
-
-    default:
-      break;
-  }
+export const handleHRStatus: BaseObjType = {
+  [RequestStatus.new]: "new",
+  [RequestStatus.confirmed]: "answered",
+  [RequestStatus.rejected]: "denied",
 };

@@ -55,11 +55,11 @@ const EditHRRequests = () => {
         <div className="float-end mb10">
           <button
             onClick={() => onSubmit(RequestStatus.rejected)}
-            className="btn btn-danger   mr-2"
+            className="btn btn-danger mr-2"
           >
             {t("deny")}
           </button>
-          <button onClick={toggleModal} className="btn btn-success  ">
+          <button onClick={toggleModal} className="btn btn-success">
             Ответить
           </button>
         </div>
@@ -72,9 +72,9 @@ const EditHRRequests = () => {
     <Card>
       <Header
         title={`${t("edit")} №${id}`}
-        subTitle={`${t("status")}: ${t(handleHRStatus(faq?.status!) || "")}`}
+        subTitle={`${t("status")}: ${t(handleHRStatus[faq?.status!] || "")}`}
       >
-        <button className="btn btn-primary  " onClick={goBack}>
+        <button className="btn btn-primary" onClick={goBack}>
           {t("back")}
         </button>
       </Header>

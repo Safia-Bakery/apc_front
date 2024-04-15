@@ -122,7 +122,7 @@ const RequestsIT = () => {
                 <tr
                   className={
                     !service_filter
-                      ? requestRows(order?.status)
+                      ? requestRows[order?.status]
                       : handleServiceRow(order)
                   }
                   key={idx}
