@@ -151,7 +151,7 @@ const TelegramAddProduct = () => {
                 <SelectWrapper
                   field={field}
                   register={register("product")}
-                  department={Departments.apc}
+                  department={Departments.APC}
                 />
               </BaseInputs>
             )}

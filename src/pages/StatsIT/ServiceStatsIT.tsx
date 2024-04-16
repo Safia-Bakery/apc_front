@@ -39,7 +39,7 @@ const ServiceStatsIT = () => {
   const downloadAsPdf = () => onDownload();
 
   const { isLoading, data } = useITServiseStats({
-    department: Departments.it,
+    department: Departments.IT,
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),
   });

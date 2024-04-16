@@ -31,7 +31,7 @@ export const sidebarReducer = createSlice({
       sidebarRoutes?.forEach((route) => {
         const updatedRoute = { ...route };
         updatedRoute.count = payload?.find((item) =>
-          item[0] === Departments.apc
+          item[0] === Departments.APC
             ? item[1] === route.sphere_status
             : item[0] === route.department
         )?.[2];

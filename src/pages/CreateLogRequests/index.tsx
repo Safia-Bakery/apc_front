@@ -30,7 +30,7 @@ const CreateLogRequests = () => {
   const branch = branchJson && JSON.parse(branchJson);
   const [error, $error] = useState<string>();
   const { data: categories, isLoading: categoryLoading } = useCategories({
-    department: Departments.logystics,
+    department: Departments.car_requests,
     category_status: 1,
   });
   const {

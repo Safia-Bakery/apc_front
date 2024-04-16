@@ -40,11 +40,11 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
 
   const renderDep = useMemo(() => {
     switch (dep) {
-      case Departments.apc:
+      case Departments.APC:
         if (sphere_status === Sphere.fabric)
           return { mainTitle: "masters", tableTitle: "master" };
         else return { mainTitle: "brigades", tableTitle: "brigadir" };
-      case Departments.it:
+      case Departments.IT:
         return { mainTitle: "it_specialists", tableTitle: "it_specialist" };
 
       default:

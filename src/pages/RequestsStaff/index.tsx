@@ -195,7 +195,7 @@ const RequestsStaff = () => {
                     {t(
                       handleStatus({
                         status: order?.status,
-                        dep: Departments.apc,
+                        dep: Departments.APC,
                       })
                     )}
                   </td>

@@ -26,14 +26,14 @@ const ITFilter: FC = () => {
   const deleteParam = useRemoveParams();
 
   const { data: categories, refetch: catRefetch } = useCategories({
-    department: Departments.it,
+    department: Departments.IT,
     enabled: false,
     sphere_status: Sphere.fix,
   });
 
   const { data: brigades, refetch: masterRefetch } = useBrigadas({
     enabled: false,
-    department: Departments.it,
+    department: Departments.IT,
   });
 
   const { register, reset } = useForm();

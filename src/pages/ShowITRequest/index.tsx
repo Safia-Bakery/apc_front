@@ -8,11 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
-import {
-  detectFileType,
-  handleDepartment,
-  handleStatus,
-} from "@/utils/helpers";
+import { detectFileType, handleStatus } from "@/utils/helpers";
 import {
   Departments,
   FileType,
@@ -64,7 +60,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
 
   const { isFetching: brigadaFetching } = useBrigadas({
     enabled: !!order?.status.toString() && order?.status < RequestStatus.done,
-    department: Departments.it,
+    department: Departments.IT,
     ...(!!sphere && { sphere }),
   });
 
@@ -293,15 +289,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                   </tr>
                   <tr>
                     <th>{t("type")}</th>
-                    <td>
-                      {t(
-                        handleDepartment({
-                          ...(!!order?.category?.sub_id
-                            ? { sub: order?.category?.sub_id }
-                            : { dep: order?.category?.department }),
-                        })
-                      )}
-                    </td>
+                    <td>{t(Departments[order?.category?.department!])}</td>
                   </tr>
                   <tr>
                     <th>{t("category")}</th>

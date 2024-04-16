@@ -77,13 +77,13 @@ export const handleStatus = ({
 }) => {
   switch (status) {
     case RequestStatus.confirmed: {
-      if (dep === Departments.logystics) return "received_for_work";
+      if (dep === Departments.car_requests) return "received_for_work";
       else return "received";
     }
     case RequestStatus.done:
       return "finished";
     case RequestStatus.sendToRepair: {
-      if (dep === Departments.logystics) return "in_the_way";
+      if (dep === Departments.car_requests) return "in_the_way";
       if (dep === Departments.marketing) return "sent_to_orderer";
       else return "sent_to_fix";
     }
@@ -194,17 +194,17 @@ export const handleDepartment = ({
 }) => {
   if (dep)
     switch (dep) {
-      case Departments.apc:
+      case Departments.APC:
         return "АРС";
       case Departments.inventory:
         return "inventory";
       case Departments.marketing:
         return "marketing";
-      case Departments.it:
+      case Departments.IT:
         return "IT";
-      case Departments.logystics:
+      case Departments.car_requests:
         return "car_requests";
-      case Departments.staff:
+      case Departments.request_for_food:
         return "request_for_food";
       case Departments.cctv:
         return "cctv";
@@ -214,7 +214,7 @@ export const handleDepartment = ({
   else
     switch (sub) {
       case MarketingSubDep.designers:
-        return "project_works";
+        return "designers";
       case MarketingSubDep.complects:
         return "complects";
       case MarketingSubDep.local_marketing:
@@ -223,10 +223,10 @@ export const handleDepartment = ({
         return "promo_production";
       case MarketingSubDep.pos:
         return "pos";
-      case MarketingSubDep.branchEnv:
+      case MarketingSubDep.branch_env:
         return "branch_env";
-      case MarketingSubDep.nonstandartAdv:
-        return "ter_manakgers";
+      case MarketingSubDep.ter_managers:
+        return "ter_managers";
 
       default:
         return "";

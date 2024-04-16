@@ -67,7 +67,7 @@ const BrigadaStat: FC<Props> = ({ sphere_status }) => {
   const downloadAsPdf = () => onDownload();
 
   const { isLoading, data } = useStatsBrigada({
-    department: Departments.apc,
+    department: Departments.APC,
     sphere_status,
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),

@@ -117,7 +117,7 @@ const AddProductModal = ({ addExp }: Props) => {
                   render={({ field }) => (
                     <BaseInputs className="!mb-0 mt-4" label="select_product">
                       <SelectWrapper
-                        department={Departments.apc}
+                        department={Departments.APC}
                         field={field}
                         register={register("product")}
                       />

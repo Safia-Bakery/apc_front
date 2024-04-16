@@ -36,7 +36,7 @@ const EditAddMasters = () => {
 
   const renderDep = useMemo(() => {
     switch (dep) {
-      case Departments.apc:
+      case Departments.APC:
         if (sphere_status === Sphere.fabric)
           return {
             inputTitle: "НАЗВАНИЕ МАСТЕРА",
@@ -49,7 +49,7 @@ const EditAddMasters = () => {
             selectTitle: "ВЫБЕРИТЕ БРИГАДИРА",
             mainTitle: `Изменить бригада №${id}`,
           };
-      case Departments.it:
+      case Departments.IT:
         return {
           inputTitle: "НАЗВАНИЕ ИТ специалиста",
           selectTitle: "ВЫБЕРИТЕ ИТ специалиста",

@@ -9,11 +9,7 @@ import { useAppSelector } from "@/store/utils/types";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
-import {
-  detectFileType,
-  handleDepartment,
-  handleStatus,
-} from "@/utils/helpers";
+import { detectFileType, handleStatus } from "@/utils/helpers";
 import {
   Departments,
   FileType,
@@ -169,15 +165,7 @@ const ShowRequestInventory = () => {
                   </tr>
                   <tr>
                     <th>{t("type")}</th>
-                    <td>
-                      {t(
-                        handleDepartment({
-                          ...(!!order?.category?.sub_id
-                            ? { sub: order?.category?.sub_id }
-                            : { dep: order?.category?.department }),
-                        })
-                      )}
-                    </td>
+                    <td>{t(Departments[order?.category?.department!])}</td>
                   </tr>
                   <tr>
                     <th>{t("group_problem")}</th>

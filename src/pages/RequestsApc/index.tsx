@@ -99,7 +99,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
     isLoading: orderLoading,
     isFetching: orderFetching,
   } = useOrders({
-    department: Departments.apc,
+    department: Departments.APC,
     page: currentPage,
     sphere_status: Number(sphere_status),
     ...(!!system && { is_bot: !!system }),
@@ -168,7 +168,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                   <td width="80">
                     {permission?.[edit] ? (
                       <Link
-                        to={`/requests-apc-${Sphere[sphere_status]}/${order?.id}?sphere_status=${sphere_status}&dep=${Departments.apc}`}
+                        to={`/requests-apc-${Sphere[sphere_status]}/${order?.id}?sphere_status=${sphere_status}&dep=${Departments.APC}`}
                         state={{ prevPath: pathname + search }}
                       >
                         {order?.id}
@@ -217,7 +217,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                     {t(
                       handleStatus({
                         status: order?.status,
-                        dep: Departments.apc,
+                        dep: Departments.APC,
                       })
                     )}
                   </td>

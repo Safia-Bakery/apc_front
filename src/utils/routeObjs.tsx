@@ -89,7 +89,7 @@ export const sidebarRoutes: SidebarType[] = [
     name: "apc_retail",
     icon: "/assets/icons/apc.svg",
     screen: MainPermissions.get_requests_apc,
-    department: Departments.apc,
+    department: Departments.APC,
     sphere_status: Sphere.retail,
     subroutes: [
       {
@@ -142,7 +142,7 @@ export const sidebarRoutes: SidebarType[] = [
     name: "apc_fabric",
     icon: "/assets/icons/apc.svg",
     screen: MainPermissions.get_fabric_requests,
-    department: Departments.apc,
+    department: Departments.APC,
     sphere_status: Sphere.fabric,
     subroutes: [
       {
@@ -185,7 +185,7 @@ export const sidebarRoutes: SidebarType[] = [
     name: "IT",
     icon: "/assets/icons/it.svg",
     screen: MainPermissions.get_it_requests,
-    department: Departments.it,
+    department: Departments.IT,
     subroutes: [
       // {
       //   name: "Заявки Закуп",
@@ -310,7 +310,7 @@ export const sidebarRoutes: SidebarType[] = [
         screen: MainPermissions.get_complect_requests,
       },
       {
-        name: "ter_manakgers",
+        name: "ter_managers",
         url: `/marketing-${MarketingSubDep[6]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_nostandard_requests,
@@ -340,7 +340,7 @@ export const sidebarRoutes: SidebarType[] = [
     name: "car_requests",
     icon: "/assets/icons/logystics.svg",
     screen: MainPermissions.get_log_requests,
-    department: Departments.logystics,
+    department: Departments.car_requests,
     subroutes: [
       {
         name: "car_requests",
@@ -421,7 +421,7 @@ export const sidebarRoutes: SidebarType[] = [
     url: "/requests-staff",
     icon: "/assets/icons/staff.svg",
     screen: MainPermissions.get_staff_requests,
-    department: Departments.staff,
+    department: Departments.request_for_food,
   },
   {
     name: "users",
@@ -697,7 +697,7 @@ export const routes = [
         add={MainPermissions.add_nostandard_requests}
         edit={MainPermissions.edit_nostandard_requests}
         title="Для Тер.Менеджеров"
-        sub_id={MarketingSubDep.nonstandartAdv}
+        sub_id={MarketingSubDep.ter_managers}
       />
     ),
     path: `/marketing-${MarketingSubDep[6]}`,
@@ -709,7 +709,7 @@ export const routes = [
         add={MainPermissions.add_stock_env_requests}
         edit={MainPermissions.edit_stock_env_requests}
         title="Внешний вид филиала"
-        sub_id={MarketingSubDep.branchEnv}
+        sub_id={MarketingSubDep.branch_env}
       />
     ),
     path: `/marketing-${MarketingSubDep[7]}`,
@@ -767,7 +767,7 @@ export const routes = [
         add={MainPermissions.add_apc_category}
         edit={MainPermissions.edit_apc_category}
         sphere_status={Sphere.retail}
-        dep={Departments.apc}
+        dep={Departments.APC}
       />
     ),
     path: "/categories-apc-retail",
@@ -779,7 +779,7 @@ export const routes = [
         add={MainPermissions.add_categ_fab}
         edit={MainPermissions.edit_categ_fab}
         sphere_status={Sphere.fabric}
-        dep={Departments.apc}
+        dep={Departments.APC}
       />
     ),
     path: "/categories-apc-fabric",
@@ -790,7 +790,7 @@ export const routes = [
       <CategoriesIT
         add={MainPermissions.add_categ_it}
         edit={MainPermissions.edit_categ_it}
-        dep={Departments.it}
+        dep={Departments.IT}
       />
     ),
     path: "/categories-it/:sphere",
@@ -834,38 +834,38 @@ export const routes = [
   },
   {
     element: (
-      <EditAddCategory dep={Departments.apc} sphere_status={Sphere.retail} />
+      <EditAddCategory dep={Departments.APC} sphere_status={Sphere.retail} />
     ),
     path: "/categories-apc-retail/:id",
     screen: MainPermissions.edit_apc_category,
   },
   {
     element: (
-      <EditAddCategory dep={Departments.apc} sphere_status={Sphere.fabric} />
+      <EditAddCategory dep={Departments.APC} sphere_status={Sphere.fabric} />
     ),
     path: "/categories-apc-fabric/:id",
     screen: MainPermissions.edit_categ_fab,
   },
   {
-    element: <EditAddCategory dep={Departments.it} />,
+    element: <EditAddCategory dep={Departments.IT} />,
     path: "/categories-it/:sphere/:id",
     screen: MainPermissions.edit_categ_it,
   },
   {
-    element: <EditAddCategory dep={Departments.it} />,
+    element: <EditAddCategory dep={Departments.IT} />,
     path: "/categories-it/:sphere/add",
     screen: MainPermissions.edit_categ_it,
   },
   {
     element: (
-      <EditAddCategory dep={Departments.apc} sphere_status={Sphere.retail} />
+      <EditAddCategory dep={Departments.APC} sphere_status={Sphere.retail} />
     ),
     path: "/categories-apc-retail/add",
     screen: MainPermissions.add_apc_category,
   },
   {
     element: (
-      <EditAddCategory dep={Departments.apc} sphere_status={Sphere.fabric} />
+      <EditAddCategory dep={Departments.APC} sphere_status={Sphere.fabric} />
     ),
     path: "/categories-apc-fabric/add",
     screen: MainPermissions.add_categ_fab,
@@ -909,7 +909,7 @@ export const routes = [
   {
     element: (
       <Masters
-        dep={Departments.apc}
+        dep={Departments.APC}
         sphere_status={Sphere.fabric}
         add={MainPermissions.add_master}
         edit={MainPermissions.edit_master}
@@ -921,7 +921,7 @@ export const routes = [
   {
     element: (
       <Masters
-        dep={Departments.apc}
+        dep={Departments.APC}
         sphere_status={Sphere.retail}
         add={MainPermissions.add_brigada}
         edit={MainPermissions.edit_brigada}
@@ -949,7 +949,7 @@ export const routes = [
   {
     element: (
       <Masters
-        dep={Departments.it}
+        dep={Departments.IT}
         add={MainPermissions.it_add_master}
         edit={MainPermissions.it_edit_master}
       />
@@ -1037,20 +1037,20 @@ export const routes = [
       <Categories
         add={MainPermissions.add_log_categs}
         edit={MainPermissions.edit_log_categs}
-        dep={Departments.logystics}
+        dep={Departments.car_requests}
       />
     ),
     path: "/categories-logystics",
     screen: MainPermissions.get_log_categs,
   },
   {
-    element: <EditAddCategory dep={Departments.logystics} />,
+    element: <EditAddCategory dep={Departments.car_requests} />,
     path: "/categories-logystics/:id",
     screen: MainPermissions.edit_log_categs,
   },
 
   {
-    element: <EditAddCategory dep={Departments.logystics} />,
+    element: <EditAddCategory dep={Departments.car_requests} />,
     path: "/categories-logystics/add",
     screen: MainPermissions.add_log_categs,
   },

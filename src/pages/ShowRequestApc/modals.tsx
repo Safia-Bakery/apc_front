@@ -72,7 +72,7 @@ const ApcModals = () => {
       !!order?.category?.id &&
       order?.status === RequestStatus.new &&
       sphere_status === Sphere.fabric,
-    department: Departments.apc,
+    department: Departments.APC,
     sphere_status: Sphere.fabric,
     parent_id: Number(order?.category?.id),
     category_status: 1,

@@ -69,15 +69,15 @@ const btnArr = [
 
 const mainDeps: DepTypes = {
   [MainPermissions.get_requests_apc]: {
-    dep: Departments.apc,
+    dep: Departments.APC,
     sphere: Sphere.retail,
   },
   [MainPermissions.get_fabric_requests]: {
-    dep: Departments.apc,
+    dep: Departments.APC,
     sphere: Sphere.fabric,
   },
   [MainPermissions.get_it_requests]: {
-    dep: Departments.it,
+    dep: Departments.IT,
   },
   [MainPermissions.get_requests_inventory]: {
     dep: Departments.inventory,
@@ -104,17 +104,17 @@ const mainDeps: DepTypes = {
   },
   [MainPermissions.get_nostandard_requests]: {
     dep: Departments.marketing,
-    sub_id: MarketingSubDep.nonstandartAdv,
+    sub_id: MarketingSubDep.ter_managers,
   },
   [MainPermissions.get_stock_env_requests]: {
     dep: Departments.marketing,
-    sub_id: MarketingSubDep.branchEnv,
+    sub_id: MarketingSubDep.branch_env,
   },
   [MainPermissions.get_log_requests]: {
-    dep: Departments.logystics,
+    dep: Departments.car_requests,
   },
   [MainPermissions.get_staff_requests]: {
-    dep: Departments.staff,
+    dep: Departments.request_for_food,
   },
   [MainPermissions.get_requests_cctv]: {
     dep: Departments.cctv,
@@ -154,7 +154,7 @@ const ControlPanel = () => {
   const renderDep = useMemo(() => {
     if (mainDep)
       switch (mainDep.dep) {
-        case Departments.apc:
+        case Departments.APC:
           if (mainDep.sphere === Sphere.fabric)
             return {
               title: "apc_fabric",
@@ -180,7 +180,7 @@ const ControlPanel = () => {
               title: "marketing",
               ratingUrl: "/marketing-all-requests?rate=1",
             };
-          if (mainDep.sub_id === MarketingSubDep.branchEnv)
+          if (mainDep.sub_id === MarketingSubDep.branch_env)
             return {
               title: "marketing_branch_env",
               newOrders: "/marketing-branchEnv?request_status=0",
@@ -204,9 +204,9 @@ const ControlPanel = () => {
               newOrders: "/marketing-local_marketing?request_status=0",
               ratingUrl: "/marketing-local_marketing?rate=1",
             };
-          if (mainDep.sub_id === MarketingSubDep.nonstandartAdv)
+          if (mainDep.sub_id === MarketingSubDep.ter_managers)
             return {
-              title: "marketing_ter_manakgers",
+              title: "marketing_ter_managers",
               newOrders: "/marketing-nonstandartAdv?request_status=0",
               ratingUrl: "/marketing-nonstandartAdv?rate=1",
             };
@@ -223,7 +223,7 @@ const ControlPanel = () => {
               ratingUrl: "/marketing-promo_production?rate=1",
             };
           else return { title: "marketing" };
-        case Departments.it:
+        case Departments.IT:
           if (mainDep.sphere === Sphere.purchase)
             return {
               title: "it_purchase",
@@ -236,12 +236,12 @@ const ControlPanel = () => {
               newOrders: `/requests-it/${Sphere.fix}?request_status=0`,
               ratingUrl: `/requests-it/${Sphere.fix}?rate=1`,
             };
-        case Departments.logystics:
+        case Departments.car_requests:
           return {
             title: "car_requests",
             newOrders: "/requests-logystics?request_status=0",
           };
-        case Departments.staff:
+        case Departments.request_for_food:
           return { title: "request_for_food", newOrders: "/requests-staff" };
 
         case Departments.cctv:

@@ -40,7 +40,7 @@ const BrigadaCategStat: FC<Props> = ({ sphere_status }) => {
   const downloadAsPdf = () => onDownload();
 
   const { isLoading, data } = useStatsBrigadaCateg({
-    department: Departments.apc,
+    department: Departments.APC,
     sphere_status,
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),

@@ -6,11 +6,7 @@ import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
-import {
-  handleDepartment,
-  handleStatus,
-  isValidHttpUrl,
-} from "@/utils/helpers";
+import { handleStatus, isValidHttpUrl } from "@/utils/helpers";
 import { Departments, ModalTypes, RequestStatus } from "@/utils/types";
 import { useForm } from "react-hook-form";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
@@ -93,7 +89,7 @@ const ShowRequestStaff = () => {
           subTitle={`${t("status")}: ${t(
             handleStatus({
               status: order?.status,
-              dep: Departments.staff,
+              dep: Departments.request_for_food,
             })
           )}`}
         >
@@ -129,15 +125,7 @@ const ShowRequestStaff = () => {
                   </tr>
                   <tr>
                     <th>{t("type")}</th>
-                    <td>
-                      {t(
-                        handleDepartment({
-                          ...(!!order?.category?.sub_id
-                            ? { sub: order?.category?.sub_id }
-                            : { dep: order?.category?.department }),
-                        })
-                      )}
-                    </td>
+                    <td>{t(Departments[order?.category?.department!])}</td>
                   </tr>
                   <tr>
                     <th>{t("group_problem")}</th>

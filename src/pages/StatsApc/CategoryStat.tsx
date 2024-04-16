@@ -63,7 +63,7 @@ const CategoryStat: FC<Props> = ({ sphere_status }) => {
   });
 
   const { data, isLoading } = useStatsCategory({
-    department: Departments.apc,
+    department: Departments.APC,
     sphere_status,
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),

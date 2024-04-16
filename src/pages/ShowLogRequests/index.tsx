@@ -7,12 +7,7 @@ import dayjs from "dayjs";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
-import {
-  detectFileType,
-  handleDepartment,
-  handleStatus,
-  isValidHttpUrl,
-} from "@/utils/helpers";
+import { detectFileType, handleStatus, isValidHttpUrl } from "@/utils/helpers";
 import {
   Departments,
   FileType,
@@ -141,7 +136,7 @@ const ShowLogRequests = () => {
           subTitle={`${t("status")}: ${t(
             handleStatus({
               status: order?.status,
-              dep: Departments.logystics,
+              dep: Departments.car_requests,
             })
           )}`}
         >
@@ -177,15 +172,7 @@ const ShowLogRequests = () => {
                   </tr>
                   <tr>
                     <th>{t("type")}</th>
-                    <td>
-                      {t(
-                        handleDepartment({
-                          ...(!!order?.category?.sub_id
-                            ? { sub: order?.category?.sub_id }
-                            : { dep: order?.category?.department }),
-                        })
-                      )}
-                    </td>
+                    <td>{t(Departments[order?.category?.department!])}</td>
                   </tr>
                   <tr>
                     <th>{t("group_problem")}</th>

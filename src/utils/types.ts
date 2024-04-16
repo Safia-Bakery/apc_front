@@ -508,13 +508,14 @@ export enum MainPermissions {
   edit_apc_expenses_categories = 123,
 }
 export enum MarketingSubDep {
-  designers = 1,
-  local_marketing = 2,
-  promo_production = 3,
-  pos = 4,
-  complects = 5,
-  nonstandartAdv = 6,
-  branchEnv = 7,
+  all,
+  designers,
+  local_marketing,
+  promo_production,
+  pos,
+  complects,
+  ter_managers,
+  branch_env,
 }
 
 export const MarketingSubDepRu = [
@@ -540,23 +541,23 @@ export const MarketingSubDepRu = [
   },
   {
     name: "Для Тер.Менеджеров",
-    id: MarketingSubDep.nonstandartAdv, // 6
+    id: MarketingSubDep.ter_managers, // 6
   },
   {
     name: "Внешний вид филиала",
-    id: MarketingSubDep.branchEnv, // 7
+    id: MarketingSubDep.branch_env, // 7
   },
 ];
 export enum Departments {
-  all = 0,
-  apc = 1,
-  inventory = 2,
-  marketing = 3,
-  it = 4,
-  logystics = 5, // zakaz mawin
-  staff = 6, // zakaz edi
-  clientComment = 7, // otziv clientov
-  cctv = 8, // videonablyudeniye
+  all,
+  APC,
+  inventory,
+  marketing,
+  IT,
+  car_requests, // zakaz mawin
+  request_for_food, // zakaz edi
+  clientComment, // otziv clientov
+  cctv, // videonablyudeniye
 }
 export enum Sphere {
   retail = 1, //for APC department

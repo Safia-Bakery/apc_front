@@ -38,7 +38,7 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
   const btnAction = document.getElementById("export_to_excell");
 
   const { data, isLoading } = useDistinct({
-    department: Departments.apc,
+    department: Departments.APC,
     sphere_status,
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),

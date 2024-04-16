@@ -25,7 +25,7 @@ const LogFilter: FC = () => {
   const perm = useAppSelector(permissionSelector);
 
   const { data: categories, refetch: catRefetch } = useCategories({
-    department: Departments.logystics,
+    department: Departments.car_requests,
     enabled: false,
   });
 

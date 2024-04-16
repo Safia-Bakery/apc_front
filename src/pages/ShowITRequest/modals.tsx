@@ -50,7 +50,7 @@ const ITModals = () => {
 
   const { data: categories, isLoading: categoriesLoading } = useCategories({
     enabled: modal === ModalTypes.changeCateg,
-    department: Departments.it,
+    department: Departments.IT,
     sphere_status: Sphere.fix,
     category_status: 1,
   });

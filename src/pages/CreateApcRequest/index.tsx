@@ -27,7 +27,7 @@ const CreateApcRequest = () => {
   const sphere_status = Number(useQueryString("sphere_status"));
   const branch = branchJson && JSON.parse(branchJson);
   const { data: categories, isLoading: categoryLoading } = useCategories({
-    department: Departments.apc,
+    department: Departments.APC,
     sphere_status,
     category_status: 1,
   });

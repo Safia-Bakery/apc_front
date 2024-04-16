@@ -40,7 +40,7 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
   const idQ = useQueryString("id");
 
   const { data: categories, refetch: catRefetch } = useCategories({
-    department: Departments.apc,
+    department: Departments.APC,
     ...(!!sphere_status && { sphere_status }),
     enabled: !!category_id,
   });
@@ -57,7 +57,7 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
 
   const { data: brigades, refetch: masterRefetch } = useBrigadas({
     enabled: !!responsible,
-    department: Departments.apc,
+    department: Departments.APC,
     sphere_status,
   });
 

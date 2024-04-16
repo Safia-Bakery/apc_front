@@ -87,7 +87,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
     isFetching,
   } = useOrders({
     enabled: true,
-    department: Departments.logystics,
+    department: Departments.car_requests,
     page: currentPage,
     ...(!!system && { is_bot: !!system }),
     ...(!!created_at && {
@@ -186,7 +186,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
                       {t(
                         handleStatus({
                           status: order?.status,
-                          dep: Departments.logystics,
+                          dep: Departments.car_requests,
                         })
                       )}
                     </td>

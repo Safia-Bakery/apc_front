@@ -101,15 +101,15 @@ const localization = {
       marketing_complects: "Маркетинг(Комплекты)",
       marketing_project_works: "Маркетинг(Проектная работа для дизайнеров)",
       local_marketing: "Маркетинг(Локальный маркетинг)",
-      marketing_ter_manakgers: "Маркетинг(Для Тер.Менеджеров)",
+      marketing_ter_managers: "Маркетинг(Для Тер.Менеджеров)",
       marketing_pos: "Маркетинг(POS-Материалы)",
       marketing_promo_production: "Маркетинг(Промо-продукция)",
 
       branch_env: "Внешний вид филиала",
       complects: "Комплекты",
-      project_works: "Проектная работа для дизайнеров",
+      designers: "Проектная работа для дизайнеров",
       local_marketingg: "Локальный маркетинг",
-      ter_manakgers: "Для Тер.Менеджеров",
+      ter_managers: "Для Тер.Менеджеров",
       pos: "POS-Материалы",
       promo_production: "Промо-продукция",
 

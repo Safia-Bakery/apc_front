@@ -40,7 +40,7 @@ const routeNameMappings: { [key: string]: string } = {
   "marketing-complects": "complects",
   "marketing-designers": "project_works",
   "marketing-branchEnv": "branch_env",
-  "marketing-unstandartAdv": "ter_manakgers",
+  "marketing-unstandartAdv": "ter_managers",
   "categories-it": "it_categories",
   "add-product": "add_products",
   "edit-product": "edit_products",

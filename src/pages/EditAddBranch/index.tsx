@@ -138,9 +138,9 @@ const EditAddBranch = () => {
         <BaseInputs label={"АРС"}>
           <MainSelect
             onChange={(e) =>
-              handleDep({ origin: Departments.apc, id: e.target.value })
+              handleDep({ origin: Departments.APC, id: e.target.value })
             }
-            value={findName(Departments.apc)}
+            value={findName(Departments.APC)}
             values={branch?.fillial_department}
           />
         </BaseInputs>

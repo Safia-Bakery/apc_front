@@ -101,7 +101,7 @@ const CreateITRequest = () => {
   );
 
   const { data: categories, isLoading: categoryLoading } = useCategories({
-    department: Departments.it,
+    department: Departments.IT,
     sphere_status: Number(sphere),
     enabled: !!sphere,
     category_status: 1,

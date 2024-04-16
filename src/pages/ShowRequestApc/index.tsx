@@ -9,11 +9,7 @@ import { useAppSelector } from "@/store/utils/types";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
-import {
-  detectFileType,
-  handleDepartment,
-  handleStatus,
-} from "@/utils/helpers";
+import { detectFileType, handleStatus } from "@/utils/helpers";
 import { useForm } from "react-hook-form";
 import {
   Departments,
@@ -70,7 +66,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
       !!order?.category?.id &&
       order?.status === RequestStatus.new &&
       sphere_status === Sphere.fabric,
-    department: Departments.apc,
+    department: Departments.APC,
     sphere_status: Sphere.fabric,
     parent_id: Number(order?.category?.id),
     category_status: 1,
@@ -79,7 +75,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
   const { data: brigadas } = useBrigadas({
     enabled: order?.status! <= RequestStatus.confirmed,
     sphere_status,
-    department: Departments.apc,
+    department: Departments.APC,
   });
   const isNew = order?.status === RequestStatus.new;
 
@@ -280,7 +276,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
           subTitle={`${t("status")}: ${t(
             handleStatus({
               status: order?.status,
-              dep: Departments.apc,
+              dep: Departments.APC,
             })
           )}`}
         >
@@ -318,15 +314,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                   </tr>
                   <tr>
                     <th>{t("type")}</th>
-                    <td>
-                      {t(
-                        handleDepartment({
-                          ...(!!order?.category?.sub_id
-                            ? { sub: order?.category?.sub_id }
-                            : { dep: order?.category?.department }),
-                        })
-                      )}
-                    </td>
+                    <td>{t(Departments[order?.category?.department!])}</td>
                   </tr>
                   <tr>
                     <th>{t("group_problem")}</th>

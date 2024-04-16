@@ -59,7 +59,7 @@ const RequestsIT = () => {
     isLoading: orderLoading,
     isFetching: orderFetching,
   } = useOrders({
-    department: Departments.it,
+    department: Departments.IT,
     page: currentPage,
     ...(!!id && { id }),
     ...(!!category_id && { category_id }),
@@ -129,7 +129,7 @@ const RequestsIT = () => {
                 >
                   <td width="40">{handleIdx(idx)}</td>
                   <td width="80">
-                    <Link to={`${order?.id}?dep=${Departments.it}`}>
+                    <Link to={`${order?.id}?dep=${Departments.IT}`}>
                       {order?.id}
                     </Link>
                   </td>

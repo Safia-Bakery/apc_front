@@ -155,8 +155,8 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
           />
         </BaseInput>
 
-        {(Number(dep) === Departments.it ||
-          Number(dep) === Departments.apc ||
+        {(Number(dep) === Departments.IT ||
+          Number(dep) === Departments.APC ||
           Number(dep) === Departments.marketing) && (
           <BaseInput label="execution_time_hoours" error={errors.time}>
             <MainInput
@@ -178,7 +178,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
 
         <MainCheckBox label={"active"} register={register("status")} />
 
-        {dep === Departments.apc && (
+        {dep === Departments.APC && (
           <MainCheckBox label="last" register={register("is_child")} />
         )}
 
