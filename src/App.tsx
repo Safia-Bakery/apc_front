@@ -343,7 +343,6 @@ const App = () => {
               <TelegramAddProduct />
             </Suspend>
           }
-          // for apc adding items
           path={"add-product/:id"}
         />
         <Route

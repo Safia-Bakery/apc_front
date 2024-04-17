@@ -1,12 +1,18 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Departments, MainPermissions, Order, Sphere } from "@/utils/types";
+import {
+  Departments,
+  MainPermissions,
+  Order,
+  RequestStatus,
+  Sphere,
+} from "@/utils/types";
 import Pagination from "@/components/Pagination";
 import { FC, useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx, handleStatus, requestRows } from "@/utils/helpers";
+import { handleIdx, requestRows } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import RequestsFilter from "./filter";
 import ItemsCount from "@/components/ItemsCount";
@@ -213,14 +219,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                     {order?.comments?.[0]?.rating}
                   </td>
 
-                  <td>
-                    {t(
-                      handleStatus({
-                        status: order?.status,
-                        dep: Departments.APC,
-                      })
-                    )}
-                  </td>
+                  <td>{t(RequestStatus[order.status])}</td>
 
                   <td>
                     {!!order?.user_manager

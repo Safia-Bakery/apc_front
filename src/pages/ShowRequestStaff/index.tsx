@@ -6,7 +6,7 @@ import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
-import { handleStatus, isValidHttpUrl } from "@/utils/helpers";
+import { isValidHttpUrl } from "@/utils/helpers";
 import { Departments, ModalTypes, RequestStatus } from "@/utils/types";
 import { useForm } from "react-hook-form";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
@@ -60,7 +60,7 @@ const ShowRequestStaff = () => {
             {t("deny")}
           </button>
           <button
-            onClick={handleBrigada({ status: RequestStatus.confirmed })}
+            onClick={handleBrigada({ status: RequestStatus.received })}
             className="btn btn-success  "
             id="recieve_request"
           >
@@ -68,11 +68,11 @@ const ShowRequestStaff = () => {
           </button>
         </div>
       );
-    if (order?.status && order?.status < RequestStatus.done)
+    if (order?.status && order?.status < RequestStatus.finished)
       return (
         <div className="float-end mb10">
           <button
-            onClick={handleBrigada({ status: RequestStatus.done })}
+            onClick={handleBrigada({ status: RequestStatus.finished })}
             className="btn btn-success  "
           >
             {t("finish")}
@@ -86,12 +86,9 @@ const ShowRequestStaff = () => {
       <Card className="overflow-hidden">
         <Header
           title={`${t("order")} №${id}`}
-          subTitle={`${t("status")}: ${t(
-            handleStatus({
-              status: order?.status,
-              dep: Departments.request_for_food,
-            })
-          )}`}
+          subTitle={`${t("status")}: ${
+            order?.status.toString() && t(RequestStatus[order?.status])
+          }`}
         >
           <button
             className="btn btn-warning   mr-2"

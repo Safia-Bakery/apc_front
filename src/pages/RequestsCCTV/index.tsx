@@ -2,12 +2,12 @@ import { useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
-import { Departments, Order } from "@/utils/types";
+import { Departments, Order, RequestStatus } from "@/utils/types";
 import Pagination from "@/components/Pagination";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx, handleStatus, requestRows } from "@/utils/helpers";
+import { handleIdx, requestRows } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import CCTVFilter from "./filter";
 import ItemsCount from "@/components/ItemsCount";
@@ -84,6 +84,8 @@ const RequestsCCTV = () => {
   //   refetch();
   // }, []);
 
+  console.log(RequestStatus, "RequestStatus");
+
   return (
     <Card>
       <Header title={t("requests_for_cctv")}>
@@ -122,13 +124,7 @@ const RequestsCCTV = () => {
                   <td>{order?.fillial?.parentfillial?.name}</td>
                   <td>{order?.category?.name}</td>
                   <td>{order?.comments?.[0]?.rating}</td>
-                  <td>
-                    {t(
-                      handleStatus({
-                        status: order?.status,
-                      })
-                    )}
-                  </td>
+                  <td>{t(RequestStatus[order?.status])}</td>
                   <td>{dayjs(order?.created_at).format(dateMonthYear)}</td>
                   <td>
                     {!!order?.user_manager

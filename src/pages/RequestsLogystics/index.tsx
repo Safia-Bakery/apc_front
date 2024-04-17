@@ -4,15 +4,14 @@ import {
   MainPermissions,
   Order,
   RequestStatus,
-  ValueLabel,
 } from "@/utils/types";
 import Pagination from "@/components/Pagination";
-import { FC, useMemo, useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx, handleStatus, requestRows } from "@/utils/helpers";
+import { LogyticsStatusObj, handleIdx, requestRows } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import ItemsCount from "@/components/ItemsCount";
 import cl from "classnames";
@@ -47,8 +46,8 @@ const column = [
 
 const reqStatus = [
   { value: RequestStatus.new },
-  { value: RequestStatus.confirmed },
-  { value: RequestStatus.sendToRepair },
+  { value: RequestStatus.received },
+  { value: RequestStatus.sent_to_fix },
 ];
 
 const RequestsLogystics: FC<Props> = ({ add, edit }) => {
@@ -182,14 +181,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
                         : t("urgentt")}
                     </td>
                     <td>{dayjs(order?.created_at).format(dateTimeFormat)}</td>
-                    <td>
-                      {t(
-                        handleStatus({
-                          status: order?.status,
-                          dep: Departments.car_requests,
-                        })
-                      )}
-                    </td>
+                    <td>{t(LogyticsStatusObj[order.status])}</td>
                     <td>
                       {!!order?.user_manager
                         ? order?.user_manager

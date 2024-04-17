@@ -4,7 +4,6 @@ import TableHead from "@/components/TableHead";
 import Chart from "react-apexcharts";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 import useMarketingStatDep from "@/hooks/useMarketingStatDep";
-import { handleDepartment } from "@/utils/helpers";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
 import { useTranslation } from "react-i18next";
@@ -75,11 +74,7 @@ const DepartmentStat = () => {
         serie: Object.keys(data?.pie).map((item) =>
           Math.round(data.pie[item][1])
         ),
-        labels: Object.keys(data?.pie).map((item) =>
-          t(
-            handleDepartment({ sub: +item as unknown as MarketingSubDep }) || ""
-          )
-        ),
+        labels: Object.keys(data?.pie).map((item) => t(MarketingSubDep[+item])),
       };
   }, [data?.pie]);
 
@@ -97,13 +92,7 @@ const DepartmentStat = () => {
       return Object.entries(data?.table)?.map((item, idx) => (
         <tr key={idx} className="bg-blue">
           <td width="40">{idx + 1}</td>
-          <td>
-            {t(
-              handleDepartment({
-                sub: +item[0] as unknown as MarketingSubDep,
-              })
-            )}
-          </td>
+          <td>{t(MarketingSubDep[+item[0]])}</td>
           {/* insert open date */}
           <td>{item[1][2]}</td>
           <td>{item[1][0]}</td>

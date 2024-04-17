@@ -1,5 +1,5 @@
 import cl from "classnames";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import BaseInput from "@/components/BaseInputs";
@@ -8,11 +8,18 @@ import Header from "@/components/Header";
 import RateStars from "@/components/RatingStars";
 import useQueryString from "custom/useQueryString";
 import commentMutation from "@/hooks/mutation/comment";
-import { handleDepartment } from "@/utils/helpers";
 import { TelegramApp } from "@/utils/tgHelpers";
 import { errorToast } from "@/utils/toast";
-import { Departments } from "@/utils/types";
+import { Departments, MarketingSubDep } from "@/utils/types";
 import { useTranslation } from "react-i18next";
+
+const renderTitle: { [key: number]: string } = {
+  1: "bad",
+  2: "less_avg",
+  3: "satisfactorily",
+  4: "good",
+  5: "excelent",
+};
 
 const TgRating = () => {
   const { t } = useTranslation();
@@ -30,24 +37,6 @@ const TgRating = () => {
   const { mutate } = commentMutation();
 
   const { register, handleSubmit, getValues } = useForm();
-
-  const renderTitle = useMemo(() => {
-    switch (rate) {
-      case 1:
-        return "bad";
-      case 2:
-        return "less_avg";
-      case 3:
-        return "satisfactorily";
-      case 4:
-        return "good";
-      case 5:
-        return "excelent";
-
-      default:
-        return "";
-    }
-  }, [rate]);
 
   const onSubmit = () => {
     mutate(
@@ -74,7 +63,9 @@ const TgRating = () => {
     >
       <Header
         title={`Заказ №${id}`}
-        subTitle={t(handleDepartment({ dep: department, sub: sub_id }))}
+        subTitle={t(
+          department ? Departments[department] : MarketingSubDep[sub_id]
+        )}
       >
         <div
           onClick={() => TelegramApp.close()}
@@ -99,7 +90,7 @@ const TgRating = () => {
               { ["hidden"]: !rate }
             )}
           >
-            {t(renderTitle)}
+            {t(rate ? renderTitle[rate] : "")}
           </h5>
           {!rate && (
             <h4 className="font-bold text-xl justify-center items-center text-center flex my-10">

@@ -1,12 +1,12 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Departments, MainPermissions, Order } from "@/utils/types";
+import { MainPermissions, Order, RequestStatus } from "@/utils/types";
 import Pagination from "@/components/Pagination";
 import { useEffect, useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx, handleStatus, requestRows } from "@/utils/helpers";
+import { handleIdx, requestRows } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import ItemsCount from "@/components/ItemsCount";
 import { useAppSelector } from "@/store/utils/types";
@@ -191,14 +191,7 @@ const RequestsStaff = () => {
                   <td>{order?.size}</td>
                   <td>{order?.bread_size}</td>
                   <td>{dayjs(order?.arrival_date).format(dateMonthYear)}</td>
-                  <td>
-                    {t(
-                      handleStatus({
-                        status: order?.status,
-                        dep: Departments.APC,
-                      })
-                    )}
-                  </td>
+                  <td>{t(RequestStatus[order.status])}</td>
                 </tr>
               ))}
           </tbody>

@@ -280,7 +280,7 @@ export const sidebarRoutes: SidebarType[] = [
         screen: MainPermissions.marketing_all_requests,
       },
       {
-        name: "project_works",
+        name: "designers",
         url: `/marketing-${MarketingSubDep[1]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_design_request,

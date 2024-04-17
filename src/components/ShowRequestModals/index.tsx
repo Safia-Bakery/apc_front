@@ -98,7 +98,7 @@ const ShowRequestModals = () => {
           ...(!!car_id && { car_id }),
           ...(!!pause_reason && { pause_reason }),
           ...(!!item && { brigada_id: Number(item?.id) }),
-          ...(status === RequestStatus.rejected && {
+          ...(status === RequestStatus.closed_denied && {
             deny_reason:
               fixedReason < 4 ? t(CancelReason[fixedReason]) : cancel_reason,
           }),
@@ -141,7 +141,7 @@ const ShowRequestModals = () => {
                       <button
                         id="attach_to_bridaga"
                         onClick={handleBrigada({
-                          status: RequestStatus.confirmed,
+                          status: RequestStatus.received,
                           item,
                         })}
                         className="btn btn-success   btn-sm"
@@ -181,7 +181,7 @@ const ShowRequestModals = () => {
                       <button
                         id="attach_to_bridaga"
                         onClick={handleBrigada({
-                          status: RequestStatus.sendToRepair,
+                          status: RequestStatus.sent_to_fix,
                           car_id: item.id,
                         })}
                         className="btn btn-success   btn-sm"
@@ -198,7 +198,7 @@ const ShowRequestModals = () => {
         return (
           <form
             onSubmit={handleSubmit(
-              handleBrigada({ status: RequestStatus.rejected })
+              handleBrigada({ status: RequestStatus.closed_denied })
             )}
             className={"w-[420px]"}
           >

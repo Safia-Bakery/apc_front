@@ -1,11 +1,11 @@
-import { Departments, ServiceStatsType } from "@/utils/types";
+import { Departments, MarketingSubDep, ServiceStatsType } from "@/utils/types";
 import { Fragment, useEffect, useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
 import cl from "classnames";
 import useServiceMarkStats from "@/hooks/useMarkServiceStats";
-import { handleDepartment, numberWithCommas as fixedN } from "@/utils/helpers";
+import { numberWithCommas as fixedN } from "@/utils/helpers";
 import { useTranslation } from "react-i18next";
 import Loading from "@/components/Loader";
 
@@ -93,7 +93,7 @@ const ServiceStatsMarketing = () => {
                     {idx + 1}
                   </td>
                   <td rowSpan={!!mainKey[1].length ? mainKey[1].length + 1 : 2}>
-                    {t(handleDepartment({ sub: +mainKey[0] }))}
+                    {t(MarketingSubDep[+mainKey[0]])}
                   </td>
 
                   <td>{mainKey[1][0].category}</td>

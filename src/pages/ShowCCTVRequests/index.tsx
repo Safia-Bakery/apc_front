@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
-import { detectFileType, handleStatus } from "@/utils/helpers";
+import { detectFileType } from "@/utils/helpers";
 import {
   Departments,
   FileType,
@@ -90,7 +90,7 @@ const ShowCCTVRequests = () => {
       {
         request_id: Number(id),
         category_id,
-        status: RequestStatus.done,
+        status: RequestStatus.finished,
       },
       {
         onSuccess: () => {
@@ -134,7 +134,7 @@ const ShowCCTVRequests = () => {
             {t("deny")}
           </button>
           <button
-            onClick={handleBrigada({ status: RequestStatus.confirmed })}
+            onClick={handleBrigada({ status: RequestStatus.received })}
             className="btn btn-success  "
             id="recieve_request"
           >
@@ -145,7 +145,7 @@ const ShowCCTVRequests = () => {
     else
       return (
         <div className="float-end mb10">
-          {order?.status! < RequestStatus.done && (
+          {order?.status! < RequestStatus.finished && (
             <button
               onClick={handleChangeModal(ModalTypes.changeCateg)}
               className="btn btn-success  "
@@ -160,7 +160,7 @@ const ShowCCTVRequests = () => {
   const renderModals = useMemo(() => {
     if (
       !!order?.status.toString() &&
-      (order?.status < RequestStatus.done || modal === ModalTypes.showPhoto)
+      (order?.status < RequestStatus.finished || modal === ModalTypes.showPhoto)
     )
       return <ShowRequestModals />;
   }, [order?.status, modal]);
@@ -182,12 +182,9 @@ const ShowCCTVRequests = () => {
       <Card className="overflow-hidden">
         <Header
           title={`${t("order")} №${id}`}
-          subTitle={`${t("status")}: ${t(
-            handleStatus({
-              status: order?.status,
-              dep: Departments.marketing,
-            })
-          )}`}
+          subTitle={`${t("status")}: ${
+            order?.status.toString() && t(RequestStatus[order?.status])
+          }`}
         >
           <button
             className="btn btn-warning   mr-2"

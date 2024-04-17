@@ -64,18 +64,18 @@ const LogysticsLogs = () => {
               <td>{t("received_for_work")}</td>
               <td>{order?.user_manager}</td>
               <td>
-                {order?.update_time?.[RequestStatus.confirmed]
-                  ? dayjs(order?.update_time?.[RequestStatus.confirmed]).format(
+                {order?.update_time?.[RequestStatus.received]
+                  ? dayjs(order?.update_time?.[RequestStatus.received]).format(
                       dateTimeFormat
                     )
                   : t("not_given")}
               </td>
               <td>
-                {!!dayjs(order?.update_time?.[RequestStatus.confirmed]).diff(
+                {!!dayjs(order?.update_time?.[RequestStatus.received]).diff(
                   order?.update_time?.[RequestStatus.new],
                   "minutes"
                 )
-                  ? dayjs(order?.update_time?.[RequestStatus.confirmed]).diff(
+                  ? dayjs(order?.update_time?.[RequestStatus.received]).diff(
                       order?.update_time?.[RequestStatus.new],
                       "minutes"
                     ) + " минута"
@@ -88,21 +88,19 @@ const LogysticsLogs = () => {
               <td>Отправлен в путь</td>
               <td>{order?.user_manager}</td>
               <td>
-                {order?.update_time?.[RequestStatus.sendToRepair]
+                {order?.update_time?.[RequestStatus.sent_to_fix]
                   ? dayjs(
-                      order?.update_time?.[RequestStatus.sendToRepair]
+                      order?.update_time?.[RequestStatus.sent_to_fix]
                     ).format(dateTimeFormat)
                   : t("not_given")}
               </td>
               <td>
-                {!!dayjs(order?.update_time?.[RequestStatus.sendToRepair]).diff(
-                  order?.update_time?.[RequestStatus.confirmed],
+                {!!dayjs(order?.update_time?.[RequestStatus.sent_to_fix]).diff(
+                  order?.update_time?.[RequestStatus.received],
                   "hours"
                 )
-                  ? dayjs(
-                      order?.update_time?.[RequestStatus.sendToRepair]
-                    ).diff(
-                      order?.update_time?.[RequestStatus.confirmed],
+                  ? dayjs(order?.update_time?.[RequestStatus.sent_to_fix]).diff(
+                      order?.update_time?.[RequestStatus.received],
                       "hours"
                     ) + t("hours")
                   : t("not_given")}
@@ -113,19 +111,19 @@ const LogysticsLogs = () => {
               <td>Завершение</td>
               <td>{order?.brigada?.name}</td>
               <td>
-                {order?.update_time?.[RequestStatus.done]
-                  ? dayjs(order?.update_time?.[RequestStatus.done]).format(
+                {order?.update_time?.[RequestStatus.finished]
+                  ? dayjs(order?.update_time?.[RequestStatus.finished]).format(
                       dateTimeFormat
                     )
                   : t("not_given")}
               </td>
               <td>
-                {!!dayjs(order?.update_time?.[RequestStatus.done]).diff(
-                  order?.update_time?.[RequestStatus.sendToRepair],
+                {!!dayjs(order?.update_time?.[RequestStatus.finished]).diff(
+                  order?.update_time?.[RequestStatus.sent_to_fix],
                   "hours"
                 )
-                  ? dayjs(order?.update_time?.[RequestStatus.done]).diff(
-                      order?.update_time?.[RequestStatus.sendToRepair],
+                  ? dayjs(order?.update_time?.[RequestStatus.finished]).diff(
+                      order?.update_time?.[RequestStatus.sent_to_fix],
                       "hours"
                     ) + ` ${t("hours")}`
                   : t("not_given")}
@@ -136,19 +134,19 @@ const LogysticsLogs = () => {
               <td>Отмена</td>
               <td>{order?.user_manager}</td>
               <td>
-                {order?.update_time?.[RequestStatus.rejected]
-                  ? dayjs(order?.update_time?.[RequestStatus.rejected]).format(
-                      dateTimeFormat
-                    )
+                {order?.update_time?.[RequestStatus.closed_denied]
+                  ? dayjs(
+                      order?.update_time?.[RequestStatus.closed_denied]
+                    ).format(dateTimeFormat)
                   : t("not_given")}
               </td>
               <td>
-                {!!dayjs(order?.update_time?.[RequestStatus.confirmed]).diff(
-                  order?.update_time?.[RequestStatus.rejected],
+                {!!dayjs(order?.update_time?.[RequestStatus.received]).diff(
+                  order?.update_time?.[RequestStatus.closed_denied],
                   "minutes"
-                ) && order?.update_time?.[RequestStatus.rejected]
-                  ? dayjs(order?.update_time?.[RequestStatus.confirmed]).diff(
-                      order?.update_time?.[RequestStatus.rejected],
+                ) && order?.update_time?.[RequestStatus.closed_denied]
+                  ? dayjs(order?.update_time?.[RequestStatus.received]).diff(
+                      order?.update_time?.[RequestStatus.closed_denied],
                       "minutes"
                     )
                   : t("not_given")}

@@ -7,7 +7,11 @@ import dayjs from "dayjs";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
-import { detectFileType, handleStatus, isValidHttpUrl } from "@/utils/helpers";
+import {
+  LogyticsStatusObj,
+  detectFileType,
+  isValidHttpUrl,
+} from "@/utils/helpers";
 import {
   Departments,
   FileType,
@@ -82,7 +86,7 @@ const ShowLogRequests = () => {
             {t("deny")}
           </button>
           <button
-            onClick={handleBrigada({ status: RequestStatus.confirmed })}
+            onClick={handleBrigada({ status: RequestStatus.received })}
             className="btn btn-success  "
             id="recieve_request"
           >
@@ -103,7 +107,7 @@ const ShowLogRequests = () => {
           )}
           {order?.status! < 3 && (
             <button
-              onClick={handleBrigada({ status: RequestStatus.done })}
+              onClick={handleBrigada({ status: RequestStatus.finished })}
               className="btn btn-success  "
             >
               {t("finish")}
@@ -116,7 +120,7 @@ const ShowLogRequests = () => {
   const renderModals = useMemo(() => {
     if (
       !!order?.status.toString() &&
-      (order?.status < RequestStatus.done || modal === ModalTypes.showPhoto)
+      (order?.status < RequestStatus.finished || modal === ModalTypes.showPhoto)
     )
       return <ShowRequestModals />;
   }, [order?.status, modal]);
@@ -133,30 +137,24 @@ const ShowLogRequests = () => {
       <Card className="overflow-hidden">
         <Header
           title={`${t("order")} №${id}`}
-          subTitle={`${t("status")}: ${t(
-            handleStatus({
-              status: order?.status,
-              dep: Departments.car_requests,
-            })
-          )}`}
+          subTitle={`${t("status")}: ${
+            order?.status.toString() && t(LogyticsStatusObj[order?.status])
+          }`}
         >
           <button
-            className="btn btn-warning   mr-2"
+            className="btn btn-warning mr-2"
             onClick={() => navigate(`/request/logs/${id}`)}
           >
             {t("logs")}
           </button>
-          <button onClick={handleBack} className="btn btn-primary  ">
+          <button onClick={handleBack} className="btn btn-primary">
             {t("back")}
           </button>
         </Header>
         <div className="content">
           <div className="row">
             <div className="col-md-6">
-              <table
-                id="w0"
-                className="table table-striped table-bordered detail-view"
-              >
+              <table className="table table-striped table-bordered detail-view">
                 <tbody>
                   <tr>
                     <th>{t("client")}</th>

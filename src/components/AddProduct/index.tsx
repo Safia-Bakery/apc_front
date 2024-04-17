@@ -43,7 +43,8 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
     id: Number(id),
     enabled: false,
   });
-  const isFinished = products?.status && products?.status < RequestStatus.done;
+  const isFinished =
+    products?.status && products?.status < RequestStatus.finished;
 
   const handleDelete = (id: number) => () => {
     deleteExp(id, {

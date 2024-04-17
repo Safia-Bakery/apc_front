@@ -9,7 +9,7 @@ import { useAppSelector } from "@/store/utils/types";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
-import { detectFileType, handleStatus } from "@/utils/helpers";
+import { detectFileType } from "@/utils/helpers";
 import { useForm } from "react-hook-form";
 import {
   Departments,
@@ -73,7 +73,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
   });
 
   const { data: brigadas } = useBrigadas({
-    enabled: order?.status! <= RequestStatus.confirmed,
+    enabled: order?.status! <= RequestStatus.received,
     sphere_status,
     department: Departments.APC,
   });
@@ -89,7 +89,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
   };
 
   const handleBrigada = ({ status }: { status: RequestStatus }) => {
-    if (status === RequestStatus.done) {
+    if (status === RequestStatus.finished) {
       synIIco(
         {
           request_id: Number(id),
@@ -157,7 +157,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
     order?.brigada?.is_outsource
       ? handleModal(ModalTypes.expense)
       : handleBrigada({
-          status: RequestStatus.done,
+          status: RequestStatus.finished,
         });
   };
 
@@ -165,7 +165,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
     if (edit && !!order?.brigada?.name && permissions?.[edit])
       return (
         <div className="flex justify-between gap-2">
-          {order?.status! < RequestStatus.done && (
+          {order?.status! < RequestStatus.finished && (
             <button
               onClick={() => handleModal(ModalTypes.cancelRequest)}
               className="btn btn-danger  "
@@ -174,11 +174,11 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
             </button>
           )}
           <div className="flex gap-2">
-            {order?.status! < RequestStatus.sendToRepair && (
+            {order?.status! < RequestStatus.sent_to_fix && (
               <button
                 onClick={() =>
                   handleBrigada({
-                    status: RequestStatus.sendToRepair,
+                    status: RequestStatus.sent_to_fix,
                   })
                 }
                 className="btn btn-warning   "
@@ -186,7 +186,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                 {t("pick_to_repair")}
               </button>
             )}
-            {order?.status! < RequestStatus.done && (
+            {order?.status! < RequestStatus.finished && (
               <button
                 id="fixed"
                 onClick={handleRequestClose}
@@ -242,7 +242,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
       addExp &&
       permissions?.[addExp] &&
       !isNew &&
-      order?.status !== RequestStatus.rejected
+      order?.status !== RequestStatus.closed_denied
     )
       return <RequestPhotoReport />;
   }, [permissions, order?.status, order?.file]);
@@ -250,7 +250,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
   const renderModal = useMemo(() => {
     if (
       !!order?.status.toString() &&
-      (order?.status < RequestStatus.done || modal === ModalTypes.showPhoto)
+      (order?.status < RequestStatus.finished || modal === ModalTypes.showPhoto)
     )
       return (
         <Suspend>
@@ -273,12 +273,9 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
       <Card className="overflow-hidden">
         <Header
           title={`${t("order")} №${id}`}
-          subTitle={`${t("status")}: ${t(
-            handleStatus({
-              status: order?.status,
-              dep: Departments.APC,
-            })
-          )}`}
+          subTitle={`${t("status")}: ${
+            order?.status.toString() && t(RequestStatus[order?.status])
+          }`}
         >
           <button
             className="btn btn-warning  "
@@ -461,7 +458,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
 
       {renderfileUploader}
 
-      {!isNew && order?.status !== RequestStatus.rejected && (
+      {!isNew && order?.status !== RequestStatus.closed_denied && (
         <AddItems addExp={addExp}>
           <div className="p-2">{renderSubmit}</div>
         </AddItems>

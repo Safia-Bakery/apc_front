@@ -54,7 +54,7 @@ const EditHRRequests = () => {
       return (
         <div className="float-end mb10">
           <button
-            onClick={() => onSubmit(RequestStatus.rejected)}
+            onClick={() => onSubmit(RequestStatus.closed_denied)}
             className="btn btn-danger mr-2"
           >
             {t("deny")}
@@ -117,7 +117,7 @@ const EditHRRequests = () => {
 
           <button
             className="btn btn-success w-full"
-            onClick={() => onSubmit(RequestStatus.confirmed)}
+            onClick={() => onSubmit(RequestStatus.received)}
           >
             {t("send")}
           </button>

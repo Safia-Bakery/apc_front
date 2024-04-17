@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { InventoryOrders } from "@/utils/types";
+import { InventoryOrders, RequestStatus } from "@/utils/types";
 import Pagination from "@/components/Pagination";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx, handleStatus, requestRows } from "@/utils/helpers";
+import { handleIdx, requestRows } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import ItemsCount from "@/components/ItemsCount";
 import useQueryString from "custom/useQueryString";
@@ -80,7 +80,7 @@ const InventoryOrderedTools = () => {
                   <td>{order?.user?.full_name}</td>
                   <td>
                     {!!order.status.toString() &&
-                      t(handleStatus({ status: order?.status }))}
+                      t(RequestStatus[order?.status])}
                   </td>
                   <td>{dayjs(order?.created_at).format(dateMonthYear)}</td>
                 </tr>

@@ -178,6 +178,3 @@ const ITFilter: FC = () => {
 };
 
 export default ITFilter;
-function SelectValue() {
-  throw new Error("Function not implemented.");
-}

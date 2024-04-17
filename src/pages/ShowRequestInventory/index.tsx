@@ -9,7 +9,7 @@ import { useAppSelector } from "@/store/utils/types";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
-import { detectFileType, handleStatus } from "@/utils/helpers";
+import { detectFileType } from "@/utils/helpers";
 import {
   Departments,
   FileType,
@@ -55,7 +55,7 @@ const ShowRequestInventory = () => {
     attach(
       {
         request_id: Number(id),
-        status: RequestStatus.confirmed,
+        status: RequestStatus.received,
       },
       {
         onSuccess: () => {
@@ -72,7 +72,7 @@ const ShowRequestInventory = () => {
       alert(t("select_productt"));
     else
       attach(
-        { request_id: Number(id), status: RequestStatus.done },
+        { request_id: Number(id), status: RequestStatus.finished },
         {
           onSuccess: () => {
             orderRefetch();
@@ -87,7 +87,7 @@ const ShowRequestInventory = () => {
     if (
       permissions?.[MainPermissions.edit_requests_inventory] &&
       !!order?.status.toString() &&
-      order?.status < RequestStatus.done
+      order?.status < RequestStatus.finished
     )
       return (
         <div className="float-end mb10">
@@ -115,7 +115,7 @@ const ShowRequestInventory = () => {
   }, [permissions, order?.status, handleFinish]);
 
   const renderModals = useMemo(() => {
-    if (!!order?.status.toString() && order?.status < RequestStatus.done)
+    if (!!order?.status.toString() && order?.status < RequestStatus.finished)
       return <ShowRequestModals />;
   }, [order?.status]);
 
@@ -126,12 +126,9 @@ const ShowRequestInventory = () => {
       <Card className="overflow-hidden">
         <Header
           title={`${t("order")} №${id}`}
-          subTitle={`${t("status")}: ${t(
-            handleStatus({
-              status: order?.status,
-              dep: Departments.inventory,
-            })
-          )}`}
+          subTitle={`${t("status")}: ${
+            order?.status.toString() && t(RequestStatus[order?.status])
+          }`}
         >
           <button
             className="btn btn-warning   mr-2"

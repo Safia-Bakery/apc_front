@@ -142,7 +142,7 @@ const ITModals = () => {
           ...(!!car_id && { car_id }),
           ...(!!pause_reason && { pause_reason }),
           ...(!!item && { brigada_id: Number(item?.id) }),
-          ...(status === RequestStatus.rejected_wating_confirmation && {
+          ...(status === RequestStatus.denied && {
             deny_reason:
               fixedReason < 4 ? t(CancelReason[fixedReason]) : cancel_reason,
           }),
@@ -160,8 +160,8 @@ const ITModals = () => {
 
   const renderModal = () => {
     if (
-      (order?.status! !== RequestStatus.done &&
-        order?.status !== RequestStatus.rejected) ||
+      (order?.status! !== RequestStatus.finished &&
+        order?.status !== RequestStatus.closed_denied) ||
       modal === ModalTypes.showPhoto
     )
       switch (modal) {
@@ -190,7 +190,7 @@ const ITModals = () => {
                         <button
                           id="attach_to_bridaga"
                           onClick={handleBrigada({
-                            status: RequestStatus.confirmed,
+                            status: RequestStatus.received,
                             item,
                           })}
                           className="btn btn-success   btn-sm"
@@ -208,7 +208,7 @@ const ITModals = () => {
             <form
               onSubmit={handleSubmit(
                 handleBrigada({
-                  status: RequestStatus.rejected_wating_confirmation,
+                  status: RequestStatus.denied,
                 })
               )}
               className={"w-[420px]"}

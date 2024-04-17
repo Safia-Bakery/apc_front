@@ -306,14 +306,14 @@ export interface ValueLabel {
 
 export enum RequestStatus {
   new,
-  confirmed,
-  sendToRepair,
-  done,
-  rejected,
+  received,
+  sent_to_fix,
+  finished,
+  closed_denied,
   paused,
   solved,
-  reopened,
-  rejected_wating_confirmation,
+  resumed,
+  denied,
 }
 export type RequestFilter = {
   id?: number | string;

@@ -9,13 +9,8 @@ import { useAppSelector } from "@/store/utils/types";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
+import { MarketingStatusObj, detectFileType } from "@/utils/helpers";
 import {
-  detectFileType,
-  handleDepartment,
-  handleStatus,
-} from "@/utils/helpers";
-import {
-  Departments,
   FileType,
   MainPermissions,
   MarketingSubDep,
@@ -104,7 +99,7 @@ const ShowMarketingRequest = () => {
             {t("deny")}
           </button>
           <button
-            onClick={handleBrigada({ status: RequestStatus.confirmed })}
+            onClick={handleBrigada({ status: RequestStatus.received })}
             className="btn btn-success  "
             id="recieve_request"
           >
@@ -116,19 +111,19 @@ const ShowMarketingRequest = () => {
     if (permissions?.[edit])
       return (
         <div className="float-end mb10">
-          {order?.status! < RequestStatus.sendToRepair && (
+          {order?.status! < RequestStatus.sent_to_fix && (
             <button
               onClick={handleBrigada({
-                status: RequestStatus.sendToRepair,
+                status: RequestStatus.sent_to_fix,
               })}
               className="btn btn-warning   mr-2"
             >
               {t("send_to_orderer")}
             </button>
           )}
-          {order?.status! < RequestStatus.done && (
+          {order?.status! < RequestStatus.finished && (
             <button
-              onClick={handleBrigada({ status: RequestStatus.done })}
+              onClick={handleBrigada({ status: RequestStatus.finished })}
               className="btn btn-success  "
             >
               {t("finish")}
@@ -141,7 +136,7 @@ const ShowMarketingRequest = () => {
   const renderModal = useMemo(() => {
     if (
       !!order?.status.toString() &&
-      (order?.status < RequestStatus.done || modal === ModalTypes.showPhoto)
+      (order?.status < RequestStatus.finished || modal === ModalTypes.showPhoto)
     )
       return <ShowRequestModals />;
   }, [order?.status, modal]);
@@ -157,12 +152,9 @@ const ShowMarketingRequest = () => {
       <Card className="overflow-hidden">
         <Header
           title={`${t("order")} №${id}`}
-          subTitle={`${t("status")}: ${t(
-            handleStatus({
-              status: order?.status,
-              dep: Departments.marketing,
-            })
-          )}`}
+          subTitle={`${t("status")}: ${
+            order?.status.toString() && t(MarketingStatusObj[order?.status])
+          }`}
         >
           <div className="flex gap-2">
             <button
@@ -201,13 +193,8 @@ const ShowMarketingRequest = () => {
                   <tr>
                     <th>{t("type")}</th>
                     <td>
-                      {t(
-                        handleDepartment({
-                          ...(!!order?.category?.sub_id
-                            ? { sub: order?.category?.sub_id }
-                            : { dep: order?.category?.department }),
-                        }) || ""
-                      )}
+                      {order?.category?.sub_id &&
+                        t(MarketingSubDep[order?.category?.sub_id])}
                     </td>
                   </tr>
                   <tr>

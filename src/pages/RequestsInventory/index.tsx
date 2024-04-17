@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Departments, Order } from "@/utils/types";
+import { Departments, Order, RequestStatus } from "@/utils/types";
 import Loading from "@/components/Loader";
 import Pagination from "@/components/Pagination";
 import { useState } from "react";
@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx, handleStatus, requestRows } from "@/utils/helpers";
+import { handleIdx, requestRows } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import InventoryFilter from "./filter";
 import ItemsCount from "@/components/ItemsCount";
@@ -104,14 +104,7 @@ const RequestsInventory = () => {
                     </ul>
                   </td>
                   <td>{dayjs(order?.created_at).format(dateMonthYear)}</td>
-                  <td>
-                    {t(
-                      handleStatus({
-                        status: order?.status,
-                        dep: Departments.inventory,
-                      })
-                    )}
-                  </td>
+                  <td>{t(RequestStatus[order.status])}</td>
                   <td>{order?.user_manager}</td>
                 </tr>
               ))}

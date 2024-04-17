@@ -249,7 +249,7 @@ const TelegramAddProduct = () => {
           {!btn && (
             <button
               type="button"
-              onClick={handleFinishOrder({ status: RequestStatus.done })}
+              onClick={handleFinishOrder({ status: RequestStatus.finished })}
               className="btn btn-success   w-full"
             >
               {t("fixed")}

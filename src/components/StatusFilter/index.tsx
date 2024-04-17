@@ -1,7 +1,6 @@
 import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
 import useQueryString from "@/hooks/custom/useQueryString";
 import { ValueLabel } from "@/utils/types";
-import { useTranslation } from "react-i18next";
 import Select from "react-select";
 
 type Props = {

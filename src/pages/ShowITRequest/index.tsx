@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
-import { detectFileType, handleStatus } from "@/utils/helpers";
+import { detectFileType } from "@/utils/helpers";
 import {
   Departments,
   FileType,
@@ -33,7 +33,7 @@ import { useTranslation } from "react-i18next";
 import { dateTimeFormat } from "@/utils/keys";
 import ITModals from "./modals";
 
-const unchangable = [RequestStatus.done, RequestStatus.rejected];
+const unchangable = [RequestStatus.finished, RequestStatus.closed_denied];
 
 interface Props {
   edit: MainPermissions;
@@ -59,7 +59,8 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
   } = useOrder({ id: Number(id) });
 
   const { isFetching: brigadaFetching } = useBrigadas({
-    enabled: !!order?.status.toString() && order?.status < RequestStatus.done,
+    enabled:
+      !!order?.status.toString() && order?.status < RequestStatus.finished,
     department: Departments.IT,
     ...(!!sphere && { sphere }),
   });
@@ -129,7 +130,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
       return (
         <div className="flex justify-between mb10 gap-2">
           {!unchangable.includes(order!?.status) &&
-          order.status !== RequestStatus.rejected_wating_confirmation ? (
+          order.status !== RequestStatus.denied ? (
             <button
               onClick={handleModal(ModalTypes.cancelRequest)}
               className="btn btn-danger"
@@ -143,11 +144,11 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
             {order?.status! > RequestStatus.new && (
               <div className="flex gap-2">
                 {order?.status! === RequestStatus.solved ||
-                order?.status! === RequestStatus.rejected_wating_confirmation ||
+                order?.status! === RequestStatus.denied ||
                 order?.status! === RequestStatus.paused ? (
                   <button
                     onClick={handleBrigada({
-                      status: RequestStatus.reopened,
+                      status: RequestStatus.resumed,
                     })}
                     className="btn btn-warning"
                   >
@@ -162,7 +163,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                   </button>
                 )}
                 {order.status !== RequestStatus.solved &&
-                  order.status !== RequestStatus.rejected_wating_confirmation &&
+                  order.status !== RequestStatus.denied &&
                   order.status !== RequestStatus.paused && (
                     <button
                       id={"fixed"}
@@ -251,9 +252,9 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
       <Card className="overflow-hidden">
         <Header
           title={`${t("request")} №${id}`}
-          subTitle={`${t("status")}: ${t(
-            handleStatus({ status: order?.status })
-          )}`}
+          subTitle={`${t("status")}: ${
+            order?.status.toString() && t(RequestStatus[order?.status])
+          }`}
         >
           <div className="flex gap-2">
             <button
@@ -461,13 +462,9 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                   <tr>
                     <th>{t("date_of_canceling")}</th>
                     <td>
-                      {order?.update_time[
-                        RequestStatus.rejected_wating_confirmation
-                      ]
+                      {order?.update_time[RequestStatus.denied]
                         ? dayjs(
-                            order?.update_time[
-                              RequestStatus.rejected_wating_confirmation
-                            ]
+                            order?.update_time[RequestStatus.denied]
                           ).format(dateTimeFormat)
                         : t("not_given")}
                     </td>
@@ -475,7 +472,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                   <tr>
                     <th>{t("reopen")}</th>
                     <td>
-                      {order?.update_time[RequestStatus.reopened]
+                      {order?.update_time[RequestStatus.resumed]
                         ? t("yes")
                         : t("no")}
                     </td>

@@ -7,7 +7,7 @@ import Pagination from "@/components/Pagination";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx, handleStatus, requestRows } from "@/utils/helpers";
+import { handleIdx, requestRows } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import ITFilter from "./filter";
 import ItemsCount from "@/components/ItemsCount";
@@ -147,7 +147,7 @@ const RequestsIT = () => {
                   <td>
                     {!!(
                       order?.update_time[RequestStatus.paused] ||
-                      order?.update_time[RequestStatus.reopened]
+                      order?.update_time[RequestStatus.resumed]
                     )
                       ? t("yes")
                       : t("no")}
@@ -164,7 +164,7 @@ const RequestsIT = () => {
                   <td width={50} className="text-center">
                     {order?.comments?.[0]?.rating}
                   </td>
-                  <td>{t(handleStatus({ status: order?.status }))}</td>
+                  <td>{t(RequestStatus[order.status])}</td>
                   <td>{dayjs(order?.created_at).format(dateTimeFormat)}</td>
                 </tr>
               ))}

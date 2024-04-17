@@ -2,7 +2,7 @@ import { useMemo, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx, handleStatus } from "@/utils/helpers";
+import { handleIdx } from "@/utils/helpers";
 import { RequestStatus } from "@/utils/types";
 import cl from "classnames";
 import Loading from "@/components/Loader";
@@ -69,11 +69,11 @@ const ShowInventoryTool = () => {
   };
 
   const renderBtns = useMemo(() => {
-    if (!!order?.status?.toString() && order?.status < RequestStatus.done)
+    if (!!order?.status?.toString() && order?.status < RequestStatus.finished)
       return (
         <div className="float-end mb10">
           <button
-            onClick={() => onSubmit(RequestStatus.done)}
+            onClick={() => onSubmit(RequestStatus.finished)}
             className="btn btn-success  "
           >
             {t("finish")}
@@ -87,11 +87,9 @@ const ShowInventoryTool = () => {
       <Card className="overflow-hidden">
         <Header
           title={`${t("purchasing_requests")} №${id}`}
-          subTitle={`${t("status")}: ${t(
-            handleStatus({
-              status: order?.status,
-            })
-          )}`}
+          subTitle={`${t("status")}: ${
+            order?.status.toString() && t(RequestStatus[order?.status])
+          }`}
         >
           <button className="btn btn-success mr-2" onClick={downloadAsPdf}>
             {t("export_to_excel")}

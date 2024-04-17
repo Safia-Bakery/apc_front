@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx, handleStatus, requestRows } from "@/utils/helpers";
+import { MarketingStatusObj, handleIdx, requestRows } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import MarketingFilter from "./filter";
 import ItemsCount from "@/components/ItemsCount";
@@ -54,6 +54,8 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
   const rate = useQueryString("rate");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
+
+  console.log(MarketingStatusObj, "MarketingStatusObj");
 
   const {
     data: requests,
@@ -125,12 +127,8 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
                   <td>{dayjs(order?.created_at).format(dateTimeFormat)}</td>
                   <td>{order?.comments?.[0]?.rating}</td>
                   <td>
-                    {t(
-                      handleStatus({
-                        status: order?.status,
-                        dep: Departments.marketing,
-                      })
-                    )}
+                    {order.status.toString() &&
+                      t(MarketingStatusObj[order.status])}
                   </td>
                   <td>
                     {order?.user_manager ? order?.user_manager : t("not_given")}

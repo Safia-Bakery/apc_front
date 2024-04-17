@@ -2,9 +2,15 @@ import { FC, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { Category, Departments, MainPermissions, Sphere } from "@/utils/types";
+import {
+  Category,
+  Departments,
+  MainPermissions,
+  MarketingSubDep,
+  Sphere,
+} from "@/utils/types";
 import Pagination from "@/components/Pagination";
-import { handleDepartment, handleIdx } from "@/utils/helpers";
+import { handleIdx } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import TableViewBtn from "@/components/TableViewBtn";
 import useCategories from "@/hooks/useCategories";
@@ -106,11 +112,9 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
                       </td>
                       <td>
                         {t(
-                          handleDepartment({
-                            ...(!!category?.sub_id
-                              ? { sub: category?.sub_id }
-                              : { dep: category?.department }),
-                          })
+                          category?.sub_id
+                            ? MarketingSubDep[category?.sub_id]
+                            : Departments[category.department!]
                         )}
                       </td>
                       <td>

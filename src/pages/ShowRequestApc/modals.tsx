@@ -101,7 +101,7 @@ const ApcModals = () => {
           ...(!!price && { price: +price }),
           ...(!!pause_reason && { pause_reason }),
           ...(!!item && { brigada_id: Number(item?.id) }),
-          ...(status === RequestStatus.rejected && {
+          ...(status === RequestStatus.closed_denied && {
             deny_reason:
               fixedReason < 4 ? t(CancelReason[fixedReason]) : cancel_reason,
           }),
@@ -144,7 +144,7 @@ const ApcModals = () => {
                       <button
                         id="attach_to_bridaga"
                         onClick={handleBrigada({
-                          status: RequestStatus.confirmed,
+                          status: RequestStatus.received,
                           item,
                         })}
                         className="btn btn-success   btn-sm"
@@ -161,7 +161,7 @@ const ApcModals = () => {
         return (
           <form
             onSubmit={handleSubmit(
-              handleBrigada({ status: RequestStatus.rejected })
+              handleBrigada({ status: RequestStatus.closed_denied })
             )}
           >
             <Header title="deny_reason">
@@ -202,7 +202,7 @@ const ApcModals = () => {
         return (
           <form
             onSubmit={handleSubmit(
-              handleBrigada({ status: RequestStatus.done })
+              handleBrigada({ status: RequestStatus.finished })
             )}
           >
             <Header title="add_expense">

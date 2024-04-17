@@ -15,6 +15,7 @@ import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import { MainPermissions } from "@/utils/types";
 import useUpdateEffect from "custom/useUpdateEffect";
+import StatusFilter from "@/components/StatusFilter";
 
 interface Props {
   sub_id?: number | string;
@@ -128,11 +129,13 @@ const MarketingFilter: FC<Props> = ({ sub_id }) => {
       </td>
       <td className="p-0">
         <BaseInputs className="!m-1">
-          <MainSelect
+          {/* <MainSelect
             values={RequestMarkStatusArr}
             value={request_status?.toString()}
             onChange={(e) => navigate({ request_status: e.target.value })}
-          />
+          /> */}
+
+          <StatusFilter options={RequestMarkStatusArr} />
         </BaseInputs>
       </td>
       <td className="p-0">

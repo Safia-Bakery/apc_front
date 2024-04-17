@@ -68,58 +68,34 @@ export const queryClient = new QueryClient({
   },
 });
 
-export const handleStatus = ({
-  status,
-  dep,
-}: {
-  status: RequestStatus | undefined;
-  dep?: Departments;
-}) => {
-  switch (status) {
-    case RequestStatus.confirmed: {
-      if (dep === Departments.car_requests) return "received_for_work";
-      else return "received";
-    }
-    case RequestStatus.done:
-      return "finished";
-    case RequestStatus.sendToRepair: {
-      if (dep === Departments.car_requests) return "in_the_way";
-      if (dep === Departments.marketing) return "sent_to_orderer";
-      else return "sent_to_fix";
-    }
-    case RequestStatus.rejected:
-      return "closed_denied";
-    case RequestStatus.paused:
-      return "paused";
-    case RequestStatus.solved:
-      return "solved";
-    case RequestStatus.reopened:
-      return "resumed";
-    case RequestStatus.rejected_wating_confirmation:
-      return "denied";
+export const MarketingStatusObj: any = {
+  ...RequestStatus,
+  ...{ [RequestStatus.sent_to_fix]: "sent_to_orderer" },
+};
 
-    default:
-      return "new";
-  }
+export const LogyticsStatusObj: any = {
+  ...RequestStatus,
+  ...{ [RequestStatus.sent_to_fix]: "in_the_way" },
+  ...{ [RequestStatus.received]: "received_for_work" },
 };
 
 export const RequestStatusArr = [
   { value: RequestStatus.new, label: "Новый" },
-  { value: RequestStatus.confirmed, label: "Принят" },
-  { value: RequestStatus.sendToRepair, label: "Отправлен для ремонта" },
-  { value: RequestStatus.done, label: "Закончен" },
-  { value: RequestStatus.rejected, label: "Отклонен" },
+  { value: RequestStatus.received, label: "Принят" },
+  { value: RequestStatus.sent_to_fix, label: "Отправлен для ремонта" },
+  { value: RequestStatus.finished, label: "Закончен" },
+  { value: RequestStatus.closed_denied, label: "Отклонен" },
 ];
 
 export const ITRequestStatusArr = [
   { value: RequestStatus.new, label: "Новый" },
-  { value: RequestStatus.confirmed, label: "Принятые" },
+  { value: RequestStatus.received, label: "Принятые" },
   { value: RequestStatus.solved, label: "Решен" },
-  { value: RequestStatus.rejected_wating_confirmation, label: "Отклонен" },
+  { value: RequestStatus.denied, label: "Отклонен" },
   { value: RequestStatus.paused, label: "Остановлен" },
-  { value: RequestStatus.done, label: "Закончен" },
-  { value: RequestStatus.reopened, label: "Переоткрыт" },
-  { value: RequestStatus.rejected, label: "Закрыт, отменен" },
+  { value: RequestStatus.finished, label: "Закончен" },
+  { value: RequestStatus.resumed, label: "Переоткрыт" },
+  { value: RequestStatus.closed_denied, label: "Закрыт, отменен" },
 ];
 
 export const UrgentValsArr = [
@@ -130,53 +106,60 @@ export const UrgentValsArr = [
 export const RatingFilterVals = [{ id: 1, name: "to_filter" }];
 
 export const RequestMarkStatusArr = [
-  { id: RequestStatus.new, name: "new" },
-  { id: RequestStatus.confirmed, name: "received" },
-  { id: RequestStatus.sendToRepair, name: "sent_to_orderer" },
-  { id: RequestStatus.done, name: "finished" },
-  { id: RequestStatus.rejected, name: "denied" },
+  { value: RequestStatus.new, label: "Новый" },
+  { value: RequestStatus.received, label: "Принятые" },
+  { value: RequestStatus.sent_to_fix, label: "Отправлен заказчику" },
+  { value: RequestStatus.finished, label: "Закончен" },
+  { value: RequestStatus.closed_denied, label: "Закончен" },
 ];
 
 export const RequestLogStatusArr = [
   { value: RequestStatus.new, label: "Новый" },
-  { value: RequestStatus.confirmed, label: "Принят в работу" },
-  { value: RequestStatus.sendToRepair, label: "В пути" },
-  { value: RequestStatus.done, label: "Закончен" },
-  { value: RequestStatus.rejected, label: "Отклонен" },
+  { value: RequestStatus.received, label: "Принят в работу" },
+  { value: RequestStatus.sent_to_fix, label: "В пути" },
+  { value: RequestStatus.finished, label: "Закончен" },
+  { value: RequestStatus.closed_denied, label: "Отклонен" },
 ];
 export const SystemArr = [
   { id: 0, name: "web_site" },
   { id: 1, name: "tg_bot" },
 ];
 export const requestRows: BaseObjType = {
-  [RequestStatus.done]: "table-success",
-  [RequestStatus.confirmed]: "table-primary",
+  [RequestStatus.finished]: "table-success",
+  [RequestStatus.received]: "table-primary",
   [RequestStatus.new]: "",
-  [RequestStatus.rejected]: "table-danger",
-  [RequestStatus.sendToRepair]: "table-warning",
+  [RequestStatus.closed_denied]: "table-danger",
+  [RequestStatus.sent_to_fix]: "table-warning",
   [RequestStatus.paused]: "table-gray",
   [RequestStatus.solved]: "table-green",
-  [RequestStatus.rejected_wating_confirmation]: "table-waiting",
-  [RequestStatus.reopened]: "table-warning",
+  [RequestStatus.denied]: "table-waiting",
+  [RequestStatus.resumed]: "table-warning",
 };
+type ObjBoolean = { [key: string]: boolean };
 export const detectFileType = (url: string) => {
   const extension = url.split(".").pop()?.toLowerCase();
-  const imageExtensions = [
-    "jpg",
-    "jpeg",
-    "png",
-    "gif",
-    "bmp",
-    "heic",
-    "img",
-    "tiff",
-    "svg",
-  ];
-  const videoExtensions = ["mp4", "avi", "mkv", "mov", "webm"];
+  const imageExtensions: ObjBoolean = {
+    jpg: true,
+    jpeg: true,
+    png: true,
+    gif: true,
+    bmp: true,
+    heic: true,
+    img: true,
+    tiff: true,
+    svg: true,
+  };
+  const videoExtensions: ObjBoolean = {
+    mp4: true,
+    avi: true,
+    mkv: true,
+    mov: true,
+    webm: true,
+  };
 
-  if (extension && imageExtensions.includes(extension)) {
+  if (extension && imageExtensions[extension]) {
     return FileType.photo;
-  } else if (extension && videoExtensions.includes(extension)) {
+  } else if (extension && videoExtensions[extension]) {
     return FileType.video;
   } else {
     return FileType.other;
@@ -184,54 +167,6 @@ export const detectFileType = (url: string) => {
 };
 
 export const isMobile = window.innerWidth <= 960;
-
-export const handleDepartment = ({
-  dep,
-  sub,
-}: {
-  dep?: Departments | undefined;
-  sub?: MarketingSubDep;
-}) => {
-  if (dep)
-    switch (dep) {
-      case Departments.APC:
-        return "АРС";
-      case Departments.inventory:
-        return "inventory";
-      case Departments.marketing:
-        return "marketing";
-      case Departments.IT:
-        return "IT";
-      case Departments.car_requests:
-        return "car_requests";
-      case Departments.request_for_food:
-        return "request_for_food";
-      case Departments.cctv:
-        return "cctv";
-      default:
-        return "";
-    }
-  else
-    switch (sub) {
-      case MarketingSubDep.designers:
-        return "designers";
-      case MarketingSubDep.complects:
-        return "complects";
-      case MarketingSubDep.local_marketing:
-        return "local_marketingg";
-      case MarketingSubDep.promo_production:
-        return "promo_production";
-      case MarketingSubDep.pos:
-        return "pos";
-      case MarketingSubDep.branch_env:
-        return "branch_env";
-      case MarketingSubDep.ter_managers:
-        return "ter_managers";
-
-      default:
-        return "";
-    }
-};
 
 export enum HRRequestTypes {
   offers = 3,
@@ -265,6 +200,6 @@ export const handleIdx = (index: number) => {
 
 export const handleHRStatus: BaseObjType = {
   [RequestStatus.new]: "new",
-  [RequestStatus.confirmed]: "answered",
-  [RequestStatus.rejected]: "denied",
+  [RequestStatus.received]: "answered",
+  [RequestStatus.closed_denied]: "denied",
 };
