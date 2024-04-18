@@ -56,7 +56,7 @@ const ITModals = () => {
   });
 
   const { data: brigades, isFetching: brigadaLoading } = useBrigadas({
-    enabled: false,
+    enabled: modal === ModalTypes.assign,
     ...(!!dep && { department: dep }),
     ...(!!sphere_status && { sphere_status }),
   });

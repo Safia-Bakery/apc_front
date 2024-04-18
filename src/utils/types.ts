@@ -587,6 +587,9 @@ export type BaseObjType = {
   [key: string | number]: string;
 };
 
+export type BaseReturnBoolean = {
+  [key: number]: boolean;
+};
 export interface MarketingDepartmentTypes {
   pie: BaseMarkObjType;
   table: BaseMarkObjType;

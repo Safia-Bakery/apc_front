@@ -134,7 +134,7 @@ const localization = {
       minutes: "мин",
       request: "Заявка",
       handled_curr_month: "Обработано за текущий месяц",
-      handled_last_30: "handled_curr_month",
+      handled_last_30: "Обработано за последних 30 дней",
       request_stats: "Статистика по заказам",
       select_date: "Выберите дату!",
       select_date_time_of_event_start: "Укажите дата и время начало событий",

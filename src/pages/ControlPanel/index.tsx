@@ -322,7 +322,7 @@ const ControlPanel = () => {
 
   return (
     <>
-      <Card className={cl(styles.card, "!mb-2")}>
+      <Card className={cl(styles.card, "!mb-2 !min-h-fit")}>
         <div className="header text-center">
           <h4 className="title m-0">
             {t("welcome")} {user?.full_name}

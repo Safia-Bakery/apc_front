@@ -10,12 +10,12 @@ import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
 import { detectFileType } from "@/utils/helpers";
 import {
+  BaseReturnBoolean,
   Departments,
   FileType,
   MainPermissions,
   ModalTypes,
   RequestStatus,
-  Sphere,
 } from "@/utils/types";
 import UploadComponent, { FileItem } from "@/components/FileUpload";
 import { reportImgSelector, uploadReport } from "reducers/selects";
@@ -33,12 +33,21 @@ import { useTranslation } from "react-i18next";
 import { dateTimeFormat } from "@/utils/keys";
 import ITModals from "./modals";
 
-const unchangable = [RequestStatus.finished, RequestStatus.closed_denied];
+const unchangable: BaseReturnBoolean = {
+  [RequestStatus.finished]: true,
+  [RequestStatus.closed_denied]: true,
+};
 
 interface Props {
   edit: MainPermissions;
   attaching: MainPermissions;
 }
+
+const unchangableObj: BaseReturnBoolean = {
+  [RequestStatus.solved]: true,
+  [RequestStatus.denied]: true,
+  [RequestStatus.paused]: true,
+};
 
 const ShowITRequest: FC<Props> = ({ attaching }) => {
   const { t } = useTranslation();
@@ -57,13 +66,6 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
     isLoading: orderLoading,
     isFetching: orderFetching,
   } = useOrder({ id: Number(id) });
-
-  const { isFetching: brigadaFetching } = useBrigadas({
-    enabled:
-      !!order?.status.toString() && order?.status < RequestStatus.finished,
-    department: Departments.IT,
-    ...(!!sphere && { sphere }),
-  });
 
   const handleModal = (modal: ModalTypes) => () => navigateParams({ modal });
 
@@ -126,10 +128,10 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
   }, []);
 
   const renderBtns = useMemo(() => {
-    if (!!order?.status.toString() && !unchangable.includes(order.status))
+    if (!!order?.status.toString() && !unchangable[order.status])
       return (
         <div className="flex justify-between mb10 gap-2">
-          {!unchangable.includes(order!?.status) &&
+          {!unchangable[order!?.status] &&
           order.status !== RequestStatus.denied ? (
             <button
               onClick={handleModal(ModalTypes.cancelRequest)}
@@ -143,9 +145,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
           <div>
             {order?.status! > RequestStatus.new && (
               <div className="flex gap-2">
-                {order?.status! === RequestStatus.solved ||
-                order?.status! === RequestStatus.denied ||
-                order?.status! === RequestStatus.paused ? (
+                {unchangableObj[order?.status!] ? (
                   <button
                     onClick={handleBrigada({
                       status: RequestStatus.resumed,
@@ -157,24 +157,22 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                 ) : (
                   <button
                     onClick={handleModal(ModalTypes.pause)}
-                    className="btn btn-warning  "
+                    className="btn btn-warning"
                   >
                     {t("pause")}
                   </button>
                 )}
-                {order.status !== RequestStatus.solved &&
-                  order.status !== RequestStatus.denied &&
-                  order.status !== RequestStatus.paused && (
-                    <button
-                      id={"fixed"}
-                      onClick={handleBrigada({
-                        status: RequestStatus.solved,
-                      })}
-                      className="btn btn-success"
-                    >
-                      {t("to_solve")}
-                    </button>
-                  )}
+                {!unchangableObj[order.status] && (
+                  <button
+                    id={"fixed"}
+                    onClick={handleBrigada({
+                      status: RequestStatus.solved,
+                    })}
+                    className="btn btn-success"
+                  >
+                    {t("to_solve")}
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -183,7 +181,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
   }, [permissions, order?.status]);
 
   const renderAssignment = useMemo(() => {
-    if (permissions?.[attaching] && !unchangable.includes(order!?.status)) {
+    if (permissions?.[attaching] && !unchangable[order!?.status]) {
       if (order?.brigada?.name) {
         return (
           <div className="flex items-center justify-between">
@@ -211,11 +209,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
   }, [permissions, order?.status, order?.brigada?.name]);
 
   const renderfileUploader = useMemo(() => {
-    if (
-      permissions?.[addExp] &&
-      !isNew &&
-      !unchangable.includes(order!?.status)
-    )
+    if (permissions?.[addExp] && !isNew && !unchangable[order!?.status])
       return (
         <Card className="overflow-hidden">
           <Header title={"add_photo_report"} />
@@ -239,13 +233,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
       );
   }, [upladedFiles, permissions, order?.status, order?.file]);
 
-  if (
-    uploadLoading ||
-    attachLoading ||
-    orderLoading ||
-    brigadaFetching ||
-    orderFetching
-  )
+  if (uploadLoading || attachLoading || orderLoading || orderFetching)
     return <Loading />;
   return (
     <>
@@ -305,7 +293,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                           )}
                         </span>
 
-                        {!unchangable.includes(order!?.status) && (
+                        {!unchangable[order!?.status] && (
                           <button
                             className={cl("btn btn-primary", styles.changeBtn)}
                             onClick={handleModal(ModalTypes.changeCateg)}
@@ -329,7 +317,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                       <div className="flex items-center justify-between">
                         <span>{order?.fillial?.parentfillial?.name}</span>
 
-                        {!unchangable.includes(order!?.status) && (
+                        {!unchangable[order!?.status] && (
                           <button
                             onClick={handleModal(ModalTypes.changeBranch)}
                             className={cl("btn btn-primary", styles.changeBtn)}
@@ -413,7 +401,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                           {dayjs(order?.finishing_time).format(dateTimeFormat)}
                         </span>
 
-                        {!unchangable.includes(order!?.status) && (
+                        {!unchangable[order!?.status] && (
                           <TableViewBtn
                             onClick={handleModal(ModalTypes.assingDeadline)}
                           />
@@ -509,7 +497,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                               </div>
                             ))}
                         </div>
-                        {!unchangable.includes(order!?.status) && (
+                        {!unchangable[order!?.status] && (
                           <TableViewBtn
                             onClick={handleModal(ModalTypes.leaveMessage)}
                           />
