@@ -55,8 +55,6 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
 
-  console.log(MarketingStatusObj, "MarketingStatusObj");
-
   const {
     data: requests,
     isLoading: orderLoading,

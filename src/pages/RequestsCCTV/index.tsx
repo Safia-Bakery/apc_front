@@ -80,12 +80,6 @@ const RequestsCCTV = () => {
     return <CCTVFilter />;
   }, []);
 
-  // useEffect(() => {
-  //   refetch();
-  // }, []);
-
-  console.log(RequestStatus, "RequestStatus");
-
   return (
     <Card>
       <Header title={t("requests_for_cctv")}>
