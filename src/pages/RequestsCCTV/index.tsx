@@ -83,15 +83,15 @@ const RequestsCCTV = () => {
   return (
     <Card>
       <Header title={t("requests_for_cctv")}>
-        <button onClick={downloadAsPdf} className="btn btn-primary   mr-2">
+        <button onClick={downloadAsPdf} className="btn btn-primary mr-2">
           {t("export_to_excel")}
         </button>
-        <button onClick={() => navigate("add")} className="btn btn-success  ">
+        <button onClick={() => navigate("add")} className="btn btn-success">
           {t("add")}
         </button>
       </Header>
 
-      <div className="table-responsive grid-view content ">
+      <div className="table-responsive grid-view content">
         <ItemsCount data={requests} />
         <table ref={tableRef} className="table table-hover">
           <TableHead

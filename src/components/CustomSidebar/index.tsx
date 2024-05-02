@@ -67,7 +67,7 @@ export const Playground: FC = () => {
         image="https://user-images.githubusercontent.com/25878302/144499035-2911184c-76d3-4611-86e7-bc4e8ff84ff5.jpg"
         rtl={false}
         breakPoint="md"
-        backgroundColor={hexToRgba("#447df7", 0.8)}
+        backgroundColor={"rgba(68, 125, 247, 0.8)"}
       >
         <div className="flex flex-col h-full">
           <div className="flex-1">
@@ -130,7 +130,7 @@ export const Playground: FC = () => {
                               />
                             }
                             active={pathname.includes(subroute.url!)}
-                            className={cl(styles.content, {})}
+                            className={styles.content}
                             key={subroute.url}
                           >
                             {t(subroute.name)}
