@@ -72,12 +72,12 @@ const ClientsComments = () => {
   return (
     <Card>
       <Header title="clients_comments">
-        <button className="btn btn-primary   mr-2" onClick={downloadAsPdf}>
+        <button className="btn btn-primary mr-2" onClick={downloadAsPdf}>
           {t("export_to_excel")}
         </button>
         {permission?.[MainPermissions.add_client_comment] && (
           <button
-            className="btn btn-success  "
+            className="btn btn-success"
             id="add_master"
             onClick={() => navigate("add")}
           >

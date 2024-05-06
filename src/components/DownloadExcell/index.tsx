@@ -4,8 +4,8 @@ import { useState } from "react";
 import useQueryString from "@/hooks/custom/useQueryString";
 import ITExcellMutation from "@/hooks/mutation/ITExcell";
 import { useTranslation } from "react-i18next";
-import { baseURL } from "@/main";
 import Loading from "../Loader";
+import useBackExcel from "@/hooks/custom/useBackExcel";
 
 const DownloadExcell = () => {
   const { t } = useTranslation();
@@ -26,15 +26,7 @@ const DownloadExcell = () => {
         },
         {
           onSuccess: (data) => {
-            if (data.file_name) {
-              const url = `${baseURL}/${data.file_name}`;
-              const a = document.createElement("a");
-              a.href = url;
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-              URL.revokeObjectURL(url);
-            }
+            if (data.file_name) useBackExcel(data.file_name);
           },
         }
       );
@@ -60,7 +52,7 @@ const DownloadExcell = () => {
         />
       </div>
       <button
-        className="btn btn-primary   mr-2"
+        className="btn btn-primary mr-2"
         type="button"
         onClick={handleActive}
       >

@@ -21,8 +21,8 @@ import { useTranslation } from "react-i18next";
 const AddStaffRequest = () => {
   const { t } = useTranslation();
   const { mutate, isPending } = requestMutation();
-  const branchJson = useQueryString("branch");
   const sphere_status = Number(useQueryString("sphere_status"));
+  const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
   const [date, $date] = useState<string>(dayjs().add(1, "day").toISOString());
 

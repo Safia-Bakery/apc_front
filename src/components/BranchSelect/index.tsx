@@ -52,7 +52,7 @@ const BranchSelect: FC<Props> = ({
     if (!!query && data?.items)
       $items(
         data.items.map((item) => {
-          return {
+        return {
             value: item.id,
             label: item.name,
           };

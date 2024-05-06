@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MainPermissions, Order, RequestStatus } from "@/utils/types";
 import Pagination from "@/components/Pagination";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
@@ -18,9 +18,9 @@ import StaffFilter from "./filter";
 import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
 import useStaffExcell from "@/hooks/useStaffExcell";
-import { baseURL } from "@/main";
 import { dateMonthYear, staffCategoryId, yearMonthDate } from "@/utils/keys";
 import { useTranslation } from "react-i18next";
+import DownloadExcel from "./downloadExcel";
 
 const column = [
   { name: "№", key: "" },
@@ -40,7 +40,6 @@ const RequestsStaff = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [sort, $sort] = useState<Order[]>();
-  const [excelFile, $excelFile] = useState(false);
   const permission = useAppSelector(permissionSelector);
   const sphere_status = useQueryString("sphere_status");
   const currentPage = Number(useQueryString("page")) || 1;
@@ -57,13 +56,8 @@ const RequestsStaff = () => {
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
 
-  const {
-    data: totals,
-    isFetching: excellFtching,
-    isLoading: excellLoading,
-  } = useStaffExcell({
+  const { data: totals, isFetching: excellFtching } = useStaffExcell({
     date: dayjs(!!arrival_date ? arrival_date : tomorrow).format(yearMonthDate),
-    file: excelFile,
   });
 
   const {
@@ -86,22 +80,6 @@ const RequestsStaff = () => {
     ...(!!portion && { portion }),
   });
 
-  useEffect(() => {
-    if (excelFile && totals?.url) {
-      const url = `${baseURL}/${totals.url}`;
-      const a = document.createElement("a");
-      a.href = url;
-      document.body.appendChild(a);
-      a.click();
-
-      $excelFile(false);
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-  }, [excelFile, totals?.url]);
-
-  const handleExcell = () => $excelFile(true);
-
   const renderFilter = useMemo(() => {
     return <StaffFilter />;
   }, []);
@@ -109,8 +87,6 @@ const RequestsStaff = () => {
   const renderModal = useMemo(() => {
     return <BotTimeModal />;
   }, []);
-
-  if (excellLoading) return <Loading />;
 
   return (
     <Card>
@@ -129,13 +105,11 @@ const RequestsStaff = () => {
             </h2>
           </div>
           <div className="flex flex-col gap-2 justify-between">
-            <button className="btn btn-success  " onClick={handleExcell}>
-              {t("export_to_excel")}
-            </button>
+            <DownloadExcel />
             {permission?.[MainPermissions.staff_modal_time] && (
               <button
                 onClick={() => navigateParams({ time_modal: 1 })}
-                className="btn btn-primary  "
+                className="btn btn-primary"
               >
                 {t("bot_settings")}
               </button>

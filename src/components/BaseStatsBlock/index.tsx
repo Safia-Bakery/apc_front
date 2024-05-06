@@ -25,11 +25,11 @@ const BaseStatsBlock = ({ routesArr, title }: Props) => {
   return (
     <Card>
       <Header title={sub_title || t(title)}>
-        <button className="btn btn-primary  " onClick={goBack}>
+        <button className="btn btn-primary" onClick={goBack}>
           {t("back")}
         </button>
 
-        <button className="btn btn-success   ml-2" id="export_to_excell">
+        <button className="btn btn-success ml-2" id="export_to_excell">
           {t("export_to_excel")}
         </button>
       </Header>
