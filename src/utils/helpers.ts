@@ -1,12 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import {
-  BaseObjType,
-  Departments,
-  EPresetTimes,
-  FileType,
-  MarketingSubDep,
-  RequestStatus,
-} from "./types";
+import { BaseObjType, EPresetTimes, FileType, RequestStatus } from "./types";
 import useQueryString from "custom/useQueryString";
 
 export const itemsPerPage = 50;
@@ -63,7 +56,6 @@ export const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       gcTime: EPresetTimes.MINUTE * 10,
       staleTime: EPresetTimes.SECOND * 10,
-      // refetchOnReconnect: true,
     },
   },
 });

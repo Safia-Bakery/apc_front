@@ -506,6 +506,8 @@ export enum MainPermissions {
   get_apc_expenses_categories = 121,
   add_apc_expenses_categories = 122,
   edit_apc_expenses_categories = 123,
+
+  bot_settings = 124,
 }
 export enum MarketingSubDep {
   all,

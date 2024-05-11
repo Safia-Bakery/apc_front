@@ -371,6 +371,8 @@ const localization = {
       search: "Поиск",
 
       select_productt: "Выберите товар!",
+
+      additions: "Дополнительно"
     },
   },
   uz: {

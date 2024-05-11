@@ -78,6 +78,8 @@ const ApcExpenseCategories = lazy(() => import("@/pages/ApcExpenseCategories"));
 const ApcExpenses = lazy(() => import("@/pages/ApcExpenses"));
 const EditAddApcExpense = lazy(() => import("@/pages/EditAddApcExpense"));
 
+const BotSettings = lazy(() => import("@/pages/BotSettings"));
+
 export const sidebarRoutes: SidebarType[] = [
   {
     name: "heat_map",
@@ -465,11 +467,23 @@ export const sidebarRoutes: SidebarType[] = [
         icon: "/assets/icons/branch.svg",
         screen: MainPermissions.get_fillials_list,
       },
+
+      {
+        name: "additions",
+        url: "/additions",
+        icon: "/assets/icons/settings.svg",
+        screen: MainPermissions.bot_settings,
+      },
     ],
   },
 ];
 
 export const routes = [
+  {
+    element: <BotSettings />,
+    path: "/additions",
+    screen: MainPermissions.bot_settings,
+  },
   {
     element: <ApcExpenseCategories />,
     path: "/expense-categories",
