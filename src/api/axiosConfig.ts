@@ -7,6 +7,7 @@ import axios, {
 import { Store } from "redux";
 import { logoutHandler } from "reducers/auth";
 import { RootState } from "@/store/rootConfig";
+import { EPresetTimes } from "@/utils/types";
 
 interface BaseUrlParams {
   url: string;
@@ -25,7 +26,7 @@ class BaseAPIClient {
     this.cancelTokenSource = axios.CancelToken.source();
     this.axiosInstance = axios.create({
       baseURL,
-      timeout: 5000,
+      timeout: EPresetTimes.MINUTE,
     });
     this.store = store;
 
