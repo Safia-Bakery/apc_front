@@ -11,6 +11,7 @@ const DownloadExcell = () => {
   const { t } = useTranslation();
   const [active, $active] = useState(false);
   const request_status = Number(useQueryString("request_status"));
+  const category_id = Number(useQueryString("category_id"));
   const { register, getValues } = useForm();
 
   const { mutate, isPending } = ITExcellMutation();
@@ -23,6 +24,7 @@ const DownloadExcell = () => {
           start_date,
           finish_date,
           ...(!!request_status && { status: request_status }),
+          ...(!!category_id && { category_id }),
         },
         {
           onSuccess: (data) => {

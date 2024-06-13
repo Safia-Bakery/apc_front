@@ -5,6 +5,7 @@ import { errorToast } from "@/utils/toast";
 interface Body {
   start_date: string;
   finish_date: string;
+  category_id?: number;
   status?: number;
 }
 
