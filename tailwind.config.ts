@@ -24,6 +24,8 @@ module.exports = {
         selected: "rgba(0, 0, 0, 0.51)",
         tgGray: "#C3D2DC",
         link: "#007bff",
+        invHeader: "#BEA087",
+        invBtn: "#DCC38B",
       },
       boxShadow: {
         selected: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
