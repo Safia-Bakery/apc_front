@@ -60,6 +60,9 @@ const InvSelectOrderType = lazy(
 const InventoryLayout = lazy(() => import("./webApp/layouts/inventory"));
 const InvArchieve = lazy(() => import("@/webApp/pages/InvArchieve"));
 const InvAddOrder = lazy(() => import("@/webApp/pages/InvAddOrder"));
+const ChooseTools = lazy(() => import("@/webApp/pages/ChooseTools"));
+const InvCart = lazy(() => import("@/webApp/pages/InvCart"));
+const InvSuccess = lazy(() => import("@/webApp/pages/InvSuccess"));
 
 dayjs.locale("ru");
 
@@ -402,6 +405,30 @@ const App = () => {
               </Suspend>
             }
             path={"add-order"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <ChooseTools />
+              </Suspend>
+            }
+            path={"tool/:id"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <InvCart />
+              </Suspend>
+            }
+            path={"cart"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <InvSuccess />
+              </Suspend>
+            }
+            path={"success/:id"}
           />
         </Route>
       </Route>

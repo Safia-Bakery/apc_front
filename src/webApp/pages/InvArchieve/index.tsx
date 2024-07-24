@@ -47,23 +47,23 @@ const InvArchieve = () => {
           <div className="px-6 py-3 rounded-xl bg-white" key={idx}>
             {/* card */}
             <div className="flex w-full gap-2">
-              <span className="text-[#898989] flex flex-1">Номер заявки</span>
+              <span className="text-tgTextGray flex flex-1">Номер заявки</span>
               <span className=" text-right flex flex-1 justify-end">
                 123456
               </span>
             </div>
             <div className="flex w-full gap-2 mt-1">
-              <span className="text-[#898989] flex flex-1">Филиал</span>
+              <span className="text-tgTextGray flex flex-1">Филиал</span>
               <span className=" text-right flex flex-1 justify-end">ZENIT</span>
             </div>
             <div className="flex w-full gap-2 mt-1">
-              <span className="text-[#898989] flex flex-1">Дата</span>
+              <span className="text-tgTextGray flex flex-1">Дата</span>
               <span className=" text-right flex flex-1 justify-end">
                 10.07.2024 — 09:41
               </span>
             </div>
             <div className="flex w-full gap-2 mt-1">
-              <span className="text-[#898989] flex flex-1">Статус</span>
+              <span className="text-tgTextGray flex flex-1">Статус</span>
               <span className=" text-right flex flex-1 justify-end">
                 В ожидании
               </span>
@@ -100,12 +100,12 @@ const InvArchieve = () => {
                   className="flex w-full gap-2 mt-1 border-dashed last:border-none border-b border-[#E4E4E4] py-1"
                 >
                   <span className="flex flex-1">Инвентарь №{childIdx + 1}</span>
-                  <span className="text-[#898989] text-right flex flex-1 justify-end">
+                  <span className="text-tgTextGray text-right flex flex-1 justify-end">
                     {childIdx + 1} x
                   </span>
                 </div>
               ))}
-              <p className="text-[#898989] mt-2">
+              <p className="text-tgTextGray mt-2">
                 Комментарии: тестовый комментарии
               </p>
             </div>

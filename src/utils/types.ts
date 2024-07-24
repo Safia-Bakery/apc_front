@@ -672,17 +672,20 @@ export type InventoryTools = {
   image: string;
   ftime?: number | null;
   status?: number;
+  count: number;
 };
+
+export interface ToolsFolderType {
+  num: string;
+  code: string;
+  parent_id: string;
+  description: string;
+  id: string;
+  name: string;
+  category: string;
+}
 export interface ToolsEarchType {
-  folders: {
-    num: string;
-    code: string;
-    parent_id: string;
-    description: string;
-    id: string;
-    name: string;
-    category: string;
-  }[];
+  folders: ToolsFolderType[];
   tools: InventoryTools[];
 }
 

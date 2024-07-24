@@ -25,7 +25,9 @@ const InvHeader = ({ title, rightChild, goBack }: Props) => {
         <div />
       )}
 
-      <h4 className="text-center m-auto text-white font-normal">{title}</h4>
+      <h4 className="text-center m-auto text-white font-normal text-xl">
+        {title}
+      </h4>
 
       <div className="max-h-7 max-w-7 h-full w-full">{rightChild}</div>
     </header>

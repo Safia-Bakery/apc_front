@@ -6,16 +6,19 @@ type Props = {
   to: string;
   children?: ReactNode;
   className?: string;
+  disabled?: boolean;
 };
 
-const CustomLink = ({ to, children, className }: Props) => {
-  return (
+const CustomLink = ({ to, children, className, disabled }: Props) => {
+  return !disabled ? (
     <Link
       to={"/tg/inventory-request/" + to + window?.location?.search}
       className={cl(className, "!text-start")}
     >
       {children}
     </Link>
+  ) : (
+    <div className={cl(className, "!text-start opacity-30")}>{children}</div>
   );
 };
 

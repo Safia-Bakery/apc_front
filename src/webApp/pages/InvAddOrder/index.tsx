@@ -1,5 +1,5 @@
 import { branchSelector } from "@/store/reducers/webInventory";
-import { useAppDispatch, useAppSelector } from "@/store/utils/types";
+import { useAppSelector } from "@/store/utils/types";
 import cl from "classnames";
 import { useState } from "react";
 import BranchModal from "./BranchModal";
@@ -7,12 +7,14 @@ import InvButton, { InvBtnType } from "@/webApp/components/InvButton";
 import InvHeader from "@/webApp/components/InvHeader";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import arrow from "/assets/icons/primaryArrow.svg";
-import SelectTool from "./SelectTool";
+import SelectTool from "@/webApp/components/SelectTool";
+import useToolsIerarch from "@/hooks/useToolsIerarch";
 
 const InvAddOrder = () => {
-  const dispatch = useAppDispatch();
   const selectedBranch = useAppSelector(branchSelector);
   const [branchModal, $branchModal] = useState(false);
+
+  useToolsIerarch({});
 
   const closeModal = () => $branchModal(false);
   const handleBranch = () => {
@@ -25,7 +27,7 @@ const InvAddOrder = () => {
       <div className="bg-white" onClick={() => $branchModal(true)}>
         <WebAppContainer className="flex items-center justify-between">
           <h4
-            className={cl("font-normal text-[#BEA087]", {
+            className={cl("font-normal text-[#BEA087] text-xl", {
               ["!font-bold"]: !selectedBranch?.id,
             })}
           >

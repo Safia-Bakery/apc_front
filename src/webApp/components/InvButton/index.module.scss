@@ -14,6 +14,10 @@
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   color: #ffffff;
   min-width: 140px;
+
+  &[disabled] {
+    background: #d2d0d0;
+  }
 }
 
 .primary {
@@ -24,12 +28,13 @@
 .white {
   background-color: white;
   color: #bea087;
+  border: 1px solid #dcc38b !important;
 }
 
 .medium {
   height: 40px;
 }
 
-.primary {
+.base {
   height: 55px;
 }
