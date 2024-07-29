@@ -17,14 +17,6 @@ import { sidebarHandler, toggleSidebar } from "@/store/reducers/selects";
 import { MainPermissions } from "@/utils/types";
 import "./index.scss";
 
-const hexToRgba = (hex: string, alpha: number) => {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-};
-
 export const Playground: FC = () => {
   const { t } = useTranslation();
   const { pathname } = useLocation();
@@ -161,16 +153,6 @@ export const Playground: FC = () => {
                     )}
                   </Fragment>
                 ))}
-              {/* 
-              <SubMenu label="Maps" icon={<Global />}>
-                <MenuItem> Google maps</MenuItem>
-                <MenuItem> Open street maps</MenuItem>
-              </SubMenu>
-              <SubMenu label="E-commerce" icon={<ShoppingCart />}>
-                <MenuItem> Product</MenuItem>
-                <MenuItem> Orders</MenuItem>
-                <MenuItem> Credit card</MenuItem>
-              </SubMenu> */}
             </Menu>
           </div>
         </div>
