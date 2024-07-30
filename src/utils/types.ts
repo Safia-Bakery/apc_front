@@ -508,6 +508,14 @@ export enum MainPermissions {
   edit_apc_expenses_categories = 123,
 
   bot_settings = 124,
+
+  //   get_tg_link = 125, todo
+  // add_tg_link = 126,
+  // edit_tg_link = 127,
+
+  get_tg_link = 58,
+  add_tg_link = 58,
+  edit_tg_link = 58,
 }
 export enum MarketingSubDep {
   all,
@@ -672,17 +680,20 @@ export type InventoryTools = {
   image: string;
   ftime?: number | null;
   status?: number;
+  count: number;
 };
+
+export interface ToolsFolderType {
+  num: string;
+  code: string;
+  parent_id: string;
+  description: string;
+  id: string;
+  name: string;
+  category: string;
+}
 export interface ToolsEarchType {
-  folders: {
-    num: string;
-    code: string;
-    parent_id: string;
-    description: string;
-    id: string;
-    name: string;
-    category: string;
-  }[];
+  folders: ToolsFolderType[];
   tools: InventoryTools[];
 }
 

@@ -34,7 +34,7 @@ const routeNameMappings: { [key: string]: string } = {
   "requests-designer": "designers",
   "requests-apc-retail": "requests_apc_retail",
   "requests-apc-fabric": "requests_apc_fabric",
-  "marketing-local_marketing": "local_marketingg",
+  "marketing-local_marketing": "video_photo",
   "marketing-promo_production": "promo_production",
   "marketing-pos": "pos",
   "marketing-complects": "complects",

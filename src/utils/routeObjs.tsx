@@ -221,10 +221,10 @@ export const sidebarRoutes: SidebarType[] = [
       },
 
       // {
-      //   name: "remains_in_stock",
-      //   url: "/items-in-stock-it",
+      //   name: "tg_links",
+      //   url: "/tg-link-it",
       //   icon: "/assets/icons/remains-in-stock.svg",
-      //   screen: MainPermissions.it_remains_in_stock,
+      //   screen: MainPermissions.get_tg_link,
       // },
       {
         name: "statistics",
@@ -288,7 +288,7 @@ export const sidebarRoutes: SidebarType[] = [
         screen: MainPermissions.get_design_request,
       },
       {
-        name: "local_marketingg",
+        name: "video_photo",
         url: `/marketing-${MarketingSubDep[2]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_locmar_requests,

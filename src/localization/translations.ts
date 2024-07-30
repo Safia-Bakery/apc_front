@@ -108,7 +108,7 @@ const localization = {
       branch_env: "Внешний вид филиала",
       complects: "Комплекты",
       designers: "Проектная работа для дизайнеров",
-      local_marketingg: "Локальный маркетинг",
+      video_photo: "Видеография / Фото",
       ter_managers: "Для Тер.Менеджеров",
       pos: "POS-Материалы",
       promo_production: "Промо-продукция",
@@ -372,7 +372,8 @@ const localization = {
 
       select_productt: "Выберите товар!",
 
-      additions: "Дополнительно"
+      additions: "Дополнительно",
+      tg_links: "Телеграмм ссылки",
     },
   },
   uz: {
