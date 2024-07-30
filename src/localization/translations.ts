@@ -100,7 +100,7 @@ const localization = {
       marketing_branch_env: "Маркетинг(Внешний вид филиала)",
       marketing_complects: "Маркетинг(Комплекты)",
       marketing_project_works: "Маркетинг(Проектная работа для дизайнеров)",
-      local_marketing: "Маркетинг(Локальный маркетинг)",
+      local_marketing: "Маркетинг(Видеография / Фото)",
       marketing_ter_managers: "Маркетинг(Для Тер.Менеджеров)",
       marketing_pos: "Маркетинг(POS-Материалы)",
       marketing_promo_production: "Маркетинг(Промо-продукция)",

@@ -534,7 +534,7 @@ export const MarketingSubDepRu = [
     id: MarketingSubDep.designers, // 1
   },
   {
-    name: "Локальный маркетинг",
+    name: "Видеография / Фото",
     id: MarketingSubDep.local_marketing, // 2
   },
   {

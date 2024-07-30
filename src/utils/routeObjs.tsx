@@ -662,7 +662,7 @@ export const routes = [
       <RequestsMarketing
         add={MainPermissions.add_locmar_requests}
         edit={MainPermissions.edit_locmar_requests}
-        title="Локальный маркетинг"
+        title="Видеография / Фото"
         sub_id={MarketingSubDep.local_marketing}
       />
     ),
