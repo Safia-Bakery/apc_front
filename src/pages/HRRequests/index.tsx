@@ -37,7 +37,7 @@ const handleTitle: BaseObjType = {
 const HRRequests = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [sort, $sort] = useState<FAQRequestTypes["items"]>();
+  const [sort, $sort] = useState<FAQRequestTypes[]>();
   const permission = useAppSelector(permissionSelector);
   const page = Number(useQueryString("page")) || 1;
   const sphere = Number(useQueryString("sphere"));

@@ -158,6 +158,8 @@ const localization = {
       answer: "Ответ",
       edit: "Изменить",
       edit_role: "Изменить роль",
+      edit_link: "Изменить ссылку",
+      chat_id: "Чат ID",
       car_model: "Модель машины",
       edit_user: "Изменить пользователь",
       login: "Логин",

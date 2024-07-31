@@ -36,6 +36,7 @@ const routeNameMappings: { [key: string]: string } = {
   "requests-apc-fabric": "requests_apc_fabric",
   "marketing-local_marketing": "video_photo",
   "marketing-promo_production": "promo_production",
+  "tg-link-it": "tg_links",
   "marketing-pos": "pos",
   "marketing-complects": "complects",
   "marketing-designers": "designers",

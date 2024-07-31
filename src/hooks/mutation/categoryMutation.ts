@@ -14,6 +14,7 @@ interface Body {
   ftime?: number;
   parent_id?: number;
   is_child?: boolean;
+  telegram_id?: number;
 }
 
 const categoryMutation = () => {

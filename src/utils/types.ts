@@ -7,12 +7,20 @@ export enum EPresetTimes {
   TEN_DAYS = DAY * 10,
 }
 
-export interface BasePaginatedRes {
+export interface BasePaginatedResDeprecated {
   total: number;
   page: number;
   size: number;
   pages: number;
 }
+
+export type BasePaginateRes<T> = {
+  items: T[];
+  total: number;
+  page: number;
+  size: number;
+  pages: number;
+};
 
 export interface UserTypes {
   username: string;
@@ -125,7 +133,7 @@ export interface Order {
   cars?: CarsTypes;
 }
 
-export interface OrderType extends BasePaginatedRes {
+export interface OrderType extends BasePaginatedResDeprecated {
   items: Order[];
 }
 
@@ -136,7 +144,7 @@ export interface StockItem {
   total_price: number;
 }
 
-export interface RemainsInStockType extends BasePaginatedRes {
+export interface RemainsInStockType extends BasePaginatedResDeprecated {
   items: StockItem[];
 }
 
@@ -151,7 +159,7 @@ export interface BranchType {
   fillial_department: BranchType[];
   is_fabrica: boolean;
 }
-export interface BranchTypes extends BasePaginatedRes {
+export interface BranchTypes extends BasePaginatedResDeprecated {
   items: BranchType[];
 }
 export interface BrigadaType {
@@ -174,7 +182,7 @@ export interface BrigadaType {
     status: number;
   }[];
 }
-export interface BrigadaTypes extends BasePaginatedRes {
+export interface BrigadaTypes extends BasePaginatedResDeprecated {
   items: BrigadaType[];
 }
 export interface CreateOrderType {
@@ -206,6 +214,12 @@ export interface RoleTypes {
   name: string;
   id: number | string;
 }
+
+export interface TgLinkTypes {
+  id?: number;
+  name?: string;
+  chat_id?: string;
+}
 export interface PermissionTypes {
   page_name: string;
   actions: {
@@ -234,11 +248,12 @@ export interface Category {
   sub_id?: number;
   file: string;
   ftime: number;
+  telegram_id?: number;
   parent_id?: number | null;
   is_child?: boolean | null;
 }
 
-export interface CategoryTypes extends BasePaginatedRes {
+export interface CategoryTypes extends BasePaginatedResDeprecated {
   items: Category[];
 }
 
@@ -257,7 +272,7 @@ export interface ExpenditureType {
   request_id: number;
   amount: number;
 }
-export interface ExpendituresTypes extends BasePaginatedRes {
+export interface ExpendituresTypes extends BasePaginatedResDeprecated {
   items: ExpenditureType[];
 }
 
@@ -278,7 +293,7 @@ export interface Comments {
   rating: number;
 }
 
-export interface CommentTypes extends BasePaginatedRes {
+export interface CommentTypes extends BasePaginatedResDeprecated {
   items: Comments[];
 }
 
@@ -295,7 +310,7 @@ export interface UsersType {
   status: number;
 }
 
-export interface UsersTypes extends BasePaginatedRes {
+export interface UsersTypes extends BasePaginatedResDeprecated {
   items: UsersType[];
 }
 
@@ -351,7 +366,7 @@ export type ToolItemType = {
   status: number;
 };
 
-export interface ToolTypes extends BasePaginatedRes {
+export interface ToolTypes extends BasePaginatedResDeprecated {
   items: ToolItemType[];
 }
 
@@ -509,13 +524,9 @@ export enum MainPermissions {
 
   bot_settings = 124,
 
-  //   get_tg_link = 125, todo
-  // add_tg_link = 126,
-  // edit_tg_link = 127,
-
-  get_tg_link = 58,
-  add_tg_link = 58,
-  edit_tg_link = 58,
+  get_tg_link = 125,
+  edit_tg_link = 126,
+  add_tg_link = 127,
 }
 export enum MarketingSubDep {
   all,
@@ -697,7 +708,7 @@ export interface ToolsEarchType {
   tools: InventoryTools[];
 }
 
-export interface InventoryOrders extends BasePaginatedRes {
+export interface InventoryOrders extends BasePaginatedResDeprecated {
   items: {
     id: number;
     status: number;
@@ -743,7 +754,7 @@ export interface InventoryOrders extends BasePaginatedRes {
   }[];
 }
 
-export interface InventoryOrder extends BasePaginatedRes {
+export interface InventoryOrder extends BasePaginatedResDeprecated {
   items: {
     id: number;
     status: number;
@@ -774,19 +785,14 @@ export interface FAQTypes {
   answer?: string;
   status?: number;
 }
-export interface MainFAQTypes extends BasePaginatedRes {
-  items: FAQTypes[];
-}
 
-export interface FAQRequestTypes extends BasePaginatedRes {
-  items: {
-    id: number;
-    comments: string;
-    status: number;
-    created_at: string;
-    sphere: number;
-    answer: string;
-  }[];
+export interface FAQRequestTypes {
+  id: number;
+  comments: string;
+  status: number;
+  created_at: string;
+  sphere: number;
+  answer: string;
 }
 
 export interface MainStatTypes {
@@ -867,7 +873,7 @@ export interface BaseExpenseTypes {
   };
 }
 
-export interface ExpensesTypes extends BasePaginatedRes {
+export interface ExpensesTypes extends BasePaginatedResDeprecated {
   items: BaseExpenseTypes[];
 }
 export interface ExpenseCategoriesTypes {
