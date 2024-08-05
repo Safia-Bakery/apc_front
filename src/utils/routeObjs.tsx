@@ -79,6 +79,8 @@ const ApcExpenses = lazy(() => import("@/pages/ApcExpenses"));
 const EditAddApcExpense = lazy(() => import("@/pages/EditAddApcExpense"));
 
 const BotSettings = lazy(() => import("@/pages/BotSettings"));
+const EditAddTgLink = lazy(() => import("@/pages/EditAddTgLink"));
+const ITTgLinks = lazy(() => import("@/pages/ITTgLinks"));
 
 export const sidebarRoutes: SidebarType[] = [
   {
@@ -220,12 +222,12 @@ export const sidebarRoutes: SidebarType[] = [
         screen: MainPermissions.get_categ_it,
       },
 
-      // {
-      //   name: "remains_in_stock",
-      //   url: "/items-in-stock-it",
-      //   icon: "/assets/icons/remains-in-stock.svg",
-      //   screen: MainPermissions.it_remains_in_stock,
-      // },
+      {
+        name: "tg_links",
+        url: "/tg-link-it",
+        icon: "/assets/icons/remains-in-stock.svg",
+        screen: MainPermissions.get_tg_link,
+      },
       {
         name: "statistics",
         url: "/statistics-it",
@@ -288,7 +290,7 @@ export const sidebarRoutes: SidebarType[] = [
         screen: MainPermissions.get_design_request,
       },
       {
-        name: "local_marketingg",
+        name: "video_photo",
         url: `/marketing-${MarketingSubDep[2]}`,
         icon: "/assets/icons/subOrder.svg",
         screen: MainPermissions.get_locmar_requests,
@@ -485,6 +487,21 @@ export const routes = [
     screen: MainPermissions.bot_settings,
   },
   {
+    element: <ITTgLinks />,
+    path: "/tg-link-it",
+    screen: MainPermissions.get_tg_link,
+  },
+  {
+    element: <EditAddTgLink />,
+    path: "/tg-link-it/add",
+    screen: MainPermissions.add_tg_link,
+  },
+  {
+    element: <EditAddTgLink />,
+    path: "/tg-link-it/:id",
+    screen: MainPermissions.edit_tg_link,
+  },
+  {
     element: <ApcExpenseCategories />,
     path: "/expense-categories",
     screen: MainPermissions.get_apc_expenses_categories,
@@ -662,7 +679,7 @@ export const routes = [
       <RequestsMarketing
         add={MainPermissions.add_locmar_requests}
         edit={MainPermissions.edit_locmar_requests}
-        title="Локальный маркетинг"
+        title="Видеография / Фото"
         sub_id={MarketingSubDep.local_marketing}
       />
     ),

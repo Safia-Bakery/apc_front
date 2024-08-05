@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/main";
 import { tokenSelector } from "reducers/auth";
 import { useAppSelector } from "@/store/utils/types";
-import { FAQRequestTypes } from "@/utils/types";
+import { BasePaginateRes, FAQRequestTypes } from "@/utils/types";
 import { HRRequestTypes } from "@/utils/helpers";
 
 interface Body {
@@ -20,7 +20,9 @@ export const useFAQRequests = ({ enabled, ...params }: Body) => {
     queryFn: () =>
       apiClient
         .get({ url: "/hr/request", params })
-        .then(({ data: response }) => response as FAQRequestTypes),
+        .then(
+          ({ data: response }) => response as BasePaginateRes<FAQRequestTypes>
+        ),
     enabled: enabled && !!token,
   });
 };

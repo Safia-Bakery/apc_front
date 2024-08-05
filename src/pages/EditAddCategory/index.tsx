@@ -18,6 +18,8 @@ import { imageConverter } from "@/utils/helpers";
 import { baseURL } from "@/main";
 import useQueryString from "@/hooks/custom/useQueryString";
 import { useTranslation } from "react-i18next";
+import useTgLinks from "@/hooks/useTgLinks";
+import Loading from "@/components/Loader";
 
 interface Props {
   sphere_status?: Sphere;
@@ -30,6 +32,9 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
   const navigate = useNavigate();
   const parent_id = Number(useQueryString("parent_id"));
   const parent_name = useQueryString("parent_name");
+  const { data: tg_links, isLoading: linkLoading } = useTgLinks({
+    enabled: Number(dep) === Departments.IT,
+  });
 
   const goBack = () => navigate(-1);
 
@@ -59,8 +64,17 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
   } = useForm();
 
   const onSubmit = () => {
-    const { name, description, urgent, status, sub_id, files, time, is_child } =
-      getValues();
+    const {
+      name,
+      description,
+      urgent,
+      status,
+      sub_id,
+      files,
+      time,
+      is_child,
+      telegram_id,
+    } = getValues();
     mutate(
       {
         name,
@@ -69,6 +83,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
         urgent: +!!urgent,
         department: dep,
         is_child,
+        telegram_id,
         sphere_status: Number(sphere) || sphere_status || Sphere.retail,
         ...(!!time && { ftime: +time }),
         ...(id && { id: +id }),
@@ -98,6 +113,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
         sub_id: Number(category?.sub_id),
         time: category.ftime,
         is_child: !!category.is_child,
+        telegram_id: category.telegram_id,
       });
     }
   }, [category, reset]);
@@ -130,12 +146,13 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
     else return parent_name ? `${t("add_to")} ${parent_name}` : "add";
   }, []);
 
-  if (isLoading && !!id) return;
+  if ((isLoading && !!id) || (linkLoading && Number(dep) === Departments.IT))
+    return <Loading />;
 
   return (
     <Card className="overflow-hidden pb-3">
       <Header title={renderTitle}>
-        <button className="btn btn-primary  " onClick={goBack}>
+        <button className="btn btn-primary" onClick={goBack}>
           {t("back")}
         </button>
       </Header>
@@ -166,6 +183,14 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
           </BaseInput>
         )}
 
+        {Number(dep) === Departments.IT && (
+          <BaseInput label="telegram_id">
+            <MainSelect
+              register={register("telegram_id")}
+              values={tg_links?.items as any}
+            />
+          </BaseInput>
+        )}
         <BaseInput label="description">
           <MainTextArea register={register("description")} />
         </BaseInput>

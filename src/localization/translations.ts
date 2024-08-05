@@ -100,7 +100,7 @@ const localization = {
       marketing_branch_env: "Маркетинг(Внешний вид филиала)",
       marketing_complects: "Маркетинг(Комплекты)",
       marketing_project_works: "Маркетинг(Проектная работа для дизайнеров)",
-      local_marketing: "Маркетинг(Локальный маркетинг)",
+      local_marketing: "Маркетинг(Видеография / Фото)",
       marketing_ter_managers: "Маркетинг(Для Тер.Менеджеров)",
       marketing_pos: "Маркетинг(POS-Материалы)",
       marketing_promo_production: "Маркетинг(Промо-продукция)",
@@ -108,7 +108,7 @@ const localization = {
       branch_env: "Внешний вид филиала",
       complects: "Комплекты",
       designers: "Проектная работа для дизайнеров",
-      local_marketingg: "Локальный маркетинг",
+      video_photo: "Видеография / Фото",
       ter_managers: "Для Тер.Менеджеров",
       pos: "POS-Материалы",
       promo_production: "Промо-продукция",
@@ -158,6 +158,8 @@ const localization = {
       answer: "Ответ",
       edit: "Изменить",
       edit_role: "Изменить роль",
+      edit_link: "Изменить ссылку",
+      chat_id: "Чат ID",
       car_model: "Модель машины",
       edit_user: "Изменить пользователь",
       login: "Логин",
@@ -372,7 +374,8 @@ const localization = {
 
       select_productt: "Выберите товар!",
 
-      additions: "Дополнительно"
+      additions: "Дополнительно",
+      tg_links: "Телеграмм ссылки",
     },
   },
   uz: {
