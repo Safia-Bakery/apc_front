@@ -70,13 +70,13 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
         {permission?.[add] && (
           <div className="flex gap-2">
             <button
-              className="btn btn-success  "
+              className="btn btn-success"
               onClick={() => handleNavigate(`add${search}`)}
               id="add_category"
             >
               {t("add")}
             </button>
-            <button onClick={() => navigate(-1)} className="btn btn-primary  ">
+            <button onClick={() => navigate(-1)} className="btn btn-primary">
               {t("back")}
             </button>
           </div>

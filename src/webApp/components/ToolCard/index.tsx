@@ -1,3 +1,4 @@
+import { baseURL } from "@/main";
 import {
   addItem,
   cartSelector,
@@ -5,12 +6,12 @@ import {
   incrementSelected,
 } from "@/store/reducers/webInventory";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
-import { InventoryTools } from "@/utils/types";
+import { ToolItemType } from "@/utils/types";
 import { CSSProperties } from "react";
 
 type Props = {
   style?: CSSProperties;
-  tool: InventoryTools;
+  tool: ToolItemType;
 };
 
 const ToolCard = ({ style, tool }: Props) => {
@@ -23,7 +24,9 @@ const ToolCard = ({ style, tool }: Props) => {
       className="rounded-3xl overflow-hidden flex gap-5 w-full bg-white"
     >
       <img
-        src={tool.image}
+        src={
+          !!tool.image ? `${baseURL}/${tool.image}` : "/assets/images/safia.png"
+        }
         height={130}
         width={130}
         className="rounded-2xl object-contain"

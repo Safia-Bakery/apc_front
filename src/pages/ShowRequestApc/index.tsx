@@ -351,7 +351,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                     <th>{t("comment")}</th>
                     <td>{order?.description}</td>
                   </tr>
-                  {order?.price && (
+                  {!!order?.price && (
                     <tr>
                       <th>{t("expense")}</th>
                       <td>{order?.price}</td>

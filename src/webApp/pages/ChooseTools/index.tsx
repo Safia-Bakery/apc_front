@@ -12,7 +12,7 @@ import WebAppContainer from "@/webApp/components/WebAppContainer";
 import arrow from "/assets/icons/primaryArrow.svg";
 import { useNavigate, useParams } from "react-router-dom";
 import SelectTool from "@/webApp/components/SelectTool";
-import useToolsIerarch from "@/hooks/useToolsIerarch";
+import { useInvTools } from "@/hooks/useInvTools";
 
 const ChooseTools = () => {
   const { id } = useParams();
@@ -21,9 +21,9 @@ const ChooseTools = () => {
   const selectedBranch = useAppSelector(branchSelector);
   const cart = useAppSelector(cartSelector);
 
-  useToolsIerarch({
-    ...(id && !!selectedBranch?.id && { parent_id: id }),
-  });
+  // useInvTools({
+  //   ...(id && !!selectedBranch?.id && { parent_id: id }),
+  // });
 
   useEffect(() => {
     if (!selectedBranch?.id) navigate("/tg/inventory-request/add-order");

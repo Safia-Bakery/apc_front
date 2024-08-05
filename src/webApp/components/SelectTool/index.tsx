@@ -2,36 +2,52 @@ import WebAppContainer from "@/webApp/components/WebAppContainer";
 import useDebounce from "@/hooks/custom/useDebounce";
 import { branchSelector, selectTool } from "@/store/reducers/webInventory";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
-import { InventoryTools, ToolItemType, ToolsFolderType } from "@/utils/types";
+import {
+  Category,
+  Departments,
+  InventoryTools,
+  ToolItemType,
+  ToolsFolderType,
+} from "@/utils/types";
 import InvInput from "@/webApp/components/InvInput";
 import { useRef, useState } from "react";
 import toolIcon from "/assets/icons/tool.svg";
 import arrow from "/assets/icons/arrowBlack.svg";
 import CustomLink from "@/webApp/components/CustomLink";
-import useToolsIerarch from "@/hooks/useToolsIerarch";
 import { useParams } from "react-router-dom";
 import ToolCard from "@/webApp/components/ToolCard";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import { useInvTools } from "@/hooks/useInvTools";
+import useCategories from "@/hooks/useCategories";
+import Loading from "@/components/Loader";
+import EmptyList from "@/components/EmptyList";
+import Pagination from "@/components/Pagination";
 
 const SelectTool = () => {
   const { id } = useParams();
+
   const dispatch = useAppDispatch();
-  const [toolsPage, $toolsPage] = useState(1);
   const selectedBranch = useAppSelector(branchSelector);
-  const [tools, $tools] = useState<ToolItemType[]>([]);
   const [toolsSearch, $toolsSearch] = useDebounce("");
-  const { data, isLoading: toolsLoading } = useToolsIerarch({
+  // const [toolsPage, $toolsPage] = useState(1);
+  // const [tools, $tools] = useState<ToolItemType[]>([]);
+
+  const { data: categories, isLoading: categoryLoading } = useCategories({
+    category_status: 1,
+    department: Departments.inventory,
+  });
+  const { data, isLoading: toolsLoading } = useInvTools({
     // page: toolsPage,
     ...(toolsSearch && !!selectedBranch?.id && { name: toolsSearch }),
-    ...(id && !!selectedBranch?.id && { parent_id: id }),
-    enabled: false,
+    ...(id && !!selectedBranch?.id && { category_id: +id }),
+    enabled: !!id && !!selectedBranch?.id,
   });
 
   const parentRef = useRef<any>();
 
   // The virtualizer
   const rowVirtualizer = useVirtualizer({
-    count: data?.tools?.length!,
+    count: data?.items?.length!,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 130,
     gap: 20,
@@ -47,9 +63,9 @@ const SelectTool = () => {
   //   }
   // };
 
-  const handleTool = (tool: ToolsFolderType) => {
+  const handleCategory = (category: Category) => {
     !!selectedBranch?.id &&
-      dispatch(selectTool({ name: tool.name, id: tool.id }));
+      dispatch(selectTool({ name: category.name, id: category.id.toString() }));
   };
 
   // useEffect(() => {
@@ -72,15 +88,16 @@ const SelectTool = () => {
         className="overflow-y-auto flex flex-col"
         // onScroll={handleScroll}
       >
-        {!!data?.folders?.length &&
-          data?.folders.map((tool, idx) => (
+        {!id &&
+          !!categories?.items?.length &&
+          categories?.items.map((category, idx) => (
             <li
-              key={idx + tool.id + tool.name}
-              onClick={() => handleTool(tool)}
+              key={idx + category.id + category.name}
+              onClick={() => handleCategory(category)}
             >
               <CustomLink
                 disabled={!selectedBranch?.id}
-                to={`tool/${tool.id}`}
+                to={`tool/${category.id}`}
                 className="flex justify-between items-center border-t border-[#E4E4E4] py-3"
               >
                 <label className="flex text-black">
@@ -91,16 +108,15 @@ const SelectTool = () => {
                     alt="tool-icon"
                     className="mr-2"
                   />
-                  {tool.name}
+                  {category.name}
                 </label>
                 <img src={arrow} alt="select" className="rotate-90" />
               </CustomLink>
             </li>
           ))}
 
-        {toolsLoading && <span>loading...</span>}
+        {(toolsLoading || categoryLoading) && <Loading />}
 
-        {/* {!data?.folders?.length && <EmptyList />} */}
         <div ref={parentRef} className="mt-3">
           <div
             className="flex flex-col gap-4"
@@ -110,25 +126,13 @@ const SelectTool = () => {
               position: "relative",
             }}
           >
-            {!!data?.tools?.length &&
-              // rowVirtualizer.getVirtualItems()
-              data.tools.map((tool) => (
-                <ToolCard
-                  key={tool.id}
-                  tool={tool}
-                  // style={{
-                  //   position: "absolute",
-                  //   top: 0,
-                  //   left: 0,
-                  //   // width: "100%",
-                  //   height: `${tool.size}px`,
-                  //   transform: `translateY(${tool.start}px)`,
-                  // }}
-                />
-              ))}
+            {!!data?.items?.length &&
+              data.items.map((tool) => <ToolCard key={tool.id} tool={tool} />)}
           </div>
         </div>
       </ul>
+      {!data?.items?.length && <EmptyList />}
+      {!!data && <Pagination totalPages={data?.pages} />}
     </WebAppContainer>
   );
 };

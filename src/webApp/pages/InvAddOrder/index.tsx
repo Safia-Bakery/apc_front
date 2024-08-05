@@ -8,13 +8,10 @@ import InvHeader from "@/webApp/components/InvHeader";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import arrow from "/assets/icons/primaryArrow.svg";
 import SelectTool from "@/webApp/components/SelectTool";
-import useToolsIerarch from "@/hooks/useToolsIerarch";
 
 const InvAddOrder = () => {
   const selectedBranch = useAppSelector(branchSelector);
   const [branchModal, $branchModal] = useState(false);
-
-  useToolsIerarch({});
 
   const closeModal = () => $branchModal(false);
   const handleBranch = () => {

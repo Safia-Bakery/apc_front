@@ -29,6 +29,7 @@ export enum Months {
 }
 
 export const dateTimeFormat = "DD.MM.YYYY HH:mm";
+export const dateTimeFormatWeb = "DD.MM.YYYY - HH:mm";
 export const dateMonthYear = "DD.MM.YYYY";
 export const yearMonthDate = "YYYY-MM-DD";
 
