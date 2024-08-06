@@ -20,10 +20,13 @@ module.exports = {
         rejected: "#FFBEBE",
         tgPrimary: "#DCC38B",
         tgSelected: "#AAC57F",
+        tgTextGray: "#898989",
         tgBorder: "#F1F1F1",
         selected: "rgba(0, 0, 0, 0.51)",
         tgGray: "#C3D2DC",
         link: "#007bff",
+        invHeader: "#BEA087",
+        invBtn: "#DCC38B",
       },
       boxShadow: {
         selected: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",

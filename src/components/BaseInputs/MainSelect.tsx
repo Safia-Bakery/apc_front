@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, ReactNode } from "react";
+import { ChangeEvent, FC, ReactNode, useRef } from "react";
 import cl from "classnames";
 import styles from "./index.module.scss";
 import { UseFormRegisterReturn } from "react-hook-form";
@@ -24,6 +24,13 @@ const MainSelect: FC<Props> = ({
   ...others
 }) => {
   const { t } = useTranslation();
+  const initialLoadRef = useRef(true);
+  const handleFocus = () => {
+    if (initialLoadRef.current) {
+      initialLoadRef.current = false;
+      onFocus?.();
+    }
+  };
   return (
     <select
       className={cl(
@@ -32,7 +39,7 @@ const MainSelect: FC<Props> = ({
         styles.select,
         styles.inputBox
       )}
-      onFocus={onFocus}
+      onFocus={handleFocus}
       {...others}
       {...register}
     >

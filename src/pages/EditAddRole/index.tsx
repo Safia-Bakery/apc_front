@@ -15,7 +15,7 @@ const EditAddRole = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
-  const goBack = () => navigate("/users");
+  const goBack = () => navigate(-1);
   const { refetch: usersRefetch } = useRoles({ enabled: !!id });
   const { mutate: postRole } = roleMutation();
 

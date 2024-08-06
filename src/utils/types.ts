@@ -243,7 +243,7 @@ export interface Category {
   department?: Departments;
   description: string;
   status: number;
-  id: number | string;
+  id: number;
   urgent: number;
   sub_id?: number;
   file: string;
@@ -271,6 +271,11 @@ export interface ExpenditureType {
   created_at: string;
   request_id: number;
   amount: number;
+
+  tool: ToolItemType;
+  comment: string;
+  user: UserTypes;
+  status: number;
 }
 export interface ExpendituresTypes extends BasePaginatedResDeprecated {
   items: ExpenditureType[];
@@ -364,6 +369,9 @@ export type ToolItemType = {
   max_amount: number | null;
   ftime?: string | number;
   status: number;
+  image?: string;
+  category_id?: string | number;
+  count: number;
 };
 
 export interface ToolTypes extends BasePaginatedResDeprecated {
@@ -527,6 +535,10 @@ export enum MainPermissions {
   get_tg_link = 125,
   edit_tg_link = 126,
   add_tg_link = 127,
+
+  get_categories_inventory = 128,
+  edit_categories_inventory = 129,
+  add_categories_inventory = 130,
 }
 export enum MarketingSubDep {
   all,
@@ -881,4 +893,39 @@ export interface ExpenseCategoriesTypes {
   id: number;
   status: number;
   name: string;
+}
+
+export interface InventoryWebAppOrders {
+  product: string;
+  description: string;
+  deny_reason: string;
+  pause_reason: string;
+  id: number;
+  rating: number;
+  created_at: string;
+  status: number;
+  brigada: BrigadaType;
+  file: {
+    url: string;
+    status: number;
+  }[];
+  category: Category;
+  fillial: BranchType;
+  started_at: string;
+  finished_at: string;
+  user: UserTypes;
+  user_manager: string;
+  expanditure: ExpenditureType[];
+  comments: Comments;
+  is_bot: true;
+  size: string;
+  arrival_date: string;
+  bread_size: string;
+  update_time: {
+    [key: number]: string;
+  };
+  finishing_time: string;
+  is_redirected: true;
+  old_cat_id: number;
+  price: number;
 }

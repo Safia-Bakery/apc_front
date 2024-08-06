@@ -187,6 +187,7 @@ const localization = {
       remains_in_stock: "Остатки на складах",
       request_for_mins: "Заявка на минимумы",
       upload_mins: "Загрузить минимумы",
+      upload_image: "Загрузить фото",
       upload_all: "Загрузить все",
       deadline: "Дедлайн",
       edit_deadline: "Изменить Дедлайн",
@@ -376,6 +377,8 @@ const localization = {
 
       additions: "Дополнительно",
       tg_links: "Телеграмм ссылки",
+
+      categories_inventory: "Категории Инвентарь",
     },
   },
   uz: {

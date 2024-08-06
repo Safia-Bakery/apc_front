@@ -20,14 +20,12 @@ import {
 } from "./utils/routeObjs";
 
 const ControlPanel = lazy(() => import("@/pages/ControlPanel"));
-const TgRating = lazy(() => import("@/pages/TgRating"));
+const TgRating = lazy(() => import("@/webApp/pages/TgRating"));
 
 const ShowConsumption = lazy(() => import("@/pages/ShowConsumption"));
 const ConsumptionStat = lazy(() => import("@/pages/StatsApc/ConsumptionStat"));
 const Login = lazy(() => import("@/pages/Login"));
 
-const TelegramAddProduct = lazy(() => import("@/pages/TelegramAddProduct"));
-const AddInventoryRequest = lazy(() => import("@/pages/AddInventoryRequest"));
 const BaseStatsBlock = lazy(() => import("./components/BaseStatsBlock"));
 
 const MarketingStatCategory = lazy(
@@ -51,6 +49,20 @@ const InventoryServiceStats = lazy(
   () => import("@/pages/StatsInventory/ServiceStats")
 );
 const ServiceStatsApc = lazy(() => import("@/pages/StatsApc/ServiceStats"));
+
+const TelegramAddProduct = lazy(
+  () => import("@/webApp/pages/TelegramAddProduct")
+);
+const AddInventoryRequest = lazy(() => import("@/pages/AddInventoryRequest"));
+const InvSelectOrderType = lazy(
+  () => import("@/webApp/pages/InvSelectOrderType")
+);
+const InventoryLayout = lazy(() => import("./webApp/layouts/inventory"));
+const InvArchieve = lazy(() => import("@/webApp/pages/InvArchieve"));
+const InvAddOrder = lazy(() => import("@/webApp/pages/InvAddOrder"));
+const ChooseTools = lazy(() => import("@/webApp/pages/ChooseTools"));
+const InvCart = lazy(() => import("@/webApp/pages/InvCart"));
+const InvSuccess = lazy(() => import("@/webApp/pages/InvSuccess"));
 
 dayjs.locale("ru");
 
@@ -361,6 +373,64 @@ const App = () => {
           }
           path={"inventory-request-add"}
         />
+
+        <Route
+          element={
+            <Suspend>
+              <InventoryLayout />
+            </Suspend>
+          }
+          path={"inventory-request"}
+        >
+          <Route
+            element={
+              <Suspend>
+                <InvSelectOrderType />
+              </Suspend>
+            }
+            path={"type"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <InvArchieve />
+              </Suspend>
+            }
+            path={"archieve"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <InvAddOrder />
+              </Suspend>
+            }
+            path={"add-order"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <ChooseTools />
+              </Suspend>
+            }
+            path={"tool/:id"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <InvCart />
+              </Suspend>
+            }
+            path={"cart"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <InvSuccess />
+              </Suspend>
+            }
+            path={"success/:id"}
+          />
+        </Route>
       </Route>
     </Routes>
   );

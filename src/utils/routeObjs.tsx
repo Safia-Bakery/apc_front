@@ -251,6 +251,12 @@ export const sidebarRoutes: SidebarType[] = [
         screen: MainPermissions.get_requests_inventory,
       },
       {
+        name: "categories",
+        url: "/categories-inventory",
+        icon: "/assets/icons/categories.svg",
+        screen: MainPermissions.get_categories_inventory,
+      },
+      {
         name: "inventory_products",
         url: "/products-ierarch",
         icon: "/assets/icons/products.svg",
@@ -485,6 +491,27 @@ export const routes = [
     element: <BotSettings />,
     path: "/additions",
     screen: MainPermissions.bot_settings,
+  },
+  {
+    element: (
+      <Categories
+        dep={Departments.inventory}
+        add={MainPermissions.add_categories_inventory}
+        edit={MainPermissions.edit_categories_inventory}
+      />
+    ),
+    path: "/categories-inventory",
+    screen: MainPermissions.get_categories_inventory,
+  },
+  {
+    element: <EditAddCategory dep={Departments.inventory} />,
+    path: "/categories-inventory/:id",
+    screen: MainPermissions.edit_categories_inventory,
+  },
+  {
+    element: <EditAddCategory dep={Departments.inventory} />,
+    path: "/categories-inventory/add",
+    screen: MainPermissions.add_categories_inventory,
   },
   {
     element: <ITTgLinks />,

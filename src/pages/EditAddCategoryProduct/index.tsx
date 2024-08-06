@@ -109,7 +109,7 @@ const EditAddCategoryProduct = () => {
       <Header
         title={!category_id ? "add" : `${t("edit_category")} №${category_id}`}
       >
-        <button className="btn btn-primary  " onClick={goBack}>
+        <button className="btn btn-primary" onClick={goBack}>
           {t("back")}
         </button>
       </Header>
