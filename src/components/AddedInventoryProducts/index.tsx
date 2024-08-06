@@ -46,7 +46,7 @@ const AddedInventoryProducts = () => {
   return (
     <>
       <Header title="products" />
-      <div className="content table-responsive table-full-width overflow-hidden !p-0">
+      <div className="content table-responsive table-full-width overflow-hidden !p-0 !min-h-min">
         <table className="table table-hover">
           <thead>
             <tr>

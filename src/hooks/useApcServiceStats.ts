@@ -19,7 +19,7 @@ export const useApcServiceStats = ({
 }: Params) => {
   return useQuery({
     queryKey: ["Apc_service_stats", finished_at, started_at, params],
-    queryFn: () =>
+    queryFn: ({ signal }) =>
       apiClient
         .get({
           url: "/v1/arc/stats",
@@ -28,7 +28,7 @@ export const useApcServiceStats = ({
             started_at,
             ...params,
           },
-          config,
+          config: { ...config, signal },
         })
         .then(({ data: response }) => response as ServiceStatsTypes),
     enabled,

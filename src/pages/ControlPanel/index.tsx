@@ -13,12 +13,13 @@ import {
   Sphere,
 } from "@/utils/types";
 import Chart from "react-apexcharts";
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import Loading from "@/components/Loader";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { Months } from "@/utils/keys";
 import { useTranslation } from "react-i18next";
+import { queryClient } from "@/utils/helpers";
 
 const options = {
   legend: {

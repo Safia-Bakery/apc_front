@@ -38,7 +38,7 @@ export const useStatsBrigadaCateg = ({
       sphere_status,
       department,
     ],
-    queryFn: () =>
+    queryFn: ({ signal }) =>
       apiClient
         .get({
           url: "/v1/stats/brigada/category",
@@ -49,6 +49,7 @@ export const useStatsBrigadaCateg = ({
             finished_at,
             timer,
           },
+          config: { signal },
         })
         .then(({ data: response }) => {
           return response as BrigadaCategStatTypes;

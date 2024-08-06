@@ -37,10 +37,11 @@ export const useStatsDepartment = ({
       sphere_status,
       department,
     ],
-    queryFn: () =>
+    queryFn: ({ signal }) =>
       apiClient
         .get({
           url: "/v1/stats/department",
+          config: { signal },
           params: {
             department,
             sphere_status,

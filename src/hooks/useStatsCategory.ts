@@ -38,10 +38,11 @@ export const useStatsCategory = ({
       sphere_status,
       department,
     ],
-    queryFn: () =>
+    queryFn: ({ signal }) =>
       apiClient
         .get({
           url: "/v1/stats/category",
+          config: { signal },
           params: {
             timer,
             department,

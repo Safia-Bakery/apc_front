@@ -1,6 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 import { BaseObjType, EPresetTimes, FileType, RequestStatus } from "./types";
 import useQueryString from "custom/useQueryString";
+import axiosInstance from "@/api/axiosInstance";
 
 export const itemsPerPage = 50;
 

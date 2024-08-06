@@ -14,9 +14,13 @@ export const useMainStats = ({ enabled, ...params }: Body) => {
   const token = useAppSelector(tokenSelector);
   return useQuery({
     queryKey: ["main_statistics", params],
-    queryFn: () =>
+    queryFn: ({ signal }) =>
       apiClient
-        .get({ url: "/v1/stats/main", params })
+        .get({
+          url: "/v1/stats/main",
+          params,
+          config: { signal },
+        })
         .then(({ data: response }) => response as MainStatTypes),
     enabled: enabled && !!token,
   });

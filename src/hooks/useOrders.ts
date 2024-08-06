@@ -27,7 +27,7 @@ interface Body {
 export const useOrders = ({ enabled, request_status, ...params }: Body) => {
   return useQuery({
     queryKey: ["requests", params, request_status],
-    queryFn: () =>
+    queryFn: ({ signal }) =>
       apiClient
         .get({
           url: "/request",
@@ -40,6 +40,7 @@ export const useOrders = ({ enabled, request_status, ...params }: Body) => {
                 ).map((item) => item.value),
               }),
           },
+          config: { signal },
         })
         .then(({ data: response }) => (response as OrderType) || null),
     enabled,

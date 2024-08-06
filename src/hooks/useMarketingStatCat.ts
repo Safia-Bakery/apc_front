@@ -24,7 +24,7 @@ export const useMarketingStatCat = ({
   const permmission = useAppSelector(permissionSelector);
   return useQuery({
     queryKey: ["stats_marketing_cat", created_at, finished_at],
-    queryFn: () =>
+    queryFn: ({ signal }) =>
       apiClient
         .get({
           url: "/v1/stats/marketing/cat",
@@ -32,6 +32,7 @@ export const useMarketingStatCat = ({
             created_at,
             finished_at,
           },
+          config: { signal },
         })
         .then(({ data: response }) => {
           return response as MarketingDepartmentTypes;

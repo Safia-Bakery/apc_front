@@ -18,9 +18,9 @@ type Res = {
 export const useStaffExcell = ({ enabled, ...params }: Params) => {
   return useQuery({
     queryKey: ["staff_excell_totals", params],
-    queryFn: () =>
+    queryFn: ({ signal }) =>
       apiClient
-        .get({ url: "/v1/excell", params })
+        .get({ url: "/v1/excell", params, config: { signal } })
         .then(({ data: response }) => response as Res),
     enabled,
     refetchOnMount: true,

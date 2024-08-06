@@ -63,6 +63,7 @@ const InvAddOrder = lazy(() => import("@/webApp/pages/InvAddOrder"));
 const ChooseTools = lazy(() => import("@/webApp/pages/ChooseTools"));
 const InvCart = lazy(() => import("@/webApp/pages/InvCart"));
 const InvSuccess = lazy(() => import("@/webApp/pages/InvSuccess"));
+const UnAuthorized = lazy(() => import("@/webApp/pages/UnAuthorized"));
 
 dayjs.locale("ru");
 
@@ -349,6 +350,14 @@ const App = () => {
       </Route>
 
       <Route path="/tg" element={<TgRoutes />}>
+        <Route
+          element={
+            <Suspend>
+              <UnAuthorized />
+            </Suspend>
+          }
+          path={"unauthorized"}
+        />
         <Route
           element={
             <Suspend>

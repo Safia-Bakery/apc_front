@@ -8,13 +8,14 @@ export const useOrderCounts = ({ enabled = true }: { enabled?: boolean }) => {
   const token = useAppSelector(tokenSelector);
   return useQuery({
     queryKey: ["order_count"],
-    queryFn: () =>
+    queryFn: ({ signal }) =>
       apiClient
-        .get({ url: "/v1/department/count" })
+        .get({ url: "/v1/department/count", config: { signal } })
         .then(
           ({ data: response }: { data: any }) =>
             response.counter as CountTypes["counter"]
         ),
+
     enabled: enabled && !!token,
     refetchOnMount: true,
   });

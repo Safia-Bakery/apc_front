@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../rootConfig";
 import { clearPermission } from "./sidebar";
+import { queryClient } from "@/utils/helpers";
 
 interface State {
   token: string | null;
@@ -21,8 +22,12 @@ export const authReducer = createSlice({
       clearPermission();
       window.location.reload();
 
+      setTimeout(() => {
+        queryClient.removeQueries();
+      }, 500);
+
       const { pathname, search } = window.location;
-      if (pathname.includes("login")) state.link = "/home";
+      if (pathname.includes("login") || pathname === "/") state.link = "/home";
       else state.link = pathname + search;
     },
     loginHandler: (state, { payload }) => {

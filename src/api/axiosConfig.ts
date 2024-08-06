@@ -9,6 +9,11 @@ import { logoutHandler } from "reducers/auth";
 import { RootState } from "@/store/rootConfig";
 import { EPresetTimes } from "@/utils/types";
 
+const unauthorizedObj: { [key: number]: boolean } = {
+  403: true,
+  401: true,
+};
+
 interface BaseUrlParams {
   url: string;
   body?: any;
@@ -53,9 +58,17 @@ class BaseAPIClient {
 
   private handleRequestError = (error: AxiosError): Promise<never> => {
     if (axios.isAxiosError(error) && error.response) {
-      if (error.response.status === 403 || error.response.status === 401) {
+      if (
+        unauthorizedObj[error.response.status!] &&
+        window.location.pathname.includes("/tg/")
+      )
+        window.location.replace("/tg/unauthorized");
+
+      if (
+        unauthorizedObj[error.response.status!] &&
+        !window.location.pathname.includes("/tg/")
+      )
         this.store?.dispatch(logoutHandler());
-      }
     }
 
     // Reject the promise with the error
@@ -87,9 +100,18 @@ class BaseAPIClient {
       return response;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        if (error.response.status === 403 || error.response.status === 401) {
+        if (
+          unauthorizedObj[error.response.status!] &&
+          !window.location.pathname.includes("/tg/")
+        ) {
           this.store?.dispatch(logoutHandler());
         }
+
+        if (
+          unauthorizedObj[error.response.status!] &&
+          window.location.pathname.includes("/tg/")
+        )
+          window.location.replace("/tg/unauthorized");
       }
       throw error;
     }

@@ -36,7 +36,7 @@ export const useStatsBrigada = ({
       sphere_status,
       department,
     ],
-    queryFn: () =>
+    queryFn: ({ signal }) =>
       apiClient
         .get({
           url: "/v1/stats/brigada",
@@ -46,6 +46,7 @@ export const useStatsBrigada = ({
             started_at,
             finished_at,
           },
+          config: { signal },
         })
         .then(({ data: response }) => {
           return response as DepartmentStatTypes[];
