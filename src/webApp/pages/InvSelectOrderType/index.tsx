@@ -4,13 +4,19 @@ import invOrderType from "/assets/icons/invOrderType.svg";
 import arrow from "/assets/icons/arrowBlack.svg";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import CustomLink from "@/webApp/components/CustomLink";
+import { useEffect } from "react";
+import { TelegramApp } from "@/utils/tgHelpers";
 
 //invOrderType
 
 const InvSelectOrderType = () => {
+  useEffect(() => {
+    // TelegramApp?.expand();
+    TelegramApp?.confirmClose();
+  }, []);
   return (
     <div>
-      <InvHeader title="Инвентарь" goBack />
+      <InvHeader title="Инвентарь" />
 
       <WebAppContainer>
         <CustomLink
