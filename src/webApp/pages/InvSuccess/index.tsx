@@ -1,3 +1,4 @@
+import { TelegramApp } from "@/utils/tgHelpers";
 import InvButton, { InvBtnType } from "@/webApp/components/InvButton";
 import InvHeader from "@/webApp/components/InvHeader";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
@@ -22,10 +23,19 @@ const InvSuccess = () => {
         <p className="text-center ">Ваша заявка принята.</p>
         <p className="text-center">Примерное время доставки: 24 ч.</p>
         <div className="flex gap-3 mt-14 w-full">
-          <InvButton btnType={InvBtnType.white} className="flex-1">
+          <InvButton
+            btnType={InvBtnType.white}
+            onClick={() => TelegramApp.toMainScreen()}
+            className="flex-1"
+          >
             На главную
           </InvButton>
-          <InvButton className="flex-1">Закрыть</InvButton>
+          <InvButton
+            className="flex-1"
+            onClick={() => TelegramApp.toMainScreen()}
+          >
+            Закрыть
+          </InvButton>
         </div>
       </WebAppContainer>
     </>
