@@ -7,22 +7,52 @@ import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import { useEffect } from "react";
 import InvButton, { InvBtnType } from "@/webApp/components/InvButton";
 import InvHeader from "@/webApp/components/InvHeader";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ToolCard from "@/webApp/components/ToolCard";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import BaseInput from "@/components/BaseInputs";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
+import requestMutation from "@/hooks/mutation/orderMutation";
+import { useForm } from "react-hook-form";
+import { errorToast } from "@/utils/toast";
+import Loading from "@/components/Loader";
 
 const InvCart = () => {
   const navigate = useNavigate();
   const selectedBranch = useAppSelector(branchSelector);
+  const { state } = useLocation();
   const dispatch = useAppDispatch();
-  //   const dispatch = useAppDispatch();
   const cart = useAppSelector(cartSelector);
+  const { mutate, isPending: mutating } = requestMutation();
+  const { getValues, register } = useForm();
 
   const handleSubmit = () => {
-    navigate(`/tg/inventory-request/success/${69}`, { replace: true });
-    dispatch(clearCart());
+    const { comment } = getValues();
+
+    const expenditure = Object.entries(cart).reduce(
+      (acc: any, [key, value]) => {
+        acc[key] = [value.count, " "];
+        return acc;
+      },
+      {}
+    );
+    mutate(
+      {
+        category_id: state?.category_id,
+        fillial_id: selectedBranch?.id!,
+        expenditure,
+        description: !!comment ? comment : " ",
+      },
+      {
+        onSuccess: (data) => {
+          dispatch(clearCart());
+          navigate(`/tg/inventory-request/success/${data.id}`, {
+            replace: true,
+          });
+        },
+        onError: (e) => errorToast(e.message),
+      }
+    );
   };
 
   useEffect(() => {
@@ -31,6 +61,7 @@ const InvCart = () => {
 
   return (
     <div className="overflow-hidden h-svh">
+      {mutating && <Loading />}
       <InvHeader title={"Корзина"} goBack />
       <div className="bg-white h-[52px]" />
 
@@ -44,7 +75,10 @@ const InvCart = () => {
           className="mt-4"
           label="При желании можно оставить комментарии"
         >
-          <MainTextArea placeholder={"Введите"} />
+          <MainTextArea
+            placeholder={"Введите"}
+            register={register("comment")}
+          />
         </BaseInput>
 
         <div className="fixed bottom-0 left-0 right-0 bg-white py-3 px-5 z-[105]">

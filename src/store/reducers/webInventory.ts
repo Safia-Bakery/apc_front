@@ -4,13 +4,11 @@ import { ToolItemType } from "@/utils/types";
 
 interface State {
   selectedBranch?: { name: string; id: string };
-  selectedTool?: { name: string; id: string };
   cart: { [key: string]: ToolItemType };
 }
 
 const initialState: State = {
   selectedBranch: undefined,
-  selectedTool: undefined,
   cart: {},
 };
 
@@ -23,12 +21,6 @@ export const webInventoryReducer = createSlice({
       { payload }: PayloadAction<{ name: string; id: string }>
     ) => {
       state.selectedBranch = payload;
-    },
-    selectTool: (
-      state,
-      { payload }: PayloadAction<{ name: string; id: string }>
-    ) => {
-      state.selectedTool = payload;
     },
 
     addItem: (state, { payload }: PayloadAction<ToolItemType>) => {
@@ -58,14 +50,12 @@ export const webInventoryReducer = createSlice({
 
 export const branchSelector = (state: RootState) =>
   state.webInventory.selectedBranch;
-export const toolSelector = (state: RootState) =>
-  state.webInventory.selectedTool;
 
 export const cartSelector = (state: RootState) => state.webInventory.cart;
 
 export const {
   selectBranch,
-  selectTool,
+
   addItem,
   incrementSelected,
   decrementSelected,

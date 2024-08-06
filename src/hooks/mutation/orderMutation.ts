@@ -55,7 +55,7 @@ const requestMutation = () => {
         config,
         contentType,
       });
-      return data;
+      return data as { success: boolean; message: string; id: number };
     },
     retry: 1,
     onError: (e: Error) => errorToast(e.message),

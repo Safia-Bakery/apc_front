@@ -1,8 +1,4 @@
-import {
-  branchSelector,
-  cartSelector,
-  toolSelector,
-} from "@/store/reducers/webInventory";
+import { branchSelector, cartSelector } from "@/store/reducers/webInventory";
 import { useAppSelector } from "@/store/utils/types";
 import cl from "classnames";
 import { useEffect } from "react";
@@ -11,19 +7,15 @@ import InvHeader from "@/webApp/components/InvHeader";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import arrow from "/assets/icons/primaryArrow.svg";
 import { useNavigate, useParams } from "react-router-dom";
-import SelectTool from "@/webApp/components/SelectTool";
-import { useInvTools } from "@/hooks/useInvTools";
+import SelectCategoryTool from "@/webApp/components/SelectCategoryTool";
+import useCategory from "@/hooks/useCategory";
 
 const ChooseTools = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const selectedTool = useAppSelector(toolSelector);
   const selectedBranch = useAppSelector(branchSelector);
+  const { data: category } = useCategory({ id: Number(id) });
   const cart = useAppSelector(cartSelector);
-
-  // useInvTools({
-  //   ...(id && !!selectedBranch?.id && { parent_id: id }),
-  // });
 
   useEffect(() => {
     if (!selectedBranch?.id) navigate("/tg/inventory-request/add-order");
@@ -37,21 +29,26 @@ const ChooseTools = () => {
           <img src={arrow} className="rotate-180" alt="select-branch" />
           <h4
             className={cl("font-normal text-[#BEA087] text-xl", {
-              ["!font-bold"]: !selectedTool?.id,
+              ["!font-bold"]: !category?.id,
             })}
           >
-            {!!selectedTool?.name && selectedTool.name}
+            {!!category?.name && category.name}
           </h4>
         </WebAppContainer>
       </div>
 
-      <SelectTool />
+      <SelectCategoryTool />
 
       <div className="fixed bottom-0 left-0 right-0 bg-white py-3 px-5 z-[105]">
         <InvButton
           btnType={InvBtnType.primary}
+          disabled={!Object.values(cart).length}
           className="w-full"
-          onClick={() => navigate("/tg/inventory-request/cart")}
+          onClick={() =>
+            navigate("/tg/inventory-request/cart", {
+              state: { category_id: id },
+            })
+          }
         >
           Корзина ({Object.values(cart).length})
         </InvButton>

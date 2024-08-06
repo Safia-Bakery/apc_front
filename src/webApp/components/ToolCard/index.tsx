@@ -41,7 +41,10 @@ const ToolCard = ({ style, tool }: Props) => {
 
         <div className="bg-tgPrimary flex items-center justify-center rounded-tl-3xl w-20 h-9 self-end">
           {!cart[tool.id] ? (
-            <button onClick={() => dispatch(addItem(tool))}>
+            <button
+              className="flex flex-1 justify-center"
+              onClick={() => dispatch(addItem(tool))}
+            >
               <img
                 src="/assets/icons/cart.svg"
                 alt="cart"
@@ -50,12 +53,20 @@ const ToolCard = ({ style, tool }: Props) => {
               />
             </button>
           ) : (
-            <div className="flex gap-3 text-white">
-              <button onClick={() => dispatch(decrementSelected(tool.id))}>
+            <div className="flex justify-evenly flex-1  text-white ">
+              <button
+                className="flex flex-1 justify-center"
+                onClick={() => dispatch(decrementSelected(tool.id))}
+              >
                 -
               </button>
-              <span>{cart[tool.id].count}</span>
-              <button onClick={() => dispatch(incrementSelected(tool.id))}>
+              <span className="flex flex-1 justify-center">
+                {cart[tool.id].count}
+              </span>
+              <button
+                className="flex flex-1 justify-center"
+                onClick={() => dispatch(incrementSelected(tool.id))}
+              >
                 +
               </button>
             </div>

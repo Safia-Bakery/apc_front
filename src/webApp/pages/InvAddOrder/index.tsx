@@ -7,7 +7,7 @@ import InvButton, { InvBtnType } from "@/webApp/components/InvButton";
 import InvHeader from "@/webApp/components/InvHeader";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import arrow from "/assets/icons/primaryArrow.svg";
-import SelectTool from "@/webApp/components/SelectTool";
+import SelectCategoryTool from "@/webApp/components/SelectCategoryTool";
 
 const InvAddOrder = () => {
   const selectedBranch = useAppSelector(branchSelector);
@@ -35,7 +35,7 @@ const InvAddOrder = () => {
       </div>
       <BranchModal isOpen={branchModal} onClose={closeModal} />
 
-      <SelectTool />
+      <SelectCategoryTool />
 
       <div className="fixed bottom-0 left-0 right-0 bg-white py-3 px-5 z-[105]">
         <InvButton

@@ -1,16 +1,10 @@
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import useDebounce from "@/hooks/custom/useDebounce";
-import { branchSelector, selectTool } from "@/store/reducers/webInventory";
-import { useAppDispatch, useAppSelector } from "@/store/utils/types";
-import {
-  Category,
-  Departments,
-  InventoryTools,
-  ToolItemType,
-  ToolsFolderType,
-} from "@/utils/types";
+import { branchSelector } from "@/store/reducers/webInventory";
+import { useAppSelector } from "@/store/utils/types";
+import { Departments } from "@/utils/types";
 import InvInput from "@/webApp/components/InvInput";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import toolIcon from "/assets/icons/tool.svg";
 import arrow from "/assets/icons/arrowBlack.svg";
 import CustomLink from "@/webApp/components/CustomLink";
@@ -22,30 +16,28 @@ import useCategories from "@/hooks/useCategories";
 import Loading from "@/components/Loader";
 import EmptyList from "@/components/EmptyList";
 import Pagination from "@/components/Pagination";
+import useQueryString from "@/hooks/custom/useQueryString";
 
-const SelectTool = () => {
+const SelectCategoryTool = () => {
   const { id } = useParams();
 
-  const dispatch = useAppDispatch();
   const selectedBranch = useAppSelector(branchSelector);
+  const page = useQueryString("page");
   const [toolsSearch, $toolsSearch] = useDebounce("");
-  // const [toolsPage, $toolsPage] = useState(1);
-  // const [tools, $tools] = useState<ToolItemType[]>([]);
 
   const { data: categories, isLoading: categoryLoading } = useCategories({
     category_status: 1,
     department: Departments.inventory,
   });
   const { data, isLoading: toolsLoading } = useInvTools({
-    // page: toolsPage,
     ...(toolsSearch && !!selectedBranch?.id && { name: toolsSearch }),
+    ...(page && { page: +page }),
     ...(id && !!selectedBranch?.id && { category_id: +id }),
     enabled: !!id && !!selectedBranch?.id,
   });
 
   const parentRef = useRef<any>();
 
-  // The virtualizer
   const rowVirtualizer = useVirtualizer({
     count: data?.items?.length!,
     getScrollElement: () => parentRef.current,
@@ -53,48 +45,20 @@ const SelectTool = () => {
     gap: 20,
   });
 
-  // const handleScroll = (e: any) => {
-  //   const bottom =
-  //     e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
-  //   if (bottom && !toolsSearch && !!selectedBranch?.id) {
-  //     $toolsPage((prev) =>
-  //       data?.total && data?.pages > prev ? prev + 1 : prev
-  //     );
-  //   }
-  // };
-
-  const handleCategory = (category: Category) => {
-    !!selectedBranch?.id &&
-      dispatch(selectTool({ name: category.name, id: category.id.toString() }));
-  };
-
-  // useEffect(() => {
-  //   if (!!data?.items?.length && !toolsSearch)
-  //     $tools((prev) => [...prev, ...data.items]);
-
-  //   if (toolsSearch && data?.items) $tools(data.items || []);
-  // }, [data?.items, toolsLoading, toolsSearch]);
-
   return (
-    <WebAppContainer className="h-full overflow-y-auto">
+    <WebAppContainer className="h-full overflow-y-auto ">
       <InvInput
-        disabled={!selectedBranch?.id}
+        disabled={!data?.items?.length}
         placeholder="Поиск товаров"
         wrapperClassName="bg-white mb-5"
         onChange={(e) => $toolsSearch(e.target?.value)}
       />
 
-      <ul
-        className="overflow-y-auto flex flex-col"
-        // onScroll={handleScroll}
-      >
+      <ul className="overflow-y-auto flex flex-col mb-4">
         {!id &&
           !!categories?.items?.length &&
           categories?.items.map((category, idx) => (
-            <li
-              key={idx + category.id + category.name}
-              onClick={() => handleCategory(category)}
-            >
+            <li key={idx + category.id + category.name}>
               <CustomLink
                 disabled={!selectedBranch?.id}
                 to={`tool/${category.id}`}
@@ -137,4 +101,4 @@ const SelectTool = () => {
   );
 };
 
-export default SelectTool;
+export default SelectCategoryTool;
