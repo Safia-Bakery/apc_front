@@ -59,7 +59,9 @@ const InvSelectOrderType = lazy(
 );
 const InventoryLayout = lazy(() => import("./webApp/layouts/inventory"));
 const InvArchieve = lazy(() => import("@/webApp/pages/InvArchieve"));
-const InvAddOrder = lazy(() => import("@/webApp/pages/InvAddOrder"));
+const SelectBranchAndCateg = lazy(
+  () => import("@/webApp/pages/SelectBranchAndCateg")
+);
 const ChooseTools = lazy(() => import("@/webApp/pages/ChooseTools"));
 const InvCart = lazy(() => import("@/webApp/pages/InvCart"));
 const InvSuccess = lazy(() => import("@/webApp/pages/InvSuccess"));
@@ -410,7 +412,7 @@ const App = () => {
           <Route
             element={
               <Suspend>
-                <InvAddOrder />
+                <SelectBranchAndCateg />
               </Suspend>
             }
             path={"add-order"}

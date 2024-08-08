@@ -28,7 +28,7 @@ const column = [{ name: "name_in_table" }, { name: "quantity" }, { name: "" }];
 const TelegramAddProduct = () => {
   const { t } = useTranslation();
   const { id } = useParams();
-  const removeRoute = useRemoveParams();
+  const removeParam = useRemoveParams();
   const dispatch = useAppDispatch();
   const { mutate: attach } = attachBrigadaMutation();
   const { mutate: deleteExp } = deleteExpenditureMutation();
@@ -64,7 +64,7 @@ const TelegramAddProduct = () => {
       {
         onSuccess: () => {
           successToast("Продукт добавлен");
-          removeRoute(["product"]);
+          removeParam(["product"]);
           reset();
           refetch();
         },

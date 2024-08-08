@@ -7,11 +7,8 @@ import CustomLink from "@/webApp/components/CustomLink";
 import { useEffect } from "react";
 import { TelegramApp } from "@/utils/tgHelpers";
 
-//invOrderType
-
 const InvSelectOrderType = () => {
   useEffect(() => {
-    // TelegramApp?.expand();
     TelegramApp?.confirmClose();
   }, []);
   return (

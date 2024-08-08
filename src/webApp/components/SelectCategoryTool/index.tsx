@@ -15,8 +15,8 @@ import { useInvTools } from "@/hooks/useInvTools";
 import useCategories from "@/hooks/useCategories";
 import Loading from "@/components/Loader";
 import EmptyList from "@/components/EmptyList";
-import Pagination from "@/components/Pagination";
 import useQueryString from "@/hooks/custom/useQueryString";
+import InvPagination from "../InvPagination";
 
 const SelectCategoryTool = () => {
   const { id } = useParams();
@@ -28,12 +28,13 @@ const SelectCategoryTool = () => {
   const { data: categories, isLoading: categoryLoading } = useCategories({
     category_status: 1,
     department: Departments.inventory,
+    enabled: false,
   });
   const { data, isLoading: toolsLoading } = useInvTools({
     ...(toolsSearch && !!selectedBranch?.id && { name: toolsSearch }),
     ...(page && { page: +page }),
     ...(id && !!selectedBranch?.id && { category_id: +id }),
-    enabled: !!id && !!selectedBranch?.id,
+    enabled: !!selectedBranch?.id && !!toolsSearch,
   });
 
   const parentRef = useRef<any>();
@@ -48,7 +49,7 @@ const SelectCategoryTool = () => {
   return (
     <WebAppContainer className="h-full overflow-y-auto ">
       <InvInput
-        disabled={!data?.items?.length}
+        // disabled={!data?.items?.length}
         placeholder="Поиск товаров"
         wrapperClassName="bg-white mb-5"
         onChange={(e) => $toolsSearch(e.target?.value)}
@@ -81,7 +82,7 @@ const SelectCategoryTool = () => {
 
         {(toolsLoading || categoryLoading) && <Loading />}
 
-        <div ref={parentRef} className="mt-3">
+        <div ref={parentRef} className="mt-3 pb-6">
           <div
             className="flex flex-col gap-4"
             style={{
@@ -92,11 +93,11 @@ const SelectCategoryTool = () => {
           >
             {!!data?.items?.length &&
               data.items.map((tool) => <ToolCard key={tool.id} tool={tool} />)}
+            {!!data && <InvPagination totalPages={data?.pages} />}
           </div>
         </div>
       </ul>
       {!data?.items?.length && <EmptyList />}
-      {!!data && <Pagination totalPages={data?.pages} />}
     </WebAppContainer>
   );
 };

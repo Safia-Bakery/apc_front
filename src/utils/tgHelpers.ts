@@ -26,7 +26,7 @@ export const TelegramApp = {
   },
 
   confirmClose() {
-    window.Telegram.WebApp.enableClosingConfirmation();
+    window.Telegram?.WebApp?.enableClosingConfirmation();
     window.Telegram.WebApp.isClosingConfirmationEnabled = true;
   },
   showProgress() {
