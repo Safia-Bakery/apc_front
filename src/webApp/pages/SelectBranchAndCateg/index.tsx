@@ -52,7 +52,7 @@ const SelectBranchAndCateg = () => {
       <SelectCategoryTool />
 
       <div className="fixed bottom-0 left-0 right-0 bg-white py-3 px-5 z-[105]">
-        {!cartLength ? (
+        {!cartLength && branchModal && (
           <InvButton
             btnType={InvBtnType.primary}
             className="w-full"
@@ -60,7 +60,9 @@ const SelectBranchAndCateg = () => {
           >
             Подтвердить
           </InvButton>
-        ) : (
+        )}
+
+        {!!cartLength && (
           <InvButton
             btnType={InvBtnType.primary}
             disabled={!cartLength}

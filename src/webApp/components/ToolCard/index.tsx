@@ -34,9 +34,9 @@ const ToolCard = ({ style, tool }: Props) => {
       />
 
       <div className="flex flex-1 justify-between pt-3 flex-col">
-        <div className="">
+        <div className="flex flex-1 items-center">
           <h5 className="font-bold text-base">{tool?.name}</h5>
-          <p className="text-tgTextGray">{tool.producttype}</p>
+          {/* <p className="text-tgTextGray">{tool.producttype}</p> */}
         </div>
 
         <div className="bg-tgPrimary flex items-center justify-center rounded-tl-3xl w-20 h-9 self-end">
