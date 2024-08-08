@@ -34,7 +34,7 @@ const SelectCategoryTool = () => {
     ...(toolsSearch && !!selectedBranch?.id && { name: toolsSearch }),
     ...(page && { page: +page }),
     ...(id && !!selectedBranch?.id && { category_id: +id }),
-    enabled: !!selectedBranch?.id && !!toolsSearch,
+    enabled: !!selectedBranch?.id || !!toolsSearch,
   });
 
   const parentRef = useRef<any>();
