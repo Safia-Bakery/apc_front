@@ -82,6 +82,9 @@ const BotSettings = lazy(() => import("@/pages/BotSettings"));
 const EditAddTgLink = lazy(() => import("@/pages/EditAddTgLink"));
 const ITTgLinks = lazy(() => import("@/pages/ITTgLinks"));
 
+const FormRequests = lazy(() => import("@/pages/FormRequests"));
+const EditAddFormRequests = lazy(() => import("@/pages/EditAddFormRequests"));
+
 export const sidebarRoutes: SidebarType[] = [
   {
     name: "heat_map",
@@ -346,6 +349,28 @@ export const sidebarRoutes: SidebarType[] = [
       },
     ],
   },
+
+  {
+    name: "requests_for_form",
+    icon: "/assets/icons/logystics.svg",
+    screen: MainPermissions.get_form_request,
+    department: Departments.form,
+    subroutes: [
+      {
+        name: "requests",
+        url: "/requests-form",
+        icon: "/assets/icons/logystics.svg",
+        screen: MainPermissions.get_form_request,
+      },
+      {
+        name: "form_type_price",
+        url: "/categories-form",
+        icon: "/assets/icons/categories.svg",
+        screen: MainPermissions.get_form_category,
+      },
+    ],
+  },
+
   {
     name: "car_requests",
     icon: "/assets/icons/logystics.svg",
@@ -487,6 +512,52 @@ export const sidebarRoutes: SidebarType[] = [
 ];
 
 export const routes = [
+  {
+    element: <FormRequests />,
+    path: "/requests-form",
+    screen: MainPermissions.get_form_request,
+  },
+  {
+    element: <EditAddFormRequests />,
+    path: "/requests-form/:id",
+    screen: MainPermissions.edit_form_request,
+  },
+  {
+    element: <EditAddFormRequests />,
+    path: "/requests-form/add",
+    screen: MainPermissions.add_form_request,
+  },
+  {
+    element: (
+      <Categories
+        dep={Departments.form}
+        add={MainPermissions.add_form_category}
+        edit={MainPermissions.edit_form_category}
+      />
+    ),
+    path: "/categories-form",
+    screen: MainPermissions.get_form_category,
+  },
+  {
+    element: <EditAddCategory dep={Departments.form} />,
+    path: "/categories-form/:id",
+    screen: MainPermissions.edit_form_category,
+  },
+  {
+    element: <EditAddCategory dep={Departments.form} />,
+    path: "/categories-form/add",
+    screen: MainPermissions.add_form_category,
+  },
+  {
+    element: <EditAddFormRequests />,
+    path: "/categories-form/add",
+    screen: MainPermissions.add_form_request,
+  },
+  {
+    element: <EditAddFormRequests />,
+    path: "/categories-form/add",
+    screen: MainPermissions.add_form_request,
+  },
   {
     element: <BotSettings />,
     path: "/additions",

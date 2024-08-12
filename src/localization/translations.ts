@@ -379,6 +379,11 @@ const localization = {
       tg_links: "Телеграмм ссылки",
 
       categories_inventory: "Категории Инвентарь",
+
+      requests_for_form: "Заявки на форму",
+      form: "Форма",
+      total_sum: "Общ. сумма",
+      form_type_price: "Виды форм / Цены",
     },
   },
   uz: {

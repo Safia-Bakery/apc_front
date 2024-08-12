@@ -539,6 +539,14 @@ export enum MainPermissions {
   get_categories_inventory = 128,
   edit_categories_inventory = 129,
   add_categories_inventory = 130,
+
+  get_form_request = 130,
+  add_form_request = 130,
+  edit_form_request = 130,
+
+  get_form_category = 130,
+  edit_form_category = 130,
+  add_form_category = 130,
 }
 export enum MarketingSubDep {
   all,
@@ -591,6 +599,7 @@ export enum Departments {
   request_for_food, // zakaz edi
   clientComment, // otziv clientov
   cctv, // videonablyudeniye
+  form,
 }
 export enum Sphere {
   retail = 1, //for APC department
