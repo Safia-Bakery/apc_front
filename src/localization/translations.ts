@@ -142,6 +142,7 @@ const localization = {
       event_description: "Описание события в детялях",
       send_photo_if_needed: "При желании отправить фото",
       show_weight_size: "Укажите вес/размер",
+      show_size: "Укажите размер",
       select_needed_time: "Укажите в какое время вам нужна машина",
       edit_branch: "Изменить филиал",
       sphere: "Сфера",

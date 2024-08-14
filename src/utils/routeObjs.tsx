@@ -83,7 +83,8 @@ const EditAddTgLink = lazy(() => import("@/pages/EditAddTgLink"));
 const ITTgLinks = lazy(() => import("@/pages/ITTgLinks"));
 
 const FormRequests = lazy(() => import("@/pages/FormRequests"));
-const EditAddFormRequests = lazy(() => import("@/pages/EditAddFormRequests"));
+const ShowFormRequests = lazy(() => import("@/pages/ShowFormRequests"));
+const AddFormRequest = lazy(() => import("@/pages/AddFormRequest"));
 
 export const sidebarRoutes: SidebarType[] = [
   {
@@ -397,40 +398,40 @@ export const sidebarRoutes: SidebarType[] = [
       },
     ],
   },
-  {
-    name: "hr_requests",
-    icon: "/assets/icons/comments.svg",
-    screen: MainPermissions.get_faq_requests,
-    subroutes: [
-      {
-        name: "questions_and_answers",
-        url: "/faq",
-        icon: "/assets/icons/subOrder.svg",
-        screen: MainPermissions.get_faq,
-      },
-      {
-        name: "offers",
-        url: "/hr-offers",
-        icon: "/assets/icons/comments.svg",
-        screen: MainPermissions.get_faq_requests,
-        param: `?sphere=${HRRequestTypes.offers}`,
-      },
-      {
-        name: "objections",
-        url: "/hr-objections",
-        icon: "/assets/icons/comments.svg",
-        screen: MainPermissions.get_faq_requests,
-        param: `?sphere=${HRRequestTypes.objections}`,
-      },
-      {
-        name: "asked_questions",
-        url: "/hr-asked-questions",
-        icon: "/assets/icons/comments.svg",
-        screen: MainPermissions.get_faq_requests,
-        param: `?sphere=${HRRequestTypes.asked_questions}`,
-      },
-    ],
-  },
+  // {
+  //   name: "hr_requests",
+  //   icon: "/assets/icons/comments.svg",
+  //   screen: MainPermissions.get_faq_requests,
+  //   subroutes: [
+  //     {
+  //       name: "questions_and_answers",
+  //       url: "/faq",
+  //       icon: "/assets/icons/subOrder.svg",
+  //       screen: MainPermissions.get_faq,
+  //     },
+  //     {
+  //       name: "offers",
+  //       url: "/hr-offers",
+  //       icon: "/assets/icons/comments.svg",
+  //       screen: MainPermissions.get_faq_requests,
+  //       param: `?sphere=${HRRequestTypes.offers}`,
+  //     },
+  //     {
+  //       name: "objections",
+  //       url: "/hr-objections",
+  //       icon: "/assets/icons/comments.svg",
+  //       screen: MainPermissions.get_faq_requests,
+  //       param: `?sphere=${HRRequestTypes.objections}`,
+  //     },
+  //     {
+  //       name: "asked_questions",
+  //       url: "/hr-asked-questions",
+  //       icon: "/assets/icons/comments.svg",
+  //       screen: MainPermissions.get_faq_requests,
+  //       param: `?sphere=${HRRequestTypes.asked_questions}`,
+  //     },
+  //   ],
+  // },
   {
     name: "cctv",
     icon: "/assets/icons/camera.svg",
@@ -518,12 +519,12 @@ export const routes = [
     screen: MainPermissions.get_form_request,
   },
   {
-    element: <EditAddFormRequests />,
+    element: <ShowFormRequests />,
     path: "/requests-form/:id",
     screen: MainPermissions.edit_form_request,
   },
   {
-    element: <EditAddFormRequests />,
+    element: <AddFormRequest />,
     path: "/requests-form/add",
     screen: MainPermissions.add_form_request,
   },
@@ -549,12 +550,12 @@ export const routes = [
     screen: MainPermissions.add_form_category,
   },
   {
-    element: <EditAddFormRequests />,
+    element: <ShowFormRequests />,
     path: "/categories-form/add",
     screen: MainPermissions.add_form_request,
   },
   {
-    element: <EditAddFormRequests />,
+    element: <ShowFormRequests />,
     path: "/categories-form/add",
     screen: MainPermissions.add_form_request,
   },
@@ -1310,41 +1311,41 @@ export const routes = [
     path: "/faq/:id",
     screen: MainPermissions.edit_faq,
   },
-  {
-    element: <HRQuestions />,
-    path: "/faq",
-    screen: MainPermissions.get_faq,
-  },
-  {
-    element: <HRRequests />,
-    path: "/hr-offers",
-    screen: MainPermissions.get_faq_requests,
-  },
-  {
-    element: <EditHRRequests />,
-    path: "/hr-offers/:id",
-    screen: MainPermissions.edit_faq_requests,
-  },
-  {
-    element: <HRRequests />,
-    path: "/hr-asked-questions",
-    screen: MainPermissions.get_faq_requests,
-  },
-  {
-    element: <EditHRRequests />,
-    path: "/hr-asked-questions/:id",
-    screen: MainPermissions.edit_faq_requests,
-  },
-  {
-    element: <HRRequests />,
-    path: "/hr-objections",
-    screen: MainPermissions.get_faq_requests,
-  },
-  {
-    element: <EditHRRequests />,
-    path: "/hr-objections/:id",
-    screen: MainPermissions.edit_faq_requests,
-  },
+  // {
+  //   element: <HRQuestions />,
+  //   path: "/faq",
+  //   screen: MainPermissions.get_faq,
+  // },
+  // {
+  //   element: <HRRequests />,
+  //   path: "/hr-offers",
+  //   screen: MainPermissions.get_faq_requests,
+  // },
+  // {
+  //   element: <EditHRRequests />,
+  //   path: "/hr-offers/:id",
+  //   screen: MainPermissions.edit_faq_requests,
+  // },
+  // {
+  //   element: <HRRequests />,
+  //   path: "/hr-asked-questions",
+  //   screen: MainPermissions.get_faq_requests,
+  // },
+  // {
+  //   element: <EditHRRequests />,
+  //   path: "/hr-asked-questions/:id",
+  //   screen: MainPermissions.edit_faq_requests,
+  // },
+  // {
+  //   element: <HRRequests />,
+  //   path: "/hr-objections",
+  //   screen: MainPermissions.get_faq_requests,
+  // },
+  // {
+  //   element: <EditHRRequests />,
+  //   path: "/hr-objections/:id",
+  //   screen: MainPermissions.edit_faq_requests,
+  // },
   // ===========================================================
 
   {

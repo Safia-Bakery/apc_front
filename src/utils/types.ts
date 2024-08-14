@@ -540,13 +540,13 @@ export enum MainPermissions {
   edit_categories_inventory = 129,
   add_categories_inventory = 130,
 
-  get_form_request = 130,
-  add_form_request = 130,
-  edit_form_request = 130,
+  get_form_request = 131,
+  add_form_request = 133,
+  edit_form_request = 132,
 
-  get_form_category = 130,
-  edit_form_category = 130,
-  add_form_category = 130,
+  get_form_category = 134,
+  edit_form_category = 135,
+  add_form_category = 136,
 }
 export enum MarketingSubDep {
   all,

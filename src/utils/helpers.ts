@@ -178,10 +178,8 @@ export const isValidHttpUrl = (string: string) => {
   return url.protocol === "http:" || url.protocol === "https:";
 };
 
-export const imageConverter = (img: File) => {
-  if (img?.size) return URL.createObjectURL(img);
-  return "";
-};
+export const imageConverter = (img: File) =>
+  img?.size ? URL.createObjectURL(img) : "";
 
 export const handleIdx = (index: number) => {
   const currentPage = Number(useQueryString("page")) || 1;
