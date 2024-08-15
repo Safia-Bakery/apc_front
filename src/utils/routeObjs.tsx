@@ -82,6 +82,10 @@ const BotSettings = lazy(() => import("@/pages/BotSettings"));
 const EditAddTgLink = lazy(() => import("@/pages/EditAddTgLink"));
 const ITTgLinks = lazy(() => import("@/pages/ITTgLinks"));
 
+const FormRequests = lazy(() => import("@/pages/FormRequests"));
+const ShowFormRequests = lazy(() => import("@/pages/ShowFormRequests"));
+const AddFormRequest = lazy(() => import("@/pages/AddFormRequest"));
+
 export const sidebarRoutes: SidebarType[] = [
   {
     name: "heat_map",
@@ -346,6 +350,28 @@ export const sidebarRoutes: SidebarType[] = [
       },
     ],
   },
+
+  {
+    name: "requests_for_form",
+    icon: "/assets/icons/logystics.svg",
+    screen: MainPermissions.get_form_request,
+    department: Departments.form,
+    subroutes: [
+      {
+        name: "requests",
+        url: "/requests-form",
+        icon: "/assets/icons/logystics.svg",
+        screen: MainPermissions.get_form_request,
+      },
+      {
+        name: "form_type_price",
+        url: "/categories-form",
+        icon: "/assets/icons/categories.svg",
+        screen: MainPermissions.get_form_category,
+      },
+    ],
+  },
+
   {
     name: "car_requests",
     icon: "/assets/icons/logystics.svg",
@@ -372,40 +398,40 @@ export const sidebarRoutes: SidebarType[] = [
       },
     ],
   },
-  {
-    name: "hr_requests",
-    icon: "/assets/icons/comments.svg",
-    screen: MainPermissions.get_faq_requests,
-    subroutes: [
-      {
-        name: "questions_and_answers",
-        url: "/faq",
-        icon: "/assets/icons/subOrder.svg",
-        screen: MainPermissions.get_faq,
-      },
-      {
-        name: "offers",
-        url: "/hr-offers",
-        icon: "/assets/icons/comments.svg",
-        screen: MainPermissions.get_faq_requests,
-        param: `?sphere=${HRRequestTypes.offers}`,
-      },
-      {
-        name: "objections",
-        url: "/hr-objections",
-        icon: "/assets/icons/comments.svg",
-        screen: MainPermissions.get_faq_requests,
-        param: `?sphere=${HRRequestTypes.objections}`,
-      },
-      {
-        name: "asked_questions",
-        url: "/hr-asked-questions",
-        icon: "/assets/icons/comments.svg",
-        screen: MainPermissions.get_faq_requests,
-        param: `?sphere=${HRRequestTypes.asked_questions}`,
-      },
-    ],
-  },
+  // {
+  //   name: "hr_requests",
+  //   icon: "/assets/icons/comments.svg",
+  //   screen: MainPermissions.get_faq_requests,
+  //   subroutes: [
+  //     {
+  //       name: "questions_and_answers",
+  //       url: "/faq",
+  //       icon: "/assets/icons/subOrder.svg",
+  //       screen: MainPermissions.get_faq,
+  //     },
+  //     {
+  //       name: "offers",
+  //       url: "/hr-offers",
+  //       icon: "/assets/icons/comments.svg",
+  //       screen: MainPermissions.get_faq_requests,
+  //       param: `?sphere=${HRRequestTypes.offers}`,
+  //     },
+  //     {
+  //       name: "objections",
+  //       url: "/hr-objections",
+  //       icon: "/assets/icons/comments.svg",
+  //       screen: MainPermissions.get_faq_requests,
+  //       param: `?sphere=${HRRequestTypes.objections}`,
+  //     },
+  //     {
+  //       name: "asked_questions",
+  //       url: "/hr-asked-questions",
+  //       icon: "/assets/icons/comments.svg",
+  //       screen: MainPermissions.get_faq_requests,
+  //       param: `?sphere=${HRRequestTypes.asked_questions}`,
+  //     },
+  //   ],
+  // },
   {
     name: "cctv",
     icon: "/assets/icons/camera.svg",
@@ -487,6 +513,52 @@ export const sidebarRoutes: SidebarType[] = [
 ];
 
 export const routes = [
+  {
+    element: <FormRequests />,
+    path: "/requests-form",
+    screen: MainPermissions.get_form_request,
+  },
+  {
+    element: <ShowFormRequests />,
+    path: "/requests-form/:id",
+    screen: MainPermissions.edit_form_request,
+  },
+  {
+    element: <AddFormRequest />,
+    path: "/requests-form/add",
+    screen: MainPermissions.add_form_request,
+  },
+  {
+    element: (
+      <Categories
+        dep={Departments.form}
+        add={MainPermissions.add_form_category}
+        edit={MainPermissions.edit_form_category}
+      />
+    ),
+    path: "/categories-form",
+    screen: MainPermissions.get_form_category,
+  },
+  {
+    element: <EditAddCategory dep={Departments.form} />,
+    path: "/categories-form/:id",
+    screen: MainPermissions.edit_form_category,
+  },
+  {
+    element: <EditAddCategory dep={Departments.form} />,
+    path: "/categories-form/add",
+    screen: MainPermissions.add_form_category,
+  },
+  {
+    element: <ShowFormRequests />,
+    path: "/categories-form/add",
+    screen: MainPermissions.add_form_request,
+  },
+  {
+    element: <ShowFormRequests />,
+    path: "/categories-form/add",
+    screen: MainPermissions.add_form_request,
+  },
   {
     element: <BotSettings />,
     path: "/additions",
@@ -1239,41 +1311,41 @@ export const routes = [
     path: "/faq/:id",
     screen: MainPermissions.edit_faq,
   },
-  {
-    element: <HRQuestions />,
-    path: "/faq",
-    screen: MainPermissions.get_faq,
-  },
-  {
-    element: <HRRequests />,
-    path: "/hr-offers",
-    screen: MainPermissions.get_faq_requests,
-  },
-  {
-    element: <EditHRRequests />,
-    path: "/hr-offers/:id",
-    screen: MainPermissions.edit_faq_requests,
-  },
-  {
-    element: <HRRequests />,
-    path: "/hr-asked-questions",
-    screen: MainPermissions.get_faq_requests,
-  },
-  {
-    element: <EditHRRequests />,
-    path: "/hr-asked-questions/:id",
-    screen: MainPermissions.edit_faq_requests,
-  },
-  {
-    element: <HRRequests />,
-    path: "/hr-objections",
-    screen: MainPermissions.get_faq_requests,
-  },
-  {
-    element: <EditHRRequests />,
-    path: "/hr-objections/:id",
-    screen: MainPermissions.edit_faq_requests,
-  },
+  // {
+  //   element: <HRQuestions />,
+  //   path: "/faq",
+  //   screen: MainPermissions.get_faq,
+  // },
+  // {
+  //   element: <HRRequests />,
+  //   path: "/hr-offers",
+  //   screen: MainPermissions.get_faq_requests,
+  // },
+  // {
+  //   element: <EditHRRequests />,
+  //   path: "/hr-offers/:id",
+  //   screen: MainPermissions.edit_faq_requests,
+  // },
+  // {
+  //   element: <HRRequests />,
+  //   path: "/hr-asked-questions",
+  //   screen: MainPermissions.get_faq_requests,
+  // },
+  // {
+  //   element: <EditHRRequests />,
+  //   path: "/hr-asked-questions/:id",
+  //   screen: MainPermissions.edit_faq_requests,
+  // },
+  // {
+  //   element: <HRRequests />,
+  //   path: "/hr-objections",
+  //   screen: MainPermissions.get_faq_requests,
+  // },
+  // {
+  //   element: <EditHRRequests />,
+  //   path: "/hr-objections/:id",
+  //   screen: MainPermissions.edit_faq_requests,
+  // },
   // ===========================================================
 
   {

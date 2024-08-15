@@ -4,6 +4,7 @@ import useQueryString from "custom/useQueryString";
 import { loginHandler } from "reducers/auth";
 import { useAppDispatch } from "@/store/utils/types";
 import { TelegramApp } from "@/utils/tgHelpers";
+import { versionHandler } from "@/store/reducers/versionCheck";
 
 const TgRoutes = () => {
   const tokenKey = useQueryString("key");
@@ -19,6 +20,7 @@ const TgRoutes = () => {
   }, [tokenKey]);
 
   useEffect(() => {
+    dispatch(versionHandler);
     setTimeout(() => {
       TelegramApp?.expand();
       TelegramApp?.confirmClose();

@@ -1,5 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Departments, Order, RequestStatus } from "@/utils/types";
+import {
+  Departments,
+  MainPermissions,
+  Order,
+  RequestStatus,
+} from "@/utils/types";
 import Loading from "@/components/Loader";
 import Pagination from "@/components/Pagination";
 import { useState } from "react";
@@ -9,29 +14,32 @@ import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { handleIdx, requestRows } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
-import InventoryFilter from "./filter";
+import FormFilter from "./filter";
 import ItemsCount from "@/components/ItemsCount";
 import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import { useTranslation } from "react-i18next";
 import { dateMonthYear, yearMonthDate } from "@/utils/keys";
+import { useAppSelector } from "@/store/utils/types";
+import { permissionSelector } from "@/store/reducers/sidebar";
+import DownloadExcell from "@/components/DownloadExcell";
 
 const column = [
   { name: "№", key: "" },
   { name: "num", key: "id" },
-  { name: "sender", key: "type" },
-  { name: "receiver", key: "fillial.name" },
-  { name: "products", key: "expenditures" },
-  { name: "date", key: "created_at" },
+  { name: "branch", key: "id" },
+  { name: "receipt_date", key: "type" },
+  { name: "form", key: "fillial.name" },
+  { name: "total_sum", key: "expenditures" },
+  { name: "employee", key: "created_at" },
 
   {
     name: "status",
     key: "status",
   },
-  { name: "author", key: "user.name" },
 ];
 
-const RequestsInventory = () => {
+const FormRequests = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const currentPage = Number(useQueryString("page")) || 1;
@@ -42,6 +50,7 @@ const RequestsInventory = () => {
   const id = Number(useQueryString("id"));
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
+  const permissions = useAppSelector(permissionSelector);
 
   const {
     data: requests,
@@ -50,7 +59,7 @@ const RequestsInventory = () => {
   } = useOrders({
     enabled: true,
     page: currentPage,
-    department: Departments.inventory,
+    department: Departments.form,
     ...(!!request_status && { request_status }),
     ...(!!created_at && {
       created_at: dayjs(created_at).format(yearMonthDate),
@@ -62,10 +71,15 @@ const RequestsInventory = () => {
 
   return (
     <Card>
-      <Header title={t("requests_for_inventory")}>
-        <button onClick={() => navigate("add")} className="btn btn-success  ">
-          {t("add")}
-        </button>
+      <Header title={t("requests_for_form")}>
+        <div className="flex">
+          <DownloadExcell />
+          {permissions?.[MainPermissions.add_form_request] && (
+            <button onClick={() => navigate("add")} className="btn btn-success">
+              {t("add")}
+            </button>
+          )}
+        </div>
       </Header>
 
       <div className="table-responsive grid-view content">
@@ -76,7 +90,7 @@ const RequestsInventory = () => {
             onSort={(data) => $sort(data)}
             data={requests?.items}
           >
-            <InventoryFilter />
+            <FormFilter />
           </TableHead>
 
           {!!requests?.items?.length && (
@@ -85,14 +99,16 @@ const RequestsInventory = () => {
                 <tr className={requestRows[order.status]} key={idx}>
                   <td width="40">{handleIdx(idx)}</td>
                   <td width="80">
-                    <Link to={`/requests-inventory/${order?.id}`}>
-                      {order?.id}
-                    </Link>
-                  </td>
-                  <td>
-                    <span className="not-set">{order?.user?.full_name}</span>
+                    {permissions?.[MainPermissions.edit_form_request] ? (
+                      <Link to={`/requests-form/${order?.id}`}>
+                        {order?.id}
+                      </Link>
+                    ) : (
+                      order?.id
+                    )}
                   </td>
                   <td>{order?.fillial?.parentfillial?.name}</td>
+                  <td>{dayjs(order?.created_at).format(dateMonthYear)}</td>
                   <td>
                     <ul className="max-w-xs w-full">
                       {!!order?.expanditure?.length &&
@@ -103,9 +119,9 @@ const RequestsInventory = () => {
                         ))}
                     </ul>
                   </td>
-                  <td>{dayjs(order?.created_at).format(dateMonthYear)}</td>
-                  <td>{t(RequestStatus[order.status])}</td>
+                  <td>total sum</td>
                   <td>{order?.user_manager}</td>
+                  <td>{t(RequestStatus[order.status])}</td>
                 </tr>
               ))}
             </tbody>
@@ -119,4 +135,4 @@ const RequestsInventory = () => {
   );
 };
 
-export default RequestsInventory;
+export default FormRequests;

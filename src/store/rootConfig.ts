@@ -7,7 +7,7 @@ import reducer from "./reducers/reducers";
 const persistConfig = {
   key: "service",
   storage,
-  whitelist: ["auth"],
+  whitelist: ["auth", "version"],
 };
 
 export const store = configureStore({

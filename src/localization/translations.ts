@@ -142,6 +142,8 @@ const localization = {
       event_description: "Описание события в детялях",
       send_photo_if_needed: "При желании отправить фото",
       show_weight_size: "Укажите вес/размер",
+      show_size: "Укажите размер",
+      size: "Размер",
       select_needed_time: "Укажите в какое время вам нужна машина",
       edit_branch: "Изменить филиал",
       sphere: "Сфера",
@@ -379,6 +381,12 @@ const localization = {
       tg_links: "Телеграмм ссылки",
 
       categories_inventory: "Категории Инвентарь",
+
+      requests_for_form: "Заявки на форму",
+      form: "Форма",
+      total_sum: "Общ. сумма",
+      form_type_price: "Виды форм / Цены",
+      totall: "Итого",
     },
   },
   uz: {

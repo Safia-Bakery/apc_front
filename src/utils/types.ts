@@ -66,6 +66,7 @@ export interface Order {
       status: number;
       description: string;
       image: string;
+      prod_cat: { name: string; price?: number };
     };
   }[];
   brigada: {
@@ -539,6 +540,14 @@ export enum MainPermissions {
   get_categories_inventory = 128,
   edit_categories_inventory = 129,
   add_categories_inventory = 130,
+
+  get_form_request = 131,
+  add_form_request = 133,
+  edit_form_request = 132,
+
+  get_form_category = 134,
+  edit_form_category = 135,
+  add_form_category = 136,
 }
 export enum MarketingSubDep {
   all,
@@ -591,6 +600,7 @@ export enum Departments {
   request_for_food, // zakaz edi
   clientComment, // otziv clientov
   cctv, // videonablyudeniye
+  form,
 }
 export enum Sphere {
   retail = 1, //for APC department
