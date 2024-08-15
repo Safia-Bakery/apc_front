@@ -106,6 +106,17 @@ const ShowFormRequests = () => {
       return <ShowRequestModals />;
   }, [order?.status, modal]);
 
+  const renderPrice = useMemo(() => {
+    return order?.request_orpr?.reduce(
+      (acc, item) => {
+        acc.totalAmount += item.amount || 0;
+        acc.totalPrice += item.orpr_product?.prod_cat?.price || 0;
+        return acc;
+      },
+      { totalAmount: 0, totalPrice: 0 }
+    );
+  }, [order?.request_orpr]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -179,24 +190,31 @@ const ShowFormRequests = () => {
             </div>
 
             <div className="col-md-6">
-              <table
-                id="w1"
-                className="table table-striped table-bordered detail-view"
-              >
-                <tbody>
+              <table className="table table-striped table-bordered detail-view">
+                <thead>
                   <tr>
-                    <th>{t("urgent")}</th>
-                    <td className="w-1/2">
-                      {!order?.category?.urgent ? "Нет" : "Да"}
-                    </td>
+                    <th>{t("form")}</th>
+                    <th>{t("size")}</th>
+                    <th>{t("quantity")}</th>
+                    <th>{t("price")}</th>
                   </tr>
-
-                  {order?.deny_reason && (
+                </thead>
+                <tbody>
+                  {order?.request_orpr?.map((item) => (
                     <tr>
-                      <th className="font-bold">{t("deny_reason")}</th>
-                      <td>{order?.deny_reason}</td>
+                      <td>{item?.orpr_product?.prod_cat?.name}</td>
+                      <td>{item.orpr_product?.name}</td>
+                      <td>{item?.amount}</td>
+                      <td>{item?.orpr_product?.prod_cat?.price || "-----"}</td>
                     </tr>
-                  )}
+                  ))}
+
+                  <tr>
+                    <td className="font-bold">{t("totall")}</td>
+                    <td className="font-bold">-----</td>
+                    <td className="font-bold">{renderPrice?.totalAmount}</td>
+                    <td className="font-bold">{renderPrice?.totalPrice}</td>
+                  </tr>
                 </tbody>
               </table>
             </div>

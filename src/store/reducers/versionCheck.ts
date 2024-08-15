@@ -12,7 +12,7 @@ const initialState: State = {
 };
 
 export const versionCheckReducer = createSlice({
-  name: "auth",
+  name: "version_check",
   initialState,
   reducers: {
     versionHandler: (state) => {

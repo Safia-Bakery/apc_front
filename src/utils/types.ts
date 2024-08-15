@@ -66,6 +66,7 @@ export interface Order {
       status: number;
       description: string;
       image: string;
+      prod_cat: { name: string; price?: number };
     };
   }[];
   brigada: {
