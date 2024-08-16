@@ -111,16 +111,16 @@ const FormRequests = () => {
                   <td>{dayjs(order?.created_at).format(dateMonthYear)}</td>
                   <td>
                     <ul className="max-w-xs w-full">
-                      {!!order?.expanditure?.length &&
-                        order?.expanditure?.map((prod) => (
-                          <li className="list-disc" key={prod.id}>
-                            {prod?.tool?.name}
+                      {!!order?.request_orpr &&
+                        order?.request_orpr?.map((item) => (
+                          <li className="list-disc" key={item.id}>
+                            {item?.orpr_product?.prod_cat?.name} x{item?.amount}
                           </li>
                         ))}
                     </ul>
                   </td>
-                  <td>total sum</td>
-                  <td>{order?.user_manager}</td>
+                  <td>{order?.price}</td>
+                  <td>{order?.description}</td>
                   <td>{t(RequestStatus[order.status])}</td>
                 </tr>
               ))}

@@ -6,16 +6,13 @@ import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
-import { baseURL } from "@/main";
 import { detectFileType } from "@/utils/helpers";
 import { FileType, ModalTypes, RequestStatus } from "@/utils/types";
 import { useForm } from "react-hook-form";
 import ShowRequestModals from "@/components/ShowRequestModals";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
-import cl from "classnames";
 import Loading from "@/components/Loader";
 import useQueryString from "@/hooks/custom/useQueryString";
-import Modal from "@/components/Modal";
 import { useTranslation } from "react-i18next";
 import { dateTimeFormat } from "@/utils/keys";
 
@@ -159,14 +156,10 @@ const ShowFormRequests = () => {
                       </a>
                     </td>
                   </tr>
-                  <tr>
-                    <th>{t("department")}</th>
-                    <td>{order?.fillial?.parentfillial?.name}</td>
-                  </tr>
 
                   <tr>
-                    <th>{t("event_description")}</th>
-                    <td>{order?.description}</td>
+                    <th>{t("branch")}</th>
+                    <td>{order?.fillial?.parentfillial?.name}</td>
                   </tr>
                   <tr>
                     <th>{t("changed")}</th>
@@ -185,6 +178,12 @@ const ShowFormRequests = () => {
                         : t("not_given")}
                     </td>
                   </tr>
+                  {!order?.deny_reason && (
+                    <tr>
+                      <th>{t("deny_reason")}:</th>
+                      <td>{order?.deny_reason}</td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -201,7 +200,7 @@ const ShowFormRequests = () => {
                 </thead>
                 <tbody>
                   {order?.request_orpr?.map((item) => (
-                    <tr>
+                    <tr key={item.id}>
                       <td>{item?.orpr_product?.prod_cat?.name}</td>
                       <td>{item.orpr_product?.name}</td>
                       <td>{item?.amount}</td>

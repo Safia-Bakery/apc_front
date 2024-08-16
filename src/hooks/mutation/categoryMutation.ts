@@ -15,6 +15,7 @@ interface Body {
   parent_id?: number;
   is_child?: boolean;
   telegram_id?: number;
+  price?: number;
 }
 
 const categoryMutation = () => {

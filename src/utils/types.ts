@@ -244,6 +244,7 @@ export interface Category {
   department?: Departments;
   description: string;
   status: number;
+  price: number;
   id: number;
   urgent: number;
   sub_id?: number;

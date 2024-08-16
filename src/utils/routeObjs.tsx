@@ -85,6 +85,7 @@ const ITTgLinks = lazy(() => import("@/pages/ITTgLinks"));
 const FormRequests = lazy(() => import("@/pages/FormRequests"));
 const ShowFormRequests = lazy(() => import("@/pages/ShowFormRequests"));
 const AddFormRequest = lazy(() => import("@/pages/AddFormRequest"));
+const EditAddFormcategory = lazy(() => import("@/pages/EditAddFormcategory"));
 
 export const sidebarRoutes: SidebarType[] = [
   {
@@ -540,25 +541,16 @@ export const routes = [
     screen: MainPermissions.get_form_category,
   },
   {
-    element: <EditAddCategory dep={Departments.form} />,
+    element: <EditAddFormcategory dep={Departments.form} />,
     path: "/categories-form/:id",
     screen: MainPermissions.edit_form_category,
   },
   {
-    element: <EditAddCategory dep={Departments.form} />,
+    element: <EditAddFormcategory dep={Departments.form} />,
     path: "/categories-form/add",
     screen: MainPermissions.add_form_category,
   },
-  {
-    element: <ShowFormRequests />,
-    path: "/categories-form/add",
-    screen: MainPermissions.add_form_request,
-  },
-  {
-    element: <ShowFormRequests />,
-    path: "/categories-form/add",
-    screen: MainPermissions.add_form_request,
-  },
+
   {
     element: <BotSettings />,
     path: "/additions",

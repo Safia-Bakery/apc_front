@@ -383,6 +383,7 @@ const localization = {
       categories_inventory: "Категории Инвентарь",
 
       requests_for_form: "Заявки на форму",
+      categories_for_form: "Категории на форму",
       form: "Форма",
       total_sum: "Общ. сумма",
       form_type_price: "Виды форм / Цены",
