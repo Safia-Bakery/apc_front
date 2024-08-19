@@ -530,6 +530,12 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                       <td>{order?.pause_reason}</td>
                     </tr>
                   )}
+                  {order?.phone_number && (
+                    <tr>
+                      <th className="font-bold">{t("phone_number")}</th>
+                      <td>{order?.phone_number}</td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>

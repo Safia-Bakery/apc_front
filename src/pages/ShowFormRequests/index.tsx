@@ -85,7 +85,6 @@ const ShowFormRequests = () => {
         <div className="float-end mb10">
           {order?.status! < RequestStatus.finished && (
             <button
-              // onClick={handleChangeModal(ModalTypes.changeCateg)}
               onClick={handleBrigada({ status: RequestStatus.finished })}
               className="btn btn-success"
             >

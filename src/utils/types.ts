@@ -55,6 +55,7 @@ export interface Order {
   urgent: boolean;
   user: UserTypes;
   user_manager: string;
+  phone_number?: string;
   is_bot: boolean;
   request_orpr?: {
     id: number;
