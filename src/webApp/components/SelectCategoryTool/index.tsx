@@ -49,6 +49,7 @@ const SelectCategoryTool = () => {
   return (
     <WebAppContainer className="h-full overflow-y-auto ">
       <InvInput
+        disabled={!selectedBranch?.id}
         // disabled={!data?.items?.length}
         placeholder="Поиск товаров"
         wrapperClassName="bg-white mb-5"
