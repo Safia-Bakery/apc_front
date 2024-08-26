@@ -12,7 +12,7 @@ import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx, requestRows } from "@/utils/helpers";
+import { handleIdx, numberWithCommas, requestRows } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import FormFilter from "./filter";
 import ItemsCount from "@/components/ItemsCount";
@@ -119,7 +119,7 @@ const FormRequests = () => {
                         ))}
                     </ul>
                   </td>
-                  <td>{order?.price}</td>
+                  <td>{numberWithCommas(order?.price || 0)}</td>
                   <td>{order?.description}</td>
                   <td>{t(RequestStatus[order.status])}</td>
                 </tr>
