@@ -6,8 +6,8 @@ import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import { errorToast, successToast } from "@/utils/toast";
-import { detectFileType } from "@/utils/helpers";
-import { FileType, ModalTypes, RequestStatus } from "@/utils/types";
+import { numberWithCommas } from "@/utils/helpers";
+import { ModalTypes, RequestStatus } from "@/utils/types";
 import { useForm } from "react-hook-form";
 import ShowRequestModals from "@/components/ShowRequestModals";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
@@ -33,12 +33,6 @@ const ShowFormRequests = () => {
   } = useOrder({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
   const navigate = useNavigate();
-
-  const handleShowPhoto = (file: string) => () => {
-    if (detectFileType(file) === FileType.other) return window.open(file);
-    else navigateParams({ modal: ModalTypes.showPhoto, photo: file });
-  };
-
   const handleBack = () => navigate("/requests-form");
 
   const handleBrigada =
@@ -107,10 +101,9 @@ const ShowFormRequests = () => {
     return order?.request_orpr?.reduce(
       (acc, item) => {
         acc.totalAmount += item.amount || 0;
-        acc.totalPrice += item.orpr_product?.prod_cat?.price || 0;
         return acc;
       },
-      { totalAmount: 0, totalPrice: 0 }
+      { totalAmount: 0 }
     );
   }, [order?.request_orpr]);
 
@@ -204,7 +197,11 @@ const ShowFormRequests = () => {
                       <td>{item?.orpr_product?.prod_cat?.name}</td>
                       <td>{item.orpr_product?.name}</td>
                       <td>{item?.amount}</td>
-                      <td>{item?.orpr_product?.prod_cat?.price || "-----"}</td>
+                      <td>
+                        {numberWithCommas(
+                          item?.orpr_product?.prod_cat?.price || 0
+                        ) || "-----"}
+                      </td>
                     </tr>
                   ))}
 
@@ -212,7 +209,9 @@ const ShowFormRequests = () => {
                     <td className="font-bold">{t("totall")}</td>
                     <td className="font-bold">-----</td>
                     <td className="font-bold">{renderPrice?.totalAmount}</td>
-                    <td className="font-bold">{renderPrice?.totalPrice}</td>
+                    <td className="font-bold">
+                      {numberWithCommas(order?.price || 0)}
+                    </td>
                   </tr>
                 </tbody>
               </table>
