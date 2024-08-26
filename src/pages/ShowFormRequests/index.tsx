@@ -178,7 +178,7 @@ const ShowFormRequests = () => {
                         : t("not_given")}
                     </td>
                   </tr>
-                  {!order?.deny_reason && (
+                  {!!order?.deny_reason && (
                     <tr>
                       <th>{t("deny_reason")}:</th>
                       <td>{order?.deny_reason}</td>
