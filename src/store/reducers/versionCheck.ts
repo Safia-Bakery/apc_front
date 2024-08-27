@@ -1,32 +1,43 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../rootConfig";
-import { CURRECT_VERSION } from "@/utils/version";
+import { CURRECT_TG_VERSION, CURRECT_WEB_VERSION } from "@/utils/version";
 import { successToast } from "@/utils/toast";
 
 interface State {
-  version: string | null;
+  tgVersion: string | null;
+  wevVersion: string | null;
 }
 
 const initialState: State = {
-  version: null,
+  tgVersion: null,
+  wevVersion: null,
 };
 
 export const versionCheckReducer = createSlice({
   name: "version_check",
   initialState,
   reducers: {
-    versionHandler: (state) => {
-      if (state.version !== CURRECT_VERSION) {
+    webVersionHandler: (state) => {
+      if (state.wevVersion !== CURRECT_WEB_VERSION) {
         successToast("version updated");
         window.location.reload();
-        state.version = CURRECT_VERSION;
+        state.wevVersion = CURRECT_WEB_VERSION;
+      }
+    },
+    tgVersionHandler: (state) => {
+      if (state.tgVersion !== CURRECT_TG_VERSION) {
+        successToast("version updated");
+        window.location.reload();
+        state.tgVersion = CURRECT_TG_VERSION;
       }
     },
   },
 });
 
-export const versionSelector = (state: RootState) => state.version.version;
+export const versionSelector = (state: RootState) => state.version.wevVersion;
+export const tgVersionSelector = (state: RootState) => state.version.tgVersion;
 
-export const { versionHandler } = versionCheckReducer.actions;
+export const { webVersionHandler, tgVersionHandler } =
+  versionCheckReducer.actions;
 
 export default versionCheckReducer.reducer;

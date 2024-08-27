@@ -15,7 +15,7 @@ import useOrderCounts from "@/hooks/useOrderCounts";
 import { langSelector } from "@/store/reducers/selects";
 import i18n from "@/localization";
 import { Playground } from "../CustomSidebar";
-import { versionHandler } from "@/store/reducers/versionCheck";
+import { webVersionHandler } from "@/store/reducers/versionCheck";
 
 const WebRooutes = () => {
   const token = useAppSelector(tokenSelector);
@@ -52,7 +52,7 @@ const WebRooutes = () => {
     // const normalizedPath = normalizeURL(currentPath);
     // if (currentPath !== normalizedPath)
     //   navigate(normalizedPath, { replace: true });
-    dispatch(versionHandler());
+    dispatch(webVersionHandler());
     if (window.location.pathname === "/") navigate("/home");
   }, []);
 

@@ -7,10 +7,10 @@ import CustomLink from "@/webApp/components/CustomLink";
 import { useEffect } from "react";
 import { TelegramApp } from "@/utils/tgHelpers";
 import { useAppSelector } from "@/store/utils/types";
-import { versionSelector } from "@/store/reducers/versionCheck";
+import { tgVersionSelector } from "@/store/reducers/versionCheck";
 
 const InvSelectOrderType = () => {
-  const version = useAppSelector(versionSelector);
+  const version = useAppSelector(tgVersionSelector);
   useEffect(() => {
     TelegramApp?.confirmClose();
   }, []);
