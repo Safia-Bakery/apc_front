@@ -20,7 +20,7 @@ const TgRoutes = () => {
   }, [tokenKey]);
 
   useEffect(() => {
-    dispatch(versionHandler);
+    dispatch(versionHandler());
     setTimeout(() => {
       TelegramApp?.expand();
       TelegramApp?.confirmClose();
