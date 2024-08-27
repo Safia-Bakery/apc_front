@@ -34,7 +34,7 @@ const SelectBranchAndCateg = () => {
   if (categoryLoading) return <Loading />;
 
   return (
-    <div className="overflow-hidden h-svh">
+    <div className="overflow-hidden h-svh overflow-y-auto">
       <InvHeader title="Новая заявка" goBack />
       <div className="bg-white my-4" onClick={() => $branchModal(true)}>
         <WebAppContainer className="flex items-center justify-between">

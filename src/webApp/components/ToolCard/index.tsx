@@ -21,7 +21,7 @@ const ToolCard = ({ style, tool }: Props) => {
   return (
     <div
       style={style}
-      className="rounded-3xl overflow-hidden flex gap-5 w-full bg-white"
+      className="rounded-3xl overflow-hidden flex gap-5 w-full bg-white h-32"
     >
       <img
         src={

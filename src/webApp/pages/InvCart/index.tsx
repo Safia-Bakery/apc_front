@@ -60,26 +60,17 @@ const InvCart = () => {
   }, [selectedBranch?.id]);
 
   return (
-    <div className="overflow-hidden h-svh">
+    <div className="overflow-y-auto h-svh pb-16">
       {mutating && <Loading />}
       <InvHeader title={"Корзина"} goBack />
       <div className="bg-white h-[52px]" />
 
-      <WebAppContainer className="mt-4 overflow-y-auto h-[60vh] mb-24">
+      <WebAppContainer className="mt-4 overflow-y-auto h-[50vh] mb-2">
         <div className="flex flex-col gap-4">
           {Object.values(cart).map((tool) => (
             <ToolCard key={tool.id} tool={tool} />
           ))}
         </div>
-        <BaseInput
-          className="mt-4"
-          label="При желании можно оставить комментарии"
-        >
-          <MainTextArea
-            placeholder={"Введите"}
-            register={register("comment")}
-          />
-        </BaseInput>
 
         <div className="fixed bottom-0 left-0 right-0 bg-white py-3 px-5 z-[105]">
           <InvButton
@@ -91,6 +82,17 @@ const InvCart = () => {
             Подтвердить заказ
           </InvButton>
         </div>
+      </WebAppContainer>
+      <WebAppContainer>
+        <BaseInput
+          className="mt-4"
+          label="При желании можно оставить комментарии"
+        >
+          <MainTextArea
+            placeholder={"Введите"}
+            register={register("comment")}
+          />
+        </BaseInput>
       </WebAppContainer>
     </div>
   );

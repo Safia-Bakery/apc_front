@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import Pagination from "@/components/Pagination";
 import EmptyList from "@/components/EmptyList";
 import ReactDatePicker from "react-datepicker";
+import InvPagination from "@/webApp/components/InvPagination";
 
 const date = new Date();
 const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -164,7 +165,7 @@ const InvArchieve = () => {
 
         {isFetching && <Loading />}
         {!orders?.items?.length && !isLoading && <EmptyList />}
-        {!!orders && <Pagination totalPages={orders.pages} />}
+        {!!orders && <InvPagination totalPages={orders.pages} />}
       </WebAppContainer>
     </div>
   );
