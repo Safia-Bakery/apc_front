@@ -1,19 +1,16 @@
 import InvHeader from "@/webApp/components/InvHeader";
-
 import invOrderType from "/assets/icons/invOrderType.svg";
 import arrow from "/assets/icons/arrowBlack.svg";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import CustomLink from "@/webApp/components/CustomLink";
 import { useEffect } from "react";
 import { TelegramApp } from "@/utils/tgHelpers";
-import { useAppSelector } from "@/store/utils/types";
-import { tgVersionSelector } from "@/store/reducers/versionCheck";
 
 const InvSelectOrderType = () => {
-  const version = useAppSelector(tgVersionSelector);
   useEffect(() => {
     TelegramApp?.confirmClose();
   }, []);
+
   return (
     <div>
       <InvHeader title="Инвентарь" />
@@ -58,8 +55,6 @@ const InvSelectOrderType = () => {
           </button>
         </CustomLink>
       </WebAppContainer>
-
-      <p>{version}</p>
     </div>
   );
 };
