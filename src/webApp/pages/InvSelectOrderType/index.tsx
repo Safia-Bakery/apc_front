@@ -6,8 +6,11 @@ import WebAppContainer from "@/webApp/components/WebAppContainer";
 import CustomLink from "@/webApp/components/CustomLink";
 import { useEffect } from "react";
 import { TelegramApp } from "@/utils/tgHelpers";
+import { useAppSelector } from "@/store/utils/types";
+import { versionSelector } from "@/store/reducers/versionCheck";
 
 const InvSelectOrderType = () => {
+  const version = useAppSelector(versionSelector);
   useEffect(() => {
     TelegramApp?.confirmClose();
   }, []);
@@ -55,6 +58,8 @@ const InvSelectOrderType = () => {
           </button>
         </CustomLink>
       </WebAppContainer>
+
+      <p>{version}</p>
     </div>
   );
 };

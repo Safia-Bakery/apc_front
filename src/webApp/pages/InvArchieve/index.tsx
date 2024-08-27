@@ -91,7 +91,7 @@ const InvArchieve = () => {
         {orders?.items?.map((order, idx) => (
           <div
             className="px-6 py-3 rounded-xl bg-white"
-            key={order.id + idx + order.created_at}
+            key={order?.id + idx + order?.created_at}
           >
             {/* card */}
             <div className="flex w-full gap-2">
@@ -109,7 +109,7 @@ const InvArchieve = () => {
             <div className="flex w-full gap-2 mt-1">
               <span className="text-tgTextGray flex flex-1">Дата</span>
               <span className=" text-right flex flex-1 justify-end">
-                {dayjs(order.created_at).format(dateTimeFormatWeb)}
+                {dayjs(order?.created_at).format(dateTimeFormatWeb)}
               </span>
             </div>
             <div className="flex w-full gap-2 mt-1">
@@ -144,7 +144,7 @@ const InvArchieve = () => {
                 }
               )}
             >
-              {order.expanditure?.map((item, childIdx) => (
+              {order?.expanditure?.map((item, childIdx) => (
                 <div
                   key={item?.id + childIdx + item.created_at}
                   className="flex w-full gap-2 mt-1 border-dashed last:border-none border-b border-[#E4E4E4] py-1"
@@ -165,7 +165,7 @@ const InvArchieve = () => {
 
         {isFetching && <Loading />}
         {!orders?.items?.length && !isLoading && <EmptyList />}
-        {!!orders && <InvPagination totalPages={orders.pages} />}
+        {!!orders && <InvPagination totalPages={orders?.pages} />}
       </WebAppContainer>
     </div>
   );

@@ -1,1 +1,1 @@
-export const CURRECT_VERSION = "1.0.3"; //todo
+export const CURRECT_VERSION = "1.0.4"; //todo
