@@ -27,6 +27,7 @@
     "react-hook-form": "^7.45.0-next.1",
     "react-i18next": "^14.0.5",
     "react-input-mask": "^2.0.4",
+    "react-native-bluetooth-escpos-printer": "^0.0.5",
     "react-paginate": "^8.2.0",
     "react-pro-sidebar": "^1.1.0",
     "react-redux": "^8.1.0",

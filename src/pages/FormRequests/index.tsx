@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 import { dateMonthYear, yearMonthDate } from "@/utils/keys";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "@/store/reducers/sidebar";
-import DownloadExcell from "@/components/DownloadExcell";
+import DownloadFormExcel from "@/components/DownloadFormExcel";
 
 const column = [
   { name: "№", key: "" },
@@ -73,7 +73,7 @@ const FormRequests = () => {
     <Card>
       <Header title={t("requests_for_form")}>
         <div className="flex">
-          <DownloadExcell />
+          <DownloadFormExcel />
           {permissions?.[MainPermissions.add_form_request] && (
             <button onClick={() => navigate("add")} className="btn btn-success">
               {t("add")}
