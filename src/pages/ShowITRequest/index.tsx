@@ -22,7 +22,6 @@ import { reportImgSelector, uploadReport } from "reducers/selects";
 import useQueryString from "custom/useQueryString";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import uploadFileMutation from "@/hooks/mutation/uploadFile";
-import useBrigadas from "@/hooks/useBrigadas";
 import Loading from "@/components/Loader";
 import cl from "classnames";
 import { permissionSelector } from "reducers/sidebar";

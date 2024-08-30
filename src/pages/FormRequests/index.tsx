@@ -121,7 +121,7 @@ const FormRequests = () => {
                   </td>
                   <td>{numberWithCommas(order?.price || 0)}</td>
                   <td>{order?.description}</td>
-                  <td>{t(RequestStatus[order.status])}</td>
+                  <td width={150}>{t(RequestStatus[order.status])}</td>
                 </tr>
               ))}
             </tbody>

@@ -35,7 +35,7 @@ const Pagination: FC<PaginationProps> = ({ totalPages = 1 }) => {
         pageClassName={`page-item`}
         previousLabel="<"
         renderOnZeroPageCount={null}
-        forcePage={currentPage - 1}
+        forcePage={!!currentPage ? currentPage - 1 : 0}
       />
     </nav>
   );

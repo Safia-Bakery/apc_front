@@ -1,3 +1,9 @@
+import Modal from "@/components/Modal";
+import {
+  useNavigateParams,
+  useRemoveParams,
+} from "@/hooks/custom/useCustomNavigate";
+import useQueryString from "@/hooks/custom/useQueryString";
 import { baseURL } from "@/main";
 import {
   addItem,
@@ -6,7 +12,8 @@ import {
   incrementSelected,
 } from "@/store/reducers/webInventory";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
-import { ToolItemType } from "@/utils/types";
+import { detectFileType } from "@/utils/helpers";
+import { FileType, ModalTypes, ToolItemType } from "@/utils/types";
 import { CSSProperties } from "react";
 
 type Props = {
@@ -17,21 +24,59 @@ type Props = {
 const ToolCard = ({ style, tool }: Props) => {
   const dispatch = useAppDispatch();
   const cart = useAppSelector(cartSelector);
+  const photo = useQueryString("photo");
+  const modal = useQueryString("modal");
+  const navigateParams = useNavigateParams();
+  const removeParams = useRemoveParams();
+
+  const handleClose = () => removeParams(["modal", "photo"]);
+
+  const handleShowPhoto = (file: string) => {
+    if (detectFileType(file) === FileType.other) return window.open(file);
+    else navigateParams({ modal: ModalTypes.showPhoto, photo: file });
+  };
 
   return (
     <div
       style={style}
       className="rounded-3xl overflow-hidden flex gap-5 w-full bg-white h-32"
     >
-      <img
-        src={
-          !!tool.image ? `${baseURL}/${tool.image}` : "/assets/images/safia.png"
+      <Modal
+        isOpen={!!modal}
+        onClose={handleClose}
+        className="!max-h-svh h-full"
+      >
+        <button
+          onClick={handleClose}
+          className={
+            "absolute top-2 right-2 w-5 h-5 rounded-full bg-gray-400 flex items-center justify-center border border-white"
+          }
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <img
+          src={photo!}
+          className={"object-contain block h-full"}
+          alt="uploaded-file"
+        />
+      </Modal>
+      <div
+        onClick={() =>
+          !!tool.image && handleShowPhoto(`${baseURL}/${tool.image}`)
         }
-        height={130}
-        width={130}
-        className="rounded-2xl object-contain"
-        alt=""
-      />
+      >
+        <img
+          src={
+            !!tool.image
+              ? `${baseURL}/${tool.image}`
+              : "/assets/images/safia.png"
+          }
+          height={130}
+          width={130}
+          className="rounded-2xl object-contain"
+          alt=""
+        />
+      </div>
 
       <div className="flex flex-1 justify-between pt-3 flex-col">
         <div className="flex flex-1 items-center">

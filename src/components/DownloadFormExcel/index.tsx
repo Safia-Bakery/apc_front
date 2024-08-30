@@ -6,15 +6,19 @@ import { useTranslation } from "react-i18next";
 import Loading from "../Loader";
 import useBackExcel from "@/hooks/custom/useBackExcel";
 import formExcelMutation from "@/hooks/mutation/formExcel";
+import { ValueLabel } from "@/utils/types";
 
 const DownloadFormExcel = () => {
   const { t } = useTranslation();
   const [active, $active] = useState(false);
-  const request_status = Number(useQueryString("request_status"));
-  const category_id = Number(useQueryString("category_id"));
+  const request_status = useQueryString("request_status");
   const { register, getValues } = useForm();
 
   const { mutate, isPending } = formExcelMutation();
+
+  const statusJson = request_status
+    ? (JSON.parse(request_status) as ValueLabel[])
+    : undefined;
 
   const handleActive = () => {
     if (active) {
@@ -23,8 +27,9 @@ const DownloadFormExcel = () => {
         {
           start_date,
           finish_date,
-          ...(!!request_status && { status: request_status }),
-          ...(!!category_id && { category_id }),
+          ...(!!request_status && {
+            status: statusJson?.map((item) => item.value),
+          }),
         },
         {
           onSuccess: (data) => {
