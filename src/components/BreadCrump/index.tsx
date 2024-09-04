@@ -66,6 +66,7 @@ const routeNameMappings: { [key: string]: string } = {
   "categories-inventory": "categories_inventory",
   "requests-form": "requests_for_form",
   "categories-form": "categories_for_form",
+  cleaning: "cleaning",
 };
 
 const Breadcrumbs: FC = () => {

@@ -550,6 +550,9 @@ export enum MainPermissions {
   get_form_category = 134,
   edit_form_category = 135,
   add_form_category = 136,
+
+  apc_cleaning = 120,
+  // apc_cleaning =120,
 }
 export enum MarketingSubDep {
   all,

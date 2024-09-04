@@ -1,5 +1,4 @@
 import { lazy } from "react";
-import { HRRequestTypes } from "./helpers";
 import { stockStores } from "./keys";
 import {
   Departments,
@@ -66,9 +65,6 @@ const InventoryOrderedTools = lazy(
   () => import("@/pages/InventoryOrderedTools")
 );
 const EditAddFAQQuestions = lazy(() => import("@/pages/EditAddFAQQuestions"));
-const HRQuestions = lazy(() => import("@/pages/HRQuestions"));
-const EditHRRequests = lazy(() => import("@/pages/EditHRRequests"));
-const HRRequests = lazy(() => import("@/pages/HRRequests"));
 
 const RequestsCCTV = lazy(() => import("@/pages/RequestsCCTV"));
 const CreateCCTVRequest = lazy(() => import("@/pages/CreateCCTVRequest"));
@@ -86,6 +82,7 @@ const FormRequests = lazy(() => import("@/pages/FormRequests"));
 const ShowFormRequests = lazy(() => import("@/pages/ShowFormRequests"));
 const AddFormRequest = lazy(() => import("@/pages/AddFormRequest"));
 const EditAddFormcategory = lazy(() => import("@/pages/EditAddFormcategory"));
+const Cleaning = lazy(() => import("@/pages/Cleaning"));
 
 export const sidebarRoutes: SidebarType[] = [
   {
@@ -144,6 +141,12 @@ export const sidebarRoutes: SidebarType[] = [
         url: "/expense-for-outsource",
         icon: "/assets/icons/categories.svg",
         screen: MainPermissions.get_apc_expenses,
+      },
+      {
+        name: "cleaning",
+        url: "/cleaning",
+        icon: "/assets/icons/categories.svg",
+        screen: MainPermissions.apc_cleaning,
       },
     ],
   },
@@ -399,40 +402,6 @@ export const sidebarRoutes: SidebarType[] = [
       },
     ],
   },
-  // {
-  //   name: "hr_requests",
-  //   icon: "/assets/icons/comments.svg",
-  //   screen: MainPermissions.get_faq_requests,
-  //   subroutes: [
-  //     {
-  //       name: "questions_and_answers",
-  //       url: "/faq",
-  //       icon: "/assets/icons/subOrder.svg",
-  //       screen: MainPermissions.get_faq,
-  //     },
-  //     {
-  //       name: "offers",
-  //       url: "/hr-offers",
-  //       icon: "/assets/icons/comments.svg",
-  //       screen: MainPermissions.get_faq_requests,
-  //       param: `?sphere=${HRRequestTypes.offers}`,
-  //     },
-  //     {
-  //       name: "objections",
-  //       url: "/hr-objections",
-  //       icon: "/assets/icons/comments.svg",
-  //       screen: MainPermissions.get_faq_requests,
-  //       param: `?sphere=${HRRequestTypes.objections}`,
-  //     },
-  //     {
-  //       name: "asked_questions",
-  //       url: "/hr-asked-questions",
-  //       icon: "/assets/icons/comments.svg",
-  //       screen: MainPermissions.get_faq_requests,
-  //       param: `?sphere=${HRRequestTypes.asked_questions}`,
-  //     },
-  //   ],
-  // },
   {
     name: "cctv",
     icon: "/assets/icons/camera.svg",
@@ -621,6 +590,11 @@ export const routes = [
     element: <CreateApcRequest />,
     path: "/requests-apc-retail/add",
     screen: MainPermissions.add_request_apc,
+  },
+  {
+    element: <Cleaning />,
+    path: "/cleaning",
+    screen: MainPermissions.apc_cleaning,
   },
   {
     element: <CreateApcRequest />,

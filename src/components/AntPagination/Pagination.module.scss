@@ -1,0 +1,16 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 15px 0 0;
+  float: left;
+  width: 100%;
+}
+
+:global(.ant-pagination-item-active) {
+
+  border-color: #7daa7d !important;
+
+  a {
+    color: #7daa7d !important;
+  }
+}

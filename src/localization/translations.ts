@@ -388,6 +388,9 @@ const localization = {
       total_sum: "Общ. сумма",
       form_type_price: "Виды форм / Цены",
       totall: "Итого",
+      cleaning: "Чистка",
+      cleanings_on: "Чистки в",
+      selected_date: "Выбранная дата",
     },
   },
   uz: {
