@@ -1,3 +1,4 @@
+import { Table } from "antd";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { useForm } from "react-hook-form";
@@ -30,7 +31,6 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
   const [id, $id] = useDebounce<string>("");
   const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
-  const system = useQueryString("system");
   const rate = useQueryString("rate");
   const category_id = Number(useQueryString("category_id"));
   const created_at = useQueryString("created_at");
@@ -90,8 +90,8 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
 
   return (
     <>
-      <td></td>
-      <td className="p-0">
+      <Table.Summary.Cell className="!p-0" index={0}></Table.Summary.Cell>
+      <Table.Summary.Cell className="!p-0" index={1}>
         <BaseInput className="!m-1">
           <MainInput
             register={register("idQ")}
@@ -100,21 +100,9 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
             onChange={handleID}
           />
         </BaseInput>
-      </td>
+      </Table.Summary.Cell>
 
-      {sphere_status === Sphere.fabric && (
-        <td className="p-0">
-          <BaseInput className="!m-1">
-            <MainSelect
-              value={system?.toString()}
-              values={SystemArr}
-              disabled
-              onChange={(e) => navigate({ system: e.target.value })}
-            />
-          </BaseInput>
-        </td>
-      )}
-      <td className="p-0">
+      <Table.Summary.Cell className="!p-0" index={2}>
         <BaseInput className="!m-1">
           <MainInput
             register={register("userName")}
@@ -122,13 +110,13 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
             onChange={handleName}
           />
         </BaseInput>
-      </td>
-      <td width={150} className="p-0 relative">
+      </Table.Summary.Cell>
+      <Table.Summary.Cell className="!p-0" index={3}>
         <div onClick={() => $enabled(true)} className={"m-1"}>
           <BranchSelect enabled={enabled} />
         </div>
-      </td>
-      <td className="p-0">
+      </Table.Summary.Cell>
+      <Table.Summary.Cell className="!p-0" index={4}>
         <BaseInputs className="!m-1">
           <MainSelect
             values={categories?.items}
@@ -137,13 +125,13 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
             onChange={(e) => navigate({ category_id: e.target.value })}
           />
         </BaseInputs>
-      </td>
-      <td className="p-0">
+      </Table.Summary.Cell>
+      <Table.Summary.Cell className="!p-0" index={5}>
         <BaseInputs className="!m-1">
           <MainSelect disabled className="!mb-0" onChange={handleUrgent} />
         </BaseInputs>
-      </td>
-      <td className="p-0">
+      </Table.Summary.Cell>
+      <Table.Summary.Cell className="!p-0" index={6}>
         <BaseInput className="!m-1">
           <MainSelect
             values={brigades?.items.filter((item) => !!item.status)}
@@ -152,8 +140,8 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
             onChange={(e) => navigate({ responsible: e.target.value })}
           />
         </BaseInput>
-      </td>
-      <td className="p-0">
+      </Table.Summary.Cell>
+      <Table.Summary.Cell className="!p-0" index={7}>
         <MainDatePicker
           selected={
             !!created_at && created_at !== "undefined"
@@ -164,8 +152,8 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
           dateFormat="d.MM.yyyy"
           wrapperClassName={"m-1"}
         />
-      </td>
-      <td className="p-0">
+      </Table.Summary.Cell>
+      <Table.Summary.Cell className="!p-0" index={8}>
         <MainDatePicker
           selected={
             !!finished_at && finished_at !== "undefined"
@@ -176,9 +164,9 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
           dateFormat="d.MM.yyyy"
           wrapperClassName={"m-1"}
         />
-      </td>
+      </Table.Summary.Cell>
 
-      <td className="p-0">
+      <Table.Summary.Cell className="!p-0" index={9}>
         <BaseInputs className="!m-1">
           <MainSelect
             values={RatingFilterVals}
@@ -186,20 +174,20 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
             onChange={(e) => navigate({ rate: e.target.value })}
           />
         </BaseInputs>
-      </td>
-      <td className="p-0">
+      </Table.Summary.Cell>
+      <Table.Summary.Cell className="!p-0" index={10}>
         <BaseInputs className="!m-1">
           <StatusFilter options={RequestStatusArr} />
         </BaseInputs>
-      </td>
-      <td className="p-0">
+      </Table.Summary.Cell>
+      <Table.Summary.Cell className="!p-0" index={11}>
         <BaseInput className="!m-1">
           <MainInput
             className="!mb-0"
             onChange={(e) => navigate({ user: e.target.value })}
           />
         </BaseInput>
-      </td>
+      </Table.Summary.Cell>
     </>
   );
 };

@@ -1,0 +1,158 @@
+.container_wrapper {
+  // padding: 30px 0;
+
+  table {
+    > thead,
+    th {
+      text-align: center !important;
+      border-right: 2px solid #ffffff !important;
+
+      &:before {
+      }
+    }
+
+    > tbody,
+    td {
+      border-right: 2px solid #fafafa;
+    }
+  }
+
+  .actions_container {
+    display: flex;
+
+    > div {
+      width: 50%;
+      text-align: center;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .delete_container {
+      color: #a76262 !important;
+    }
+
+    .edit_container {
+      color: #7ca97c !important;
+    }
+  }
+
+  @media (max-width: 991px) {
+    thead {
+      display: none;
+    }
+
+    tbody > tr {
+      display: block;
+      // border-bottom: 15px solid whitesmoke;
+      background-color: #fefefe;
+
+      &:not(:first-child) {
+        border-bottom: 15px solid whitesmoke;
+      }
+
+      td {
+        border-width: 1px 1px 1px 0px !important;
+        border-style: solid;
+        border-color: #f5f5f5;
+        display: block;
+        padding: 10px;
+        text-align: center !important;
+      }
+
+      td:first-child {
+        background: var(--table-header-background);
+      }
+
+      td:last-child {
+        // padding: 0px;
+
+        a {
+          float: left !important;
+          width: 100% !important;
+          background: var(--hover-color) !important;
+
+          svg {
+            margin-right: 0px;
+            background: none;
+          }
+        }
+
+        svg {
+          width: 100%;
+          background: #ff03039e;
+          border-radius: 0px;
+        }
+      }
+    }
+  }
+}
+.user_form {
+  margin-top: 25px;
+  background: #ffffff;
+
+  .user_details {
+    .user {
+      .devider {
+        padding: 10px;
+        margin: 0px;
+        text-align: center !important;
+        display: block;
+        text-transform: uppercase;
+        color: #000000;
+        font-weight: bold;
+        border: 0px;
+      }
+
+      .form_container {
+        padding: 0px;
+
+        .form_group {
+          padding: 2px;
+
+          > div {
+            background: whitesmoke;
+            margin: 0px;
+            padding: 2px;
+
+            :global(.ant-form-item-label) {
+              background: #ffffff;
+              text-transform: uppercase;
+              padding: 4px;
+              text-align: center;
+
+              > label {
+                font-size: 12px;
+              }
+            }
+
+            :global(.ant-form-item-control) {
+              margin: 0px;
+
+              input,
+              select {
+                border-radius: 0px;
+                height: 41px;
+                border-width: 0px 0px 0px 1px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .actions {
+    text-align: center;
+    padding: 20px 0px;
+    border-top: 1px solid whitesmoke;
+    margin: 10px 0px;
+
+    button {
+      background: #d7dcb5;
+      text-transform: uppercase;
+      border-radius: 3px;
+      padding: 10px 50px;
+    }
+  }
+}

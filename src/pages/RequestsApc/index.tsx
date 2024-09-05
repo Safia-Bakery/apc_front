@@ -6,25 +6,22 @@ import {
   RequestStatus,
   Sphere,
 } from "@/utils/types";
-import Pagination from "@/components/Pagination";
-import { FC, useMemo, useRef, useState } from "react";
+import { FC, useMemo, useRef } from "react";
 import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { handleIdx, requestRows } from "@/utils/helpers";
-import TableHead from "@/components/TableHead";
 import RequestsFilter from "./filter";
-import ItemsCount from "@/components/ItemsCount";
-import cl from "classnames";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
-import EmptyList from "@/components/EmptyList";
-import Loading from "@/components/Loader";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import { useTranslation } from "react-i18next";
 import { dateMonthYear, yearMonthDate } from "@/utils/keys";
+import AntdTable from "@/components/AntdTable";
+import Table, { ColumnsType } from "antd/es/table";
+import { TableRowSelection } from "antd/es/table/interface";
 
 interface Props {
   add: MainPermissions;
@@ -36,7 +33,6 @@ interface Props {
 const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [sort, $sort] = useState<Order[]>();
   const permission = useAppSelector(permissionSelector);
   const currentPage = Number(useQueryString("page")) || 1;
   const { pathname, search } = useLocation();
@@ -61,29 +57,6 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
   const responsible = Number(useQueryString("responsible"));
-
-  const column = useMemo(() => {
-    const columns = [
-      { name: "№", key: "" },
-      { name: "request_number", key: "id" },
-      { name: "client", key: "user" },
-      { name: "branch_dep", key: "name" },
-      { name: "group_problem", key: "category?.name" },
-      { name: "urgent", key: "urgent" },
-      { name: "brigade", key: "brigada" },
-      { name: "receipt_date", key: "created_at" },
-      { name: "finished", key: "finished_at" },
-      { name: "rate", key: "rate" },
-      { name: "status", key: "status" },
-      { name: "changed", key: "user_manager" },
-    ];
-
-    if (Number(sphere_status) === Sphere.fabric) {
-      columns.splice(2, 0, { name: "Система", key: "is_bot" });
-    }
-
-    return columns;
-  }, [sphere_status]);
 
   const downloadAsPdf = () => onDownload();
 
@@ -123,6 +96,84 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
     ...(!!started_at && { started_at }),
   });
 
+  const columns = useMemo<ColumnsType<Order>>(
+    () => [
+      {
+        title: "№",
+        dataIndex: "",
+        width: 50,
+        className: "!px-0 text-center",
+        render: (_, r, idx) => handleIdx(idx),
+      },
+      {
+        title: t("request_number"),
+        dataIndex: "id",
+        render: (_, order) =>
+          permission?.[edit] ? (
+            <Link
+              to={`/requests-apc-${Sphere[sphere_status]}/${order?.id}?sphere_status=${sphere_status}&dep=${Departments.APC}`}
+              state={{ prevPath: pathname + search }}
+            >
+              {order?.id}
+            </Link>
+          ) : (
+            order?.id
+          ),
+      },
+      {
+        title: t("client"),
+        dataIndex: "user",
+        render: (_, record) => record?.user?.full_name,
+      },
+      {
+        title: t("branch_dep"),
+        dataIndex: "fillial",
+        render: (_, record) => record?.fillial?.parentfillial?.name,
+      },
+      {
+        title: t("group_problem"),
+        dataIndex: "group_problem",
+        render: (_, record) => record?.category?.name,
+      },
+      {
+        title: t("urgent"),
+        dataIndex: "urgent",
+        render: (_, record) =>
+          !record?.urgent ? t("not_urgent") : t("urgentt"),
+      },
+      {
+        title: t("brigade"),
+        dataIndex: "brigade",
+        render: (_, record) => record?.brigada?.name,
+      },
+      {
+        title: t("receipt_date"),
+        dataIndex: "created_at",
+        render: (_, record) => dayjs(record?.created_at).format(dateMonthYear),
+      },
+      {
+        title: t("finished"),
+        dataIndex: "finished_at",
+        render: (_, record) => dayjs(record?.finished_at).format(dateMonthYear),
+      },
+      {
+        title: t("rate"),
+        dataIndex: "rate",
+        render: (_, record) => record?.comments?.[0]?.rating,
+      },
+      {
+        title: t("status"),
+        dataIndex: "status",
+        render: (_, record) => t(RequestStatus[record.status]),
+      },
+      {
+        title: t("changed"),
+        dataIndex: "user_manager",
+      },
+    ],
+    []
+  );
+
   const renderFilter = useMemo(() => {
     return <RequestsFilter sphere_status={sphere_status} />;
   }, [sphere_status]);
@@ -149,90 +200,23 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
       </Header>
 
       <div className="table-responsive grid-view content">
-        <ItemsCount data={requests} />
-        <table className="table table-hover table-bordered" ref={tableRef}>
-          <TableHead
-            column={column}
-            onSort={(data) => $sort(data)}
-            data={requests?.items}
-          >
-            {renderFilter}
-          </TableHead>
-          <tbody>
-            {!!requests?.items?.length &&
-              !orderLoading &&
-              (sort?.length ? sort : requests?.items)?.map((order, idx) => (
-                <tr
-                  className={
-                    !service_filter
-                      ? requestRows[order?.status]
-                      : handleServiceRow(order)
-                  }
-                  key={idx}
-                >
-                  <td width="40">{handleIdx(idx)}</td>
-                  <td width="80">
-                    {permission?.[edit] ? (
-                      <Link
-                        to={`/requests-apc-${Sphere[sphere_status]}/${order?.id}?sphere_status=${sphere_status}&dep=${Departments.APC}`}
-                        state={{ prevPath: pathname + search }}
-                      >
-                        {order?.id}
-                      </Link>
-                    ) : (
-                      <span className={"text-link"}>{order?.id}</span>
-                    )}
-                  </td>
-                  {Number(sphere_status) === Sphere.fabric && (
-                    <td>{order?.is_bot ? t("tg_bot") : t("web_site")}</td>
-                  )}
-                  <td>{order?.user?.full_name}</td>
-                  <td>
-                    <span className={"not-set"}>
-                      {order?.fillial?.parentfillial?.name}
-                    </span>
-                  </td>
-                  <td
-                    className={cl({
-                      ["font-bold"]: order?.category?.urgent,
-                    })}
-                  >
-                    {order?.category?.name}
-                  </td>
-                  <td>
-                    {!order?.category?.urgent ? t("not_urgent") : t("urgentt")}
-                  </td>
-                  <td>
-                    {!!order?.brigada?.name
-                      ? order?.brigada?.name
-                      : t("not_given")}
-                  </td>
-                  <td>{dayjs(order?.created_at).format(dateMonthYear)}</td>
-
-                  <td>
-                    {!!order?.finished_at
-                      ? dayjs(order?.finished_at).format(dateMonthYear)
-                      : t("not_given")}
-                  </td>
-
-                  <td className="text-center" width={50}>
-                    {order?.comments?.[0]?.rating}
-                  </td>
-
-                  <td>{t(RequestStatus[order.status])}</td>
-
-                  <td>
-                    {!!order?.user_manager
-                      ? order?.user_manager
-                      : t("not_given")}
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-        {(orderLoading || orderFetching) && <Loading />}
-        {!requests?.items?.length && !orderLoading && <EmptyList />}
-        {!!requests && <Pagination totalPages={requests.pages} />}
+        <AntdTable
+          sticky
+          data={requests?.items}
+          totalItems={requests?.total}
+          columns={columns}
+          loading={orderLoading || orderFetching}
+          rowClassName={(item) =>
+            !service_filter ? requestRows[item?.status] : handleServiceRow(item)
+          }
+          summary={() => (
+            <Table.Summary fixed={"top"}>
+              <Table.Summary.Row className="sticky top-0 z-10">
+                {renderFilter}
+              </Table.Summary.Row>
+            </Table.Summary>
+          )}
+        />
       </div>
     </Card>
   );
