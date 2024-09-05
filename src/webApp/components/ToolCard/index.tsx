@@ -66,11 +66,7 @@ const ToolCard = ({ style, tool }: Props) => {
         }
       >
         <img
-          src={
-            !!tool.image
-              ? `${baseURL}/${tool.image}`
-              : "/assets/images/safia.png"
-          }
+          src={!!tool.image ? `${baseURL}/${tool.image}` : "/images/safia.png"}
           height={130}
           width={130}
           className="rounded-2xl object-contain"
@@ -90,12 +86,7 @@ const ToolCard = ({ style, tool }: Props) => {
               className="flex flex-1 justify-center"
               onClick={() => dispatch(addItem(tool))}
             >
-              <img
-                src="/assets/icons/cart.svg"
-                alt="cart"
-                height={20}
-                width={20}
-              />
+              <img src="/icons/cart.svg" alt="cart" height={20} width={20} />
             </button>
           ) : (
             <div className="flex justify-evenly flex-1  text-white ">

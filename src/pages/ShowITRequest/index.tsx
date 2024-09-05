@@ -486,10 +486,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                                     )}
                                     className="cursor-pointer"
                                   >
-                                    <img
-                                      src="/assets/icons/attached.svg"
-                                      alt="file"
-                                    />
+                                    <img src="/icons/attached.svg" alt="file" />
                                   </span>
                                 )}
                                 <span>{item.message}</span>

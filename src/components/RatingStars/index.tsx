@@ -1,6 +1,6 @@
 import { FC } from "react";
-import star from "/assets/icons/fullStar.svg";
-import emptyStar from "/assets/icons/emptyStar.svg";
+import star from "/icons/fullStar.svg";
+import emptyStar from "/icons/emptyStar.svg";
 import cl from "classnames";
 
 interface Props {

@@ -1,6 +1,6 @@
 import InvHeader from "@/webApp/components/InvHeader";
-import invOrderType from "/assets/icons/invOrderType.svg";
-import arrow from "/assets/icons/arrowBlack.svg";
+import invOrderType from "/icons/invOrderType.svg";
+import arrow from "/icons/arrowBlack.svg";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import CustomLink from "@/webApp/components/CustomLink";
 import { useEffect } from "react";

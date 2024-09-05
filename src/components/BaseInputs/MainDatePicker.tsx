@@ -51,7 +51,7 @@ const MainDatePicker: FC<Props> = ({
       {!!selected && (
         <img
           onClick={handleClear}
-          src="/assets/icons/clear.svg"
+          src="/icons/clear.svg"
           alt="clear"
           width={15}
           height={15}

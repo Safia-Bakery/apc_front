@@ -5,7 +5,7 @@ const UnAuthorized = () => {
   return (
     <div className="h-svh w-full flex flex-col items-center justify-center gap-4">
       <img
-        src="/assets/images/safia.png"
+        src="/images/safia.png"
         alt="safia-logo"
         className="max-w-64 w-full"
       />

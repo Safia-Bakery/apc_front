@@ -1,8 +1,8 @@
 import InvHeader from "@/webApp/components/InvHeader";
-import calendar from "/assets/icons/calendar.svg";
+import calendar from "/icons/calendar.svg";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import InvButton, { BtnSize, InvBtnType } from "@/webApp/components/InvButton";
-import arrow from "/assets/icons/arrowBlack.svg";
+import arrow from "/icons/arrowBlack.svg";
 import { useRef, useState } from "react";
 import cl from "classnames";
 import useWebInvOrders from "@/hooks/useWebInvOrders";

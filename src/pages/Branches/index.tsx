@@ -120,7 +120,7 @@ const Branches = () => {
               className="btn btn-primary   mr-2 !flex"
             >
               <img
-                src="/assets/icons/sync.svg"
+                src="/icons/sync.svg"
                 height={20}
                 width={20}
                 alt="sync"

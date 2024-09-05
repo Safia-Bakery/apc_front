@@ -153,12 +153,9 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
 
                     <td width={40}>
                       {order?.fillial?.id ? (
-                        <img src="/assets/icons/home.svg" alt="from-fillial" />
+                        <img src="/icons/home.svg" alt="from-fillial" />
                       ) : (
-                        <img
-                          src="/assets/icons/marker.svg"
-                          alt="from-location"
-                        />
+                        <img src="/icons/marker.svg" alt="from-location" />
                       )}
                     </td>
 

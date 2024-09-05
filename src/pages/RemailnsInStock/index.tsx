@@ -60,7 +60,7 @@ const RemainsInStock = () => {
             disabled={syncLoading}
           >
             <img
-              src="/assets/icons/sync.svg"
+              src="/icons/sync.svg"
               height={20}
               width={20}
               alt="sync"

@@ -306,7 +306,7 @@ const ControlPanel = () => {
               <div className="w-full flex justify-end mt-3">
                 {t("open_list")}{" "}
                 <img
-                  src="/assets/icons/arrowBlack.svg"
+                  src="/icons/arrowBlack.svg"
                   alt=""
                   className="rotate-90"
                   width={15}
@@ -353,7 +353,7 @@ const ControlPanel = () => {
                     >
                       {t("go")}{" "}
                       <img
-                        src="/assets/icons/arrowBlack.svg"
+                        src="/icons/arrowBlack.svg"
                         alt=""
                         className="rotate-90"
                         width={15}
@@ -394,7 +394,7 @@ const ControlPanel = () => {
                         >
                           {t("open_list")}{" "}
                           <img
-                            src="/assets/icons/arrowBlack.svg"
+                            src="/icons/arrowBlack.svg"
                             alt=""
                             className="rotate-90"
                             width={15}
@@ -420,7 +420,7 @@ const ControlPanel = () => {
                           >
                             {t("open_all_rtates")}{" "}
                             <img
-                              src="/assets/icons/arrowBlack.svg"
+                              src="/icons/arrowBlack.svg"
                               alt=""
                               className="rotate-90"
                               width={15}

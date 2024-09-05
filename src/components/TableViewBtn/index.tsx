@@ -9,7 +9,7 @@ const TableViewBtn: FC<Props> = ({ onClick }) => {
     <div onClick={onClick} id="edit_item">
       <img
         className={"h-4 w-4 cursor-pointer"}
-        src="/assets/icons/edit.svg"
+        src="/icons/edit.svg"
         alt="edit"
       />
     </div>

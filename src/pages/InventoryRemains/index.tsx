@@ -166,7 +166,7 @@ const InventoryRemains = () => {
             onClick={handleParentId(folder.id, folder.name)}
             key={folder.id}
           >
-            <img src="/assets/icons/folder.svg" alt="folder" />
+            <img src="/icons/folder.svg" alt="folder" />
             <span>{folder.name}</span>
           </li>
         ))}

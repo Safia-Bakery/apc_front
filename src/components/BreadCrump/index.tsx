@@ -111,7 +111,7 @@ const Breadcrumbs: FC = () => {
               width={22}
               className="flex"
               height={22}
-              src="/assets/icons/burger.svg"
+              src="/icons/burger.svg"
               alt="burger"
             />
           </button>

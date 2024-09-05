@@ -1,5 +1,5 @@
 import cl from "classnames";
-import searchIcon from "/assets/icons/search.svg";
+import searchIcon from "/icons/search.svg";
 import { ChangeEvent, HTMLInputTypeAttribute } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 

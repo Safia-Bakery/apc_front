@@ -1,7 +1,7 @@
 import { FC } from "react";
 import styles from "./index.module.scss";
 import cl from "classnames";
-import safiaLogo from "/assets/images/safia.png";
+import safiaLogo from "/images/safia.png";
 
 interface Props {
   is_static?: boolean;

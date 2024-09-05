@@ -14,7 +14,7 @@ const InvHeader = ({ title, rightChild, goBack }: Props) => {
       {goBack ? (
         <button onClick={() => navigate(-1)}>
           <img
-            src="/assets/icons/arrow.svg"
+            src="/icons/arrow.svg"
             className="-rotate-90"
             alt="go-back"
             height={24}

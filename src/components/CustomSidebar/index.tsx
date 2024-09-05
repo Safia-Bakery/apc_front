@@ -79,7 +79,7 @@ export const Playground: FC = () => {
                     className={styles.routeIcon}
                     height={30}
                     width={30}
-                    src={"/assets/icons/controlPanel.svg"}
+                    src={"/icons/controlPanel.svg"}
                   />
                 }
               >

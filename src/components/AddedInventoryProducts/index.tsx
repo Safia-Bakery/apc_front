@@ -74,7 +74,7 @@ const AddedInventoryProducts = () => {
                       className="cursor-pointer"
                       onClick={handleUpdateProd(item.id)}
                     >
-                      <img src="/assets/icons/send.svg" alt={t("send")} />
+                      <img src="/icons/send.svg" alt={t("send")} />
                     </div>
                   )}
                 </td>

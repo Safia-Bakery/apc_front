@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import InvButton, { InvBtnType } from "@/webApp/components/InvButton";
 import InvHeader from "@/webApp/components/InvHeader";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
-import arrow from "/assets/icons/primaryArrow.svg";
+import arrow from "/icons/primaryArrow.svg";
 import { useNavigate, useParams } from "react-router-dom";
 import SelectCategoryTool from "@/webApp/components/SelectCategoryTool";
 import useCategory from "@/hooks/useCategory";

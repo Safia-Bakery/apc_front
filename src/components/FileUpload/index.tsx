@@ -82,7 +82,7 @@ const UploadComponent: FC<FileUploaderProps> = ({
                     className="flex justify-content-center pointer"
                     onClick={() => handleFileDelete(item.id)}
                   >
-                    <img src="/assets/icons/delete.svg" alt="delete" />
+                    <img src="/icons/delete.svg" alt="delete" />
                   </div>
                 </td>
               </tr>

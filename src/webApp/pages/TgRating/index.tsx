@@ -100,7 +100,7 @@ const TgRating = () => {
 
           {!rate && (
             <img
-              src="/assets/images/safia.jpg"
+              src="/images/safia.jpg"
               alt=""
               className="w-28 opacity-20 mx-auto mb-16"
             />

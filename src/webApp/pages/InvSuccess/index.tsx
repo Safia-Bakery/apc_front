@@ -13,7 +13,7 @@ const InvSuccess = () => {
         <div className="bg-white h-[52px]" />
       </div>
       <WebAppContainer className="h-svh flex items-center justify-center flex-col">
-        <img src="/assets/images/safia.jpg" alt="" width={170} height={75} />
+        <img src="/images/safia.jpg" alt="" width={170} height={75} />
         <h3 className="text-lg text-center mt-2">Спасибо за заявку!</h3>
         <div className="flex justify-between my-8">
           <span>

@@ -81,7 +81,7 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
             className="btn btn-primary   btn-sm mr-2"
           >
             <img
-              src="/assets/icons/sync.svg"
+              src="/icons/sync.svg"
               height={20}
               width={20}
               alt="sync"
@@ -128,7 +128,7 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
                     className="flex justify-content-center pointer"
                     onClick={handleDelete(item?.id)}
                   >
-                    <img src="/assets/icons/delete.svg" alt="delete" />
+                    <img src="/icons/delete.svg" alt="delete" />
                   </div>
                 </td>
               </tr>
