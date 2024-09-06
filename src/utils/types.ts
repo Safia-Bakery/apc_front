@@ -324,7 +324,7 @@ export interface UsersTypes extends BasePaginatedResDeprecated {
 
 export interface ValueLabel {
   label: string;
-  value: number;
+  value: number | string;
 }
 
 export enum RequestStatus {
@@ -551,8 +551,7 @@ export enum MainPermissions {
   edit_form_category = 135,
   add_form_category = 136,
 
-  apc_cleaning = 120,
-  // apc_cleaning =120,
+  apc_cleaning = 137,
 }
 export enum MarketingSubDep {
   all,

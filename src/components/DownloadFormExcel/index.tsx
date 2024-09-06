@@ -28,7 +28,7 @@ const DownloadFormExcel = () => {
           start_date,
           finish_date,
           ...(!!request_status && {
-            status: statusJson?.map((item) => item.value),
+            status: statusJson?.map((item) => +item.value),
           }),
         },
         {
