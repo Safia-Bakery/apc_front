@@ -1,14 +1,12 @@
-import { useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Alert,
   Calendar,
-  Badge,
   CalendarProps,
-  BadgeProps,
   Modal,
   Button,
-  Select,
   ConfigProvider,
+  AlertProps,
 } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import ruRU from "antd/es/locale/ru_RU";
@@ -17,41 +15,17 @@ import localeData from "dayjs/plugin/localeData";
 import Container from "@/components/Container";
 import { Empty } from "antd";
 import { useTranslation } from "react-i18next";
+import { deleteCalendar, useCalendars } from "@/hooks/cleaning";
+import { yearMonthDate } from "@/utils/keys";
+import Loading from "@/components/Loader";
+import { antdType } from "@/utils/antdTypes";
+import CalendarInput from "./calendarInput";
+import { errorToast } from "@/utils/toast";
 
 // Apply the plugins globally
 dayjs.extend(weekday);
 dayjs.extend(localeData);
-
-const getListData = (value: Dayjs) => {
-  let listData: { type: string; content: string }[] = [];
-  switch (value.date()) {
-    case 8:
-      listData = [
-        { type: "warning", content: "This is a warning event." },
-        { type: "success", content: "This is a usual event." },
-      ];
-      break;
-    case 10:
-      listData = [
-        { type: "warning", content: "This is a warning event." },
-        { type: "success", content: "This is a usual event." },
-        { type: "error", content: "This is an error event." },
-      ];
-      break;
-    case 15:
-      listData = [
-        { type: "warning", content: "This is a warning event" },
-        { type: "success", content: "This is a very long usual event..." },
-        { type: "error", content: "This is error event 1." },
-        { type: "error", content: "This is error event 2." },
-        { type: "error", content: "This is error event 3." },
-        { type: "error", content: "This is error event 4." },
-      ];
-      break;
-    default:
-  }
-  return listData || [];
-};
+const today = new Date();
 
 const getMonthData = (value: Dayjs) => {
   if (value.month() === 8) {
@@ -62,8 +36,11 @@ const getMonthData = (value: Dayjs) => {
 const Cleaning = () => {
   const { t } = useTranslation();
   const [value, setValue] = useState<Dayjs>(dayjs());
-  const [selectedValue, setSelectedValue] = useState<Dayjs>(dayjs());
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedMonth, $selectedMonth] = useState(
+    dayjs(today).format(yearMonthDate)
+  );
+  const { mutate: deleteItem } = deleteCalendar();
   const [modalData, setModalData] = useState<{
     date: Dayjs;
     events: { type: string; content: string }[];
@@ -71,8 +48,15 @@ const Cleaning = () => {
     date: dayjs(),
     events: [],
   });
+
+  const {
+    data: calendars,
+    isLoading,
+    refetch,
+  } = useCalendars({
+    current_date: selectedMonth,
+  });
   const [showInput, setShowInput] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
   const monthCellRender = (value: Dayjs) => {
     const num = getMonthData(value);
@@ -84,15 +68,43 @@ const Cleaning = () => {
     ) : null;
   };
 
+  const handleDelete = (id: number) => {
+    deleteItem(id, {
+      onSuccess: () => {
+        refetch();
+      },
+      onError: (e) => errorToast(e.message),
+    });
+  };
+
+  const getListData = useCallback(
+    (value: Dayjs) => {
+      const listData: { type: string; content: string; id: number }[] = [];
+      calendars?.forEach((calendar) => {
+        const eventDate = dayjs(calendar?.date);
+        if (value.isSame(eventDate, "day")) {
+          listData.push({
+            type: calendar.is_active ? antdType.success : antdType.warning,
+            content: `${calendar?.branch?.name}`,
+            id: calendar.id,
+          });
+        }
+      });
+      return listData;
+    },
+    [calendars]
+  );
+
   const dateCellRender = (value: Dayjs) => {
     const listData = getListData(value);
     return (
       <ul className="events">
         {listData.map((item) => (
           <li key={item.content}>
-            <Badge
-              status={item.type as BadgeProps["status"]}
-              text={item.content}
+            <Alert
+              className="py-1 px-2"
+              type={item.type as AlertProps["type"]}
+              message={item.content}
             />
           </li>
         ))}
@@ -100,7 +112,10 @@ const Cleaning = () => {
     );
   };
 
-  const toggleModal = () => setIsModalVisible((prev) => !prev);
+  const toggleModal = useCallback(
+    () => setIsModalVisible((prev) => !prev),
+    [isModalVisible]
+  );
 
   const cellRender: CalendarProps<Dayjs>["cellRender"] = (current, info) => {
     if (info.type === "date") return dateCellRender(current);
@@ -110,18 +125,14 @@ const Cleaning = () => {
 
   const onSelect = (newValue: Dayjs) => {
     setValue(newValue);
-    // toggleModal();
-    setSelectedValue(newValue);
-
     const events = getListData(newValue);
-    // if (events.length) {
     setModalData({ date: newValue, events });
     toggleModal();
-    // }
   };
 
   const onPanelChange = (newValue: Dayjs) => {
     setValue(newValue);
+    $selectedMonth(dayjs(newValue).format(yearMonthDate));
   };
 
   const handleModalOk = () => {
@@ -136,16 +147,42 @@ const Cleaning = () => {
     setShowInput(true);
   };
 
-  const handleSelectChange = (value: string[]) => {
-    setSelectedItems(value);
-  };
+  const renderModal = useMemo(() => {
+    return (
+      <ul>
+        {!!modalData?.events?.length ? (
+          modalData.events.map((event: any) => (
+            <li key={event.content}>
+              <Alert
+                className="py-1 px-2"
+                closable
+                onClose={() => handleDelete(event.id)}
+                type={event.type as AlertProps["type"]}
+                message={event.content}
+              />
+            </li>
+          ))
+        ) : (
+          <Empty description={t("empty_list")} />
+        )}
+      </ul>
+    );
+  }, [modalData?.events, showInput]);
+
+  useEffect(() => {
+    return () => {
+      setShowInput(false);
+    };
+  }, []);
+
+  if (isLoading) return <Loading />;
 
   return (
     <ConfigProvider locale={ruRU}>
       <Container>
         <Alert
           message={
-            t("selected_date") + ` ${selectedValue?.format("YYYY-MM-DD")}`
+            t("selected_date") + ` ${modalData?.date?.format("YYYY-MM-DD")}`
           }
         />
         <Calendar
@@ -161,41 +198,34 @@ const Cleaning = () => {
           onOk={handleModalOk}
           onCancel={handleModalCancel}
           footer={[
-            <Button key="add" type="dashed" onClick={handleAddClick}>
+            <Button
+              key="add"
+              disabled={showInput}
+              type="dashed"
+              className="bg-primary text-white"
+              onClick={handleAddClick}
+            >
               {t("add")}
             </Button>,
-            <Button key="ok" type="dashed" onClick={handleModalOk}>
+            <Button
+              key="ok"
+              type="dashed"
+              className="bg-invBtn"
+              onClick={handleModalOk}
+            >
               OK
             </Button>,
           ]}
         >
-          <ul>
-            {!!modalData?.events?.length ? (
-              modalData.events.map((event) => (
-                <li key={event.content}>
-                  <Badge
-                    status={event.type as BadgeProps["status"]}
-                    text={event.content}
-                  />
-                </li>
-              ))
-            ) : (
-              <Empty description={t("empty_list")} />
-            )}
-          </ul>
+          {renderModal}
           {showInput && (
-            <Select
-              mode="multiple"
-              style={{ width: "100%", marginTop: "16px" }}
-              placeholder="Select events"
-              onChange={handleSelectChange}
-              options={[
-                { label: "Meeting", value: "meeting" },
-                { label: "Lunch", value: "lunch" },
-                { label: "Project Deadline", value: "deadline" },
-                { label: "Workshop", value: "workshop" },
-              ]}
-              value={selectedItems}
+            <CalendarInput
+              closeModal={() => {
+                toggleModal();
+                setShowInput(false);
+              }}
+              selectedDate={dayjs(modalData.date).format(yearMonthDate)}
+              selectedMonth={selectedMonth}
             />
           )}
         </Modal>
