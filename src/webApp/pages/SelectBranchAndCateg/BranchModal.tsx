@@ -60,9 +60,10 @@ const BranchModal = ({ isOpen, onClose }: Props) => {
           branches.map((branch, idx) => (
             <li
               key={idx + branch.id}
-              onClick={() =>
-                dispatch(selectBranch({ name: branch.name, id: branch.id }))
-              }
+              onClick={() => {
+                dispatch(selectBranch({ name: branch.name, id: branch.id }));
+                onClose();
+              }}
               className="flex justify-between items-center border-t border-[#E4E4E4] py-3"
             >
               <label>{branch.name}</label>
