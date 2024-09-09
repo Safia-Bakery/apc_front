@@ -15,7 +15,7 @@ type Props = {
 
 const CalendarInput = ({ selectedDate, selectedMonth, closeModal }: Props) => {
   const { t } = useTranslation();
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [selectedItems, setSelectedItems] = useState<string>("");
   const [branchSearch, $branchSearch] = useDebounce("");
   const [branches, $branches] = useState<ValueLabel[]>([]);
   const { mutate, isPending } = editAddCalendarMutation();
@@ -35,7 +35,7 @@ const CalendarInput = ({ selectedDate, selectedMonth, closeModal }: Props) => {
   const handleSend = () => {
     mutate(
       {
-        branch_id: selectedItems?.[0],
+        branch_id: selectedItems,
         date: selectedDate,
         is_active: 1,
       },
@@ -49,8 +49,9 @@ const CalendarInput = ({ selectedDate, selectedMonth, closeModal }: Props) => {
     );
   };
 
-  const handleSelectChange = (value: string[]) => {
-    setSelectedItems(value.slice(-1));
+  const handleSelectChange = (value: string) => {
+    console.log(value);
+    setSelectedItems(value);
   };
   const optionRender = (option: any) => {
     return branchLoading ? (
@@ -75,7 +76,7 @@ const CalendarInput = ({ selectedDate, selectedMonth, closeModal }: Props) => {
 
   useEffect(() => {
     return () => {
-      setSelectedItems([]);
+      setSelectedItems("");
     };
   }, []);
 
@@ -83,8 +84,9 @@ const CalendarInput = ({ selectedDate, selectedMonth, closeModal }: Props) => {
     <Flex gap={10} className="mt-4">
       <Select
         loading={branchLoading}
+        showSearch
         autoFocus
-        mode="multiple"
+        // mode="multiple"
         filterOption={false}
         allowClear
         className="w-full"

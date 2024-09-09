@@ -62,15 +62,19 @@ function AntdTable<T>({
         className={`common-table ${styles.table} align-center ${className}`}
         rowClassName={`clickable-row ${handleRowStyles}`}
         footer={false}
-        pagination={{
-          total: totalItems,
-          hideOnSinglePage: false,
-          current: currentPage,
-          pageSize: itemsPerPage,
-          onChange: handleNavigate,
-          showSizeChanger: false,
-          position: ["bottomLeft"],
-        }}
+        pagination={
+          totalItems
+            ? {
+                total: totalItems,
+                hideOnSinglePage: false,
+                current: currentPage,
+                pageSize: itemsPerPage,
+                onChange: handleNavigate,
+                showSizeChanger: false,
+                position: ["bottomLeft"],
+              }
+            : false
+        }
         virtual
         columns={columns}
         title={() =>

@@ -87,72 +87,72 @@
     }
   }
 }
-.user_form {
-  margin-top: 25px;
-  background: #ffffff;
+// .user_form {
+//   margin-top: 25px;
+//   background: #ffffff;
 
-  .user_details {
-    .user {
-      .devider {
-        padding: 10px;
-        margin: 0px;
-        text-align: center !important;
-        display: block;
-        text-transform: uppercase;
-        color: #000000;
-        font-weight: bold;
-        border: 0px;
-      }
+//   .user_details {
+//     .user {
+//       .devider {
+//         padding: 10px;
+//         margin: 0px;
+//         text-align: center !important;
+//         display: block;
+//         text-transform: uppercase;
+//         color: #000000;
+//         font-weight: bold;
+//         border: 0px;
+//       }
 
-      .form_container {
-        padding: 0px;
+//       .form_container {
+//         padding: 0px;
 
-        .form_group {
-          padding: 2px;
+//         .form_group {
+//           padding: 2px;
 
-          > div {
-            background: whitesmoke;
-            margin: 0px;
-            padding: 2px;
+//           > div {
+//             background: whitesmoke;
+//             margin: 0px;
+//             padding: 2px;
 
-            :global(.ant-form-item-label) {
-              background: #ffffff;
-              text-transform: uppercase;
-              padding: 4px;
-              text-align: center;
+//             :global(.ant-form-item-label) {
+//               background: #ffffff;
+//               text-transform: uppercase;
+//               padding: 4px;
+//               text-align: center;
 
-              > label {
-                font-size: 12px;
-              }
-            }
+//               > label {
+//                 font-size: 12px;
+//               }
+//             }
 
-            :global(.ant-form-item-control) {
-              margin: 0px;
+//             :global(.ant-form-item-control) {
+//               margin: 0px;
 
-              input,
-              select {
-                border-radius: 0px;
-                height: 41px;
-                border-width: 0px 0px 0px 1px;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+//               input,
+//               select {
+//                 border-radius: 0px;
+//                 height: 41px;
+//                 border-width: 0px 0px 0px 1px;
+//               }
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
 
-  .actions {
-    text-align: center;
-    padding: 20px 0px;
-    border-top: 1px solid whitesmoke;
-    margin: 10px 0px;
+//   .actions {
+//     text-align: center;
+//     padding: 20px 0px;
+//     border-top: 1px solid whitesmoke;
+//     margin: 10px 0px;
 
-    button {
-      background: #d7dcb5;
-      text-transform: uppercase;
-      border-radius: 3px;
-      padding: 10px 50px;
-    }
-  }
-}
+//     button {
+//       background: #d7dcb5;
+//       text-transform: uppercase;
+//       border-radius: 3px;
+//       padding: 10px 50px;
+//     }
+//   }
+// }
