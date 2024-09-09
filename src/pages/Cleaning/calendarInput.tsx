@@ -42,7 +42,7 @@ const CalendarInput = ({ selectedDate, selectedMonth, closeModal }: Props) => {
       {
         onSuccess: () => {
           refetch();
-          closeModal?.();
+          setSelectedItems("");
         },
         onError: (e) => errorToast(e.message),
       }

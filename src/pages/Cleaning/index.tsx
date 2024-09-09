@@ -31,6 +31,13 @@ const statusType: { [key: number]: AlertProps["type"] } = {
   [RequestStatus.received]: antdType.info,
 };
 
+interface ListType {
+  type: string;
+  content: string;
+  id: number;
+  status?: number;
+  date?: string;
+}
 // Apply the plugins globally
 dayjs.extend(weekday);
 dayjs.extend(localeData);
@@ -88,12 +95,7 @@ const Cleaning = () => {
 
   const getListData = useCallback(
     (value: Dayjs) => {
-      const listData: {
-        type: string;
-        content: string;
-        id: number;
-        status?: number;
-      }[] = [];
+      const listData: ListType[] = [];
       calendars?.forEach((calendar) => {
         const eventDate = dayjs(calendar?.date);
         if (value.isSame(eventDate, "day")) {
@@ -102,6 +104,7 @@ const Cleaning = () => {
             content: `${calendar?.branch?.name}`,
             id: calendar.id,
             status: calendar?.request?.status || 0,
+            date: calendar.date,
           });
         }
       });
@@ -170,12 +173,12 @@ const Cleaning = () => {
             <li key={event.content}>
               <Alert
                 className="py-1 px-2"
-                closable
+                closable={dayjs(event.date).isAfter(today, "day")}
                 onClose={() => handleDelete(event.id)}
                 type={statusType[event?.status]}
                 message={`${event.content} - ${t(
                   RequestStatus[event?.status]
-                )}`}
+                )} ${event.date}`}
               />
             </li>
           ))
@@ -185,6 +188,13 @@ const Cleaning = () => {
       </ul>
     );
   }, [modalData?.events, showInput]);
+
+  useEffect(() => {
+    if (modalData?.date) {
+      const events = getListData(modalData?.date);
+      setModalData({ date: modalData?.date, events });
+    }
+  }, [calendars, modalData?.date]);
 
   useEffect(() => {
     return () => {
@@ -206,6 +216,7 @@ const Cleaning = () => {
           className="p-4"
           value={value}
           cellRender={cellRender}
+          mode="month"
           onSelect={onSelect}
           onPanelChange={onPanelChange}
         />
@@ -217,7 +228,9 @@ const Cleaning = () => {
           footer={[
             <Button
               key="add"
-              disabled={showInput}
+              disabled={
+                showInput || dayjs(modalData.date).isBefore(today, "day")
+              }
               type="dashed"
               className="bg-primary text-white"
               onClick={handleAddClick}
