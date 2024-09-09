@@ -49,10 +49,8 @@ const CalendarInput = ({ selectedDate, selectedMonth, closeModal }: Props) => {
     );
   };
 
-  const handleSelectChange = (value: string) => {
-    console.log(value);
-    setSelectedItems(value);
-  };
+  const handleSelectChange = (value: string) => setSelectedItems(value);
+
   const optionRender = (option: any) => {
     return branchLoading ? (
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -103,7 +101,7 @@ const CalendarInput = ({ selectedDate, selectedMonth, closeModal }: Props) => {
       <Button
         loading={isPending}
         onClick={handleSend}
-        disabled={isPending || !selectedItems.length}
+        disabled={isPending || !selectedItems?.length}
         className="bg-success"
       >
         {t("send")}

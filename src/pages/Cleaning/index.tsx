@@ -21,6 +21,15 @@ import Loading from "@/components/Loader";
 import { antdType } from "@/utils/antdTypes";
 import CalendarInput from "./calendarInput";
 import { errorToast } from "@/utils/toast";
+import { RequestStatus } from "@/utils/types";
+
+const statusType: { [key: number]: AlertProps["type"] } = {
+  [RequestStatus.closed_denied]: antdType.error,
+  [RequestStatus.denied]: antdType.error,
+  [RequestStatus.finished]: antdType.success,
+  [RequestStatus.new]: antdType.warning,
+  [RequestStatus.received]: antdType.info,
+};
 
 // Apply the plugins globally
 dayjs.extend(weekday);
@@ -79,7 +88,12 @@ const Cleaning = () => {
 
   const getListData = useCallback(
     (value: Dayjs) => {
-      const listData: { type: string; content: string; id: number }[] = [];
+      const listData: {
+        type: string;
+        content: string;
+        id: number;
+        status?: number;
+      }[] = [];
       calendars?.forEach((calendar) => {
         const eventDate = dayjs(calendar?.date);
         if (value.isSame(eventDate, "day")) {
@@ -87,6 +101,7 @@ const Cleaning = () => {
             type: calendar.is_active ? antdType.success : antdType.warning,
             content: `${calendar?.branch?.name}`,
             id: calendar.id,
+            status: calendar?.request?.status || 0,
           });
         }
       });
@@ -103,7 +118,7 @@ const Cleaning = () => {
           <li key={item.content}>
             <Alert
               className="py-1 px-2"
-              type={item.type as AlertProps["type"]}
+              type={statusType[item.status as number]}
               message={item.content}
             />
           </li>
@@ -157,8 +172,10 @@ const Cleaning = () => {
                 className="py-1 px-2"
                 closable
                 onClose={() => handleDelete(event.id)}
-                type={event.type as AlertProps["type"]}
-                message={event.content}
+                type={statusType[event?.status]}
+                message={`${event.content} - ${t(
+                  RequestStatus[event?.status]
+                )}`}
               />
             </li>
           ))
