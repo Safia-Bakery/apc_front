@@ -19,7 +19,7 @@ interface Params {
   sphere_status?: Sphere;
 }
 
-const config = { timeout: EPresetTimes.SECOND * 10 };
+const config = { timeout: EPresetTimes.MINUTE * 5 };
 
 export const useServiceMarkStats = ({
   enabled,

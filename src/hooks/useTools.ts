@@ -12,7 +12,7 @@ interface Body {
   few_amounts?: boolean;
 }
 
-const config = { timeout: EPresetTimes.SECOND * 15 };
+const config = { timeout: EPresetTimes.MINUTE * 5 };
 
 export const useTools = ({ enabled = true, ...params }: Body) => {
   return useQuery({

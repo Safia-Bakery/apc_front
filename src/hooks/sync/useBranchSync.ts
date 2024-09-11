@@ -3,7 +3,7 @@ import apiClient from "@/main";
 import { errorToast } from "@/utils/toast";
 import { BranchTypes, EPresetTimes } from "@/utils/types";
 
-const config = { timeout: EPresetTimes.MINUTE * 2 };
+const config = { timeout: EPresetTimes.MINUTE * 5 };
 
 export const useBranchSync = ({
   enabled = true,
