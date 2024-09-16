@@ -25,7 +25,6 @@ import { RequestStatus } from "@/utils/types";
 
 const statusType: { [key: number]: AlertProps["type"] } = {
   [RequestStatus.closed_denied]: antdType.error,
-  [RequestStatus.denied]: antdType.error,
   [RequestStatus.finished]: antdType.success,
   [RequestStatus.new]: antdType.warning,
   [RequestStatus.received]: antdType.info,

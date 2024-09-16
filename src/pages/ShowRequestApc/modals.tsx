@@ -101,7 +101,7 @@ const ApcModals = () => {
           ...(!!price && { price: +price }),
           ...(!!pause_reason && { pause_reason }),
           ...(!!item && { brigada_id: Number(item?.id) }),
-          ...(status === RequestStatus.denied && {
+          ...(status === RequestStatus.closed_denied && {
             deny_reason:
               fixedReason < 4 ? t(CancelReason[fixedReason]) : cancel_reason,
           }),
@@ -162,7 +162,7 @@ const ApcModals = () => {
           <form
             onSubmit={handleSubmit(
               handleBrigada({
-                status: RequestStatus.denied,
+                status: RequestStatus.closed_denied,
               })
             )}
             className={"w-[420px]"}

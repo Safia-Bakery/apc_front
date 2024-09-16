@@ -52,7 +52,7 @@ const InventoryModals = () => {
           request_id: Number(id),
           status,
           ...(!!pause_reason && { pause_reason }),
-          ...(status === RequestStatus.denied && {
+          ...(status === RequestStatus.closed_denied && {
             deny_reason:
               fixedReason < 4 ? t(CancelReason[fixedReason]) : cancel_reason,
           }),
@@ -99,7 +99,7 @@ const InventoryModals = () => {
           <form
             onSubmit={handleSubmit(
               handleBrigada({
-                status: RequestStatus.denied,
+                status: RequestStatus.closed_denied,
               })
             )}
             className={"w-[420px]"}
