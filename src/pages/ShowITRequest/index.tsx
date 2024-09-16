@@ -37,16 +37,16 @@ const unchangable: BaseReturnBoolean = {
   [RequestStatus.closed_denied]: true,
 };
 
-interface Props {
-  edit: MainPermissions;
-  attaching: MainPermissions;
-}
-
 const unchangableObj: BaseReturnBoolean = {
   [RequestStatus.solved]: true,
   [RequestStatus.denied]: true,
   [RequestStatus.paused]: true,
 };
+
+interface Props {
+  edit: MainPermissions;
+  attaching: MainPermissions;
+}
 
 const ShowITRequest: FC<Props> = ({ attaching }) => {
   const { t } = useTranslation();

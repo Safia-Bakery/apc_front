@@ -101,7 +101,7 @@ const ApcModals = () => {
           ...(!!price && { price: +price }),
           ...(!!pause_reason && { pause_reason }),
           ...(!!item && { brigada_id: Number(item?.id) }),
-          ...(status === RequestStatus.closed_denied && {
+          ...(status === RequestStatus.denied && {
             deny_reason:
               fixedReason < 4 ? t(CancelReason[fixedReason]) : cancel_reason,
           }),
@@ -161,11 +161,14 @@ const ApcModals = () => {
         return (
           <form
             onSubmit={handleSubmit(
-              handleBrigada({ status: RequestStatus.closed_denied })
+              handleBrigada({
+                status: RequestStatus.denied,
+              })
             )}
+            className={"w-[420px]"}
           >
             <Header title="deny_reason">
-              <button onClick={closeModal}>
+              <button onClick={closeModal} className="close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </Header>
@@ -198,6 +201,31 @@ const ApcModals = () => {
             </div>
           </form>
         );
+      case ModalTypes.pause:
+        return (
+          <form
+            onSubmit={handleSubmit(
+              handleBrigada({ status: RequestStatus.paused })
+            )}
+            className={"w-[420px]"}
+          >
+            <Header title="pause_reason">
+              <button onClick={closeModal} className="close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </Header>
+            <div className="p-3">
+              <BaseInput label="comments">
+                <MainTextArea register={register("pause_reason")} autoFocus />
+              </BaseInput>
+
+              <button className="btn btn-success" type="submit">
+                {t("send")}
+              </button>
+            </div>
+          </form>
+        );
+
       case ModalTypes.expense:
         return (
           <form
@@ -262,7 +290,7 @@ const ApcModals = () => {
             </BaseInput>
 
             <button
-              className="btn btn-success   w-full"
+              className="btn btn-success w-full"
               onClick={handleChangeCateg}
             >
               {t("apply")}

@@ -45,25 +45,27 @@ const RequestPhotoReport = () => {
       );
   };
   return (
-    <Card className="overflow-hidden">
-      <Header title={"add_photo_report"} />
-      <div className="m-3">
-        <UploadComponent
-          onFilesSelected={handleFilesSelected}
-          inputRef={inputRef}
-        />
-        {!!upladedFiles?.length && (
-          <button
-            onClick={handlerSubmitFile}
-            type="button"
-            id={"save_report"}
-            className="btn btn-success float-end   my-3"
-          >
-            {t("save")}
-          </button>
-        )}
-      </div>
-    </Card>
+    <div className="h-64 mb-6">
+      <Card className="overflow-hidden">
+        <Header title={"add_photo_report"} />
+        <div className="m-3">
+          <UploadComponent
+            onFilesSelected={handleFilesSelected}
+            inputRef={inputRef}
+          />
+          {!!upladedFiles?.length && (
+            <button
+              onClick={handlerSubmitFile}
+              type="button"
+              id={"save_report"}
+              className="btn btn-success float-end my-3"
+            >
+              {t("save")}
+            </button>
+          )}
+        </div>
+      </Card>
+    </div>
   );
 };
 
