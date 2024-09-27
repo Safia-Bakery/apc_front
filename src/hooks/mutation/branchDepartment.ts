@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
-import { errorToast } from "@/utils/toast";
+import baseApi from "@/api/base_api";
+import errorToast from "@/utils/errorToast";
 
 interface Body {
   id: string;
@@ -11,8 +11,8 @@ const branchDepartmentMutation = () => {
   return useMutation({
     mutationKey: ["expenditure_sync"],
     mutationFn: (body: Body) =>
-      apiClient
-        .put({ url: "/deparment/update", body })
+      baseApi
+        .put("/deparment/update", body)
         .then((data) => data)
         .catch((e: Error) => errorToast(e.message)),
   });

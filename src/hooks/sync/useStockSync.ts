@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
-import { errorToast, successToast } from "@/utils/toast";
+import baseApi from "@/api/base_api";
+import successToast from "@/utils/successToast";
+import errorToast from "@/utils/errorToast";
 import { BranchTypes, EPresetTimes } from "@/utils/types";
-
-const config = { timeout: EPresetTimes.MINUTE * 5 };
 
 export const useStockSync = ({
   enabled = true,
@@ -15,8 +14,11 @@ export const useStockSync = ({
   return useQuery({
     queryKey: ["stock_sync"],
     queryFn: () =>
-      apiClient
-        .get({ url: "/v1/synch/left", params: { store_id }, config })
+      baseApi
+        .get("/v1/synch/left", {
+          params: { store_id },
+          timeout: EPresetTimes.MINUTE * 5,
+        })
         .then(({ data: response }) => {
           successToast("Синхронизировано");
           response as BranchTypes;

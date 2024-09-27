@@ -4,13 +4,14 @@ import Header from "@/components/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect, useMemo } from "react";
-import { errorToast, successToast } from "@/utils/toast";
+import successToast from "@/utils/successToast";
+import errorToast from "@/utils/errorToast";
 import BaseInput from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 import { imageConverter } from "@/utils/helpers";
-import { baseURL } from "@/main";
+import { baseURL } from "@/store/baseUrl";
 import categoryProductMutation from "@/hooks/mutation/categoryProduct";
 import { useTranslation } from "react-i18next";
 

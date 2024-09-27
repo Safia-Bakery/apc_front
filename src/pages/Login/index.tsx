@@ -7,7 +7,7 @@ import { linkSelector, loginHandler, tokenSelector } from "reducers/auth";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useToken from "@/hooks/useToken";
-import { successToast } from "@/utils/toast";
+import successToast from "@/utils/successToast";
 import BaseInput from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
 import Loading from "@/components/Loader";

@@ -4,7 +4,7 @@ import {
   useRemoveParams,
 } from "@/hooks/custom/useCustomNavigate";
 import useQueryString from "@/hooks/custom/useQueryString";
-import { baseURL } from "@/main";
+import { baseURL } from "@/store/baseUrl";
 import {
   addItem,
   cartSelector,

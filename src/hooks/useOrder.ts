@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { Order } from "@/utils/types";
 
 export const useOrder = ({
@@ -12,8 +12,8 @@ export const useOrder = ({
   return useQuery({
     queryKey: ["order", id],
     queryFn: () =>
-      apiClient
-        .get({ url: `/request/${id}` })
+      baseApi
+        .get(`/request/${id}`)
         .then(({ data: response }) => (response as Order) || null),
     enabled: !!id && enabled,
     refetchOnMount: true,

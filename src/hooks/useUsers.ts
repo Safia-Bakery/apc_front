@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { UsersTypes } from "@/utils/types";
 
 interface BodyTypes {
@@ -26,8 +26,8 @@ export const useUsers = ({
   return useQuery({
     queryKey: ["users", page, position, body],
     queryFn: () =>
-      apiClient
-        .get({ url: "/users", params: { page, size, ...body, position } })
+      baseApi
+        .get("/users", { params: { page, size, ...body, position } })
         .then(({ data: response }) => {
           return response as UsersTypes;
         }),

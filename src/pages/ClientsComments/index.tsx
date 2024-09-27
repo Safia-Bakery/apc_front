@@ -21,7 +21,7 @@ import {
 } from "@/utils/types";
 import DateRangeBlock from "@/components/DateRangeBlock";
 import useOrders from "@/hooks/useOrders";
-import { baseURL } from "@/main";
+import { baseURL } from "@/store/baseUrl";
 import { useNavigateParams } from "custom/useCustomNavigate";
 import ShowRequestModals from "@/components/ShowRequestModals";
 import { useTranslation } from "react-i18next";

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { BranchTypes, EPresetTimes } from "@/utils/types";
 
 interface BodyTypes {
@@ -19,8 +19,6 @@ interface Params {
   warehouse?: boolean;
 }
 
-const config = { timeout: EPresetTimes.SECOND * 15 };
-
 export const useBranches = ({
   enabled = true,
   size,
@@ -32,11 +30,10 @@ export const useBranches = ({
   return useQuery({
     queryKey: ["branches", origin, body, page, warehouse],
     queryFn: () =>
-      apiClient
-        .get({
-          url: warehouse ? "/get/fillial/fabrica" : "/fillials",
+      baseApi
+        .get(warehouse ? "/get/fillial/fabrica" : "/fillials", {
           params: { page, size, origin, ...body },
-          config,
+          timeout: EPresetTimes.SECOND * 15,
         })
         .then(({ data: response }) => response as BranchTypes),
     enabled,

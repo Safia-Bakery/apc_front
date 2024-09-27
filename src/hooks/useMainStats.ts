@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { tokenSelector } from "reducers/auth";
 import { useAppSelector } from "@/store/utils/types";
 import { Departments, MainStatTypes, Sphere } from "@/utils/types";
@@ -15,12 +15,8 @@ export const useMainStats = ({ enabled, ...params }: Body) => {
   return useQuery({
     queryKey: ["main_statistics", params],
     queryFn: ({ signal }) =>
-      apiClient
-        .get({
-          url: "/v1/stats/main",
-          params,
-          config: { signal },
-        })
+      baseApi
+        .get("/v1/stats/main", { params, signal })
         .then(({ data: response }) => response as MainStatTypes),
     enabled: enabled && !!token,
   });

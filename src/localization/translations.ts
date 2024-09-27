@@ -391,6 +391,8 @@ const localization = {
       cleaning: "Чистка",
       cleanings_on: "Чистки в",
       selected_date: "Выбранная дата",
+
+      upload_stats: "Загрузить статистику",
     },
   },
   uz: {

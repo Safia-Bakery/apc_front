@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { UserTypes } from "@/utils/types";
 
 export const useUser = ({
@@ -12,8 +12,8 @@ export const useUser = ({
   return useQuery({
     queryKey: ["user", id],
     queryFn: () =>
-      apiClient
-        .get({ url: `/users/${id}` })
+      baseApi
+        .get(`/users/${id}`)
         .then(({ data: response }) => (response as UserTypes) || null),
     enabled: !!id && enabled,
     refetchOnMount: true,

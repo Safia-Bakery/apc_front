@@ -1,9 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
-import { errorToast } from "@/utils/toast";
+import baseApi from "@/api/base_api";
+import errorToast from "@/utils/errorToast";
 import { BranchTypes, EPresetTimes } from "@/utils/types";
-
-const config = { timeout: EPresetTimes.MINUTE * 5 };
 
 export const useBranchSync = ({
   enabled = true,
@@ -17,8 +15,11 @@ export const useBranchSync = ({
   return useQuery({
     queryKey: ["branches_sync"],
     queryFn: () =>
-      apiClient
-        .get({ url: "/synch/department", params: { page, size }, config })
+      baseApi
+        .get("/synch/department", {
+          params: { page, size },
+          timeout: EPresetTimes.MINUTE * 5,
+        })
         .then(({ data: response }) => {
           return response as BranchTypes;
         })

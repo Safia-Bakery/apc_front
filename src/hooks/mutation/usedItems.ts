@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { FileItem } from "@/components/FileUpload";
-import apiClient from "@/main";
-import { errorToast } from "@/utils/toast";
+import baseApi from "@/api/base_api";
+import errorToast from "@/utils/errorToast";
 import { EPresetTimes } from "@/utils/types";
 
 interface Body {
@@ -13,10 +13,6 @@ interface Body {
 }
 
 const usedItems = () => {
-  const contentType = "multipart/form-data";
-
-  const config = { timeout: EPresetTimes.MINUTE * 2 };
-
   return useMutation({
     mutationKey: ["create_order"],
     mutationFn: ({ amount, request_id, tool_id, comment, files }: Body) => {
@@ -29,12 +25,10 @@ const usedItems = () => {
         formData.append("files", item.file, item.file.name);
       });
 
-      return apiClient
-        .post({
-          url: "/v1/expenditure",
-          body: formData,
-          config,
-          contentType,
+      return baseApi
+        .post("/v1/expenditure", formData, {
+          timeout: EPresetTimes.MINUTE * 2,
+          headers: { "Content-Type": "multipart/form-data" },
         })
         .then(({ data }) => data);
     },

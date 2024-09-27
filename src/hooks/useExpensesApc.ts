@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { ExpensesTypes } from "@/utils/types";
 
 interface Params {
@@ -15,8 +15,8 @@ export const useExpensesApc = ({ enabled = true, ...params }: Params) => {
   return useQuery({
     queryKey: ["expenses", params],
     queryFn: () =>
-      apiClient
-        .get({ url: "/v1/expense", params })
+      baseApi
+        .get("/v1/expense", { params })
         .then(({ data: response }) => (response as ExpensesTypes) || null),
     enabled,
     refetchOnMount: true,

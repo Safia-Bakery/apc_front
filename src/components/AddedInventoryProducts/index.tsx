@@ -3,7 +3,8 @@ import { useParams } from "react-router-dom";
 import useOrder from "@/hooks/useOrder";
 import updateInventoryProdMutation from "@/hooks/mutation/updateInventoryProd";
 import { RequestStatus } from "@/utils/types";
-import { errorToast, successToast } from "@/utils/toast";
+import successToast from "@/utils/successToast";
+import errorToast from "@/utils/errorToast";
 import { useTranslation } from "react-i18next";
 
 const column = [

@@ -13,7 +13,8 @@ import Pagination from "@/components/Pagination";
 import EmptyList from "@/components/EmptyList";
 import toolOrderMutation from "@/hooks/mutation/toolOrder";
 import useInventoryOrders from "@/hooks/useInventoryOrders";
-import { errorToast, successToast } from "@/utils/toast";
+import successToast from "@/utils/successToast";
+import errorToast from "@/utils/errorToast";
 import { useTranslation } from "react-i18next";
 import { dateMonthYear } from "@/utils/keys";
 

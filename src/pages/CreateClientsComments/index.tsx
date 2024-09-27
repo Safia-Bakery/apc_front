@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { errorToast } from "@/utils/toast";
+import errorToast from "@/utils/errorToast";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { useNavigate } from "react-router-dom";

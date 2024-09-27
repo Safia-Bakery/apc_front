@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { FAQTypes } from "@/utils/types";
 
 const faqsMutation = () => {
@@ -7,10 +7,10 @@ const faqsMutation = () => {
     mutationKey: ["faqs_mutation"],
     mutationFn: async (body: FAQTypes) => {
       if (body.id) {
-        const { data } = await apiClient.put({ url: "/hr/question", body });
+        const { data } = await baseApi.put("/hr/question", body);
         return data;
       } else {
-        const { data } = await apiClient.post({ url: "/hr/question", body });
+        const { data } = await baseApi.post("/hr/question", body);
         return data;
       }
     },

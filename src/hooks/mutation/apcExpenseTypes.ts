@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 
 interface Body {
   name: string;
@@ -10,7 +10,7 @@ const apcExpenseTypesMutation = () => {
   return useMutation({
     mutationKey: ["apc_expense_types"],
     mutationFn: async (body: Body) => {
-      const { data } = await apiClient.post({ url: "/v1/expense/type", body });
+      const { data } = await baseApi.post("/v1/expense/type", body);
       return data;
     },
   });

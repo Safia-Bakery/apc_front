@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
 import { EPresetTimes, ServiceStatsTypes, Sphere } from "@/utils/types";
 import dayjs from "dayjs";
 import { yearMonthDate } from "@/utils/keys";
+import baseApi from "@/api/base_api";
 
 interface Params {
   enabled?: boolean;
@@ -20,15 +20,15 @@ export const useApcServiceStats = ({
   return useQuery({
     queryKey: ["Apc_service_stats", finished_at, started_at, params],
     queryFn: ({ signal }) =>
-      apiClient
-        .get({
-          url: "/v1/arc/stats",
+      baseApi
+        .get("/v1/arc/stats", {
           params: {
             finished_at,
             started_at,
             ...params,
           },
-          config: { ...config, signal },
+          ...config,
+          signal,
         })
         .then(({ data: response }) => response as ServiceStatsTypes),
     enabled,

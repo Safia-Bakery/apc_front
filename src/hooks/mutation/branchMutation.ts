@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
-import { errorToast } from "@/utils/toast";
+import baseApi from "@/api/base_api";
+import errorToast from "@/utils/errorToast";
 
 type Body = {
   name: string;
@@ -17,13 +17,8 @@ const branchMutation = () => {
     mutationKey: ["handle_branch"],
     mutationFn: (body: Body) => {
       if (!body.id)
-        return apiClient
-          .post({ url: "/fillials", body })
-          .then(({ data }) => data);
-      else
-        return apiClient
-          .put({ url: "/fillials", body })
-          .then(({ data }) => data);
+        return baseApi.post("/fillials", body).then(({ data }) => data);
+      else return baseApi.put("/fillials", body).then(({ data }) => data);
     },
     onError: (e) => errorToast(e.message),
   });

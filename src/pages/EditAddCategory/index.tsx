@@ -7,19 +7,31 @@ import Header from "@/components/Header";
 import useCategory from "@/hooks/useCategory";
 import categoryMutation from "@/hooks/mutation/categoryMutation";
 import useCategories from "@/hooks/useCategories";
-import { errorToast, successToast } from "@/utils/toast";
 import BaseInput from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
-import { Departments, MarketingSubDepRu, Sphere } from "@/utils/types";
+import {
+  BaseReturnBoolean,
+  Departments,
+  MarketingSubDepRu,
+  Sphere,
+} from "@/utils/types";
 import MainSelect from "@/components/BaseInputs/MainSelect";
 import { imageConverter } from "@/utils/helpers";
-import { baseURL } from "@/main";
+import { baseURL } from "@/store/baseUrl";
 import useQueryString from "@/hooks/custom/useQueryString";
 import { useTranslation } from "react-i18next";
 import useTgLinks from "@/hooks/useTgLinks";
 import Loading from "@/components/Loader";
+import successToast from "@/utils/successToast";
+import errorToast from "@/utils/errorToast";
+
+const showTime: BaseReturnBoolean = {
+  [Departments.IT]: true,
+  [Departments.APC]: true,
+  [Departments.marketing]: true,
+};
 
 interface Props {
   sphere_status?: Sphere;
@@ -172,9 +184,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
           />
         </BaseInput>
 
-        {(Number(dep) === Departments.IT ||
-          Number(dep) === Departments.APC ||
-          Number(dep) === Departments.marketing) && (
+        {showTime?.[Number(dep)] && (
           <BaseInput label="execution_time_hoours" error={errors.time}>
             <MainInput
               register={register("time", { required: t("required_field") })}

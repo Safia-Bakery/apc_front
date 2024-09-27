@@ -1,7 +1,8 @@
 import UploadComponent, { FileItem } from "@/components/FileUpload";
 import uploadFileMutation from "@/hooks/mutation/uploadFile";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
-import { errorToast, successToast } from "@/utils/toast";
+import successToast from "@/utils/successToast";
+import errorToast from "@/utils/errorToast";
 import { useRef } from "react";
 import { reportImgSelector, uploadReport } from "reducers/selects";
 import Card from "../Card";

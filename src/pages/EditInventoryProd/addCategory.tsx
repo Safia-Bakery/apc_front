@@ -4,7 +4,7 @@ import Loading from "@/components/Loader";
 import categoryTools from "@/hooks/mutation/categoryTools";
 import useCategories from "@/hooks/useCategories";
 import useTools from "@/hooks/useTools";
-import { successToast } from "@/utils/toast";
+import successToast from "@/utils/successToast";
 import { Departments } from "@/utils/types";
 import { ChangeEvent } from "react";
 import { useParams } from "react-router-dom";

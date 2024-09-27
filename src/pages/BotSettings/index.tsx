@@ -2,7 +2,7 @@ import Card from "@/components/Card";
 import Header from "@/components/Header";
 import Loading from "@/components/Loader";
 import apcBotMutation from "@/hooks/mutation/apcBot";
-import { successToast } from "@/utils/toast";
+import successToast from "@/utils/successToast";
 
 const BotSettings = () => {
   const { mutate, isPending } = apcBotMutation();

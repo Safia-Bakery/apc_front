@@ -4,7 +4,8 @@ import cl from "classnames";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { errorToast, successToast } from "@/utils/toast";
+import successToast from "@/utils/successToast";
+import errorToast from "@/utils/errorToast";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import requestMutation from "@/hooks/mutation/orderMutation";
