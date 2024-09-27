@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import cl from "classnames";
 import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
@@ -11,24 +11,38 @@ import { errorToast, successToast } from "@/utils/toast";
 import { baseURL } from "@/main";
 import { detectFileType } from "@/utils/helpers";
 import {
+  BaseReturnBoolean,
   Departments,
   FileType,
-  MainPermissions,
   ModalTypes,
   RequestStatus,
 } from "@/utils/types";
-import ShowRequestModals from "@/components/ShowRequestModals";
-import { useNavigateParams } from "custom/useCustomNavigate";
+import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { permissionSelector } from "reducers/sidebar";
 import AddedInventoryProducts from "@/components/AddedInventoryProducts";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
 import { dateTimeFormat } from "@/utils/keys";
+import InventoryModals from "./modals";
+import useQueryString from "@/hooks/custom/useQueryString";
+
+const unchangable: BaseReturnBoolean = {
+  [RequestStatus.finished]: true,
+  [RequestStatus.closed_denied]: true,
+};
+
+const unchangableObj: BaseReturnBoolean = {
+  [RequestStatus.solved]: true,
+  [RequestStatus.closed_denied]: true,
+  [RequestStatus.paused]: true,
+};
 
 const ShowRequestInventory = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const permissions = useAppSelector(permissionSelector);
+  const modal = useQueryString("modal");
+  const removeParams = useRemoveParams();
 
   const navigateParams = useNavigateParams();
   const { mutate: attach, isPending: attaching } = attachBrigadaMutation();
@@ -41,7 +55,6 @@ const ShowRequestInventory = () => {
     isLoading,
     isFetching,
   } = useOrder({ id: Number(id) });
-  const isNew = order?.status === RequestStatus.new;
   const navigate = useNavigate();
 
   const handleShowPhoto = (file: string) => () => {
@@ -51,28 +64,14 @@ const ShowRequestInventory = () => {
 
   const handleBack = () => navigate("/requests-inventory");
 
-  const handleReceive = () => {
-    attach(
-      {
-        request_id: Number(id),
-        status: RequestStatus.received,
-      },
-      {
-        onSuccess: () => {
-          orderRefetch();
-          successToast("assigned");
-        },
-        onError: (e) => errorToast(e.message),
-      }
-    );
-  };
-
-  const handleFinish = useCallback(() => {
-    if (!order?.expanditure?.find((item) => !!item.status))
-      alert(t("select_productt"));
-    else
+  const handleBrigada =
+    ({ status }: { status?: RequestStatus }) =>
+    () => {
       attach(
-        { request_id: Number(id), status: RequestStatus.finished },
+        {
+          request_id: Number(id),
+          status,
+        },
         {
           onSuccess: () => {
             orderRefetch();
@@ -81,43 +80,76 @@ const ShowRequestInventory = () => {
           onError: (e) => errorToast(e.message),
         }
       );
-  }, [order?.expanditure, order?.status]);
+      removeParams(["modal"]);
+    };
 
   const renderBtns = useMemo(() => {
-    if (
-      permissions?.[MainPermissions.edit_requests_inventory] &&
-      !!order?.status.toString() &&
-      order?.status < RequestStatus.finished
-    )
+    if (!!order?.status.toString() && !unchangable[order.status])
       return (
-        <div className="float-end mb10">
-          <button
-            onClick={handleModal(ModalTypes.cancelRequest)}
-            className="btn btn-danger   mx-2"
-          >
-            {t("deny")}
-          </button>
-          {isNew ? (
+        <div className="flex justify-between mb10 gap-2">
+          {!unchangable[order!?.status] &&
+          order.status !== RequestStatus.closed_denied ? (
             <button
-              onClick={handleReceive}
-              className="btn btn-success  "
-              id="recieve_request"
+              onClick={handleModal(ModalTypes.cancelRequest)}
+              className="btn btn-danger"
             >
-              {t("receive")}
+              {t("calcel")}
             </button>
           ) : (
-            <button onClick={handleFinish} className="btn btn-success  ">
-              {t("finish")}
-            </button>
+            <div />
           )}
+          <div>
+            {order?.status === RequestStatus.new && (
+              <button
+                onClick={handleBrigada({
+                  status: RequestStatus.received,
+                })}
+                className="btn btn-success"
+                id="recieve_request"
+              >
+                {t("receive")}
+              </button>
+            )}
+            {order?.status! > RequestStatus.new && (
+              <div className="flex gap-2">
+                {unchangableObj[order?.status!] ? (
+                  <button
+                    onClick={handleBrigada({
+                      status: RequestStatus.resumed,
+                    })}
+                    className="btn btn-warning"
+                  >
+                    {t("resume")}
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleModal(ModalTypes.pause)}
+                    className="btn btn-warning"
+                  >
+                    {t("pause")}
+                  </button>
+                )}
+                {!unchangableObj[order.status] && (
+                  <button
+                    id={"fixed"}
+                    onClick={handleBrigada({
+                      status: RequestStatus.solved,
+                    })}
+                    className="btn btn-success"
+                  >
+                    {t("to_solve")}
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       );
-  }, [permissions, order?.status, handleFinish]);
+  }, [permissions, order?.status]);
 
   const renderModals = useMemo(() => {
-    if (!!order?.status.toString() && order?.status < RequestStatus.finished)
-      return <ShowRequestModals />;
-  }, [order?.status]);
+    return <InventoryModals />;
+  }, [modal]);
 
   if (isLoading || isFetching || attaching) return <Loading />;
 
@@ -267,6 +299,12 @@ const ShowRequestInventory = () => {
                     <tr>
                       <th className="font-bold">{t("deny_reason")}</th>
                       <td>{order?.deny_reason}</td>
+                    </tr>
+                  )}
+                  {order?.pause_reason && (
+                    <tr>
+                      <th className="font-bold">{t("pause_reason")}</th>
+                      <td>{order?.pause_reason}</td>
                     </tr>
                   )}
                 </tbody>

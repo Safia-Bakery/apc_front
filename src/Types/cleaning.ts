@@ -27,5 +27,6 @@ interface CalendarTypes {
     status: number;
     country: string;
   };
+  request?: { status: number };
   is_active: number;
 }

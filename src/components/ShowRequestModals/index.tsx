@@ -290,39 +290,6 @@ const ShowRequestModals = () => {
           </div>
         );
 
-      // case ModalTypes.assingDeadline:
-      //   return (
-      //     <>
-      //       <Header title="edit_deadline">
-      //         <button onClick={() => removeParams(["modal"])} className="close">
-      //           <span aria-hidden="true">&times;</span>
-      //         </button>
-      //       </Header>
-      //       <div className="min-w-[380px] p-4">
-      //         <BaseInput label="Выберите дедлайн">
-      //           <MainDatePicker
-      //             showTimeSelect
-      //             selected={
-      //               !!deadline
-      //                 ? dayjs(deadline || undefined).toDate()
-      //                 : undefined
-      //             }
-      //             onChange={handleDeadline}
-      //           />
-      //         </BaseInput>
-
-      //         <button
-      //           onClick={handleBrigada({
-      //             time: deadline?.toISOString(),
-      //           })}
-      //           className="btn btn-success   btn-sm float-end"
-      //         >
-      //           Принять
-      //         </button>
-      //       </div>
-      //     </>
-      //   );
-
       case ModalTypes.reassign:
         return (
           <div className="min-w-[380px] p-4">

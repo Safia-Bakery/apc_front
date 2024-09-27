@@ -21,7 +21,22 @@ import Loading from "@/components/Loader";
 import { antdType } from "@/utils/antdTypes";
 import CalendarInput from "./calendarInput";
 import { errorToast } from "@/utils/toast";
+import { RequestStatus } from "@/utils/types";
 
+const statusType: { [key: number]: AlertProps["type"] } = {
+  [RequestStatus.closed_denied]: antdType.error,
+  [RequestStatus.finished]: antdType.success,
+  [RequestStatus.new]: antdType.warning,
+  [RequestStatus.received]: antdType.info,
+};
+
+interface ListType {
+  type: string;
+  content: string;
+  id: number;
+  status?: number;
+  date?: string;
+}
 // Apply the plugins globally
 dayjs.extend(weekday);
 dayjs.extend(localeData);
@@ -79,7 +94,7 @@ const Cleaning = () => {
 
   const getListData = useCallback(
     (value: Dayjs) => {
-      const listData: { type: string; content: string; id: number }[] = [];
+      const listData: ListType[] = [];
       calendars?.forEach((calendar) => {
         const eventDate = dayjs(calendar?.date);
         if (value.isSame(eventDate, "day")) {
@@ -87,6 +102,8 @@ const Cleaning = () => {
             type: calendar.is_active ? antdType.success : antdType.warning,
             content: `${calendar?.branch?.name}`,
             id: calendar.id,
+            status: calendar?.request?.status || 0,
+            date: calendar.date,
           });
         }
       });
@@ -103,7 +120,7 @@ const Cleaning = () => {
           <li key={item.content}>
             <Alert
               className="py-1 px-2"
-              type={item.type as AlertProps["type"]}
+              type={statusType[item.status as number]}
               message={item.content}
             />
           </li>
@@ -155,10 +172,12 @@ const Cleaning = () => {
             <li key={event.content}>
               <Alert
                 className="py-1 px-2"
-                closable
+                closable={dayjs(event.date).isAfter(today, "day")}
                 onClose={() => handleDelete(event.id)}
-                type={event.type as AlertProps["type"]}
-                message={event.content}
+                type={statusType[event?.status]}
+                message={`${event.content} - ${t(
+                  RequestStatus[event?.status]
+                )} ${event.date}`}
               />
             </li>
           ))
@@ -168,6 +187,13 @@ const Cleaning = () => {
       </ul>
     );
   }, [modalData?.events, showInput]);
+
+  useEffect(() => {
+    if (modalData?.date) {
+      const events = getListData(modalData?.date);
+      setModalData({ date: modalData?.date, events });
+    }
+  }, [calendars, modalData?.date]);
 
   useEffect(() => {
     return () => {
@@ -189,6 +215,7 @@ const Cleaning = () => {
           className="p-4"
           value={value}
           cellRender={cellRender}
+          mode="month"
           onSelect={onSelect}
           onPanelChange={onPanelChange}
         />
@@ -200,7 +227,9 @@ const Cleaning = () => {
           footer={[
             <Button
               key="add"
-              disabled={showInput}
+              disabled={
+                showInput || dayjs(modalData.date).isBefore(today, "day")
+              }
               type="dashed"
               className="bg-primary text-white"
               onClick={handleAddClick}

@@ -11,7 +11,7 @@ interface RegisterTypes {
 const uploadFileMutation = () => {
   const contentType = "multipart/form-data";
 
-  const config = { timeout: EPresetTimes.MINUTE * 2 };
+  const config = { timeout: EPresetTimes.MINUTE * 5 };
   return useMutation({
     mutationKey: ["register"],
     mutationFn: ({ request_id, files }: RegisterTypes) => {

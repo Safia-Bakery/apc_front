@@ -10,7 +10,7 @@ interface Params {
   started_at?: string;
 }
 
-const config = { timeout: EPresetTimes.SECOND * 10 };
+const config = { timeout: EPresetTimes.MINUTE * 5 };
 
 export const useInventoryServiseStats = ({
   enabled,

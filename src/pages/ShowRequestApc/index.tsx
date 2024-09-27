@@ -12,6 +12,7 @@ import { baseURL } from "@/main";
 import { detectFileType } from "@/utils/helpers";
 import { useForm } from "react-hook-form";
 import {
+  BaseReturnBoolean,
   Departments,
   FileType,
   MainPermissions,
@@ -33,6 +34,17 @@ import RequestPhotoReport from "@/components/RequestPhotoReport";
 import Suspend from "@/components/Suspend";
 
 const ApcModals = lazy(() => import("./modals"));
+
+const unchangable: BaseReturnBoolean = {
+  [RequestStatus.finished]: true,
+  [RequestStatus.closed_denied]: true,
+};
+
+const unchangableObj: BaseReturnBoolean = {
+  [RequestStatus.solved]: true,
+  [RequestStatus.closed_denied]: true,
+  [RequestStatus.paused]: true,
+};
 
 interface Props {
   edit?: MainPermissions;
@@ -133,25 +145,25 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
     removeParams(["modal"]);
   };
 
-  const renderBtns = useMemo(() => {
-    if (
-      edit &&
-      attaching &&
-      permissions?.[edit] &&
-      isNew &&
-      permissions?.[attaching]
-    )
-      return (
-        <div className="float-end mb10">
-          <button
-            onClick={() => handleModal(ModalTypes.cancelRequest)}
-            className="btn btn-danger  "
-          >
-            {t("deny")}
-          </button>
-        </div>
-      );
-  }, [permissions, order?.status]);
+  // const renderBtns = useMemo(() => {
+  //   if (
+  //     edit &&
+  //     attaching &&
+  //     permissions?.[edit] &&
+  //     isNew &&
+  //     permissions?.[attaching]
+  //   )
+  //     return (
+  //       <div className="float-end mb10">
+  //         <button
+  //           onClick={() => handleModal(ModalTypes.cancelRequest)}
+  //           className="btn btn-danger"
+  //         >
+  //           {t("deny")}
+  //         </button>
+  //       </div>
+  //     );
+  // }, [permissions, order?.status]);
 
   const handleRequestClose = () => {
     order?.brigada?.is_outsource
@@ -161,44 +173,114 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
         });
   };
 
-  const renderSubmit = useMemo(() => {
-    if (edit && !!order?.brigada?.name && permissions?.[edit])
+  // const renderSubmit = useMemo(() => {
+  //   if (edit && !!order?.brigada?.name && permissions?.[edit])
+  //     return (
+  //       <div className="flex justify-between gap-2">
+  //         {order?.status! < RequestStatus.finished && (
+  //           <button
+  //             onClick={() => handleModal(ModalTypes.cancelRequest)}
+  //             className="btn btn-danger  "
+  //           >
+  //             {t("calcel")}
+  //           </button>
+  //         )}
+  //         <div className="flex gap-2">
+  //           {order?.status! < RequestStatus.sent_to_fix && (
+  //             <button
+  //               onClick={() =>
+  //                 handleBrigada({
+  //                   status: RequestStatus.sent_to_fix,
+  //                 })
+  //               }
+  //               className="btn btn-warning"
+  //             >
+  //               {t("pick_to_repair")}
+  //             </button>
+  //           )}
+  //           {order?.status! < RequestStatus.finished && (
+  //             <button
+  //               id="fixed"
+  //               onClick={handleRequestClose}
+  //               className="btn btn-success"
+  //             >
+  //               {t("fixed")} {isPending && <Loading is_static />}
+  //             </button>
+  //           )}
+  //         </div>
+  //       </div>
+  //     );
+  // }, [permissions, order?.status, isPending]);
+
+  const renderBtns = useMemo(() => {
+    if (!!order?.status.toString() && !unchangable[order.status])
       return (
-        <div className="flex justify-between gap-2">
-          {order?.status! < RequestStatus.finished && (
+        <div className="flex justify-between mb10 gap-2">
+          {!unchangable[order!?.status] &&
+          order.status !== RequestStatus.closed_denied ? (
             <button
               onClick={() => handleModal(ModalTypes.cancelRequest)}
-              className="btn btn-danger  "
+              className="btn btn-danger"
             >
               {t("calcel")}
             </button>
+          ) : (
+            <div />
           )}
-          <div className="flex gap-2">
-            {order?.status! < RequestStatus.sent_to_fix && (
-              <button
-                onClick={() =>
-                  handleBrigada({
-                    status: RequestStatus.sent_to_fix,
-                  })
-                }
-                className="btn btn-warning   "
-              >
-                {t("pick_to_repair")}
-              </button>
-            )}
-            {order?.status! < RequestStatus.finished && (
-              <button
-                id="fixed"
-                onClick={handleRequestClose}
-                className="btn btn-success  "
-              >
-                {t("fixed")} {isPending && <Loading is_static />}
-              </button>
+          <div>
+            {order?.status! > RequestStatus.new && (
+              <div className="flex gap-2">
+                {unchangableObj[order?.status!] ? (
+                  <button
+                    onClick={() =>
+                      handleBrigada({
+                        status: RequestStatus.resumed,
+                      })
+                    }
+                    className="btn btn-warning"
+                  >
+                    {t("resume")}
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleModal(ModalTypes.pause)}
+                    className="btn btn-warning"
+                  >
+                    {t("pause")}
+                  </button>
+                )}
+                {!unchangableObj[order.status] && (
+                  <button
+                    id={"fixed"}
+                    onClick={() =>
+                      handleBrigada({
+                        status: RequestStatus.solved,
+                      })
+                    }
+                    className="btn btn-success"
+                  >
+                    {t("to_solve")}
+                  </button>
+                )}
+
+                {order?.status! < RequestStatus.sent_to_fix && (
+                  <button
+                    onClick={() =>
+                      handleBrigada({
+                        status: RequestStatus.sent_to_fix,
+                      })
+                    }
+                    className="btn btn-warning"
+                  >
+                    {t("pick_to_repair")}
+                  </button>
+                )}
+              </div>
             )}
           </div>
         </div>
       );
-  }, [permissions, order?.status, isPending]);
+  }, [permissions, order?.status]);
 
   const handleAssign = useCallback(() => {
     navigateParams({
@@ -217,7 +299,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
             <span>{order?.brigada?.name}</span>
             <button
               onClick={() => handleModal(ModalTypes.assign)}
-              className="btn btn-primary   float-end"
+              className="btn btn-primary float-end"
             >
               {t("reassign")}
             </button>
@@ -228,7 +310,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
         <button
           id="assign"
           onClick={handleAssign}
-          className="btn btn-success   float-end"
+          className="btn btn-success float-end"
         >
           {t("assign")}
         </button>
@@ -248,16 +330,12 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
   }, [permissions, order?.status, order?.file]);
 
   const renderModal = useMemo(() => {
-    if (
-      !!order?.status.toString() &&
-      (order?.status < RequestStatus.finished || modal === ModalTypes.showPhoto)
-    )
-      return (
-        <Suspend>
-          <ApcModals />
-        </Suspend>
-      );
-  }, [order?.status, modal, brigadas]);
+    return (
+      <Suspend>
+        <ApcModals />
+      </Suspend>
+    );
+  }, [modal]);
 
   if (
     isPending ||
@@ -284,7 +362,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
             {t("logs")}
           </button>
           {!!sphere_status && (
-            <button onClick={handleBack} className="btn btn-primary   ml-2">
+            <button onClick={handleBack} className="btn btn-primary ml-2">
               {t("back")}
             </button>
           )}
@@ -447,6 +525,12 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                       <td>{order?.deny_reason}</td>
                     </tr>
                   )}
+                  {order?.pause_reason && (
+                    <tr>
+                      <th className="font-bold">{t("pause_reason")}</th>
+                      <td>{order?.pause_reason}</td>
+                    </tr>
+                  )}
                   {order?.phone_number && (
                     <tr>
                       <th className="font-bold">{t("phone_number")}</th>
@@ -466,7 +550,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
 
       {!isNew && order?.status !== RequestStatus.closed_denied && (
         <AddItems addExp={addExp}>
-          <div className="p-2">{renderSubmit}</div>
+          {/* <div className="p-2">{renderSubmit}</div> */}
         </AddItems>
       )}
       {renderModal}

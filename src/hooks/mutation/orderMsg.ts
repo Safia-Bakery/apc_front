@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import apiClient from "@/main";
+import { EPresetTimes } from "@/utils/types";
 
 interface Body {
   request_id: number;
@@ -10,7 +11,7 @@ interface Body {
 
 const orderMsgMutation = () => {
   const contentType = "multipart/form-data";
-  const config = { timeout: 100000 };
+  const config = { timeout: EPresetTimes.MINUTE * 2 };
   return useMutation({
     mutationKey: ["order_message"],
     mutationFn: (body: Body) =>
