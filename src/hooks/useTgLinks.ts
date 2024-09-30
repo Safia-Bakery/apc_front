@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { BasePaginateRes, TgLinkTypes } from "@/utils/types";
 
 interface Params {
@@ -13,8 +13,8 @@ export const useTgLinks = ({ enabled = true, ...params }: Params) => {
   return useQuery({
     queryKey: ["tg_links", params],
     queryFn: () =>
-      apiClient
-        .get({ url: "/v1/telegrams", params })
+      baseApi
+        .get("/v1/telegrams", { params })
         .then(({ data: response }) => response as BasePaginateRes<TgLinkTypes>),
     enabled,
     refetchOnMount: true,

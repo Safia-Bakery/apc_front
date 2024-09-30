@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { Departments, EPresetTimes, ItServiceStatTypes } from "@/utils/types";
 import dayjs from "dayjs";
 import { yearMonthDate } from "@/utils/keys";
@@ -20,15 +20,14 @@ export const useITServiseStats = ({
   return useQuery({
     queryKey: ["Service_IT_Stats", finished_at, started_at, params],
     queryFn: () =>
-      apiClient
-        .get({
-          url: "/it/stats",
+      baseApi
+        .get("/it/stats", {
           params: {
             finished_at,
             started_at,
             ...params,
           },
-          config,
+          ...config,
         })
         .then(({ data: response }) => response as ItServiceStatTypes),
     enabled,

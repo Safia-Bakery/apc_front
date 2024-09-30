@@ -1,11 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 
 const inventoryMinsMutation = () => {
   return useMutation({
     mutationKey: ["tools_for_order"],
-    mutationFn: () =>
-      apiClient.post({ url: "/toolsorder" }).then(({ data }) => data),
+    mutationFn: () => baseApi.post("/toolsorder").then(({ data }) => data),
   });
 };
 export default inventoryMinsMutation;

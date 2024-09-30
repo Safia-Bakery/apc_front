@@ -7,7 +7,8 @@ import { Fragment, useEffect } from "react";
 import Loading from "@/components/Loader";
 import usePermissions from "@/hooks/usePermissions";
 import { useForm } from "react-hook-form";
-import { errorToast, successToast } from "@/utils/toast";
+import successToast from "@/utils/successToast";
+import errorToast from "@/utils/errorToast";
 import useQueryString from "@/hooks/custom/useQueryString";
 import { useTranslation } from "react-i18next";
 

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { RolePermissions } from "@/utils/types";
 
 export const useRolePermission = ({
@@ -12,8 +12,8 @@ export const useRolePermission = ({
   return useQuery({
     queryKey: ["role_permissions", id],
     queryFn: () =>
-      apiClient
-        .get({ url: `/user/group/permissions/${id}` })
+      baseApi
+        .get(`/user/group/permissions/${id}`)
         .then(({ data: response }) => (response as RolePermissions) || null),
     enabled,
     refetchOnMount: true,

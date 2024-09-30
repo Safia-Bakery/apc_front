@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 
 const roleMutation = () => {
   return useMutation({
@@ -14,12 +14,12 @@ const roleMutation = () => {
       id?: number;
     }) => {
       if (id)
-        return apiClient
-          .put({ url: "/user/roles", body: { name, id } })
+        return baseApi
+          .put("/user/roles", { name, id })
           .then(({ data }) => data);
       else
-        return apiClient
-          .post({ url: "/user/roles", body: { name, status } })
+        return baseApi
+          .post("/user/roles", { name, status })
           .then(({ data }) => data);
     },
   });

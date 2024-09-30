@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 
 interface RegisterTypes {
   id: number | string;
@@ -16,8 +16,8 @@ const registerMutation = () => {
       password: string;
       full_name: string;
     }) =>
-      apiClient
-        .post({ url: "/register", body })
+      baseApi
+        .post("/register", body)
         .then(({ data }) => data as unknown as RegisterTypes),
   });
 };

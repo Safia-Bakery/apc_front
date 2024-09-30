@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../rootConfig";
 import { CURRECT_TG_VERSION, CURRECT_WEB_VERSION } from "@/utils/version";
-import { successToast } from "@/utils/toast";
+import successToast from "@/utils/successToast";
 
 interface State {
   tgVersion: string | null;

@@ -5,7 +5,7 @@ import useOrder from "@/hooks/useOrder";
 import { detectFileType } from "@/utils/helpers";
 import { useNavigateParams } from "custom/useCustomNavigate";
 import { FileType, ModalTypes } from "@/utils/types";
-import { baseURL } from "@/main";
+import { baseURL } from "@/store/baseUrl";
 import cl from "classnames";
 import { useTranslation } from "react-i18next";
 

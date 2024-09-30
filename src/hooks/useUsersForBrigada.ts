@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { Departments, Sphere, UsersTypes } from "@/utils/types";
 
 interface Params {
@@ -14,8 +14,8 @@ export const useUsersForBrigada = (params: Params) => {
   return useQuery({
     queryKey: ["users_for_brigada", params],
     queryFn: () =>
-      apiClient
-        .get({ url: `/users/for/brigada/${params.id}`, params })
+      baseApi
+        .get(`/users/for/brigada/${params.id}`, { params })
         .then(({ data: response }) => response as UsersTypes),
     enabled: params.enabled,
     refetchOnMount: true,

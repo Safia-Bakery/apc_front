@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { BrigadaType } from "@/utils/types";
 
 export const useBrigada = ({
@@ -12,8 +12,8 @@ export const useBrigada = ({
   return useQuery({
     queryKey: ["brigada", id],
     queryFn: () =>
-      apiClient
-        .get({ url: `/brigadas/${id}` })
+      baseApi
+        .get(`/brigadas/${id}`)
         .then(({ data: response }) => (response as BrigadaType) || null),
     enabled: !!id && enabled,
     refetchOnMount: true,

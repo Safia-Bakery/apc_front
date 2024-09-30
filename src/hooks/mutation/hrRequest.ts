@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 
 interface BodyTypes {
   id: number;
@@ -11,7 +11,7 @@ const hrRequestsMutation = () => {
   return useMutation({
     mutationKey: ["faqs_requests_mutation"],
     mutationFn: async (body: BodyTypes) => {
-      const { data } = await apiClient.put({ url: "/hr/request", body });
+      const { data } = await baseApi.put("/hr/request", body);
       return data;
     },
   });

@@ -12,7 +12,8 @@ import {
   Sphere,
 } from "@/utils/types";
 import { CancelReason, detectFileType } from "@/utils/helpers";
-import { errorToast, successToast } from "@/utils/toast";
+import successToast from "@/utils/successToast";
+import errorToast from "@/utils/errorToast";
 import useOrder from "@/hooks/useOrder";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import useQueryString from "custom/useQueryString";

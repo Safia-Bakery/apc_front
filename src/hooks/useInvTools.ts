@@ -1,6 +1,6 @@
 import { BasePaginateRes, EPresetTimes, ToolItemType } from "@/utils/types";
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 
 interface Props {
   category_id?: number;
@@ -14,11 +14,8 @@ export const useInvTools = ({ enabled, ...params }: Props) => {
   return useQuery({
     queryKey: ["useInvTools", params],
     queryFn: () =>
-      apiClient
-        .get({
-          url: "/v1/category/tools",
-          params,
-        })
+      baseApi
+        .get("/v1/category/tools", { params })
         .then(
           ({ data: response }) => response as BasePaginateRes<ToolItemType>
         ),

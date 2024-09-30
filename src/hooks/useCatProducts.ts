@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { CategoryProducts } from "@/utils/types";
 
 interface Props {
@@ -15,11 +15,8 @@ export const useCatProducts = ({ enabled = true, ...params }: Props) => {
   return useQuery({
     queryKey: ["category_products", params],
     queryFn: () =>
-      apiClient
-        .get({
-          url: "/v1/cat/product",
-          params,
-        })
+      baseApi
+        .get("/v1/cat/product", { params })
         .then(({ data: response }) => response as CategoryProducts[]),
     enabled,
     refetchOnMount: true,

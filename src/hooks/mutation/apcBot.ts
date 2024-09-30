@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 
 const apcBotMutation = () => {
   return useMutation({
     mutationKey: ["apc_bot_settings"],
     mutationFn: async () => {
-      const { data } = await apiClient.post({ url: "/restart-arcbot/" });
+      const { data } = await baseApi.post("/restart-arcbot/");
       return data;
     },
   });

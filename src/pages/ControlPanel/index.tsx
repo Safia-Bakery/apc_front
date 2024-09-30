@@ -13,13 +13,12 @@ import {
   Sphere,
 } from "@/utils/types";
 import Chart from "react-apexcharts";
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import Loading from "@/components/Loader";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { Months } from "@/utils/keys";
 import { useTranslation } from "react-i18next";
-import { queryClient } from "@/utils/helpers";
 
 const options = {
   legend: {
@@ -129,6 +128,7 @@ enum MonthVals {
 
 const ControlPanel = () => {
   const { t } = useTranslation();
+  const [upload, $upload] = useState(false);
   const { data: user } = useToken({ enabled: false });
   const perms = new Set(user?.permissions);
   const mainDep: DepType = Object.entries(mainDeps).find((item) =>
@@ -149,7 +149,7 @@ const ControlPanel = () => {
       !isMarkAdmin && {
         sub_id: mainDep?.sub_id,
       }),
-    enabled: !!mainDep?.dep,
+    enabled: upload && !!mainDep?.dep,
   });
 
   const renderDep = useMemo(() => {
@@ -333,11 +333,15 @@ const ControlPanel = () => {
           <p>{t(renderDep?.title || "")}</p>
         </div>
 
-        <div>
+        <div className="w-full flex justify-between items-center">
           <p className={styles.category}>{dayjs().format("DD-MM-YYYY")}</p>
+
+          <button className="btn btn-info" onClick={() => $upload(true)}>
+            {t("upload_stats")}
+          </button>
         </div>
       </Card>
-      {mainDep?.dep && (
+      {mainDep?.dep && upload && (
         <div className="h-full -mt-4">
           <Container>
             <div className="flex flex-[6] gap-2 ">

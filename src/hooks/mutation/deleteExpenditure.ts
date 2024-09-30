@@ -1,13 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
-import { errorToast } from "@/utils/toast";
+import baseApi from "@/api/base_api";
+import errorToast from "@/utils/errorToast";
 
 const deleteExpenditureMutation = () => {
   return useMutation({
     mutationKey: ["delete_expenditure"],
     mutationFn: (id: number) => {
-      return apiClient
-        .delete({ url: "/v1/expanditure", params: { id } })
+      return baseApi
+        .delete("/v1/expanditure", { params: id })
         .then(({ data }) => data)
         .catch((e) => errorToast(e.message));
     },

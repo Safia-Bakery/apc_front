@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
-import { errorToast } from "@/utils/toast";
+import baseApi from "@/api/base_api";
+import errorToast from "@/utils/errorToast";
 import { EPresetTimes } from "@/utils/types";
 
 interface Body {
@@ -20,10 +20,6 @@ interface Body {
 }
 
 const requestMutation = () => {
-  const contentType = "multipart/form-data";
-
-  const config = { timeout: EPresetTimes.MINUTE * 2 };
-
   return useMutation({
     mutationKey: ["create_order"],
     mutationFn: async (body: Body) => {
@@ -48,13 +44,14 @@ const requestMutation = () => {
             break;
         }
       });
-      const { data } = await apiClient.post({
-        url: "/request",
-        body: formData,
-        params: { size: body.size },
-        config,
-        contentType,
-      });
+      const { data } = await baseApi.post(
+        `/request?size=${body.size}`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          timeout: EPresetTimes.MINUTE * 2,
+        }
+      );
       return data as { success: boolean; message: string; id: number };
     },
     onError: (e: Error) => errorToast(e.message),

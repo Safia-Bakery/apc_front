@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 
 interface Body {
   category_id: number;
@@ -12,16 +12,12 @@ const categoryTools = () => {
     mutationKey: ["category_tools"],
     mutationFn: async ({ is_delete, ...body }: Body) => {
       if (is_delete) {
-        const { data } = await apiClient.delete({
-          url: "/v1/category/tools",
-          body,
+        const { data } = await baseApi.delete("/v1/category/tools", {
+          data: body,
         });
         return data;
       } else {
-        const { data } = await apiClient.post({
-          url: "/v1/category/tools",
-          body,
-        });
+        const { data } = await baseApi.post("/v1/category/tools", body);
         return data;
       }
     },

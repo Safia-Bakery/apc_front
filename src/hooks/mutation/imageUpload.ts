@@ -1,18 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { EPresetTimes } from "@/utils/types";
 
 const imageUpload = () => {
-  const contentType = "multipart/form-data";
-  const config = { timeout: EPresetTimes.MINUTE * 5 };
   return useMutation({
     mutationKey: ["image_upload"],
     mutationFn: async (body: any) => {
-      const { data } = await apiClient.post({
-        url: "/v1/image/upload",
-        body,
-        config,
-        contentType,
+      const { data } = await baseApi.post("/v1/image/upload", body, {
+        headers: { "Content-Type": "multipart/form-data" },
+        timeout: EPresetTimes.MINUTE * 5,
       });
       return data;
     },

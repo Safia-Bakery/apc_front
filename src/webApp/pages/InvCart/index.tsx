@@ -14,7 +14,7 @@ import BaseInput from "@/components/BaseInputs";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import requestMutation from "@/hooks/mutation/orderMutation";
 import { useForm } from "react-hook-form";
-import { errorToast } from "@/utils/toast";
+import errorToast from "@/utils/errorToast";
 import Loading from "@/components/Loader";
 
 const InvCart = () => {

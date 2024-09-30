@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { CommentTypes } from "@/utils/types";
 
 export const useComments = ({
@@ -14,8 +14,8 @@ export const useComments = ({
   return useQuery({
     queryKey: ["comments", page],
     queryFn: () =>
-      apiClient
-        .get({ url: "/v1/comments", params: { size, page } })
+      baseApi
+        .get("/v1/comments", { params: { size, page } })
         .then(({ data: response }) => response as CommentTypes),
     enabled,
     refetchOnMount: true,

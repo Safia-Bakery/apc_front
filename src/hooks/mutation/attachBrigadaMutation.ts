@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { RequestStatus } from "@/utils/types";
 
 interface Body {
@@ -18,10 +18,7 @@ const attachBrigadaMutation = () => {
   return useMutation({
     mutationKey: ["attach_brigada_to_request"],
     mutationFn: async (body: Body) => {
-      const { data } = await apiClient.put({
-        url: "/request/attach/brigada",
-        body,
-      });
+      const { data } = await baseApi.put("/request/attach/brigada", body);
       return data;
     },
     retry: 3,

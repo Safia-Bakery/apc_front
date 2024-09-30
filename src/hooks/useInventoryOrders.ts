@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { tokenSelector } from "reducers/auth";
 import { useAppSelector } from "@/store/utils/types";
 import { InventoryOrders } from "@/utils/types";
@@ -17,8 +17,8 @@ export const useInventoryOrders = (params: Body) => {
   return useQuery({
     queryKey: ["toolsorder", params],
     queryFn: () =>
-      apiClient
-        .get({ url: "/toolsorder", params })
+      baseApi
+        .get("/toolsorder", { params })
         .then(({ data: response }) => response as InventoryOrders),
     enabled: params.enabled && !!token,
     refetchOnMount: true,

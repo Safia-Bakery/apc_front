@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { EPresetTimes } from "@/utils/types";
 
 interface Body {
@@ -10,13 +10,14 @@ interface Body {
 }
 
 const orderMsgMutation = () => {
-  const contentType = "multipart/form-data";
-  const config = { timeout: EPresetTimes.MINUTE * 2 };
   return useMutation({
     mutationKey: ["order_message"],
     mutationFn: (body: Body) =>
-      apiClient
-        .post({ url: "/v1/reqest/message", body, config, contentType })
+      baseApi
+        .post("/v1/reqest/message", body, {
+          headers: { "Content-Type": "multipart/form-data" },
+          timeout: EPresetTimes.MINUTE * 2,
+        })
         .then(({ data }) => data),
   });
 };

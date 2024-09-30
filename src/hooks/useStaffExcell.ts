@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 
 interface Params {
   enabled?: boolean;
@@ -19,8 +19,8 @@ export const useStaffExcell = ({ enabled, ...params }: Params) => {
   return useQuery({
     queryKey: ["staff_excell_totals", params],
     queryFn: ({ signal }) =>
-      apiClient
-        .get({ url: "/v1/excell", params, config: { signal } })
+      baseApi
+        .get("/v1/excell", { params, signal })
         .then(({ data: response }) => response as Res),
     enabled,
     refetchOnMount: true,

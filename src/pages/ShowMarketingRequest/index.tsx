@@ -7,8 +7,9 @@ import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
 import { useAppSelector } from "@/store/utils/types";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
-import { errorToast, successToast } from "@/utils/toast";
-import { baseURL } from "@/main";
+import successToast from "@/utils/successToast";
+import errorToast from "@/utils/errorToast";
+import { baseURL } from "@/store/baseUrl";
 import { MarketingStatusObj, detectFileType } from "@/utils/helpers";
 import {
   FileType,

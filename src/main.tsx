@@ -6,21 +6,14 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import App from "./App.tsx";
 import { queryClient } from "./utils/helpers.ts";
 import { persistor, store } from "./store/rootConfig.ts";
-import BaseAPIClient from "./api/axiosConfig.ts";
 import Loading from "./components/Loader/index.tsx";
-import "react-toastify/dist/ReactToastify.css";
 import "./index.scss";
-
-export const baseURL = "https://api.service.safiabakery.uz";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-
-export default new BaseAPIClient(baseURL, store);
 
 let container: any = null;
 
@@ -35,7 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
             <BrowserRouter>
               <App />
             </BrowserRouter>
-            <ToastContainer autoClose={600} />
           </QueryClientProvider>
         </PersistGate>
       </Provider>

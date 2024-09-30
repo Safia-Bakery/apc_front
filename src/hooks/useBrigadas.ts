@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { BrigadaTypes, Departments, EPresetTimes } from "@/utils/types";
 
 type Params = {
@@ -14,11 +14,8 @@ const useBrigadas = ({ page, sphere_status, department, enabled }: Params) => {
   return useQuery({
     queryKey: ["brigadas", page, sphere_status, department],
     queryFn: () =>
-      apiClient
-        .get({
-          url: "/brigadas",
-          params: { page, sphere_status, department },
-        })
+      baseApi
+        .get("/brigadas", { params: { page, sphere_status, department } })
         .then(({ data: response }) => response as BrigadaTypes),
     enabled,
     staleTime: EPresetTimes.MINUTE * 5,

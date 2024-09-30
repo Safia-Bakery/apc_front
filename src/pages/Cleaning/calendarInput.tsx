@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ValueLabel } from "@/utils/types";
 import { editAddCalendarMutation, useCalendars } from "@/hooks/cleaning";
-import { errorToast } from "@/utils/toast";
+import errorToast from "@/utils/errorToast";
 
 type Props = {
   selectedDate: string;
