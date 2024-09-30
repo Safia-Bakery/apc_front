@@ -16,7 +16,7 @@ import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import { useTranslation } from "react-i18next";
-import { dateMonthYear, yearMonthDate } from "@/utils/keys";
+import { dateTimeFormat, yearMonthDate } from "@/utils/keys";
 
 const column = [
   { name: "№", key: "" },
@@ -119,7 +119,7 @@ const RequestsCCTV = () => {
                   <td>{order?.category?.name}</td>
                   <td>{order?.comments?.[0]?.rating}</td>
                   <td>{t(RequestStatus[order?.status])}</td>
-                  <td>{dayjs(order?.created_at).format(dateMonthYear)}</td>
+                  <td>{dayjs(order?.created_at).format(dateTimeFormat)}</td>
                   <td>
                     {!!order?.user_manager
                       ? order?.user_manager

@@ -24,7 +24,7 @@ import EmptyList from "@/components/EmptyList";
 import Loading from "@/components/Loader";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import { useTranslation } from "react-i18next";
-import { dateMonthYear, yearMonthDate } from "@/utils/keys";
+import { dateTimeFormat, yearMonthDate } from "@/utils/keys";
 
 interface Props {
   add: MainPermissions;
@@ -207,11 +207,11 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                       ? order?.brigada?.name
                       : t("not_given")}
                   </td>
-                  <td>{dayjs(order?.created_at).format(dateMonthYear)}</td>
+                  <td>{dayjs(order?.created_at).format(dateTimeFormat)}</td>
 
                   <td>
                     {!!order?.finished_at
-                      ? dayjs(order?.finished_at).format(dateMonthYear)
+                      ? dayjs(order?.finished_at).format(dateTimeFormat)
                       : t("not_given")}
                   </td>
 
