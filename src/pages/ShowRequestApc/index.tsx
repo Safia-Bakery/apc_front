@@ -121,11 +121,11 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                   orderRefetch();
                   successToast("assigned");
                 },
-                onError: (e: any) => errorToast(e.message),
+                onError: (e) => errorToast(e.message),
               }
             );
           },
-          onError: (e: any) => errorToast(e.message),
+          onError: (e) => errorToast(e.message),
         }
       );
     } else
@@ -170,7 +170,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
     order?.brigada?.is_outsource
       ? handleModal(ModalTypes.expense)
       : handleBrigada({
-          status: RequestStatus.finished,
+          status: RequestStatus.solved,
         });
   };
 
@@ -253,10 +253,11 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                 {!unchangableObj[order.status] && (
                   <button
                     id={"fixed"}
-                    onClick={() =>
-                      handleBrigada({
-                        status: RequestStatus.solved,
-                      })
+                    onClick={
+                      handleRequestClose
+                      // handleBrigada({
+                      //   status: RequestStatus.solved,
+                      // })
                     }
                     className="btn btn-success"
                   >

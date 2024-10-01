@@ -231,7 +231,7 @@ const ApcModals = () => {
         return (
           <form
             onSubmit={handleSubmit(
-              handleBrigada({ status: RequestStatus.finished })
+              handleBrigada({ status: RequestStatus.solved })
             )}
           >
             <Header title="add_expense">
