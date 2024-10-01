@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { Departments, DistinctTypes, Sphere } from "@/utils/types";
 import { yearMonthDate } from "@/utils/keys";
 
@@ -29,9 +29,8 @@ export const useDistinct = ({
       department,
     ],
     queryFn: () =>
-      apiClient
-        .get({
-          url: "/v1/expanditure/distinct",
+      baseApi
+        .get("/v1/expanditure/distinct", {
           params: {
             started_at,
             finished_at,

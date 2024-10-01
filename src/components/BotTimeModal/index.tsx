@@ -11,7 +11,7 @@ import { MainPermissions } from "@/utils/types";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import Loading from "../Loader";
-import { errorToast } from "@/utils/toast";
+import errorToast from "@/utils/errorToast";
 import { useTranslation } from "react-i18next";
 
 const BotTimeModal = () => {

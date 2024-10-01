@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
 import {
@@ -37,16 +37,15 @@ export const useStatsBrigada = ({
       department,
     ],
     queryFn: ({ signal }) =>
-      apiClient
-        .get({
-          url: "/v1/stats/brigada",
+      baseApi
+        .get("/v1/stats/brigada", {
           params: {
             department,
             sphere_status,
             started_at,
             finished_at,
           },
-          config: { signal },
+          signal,
         })
         .then(({ data: response }) => {
           return response as DepartmentStatTypes[];

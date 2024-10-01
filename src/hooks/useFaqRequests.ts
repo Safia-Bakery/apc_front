@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { tokenSelector } from "reducers/auth";
 import { useAppSelector } from "@/store/utils/types";
 import { BasePaginateRes, FAQRequestTypes } from "@/utils/types";
@@ -18,8 +18,8 @@ export const useFAQRequests = ({ enabled, ...params }: Body) => {
   return useQuery({
     queryKey: ["faq_questions", params],
     queryFn: () =>
-      apiClient
-        .get({ url: "/hr/request", params })
+      baseApi
+        .get("/hr/request", { params })
         .then(
           ({ data: response }) => response as BasePaginateRes<FAQRequestTypes>
         ),

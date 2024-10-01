@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
 import {
@@ -27,9 +27,8 @@ export const useMarketingStatDep = ({
   return useQuery({
     queryKey: ["stats_marketing_dep", started_at, finished_at],
     queryFn: () =>
-      apiClient
-        .get({
-          url: "/v1/stats/marketing/pie",
+      baseApi
+        .get("/v1/stats/marketing/pie", {
           params: {
             timer,
             created_at: started_at,

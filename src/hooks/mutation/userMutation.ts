@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
-import { errorToast } from "@/utils/toast";
+import baseApi from "@/api/base_api";
+import errorToast from "@/utils/errorToast";
 
 interface Body {
   password?: string;
@@ -21,17 +21,12 @@ const userMutation = () => {
     mutationKey: ["create_update_user"],
     mutationFn: (body: Body) => {
       if (body.user_id)
-        return apiClient.put({ url: "/users", body }).then((res) => {
+        return baseApi.put("/users", body).then((res) => {
           return res;
         });
-      return apiClient
-        .post({
-          url: "/register",
-          body,
-        })
-        .then((res) => {
-          if (res.status === 200) return res;
-        });
+      return baseApi.post("/register", body).then((res) => {
+        if (res.status === 200) return res;
+      });
     },
     retry: 3,
     retryDelay: 2000,

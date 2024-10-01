@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { ExpendituresTypes } from "@/utils/types";
 
 export const useExpenditure = ({
@@ -12,8 +12,8 @@ export const useExpenditure = ({
   return useQuery({
     queryKey: ["get_expanditure", id],
     queryFn: () =>
-      apiClient
-        .get({ url: "/v1/expanditure", params: { id } })
+      baseApi
+        .get("/v1/expanditure", { params: { id } })
         .then(({ data: response }) => (response as ExpendituresTypes) || null),
     enabled: !!id && enabled,
     refetchOnMount: true,

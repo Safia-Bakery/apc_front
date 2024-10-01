@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 
 interface Body {
   amount: number;
@@ -16,10 +16,10 @@ const apcExpensesMutation = () => {
     mutationKey: ["apc_expenses"],
     mutationFn: async (body: Body) => {
       if (body.id) {
-        const { data } = await apiClient.put({ url: "/v1/expense", body });
+        const { data } = await baseApi.put("/v1/expense", body);
         return data;
       } else {
-        const { data } = await apiClient.post({ url: "/v1/expense", body });
+        const { data } = await baseApi.post("/v1/expense", body);
         return data;
       }
     },

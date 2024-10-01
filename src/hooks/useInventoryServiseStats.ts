@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { EPresetTimes, InvServiceStatTypes } from "@/utils/types";
 import dayjs from "dayjs";
 import { yearMonthDate } from "@/utils/keys";
@@ -21,15 +21,14 @@ export const useInventoryServiseStats = ({
   return useQuery({
     queryKey: ["Service_Inventory_Stats", finished_at, started_at, params],
     queryFn: () =>
-      apiClient
-        .get({
-          url: "/v1/stats/inventory",
+      baseApi
+        .get("/v1/stats/inventory", {
           params: {
             finished_at,
             started_at,
             ...params,
           },
-          config,
+          ...config,
         })
         .then(({ data: response }) => response as InvServiceStatTypes),
     enabled,

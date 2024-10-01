@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { FileItem } from "@/components/FileUpload";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { EPresetTimes } from "@/utils/types";
 
 interface RegisterTypes {
@@ -9,9 +9,6 @@ interface RegisterTypes {
 }
 
 const uploadFileMutation = () => {
-  const contentType = "multipart/form-data";
-
-  const config = { timeout: EPresetTimes.MINUTE * 5 };
   return useMutation({
     mutationKey: ["register"],
     mutationFn: ({ request_id, files }: RegisterTypes) => {
@@ -20,8 +17,11 @@ const uploadFileMutation = () => {
       files?.forEach((item) => {
         formData.append("files", item.file, item.file.name);
       });
-      return apiClient
-        .post({ url: "/v1/upload/file", body: formData, contentType, config })
+      return baseApi
+        .post("/v1/upload/file", formData, {
+          timeout: EPresetTimes.MINUTE * 5,
+          headers: { "Content-Type": "multipart/form-data" },
+        })
         .then(({ data }) => data);
     },
   });

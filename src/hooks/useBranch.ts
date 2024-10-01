@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
 import { BranchType, MainPermissions } from "@/utils/types";
@@ -15,8 +15,8 @@ export const useBranch = ({
   return useQuery({
     queryKey: ["branch", id],
     queryFn: () =>
-      apiClient
-        .get({ url: `/fillials/${id}` })
+      baseApi
+        .get(`/fillials/${id}`)
         .then(({ data: response }) => (response as BranchType) || null),
     enabled: !!id && enabled && perm?.[MainPermissions.get_fillials_list],
     refetchOnMount: true,

@@ -35,7 +35,7 @@ const RequestsIT = lazy(() => import("@/pages/RequestsIT"));
 const AddInventoryRequest = lazy(() => import("@/pages/AddInventoryRequest"));
 const RequestsInventory = lazy(() => import("@/pages/RequestsInventory"));
 const ShowRequestInventory = lazy(() => import("@/pages/ShowRequestInventory"));
-const YandexMap = lazy(() => import("@/pages/Map"));
+// const YandexMap = lazy(() => import("@/pages/Map"));
 
 const Categories = lazy(() => import("@/pages/Categories"));
 const EditAddCategory = lazy(() => import("@/pages/EditAddCategory"));
@@ -85,12 +85,12 @@ const EditAddFormcategory = lazy(() => import("@/pages/EditAddFormcategory"));
 const Cleaning = lazy(() => import("@/pages/Cleaning"));
 
 export const sidebarRoutes: SidebarType[] = [
-  {
-    name: "heat_map",
-    url: "/map",
-    icon: "/icons/map.svg",
-    screen: MainPermissions.get_map,
-  },
+  // {
+  //   name: "heat_map",
+  //   url: "/map",
+  //   icon: "/icons/map.svg",
+  //   screen: MainPermissions.get_map,
+  // },
   {
     name: "apc_retail",
     icon: "/icons/apc.svg",
@@ -846,7 +846,7 @@ export const routes = [
     path: `/marketing-${MarketingSubDep[7]}/add`,
     screen: MainPermissions.get_stock_env_requests,
   },
-  { element: <YandexMap />, path: "/map", screen: MainPermissions.get_map },
+  // { element: <YandexMap />, path: "/map", screen: MainPermissions.get_map },
   // {
   //   element: <StatisticsApc />,
   //   path: "/statistics",

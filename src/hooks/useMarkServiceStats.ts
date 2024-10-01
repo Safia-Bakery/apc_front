@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import {
   Departments,
   EPresetTimes,
@@ -30,15 +30,14 @@ export const useServiceMarkStats = ({
   return useQuery({
     queryKey: ["Service_Mark_Stats", finished_at, started_at, params],
     queryFn: () =>
-      apiClient
-        .get({
-          url: "/v2/stats/marketing",
+      baseApi
+        .get("/v2/stats/marketing", {
           params: {
             finished_at,
             started_at,
             ...params,
           },
-          config,
+          ...config,
         })
         .then(({ data: response }) => response as ServiceStatsTypes),
     enabled,

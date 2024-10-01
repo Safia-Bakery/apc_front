@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { Departments, EPresetTimes, ToolTypes } from "@/utils/types";
 
 interface Body {
@@ -18,12 +18,8 @@ export const useTools = ({ enabled = true, ...params }: Body) => {
   return useQuery({
     queryKey: ["tools", params],
     queryFn: () =>
-      apiClient
-        .get({
-          url: "/tools/",
-          params,
-          config,
-        })
+      baseApi
+        .get("/tools/", { params, ...config })
         .then(({ data: response }) => {
           return response as ToolTypes;
         }),

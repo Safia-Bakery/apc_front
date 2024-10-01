@@ -7,7 +7,7 @@ import { detectFileType } from "@/utils/helpers";
 import { FileType, ModalTypes, Order } from "@/utils/types";
 import useOrder from "@/hooks/useOrder";
 import { useNavigateParams } from "custom/useCustomNavigate";
-import { baseURL } from "@/main";
+import { baseURL } from "@/store/baseUrl";
 import cl from "classnames";
 import ShowRequestModals from "@/components/ShowRequestModals";
 import Loading from "@/components/Loader";

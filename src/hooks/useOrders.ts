@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { OrderType, ValueLabel } from "@/utils/types";
 
 interface Body {
@@ -25,22 +25,22 @@ interface Body {
 }
 
 export const useOrders = ({ enabled, request_status, ...params }: Body) => {
+  console.log(request_status, "request_status");
   return useQuery({
     queryKey: ["requests", params, request_status],
     queryFn: ({ signal }) =>
-      apiClient
-        .get({
-          url: "/request",
+      baseApi
+        .get("/request", {
           params: {
             ...params,
             ...(!!request_status &&
               (JSON.parse(request_status) as ValueLabel[])?.length && {
-                request_status: (
-                  JSON.parse(request_status) as ValueLabel[]
-                ).map((item) => item.value),
+                request_status: (JSON.parse(request_status) as ValueLabel[])
+                  .map((item) => item.value)
+                  .join(","),
               }),
           },
-          config: { signal },
+          signal,
         })
         .then(({ data: response }) => (response as OrderType) || null),
     enabled,

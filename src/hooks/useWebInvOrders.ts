@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import {
   InventoryWebAppOrders,
   BasePaginateRes,
@@ -19,11 +19,8 @@ export const useWebInvOrders = ({ enabled, ...params }: Props) => {
   return useQuery({
     queryKey: ["useWebInvOrders", params],
     queryFn: () =>
-      apiClient
-        .get({
-          url: "/v1/my/orders",
-          params,
-        })
+      baseApi
+        .get("/v1/my/orders", { params })
         .then(
           ({ data: response }) =>
             response as BasePaginateRes<InventoryWebAppOrders>

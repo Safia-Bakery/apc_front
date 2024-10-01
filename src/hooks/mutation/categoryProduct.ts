@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { EPresetTimes } from "@/utils/types";
 
 interface Body {
@@ -13,24 +13,19 @@ interface Body {
 
 const categoryProductMutation = () => {
   const contentType = "multipart/form-data";
-  const config = { timeout: EPresetTimes.MINUTE * 5 };
   return useMutation({
     mutationKey: ["handle_category_product"],
     mutationFn: async (body: Body) => {
       if (!body.id) {
-        const { data } = await apiClient.post({
-          url: "/v1/cat/product",
-          body,
-          config,
-          contentType,
+        const { data } = await baseApi.post("/v1/cat/product", body, {
+          headers: { "Content-Type": contentType },
+          timeout: EPresetTimes.MINUTE * 5,
         });
         return data;
       } else {
-        const { data } = await apiClient.put({
-          url: "/v1/cat/product",
-          body,
-          config,
-          contentType,
+        const { data } = await baseApi.put("/v1/cat/product", body, {
+          headers: { "Content-Type": contentType },
+          timeout: EPresetTimes.MINUTE * 5,
         });
         return data;
       }

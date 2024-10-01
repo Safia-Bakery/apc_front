@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/main";
+import baseApi from "@/api/base_api";
 import { ToolsEarchType } from "@/utils/types";
 
 interface Props {
@@ -12,9 +12,8 @@ export const useToolsIerarch = ({ parent_id, enabled, name }: Props) => {
   return useQuery({
     queryKey: ["tools_ierarch", parent_id, name],
     queryFn: () =>
-      apiClient
-        .get({
-          url: "/tool/iarch",
+      baseApi
+        .get("/tool/iarch", {
           params: {
             parent_id,
             name,

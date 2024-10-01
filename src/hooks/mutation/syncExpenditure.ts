@@ -1,20 +1,16 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
-import { errorToast } from "@/utils/toast";
+import baseApi from "@/api/base_api";
+import errorToast from "@/utils/errorToast";
 import { EPresetTimes } from "@/utils/types";
 
 const syncExpenditure = () => {
   return useMutation({
     mutationKey: ["expenditure_sync"],
     mutationFn: (body: { request_id: number }) =>
-      apiClient
-        .put({
-          url: "/v1/expanditure/iiko",
-          body,
-          config: { timeout: EPresetTimes.MINUTE * 5 },
-        })
+      baseApi
+        .put("/v1/expanditure/iiko", body, { timeout: EPresetTimes.MINUTE * 5 })
         .then((data) => data)
-        .catch((e: Error) => errorToast(e.message)),
+        .catch((e) => errorToast(e.message)),
   });
 };
 export default syncExpenditure;

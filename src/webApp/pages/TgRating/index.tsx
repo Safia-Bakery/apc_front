@@ -9,7 +9,7 @@ import RateStars from "@/components/RatingStars";
 import useQueryString from "custom/useQueryString";
 import commentMutation from "@/hooks/mutation/comment";
 import { TelegramApp } from "@/utils/tgHelpers";
-import { errorToast } from "@/utils/toast";
+import errorToast from "@/utils/errorToast";
 import { Departments, MarketingSubDep } from "@/utils/types";
 import { useTranslation } from "react-i18next";
 

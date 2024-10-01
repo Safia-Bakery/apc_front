@@ -5,8 +5,9 @@ import Header from "@/components/Header";
 import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
-import { errorToast, successToast } from "@/utils/toast";
-import { baseURL } from "@/main";
+import successToast from "@/utils/successToast";
+import errorToast from "@/utils/errorToast";
+import { baseURL } from "@/store/baseUrl";
 import { detectFileType } from "@/utils/helpers";
 import {
   Departments,

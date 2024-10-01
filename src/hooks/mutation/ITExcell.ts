@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/main";
-import { errorToast } from "@/utils/toast";
+import baseApi from "@/api/base_api";
+import errorToast from "@/utils/errorToast";
 
 interface Body {
   start_date: string;
@@ -13,7 +13,7 @@ const ITExcellMutation = () => {
   return useMutation({
     mutationKey: ["it_excell_mutation"],
     mutationFn: async (body: Body) => {
-      const { data } = await apiClient.post({ url: "/it/excell", body });
+      const { data } = await baseApi.post("/it/excell", body);
       return data as { file_name: string };
     },
     onError: (e) => errorToast(e.message),

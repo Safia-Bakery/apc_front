@@ -20,7 +20,7 @@ import { yearMonthDate } from "@/utils/keys";
 import Loading from "@/components/Loader";
 import { antdType } from "@/utils/antdTypes";
 import CalendarInput from "./calendarInput";
-import { errorToast } from "@/utils/toast";
+import errorToast from "@/utils/errorToast";
 import { RequestStatus } from "@/utils/types";
 
 const statusType: { [key: number]: AlertProps["type"] } = {
