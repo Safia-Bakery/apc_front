@@ -54,7 +54,6 @@ function AntdTable<T>({
       <Table
         {...(others as any)}
         rootClassName="overflow-visible"
-        // scroll={{ y: 400 }}
         dataSource={data?.map((item, idx) => ({ ...item, key: idx }))}
         className={`common-table ${styles.table} align-center ${className}`}
         rowClassName={(item) => `clickable-row ${handleRowStyles(item)}`}

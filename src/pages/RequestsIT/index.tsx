@@ -55,6 +55,7 @@ const RequestsIT = () => {
       {
         title: t("num"),
         dataIndex: "id",
+        width: 180,
         render: (_, order) =>
           permission?.[MainPermissions.edit_it_requests] ? (
             <Link to={`${order?.id}?dep=${Departments.IT}`}>{order?.id}</Link>
@@ -64,11 +65,13 @@ const RequestsIT = () => {
       },
       {
         title: t("employee"),
+        width: 180,
         dataIndex: "user?.full_name",
         render: (_, record) => record?.user?.full_name,
       },
       {
         title: t("executor"),
+        width: 180,
         dataIndex: "brigada",
 
         render: (_, record) =>
@@ -76,23 +79,27 @@ const RequestsIT = () => {
       },
       {
         title: t("branch"),
+        width: 180,
         dataIndex: "fillial",
         render: (_, record) => record?.fillial?.parentfillial?.name,
       },
       {
         title: t("category"),
+        width: 180,
         dataIndex: "category",
         render: (_, record) => record?.category?.name,
       },
       {
         title: t("urgent"),
         dataIndex: "urgent",
+        width: 180,
         render: (_, record) =>
           !!record?.category?.urgent ? t("yes") : t("no"),
       },
       {
         title: t("reopened"),
         dataIndex: "update_time",
+        width: 100,
         render: (_, record) =>
           !!(
             record?.update_time[RequestStatus.paused] ||
@@ -103,22 +110,26 @@ const RequestsIT = () => {
       },
       {
         title: t("comment_table"),
+        width: 180,
         dataIndex: "description",
         render: (_, record) => record?.description,
       },
       {
         title: t("rate"),
         dataIndex: "comments",
+        width: 100,
         render: (_, record) => record?.comments?.[0]?.rating,
       },
       {
         title: t("status"),
         dataIndex: "status",
+        width: 150,
         render: (_, record) => t(RequestStatus[record.status]),
       },
       {
         title: t("date"),
         dataIndex: "created_at",
+        width: 180,
         render: (_, record) => dayjs(record?.created_at).format(dateTimeFormat),
       },
     ],
@@ -168,9 +179,9 @@ const RequestsIT = () => {
   return (
     <Card>
       <Header title={"it_requests"}>
-        <div className="flex">
+        <div className="flex flex-col-reverse md:flex-row gap-2 md:gap-0">
           <DownloadExcell />
-          <button onClick={() => navigate("add")} className="btn btn-success  ">
+          <button onClick={() => navigate("add")} className="btn btn-success">
             {t("add")}
           </button>
         </div>

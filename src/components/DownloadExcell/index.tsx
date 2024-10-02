@@ -36,11 +36,18 @@ const DownloadExcell = () => {
   };
 
   return (
-    <form className="flex gap-2">
+    <form
+      className={cl("flex gap-2 md:flex-row flex-col-reverse ", {
+        ["md:flex-row flex-col"]: active,
+      })}
+    >
       <div
-        className={cl("flex gap-2 opacity-0 transition-opacity", {
-          ["opacity-100"]: active,
-        })}
+        className={cl(
+          "gap-2 md:opacity-0 hidden transition-opacity md:flex-row flex-col",
+          {
+            ["md:opacity-100 !flex"]: active,
+          }
+        )}
       >
         <input
           type="date"
@@ -54,7 +61,7 @@ const DownloadExcell = () => {
         />
       </div>
       <button
-        className="btn btn-primary mr-2"
+        className="btn btn-primary md:mr-2"
         type="button"
         onClick={handleActive}
       >
