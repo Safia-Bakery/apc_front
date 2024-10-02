@@ -46,7 +46,7 @@ const UsersFilter: FC<Props> = () => {
   return (
     <>
       <td></td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput
             className="!m-0"
@@ -54,7 +54,7 @@ const UsersFilter: FC<Props> = () => {
           />
         </BaseInput>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput
             className="!m-0"
@@ -62,7 +62,7 @@ const UsersFilter: FC<Props> = () => {
           />
         </BaseInput>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInputs className="!m-1">
           <MainSelect
             values={roles}
@@ -72,7 +72,7 @@ const UsersFilter: FC<Props> = () => {
           />
         </BaseInputs>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput
             className="!m-0"
@@ -80,7 +80,7 @@ const UsersFilter: FC<Props> = () => {
           />
         </BaseInput>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInputs className="!m-1">
           <MainSelect
             values={StatusName}

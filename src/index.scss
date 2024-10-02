@@ -365,3 +365,14 @@ p {
 .ant-table-header {
   overflow: visible !important;
 }
+:where(.css-dev-only-do-not-override-14i19y2).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th,
+:where(.css-dev-only-do-not-override-14i19y2).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > td {
+  background: #447df7;
+  color: white;
+}
