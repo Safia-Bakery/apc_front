@@ -1,94 +1,79 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Departments,
-  MainPermissions,
-  ToolItemType,
-  ToolTypes,
-} from "@/utils/types";
-import Pagination from "@/components/Pagination";
+import { Departments, MainPermissions, ToolItemType } from "@/utils/types";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { numberWithCommas } from "@/utils/helpers";
-import ItemsCount from "@/components/ItemsCount";
 import useQueryString from "custom/useQueryString";
-import EmptyList from "@/components/EmptyList";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
 import TableViewBtn from "@/components/TableViewBtn";
 import useTools from "@/hooks/useTools";
-import { useDownloadExcel } from "react-export-table-to-excel";
 import inventoryMinsMutation from "@/hooks/mutation/inventoryMins";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
-import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
-import { ColumnDef } from "@tanstack/table-core";
-import VirtualTable from "@/components/VirtualTable";
+import AntdTable from "@/components/AntdTable";
+import { ColumnsType } from "antd/es/table";
 
 const InventoryRemainsMins = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const tableRef = useRef(null);
-  const [sort, $sort] = useState<ToolTypes["items"]>();
   const page = Number(useQueryString("page")) || 1;
   const name = useQueryString("name");
   const permission = useAppSelector(permissionSelector);
   const handleNavigate = (route: string) => () => navigate(route);
   const mins = useQueryString("mins");
 
-  const columns = useMemo<ColumnDef<ToolItemType>[]>(
+  const columns = useMemo<ColumnsType<ToolItemType>>(
     () => [
       {
-        accessorFn: (_, idx) => idx + 1,
-        cell: (props) => <div className="w-4">{props.row.index + 1}</div>,
-        header: "№",
-        size: 10,
+        render: (_, r, idx) => idx + 1,
+        title: "№",
+        width: 50,
       },
       {
-        accessorKey: "name",
-        header: t("name_in_table"),
-        cell: (info) => info.getValue(),
+        dataIndex: "name",
+        title: t("name_in_table"),
       },
       {
-        accessorKey: "price",
-        header: t("price"),
-        cell: ({ row }) => numberWithCommas(row.original?.price),
+        dataIndex: "price",
+        title: t("price"),
+        render: (_, record) => numberWithCommas(record?.price),
       },
       {
-        accessorKey: "num",
-        header: t("num"),
+        dataIndex: "num",
+        title: t("num"),
       },
       {
-        accessorKey: "amount_left",
-        header: t("remains"),
+        dataIndex: "amount_left",
+        title: t("remains"),
       },
       {
-        accessorKey: "min_amount",
-        header: t("min"),
+        dataIndex: "min_amount",
+        title: t("min"),
       },
       {
-        accessorKey: "max_amount",
-        header: t("max"),
+        dataIndex: "max_amount",
+        title: t("max"),
       },
       {
-        accessorKey: "ftime",
-        header: t("deadline_in_hours"),
+        dataIndex: "ftime",
+        title: t("deadline_in_hours"),
       },
       {
-        accessorKey: "status",
-        header: t("status"),
-        cell: ({ row }) =>
-          !row.original.status ? t("not_active") : t("active"),
+        dataIndex: "status",
+        title: t("status"),
+        render: (_, record) => (!record.status ? t("not_active") : t("active")),
       },
       {
-        accessorKey: "action",
-        size: 30,
-        header: "",
-        cell: ({ row }) => {
+        dataIndex: "action",
+        width: 50,
+        title: "",
+        render: (_, record) => {
           return (
             permission?.[MainPermissions.edit_product_inventory] && (
-              <TableViewBtn onClick={handleNavigate(`${row.original.id}`)} />
+              <TableViewBtn onClick={handleNavigate(`${record.id}`)} />
             )
           );
         },
@@ -110,14 +95,7 @@ const InventoryRemainsMins = () => {
     ...(!!name && { name }),
   });
 
-  const { onDownload } = useDownloadExcel({
-    currentTableRef: tableRef.current,
-    filename: t("remains_in_stock"),
-    sheet: t("remains_in_stock"),
-  });
   const goBack = () => navigate(-1);
-
-  const downloadAsPdf = () => onDownload();
 
   const handleRequestsMins = () =>
     minsMutation(undefined, {
@@ -143,9 +121,6 @@ const InventoryRemainsMins = () => {
               {t("request_for_mins")}
             </button>
           )}
-          <button className="btn btn-success" onClick={downloadAsPdf}>
-            {t("export_to_excel")}
-          </button>
           <button className="btn btn-primary" onClick={handleMins}>
             {!mins ? t("upload_mins") : t("upload_all")}
           </button>
@@ -156,16 +131,21 @@ const InventoryRemainsMins = () => {
       </Header>
 
       <div className="content">
-        <ItemsCount data={tools} />
-        <VirtualTable
+        {/* <VirtualTable
           columns={columns}
           data={tools?.items}
           rowClassName={(_) => "table-danger"}
-        />
+        /> */}
 
-        {toolsLoading && <Loading />}
-        {!tools?.items?.length && !toolsLoading && <EmptyList />}
-        {!!tools && <Pagination totalPages={tools.pages} />}
+        <AntdTable
+          totalItems={tools?.total}
+          data={tools?.items}
+          virtual
+          scroll={{ y: 400 }}
+          columns={columns}
+          loading={toolsLoading}
+          rowClassName={(_) => "table-danger"}
+        />
       </div>
     </Card>
   );

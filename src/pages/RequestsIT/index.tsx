@@ -1,42 +1,30 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
-import { Departments, Order, RequestStatus } from "@/utils/types";
-import Pagination from "@/components/Pagination";
+import {
+  Departments,
+  MainPermissions,
+  Order,
+  RequestStatus,
+} from "@/utils/types";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { handleIdx, requestRows } from "@/utils/helpers";
-import TableHead from "@/components/TableHead";
 import ITFilter from "./filter";
-import ItemsCount from "@/components/ItemsCount";
 import useQueryString from "custom/useQueryString";
-import EmptyList from "@/components/EmptyList";
-import Loading from "@/components/Loader";
+import AntdTable from "@/components/AntdTable";
 import DownloadExcell from "@/components/DownloadExcell";
 import { dateTimeFormat, yearMonthDate } from "@/utils/keys";
-
-const column = [
-  { name: "№", key: "" },
-  { name: "num", key: "id" },
-  { name: "employee", key: "type" },
-  { name: "executor", key: "fillial.name" },
-  { name: "branch", key: "fillial.name" },
-  { name: "category", key: "category" },
-  { name: "urgent", key: "urgent" },
-  { name: "reopened", key: "paused" },
-  { name: "comment_table", key: "comment" },
-  { name: "rate", key: "rate" },
-  { name: "status", key: "status" },
-  { name: "date", key: "category.name" },
-];
+import Table from "antd/es/table/Table";
+import { ColumnsType } from "antd/es/table";
+import { permissionSelector } from "@/store/reducers/sidebar";
+import { useAppSelector } from "@/store/utils/types";
 
 const RequestsIT = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const tableRef = useRef(null);
-  const [sort, $sort] = useState<Order[]>();
   const currentPage = Number(useQueryString("page")) || 1;
 
   const user = useQueryString("user");
@@ -53,6 +41,89 @@ const RequestsIT = () => {
   const started_at = useQueryString("started_at");
   const finished_at = useQueryString("finished_at");
   const service_filter = useQueryString("service_filter");
+  const permission = useAppSelector(permissionSelector);
+
+  const columns = useMemo<ColumnsType<Order>>(
+    () => [
+      {
+        title: "№",
+        dataIndex: "",
+        width: 50,
+        className: "!px-0 text-center",
+        render: (_, r, idx) => handleIdx(idx),
+      },
+      {
+        title: t("num"),
+        dataIndex: "id",
+        render: (_, order) =>
+          permission?.[MainPermissions.edit_it_requests] ? (
+            <Link to={`${order?.id}?dep=${Departments.IT}`}>{order?.id}</Link>
+          ) : (
+            order?.id
+          ),
+      },
+      {
+        title: t("employee"),
+        dataIndex: "user?.full_name",
+        render: (_, record) => record?.user?.full_name,
+      },
+      {
+        title: t("executor"),
+        dataIndex: "brigada",
+
+        render: (_, record) =>
+          !!record?.brigada?.name ? record?.brigada?.name : "-----------",
+      },
+      {
+        title: t("branch"),
+        dataIndex: "fillial",
+        render: (_, record) => record?.fillial?.parentfillial?.name,
+      },
+      {
+        title: t("category"),
+        dataIndex: "category",
+        render: (_, record) => record?.category?.name,
+      },
+      {
+        title: t("urgent"),
+        dataIndex: "urgent",
+        render: (_, record) =>
+          !!record?.category?.urgent ? t("yes") : t("no"),
+      },
+      {
+        title: t("reopened"),
+        dataIndex: "update_time",
+        render: (_, record) =>
+          !!(
+            record?.update_time[RequestStatus.paused] ||
+            record?.update_time[RequestStatus.resumed]
+          )
+            ? t("yes")
+            : t("no"),
+      },
+      {
+        title: t("comment_table"),
+        dataIndex: "description",
+        render: (_, record) => record?.description,
+      },
+      {
+        title: t("rate"),
+        dataIndex: "comments",
+        render: (_, record) => record?.comments?.[0]?.rating,
+      },
+      {
+        title: t("status"),
+        dataIndex: "status",
+        render: (_, record) => t(RequestStatus[record.status]),
+      },
+      {
+        title: t("date"),
+        dataIndex: "created_at",
+        render: (_, record) => dayjs(record?.created_at).format(dateTimeFormat),
+      },
+    ],
+    []
+  );
 
   const {
     data: requests,
@@ -106,73 +177,23 @@ const RequestsIT = () => {
       </Header>
 
       <div className="table-responsive grid-view content ">
-        <ItemsCount data={requests} />
-        <table ref={tableRef} className="table table-hover table-bordered">
-          <TableHead
-            column={column}
-            onSort={(data) => $sort(data)}
-            data={requests?.items}
-          >
-            {renderFilter}
-          </TableHead>
-
-          <tbody>
-            {!!requests?.items?.length &&
-              (sort?.length ? sort : requests?.items)?.map((order, idx) => (
-                <tr
-                  className={
-                    !service_filter
-                      ? requestRows[order?.status]
-                      : handleServiceRow(order)
-                  }
-                  key={idx}
-                >
-                  <td width="40">{handleIdx(idx)}</td>
-                  <td width="80">
-                    <Link to={`${order?.id}?dep=${Departments.IT}`}>
-                      {order?.id}
-                    </Link>
-                  </td>
-                  <td>
-                    <span>{order?.user?.full_name}</span>
-                  </td>
-                  <td>
-                    {!!order?.brigada?.name
-                      ? order?.brigada?.name
-                      : "-----------"}
-                  </td>
-                  <td>{order?.fillial?.parentfillial?.name}</td>
-                  <td>{order?.category?.name}</td>
-                  <td>{!!order?.category?.urgent ? t("yes") : t("no")}</td>
-                  <td>
-                    {!!(
-                      order?.update_time[RequestStatus.paused] ||
-                      order?.update_time[RequestStatus.resumed]
-                    )
-                      ? t("yes")
-                      : t("no")}
-                  </td>
-                  <td>
-                    <div
-                      className={
-                        "overflow-hidden text-ellipsis max-w-[200px] w-full"
-                      }
-                    >
-                      {order?.description}
-                    </div>
-                  </td>
-                  <td width={50} className="text-center">
-                    {order?.comments?.[0]?.rating}
-                  </td>
-                  <td>{t(RequestStatus[order.status])}</td>
-                  <td>{dayjs(order?.created_at).format(dateTimeFormat)}</td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-        {(orderLoading || orderFetching) && <Loading />}
-        {!requests?.items?.length && !orderLoading && <EmptyList />}
-        {!!requests && <Pagination totalPages={requests.pages} />}
+        <AntdTable
+          sticky
+          data={requests?.items}
+          totalItems={requests?.total}
+          columns={columns}
+          loading={orderLoading || orderFetching}
+          rowClassName={(item) =>
+            !service_filter ? requestRows[item?.status] : handleServiceRow(item)
+          }
+          summary={() => (
+            <Table.Summary fixed={"top"}>
+              <Table.Summary.Row className="sticky top-0 z-10">
+                {renderFilter}
+              </Table.Summary.Row>
+            </Table.Summary>
+          )}
+        />
       </div>
     </Card>
   );

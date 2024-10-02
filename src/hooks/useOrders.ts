@@ -25,7 +25,6 @@ interface Body {
 }
 
 export const useOrders = ({ enabled, request_status, ...params }: Body) => {
-  console.log(request_status, "request_status");
   return useQuery({
     queryKey: ["requests", params, request_status],
     queryFn: ({ signal }) =>

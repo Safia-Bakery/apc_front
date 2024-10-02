@@ -52,7 +52,7 @@ const FormFilter = () => {
   return (
     <>
       <td></td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput
             register={register("id")}
@@ -62,13 +62,13 @@ const FormFilter = () => {
           />
         </BaseInput>
       </td>
-      <td width={150} className="p-0 relative">
+      <td width={150} className="!p-0 relative">
         <div onClick={() => $enabled(true)} className={"m-1"}>
           <BranchSelect enabled={enabled} />
         </div>
       </td>
 
-      <td className="p-0">
+      <td className="!p-0">
         <MainDatePicker
           selected={
             !!created_at && created_at !== "undefined"
@@ -80,18 +80,18 @@ const FormFilter = () => {
           wrapperClassName={"m-1"}
         />
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput className="!mb-0" />
         </BaseInput>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput className="!mb-0" />
         </BaseInput>
       </td>
 
-      {/* <td className="p-0">
+      {/* <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput
             register={register("userName")}
@@ -101,12 +101,12 @@ const FormFilter = () => {
         </BaseInput>
       </td> */}
 
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput register={register("comment")} className="!mb-0" />
         </BaseInput>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInputs className="!m-1">
           <StatusFilter options={RequestStatusArr} />
         </BaseInputs>
