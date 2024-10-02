@@ -84,6 +84,9 @@ const AddFormRequest = lazy(() => import("@/pages/AddFormRequest"));
 const EditAddFormcategory = lazy(() => import("@/pages/EditAddFormcategory"));
 const Cleaning = lazy(() => import("@/pages/Cleaning"));
 
+const KRURequests = lazy(() => import("@/pages/KRURequests"));
+const AddKRURequests = lazy(() => import("@/pages/AddKRURequest"));
+
 export const sidebarRoutes: SidebarType[] = [
   // {
   //   name: "heat_map",
@@ -377,6 +380,27 @@ export const sidebarRoutes: SidebarType[] = [
   },
 
   {
+    name: "kru_requests",
+    icon: "/icons/logystics.svg",
+    screen: MainPermissions.kru_requests,
+    // department: Departments.form,
+    subroutes: [
+      {
+        name: "tasks",
+        url: "/requests-kru",
+        icon: "/icons/logystics.svg",
+        screen: MainPermissions.kru_requests,
+      },
+      // {
+      //   name: "add_tasks",
+      //   url: "/requests-kru/add",
+      //   icon: "/icons/categories.svg",
+      //   screen: MainPermissions.add_kru_requests,
+      // },
+    ],
+  },
+
+  {
     name: "car_requests",
     icon: "/icons/logystics.svg",
     screen: MainPermissions.get_log_requests,
@@ -487,6 +511,21 @@ export const routes = [
     element: <FormRequests />,
     path: "/requests-form",
     screen: MainPermissions.get_form_request,
+  },
+  {
+    element: <KRURequests />,
+    path: "/requests-kru",
+    screen: MainPermissions.kru_requests,
+  },
+  {
+    element: <AddKRURequests />,
+    path: "/requests-kru/add",
+    screen: MainPermissions.add_kru_requests,
+  },
+  {
+    element: <AddKRURequests />,
+    path: "/requests-kru/:id",
+    screen: MainPermissions.add_kru_requests,
   },
   {
     element: <ShowFormRequests />,

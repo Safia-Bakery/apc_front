@@ -372,7 +372,23 @@ p {
 :where(.css-dev-only-do-not-override-14i19y2).ant-table-wrapper
   .ant-table-thead
   > tr
-  > td {
+  > td,
+:where(.css-14i19y2).ant-table-wrapper .ant-table-thead > tr > th {
   background: #447df7;
   color: white;
+}
+
+:where(.css-dev-only-do-not-override-14i19y2).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th:not(:last-child):not(.ant-table-selection-column):not(
+    .ant-table-row-expand-icon-cell
+  ):not([colspan])::before,
+:where(.css-14i19y2).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th:not(:last-child):not(.ant-table-selection-column):not(
+    .ant-table-row-expand-icon-cell
+  ):not([colspan])::before {
+  background: initial !important;
 }
