@@ -191,6 +191,8 @@ const RequestsIT = () => {
         <AntdTable
           sticky
           data={requests?.items}
+          // virtual
+          // scroll={{ y: 500 }}
           totalItems={requests?.total}
           columns={columns}
           loading={orderLoading || orderFetching}

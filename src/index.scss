@@ -364,6 +364,8 @@ p {
 
 .ant-table-header {
   overflow: visible !important;
+  // overflow-x: scroll;
+  // ;
 }
 :where(.css-dev-only-do-not-override-14i19y2).ant-table-wrapper
   .ant-table-thead
@@ -374,7 +376,7 @@ p {
   > tr
   > td,
 :where(.css-14i19y2).ant-table-wrapper .ant-table-thead > tr > th {
-  background: #447df7;
+  background: #447df7 !important;
   color: white;
 }
 
@@ -391,4 +393,12 @@ p {
     .ant-table-row-expand-icon-cell
   ):not([colspan])::before {
   background: initial !important;
+}
+
+.ant-table-cell-fix-left {
+  background: transparent !important;
+}
+
+.ant-table-cell-row-hover {
+  background: #fafafa !important;
 }
