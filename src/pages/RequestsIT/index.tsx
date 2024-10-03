@@ -55,7 +55,7 @@ const RequestsIT = () => {
       {
         title: t("num"),
         dataIndex: "id",
-        width: 180,
+        width: 80,
         render: (_, order) =>
           permission?.[MainPermissions.edit_it_requests] ? (
             <Link to={`${order?.id}?dep=${Departments.IT}`}>{order?.id}</Link>
@@ -65,13 +65,13 @@ const RequestsIT = () => {
       },
       {
         title: t("employee"),
-        width: 180,
+        width: 160,
         dataIndex: "user?.full_name",
         render: (_, record) => record?.user?.full_name,
       },
       {
         title: t("executor"),
-        width: 180,
+        width: 160,
         dataIndex: "brigada",
 
         render: (_, record) =>
@@ -79,20 +79,20 @@ const RequestsIT = () => {
       },
       {
         title: t("branch"),
-        width: 180,
+        width: 160,
         dataIndex: "fillial",
         render: (_, record) => record?.fillial?.parentfillial?.name,
       },
       {
         title: t("category"),
-        width: 180,
+        width: 160,
         dataIndex: "category",
         render: (_, record) => record?.category?.name,
       },
       {
         title: t("urgent"),
         dataIndex: "urgent",
-        width: 180,
+        width: 160,
         render: (_, record) =>
           !!record?.category?.urgent ? t("yes") : t("no"),
       },
@@ -110,7 +110,7 @@ const RequestsIT = () => {
       },
       {
         title: t("comment_table"),
-        width: 180,
+        width: 160,
         dataIndex: "description",
         render: (_, record) => record?.description,
       },
@@ -129,7 +129,7 @@ const RequestsIT = () => {
       {
         title: t("date"),
         dataIndex: "created_at",
-        width: 180,
+        width: 160,
         render: (_, record) => dayjs(record?.created_at).format(dateTimeFormat),
       },
     ],
