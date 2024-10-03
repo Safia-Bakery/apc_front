@@ -552,6 +552,12 @@ export enum MainPermissions {
   add_form_category = 136,
 
   apc_cleaning = 137,
+
+  kru_requests = 138,
+  add_kru_requests = 139,
+
+  // kru_requests = 130,
+  // add_kru_requests = 130,
 }
 export enum MarketingSubDep {
   all,

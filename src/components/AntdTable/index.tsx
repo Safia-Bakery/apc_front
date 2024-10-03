@@ -3,7 +3,6 @@ import styles from "./index.module.scss";
 import { TableProps } from "antd/es/table";
 import cl from "classnames";
 import { ReactNode, useCallback, useMemo } from "react";
-import ItemsCount from "../ItemsCount";
 import { useTranslation } from "react-i18next";
 import useQueryString from "@/hooks/custom/useQueryString";
 import { itemsPerPage } from "@/utils/helpers";
@@ -14,9 +13,7 @@ type RowClassName<T> = string | ReturnFunction<T>;
 
 interface Props<TData> extends TableProps<TData> {
   data?: TData[];
-  // columns: ColumnGroupType<TData> | ColumnType<TData>[];
   className?: string;
-  // children?: ReactNode;
   rowClassName?: RowClassName<TData>;
   isLoading?: boolean;
   totalItems?: number;
@@ -57,10 +54,9 @@ function AntdTable<T>({
       <Table
         {...(others as any)}
         rootClassName="overflow-visible"
-        scroll={{ y: 400 }}
         dataSource={data?.map((item, idx) => ({ ...item, key: idx }))}
         className={`common-table ${styles.table} align-center ${className}`}
-        rowClassName={`clickable-row ${handleRowStyles}`}
+        rowClassName={(item) => `clickable-row ${handleRowStyles(item)}`}
         footer={false}
         pagination={
           totalItems
@@ -75,8 +71,9 @@ function AntdTable<T>({
               }
             : false
         }
-        virtual
+        // virtual
         columns={columns}
+        sticky
         title={() =>
           totalItems && (
             <div>

@@ -393,6 +393,12 @@ const localization = {
       selected_date: "Выбранная дата",
 
       upload_stats: "Загрузить статистику",
+
+      tasks: "Задачи",
+      add_tasks: "Добавить Задачи",
+      subtask_qnt: "Количество подзадач",
+      subtasks: "Подзадачи",
+      kru_requests: "Задачи КРУ",
     },
   },
   uz: {

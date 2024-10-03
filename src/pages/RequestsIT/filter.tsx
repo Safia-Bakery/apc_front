@@ -78,7 +78,7 @@ const ITFilter: FC = () => {
   return (
     <>
       <td></td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput
             register={register("id")}
@@ -88,7 +88,7 @@ const ITFilter: FC = () => {
           />
         </BaseInput>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput
             register={register("userName")}
@@ -97,7 +97,7 @@ const ITFilter: FC = () => {
           />
         </BaseInput>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainSelect
             values={brigades?.items.filter((item) => !!item.status)}
@@ -107,12 +107,12 @@ const ITFilter: FC = () => {
           />
         </BaseInput>
       </td>
-      <td width={150} className="p-0 relative">
+      <td width={150} className="!p-0 relative">
         <div onClick={() => $enabled(true)} className={"m-1"}>
           <BranchSelect enabled={enabled} />
         </div>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInputs className="!m-1">
           <MainSelect
             values={categories?.items}
@@ -122,7 +122,7 @@ const ITFilter: FC = () => {
           />
         </BaseInputs>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInputs className="!m-1">
           <MainSelect
             values={UrgentValsArr}
@@ -131,7 +131,7 @@ const ITFilter: FC = () => {
           />
         </BaseInputs>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInputs className="!m-1">
           <MainSelect
             values={UrgentValsArr}
@@ -141,12 +141,12 @@ const ITFilter: FC = () => {
         </BaseInputs>
       </td>
 
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput register={register("comment")} className="!mb-0" />
         </BaseInput>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInputs className="!m-1">
           <MainSelect
             values={RatingFilterVals}
@@ -155,13 +155,13 @@ const ITFilter: FC = () => {
           />
         </BaseInputs>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInputs className="!m-1">
           <StatusFilter options={ITRequestStatusArr} />
         </BaseInputs>
       </td>
 
-      <td className="p-0">
+      <td className="!p-0">
         <MainDatePicker
           selected={
             !!created_at && created_at !== "undefined"

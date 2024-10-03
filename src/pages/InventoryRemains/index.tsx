@@ -6,24 +6,21 @@ import { useNavigate } from "react-router-dom";
 import styles from "./index.module.scss";
 import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
 import useQueryString from "@/hooks/custom/useQueryString";
-import EmptyList from "@/components/EmptyList";
 import cl from "classnames";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { InventoryTools, MainPermissions } from "@/utils/types";
 import TableViewBtn from "@/components/TableViewBtn";
-import { useMemo, useRef } from "react";
-import { useDownloadExcel } from "react-export-table-to-excel";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import InventoryRemainsFilter from "./filter";
 import { numberWithCommas } from "@/utils/helpers";
-import VirtualTable from "@/components/VirtualTable";
-import { ColumnDef } from "@tanstack/table-core";
+import AntdTable from "@/components/AntdTable";
+import Table, { ColumnsType } from "antd/es/table";
 
 const InventoryRemains = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const tableRef = useRef(null);
   const navigateParams = useNavigateParams();
   const permission = useAppSelector(permissionSelector);
   const handleNavigate = (route: string) => () => navigate(route);
@@ -43,67 +40,56 @@ const InventoryRemains = () => {
   const handleParentId = (id: string, name: string) => () =>
     navigateParams({ parent_id: id, parent_name: name });
 
-  const { onDownload } = useDownloadExcel({
-    currentTableRef: tableRef.current,
-    filename: t("remains_in_stock"),
-    sheet: t("remains_in_stock"),
-  });
-  const downloadAsPdf = () => onDownload();
-  const columns = useMemo<ColumnDef<InventoryTools>[]>(
+  const columns = useMemo<ColumnsType<InventoryTools>>(
     () => [
       {
-        accessorFn: (_, idx) => idx + 1,
-        cell: (props) => <div className="w-4">{props.row.index + 1}</div>,
-        header: "№",
-        size: 10,
+        render: (_, r, idx) => idx + 1,
+        title: "№",
+        width: 50,
       },
       {
-        accessorKey: "name",
-        header: t("name_in_table"),
-        cell: (info) => info.getValue(),
+        dataIndex: "name",
+        title: t("name_in_table"),
       },
       {
-        accessorKey: "price",
-        header: t("price"),
-        cell: ({ row }) => numberWithCommas(row.original?.price),
+        dataIndex: "price",
+        title: t("price"),
+        render: (_, record) => numberWithCommas(record?.price),
       },
       {
-        accessorKey: "num",
-        header: t("num"),
+        dataIndex: "num",
+        title: t("num"),
       },
       {
-        accessorKey: "amount_left",
-        header: t("remains"),
+        dataIndex: "amount_left",
+        title: t("remains"),
       },
       {
-        accessorKey: "min_amount",
-        header: t("min"),
+        dataIndex: "min_amount",
+        title: t("min"),
       },
       {
-        accessorKey: "max_amount",
-        header: t("max"),
+        dataIndex: "max_amount",
+        title: t("max"),
       },
       {
-        accessorKey: "ftime",
-        header: t("deadline_in_hours"),
+        dataIndex: "ftime",
+        title: t("deadline_in_hours"),
       },
       {
-        accessorKey: "status",
-        header: t("status"),
-        cell: ({ row }) =>
-          !row.original.status ? t("not_active") : t("active"),
+        dataIndex: "status",
+        title: t("status"),
+        render: (_, record) => (!record.status ? t("not_active") : t("active")),
       },
       {
-        accessorKey: "action",
-        size: 30,
-        header: "",
-        cell: ({ row }) => {
+        dataIndex: "action",
+        width: 50,
+        title: "",
+        render: (_, record) => {
           return (
             permission?.[MainPermissions.edit_product_inventory] && (
               <TableViewBtn
-                onClick={handleNavigate(
-                  `/inventory-remains/${row.original.id}`
-                )}
+                onClick={handleNavigate(`/inventory-remains/${record.id}`)}
               />
             )
           );
@@ -120,10 +106,13 @@ const InventoryRemains = () => {
   const renderItems = useMemo(() => {
     if (!!parent_id)
       return (
-        <VirtualTable
-          columns={columns}
+        <AntdTable
           data={data?.tools}
-          rowClassName={({ original: tool }) =>
+          virtual
+          scroll={{ y: 400 }}
+          columns={columns}
+          loading={isFetching || isLoading}
+          rowClassName={(tool) =>
             cl({
               ["table-danger"]:
                 tool.min_amount &&
@@ -133,11 +122,16 @@ const InventoryRemains = () => {
                 tool.min_amount && tool.amount_left > tool.min_amount,
             })
           }
-        >
-          {renderFilter}
-        </VirtualTable>
+          summary={() => (
+            <Table.Summary fixed={"top"}>
+              <Table.Summary.Row className="sticky top-0 z-10">
+                {renderFilter}
+              </Table.Summary.Row>
+            </Table.Summary>
+          )}
+        />
       );
-  }, [data?.tools]);
+  }, [data?.tools, isFetching, isLoading]);
 
   const handleMins = () => navigate("/inventory-remains?mins=1");
 
@@ -147,9 +141,6 @@ const InventoryRemains = () => {
     <Card className="pb-4">
       <Header title={!parent_name ? "Инвентарь / Товары" : parent_name}>
         <div className="flex gap-2">
-          <button className="btn btn-success" onClick={downloadAsPdf}>
-            {t("export_to_excel")}
-          </button>
           <button className="btn btn-primary" onClick={handleMins}>
             {!mins ? t("upload_mins") : t("upload_all")}
           </button>
@@ -173,9 +164,6 @@ const InventoryRemains = () => {
         <hr />
         {renderItems}
       </ul>
-
-      {!data?.tools?.length && <EmptyList />}
-      {(isLoading || isFetching) && <Loading />}
     </Card>
   );
 };

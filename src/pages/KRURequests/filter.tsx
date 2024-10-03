@@ -10,11 +10,7 @@ import useRoles from "@/hooks/useRoles";
 import useUpdateEffect from "custom/useUpdateEffect";
 import { useTranslation } from "react-i18next";
 
-interface Props {
-  currentPage: number;
-}
-
-const UsersFilter: FC<Props> = () => {
+const UsersFilter = () => {
   const { t } = useTranslation();
   const navigate = useNavigateParams();
   const [full_name, $full_name] = useDebounce("");
@@ -58,38 +54,18 @@ const UsersFilter: FC<Props> = () => {
         <BaseInput className="!m-1">
           <MainInput
             className="!m-0"
-            onChange={(e) => $username(e.target.value)}
+            onChange={(e) => $full_name(e.target.value)}
           />
         </BaseInput>
-      </td>
-      <td className="!p-0">
-        <BaseInputs className="!m-1">
-          <MainSelect
-            values={roles}
-            onFocus={() => rolesRefetch()}
-            value={role_id?.toString()}
-            onChange={(e) => navigate({ role_id: e.target.value })}
-          />
-        </BaseInputs>
       </td>
       <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput
             className="!m-0"
-            onChange={(e) => $phone_number(e.target.value)}
+            onChange={(e) => $username(e.target.value)}
           />
         </BaseInput>
       </td>
-      <td className="!p-0">
-        <BaseInputs className="!m-1">
-          <MainSelect
-            values={StatusName}
-            value={user_status?.toString()}
-            onChange={(e) => navigate({ user_status: e.target.value })}
-          />
-        </BaseInputs>
-      </td>
-      <td></td>
     </>
   );
 };

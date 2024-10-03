@@ -73,13 +73,13 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
   const handleModal = () => navigate({ add_product_modal: true });
 
   return (
-    <Card>
+    <Card className="!min-h-min">
       <Header title="products">
         {synciiko && permissions?.[synciiko] && (
           <button
             disabled={isLoading}
             onClick={handleSync}
-            className="btn btn-primary   btn-sm mr-2"
+            className="btn btn-primary btn-sm mr-2"
           >
             <img
               src="/icons/sync.svg"
@@ -101,7 +101,7 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
           </button>
         )}
       </Header>
-      <div className="content table-responsive table-full-width overflow-hidden">
+      <div className="content table-full-width overflow-hidden">
         <table className="table table-hover">
           <thead>
             <tr>

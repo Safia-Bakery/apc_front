@@ -46,8 +46,8 @@ const RequestPhotoReport = () => {
       );
   };
   return (
-    <div className="h-64 mb-6">
-      <Card className="overflow-hidden">
+    <div>
+      <Card className="overflow-hidden !min-h-min">
         <Header title={"add_photo_report"} />
         <div className="m-3">
           <UploadComponent

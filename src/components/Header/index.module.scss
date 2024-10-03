@@ -9,6 +9,9 @@
   @media (max-width: 760px) {
     font-size: 18px;
     padding: 8px 8px 0 8px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 .title {
@@ -19,7 +22,7 @@
   margin: 0;
   margin-right: 10px;
   display: flex;
-  align-items: center;
+  // align-items: center;
 
   @media (max-width: 1200px) {
     font-size: 22px;

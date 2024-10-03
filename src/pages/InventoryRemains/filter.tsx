@@ -19,7 +19,7 @@ const InventoryRemainsFilter: FC = () => {
   return (
     <>
       <td></td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput
             register={register("name")}
@@ -28,32 +28,32 @@ const InventoryRemainsFilter: FC = () => {
           />
         </BaseInput>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput disabled />
         </BaseInput>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput disabled />
         </BaseInput>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput disabled />
         </BaseInput>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput disabled />
         </BaseInput>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput disabled />
         </BaseInput>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput disabled />
         </BaseInput>
