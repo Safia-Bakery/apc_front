@@ -11,7 +11,7 @@ import {
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx, requestRows } from "@/utils/helpers";
+import { handleIdx, isMobile, requestRows } from "@/utils/helpers";
 import ITFilter from "./filter";
 import useQueryString from "custom/useQueryString";
 import AntdTable from "@/components/AntdTable";
@@ -65,13 +65,13 @@ const RequestsIT = () => {
       },
       {
         title: t("employee"),
-        width: 160,
+        ...(isMobile && { width: 160 }),
         dataIndex: "user?.full_name",
         render: (_, record) => record?.user?.full_name,
       },
       {
         title: t("executor"),
-        width: 160,
+        ...(isMobile && { width: 160 }),
         dataIndex: "brigada",
 
         render: (_, record) =>
@@ -79,27 +79,27 @@ const RequestsIT = () => {
       },
       {
         title: t("branch"),
-        width: 160,
+        ...(isMobile && { width: 160 }),
         dataIndex: "fillial",
         render: (_, record) => record?.fillial?.parentfillial?.name,
       },
       {
         title: t("category"),
-        width: 160,
+        ...(isMobile && { width: 160 }),
         dataIndex: "category",
         render: (_, record) => record?.category?.name,
       },
       {
         title: t("urgent"),
         dataIndex: "urgent",
-        width: 160,
+        ...(isMobile && { width: 160 }),
         render: (_, record) =>
           !!record?.category?.urgent ? t("yes") : t("no"),
       },
       {
         title: t("reopened"),
         dataIndex: "update_time",
-        width: 100,
+        ...(isMobile && { width: 100 }),
         render: (_, record) =>
           !!(
             record?.update_time[RequestStatus.paused] ||
@@ -110,26 +110,26 @@ const RequestsIT = () => {
       },
       {
         title: t("comment_table"),
-        width: 160,
+        ...(isMobile && { width: 160 }),
         dataIndex: "description",
         render: (_, record) => record?.description,
       },
       {
         title: t("rate"),
         dataIndex: "comments",
-        width: 100,
+        ...(isMobile && { width: 100 }),
         render: (_, record) => record?.comments?.[0]?.rating,
       },
       {
         title: t("status"),
         dataIndex: "status",
-        width: 150,
+        ...(isMobile && { width: 150 }),
         render: (_, record) => t(RequestStatus[record.status]),
       },
       {
         title: t("date"),
         dataIndex: "created_at",
-        width: 160,
+        ...(isMobile && { width: 160 }),
         render: (_, record) => dayjs(record?.created_at).format(dateTimeFormat),
       },
     ],
