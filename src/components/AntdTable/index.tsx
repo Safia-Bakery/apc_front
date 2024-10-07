@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import useQueryString from "@/hooks/custom/useQueryString";
 import { itemsPerPage } from "@/utils/helpers";
 import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
+import { useLocation } from "react-router-dom";
 
 type ReturnFunction<Tval> = (smt: Tval) => string;
 type RowClassName<T> = string | ReturnFunction<T>;
@@ -30,6 +31,7 @@ function AntdTable<T>({
   ...others
 }: Props<T>) {
   const { t } = useTranslation();
+  const { search } = useLocation();
   const currentPage = Number(useQueryString("page")) || 1;
   const navigateParams = useNavigateParams();
   const handleRowStyles = (item: T) =>
@@ -39,7 +41,7 @@ function AntdTable<T>({
     (page: number) => {
       navigateParams({ page });
     },
-    [currentPage]
+    [currentPage, search]
   );
 
   const indexOfLastItem = Math.min(currentPage * itemsPerPage);

@@ -402,3 +402,18 @@ p {
 .ant-table-cell-row-hover {
   background: #fafafa !important;
 }
+
+// #4096ff
+// .ant-btn.button {
+//   &[type="button"],
+//   &[type="reset"],
+//   &[type="submit"] {
+//     background: #4096ff !important;
+//   }
+// }
+.ant-btn-primary {
+  background-color: #1677ff;
+}
+.ant-btn-dangerous {
+  border-color: #ff4d4f !important;
+}

@@ -84,16 +84,12 @@ const AddFormRequest = lazy(() => import("@/pages/AddFormRequest"));
 const EditAddFormcategory = lazy(() => import("@/pages/EditAddFormcategory"));
 const Cleaning = lazy(() => import("@/pages/Cleaning"));
 
-const KRURequests = lazy(() => import("@/pages/KRURequests"));
-const AddKRURequests = lazy(() => import("@/pages/AddKRURequest"));
+const AddKRUSubTasks = lazy(() => import("@/pages/AddKRUSubTasks"));
+
+const EditKruTask = lazy(() => import("@/pages/EditKruTask"));
+const KruTasks = lazy(() => import("@/pages/KruTasks"));
 
 export const sidebarRoutes: SidebarType[] = [
-  // {
-  //   name: "heat_map",
-  //   url: "/map",
-  //   icon: "/icons/map.svg",
-  //   screen: MainPermissions.get_map,
-  // },
   {
     name: "apc_retail",
     icon: "/icons/apc.svg",
@@ -380,23 +376,16 @@ export const sidebarRoutes: SidebarType[] = [
   },
 
   {
-    name: "kru_requests",
+    name: "kru_tasks",
     icon: "/icons/logystics.svg",
-    screen: MainPermissions.kru_requests,
-    // department: Departments.form,
+    screen: MainPermissions.kru_sub_tasks,
     subroutes: [
       {
-        name: "tasks",
-        url: "/requests-kru",
-        icon: "/icons/logystics.svg",
-        screen: MainPermissions.kru_requests,
+        name: "tasks", // Поддержка
+        url: `/kru-tasks`,
+        icon: "/icons/categories.svg",
+        screen: MainPermissions.kru_tasks,
       },
-      // {
-      //   name: "add_tasks",
-      //   url: "/requests-kru/add",
-      //   icon: "/icons/categories.svg",
-      //   screen: MainPermissions.add_kru_requests,
-      // },
     ],
   },
 
@@ -513,19 +502,26 @@ export const routes = [
     screen: MainPermissions.get_form_request,
   },
   {
-    element: <KRURequests />,
-    path: "/requests-kru",
-    screen: MainPermissions.kru_requests,
+    element: <KruTasks />,
+    path: "/kru-tasks",
+    screen: MainPermissions.kru_tasks,
+  },
+
+  {
+    element: <EditKruTask />,
+    path: "/kru-tasks/:id",
+    screen: MainPermissions.edit_kru_tasks,
+  },
+
+  {
+    element: <EditKruTask />,
+    path: "/kru-tasks/add",
+    screen: MainPermissions.edit_kru_tasks,
   },
   {
-    element: <AddKRURequests />,
-    path: "/requests-kru/add",
-    screen: MainPermissions.add_kru_requests,
-  },
-  {
-    element: <AddKRURequests />,
-    path: "/requests-kru/:id",
-    screen: MainPermissions.add_kru_requests,
+    element: <AddKRUSubTasks />,
+    path: "/kru-tasks/:id/add-task",
+    screen: MainPermissions.kru_sub_tasks,
   },
   {
     element: <ShowFormRequests />,

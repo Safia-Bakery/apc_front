@@ -395,10 +395,16 @@ const localization = {
       upload_stats: "Загрузить статистику",
 
       tasks: "Задачи",
+      kru_tasks: "Задачи КРУ",
+      task: "Задача",
       add_tasks: "Добавить Задачи",
+      add_sub_tasks: "Добавить Задачи",
+      "add task": "Добавить Подзадачи",
       subtask_qnt: "Количество подзадач",
       subtasks: "Подзадачи",
-      kru_requests: "Задачи КРУ",
+
+      "kru tasks": "Задачи КРУ",
+      task_name: "Наименование Подзадачи",
     },
   },
   uz: {

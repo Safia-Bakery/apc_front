@@ -553,11 +553,11 @@ export enum MainPermissions {
 
   apc_cleaning = 137,
 
-  kru_requests = 138,
-  add_kru_requests = 139,
+  kru_sub_tasks = 139,
+  add_kru_sub_tasks = 138,
 
-  // kru_requests = 130,
-  // add_kru_requests = 130,
+  kru_tasks = 140,
+  edit_kru_tasks = 141,
 }
 export enum MarketingSubDep {
   all,
