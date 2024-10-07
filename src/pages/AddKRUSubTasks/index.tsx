@@ -121,7 +121,7 @@ const AddKRUSubTasks = () => {
           perm?.[MainPermissions.add_kru_sub_tasks] && (
             <Flex gap={10}>
               <Popconfirm
-                title="Вы действительно хотите удалить эту задачу?"
+                title="Вы действительно хотите удалить эту подзадачу?"
                 onConfirm={() => handleDelete(record.id)}
                 okText={t("yes")}
                 cancelText={t("no")}
@@ -148,7 +148,7 @@ const AddKRUSubTasks = () => {
     <Card>
       <Header title={"add"}>
         {!isMobile && (
-          <Button type="primary" onClick={() => navigate("/requests-kru")}>
+          <Button type="primary" onClick={() => navigate("/kru-tasks")}>
             {t("back")}
           </Button>
         )}
