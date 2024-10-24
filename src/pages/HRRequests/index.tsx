@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { BaseObjType, FAQRequestTypes, MainPermissions } from "@/utils/types";
+import { BaseObjType, FAQRequestTypes } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import Pagination from "@/components/Pagination";
 import {
   HRRequestTypes,

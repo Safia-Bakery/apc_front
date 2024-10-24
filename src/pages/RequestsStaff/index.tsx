@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { MainPermissions, Order, RequestStatus } from "@/utils/types";
+import { Order, RequestStatus } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import Pagination from "@/components/Pagination";
 import { useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
@@ -127,7 +128,7 @@ const RequestsStaff = () => {
         </div>
       </Header>
 
-      <div className="table-responsive grid-view content">
+      <div className="table-responsive  content">
         <ItemsCount data={requests} />
         <table className="table table-hover" ref={tableRef}>
           <TableHead

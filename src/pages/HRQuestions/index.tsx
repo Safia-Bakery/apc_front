@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { FAQTypes, MainPermissions } from "@/utils/types";
+import { FAQTypes } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import Pagination from "@/components/Pagination";
 import { handleIdx } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
@@ -50,7 +51,7 @@ const FAQQuestions = () => {
       </Header>
 
       <div className="content">
-        <div className="table-responsive grid-view">
+        <div className="table-responsive ">
           <ItemsCount data={faqs} />
           <table className="table table-hover">
             <TableHead

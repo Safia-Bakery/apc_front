@@ -149,11 +149,11 @@ const EditAddBranch = () => {
           <MainSelect
             onChange={(e) =>
               handleDep({
-                origin: Departments.inventory,
+                origin: Departments.inventory_retail,
                 id: e.target.value,
               })
             }
-            value={findName(Departments.inventory)}
+            value={findName(Departments.inventory_retail)}
             values={branch?.fillial_department}
           />
         </BaseInputs>

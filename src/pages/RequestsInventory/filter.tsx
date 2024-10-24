@@ -7,7 +7,7 @@ import MainInput from "@/components/BaseInputs/MainInput";
 import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
 import BranchSelect from "@/components/BranchSelect";
 import useQueryString from "custom/useQueryString";
-import { MainPermissions } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import dayjs from "dayjs";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { useForm } from "react-hook-form";
@@ -64,7 +64,7 @@ const ITFilter: FC = () => {
   return (
     <>
       <td></td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1 relative">
           <MainInput
             register={register("id")}
@@ -74,7 +74,7 @@ const ITFilter: FC = () => {
           />
         </BaseInput>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput
             register={register("sender")}
@@ -83,19 +83,19 @@ const ITFilter: FC = () => {
           />
         </BaseInput>
       </td>
-      <td width={150} className="p-0 relative">
+      <td width={150} className="!p-0 relative">
         <div onClick={() => $enabled(true)} className={"m-1"}>
           {perm?.[MainPermissions.get_fillials_list] && (
             <BranchSelect enabled={enabled} />
           )}
         </div>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput register={register("prods")} className="!mb-0" />
         </BaseInput>
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <MainDatePicker
           selected={
             !!created_at && created_at !== "undefined"
@@ -107,7 +107,7 @@ const ITFilter: FC = () => {
           wrapperClassName={"m-1"}
         />
       </td>
-      <td className="p-0">
+      <td className="!p-0">
         <BaseInputs className="!m-1">
           <StatusFilter options={RequestStatusArr} />
         </BaseInputs>

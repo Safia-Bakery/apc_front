@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Departments, MainPermissions, Order } from "@/utils/types";
+import { Departments, Order } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import Pagination from "@/components/Pagination";
 import { FC, useState } from "react";
 import dayjs from "dayjs";
@@ -90,7 +91,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
         )}
       </Header>
 
-      <div className="table-responsive grid-view content">
+      <div className="table-responsive  content">
         <ItemsCount data={requests} />
         <table className="table table-hover">
           <TableHead

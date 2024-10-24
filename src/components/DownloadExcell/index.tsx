@@ -37,7 +37,7 @@ const DownloadExcell = () => {
 
   return (
     <form
-      className={cl("flex gap-2 md:flex-row flex-col-reverse ", {
+      className={cl("flex gap-2 md:flex-row flex-col-reverse", {
         ["md:flex-row flex-col"]: active,
       })}
     >

@@ -289,6 +289,7 @@ const localization = {
       servise_level_stats: "статистика по уровнем сервиса",
       service_level: "уровень сервиса",
       inventory_retail: "Инвентарь розница",
+      inventory_fabric: "Инвентарь фабрика",
       with_service_level: "Уровень сервиса",
       with_category: "По категориям",
       with_branch: "По филиалам",

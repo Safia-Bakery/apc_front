@@ -2,12 +2,8 @@ import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
-import {
-  Departments,
-  MainPermissions,
-  Order,
-  RequestStatus,
-} from "@/utils/types";
+import { Departments, Order, RequestStatus } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
@@ -187,7 +183,7 @@ const RequestsIT = () => {
         </div>
       </Header>
 
-      <div className="table-responsive grid-view content ">
+      <div className="table-responsive  content ">
         <AntdTable
           sticky
           data={requests?.items}

@@ -3,13 +3,9 @@ import dayjs from "dayjs";
 import baseApi from "@/api/base_api";
 import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
-import {
-  DepartmentStatTypes,
-  Departments,
-  MainPermissions,
-  Sphere,
-} from "@/utils/types";
+import { DepartmentStatTypes, Departments, Sphere } from "@/utils/types";
 import { yearMonthDate } from "@/utils/keys";
+import { MainPermissions } from "@/utils/permissions";
 
 interface BodyTypes {
   enabled?: boolean;

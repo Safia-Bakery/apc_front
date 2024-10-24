@@ -74,7 +74,7 @@ const RemainsInStock = () => {
         </div>
       </Header>
 
-      <div className="table-responsive grid-view content">
+      <div className="table-responsive  content">
         <ItemsCount data={products} />
         <table className="table table-hover">
           <TableHead

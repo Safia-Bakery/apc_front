@@ -3,12 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import {
-  BrigadaType,
-  Departments,
-  MainPermissions,
-  Sphere,
-} from "@/utils/types";
+import { BrigadaType, Departments, Sphere } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import Loading from "@/components/Loader";
 import Pagination from "@/components/Pagination";
 import { handleIdx } from "@/utils/helpers";
@@ -97,7 +93,7 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
         )}
       </Header>
 
-      <div className="table-responsive grid-view content">
+      <div className="table-responsive  content">
         <ItemsCount data={brigadas} />
         <table className="table table-hover">
           <TableHead column={column} onSort={(data) => $sort(data)} />

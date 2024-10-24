@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Departments, MainPermissions, ToolItemType } from "@/utils/types";
+import { Departments, ToolItemType } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { numberWithCommas } from "@/utils/helpers";
@@ -89,7 +90,7 @@ const InventoryRemainsMins = () => {
     isLoading: toolsLoading,
     refetch,
   } = useTools({
-    department: Departments.inventory,
+    department: Departments.inventory_retail,
     page,
     few_amounts: !!mins,
     ...(!!name && { name }),

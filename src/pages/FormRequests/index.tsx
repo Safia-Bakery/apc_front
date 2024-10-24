@@ -1,10 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Departments,
-  MainPermissions,
-  Order,
-  RequestStatus,
-} from "@/utils/types";
+import { Departments, Order, RequestStatus } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import { useMemo } from "react";
 import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
@@ -127,7 +123,7 @@ const FormRequests = () => {
         </div>
       </Header>
 
-      <div className="table-responsive grid-view content">
+      <div className="table-responsive  content">
         <AntdTable
           sticky
           data={requests?.items}

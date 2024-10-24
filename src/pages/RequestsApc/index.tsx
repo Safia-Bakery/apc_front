@@ -1,11 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  Departments,
-  MainPermissions,
-  Order,
-  RequestStatus,
-  Sphere,
-} from "@/utils/types";
+import { Departments, Order, RequestStatus, Sphere } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import Pagination from "@/components/Pagination";
 import { FC, useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
@@ -148,7 +143,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
         )}
       </Header>
 
-      <div className="table-responsive grid-view content">
+      <div className="table-responsive  content">
         <ItemsCount data={requests} />
         <table className="table table-hover table-bordered" ref={tableRef}>
           <TableHead

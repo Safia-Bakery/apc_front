@@ -91,7 +91,7 @@ const RequestsCCTV = () => {
         </button>
       </Header>
 
-      <div className="table-responsive grid-view content">
+      <div className="table-responsive  content">
         <ItemsCount data={requests} />
         <table ref={tableRef} className="table table-hover">
           <TableHead

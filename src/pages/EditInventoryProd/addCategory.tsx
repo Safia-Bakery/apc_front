@@ -15,7 +15,7 @@ const AddCategory = () => {
 
   const { data: categories, isLoading } = useCategories({
     category_status: 1,
-    department: Departments.inventory,
+    department: Departments.inventory_retail,
   });
   const {
     data,

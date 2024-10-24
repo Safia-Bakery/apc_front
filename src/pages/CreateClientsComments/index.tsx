@@ -13,7 +13,7 @@ import MainInput from "@/components/BaseInputs/MainInput";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import useQueryString from "custom/useQueryString";
 import BranchSelect from "@/components/BranchSelect";
-import { MainPermissions } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import Loading from "@/components/Loader";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";

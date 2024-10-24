@@ -2,7 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import baseApi from "@/api/base_api";
 import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
-import { BranchType, MainPermissions } from "@/utils/types";
+import { BranchType } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 
 export const useBranch = ({
   id,

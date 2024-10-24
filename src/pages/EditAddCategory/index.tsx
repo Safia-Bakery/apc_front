@@ -40,7 +40,7 @@ interface Props {
 
 const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
   const { t } = useTranslation();
-  const { id, sphere } = useParams();
+  const { id, sphere, dep: depId } = useParams();
   const navigate = useNavigate();
   const parent_id = Number(useQueryString("parent_id"));
   const parent_name = useQueryString("parent_name");
@@ -58,7 +58,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
   const { refetch: categoryRefetch } = useCategories({
     enabled: false,
     page: 1,
-    department: dep,
+    department: depId || dep,
     ...((sphere_status || !!sphere) && {
       sphere_status: Number(sphere) || sphere_status,
     }),
@@ -93,7 +93,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
         description,
         status: +!!status,
         urgent: +!!urgent,
-        department: dep,
+        department: Number(depId) || dep,
         is_child,
         telegram_id,
         sphere_status: Number(sphere) || sphere_status || Sphere.retail,

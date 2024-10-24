@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { useDownloadExcel } from "react-export-table-to-excel/lib/hooks/useExcel";
 import { useMemo, useRef } from "react";
-
+import { MainPermissions } from "@/utils/permissions";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import Pagination from "@/components/Pagination";
@@ -13,12 +13,7 @@ import useQueryString from "custom/useQueryString";
 import EmptyList from "@/components/EmptyList";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
-import {
-  Departments,
-  FileType,
-  MainPermissions,
-  ModalTypes,
-} from "@/utils/types";
+import { Departments, FileType, ModalTypes } from "@/utils/types";
 import DateRangeBlock from "@/components/DateRangeBlock";
 import useOrders from "@/hooks/useOrders";
 import { baseURL } from "@/store/baseUrl";
@@ -89,7 +84,7 @@ const ClientsComments = () => {
       <div className="content">
         <DateRangeBlock />
 
-        <div className="table-responsive grid-view">
+        <div className="table-responsive ">
           <ItemsCount data={comments} />
           <table className="table table-hover" ref={tableRef}>
             <TableHead column={column} />

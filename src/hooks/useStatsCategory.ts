@@ -7,9 +7,9 @@ import {
   CategoryStatTypes,
   Departments,
   EPresetTimes,
-  MainPermissions,
   Sphere,
 } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import { yearMonthDate } from "@/utils/keys";
 
 interface BodyTypes {

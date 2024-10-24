@@ -25,7 +25,7 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Flex, Modal, Popconfirm } from "antd";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "@/store/reducers/sidebar";
-import { MainPermissions } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 
 const AddKRUSubTasks = () => {
   const { t } = useTranslation();

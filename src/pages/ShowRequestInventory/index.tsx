@@ -40,7 +40,7 @@ const unchangableObj: BaseReturnBoolean = {
 
 const ShowRequestInventory = () => {
   const { t } = useTranslation();
-  const { id } = useParams();
+  const { id, dep } = useParams();
   const permissions = useAppSelector(permissionSelector);
   const modal = useQueryString("modal");
   const removeParams = useRemoveParams();
@@ -63,7 +63,7 @@ const ShowRequestInventory = () => {
     else navigateParams({ modal: ModalTypes.showPhoto, photo: file });
   };
 
-  const handleBack = () => navigate("/requests-inventory");
+  const handleBack = () => navigate(`/requests-inventory/${dep}`);
 
   const handleBrigada =
     ({ status }: { status?: RequestStatus }) =>
@@ -164,7 +164,7 @@ const ShowRequestInventory = () => {
           }`}
         >
           <button
-            className="btn btn-warning   mr-2"
+            className="btn btn-warning mr-2"
             onClick={() => navigate(`/request/logs/${id}`)}
           >
             {t("logs")}

@@ -1,3 +1,5 @@
+import { MainPermissions } from "./permissions";
+
 export enum EPresetTimes {
   SECOND = 1000,
   MINUTE = SECOND * 60,
@@ -389,176 +391,6 @@ export interface CartProducts {
   author: { name: string; id: number | string };
 }
 
-export enum MainPermissions {
-  edit_roles = 2,
-  get_roles = 14,
-  add_role = 15,
-  get_comments_list = 1,
-  edit_comment = 13,
-  get_brigadas = 3,
-  add_brigada = 16,
-  edit_brigada = 17,
-  get_warehouse_retail = 4,
-  get_warehouse_fabric = 70,
-  get_users = 5,
-  add_users = 18,
-  edit_users = 19,
-  get_mark_category = 6,
-  add_mark_category = 20,
-  edit_mark_category = 21,
-  get_map = 8,
-  synch_fillials_iiko = 9,
-  synch_tools_iiko = 30,
-  add_fillials = 22,
-  edit_fillials = 23,
-  get_fillials_list = 29,
-  get_requests_apc = 12,
-  edit_request_apc = 24,
-  add_request_apc = 25,
-  synch_apc_iiko = 26,
-  request_ettach = 27,
-  request_add_expanditure = 28,
-  get_design_request = 31,
-  add_design_request = 44,
-  edit_design_request = 32,
-  get_locmar_requests = 33,
-  add_locmar_requests = 45,
-  edit_locmar_requests = 34,
-  get_promo_requests = 35,
-  add_promo_requests = 43,
-  edit_promo_requests = 36,
-  get_pos_requests = 37,
-  add_pos_requests = 42,
-  edit_pos_requests = 38,
-  get_complect_requests = 39,
-  add_complect_requests = 41,
-  edit_complect_requests = 40,
-  get_apc_category = 48,
-  add_apc_category = 46,
-  edit_apc_category = 47,
-
-  get_clients = 58,
-  add_clients = 59,
-  edit_clients = 60,
-
-  get_master = 61,
-  add_master = 62,
-  edit_master = 63,
-
-  get_fabric_requests = 49,
-  edit_fabric_requests = 50,
-  add_fabric_requests = 51,
-  sync_fab_req_iiko = 52,
-  fabric_req_attach_master = 53,
-  add_expen_fab = 54,
-  add_categ_fab = 55,
-  get_categ_fab = 57,
-  edit_categ_fab = 56,
-
-  get_stock_env_requests = 67,
-  edit_stock_env_requests = 68,
-  add_stock_env_requests = 69,
-
-  get_nostandard_requests = 64,
-  edit_nostandard_requests = 65,
-  add_nostandard_requests = 66,
-
-  get_log_requests = 71,
-  edit_log_requests = 73,
-  add_log_requests = 72,
-
-  get_log_cars = 92,
-  add_log_cars = 93,
-  edit_log_cars = 94,
-
-  get_log_categs = 74,
-  add_log_categs = 75,
-  edit_log_categs = 76,
-
-  get_staff_requests = 80,
-  add_staff_requests = 79,
-  edit_staff_requests = 78,
-  staff_modal_time = 77,
-
-  it_add_master = 84,
-  it_edit_master = 83,
-  it_get_masters = 85,
-  it_statistics = 81,
-  it_remains_in_stock = 83,
-  get_it_requests = 90,
-  edit_it_requests = 89,
-  add_it_requests = 91,
-  add_categ_it = 87,
-  get_categ_it = 88,
-  edit_categ_it = 86,
-
-  get_client_comment = 95,
-  edit_client_comment = 97,
-  add_client_comment = 96,
-
-  get_requests_inventory = 98,
-  add_requests_inventory = 99,
-  edit_requests_inventory = 100,
-  edit_product_inventory = 102,
-  get_product_inventory = 101,
-  get_inventory_purchase_prods = 103,
-  edit_inventory_purchase_prods = 104,
-  inventory_remains_in_stock = 105,
-  inventory_reports = 106,
-
-  get_faq = 107,
-  add_faq = 108,
-  edit_faq = 109,
-  get_faq_requests = 110,
-  edit_faq_requests = 111,
-
-  marketing_all_requests = 112,
-
-  get_requests_cctv = 117,
-  add_requests_cctv = 118,
-  edit_requests_cctv = 115,
-  edit_cetagories_cctv = 120,
-  get_cetagories_cctv = 116,
-  add_cetagories_cctv = 119,
-
-  stats_apc_fabric = 114,
-
-  stats_apc_retail = 113,
-  stats_marketing = 7,
-
-  get_apc_expenses = 121,
-  edit_apc_expenses = 122,
-  add_apc_expenses = 123,
-  get_apc_expenses_categories = 121,
-  add_apc_expenses_categories = 122,
-  edit_apc_expenses_categories = 123,
-
-  bot_settings = 124,
-
-  get_tg_link = 125,
-  edit_tg_link = 126,
-  add_tg_link = 127,
-
-  get_categories_inventory = 128,
-  edit_categories_inventory = 129,
-  add_categories_inventory = 130,
-
-  get_form_request = 131,
-  add_form_request = 133,
-  edit_form_request = 132,
-
-  get_form_category = 134,
-  edit_form_category = 135,
-  add_form_category = 136,
-
-  apc_cleaning = 137,
-
-  kru_sub_tasks = 139,
-  add_kru_sub_tasks = 138,
-
-  kru_tasks = 140,
-  edit_kru_tasks = 141,
-}
 export enum MarketingSubDep {
   all,
   designers,
@@ -603,7 +435,7 @@ export const MarketingSubDepRu = [
 export enum Departments {
   all,
   APC,
-  inventory,
+  inventory_retail,
   marketing,
   IT,
   car_requests, // zakaz mawin
@@ -611,6 +443,7 @@ export enum Departments {
   clientComment, // otziv clientov
   cctv, // videonablyudeniye
   form,
+  inventory_factory,
 }
 export enum Sphere {
   retail = 1, //for APC department

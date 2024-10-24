@@ -14,10 +14,10 @@ import {
   BaseReturnBoolean,
   Departments,
   FileType,
-  MainPermissions,
   ModalTypes,
   RequestStatus,
 } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import UploadComponent, { FileItem } from "@/components/FileUpload";
 import { reportImgSelector, uploadReport } from "reducers/selects";
 import useQueryString from "custom/useQueryString";

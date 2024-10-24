@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import useBotWorkTime from "@/hooks/useBotWorkTime";
 import useQueryString from "custom/useQueryString";
-import { MainPermissions } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import Loading from "../Loader";

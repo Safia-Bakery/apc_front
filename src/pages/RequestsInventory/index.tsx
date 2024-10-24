@@ -1,41 +1,23 @@
-import { Link, useNavigate } from "react-router-dom";
-import { Departments, Order, RequestStatus } from "@/utils/types";
-import Loading from "@/components/Loader";
-import Pagination from "@/components/Pagination";
-import { useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Order, RequestStatus } from "@/utils/types";
+import { useMemo } from "react";
 import dayjs from "dayjs";
-import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx, requestRows } from "@/utils/helpers";
-import TableHead from "@/components/TableHead";
+import { handleIdx, isMobile, requestRows } from "@/utils/helpers";
 import InventoryFilter from "./filter";
-import ItemsCount from "@/components/ItemsCount";
 import useQueryString from "custom/useQueryString";
-import EmptyList from "@/components/EmptyList";
 import { useTranslation } from "react-i18next";
 import { dateTimeFormat, yearMonthDate } from "@/utils/keys";
-
-const column = [
-  { name: "№", key: "" },
-  { name: "num", key: "id" },
-  { name: "sender", key: "type" },
-  { name: "receiver", key: "fillial.name" },
-  { name: "products", key: "expenditures" },
-  { name: "date", key: "created_at" },
-
-  {
-    name: "status",
-    key: "status",
-  },
-  { name: "author", key: "user.name" },
-];
+import { getInventoryRequests } from "@/hooks/inventory";
+import AntdTable from "@/components/AntdTable";
+import Table, { ColumnsType } from "antd/es/table";
 
 const RequestsInventory = () => {
   const { t } = useTranslation();
+  const { dep } = useParams();
   const navigate = useNavigate();
   const currentPage = Number(useQueryString("page")) || 1;
-  const [sort, $sort] = useState<Order[]>();
   const request_status = useQueryString("request_status");
   const created_at = useQueryString("created_at");
   const user = useQueryString("user");
@@ -47,10 +29,10 @@ const RequestsInventory = () => {
     data: requests,
     isLoading: orderLoading,
     isFetching: orderFetching,
-  } = useOrders({
+  } = getInventoryRequests({
     enabled: true,
     page: currentPage,
-    department: Departments.inventory,
+    department: Number(dep),
     ...(!!request_status && { request_status }),
     ...(!!created_at && {
       created_at: dayjs(created_at).format(yearMonthDate),
@@ -60,60 +42,100 @@ const RequestsInventory = () => {
     ...(!!id && { id }),
   });
 
+  const columns = useMemo<ColumnsType<Order>>(
+    () => [
+      {
+        title: "№",
+        dataIndex: "",
+        width: 50,
+        className: "!px-0 text-center",
+        render: (_, r, idx) => handleIdx(idx),
+      },
+      {
+        title: t("num"),
+        dataIndex: "id",
+        width: 80,
+        render: (_, order) => <Link to={`${order?.id}`}>{order?.id}</Link>,
+      },
+      {
+        title: t("sender"),
+        ...(isMobile && { width: 160 }),
+        dataIndex: "user?.full_name",
+        render: (_, order) => order?.user?.full_name,
+      },
+      {
+        title: t("receiver"),
+        ...(isMobile && { width: 160 }),
+        dataIndex: "brigada",
+
+        render: (_, order) => order?.fillial?.parentfillial?.name,
+      },
+      {
+        title: t("products"),
+        ...(isMobile && { width: 160 }),
+        dataIndex: "fillial",
+        render: (_, order) => (
+          <ul className="max-w-xs w-full pl-3">
+            {!!order?.expanditure?.length &&
+              order?.expanditure?.map((prod) => (
+                <li className="list-disc" key={prod.id}>
+                  {prod?.tool?.name}
+                </li>
+              ))}
+          </ul>
+        ),
+      },
+      {
+        title: t("date"),
+        dataIndex: "created_at",
+        ...(isMobile && { width: 160 }),
+        render: (_, record) => dayjs(record?.created_at).format(dateTimeFormat),
+      },
+
+      {
+        title: t("status"),
+        dataIndex: "status",
+        ...(isMobile && { width: 150 }),
+        render: (_, record) => t(RequestStatus[record.status]),
+      },
+      {
+        title: t("author"),
+        dataIndex: "update_time",
+        ...(isMobile && { width: 100 }),
+        render: (_, order) => order?.user_manager,
+      },
+    ],
+    []
+  );
+
+  const renderFilter = useMemo(() => {
+    return <InventoryFilter />;
+  }, []);
+
   return (
     <Card>
       <Header title={t("requests_for_inventory")}>
-        <button onClick={() => navigate("add")} className="btn btn-success  ">
+        {/* <button onClick={() => navigate("add")} className="btn btn-success">
           {t("add")}
-        </button>
+        </button> */}
       </Header>
 
-      <div className="table-responsive grid-view content">
-        <ItemsCount data={requests} />
-        <table className="table table-hover">
-          <TableHead
-            column={column}
-            onSort={(data) => $sort(data)}
-            data={requests?.items}
-          >
-            <InventoryFilter />
-          </TableHead>
-
-          {!!requests?.items?.length && (
-            <tbody>
-              {(sort?.length ? sort : requests?.items)?.map((order, idx) => (
-                <tr className={requestRows[order.status]} key={idx}>
-                  <td width="40">{handleIdx(idx)}</td>
-                  <td width="80">
-                    <Link to={`/requests-inventory/${order?.id}`}>
-                      {order?.id}
-                    </Link>
-                  </td>
-                  <td>
-                    <span className="not-set">{order?.user?.full_name}</span>
-                  </td>
-                  <td>{order?.fillial?.parentfillial?.name}</td>
-                  <td>
-                    <ul className="max-w-xs w-full">
-                      {!!order?.expanditure?.length &&
-                        order?.expanditure?.map((prod) => (
-                          <li className="list-disc" key={prod.id}>
-                            {prod?.tool?.name}
-                          </li>
-                        ))}
-                    </ul>
-                  </td>
-                  <td>{dayjs(order?.created_at).format(dateTimeFormat)}</td>
-                  <td>{t(RequestStatus[order.status])}</td>
-                  <td>{order?.user_manager}</td>
-                </tr>
-              ))}
-            </tbody>
+      <div className="table-responsive">
+        <AntdTable
+          sticky
+          data={requests?.items}
+          totalItems={requests?.total}
+          columns={columns}
+          loading={orderLoading || orderFetching}
+          rowClassName={(item) => requestRows[item.status]}
+          summary={() => (
+            <Table.Summary fixed={"top"}>
+              <Table.Summary.Row className="sticky top-0 z-10">
+                {renderFilter}
+              </Table.Summary.Row>
+            </Table.Summary>
           )}
-        </table>
-        {(orderFetching || orderLoading) && <Loading />}
-        {!requests?.items?.length && !orderLoading && <EmptyList />}
-        {!!requests && <Pagination totalPages={requests.pages} />}
+        />
       </div>
     </Card>
   );

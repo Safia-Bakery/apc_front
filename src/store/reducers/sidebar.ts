@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../rootConfig";
-import { Departments, MainPermissions, SidebarType } from "@/utils/types";
+import { Departments, SidebarType } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import { sidebarRoutes } from "@/utils/routeObjs";
 
 interface State {

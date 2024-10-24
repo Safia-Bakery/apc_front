@@ -6,12 +6,8 @@ import { Link } from "react-router-dom";
 import Container from "@/components/Container";
 import cl from "classnames";
 import useMainStats from "@/hooks/useMainStats";
-import {
-  Departments,
-  MainPermissions,
-  MarketingSubDep,
-  Sphere,
-} from "@/utils/types";
+import { Departments, MarketingSubDep, Sphere } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import Chart from "react-apexcharts";
 import { ChangeEvent, useMemo, useState } from "react";
 import Loading from "@/components/Loader";
@@ -79,8 +75,8 @@ const mainDeps: DepTypes = {
   [MainPermissions.get_it_requests]: {
     dep: Departments.IT,
   },
-  [MainPermissions.get_requests_inventory]: {
-    dep: Departments.inventory,
+  [MainPermissions.get_requests_inventory_retail]: {
+    dep: Departments.inventory_retail,
   },
   [MainPermissions.get_design_request]: {
     dep: Departments.marketing,
@@ -170,7 +166,7 @@ const ControlPanel = () => {
               newOrders: "/requests-apc-retail?request_status=0",
               ratingUrl: "/requests-apc-retail?rate=1",
             };
-        case Departments.inventory:
+        case Departments.inventory_retail:
           return {
             title: "inventory",
             newOrders: "/requests-inventory?request_status=0",

@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import useCatProducts from "@/hooks/useCatProducts";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { MainPermissions } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import { handleIdx } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
 import TableViewBtn from "@/components/TableViewBtn";
@@ -59,7 +59,7 @@ const CategoryProducts = () => {
       </Header>
 
       <div className="content">
-        <div className="table-responsive grid-view">
+        <div className="table-responsive ">
           <table className="table table-hover">
             <TableHead
               column={column}

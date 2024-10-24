@@ -16,11 +16,11 @@ import {
   BaseReturnBoolean,
   Departments,
   FileType,
-  MainPermissions,
   ModalTypes,
   RequestStatus,
   Sphere,
 } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import useQueryString from "custom/useQueryString";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import useBrigadas from "@/hooks/useBrigadas";

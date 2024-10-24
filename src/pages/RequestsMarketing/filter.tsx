@@ -13,7 +13,7 @@ import BranchSelect from "@/components/BranchSelect";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
-import { MainPermissions } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import useUpdateEffect from "custom/useUpdateEffect";
 import StatusFilter from "@/components/StatusFilter";
 

@@ -15,7 +15,6 @@ import useOrderCounts from "@/hooks/useOrderCounts";
 import { langSelector } from "@/store/reducers/selects";
 import i18n from "@/localization";
 import { Playground } from "../CustomSidebar";
-import { webVersionHandler } from "@/store/reducers/versionCheck";
 
 const WebRooutes = () => {
   const token = useAppSelector(tokenSelector);
@@ -48,11 +47,6 @@ const WebRooutes = () => {
   }, [permission, token]);
 
   useEffect(() => {
-    // const currentPath = window.location.pathname;
-    // const normalizedPath = normalizeURL(currentPath);
-    // if (currentPath !== normalizedPath)
-    //   navigate(normalizedPath, { replace: true });
-    dispatch(webVersionHandler());
     if (window.location.pathname === "/") navigate("/home");
   }, []);
 

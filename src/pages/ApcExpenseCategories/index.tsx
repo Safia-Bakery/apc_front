@@ -26,7 +26,7 @@ const ApcExpenseCategories = () => {
     <Card>
       <Header title={"expense_categories"} />
 
-      <div className="table-responsive grid-view content">
+      <div className="table-responsive  content">
         <table className="table table-hover">
           <TableHead
             column={column}

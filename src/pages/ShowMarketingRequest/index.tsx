@@ -13,14 +13,13 @@ import { baseURL } from "@/store/baseUrl";
 import { MarketingStatusObj, detectFileType } from "@/utils/helpers";
 import {
   FileType,
-  MainPermissions,
   MarketingSubDep,
   ModalTypes,
   RequestStatus,
 } from "@/utils/types";
 import { useForm } from "react-hook-form";
 import ShowRequestModals from "@/components/ShowRequestModals";
-
+import { MainPermissions } from "@/utils/permissions";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";

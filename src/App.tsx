@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import WebRooutes from "./components/WebRoutes";
 import { useAppSelector } from "@/store/utils/types";
 import { tokenSelector } from "reducers/auth";
-import { MainPermissions, Sphere } from "@/utils/types";
+import { Sphere } from "@/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import Suspend from "./components/Suspend";
 import TgRoutes from "./components/TgRoutes";
@@ -18,6 +18,7 @@ import {
   MarketingStatsRoutes,
   routes,
 } from "./utils/routeObjs";
+import { MainPermissions } from "@/utils/permissions";
 
 const ControlPanel = lazy(() => import("@/pages/ControlPanel"));
 const TgRating = lazy(() => import("@/webApp/pages/TgRating"));

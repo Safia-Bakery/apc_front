@@ -14,7 +14,7 @@ import { sidebatItemsSelector } from "@/store/reducers/sidebar";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import styles from "./index.module.scss";
 import { sidebarHandler, toggleSidebar } from "@/store/reducers/selects";
-import { MainPermissions } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import "./index.scss";
 
 export const Playground: FC = () => {

@@ -40,7 +40,7 @@ const Comments = () => {
       </Header>
 
       <div className="content">
-        <div className="table-responsive grid-view">
+        <div className="table-responsive ">
           <ItemsCount data={comments} />
           <table className="table table-hover">
             <TableHead column={column} />

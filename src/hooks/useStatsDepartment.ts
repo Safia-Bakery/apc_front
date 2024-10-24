@@ -7,10 +7,10 @@ import {
   DepartmentStatTypes,
   Departments,
   EPresetTimes,
-  MainPermissions,
   Sphere,
 } from "@/utils/types";
 import { yearMonthDate } from "@/utils/keys";
+import { MainPermissions } from "@/utils/permissions";
 
 interface BodyTypes {
   enabled?: boolean;

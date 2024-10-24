@@ -2,13 +2,8 @@ import { FC, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import {
-  Category,
-  Departments,
-  MainPermissions,
-  MarketingSubDep,
-  Sphere,
-} from "@/utils/types";
+import { Category, Departments, MarketingSubDep, Sphere } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import Pagination from "@/components/Pagination";
 import { handleIdx } from "@/utils/helpers";
 import TableHead from "@/components/TableHead";
@@ -84,7 +79,7 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
       </Header>
 
       <div className="content">
-        <div className="table-responsive grid-view">
+        <div className="table-responsive ">
           <ItemsCount data={categories} />
           <table className="table table-hover">
             <TableHead

@@ -1,7 +1,8 @@
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { MainPermissions, UsersType } from "@/utils/types";
+import { UsersType } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import { FC, useMemo } from "react";
 import { handleIdx } from "@/utils/helpers";
 import TableViewBtn from "@/components/TableViewBtn";
@@ -121,7 +122,7 @@ const Users: FC<Props> = ({ add, edit }) => {
         )}
       </Header>
 
-      <div className="table-responsive grid-view content">
+      <div className="table-responsive  content">
         <AntdTable
           sticky
           data={users?.items}

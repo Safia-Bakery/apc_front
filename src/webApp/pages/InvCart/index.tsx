@@ -12,10 +12,10 @@ import ToolCard from "@/webApp/components/ToolCard";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import BaseInput from "@/components/BaseInputs";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
-import requestMutation from "@/hooks/mutation/orderMutation";
 import { useForm } from "react-hook-form";
 import errorToast from "@/utils/errorToast";
 import Loading from "@/components/Loader";
+import invRequestMutation from "@/hooks/inventory";
 
 const InvCart = () => {
   const navigate = useNavigate();
@@ -23,19 +23,17 @@ const InvCart = () => {
   const { state } = useLocation();
   const dispatch = useAppDispatch();
   const cart = useAppSelector(cartSelector);
-  const { mutate, isPending: mutating } = requestMutation();
+  const { mutate, isPending: mutating } = invRequestMutation();
   const { getValues, register } = useForm();
 
   const handleSubmit = () => {
     const { comment } = getValues();
 
-    const expenditure = Object.entries(cart).reduce(
-      (acc: any, [key, value]) => {
-        acc[key] = [value.count, " "];
-        return acc;
-      },
-      {}
-    );
+    const expenditure = Object.entries(cart).map((item) => ({
+      tool_id: Number(item[0]),
+      amount: item[1].count,
+    }));
+
     mutate(
       {
         category_id: state?.category_id,

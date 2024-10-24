@@ -37,7 +37,7 @@ const BaseStatsBlock = ({ routesArr, title }: Props) => {
       <div className="content">
         <DateRangeBlock />
 
-        <div className="table-responsive grid-view">
+        <div className="table-responsive ">
           <StatBar arr={routesArr} />
           <Outlet />
         </div>

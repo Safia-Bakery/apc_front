@@ -77,7 +77,7 @@ function AntdTable<T>({
         columns={columns}
         sticky
         title={() =>
-          totalItems && (
+          !!totalItems && (
             <div>
               {t("shown_items")}{" "}
               <b>

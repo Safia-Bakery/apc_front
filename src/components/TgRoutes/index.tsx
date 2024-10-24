@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import useQueryString from "custom/useQueryString";
-import { loginHandler } from "reducers/auth";
+import { getDepartment, loginHandler } from "reducers/auth";
 import { useAppDispatch } from "@/store/utils/types";
 import { TelegramApp } from "@/utils/tgHelpers";
-import { tgVersionHandler } from "@/store/reducers/versionCheck";
 
 const TgRoutes = () => {
   const tokenKey = useQueryString("key");
+  const departmentParam = useQueryString("department");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { pathname, search } = useLocation();
@@ -16,11 +16,11 @@ const TgRoutes = () => {
     if (!!tokenKey) {
       dispatch(loginHandler(tokenKey));
       navigate(pathname + search);
+      departmentParam && dispatch(getDepartment(Number(departmentParam)));
     }
-  }, [tokenKey]);
+  }, [tokenKey, departmentParam]);
 
   useEffect(() => {
-    dispatch(tgVersionHandler());
     setTimeout(() => {
       TelegramApp?.expand();
       TelegramApp?.confirmClose();

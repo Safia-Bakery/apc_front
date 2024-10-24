@@ -1,12 +1,7 @@
 import { lazy } from "react";
 import { stockStores } from "./keys";
-import {
-  Departments,
-  MainPermissions,
-  MarketingSubDep,
-  SidebarType,
-  Sphere,
-} from "./types";
+import { Departments, MarketingSubDep, SidebarType, Sphere } from "./types";
+import { MainPermissions } from "./permissions";
 
 const RequestsStaff = lazy(() => import("@/pages/RequestsStaff"));
 const AddStaffOrder = lazy(() => import("@/pages/AddStaffRequest"));
@@ -82,6 +77,7 @@ const FormRequests = lazy(() => import("@/pages/FormRequests"));
 const ShowFormRequests = lazy(() => import("@/pages/ShowFormRequests"));
 const AddFormRequest = lazy(() => import("@/pages/AddFormRequest"));
 const EditAddFormcategory = lazy(() => import("@/pages/EditAddFormcategory"));
+const InventoryCategories = lazy(() => import("@/pages/InventoryCategories"));
 const Cleaning = lazy(() => import("@/pages/Cleaning"));
 
 const AddKRUSubTasks = lazy(() => import("@/pages/AddKRUSubTasks"));
@@ -246,22 +242,62 @@ export const sidebarRoutes: SidebarType[] = [
   },
 
   {
-    name: "inventory",
+    name: "inventory_retail",
     icon: "/icons/inventary.svg",
-    department: Departments.inventory,
-    screen: MainPermissions.get_requests_inventory,
+    department: Departments.inventory_retail,
+    screen: MainPermissions.get_requests_inventory_retail,
     subroutes: [
       {
         name: "requests",
-        url: "/requests-inventory",
+        url: `/requests-inventory/${Departments.inventory_retail}`,
         icon: "/icons/subOrder.svg",
-        screen: MainPermissions.get_requests_inventory,
+        screen: MainPermissions.get_requests_inventory_retail,
       },
       {
         name: "categories",
-        url: "/categories-inventory",
+        url: `/categories-inventory/${Departments.inventory_retail}`,
         icon: "/icons/categories.svg",
-        screen: MainPermissions.get_categories_inventory,
+        screen: MainPermissions.get_categories_inventory_retail,
+      },
+      {
+        name: "inventory_products",
+        url: "/products-ierarch",
+        icon: "/icons/products.svg",
+        screen: MainPermissions.get_product_inventory,
+      },
+      {
+        name: "purchasing_requests",
+        url: "/order-products-inventory",
+        icon: "/icons/products.svg",
+        screen: MainPermissions.get_inventory_purchase_prods,
+      },
+      {
+        name: "statistics",
+        url: "/statistics-inventory",
+        param: "/service_level",
+        icon: "/icons/statistics.svg",
+        screen: MainPermissions.inventory_reports,
+      },
+    ],
+  },
+
+  {
+    name: "inventory_fabric",
+    icon: "/icons/inventary.svg",
+    department: Departments.inventory_factory,
+    screen: MainPermissions.get_requests_inventory_factory,
+    subroutes: [
+      {
+        name: "requests",
+        url: `/requests-inventory/${Departments.inventory_factory}`,
+        icon: "/icons/subOrder.svg",
+        screen: MainPermissions.get_requests_inventory_factory,
+      },
+      {
+        name: "categories",
+        url: `/categories-inventory/${Departments.inventory_factory}`,
+        icon: "/icons/categories.svg",
+        screen: MainPermissions.get_categories_inventory_factory,
       },
       {
         name: "inventory_products",
@@ -561,25 +597,34 @@ export const routes = [
     screen: MainPermissions.bot_settings,
   },
   {
-    element: (
-      <Categories
-        dep={Departments.inventory}
-        add={MainPermissions.add_categories_inventory}
-        edit={MainPermissions.edit_categories_inventory}
-      />
-    ),
-    path: "/categories-inventory",
-    screen: MainPermissions.get_categories_inventory,
+    element: <InventoryCategories />,
+    path: "/categories-inventory/:dep",
+    screen: MainPermissions.get_categories_inventory_retail,
   },
   {
-    element: <EditAddCategory dep={Departments.inventory} />,
-    path: "/categories-inventory/:id",
-    screen: MainPermissions.edit_categories_inventory,
+    element: <InventoryCategories />,
+    path: "/categories-inventory/:dep",
+    screen: MainPermissions.get_categories_inventory_factory,
   },
   {
-    element: <EditAddCategory dep={Departments.inventory} />,
-    path: "/categories-inventory/add",
-    screen: MainPermissions.add_categories_inventory,
+    element: <EditAddCategory dep={Departments.inventory_retail} />,
+    path: "/categories-inventory/:dep/:id",
+    screen: MainPermissions.edit_categories_inventory_retail,
+  },
+  {
+    element: <EditAddCategory dep={Departments.inventory_factory} />,
+    path: "/categories-inventory/:dep/:id",
+    screen: MainPermissions.edit_categories_inventory_factory,
+  },
+  {
+    element: <EditAddCategory dep={Departments.inventory_factory} />,
+    path: "/categories-inventory/:dep/add",
+    screen: MainPermissions.add_categories_inventory_factory,
+  },
+  {
+    element: <EditAddCategory dep={Departments.inventory_factory} />,
+    path: "/categories-inventory/:dep/add",
+    screen: MainPermissions.add_categories_inventory_factory,
   },
   {
     element: <ITTgLinks />,
@@ -1219,18 +1264,33 @@ export const routes = [
   // iniventory
   {
     element: <RequestsInventory />,
-    path: "/requests-inventory",
-    screen: MainPermissions.get_requests_inventory,
+    path: "/requests-inventory/:dep",
+    screen: MainPermissions.get_requests_inventory_factory,
+  },
+  {
+    element: <RequestsInventory />,
+    path: "/requests-inventory/:dep",
+    screen: MainPermissions.get_requests_inventory_retail,
   },
   {
     element: <ShowRequestInventory />,
-    path: "/requests-inventory/:id",
-    screen: MainPermissions.edit_requests_inventory,
+    path: "/requests-inventory/:dep/:id",
+    screen: MainPermissions.edit_requests_inventory_retail,
+  },
+  {
+    element: <ShowRequestInventory />,
+    path: "/requests-inventory/:dep/:id",
+    screen: MainPermissions.edit_requests_inventory_factory,
   },
   {
     element: <AddInventoryRequest />,
-    path: "/requests-inventory/add",
-    screen: MainPermissions.add_requests_inventory,
+    path: "/requests-inventory/:dep/add",
+    screen: MainPermissions.add_requests_inventory_retail,
+  },
+  {
+    element: <AddInventoryRequest />,
+    path: "/requests-inventory/:dep/add",
+    screen: MainPermissions.edit_requests_inventory_factory,
   },
   {
     element: <EditInventoryProd />,

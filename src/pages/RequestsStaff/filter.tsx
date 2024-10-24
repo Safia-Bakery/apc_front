@@ -5,7 +5,7 @@ import MainInput from "@/components/BaseInputs/MainInput";
 import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
 import BranchSelect from "@/components/BranchSelect";
 import useQueryString from "custom/useQueryString";
-import { MainPermissions } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import dayjs from "dayjs";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { useForm } from "react-hook-form";

@@ -17,12 +17,8 @@ import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import useQueryString from "custom/useQueryString";
 import BranchSelect from "@/components/BranchSelect";
 import useCategories from "@/hooks/useCategories";
-import {
-  CategoryProducts,
-  Departments,
-  MainPermissions,
-  Sphere,
-} from "@/utils/types";
+import { CategoryProducts, Departments, Sphere } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import Loading from "@/components/Loader";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";

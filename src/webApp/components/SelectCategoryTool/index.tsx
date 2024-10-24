@@ -27,7 +27,7 @@ const SelectCategoryTool = () => {
 
   const { data: categories, isLoading: categoryLoading } = useCategories({
     category_status: 1,
-    department: Departments.inventory,
+    department: Departments.inventory_retail,
     enabled: false,
   });
   const { data, isLoading: toolsLoading } = useInvTools({

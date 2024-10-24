@@ -6,7 +6,7 @@ import useQueryString from "@/hooks/custom/useQueryString";
 import { kruCategoryDeletion, useKruCategories } from "@/hooks/kru";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
-import { MainPermissions } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import { ColumnsType } from "antd/es/table";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -103,7 +103,7 @@ const KruTasks = () => {
         </button>
       </Header>
 
-      <div className="table-responsive grid-view content ">
+      <div className="table-responsive  content ">
         <AntdTable
           data={data?.items}
           totalItems={data?.total}

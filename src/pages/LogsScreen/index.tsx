@@ -36,7 +36,7 @@ const Logs = () => {
     if (order?.communication?.length)
       return (
         <Card>
-          <div className="table-responsive grid-view content">
+          <div className="table-responsive  content">
             <Header title={"comments"} />
             <table className="table table-hover">
               <thead>
@@ -75,7 +75,7 @@ const Logs = () => {
           </button>
         </Header>
 
-        <div className="table-responsive grid-view content">
+        <div className="table-responsive  content">
           <table className="table table-hover">
             <thead>
               <tr>

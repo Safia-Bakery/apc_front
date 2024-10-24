@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { Departments } from "@/utils/types";
 import useCategories from "@/hooks/useCategories";
 import Loading from "@/components/Loader";
+import { deptSelector } from "@/store/reducers/auth";
 
 const SelectBranchAndCateg = () => {
   const selectedBranch = useAppSelector(branchSelector);
@@ -20,10 +21,11 @@ const SelectBranchAndCateg = () => {
   const cart = useAppSelector(cartSelector);
   const navigate = useNavigate();
   const cartLength = Object.values(cart)?.length;
+  const dep = useAppSelector(deptSelector);
 
   const { data: categories, isLoading: categoryLoading } = useCategories({
     category_status: 1,
-    department: Departments.inventory,
+    department: dep || Departments.inventory_retail,
   });
 
   const closeModal = () => $branchModal(false);

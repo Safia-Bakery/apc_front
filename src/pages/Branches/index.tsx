@@ -3,7 +3,8 @@ import Header from "@/components/Header";
 import { useNavigate } from "react-router-dom";
 import Pagination from "@/components/Pagination";
 import { useMemo } from "react";
-import { BranchType, MainPermissions } from "@/utils/types";
+import { BranchType } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import { handleIdx } from "@/utils/helpers";
 import TableViewBtn from "@/components/TableViewBtn";
 import useBranches from "@/hooks/useBranches";
@@ -141,7 +142,7 @@ const Branches = () => {
         </div>
       </Header>
 
-      <div className="table-responsive grid-view content">
+      <div className="table-responsive  content">
         <ItemsCount data={branches} />
         <VirtualTable columns={columns} data={branches?.items}>
           {renderFilter}

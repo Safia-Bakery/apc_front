@@ -53,7 +53,7 @@ const EditKruTask = () => {
       </Header>
 
       <form
-        className="table-responsive grid-view content"
+        className="table-responsive  content"
         onSubmit={handleSubmit(onSubmit)}
       >
         <BaseInputs label={"name_in_table"}>

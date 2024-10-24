@@ -3,11 +3,8 @@ import dayjs from "dayjs";
 import baseApi from "@/api/base_api";
 import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
-import {
-  MarketingDepartmentTypes,
-  MainPermissions,
-  EPresetTimes,
-} from "@/utils/types";
+import { MarketingDepartmentTypes, EPresetTimes } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 import { yearMonthDate } from "@/utils/keys";
 
 interface BodyTypes {

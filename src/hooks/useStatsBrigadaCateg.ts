@@ -7,10 +7,10 @@ import {
   BrigadaCategStatTypes,
   Departments,
   EPresetTimes,
-  MainPermissions,
   Sphere,
 } from "@/utils/types";
 import { yearMonthDate } from "@/utils/keys";
+import { MainPermissions } from "@/utils/permissions";
 
 type BodyTypes = {
   enabled?: boolean;

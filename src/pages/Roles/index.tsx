@@ -1,7 +1,8 @@
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { Link, useNavigate } from "react-router-dom";
-import { MainPermissions, RoleTypes } from "@/utils/types";
+import { RoleTypes } from "@/utils/types";
+import { MainPermissions } from "@/utils/permissions";
 
 import Loading from "@/components/Loader";
 import { useState } from "react";
@@ -40,7 +41,7 @@ const Roles = () => {
         )}
       </Header>
 
-      <div className="table-responsive grid-view content">
+      <div className="table-responsive  content">
         <table className="table table-hover">
           <TableHead
             column={column}
