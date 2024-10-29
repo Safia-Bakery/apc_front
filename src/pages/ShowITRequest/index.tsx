@@ -70,8 +70,6 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
 
   const handleModal = (modal: ModalTypes) => () => navigateParams({ modal });
 
-  console.log(state);
-
   const isNew = order?.status === RequestStatus.new;
   const inputRef = useRef<any>(null);
   const upladedFiles = useAppSelector(reportImgSelector);
@@ -79,7 +77,6 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
   const { mutate, isPending: uploadLoading } = uploadFileMutation();
 
   const handleBack = useCallback(() => {
-    console.log(state?.search, "state?.search iside");
     navigate(`/requests-it/${sphere}${!!state?.search ? state?.search : ""}`);
   }, [state?.search]);
 
