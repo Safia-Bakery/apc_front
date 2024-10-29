@@ -40,7 +40,6 @@ const ITModals = () => {
   const [deadline, $deadline] = useState<Date>();
   const photo = useQueryString("photo");
   const sphere_status = Number(useQueryString("sphere_status"));
-  const dep = Number(useQueryString("dep"));
   const removeParams = useRemoveParams();
   const { mutate: attach, isPending: attaching } = attachBrigadaMutation();
   const { register, getValues, watch, handleSubmit, reset } = useForm();
@@ -58,7 +57,7 @@ const ITModals = () => {
 
   const { data: brigades, isFetching: brigadaLoading } = useBrigadas({
     enabled: modal === ModalTypes.assign,
-    ...(!!dep && { department: dep }),
+    department: Departments.IT,
     ...(!!sphere_status && { sphere_status }),
   });
 

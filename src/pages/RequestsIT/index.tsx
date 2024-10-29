@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 import { Departments, Order, RequestStatus } from "@/utils/types";
@@ -22,6 +22,7 @@ const RequestsIT = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const currentPage = Number(useQueryString("page")) || 1;
+  const { search } = useLocation();
 
   const user = useQueryString("user");
   const id = Number(useQueryString("id"));
@@ -54,7 +55,9 @@ const RequestsIT = () => {
         width: 80,
         render: (_, order) =>
           permission?.[MainPermissions.edit_it_requests] ? (
-            <Link to={`${order?.id}?dep=${Departments.IT}`}>{order?.id}</Link>
+            <Link to={`${order?.id}`} state={{ search }}>
+              {order?.id}
+            </Link>
           ) : (
             order?.id
           ),
@@ -129,7 +132,7 @@ const RequestsIT = () => {
         render: (_, record) => dayjs(record?.created_at).format(dateTimeFormat),
       },
     ],
-    []
+    [search]
   );
 
   const {

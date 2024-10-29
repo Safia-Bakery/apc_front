@@ -1,5 +1,5 @@
-import { FC, useMemo, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { FC, useCallback, useMemo, useRef } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import useOrder from "@/hooks/useOrder";
@@ -52,6 +52,7 @@ interface Props {
 const ShowITRequest: FC<Props> = ({ attaching }) => {
   const { t } = useTranslation();
   const { id, sphere } = useParams();
+  const { state } = useLocation();
   const navigate = useNavigate();
   const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const permissions = useAppSelector(permissionSelector);
@@ -69,13 +70,18 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
 
   const handleModal = (modal: ModalTypes) => () => navigateParams({ modal });
 
+  console.log(state);
+
   const isNew = order?.status === RequestStatus.new;
   const inputRef = useRef<any>(null);
   const upladedFiles = useAppSelector(reportImgSelector);
 
   const { mutate, isPending: uploadLoading } = uploadFileMutation();
 
-  const handleBack = () => navigate(`/requests-it/${sphere}`);
+  const handleBack = useCallback(() => {
+    console.log(state?.search, "state?.search iside");
+    navigate(`/requests-it/${sphere}${!!state?.search ? state?.search : ""}`);
+  }, [state?.search]);
 
   const handleFilesSelected = (data: FileItem[]) =>
     dispatch(uploadReport(data));
