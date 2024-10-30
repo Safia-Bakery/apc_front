@@ -406,6 +406,7 @@ const localization = {
 
       "kru tasks": "Задачи КРУ",
       task_name: "Наименование Подзадачи",
+      cant_call: "Не смогли дозвонится",
     },
   },
   uz: {

@@ -186,7 +186,7 @@ const RequestsIT = () => {
         </div>
       </Header>
 
-      <div className="table-responsive  content ">
+      <div className="table-responsive content">
         <AntdTable
           sticky
           data={requests?.items}

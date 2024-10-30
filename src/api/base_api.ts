@@ -6,7 +6,7 @@ import { EPresetTimes } from "@/utils/types";
 
 const logoutObj: { [key: number]: boolean } = {
   401: true,
-  // 403: true,
+  403: true, // do not wait too many times when users token has been expired
 };
 
 const baseApi: AxiosInstance = axios.create({

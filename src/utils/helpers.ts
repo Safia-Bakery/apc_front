@@ -28,6 +28,7 @@ export const CancelReason: CancelReasonType = {
   2: "re_application",
   3: "test_request",
   4: "other",
+  5: "cant_call",
 };
 
 export const numberWithCommas = (val: number) => {
