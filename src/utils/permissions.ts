@@ -174,4 +174,7 @@ export enum MainPermissions {
   get_categories_inventory_factory = 147,
   edit_categories_inventory_factory = 146,
   add_categories_inventory_factory = 145,
+
+  it_request_change_categ = 148, //todo
+  it_request_change_deadline = 149, //todo
 }

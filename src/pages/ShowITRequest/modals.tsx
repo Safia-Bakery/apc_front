@@ -32,6 +32,9 @@ import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
 import orderMsgMutation from "@/hooks/mutation/orderMsg";
 import MainInput from "@/components/BaseInputs/MainInput";
 import dayjs from "dayjs";
+import { MainPermissions } from "@/utils/permissions";
+import { useAppSelector } from "@/store/utils/types";
+import { permissionSelector } from "@/store/reducers/sidebar";
 
 const ITModals = () => {
   const { t } = useTranslation();
@@ -45,6 +48,7 @@ const ITModals = () => {
   const { register, getValues, watch, handleSubmit, reset } = useForm();
   const branchJson = useUpdateQueryStr("branch");
   const branch = branchJson && JSON.parse(branchJson);
+  const permissions = useAppSelector(permissionSelector);
 
   const closeModal = () => removeParams(["modal"]);
 
@@ -164,257 +168,255 @@ const ITModals = () => {
         order?.status !== RequestStatus.closed_denied) ||
       modal === ModalTypes.showPhoto
     )
-      switch (modal) {
-        case ModalTypes.assign:
-          return (
-            <div className={"w-[420px]"}>
-              <Header title="select_handler">
-                <button onClick={closeModal} className="close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </Header>
-              <div className={"overflow-y-auto max-h-80 h-full mt-2"}>
-                {brigadaLoading ? (
-                  <Loading is_static />
-                ) : (
-                  brigades?.items
-                    .filter((item) => !!item.user!?.length && !!item.status)
-                    .map((item, idx) => (
-                      <div
-                        key={idx}
-                        className={
-                          "flex justify-between border-b border-b-black py-4 pr-1 pl-4 items-center"
-                        }
-                      >
-                        <h6 className="text-lg mb-0">{item?.name}</h6>
-                        <button
-                          id="attach_to_bridaga"
-                          onClick={handleBrigada({
-                            status: RequestStatus.received,
-                            item,
-                          })}
-                          className="btn btn-success   btn-sm"
-                        >
-                          {t("assign")}
-                        </button>
-                      </div>
-                    ))
-                )}
-              </div>
-            </div>
-          );
-        case ModalTypes.cancelRequest:
-          return (
-            <form
-              onSubmit={handleSubmit(
-                handleBrigada({
-                  status: RequestStatus.closed_denied,
-                })
-              )}
-              className={"w-[420px]"}
-            >
-              <Header title="deny_reason">
-                <button onClick={closeModal} className="close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </Header>
-              <div className="p-3">
-                <BaseInput label="select_reason">
-                  <MainSelect
-                    register={register("fixedReason", {
-                      required: t("required_field"),
-                    })}
-                  >
-                    <option value={undefined} />
-
-                    {Object.keys(CancelReason).map((item) => (
-                      <option key={item} value={item}>
-                        {t(CancelReason[+item])}
-                      </option>
-                    ))}
-                  </MainSelect>
-                </BaseInput>
-
-                {watch("fixedReason") == 4 && (
-                  <BaseInput label="comments">
-                    <MainTextArea register={register("cancel_reason")} />
-                  </BaseInput>
-                )}
-
-                <button className="btn btn-success w-full" type="submit">
-                  {t("send")}
-                </button>
-              </div>
-            </form>
-          );
-        case ModalTypes.pause:
-          return (
-            <form
-              onSubmit={handleSubmit(
-                handleBrigada({ status: RequestStatus.paused })
-              )}
-              className={"w-[420px]"}
-            >
-              <Header title="pause_reason">
-                <button onClick={closeModal} className="close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </Header>
-              <div className="p-3">
-                <BaseInput label="comments">
-                  <MainTextArea register={register("pause_reason")} autoFocus />
-                </BaseInput>
-
-                <button className="btn btn-success" type="submit">
-                  {t("send")}
-                </button>
-              </div>
-            </form>
-          );
-
-        case ModalTypes.showPhoto:
-          return (
-            <div className={"relative"}>
-              <button
-                onClick={() => removeParams(["modal", "photo"])}
-                className={cl(
-                  "absolute top-2 right-2 w-5 h-5 rounded-full bg-gray-400 flex items-center justify-center border border-white"
-                )}
-              >
+      if (modal === ModalTypes.assign)
+        return (
+          <div className={"w-[420px]"}>
+            <Header title="select_handler">
+              <button onClick={closeModal} className="close">
                 <span aria-hidden="true">&times;</span>
               </button>
-              <Link to={photo || ""} target="_blank" rel="noopener noreferrer">
-                {photo && detectFileType(photo) === FileType.photo ? (
-                  <img
-                    src={photo}
-                    className={"max-h-[80vh] max-w-[80vw] block h-full"}
-                    alt="uploaded-file"
-                  />
-                ) : (
-                  <video
-                    src={photo || ""}
-                    className={"max-h-[80vh] max-w-[80vw] block h-full"}
-                    controls
-                  />
-                )}
-              </Link>
+            </Header>
+            <div className={"overflow-y-auto max-h-80 h-full mt-2"}>
+              {brigadaLoading ? (
+                <Loading is_static />
+              ) : (
+                brigades?.items
+                  .filter((item) => !!item.user!?.length && !!item.status)
+                  .map((item, idx) => (
+                    <div
+                      key={idx}
+                      className={
+                        "flex justify-between border-b border-b-black py-4 pr-1 pl-4 items-center"
+                      }
+                    >
+                      <h6 className="text-lg mb-0">{item?.name}</h6>
+                      <button
+                        id="attach_to_bridaga"
+                        onClick={handleBrigada({
+                          status: RequestStatus.received,
+                          item,
+                        })}
+                        className="btn btn-success   btn-sm"
+                      >
+                        {t("assign")}
+                      </button>
+                    </div>
+                  ))
+              )}
             </div>
-          );
+          </div>
+        );
+    if (modal === ModalTypes.cancelRequest)
+      return (
+        <form
+          onSubmit={handleSubmit(
+            handleBrigada({
+              status: RequestStatus.closed_denied,
+            })
+          )}
+          className={"w-[420px]"}
+        >
+          <Header title="deny_reason">
+            <button onClick={closeModal} className="close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </Header>
+          <div className="p-3">
+            <BaseInput label="select_reason">
+              <MainSelect
+                register={register("fixedReason", {
+                  required: t("required_field"),
+                })}
+              >
+                <option value={undefined} />
 
-        case ModalTypes.changeBranch:
-          return (
-            <>
-              <Header title="change">
-                <button onClick={closeModal} className="close">
-                  <span>&times;</span>
-                </button>
-              </Header>
-              <div className="min-w-96">
-                <BaseInput label="select_branch">
-                  <BranchSelect enabled />
-                </BaseInput>
+                {Object.keys(CancelReason).map((item) => (
+                  <option key={item} value={item}>
+                    {t(CancelReason[+item])}
+                  </option>
+                ))}
+              </MainSelect>
+            </BaseInput>
 
-                <button
-                  className="btn btn-success   w-full"
-                  onClick={handleChange({ filial: true })}
-                >
-                  {t("apply")}
-                </button>
-              </div>
-            </>
-          );
-        case ModalTypes.changeCateg:
-          return (
-            <>
-              <Header title="change">
-                <button onClick={closeModal} className="close">
-                  <span>&times;</span>
-                </button>
-              </Header>
-              <BaseInput label="select_category">
-                <MainSelect
-                  values={categories?.items}
-                  register={register("category")}
-                />
+            {watch("fixedReason") == 4 && (
+              <BaseInput label="comments">
+                <MainTextArea register={register("cancel_reason")} />
               </BaseInput>
-              <div className="min-w-96">
-                <button
-                  className="btn btn-success   w-full"
-                  onClick={handleChange({ categ: true })}
-                >
-                  {t("apply")}
-                </button>
-              </div>
-            </>
-          );
-        case ModalTypes.leaveMessage:
-          return (
-            <>
-              <Header title="leave_comment">
-                <button onClick={closeModal} className="close">
-                  <span>&times;</span>
-                </button>
-              </Header>
-              <div className="p-1">
-                <BaseInput label="comments">
-                  <MainTextArea
-                    autoFocus
-                    onKeyDown={handleKeyDown}
-                    register={register("left_comment")}
-                  />
-                </BaseInput>
-                <BaseInput label="upload_photo">
-                  <MainInput
-                    type="file"
-                    register={register("uploaded_photo")}
-                  />
-                </BaseInput>
-                <button
-                  className="btn btn-success   w-full"
-                  onClick={handleMessage}
-                >
-                  {t("apply")}
-                </button>
-              </div>
-            </>
-          );
+            )}
 
-        case ModalTypes.assingDeadline:
-          return (
-            <>
-              <Header title="select_deadline">
-                <button onClick={closeModal} className="close">
-                  <span>&times;</span>
-                </button>
-              </Header>
-              <div className="p-1 w-96">
-                <BaseInput label="select_deadline">
-                  <MainDatePicker
-                    showTimeSelect
-                    selected={
-                      !!deadline || order?.finishing_time
-                        ? dayjs(deadline || order?.finishing_time).toDate()
-                        : undefined
-                    }
-                    onChange={handleDeadline}
-                  />
-                </BaseInput>
+            <button className="btn btn-success w-full" type="submit">
+              {t("send")}
+            </button>
+          </div>
+        </form>
+      );
+    if (modal === ModalTypes.pause)
+      return (
+        <form
+          onSubmit={handleSubmit(
+            handleBrigada({ status: RequestStatus.paused })
+          )}
+          className={"w-[420px]"}
+        >
+          <Header title="pause_reason">
+            <button onClick={closeModal} className="close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </Header>
+          <div className="p-3">
+            <BaseInput label="comments">
+              <MainTextArea register={register("pause_reason")} autoFocus />
+            </BaseInput>
 
-                <button
-                  onClick={handleBrigada({
-                    time: deadline?.toISOString(),
-                  })}
-                  className="btn btn-success   w-full"
-                >
-                  {t("apply")}
-                </button>
-              </div>
-            </>
-          );
+            <button className="btn btn-success" type="submit">
+              {t("send")}
+            </button>
+          </div>
+        </form>
+      );
 
-        default:
-          return;
-      }
+    if (modal === ModalTypes.showPhoto)
+      return (
+        <div className={"relative"}>
+          <button
+            onClick={() => removeParams(["modal", "photo"])}
+            className={cl(
+              "absolute top-2 right-2 w-5 h-5 rounded-full bg-gray-400 flex items-center justify-center border border-white"
+            )}
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <Link to={photo || ""} target="_blank" rel="noopener noreferrer">
+            {photo && detectFileType(photo) === FileType.photo ? (
+              <img
+                src={photo}
+                className={"max-h-[80vh] max-w-[80vw] block h-full"}
+                alt="uploaded-file"
+              />
+            ) : (
+              <video
+                src={photo || ""}
+                className={"max-h-[80vh] max-w-[80vw] block h-full"}
+                controls
+              />
+            )}
+          </Link>
+        </div>
+      );
+
+    if (modal === ModalTypes.changeBranch)
+      return (
+        <>
+          <Header title="change">
+            <button onClick={closeModal} className="close">
+              <span>&times;</span>
+            </button>
+          </Header>
+          <div className="min-w-96">
+            <BaseInput label="select_branch">
+              <BranchSelect enabled />
+            </BaseInput>
+
+            <button
+              className="btn btn-success   w-full"
+              onClick={handleChange({ filial: true })}
+            >
+              {t("apply")}
+            </button>
+          </div>
+        </>
+      );
+    if (
+      modal === ModalTypes.changeCateg &&
+      permissions?.[MainPermissions.it_request_change_categ]
+    )
+      return (
+        <>
+          <Header title="change">
+            <button onClick={closeModal} className="close">
+              <span>&times;</span>
+            </button>
+          </Header>
+          <BaseInput label="select_category">
+            <MainSelect
+              values={categories?.items}
+              register={register("category")}
+            />
+          </BaseInput>
+          <div className="min-w-96">
+            <button
+              className="btn btn-success w-full"
+              onClick={handleChange({ categ: true })}
+            >
+              {t("apply")}
+            </button>
+          </div>
+        </>
+      );
+    if (modal === ModalTypes.leaveMessage)
+      return (
+        <>
+          <Header title="leave_comment">
+            <button onClick={closeModal} className="close">
+              <span>&times;</span>
+            </button>
+          </Header>
+          <div className="p-1">
+            <BaseInput label="comments">
+              <MainTextArea
+                autoFocus
+                onKeyDown={handleKeyDown}
+                register={register("left_comment")}
+              />
+            </BaseInput>
+            <BaseInput label="upload_photo">
+              <MainInput type="file" register={register("uploaded_photo")} />
+            </BaseInput>
+            <button
+              className="btn btn-success   w-full"
+              onClick={handleMessage}
+            >
+              {t("apply")}
+            </button>
+          </div>
+        </>
+      );
+
+    if (
+      modal === ModalTypes.assingDeadline &&
+      permissions?.[MainPermissions.it_request_change_deadline]
+    )
+      return (
+        <>
+          <Header title="select_deadline">
+            <button onClick={closeModal} className="close">
+              <span>&times;</span>
+            </button>
+          </Header>
+          <div className="p-1 w-96">
+            <BaseInput label="select_deadline">
+              <MainDatePicker
+                showTimeSelect
+                selected={
+                  !!deadline || order?.finishing_time
+                    ? dayjs(deadline || order?.finishing_time).toDate()
+                    : undefined
+                }
+                onChange={handleDeadline}
+              />
+            </BaseInput>
+
+            <button
+              onClick={handleBrigada({
+                time: deadline?.toISOString(),
+              })}
+              className="btn btn-success   w-full"
+            >
+              {t("apply")}
+            </button>
+          </div>
+        </>
+      );
   };
 
   useEffect(() => {

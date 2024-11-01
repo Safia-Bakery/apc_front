@@ -296,14 +296,20 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                           )}
                         </span>
 
-                        {!unchangable[order!?.status] && (
-                          <button
-                            className={cl("btn btn-primary", styles.changeBtn)}
-                            onClick={handleModal(ModalTypes.changeCateg)}
-                          >
-                            {t("change")}
-                          </button>
-                        )}
+                        {!unchangable[order!?.status] &&
+                          permissions?.[
+                            MainPermissions.it_request_change_categ
+                          ] && (
+                            <button
+                              className={cl(
+                                "btn btn-primary",
+                                styles.changeBtn
+                              )}
+                              onClick={handleModal(ModalTypes.changeCateg)}
+                            >
+                              {t("change")}
+                            </button>
+                          )}
                       </div>
                     </td>
                   </tr>
@@ -404,11 +410,14 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                           {dayjs(order?.finishing_time).format(dateTimeFormat)}
                         </span>
 
-                        {!unchangable[order!?.status] && (
-                          <TableViewBtn
-                            onClick={handleModal(ModalTypes.assingDeadline)}
-                          />
-                        )}
+                        {!unchangable[order!?.status] &&
+                          permissions?.[
+                            MainPermissions.it_request_change_categ
+                          ] && (
+                            <TableViewBtn
+                              onClick={handleModal(ModalTypes.assingDeadline)}
+                            />
+                          )}
                       </div>
                     </td>
                   </tr>
