@@ -39,7 +39,6 @@ function AntdTable<T>({
 
   const handleNavigate = useCallback(
     (page: number) => {
-      console.log("first");
       navigateParams({ page });
     },
     [currentPage, search]
