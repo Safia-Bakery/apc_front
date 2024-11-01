@@ -14,6 +14,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import { detectFileType } from "@/utils/helpers";
 import { FileType, ModalTypes, ToolItemType } from "@/utils/types";
+import { Image } from "antd";
 import { CSSProperties } from "react";
 
 type Props = {
@@ -60,19 +61,14 @@ const ToolCard = ({ style, tool }: Props) => {
           alt="uploaded-file"
         />
       </Modal>
-      <div
-        onClick={() =>
-          !!tool.image && handleShowPhoto(`${baseURL}/${tool.image}`)
-        }
-      >
-        <img
-          src={!!tool.image ? `${baseURL}/${tool.image}` : "/images/safia.png"}
-          height={130}
-          width={130}
-          className="rounded-2xl object-contain"
-          alt=""
-        />
-      </div>
+
+      <Image
+        src={!!tool.image ? `${baseURL}/${tool.image}` : "/images/safia.png"}
+        height={130}
+        width={130}
+        className="rounded-2xl object-contain"
+        alt=""
+      />
 
       <div className="flex flex-1 justify-between pt-3 flex-col">
         <div className="flex flex-1 items-center">
