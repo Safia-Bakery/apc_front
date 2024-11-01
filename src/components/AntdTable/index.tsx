@@ -2,7 +2,7 @@ import { Table } from "antd";
 import styles from "./index.module.scss";
 import { TableProps } from "antd/es/table";
 import cl from "classnames";
-import { ReactNode, useCallback, useMemo } from "react";
+import { ReactNode, useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useQueryString from "@/hooks/custom/useQueryString";
 import { itemsPerPage } from "@/utils/helpers";
@@ -22,7 +22,7 @@ interface Props<TData> extends TableProps<TData> {
 }
 
 function AntdTable<T>({
-  data,
+  data = [],
   columns,
   className,
   rowClassName,
@@ -39,6 +39,7 @@ function AntdTable<T>({
 
   const handleNavigate = useCallback(
     (page: number) => {
+      console.log("first");
       navigateParams({ page });
     },
     [currentPage, search]
@@ -50,6 +51,10 @@ function AntdTable<T>({
       totalItems && Math.min((currentPage - 1) * itemsPerPage + 1, totalItems)
     );
   }, [currentPage, totalItems]);
+
+  useEffect(() => {
+    if (data?.length <= itemsPerPage) navigateParams({ page: 1 });
+  }, [data]);
 
   return (
     <div className={cl(styles.container_wrapper)}>
