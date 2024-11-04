@@ -21,13 +21,6 @@ const TgRoutes = () => {
   }, [tokenKey, departmentParam]);
 
   useEffect(() => {
-    setTimeout(() => {
-      TelegramApp?.expand();
-      TelegramApp?.confirmClose();
-    }, 400);
-  }, []);
-
-  useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://telegram.org/js/telegram-web-app.js";
     script.async = true;
@@ -37,6 +30,13 @@ const TgRoutes = () => {
     return () => {
       document.body.removeChild(script);
     };
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      TelegramApp?.expand();
+      TelegramApp?.confirmClose();
+    }, 400);
   }, []);
 
   return <Outlet />;
