@@ -22,7 +22,7 @@ const ChooseTools = () => {
   }, [selectedBranch?.id]);
 
   return (
-    <div className="overflow-hidden h-svh">
+    <div className="overflow-hidden h-svh pb-6">
       <InvHeader title={selectedBranch?.name} goBack />
       <div className="bg-white" onClick={() => navigate(-1)}>
         <WebAppContainer className="flex items-center gap-3">
@@ -39,11 +39,11 @@ const ChooseTools = () => {
 
       <SelectCategoryTool />
 
-      <div className="fixed bottom-0 left-0 right-0 bg-white py-3 px-5 z-[105]">
+      <div className="fixed bottom-0 left-0 right-0 bg-white py-2 px-5 z-[105]">
         <InvButton
           btnType={InvBtnType.primary}
           disabled={!Object.values(cart).length}
-          className="w-full"
+          className="w-full !h-11"
           onClick={() =>
             navigate("/tg/inventory-request/cart", {
               state: { category_id: id },
