@@ -62,6 +62,8 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
   const removeParams = useRemoveParams();
   const { mutate: attach, isPending: attachLoading } = attachBrigadaMutation();
 
+  const closeModal = () => removeParams(["modal"]);
+
   const {
     data: order,
     refetch: orderRefetch,
@@ -105,7 +107,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
           onError: (e) => errorToast(e.message),
         }
       );
-      removeParams(["modal"]);
+      closeModal();
     };
 
   const handlerSubmitFile = () => {

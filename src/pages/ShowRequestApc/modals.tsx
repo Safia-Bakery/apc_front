@@ -27,6 +27,7 @@ import useBrigadas from "@/hooks/useBrigadas";
 import Loading from "@/components/Loader";
 import useCategories from "@/hooks/useCategories";
 import MainInput from "@/components/BaseInputs/MainInput";
+import AsyncAccordion from "@/components/AsyncAccordion";
 
 const unchangable: BaseReturnBoolean = {
   [RequestStatus.finished]: true,
@@ -54,50 +55,7 @@ const ApcModals = () => {
 
   const closeModal = () => removeParams(["modal"]);
 
-  const handleChangeCateg = () => {
-    const { category_id } = getValues();
-    attach(
-      {
-        request_id: Number(id),
-        ...(category_id && { category_id }),
-      },
-      {
-        onSuccess: () => {
-          // navigateParams({ modal: ModalTypes.assign });
-          orderRefetch();
-          successToast("assigned");
-          closeModal();
-        },
-        onError: (e) => errorToast(e.message),
-      }
-    );
-  };
-
   const { data: order } = useOrder({ id: Number(id) });
-
-  const { data: categories, isLoading: categoryLoading } = useCategories({
-    enabled:
-      !!order?.category?.id &&
-      modal === ModalTypes.changeCateg &&
-      order?.status === RequestStatus.new &&
-      sphere_status === Sphere.fabric,
-    department: Departments.APC,
-    sphere_status: Sphere.fabric,
-    parent_id: Number(order?.category?.id),
-    category_status: 1,
-  });
-
-  const { data: categorieRetail } = useCategories({
-    enabled:
-      modal === ModalTypes.changeCateg &&
-      !!order?.category?.id &&
-      sphere_status === Sphere.retail &&
-      !unchangable[order.status],
-    department: Departments.APC,
-    sphere_status: Sphere.retail,
-    // parent_id: Number(order?.category?.id),
-    category_status: 1,
-  });
 
   const { data: brigades, isFetching: brigadaLoading } = useBrigadas({
     enabled: false,
@@ -299,41 +257,33 @@ const ApcModals = () => {
         </div>
       );
 
-    if (modal === ModalTypes.changeCateg)
-      return (
-        <>
-          <BaseInput label="select_category">
-            <MainSelect
-              values={categorieRetail?.items ?? categories?.items}
-              register={register("category_id")}
-            />
-          </BaseInput>
+    if (modal === ModalTypes.changeCateg) return <AsyncAccordion />;
+    // return (
+    //   <>
+    //     <BaseInput label="select_category">
+    //       <MainSelect
+    //         values={categorieRetail?.items ?? categories?.items}
+    //         register={register("category_id")}
+    //       />
+    //     </BaseInput>
 
-          <button
-            className="btn btn-success w-full"
-            onClick={handleChangeCateg}
-          >
-            {t("apply")}
-          </button>
-        </>
-      );
+    //     <button
+    //       className="btn btn-success w-full"
+    //       onClick={handleChangeCateg}
+    //     >
+    //       {t("apply")}
+    //     </button>
+    //   </>
+    // );
   };
 
-  if (
-    (!!order?.category?.id &&
-      order?.status === RequestStatus.new &&
-      sphere_status === Sphere.fabric &&
-      categoryLoading) ||
-    orderFetching ||
-    attaching
-  )
-    return <Loading />;
+  if (orderFetching || attaching) return <Loading />;
 
   return (
     <Modal
       onClose={() => removeParams(["modal", !!photo ? "photo" : ""])}
       isOpen={!!modal && modal !== ModalTypes.closed}
-      className={cl("!h-[400px] w-min p-1 overflow-y-auto")}
+      className={cl("!h-[400px] w-min min-w-56 p-1 overflow-y-auto")}
     >
       {renderModal()}
     </Modal>

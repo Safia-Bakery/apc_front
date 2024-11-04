@@ -1,0 +1,27 @@
+.folder {
+  border-bottom: 1px solid black;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 16px;
+  cursor: pointer;
+  &:hover {
+    background: var(--hoverGray);
+  }
+
+  &:first-child {
+    border-top: 1px solid black;
+  }
+}
+.tool {
+  border-top: 1px solid black;
+  padding: 8px 16px;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--hoverGray);
+  }
+  &:last-child {
+    border-bottom: 1px solid black;
+  }
+}

@@ -86,7 +86,8 @@ const ShowRequestApc: FC<Props> = ({ attaching, addExp }) => {
   });
 
   useBrigadas({
-    enabled: order?.status! <= RequestStatus.received,
+    enabled:
+      order?.status! <= RequestStatus.received && modal === ModalTypes.assign,
     sphere_status,
     department: Departments.APC,
   });
