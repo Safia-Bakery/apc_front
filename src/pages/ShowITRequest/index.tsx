@@ -67,7 +67,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
     refetch: orderRefetch,
     isLoading: orderLoading,
     isFetching: orderFetching,
-  } = getItrequest({ id: Number(id) });
+  } = useOrder({ id: Number(id) });
 
   const handleModal = (modal: ModalTypes) => () => navigateParams({ modal });
 
