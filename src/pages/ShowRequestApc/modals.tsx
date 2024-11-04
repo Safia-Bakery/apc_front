@@ -63,9 +63,10 @@ const ApcModals = () => {
       },
       {
         onSuccess: () => {
-          navigateParams({ modal: ModalTypes.assign });
+          // navigateParams({ modal: ModalTypes.assign });
           orderRefetch();
           successToast("assigned");
+          closeModal();
         },
         onError: (e) => errorToast(e.message),
       }

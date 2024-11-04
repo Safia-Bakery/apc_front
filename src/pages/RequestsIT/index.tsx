@@ -23,7 +23,6 @@ import { permissionSelector } from "@/store/reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
 import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
 import { getITRequests } from "@/hooks/it";
-import useOrders from "@/hooks/useOrders";
 
 const RequestsIT = () => {
   const { t } = useTranslation();
