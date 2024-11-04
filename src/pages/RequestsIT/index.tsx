@@ -1,13 +1,17 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
-import { Departments, Order, RequestStatus } from "@/utils/types";
+import { Order, RequestStatus } from "@/utils/types";
 import { MainPermissions } from "@/utils/permissions";
-import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx, isMobile, requestRows } from "@/utils/helpers";
+import {
+  handleIdx,
+  isMobile,
+  ITRequestStatusArr as statuses,
+  requestRows,
+} from "@/utils/helpers";
 import ITFilter from "./filter";
 import useQueryString from "custom/useQueryString";
 import AntdTable from "@/components/AntdTable";
@@ -17,12 +21,16 @@ import Table from "antd/es/table/Table";
 import { ColumnsType } from "antd/es/table";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
+import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
+import { getITRequests } from "@/hooks/it";
+import useOrders from "@/hooks/useOrders";
 
 const RequestsIT = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const currentPage = Number(useQueryString("page")) || 1;
   const { search } = useLocation();
+  const navigateParams = useNavigateParams();
 
   const user = useQueryString("user");
   const id = Number(useQueryString("id"));
@@ -101,8 +109,8 @@ const RequestsIT = () => {
         ...(isMobile && { width: 100 }),
         render: (_, record) =>
           !!(
-            record?.update_time[RequestStatus.paused] ||
-            record?.update_time[RequestStatus.resumed]
+            record?.update_time?.[RequestStatus.paused] ||
+            record?.update_time?.[RequestStatus.resumed]
           )
             ? t("yes")
             : t("no"),
@@ -139,8 +147,8 @@ const RequestsIT = () => {
     data: requests,
     isLoading: orderLoading,
     isFetching: orderFetching,
-  } = useOrders({
-    department: Departments.IT,
+  } = getITRequests({
+    // todo getITRequests
     page: currentPage,
     ...(!!id && { id }),
     ...(!!category_id && { category_id }),
@@ -173,6 +181,12 @@ const RequestsIT = () => {
 
   const renderFilter = useMemo(() => {
     return <ITFilter />;
+  }, []);
+
+  useEffect(() => {
+    const indexes = [0, 1, 4, 6];
+    const filtered = indexes.map((i) => statuses[i]);
+    navigateParams({ request_status: JSON.stringify(filtered) });
   }, []);
 
   return (

@@ -32,6 +32,7 @@ import TableViewBtn from "@/components/TableViewBtn";
 import { useTranslation } from "react-i18next";
 import { dateTimeFormat } from "@/utils/keys";
 import ITModals from "./modals";
+import { getItrequest } from "@/hooks/it";
 
 const unchangable: BaseReturnBoolean = {
   [RequestStatus.finished]: true,
@@ -66,7 +67,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
     refetch: orderRefetch,
     isLoading: orderLoading,
     isFetching: orderFetching,
-  } = useOrder({ id: Number(id) });
+  } = getItrequest({ id: Number(id) });
 
   const handleModal = (modal: ModalTypes) => () => navigateParams({ modal });
 

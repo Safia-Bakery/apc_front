@@ -53,7 +53,7 @@ interface Props {
   addExp?: MainPermissions;
 }
 
-const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
+const ShowRequestApc: FC<Props> = ({ attaching, addExp }) => {
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -85,7 +85,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
     category_status: 1,
   });
 
-  const { data: brigadas } = useBrigadas({
+  useBrigadas({
     enabled: order?.status! <= RequestStatus.received,
     sphere_status,
     department: Departments.APC,
@@ -146,26 +146,6 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
     removeParams(["modal"]);
   };
 
-  // const renderBtns = useMemo(() => {
-  //   if (
-  //     edit &&
-  //     attaching &&
-  //     permissions?.[edit] &&
-  //     isNew &&
-  //     permissions?.[attaching]
-  //   )
-  //     return (
-  //       <div className="float-end mb10">
-  //         <button
-  //           onClick={() => handleModal(ModalTypes.cancelRequest)}
-  //           className="btn btn-danger"
-  //         >
-  //           {t("deny")}
-  //         </button>
-  //       </div>
-  //     );
-  // }, [permissions, order?.status]);
-
   const handleRequestClose = () => {
     order?.brigada?.is_outsource
       ? handleModal(ModalTypes.expense)
@@ -173,45 +153,6 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
           status: RequestStatus.solved,
         });
   };
-
-  // const renderSubmit = useMemo(() => {
-  //   if (edit && !!order?.brigada?.name && permissions?.[edit])
-  //     return (
-  //       <div className="flex justify-between gap-2">
-  //         {order?.status! < RequestStatus.finished && (
-  //           <button
-  //             onClick={() => handleModal(ModalTypes.cancelRequest)}
-  //             className="btn btn-danger  "
-  //           >
-  //             {t("calcel")}
-  //           </button>
-  //         )}
-  //         <div className="flex gap-2">
-  //           {order?.status! < RequestStatus.sent_to_fix && (
-  //             <button
-  //               onClick={() =>
-  //                 handleBrigada({
-  //                   status: RequestStatus.sent_to_fix,
-  //                 })
-  //               }
-  //               className="btn btn-warning"
-  //             >
-  //               {t("pick_to_repair")}
-  //             </button>
-  //           )}
-  //           {order?.status! < RequestStatus.finished && (
-  //             <button
-  //               id="fixed"
-  //               onClick={handleRequestClose}
-  //               className="btn btn-success"
-  //             >
-  //               {t("fixed")} {isPending && <Loading is_static />}
-  //             </button>
-  //           )}
-  //         </div>
-  //       </div>
-  //     );
-  // }, [permissions, order?.status, isPending]);
 
   const renderBtns = useMemo(() => {
     if (!!order?.status.toString() && !unchangable[order.status])
@@ -358,7 +299,7 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
           }`}
         >
           <button
-            className="btn btn-warning  "
+            className="btn btn-warning"
             onClick={() => navigate(`/request/logs/${id}`)}
           >
             {t("logs")}
@@ -384,8 +325,8 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                   <tr>
                     <th>{t("phone_number")}</th>
                     <td>
-                      <a href={`tel:+${order?.user.phone_number}`}>
-                        +{order?.user.phone_number}
+                      <a href={`tel:+${order?.user?.phone_number}`}>
+                        +{order?.user?.phone_number}
                       </a>
                     </td>
                   </tr>
@@ -395,7 +336,32 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                   </tr>
                   <tr>
                     <th>{t("group_problem")}</th>
-                    <td>{order?.category?.name}</td>
+                    <td>
+                      <div className="flex items-center justify-between">
+                        <span>
+                          {order?.category?.name}{" "}
+                          {order?.is_redirected && (
+                            <span className="font-bold">
+                              ({t("has_changed")})
+                            </span>
+                          )}
+                        </span>
+
+                        {!unchangable[order!?.status] &&
+                          permissions?.[
+                            MainPermissions.it_request_change_categ
+                          ] && (
+                            <button
+                              className={cl("btn btn-primary")}
+                              onClick={() =>
+                                handleModal(ModalTypes.changeCateg)
+                              }
+                            >
+                              {t("change")}
+                            </button>
+                          )}
+                      </div>
+                    </td>
                   </tr>
                   <tr>
                     <th>{t("department")}</th>
@@ -409,14 +375,14 @@ const ShowRequestApc: FC<Props> = ({ edit, attaching, addExp }) => {
                     <th>{t("file")}</th>
                     <td className="flex flex-col !border-none">
                       {order?.file?.map((item, index) => {
-                        if (item.status === 0)
+                        if (item?.status === 0)
                           return (
                             <div
                               className={cl(
                                 "text-link cursor-pointer max-w-[150px] w-full text-truncate"
                               )}
                               onClick={handleShowPhoto(
-                                `${baseURL}/${item.url}`
+                                `${baseURL}/${item?.url}`
                               )}
                               key={item.url + index}
                             >

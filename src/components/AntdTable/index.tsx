@@ -8,6 +8,7 @@ import useQueryString from "@/hooks/custom/useQueryString";
 import { itemsPerPage } from "@/utils/helpers";
 import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
 import { useLocation } from "react-router-dom";
+import CustomNavigator from "./navigator";
 
 type ReturnFunction<Tval> = (smt: Tval) => string;
 type RowClassName<T> = string | ReturnFunction<T>;
@@ -51,12 +52,9 @@ function AntdTable<T>({
     );
   }, [currentPage, totalItems]);
 
-  useEffect(() => {
-    if (data?.length <= itemsPerPage) navigateParams({ page: 1 });
-  }, [data]);
-
   return (
     <div className={cl(styles.container_wrapper)}>
+      {!!data.length && <CustomNavigator data={data} />}
       <Table
         {...(others as any)}
         rootClassName="overflow-visible"
