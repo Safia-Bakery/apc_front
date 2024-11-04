@@ -34,7 +34,7 @@ const SelectCategoryTool = () => {
     ...(toolsSearch && !!selectedBranch?.id && { name: toolsSearch }),
     ...(page && { page: +page }),
     ...(id && !!selectedBranch?.id && { category_id: +id }),
-    enabled: !!selectedBranch?.id || !!toolsSearch,
+    enabled: (!!selectedBranch?.id || !!toolsSearch) && !!id,
   });
 
   const parentRef = useRef<any>();
@@ -98,7 +98,7 @@ const SelectCategoryTool = () => {
           </div>
         </div>
       </ul>
-      {!data?.items?.length && <EmptyList />}
+      {!data?.items?.length && !!id && <EmptyList />}
     </WebAppContainer>
   );
 };
