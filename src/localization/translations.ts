@@ -238,6 +238,7 @@ const localization = {
       apply: "Применить",
       finish: "Завершить",
       changed_date: "Дата изменения",
+      last_changed_date: "Дата последнего изменения",
       text_order: "Текст заявки",
       responsible: "Ответственный",
       rate_comment: "Рейтинг(отзыв)",

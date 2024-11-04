@@ -84,6 +84,7 @@ const AddKRUSubTasks = lazy(() => import("@/pages/AddKRUSubTasks"));
 
 const EditKruTask = lazy(() => import("@/pages/EditKruTask"));
 const KruTasks = lazy(() => import("@/pages/KruTasks"));
+const LogsIt = lazy(() => import("@/pages/ShowITRequest/logs"));
 
 export const sidebarRoutes: SidebarType[] = [
   {
@@ -1107,8 +1108,8 @@ export const routes = [
     screen: MainPermissions.get_brigadas,
   },
   {
-    element: <Logs />,
-    path: "/request/logs/:id",
+    element: <LogsIt />,
+    path: "/request-it/logs/:id",
     screen: MainPermissions.edit_it_requests,
   },
   {

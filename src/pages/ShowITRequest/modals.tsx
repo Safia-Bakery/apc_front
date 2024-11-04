@@ -35,6 +35,7 @@ import dayjs from "dayjs";
 import { MainPermissions } from "@/utils/permissions";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "@/store/reducers/sidebar";
+import { getItrequest } from "@/hooks/it";
 
 const ITModals = () => {
   const { t } = useTranslation();
@@ -69,7 +70,7 @@ const ITModals = () => {
     refetch: orderRefetch,
     isFetching: orderFetching,
     data: order,
-  } = useOrder({
+  } = getItrequest({
     id: Number(id),
   });
   const handleDeadline = (event: Date) => $deadline(event);

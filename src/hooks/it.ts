@@ -17,7 +17,7 @@ export const getItrequest = ({
         .get(`/api/v2/requests/it/${id}`, {
           signal,
         })
-        .then(({ data: response }) => (response as Order) || null),
+        .then(({ data: response }) => (response as ITRequestRes) || null),
     enabled,
   });
 };

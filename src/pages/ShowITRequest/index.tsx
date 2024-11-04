@@ -1,8 +1,7 @@
-import { FC, useCallback, useMemo, useRef } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
@@ -251,7 +250,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
           <div className="flex gap-2">
             <button
               className="btn btn-warning"
-              onClick={() => navigate(`/request/logs/${id}`)}
+              onClick={() => navigate(`/request-it/logs/${id}`)}
             >
               {t("logs")}
             </button>
@@ -432,10 +431,12 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                     </td>
                   </tr>
                   <tr>
-                    <th>{t("changed_date")}</th>
+                    <th>{t("last_changed_date")}</th>
                     <td>
-                      {order?.updated_at
-                        ? dayjs(order?.updated_at).format(dateTimeFormat)
+                      {!!order?.log?.length
+                        ? dayjs(order?.log.at(-1)?.created_at).format(
+                            dateTimeFormat
+                          )
                         : t("not_given")}
                     </td>
                   </tr>

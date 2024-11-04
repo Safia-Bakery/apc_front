@@ -16,7 +16,7 @@ const baseApi: AxiosInstance = axios.create({
 
 baseApi.interceptors.request.use(
   (config) => {
-    const token = store.getState()?.auth.token;
+    const token = store.getState()?.auth?.token;
 
     if (config.headers) {
       const defaultHeaders: any = {
@@ -46,7 +46,7 @@ baseApi.interceptors.response.use(
     }
 
     if (
-      logoutObj[error.response.status!] &&
+      logoutObj[error.response?.status!] &&
       window.location.pathname.includes("/tg/")
     )
       window.location.replace("/tg/unauthorized");

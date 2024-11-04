@@ -147,7 +147,6 @@ const RequestsIT = () => {
     isLoading: orderLoading,
     isFetching: orderFetching,
   } = getITRequests({
-    // todo getITRequests
     page: currentPage,
     ...(!!id && { id }),
     ...(!!category_id && { category_id }),
@@ -199,7 +198,7 @@ const RequestsIT = () => {
         </div>
       </Header>
 
-      <div className="table-responsive content">
+      <div className="overflow-x-auto md:overflow-visible content">
         <AntdTable
           sticky
           data={requests?.items}
