@@ -1,11 +1,9 @@
-import { FC, useCallback, useMemo, useRef } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
-import { useAppDispatch, useAppSelector } from "@/store/utils/types";
-import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
+import { useAppSelector } from "@/store/utils/types";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 import { baseURL } from "@/store/baseUrl";
@@ -18,11 +16,7 @@ import {
   RequestStatus,
 } from "@/utils/types";
 import { MainPermissions } from "@/utils/permissions";
-import UploadComponent, { FileItem } from "@/components/FileUpload";
-import { reportImgSelector, uploadReport } from "reducers/selects";
-import useQueryString from "custom/useQueryString";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
-import uploadFileMutation from "@/hooks/mutation/uploadFile";
 import Loading from "@/components/Loader";
 import cl from "classnames";
 import { permissionSelector } from "reducers/sidebar";
@@ -32,7 +26,7 @@ import TableViewBtn from "@/components/TableViewBtn";
 import { useTranslation } from "react-i18next";
 import { dateTimeFormat } from "@/utils/keys";
 import ITModals from "./modals";
-import { getItrequest } from "@/hooks/it";
+import { getItrequest, itRequestMutation } from "@/hooks/it";
 
 const unchangable: BaseReturnBoolean = {
   [RequestStatus.finished]: true,
@@ -55,12 +49,10 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
   const { id, sphere } = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
-  const addExp = Number(useQueryString("addExp")) as MainPermissions;
   const permissions = useAppSelector(permissionSelector);
-  const dispatch = useAppDispatch();
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
-  const { mutate: attach, isPending: attachLoading } = attachBrigadaMutation();
+  const { mutate: attach, isPending: attachLoading } = itRequestMutation();
 
   const closeModal = () => removeParams(["modal"]);
 
@@ -69,22 +61,13 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
     refetch: orderRefetch,
     isLoading: orderLoading,
     isFetching: orderFetching,
-  } = useOrder({ id: Number(id) });
+  } = getItrequest({ id: Number(id) });
 
   const handleModal = (modal: ModalTypes) => () => navigateParams({ modal });
-
-  const isNew = order?.status === RequestStatus.new;
-  const inputRef = useRef<any>(null);
-  const upladedFiles = useAppSelector(reportImgSelector);
-
-  const { mutate, isPending: uploadLoading } = uploadFileMutation();
 
   const handleBack = useCallback(() => {
     navigate(`/requests-it/${sphere}${!!state?.search ? state?.search : ""}`);
   }, [state?.search]);
-
-  const handleFilesSelected = (data: FileItem[]) =>
-    dispatch(uploadReport(data));
 
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
@@ -109,25 +92,6 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
       );
       closeModal();
     };
-
-  const handlerSubmitFile = () => {
-    if (upladedFiles?.length)
-      mutate(
-        {
-          request_id: Number(id),
-          files: upladedFiles,
-        },
-        {
-          onSuccess: () => {
-            orderRefetch();
-            dispatch(uploadReport([]));
-            inputRef.current.value = null;
-            successToast("Сохранено");
-          },
-          onError: (e) => errorToast(e.message),
-        }
-      );
-  };
 
   const renderModals = useMemo(() => {
     return <ITModals />;
@@ -214,33 +178,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
     return <span>{order?.brigada?.name}</span>;
   }, [permissions, order?.status, order?.brigada?.name]);
 
-  const renderfileUploader = useMemo(() => {
-    if (permissions?.[addExp] && !isNew && !unchangable[order!?.status])
-      return (
-        <Card className="overflow-hidden">
-          <Header title={"add_photo_report"} />
-          <div className="m-3">
-            <UploadComponent
-              onFilesSelected={handleFilesSelected}
-              inputRef={inputRef}
-            />
-            {!!upladedFiles?.length && (
-              <button
-                onClick={handlerSubmitFile}
-                type="button"
-                id={"save_report"}
-                className="btn btn-success float-end my-3"
-              >
-                {t("save")}
-              </button>
-            )}
-          </div>
-        </Card>
-      );
-  }, [upladedFiles, permissions, order?.status, order?.file]);
-
-  if (uploadLoading || attachLoading || orderLoading || orderFetching)
-    return <Loading />;
+  if (attachLoading || orderLoading || orderFetching) return <Loading />;
   return (
     <>
       <Card className="overflow-hidden">
@@ -253,7 +191,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
           <div className="flex gap-2">
             <button
               className="btn btn-warning"
-              onClick={() => navigate(`/request/logs/${id}`)}
+              onClick={() => navigate(`/request-it/logs/${id}`)}
             >
               {t("logs")}
             </button>
@@ -434,10 +372,17 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                     </td>
                   </tr>
                   <tr>
-                    <th>{t("changed_date")}</th>
-                    <td>
+                    <th>{t("last_changed_date")}</th>
+                    {/* <td>
                       {order?.updated_at
                         ? dayjs(order?.updated_at).format(dateTimeFormat)
+                        : t("not_given")}
+                    </td> */}
+                    <td>
+                      {!!order?.log?.length
+                        ? dayjs(order?.log.at(-1)?.created_at).format(
+                            dateTimeFormat
+                          )
                         : t("not_given")}
                     </td>
                   </tr>
@@ -556,8 +501,6 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
           <div className="p-2">{renderBtns}</div>
         </div>
       </Card>
-
-      {renderfileUploader}
 
       {!!order?.request_orpr?.length && <AddedProductsIT />}
       {renderModals}

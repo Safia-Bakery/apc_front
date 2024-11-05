@@ -21,7 +21,7 @@ const loginMutation = () => {
         })
         .then(({ data }) => data as unknown as LoginTypes),
 
-    onError: (e) => errorToast(e.message),
+    onError: (e) => errorToast(e?.message),
     retry: 3,
     retryDelay: 1000,
   });

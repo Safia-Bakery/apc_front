@@ -14,8 +14,6 @@ import {
 import { CancelReason, detectFileType } from "@/utils/helpers";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
-import useOrder from "@/hooks/useOrder";
-import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import useQueryString from "custom/useQueryString";
 import { useRemoveParams } from "custom/useCustomNavigate";
 import useBrigadas from "@/hooks/useBrigadas";
@@ -35,6 +33,7 @@ import dayjs from "dayjs";
 import { MainPermissions } from "@/utils/permissions";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "@/store/reducers/sidebar";
+import { getItrequest, itRequestMutation } from "@/hooks/it";
 
 const ITModals = () => {
   const { t } = useTranslation();
@@ -44,7 +43,7 @@ const ITModals = () => {
   const photo = useQueryString("photo");
   const sphere_status = Number(useQueryString("sphere_status"));
   const removeParams = useRemoveParams();
-  const { mutate: attach, isPending: attaching } = attachBrigadaMutation();
+  const { mutate: attach, isPending: attaching } = itRequestMutation();
   const { register, getValues, watch, handleSubmit, reset } = useForm();
   const branchJson = useUpdateQueryStr("branch");
   const branch = branchJson && JSON.parse(branchJson);
@@ -69,7 +68,7 @@ const ITModals = () => {
     refetch: orderRefetch,
     isFetching: orderFetching,
     data: order,
-  } = useOrder({
+  } = getItrequest({
     id: Number(id),
   });
   const handleDeadline = (event: Date) => $deadline(event);

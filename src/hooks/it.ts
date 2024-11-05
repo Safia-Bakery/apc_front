@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import baseApi from "@/api/base_api";
-import { Order, ValueLabel } from "@/utils/types";
+import { EPresetTimes, Order, ValueLabel } from "@/utils/types";
 
 export const getItrequest = ({
   id,
@@ -17,8 +17,9 @@ export const getItrequest = ({
         .get(`/api/v2/requests/it/${id}`, {
           signal,
         })
-        .then(({ data: response }) => (response as Order) || null),
+        .then(({ data: response }) => (response as ITRequestRes) || null),
     enabled,
+    staleTime: EPresetTimes.MINUTE * 5,
   });
 };
 
@@ -52,13 +53,16 @@ export const getITRequests = ({
 
 export const itRequestMutation = () => {
   return useMutation({
-    mutationKey: ["cars_mutation"],
+    mutationKey: ["it_request_mutation"],
     mutationFn: async (body: ITrequestBody) => {
-      if (body.id) {
-        const { data } = await baseApi.put("/api/v2/requests/inv", body);
+      if (body.request_id) {
+        const { data } = await baseApi.put(
+          `/api/v2/requests/it/${body.request_id}`,
+          body
+        );
         return data;
       } else {
-        const { data } = await baseApi.post("/api/v2/requests/inv", body);
+        const { data } = await baseApi.post("/api/v2/requests/it", body);
         return data;
       }
     },

@@ -147,7 +147,6 @@ const RequestsIT = () => {
     isLoading: orderLoading,
     isFetching: orderFetching,
   } = getITRequests({
-    // todo getITRequests
     page: currentPage,
     ...(!!id && { id }),
     ...(!!category_id && { category_id }),
@@ -182,11 +181,11 @@ const RequestsIT = () => {
     return <ITFilter />;
   }, []);
 
-  useEffect(() => {
-    const indexes = [0, 1, 4, 6];
-    const filtered = indexes.map((i) => statuses[i]);
-    navigateParams({ request_status: JSON.stringify(filtered) });
-  }, []);
+  // useEffect(() => {
+  //   const indexes = [0, 1, 4, 6];
+  //   const filtered = indexes.map((i) => statuses[i]);
+  //   navigateParams({ request_status: JSON.stringify(filtered) });
+  // }, []);
 
   return (
     <Card>
@@ -199,7 +198,7 @@ const RequestsIT = () => {
         </div>
       </Header>
 
-      <div className="table-responsive content">
+      <div className="overflow-x-auto md:overflow-visible content">
         <AntdTable
           sticky
           data={requests?.items}

@@ -110,7 +110,7 @@ const InventoryRemains = () => {
         <AntdTable
           data={data?.tools}
           virtual
-          scroll={{ y: 400 }}
+          scroll={{ y: 700 }}
           columns={columns}
           loading={isFetching || isLoading}
           rowClassName={(tool) =>

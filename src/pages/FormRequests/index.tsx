@@ -123,7 +123,7 @@ const FormRequests = () => {
         </div>
       </Header>
 
-      <div className="table-responsive  content">
+      <div className="content">
         <AntdTable
           sticky
           data={requests?.items}

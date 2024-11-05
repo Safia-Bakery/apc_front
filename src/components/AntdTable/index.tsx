@@ -77,7 +77,6 @@ function AntdTable<T>({
         }
         // virtual
         columns={columns}
-        sticky
         title={() =>
           !!totalItems && (
             <div>
