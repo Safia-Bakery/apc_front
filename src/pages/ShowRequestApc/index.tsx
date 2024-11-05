@@ -348,19 +348,14 @@ const ShowRequestApc: FC<Props> = ({ attaching, addExp }) => {
                           )}
                         </span>
 
-                        {!unchangable[order!?.status] &&
-                          permissions?.[
-                            MainPermissions.it_request_change_categ
-                          ] && (
-                            <button
-                              className={cl("btn btn-primary")}
-                              onClick={() =>
-                                handleModal(ModalTypes.changeCateg)
-                              }
-                            >
-                              {t("change")}
-                            </button>
-                          )}
+                        {!unchangable[order!?.status] && (
+                          <button
+                            className={cl("btn btn-primary")}
+                            onClick={() => handleModal(ModalTypes.changeCateg)}
+                          >
+                            {t("change")}
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
