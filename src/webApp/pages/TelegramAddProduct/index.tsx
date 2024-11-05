@@ -16,7 +16,7 @@ import deleteExpenditureMutation from "@/hooks/mutation/deleteExpenditure";
 import UploadComponent, { FileItem } from "@/components/FileUpload";
 import { reportImgSelector, uploadReport } from "reducers/selects";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
-import uploadFileMutation from "@/hooks/mutation/uploadFile";
+import { uploadFileMutation } from "@/hooks/mutation/uploadFile";
 import useSyncExpanditure from "@/hooks/sync/useSyncExpanditure";
 import { TelegramApp } from "@/utils/tgHelpers";
 import BaseInputs from "@/components/BaseInputs";

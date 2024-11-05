@@ -18,11 +18,9 @@ const LogsIt = () => {
   const navigate = useNavigate();
   const handleNavigate = () => navigate(-1);
 
-  const {
-    data: order,
-    isLoading: orderLoading,
-    isFetching: orderFetching,
-  } = getItrequest({ id: Number(id) });
+  const { data: order, isLoading: orderLoading } = getItrequest({
+    id: Number(id),
+  });
 
   const columns = useMemo<ColumnsType<ItLogs>>(
     () => [
@@ -36,49 +34,95 @@ const LogsIt = () => {
       {
         title: t("action"),
         dataIndex: "status",
-        width: 50,
+
         className: "!px-0 text-center",
         render: (_, record) => t(RequestStatus[record.status]),
       },
       {
         title: t("employee"),
-        dataIndex: "status",
-        width: 50,
+        dataIndex: "full_name",
+
         className: "!px-0 text-center",
         render: (_, record) => record?.user?.full_name,
       },
       {
         title: t("date"),
-        dataIndex: "status",
-        width: 50,
+        dataIndex: "created_at",
+
         className: "!px-0 text-center",
         render: (_, record) =>
-          record?.created_at?.[RequestStatus.new]
-            ? dayjs(record?.created_at?.[RequestStatus.new]).format(
-                dateTimeFormat
-              )
+          record?.created_at
+            ? dayjs(record?.created_at).format(dateTimeFormat)
             : t("not_given"),
       },
       {
         title: t("minute"),
         dataIndex: "status",
-        width: 50,
+
         className: "!px-0 text-center",
         render: (_, record) => t(RequestStatus[record.status]),
       },
     ],
     []
   );
-  return (
-    <Card>
-      <Header title={"logs"}>
-        <button onClick={handleNavigate} className="btn btn-primary">
-          {t("back")}
-        </button>
-      </Header>
 
-      <AntdTable data={order?.log} loading={orderLoading} columns={columns} />
-    </Card>
+  const commentColumns = useMemo<ColumnsType<CommunicationType>>(
+    () => [
+      {
+        title: "№",
+        dataIndex: "",
+        width: 50,
+        className: "!px-0 text-center",
+        render: (_, r, idx) => handleIdx(idx),
+      },
+      {
+        title: t("commentt"),
+        dataIndex: "message",
+
+        className: "!px-0 text-center",
+      },
+      {
+        title: t("employee"),
+        dataIndex: "full_name",
+
+        className: "!px-0 text-center",
+        render: (_, record) => record?.user?.full_name,
+      },
+      {
+        title: t("date"),
+        dataIndex: "status",
+        className: "!px-0 text-center",
+        render: (_, record) =>
+          record?.created_at
+            ? dayjs(record?.created_at).format(dateTimeFormat)
+            : t("not_given"),
+      },
+    ],
+    []
+  );
+  return (
+    <>
+      <Card className="!min-h-72">
+        <Header title={"logs"}>
+          <button onClick={handleNavigate} className="btn btn-primary">
+            {t("back")}
+          </button>
+        </Header>
+
+        <AntdTable data={order?.log} loading={orderLoading} columns={columns} />
+      </Card>
+
+      <Card className="!min-h-72">
+        <Header title={"comments"} />
+        {!!order?.communication?.length && (
+          <AntdTable
+            data={order?.communication}
+            loading={orderLoading}
+            columns={commentColumns}
+          />
+        )}
+      </Card>
+    </>
   );
 };
 

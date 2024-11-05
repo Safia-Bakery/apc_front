@@ -8,7 +8,7 @@ interface RegisterTypes {
   files?: FileItem[];
 }
 
-const uploadFileMutation = () => {
+export const uploadFileMutation = () => {
   return useMutation({
     mutationKey: ["register"],
     mutationFn: ({ request_id, files }: RegisterTypes) => {
@@ -26,4 +26,21 @@ const uploadFileMutation = () => {
     },
   });
 };
-export default uploadFileMutation;
+
+export const uploadFileMutationV2 = () => {
+  return useMutation({
+    mutationKey: ["register"],
+    mutationFn: async ({ files }: { files: any[] }) => {
+      // console.log(files, "files");
+      const formData = new FormData();
+      files?.forEach((item) => {
+        formData.append("files", item, item?.name);
+      });
+      const { data } = await baseApi.post("/file/upload", formData, {
+        timeout: EPresetTimes.MINUTE * 10,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      return data;
+    },
+  });
+};

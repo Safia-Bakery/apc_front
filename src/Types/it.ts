@@ -17,31 +17,33 @@ interface ItrequestsParams {
 }
 
 interface ITrequestBody {
-  id?: number;
-  fillial_id: string;
-  category_id: number;
-  description?: string;
-  product?: string;
-  expenditure?: {
-    amount: number;
-    tool_id: number | string;
-  }[];
+  request_id: number;
+  status?: number;
+  deny_reason?: string;
+  finishing_time?: string;
+  fillial_id?: string;
+  category_id?: string | number;
+  pause_reason?: string;
 }
 
 interface ItLogs {
   id: number;
-  user: {
-    id: number;
-    username: string;
-    full_name: string;
-    email: string;
-    phone_number: string;
-    status: number;
-  };
+  user: UserTypes;
   created_at: string;
   status: number;
 }
-
+interface UserTypes {
+  id: number;
+  username: string;
+  full_name: string;
+  email: string;
+  phone_number: string;
+  status: number;
+  group: {
+    name: string;
+    id: number;
+  };
+}
 interface ITRequestRes {
   id: number;
   product: string;
@@ -56,14 +58,7 @@ interface ITRequestRes {
     name: string;
     description: string;
     status: number;
-    user: {
-      id: number;
-      username: string;
-      full_name: string;
-      email: string;
-      phone_number: string;
-      status: number;
-    }[];
+    user: UserTypes[];
     sphere_status: number;
     department: number;
     is_outsource: true;
@@ -105,18 +100,7 @@ interface ITRequestRes {
   };
   started_at: string;
   finished_at: string;
-  user: {
-    id: number;
-    username: string;
-    full_name: string;
-    email: string;
-    phone_number: string;
-    group: {
-      name: string;
-      id: number;
-    };
-    status: number;
-  };
+  user: UserTypes;
   user_manager: string;
   expanditure: {
     id: number;
@@ -140,35 +124,13 @@ interface ITRequestRes {
       category_id: number;
     };
     comment: string;
-    user: {
-      id: number;
-      username: string;
-      full_name: string;
-      email: string;
-      phone_number: string;
-      group: {
-        name: string;
-        id: number;
-      };
-      status: number;
-    };
+    user: UserTypes;
     created_at: string;
     status: number;
   }[];
   comments: {
     id: number;
-    user: {
-      id: number;
-      username: string;
-      full_name: string;
-      email: string;
-      phone_number: string;
-      group: {
-        name: string;
-        id: number;
-      };
-      status: number;
-    };
+    user: UserTypes;
     comment: string;
     rating: number;
   }[];
@@ -202,27 +164,17 @@ interface ITRequestRes {
     status: number;
     number: string;
   };
-  communication: {
-    id: number;
-    message: string;
-    status: number;
-    user: {
-      id: number;
-      username: string;
-      success: true;
-      full_name: string;
-      status: number;
-      sphere_status: number;
-      brigader: string;
-      brigada_id: string;
-      group_id: number;
-      group: string;
-      telegram_id: number;
-    };
-    photo: string;
-    created_at: string;
-  }[];
+  communication: CommunicationType[];
   price: number;
   phone_number: string;
   log: ItLogs[];
+}
+
+interface CommunicationType {
+  id: number;
+  message: string;
+  status: number;
+  user: UserTypes;
+  photo: string;
+  created_at: string;
 }

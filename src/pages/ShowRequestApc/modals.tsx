@@ -258,23 +258,6 @@ const ApcModals = () => {
       );
 
     if (modal === ModalTypes.changeCateg) return <AsyncAccordion />;
-    // return (
-    //   <>
-    //     <BaseInput label="select_category">
-    //       <MainSelect
-    //         values={categorieRetail?.items ?? categories?.items}
-    //         register={register("category_id")}
-    //       />
-    //     </BaseInput>
-
-    //     <button
-    //       className="btn btn-success w-full"
-    //       onClick={handleChangeCateg}
-    //     >
-    //       {t("apply")}
-    //     </button>
-    //   </>
-    // );
   };
 
   if (orderFetching || attaching) return <Loading />;

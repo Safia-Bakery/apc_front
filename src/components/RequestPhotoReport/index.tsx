@@ -1,5 +1,5 @@
 import UploadComponent, { FileItem } from "@/components/FileUpload";
-import uploadFileMutation from "@/hooks/mutation/uploadFile";
+import { uploadFileMutation } from "@/hooks/mutation/uploadFile";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";

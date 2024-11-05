@@ -2,6 +2,7 @@ import { lazy } from "react";
 import { stockStores } from "./keys";
 import { Departments, MarketingSubDep, SidebarType, Sphere } from "./types";
 import { MainPermissions } from "./permissions";
+import { ITRequestStatusArr } from "./helpers";
 
 const RequestsStaff = lazy(() => import("@/pages/RequestsStaff"));
 const AddStaffOrder = lazy(() => import("@/pages/AddStaffRequest"));
@@ -85,6 +86,10 @@ const AddKRUSubTasks = lazy(() => import("@/pages/AddKRUSubTasks"));
 const EditKruTask = lazy(() => import("@/pages/EditKruTask"));
 const KruTasks = lazy(() => import("@/pages/KruTasks"));
 const LogsIt = lazy(() => import("@/pages/ShowITRequest/logs"));
+
+const indexes = [0, 1, 4, 6];
+const filtered = indexes.map((i) => ITRequestStatusArr[i]);
+const request_status = JSON.stringify(filtered);
 
 export const sidebarRoutes: SidebarType[] = [
   {
@@ -195,17 +200,12 @@ export const sidebarRoutes: SidebarType[] = [
     screen: MainPermissions.get_it_requests,
     department: Departments.IT,
     subroutes: [
-      // {
-      //   name: "Заявки Закуп",
-      //   url: `/requests-it/${Sphere.purchase}`,
-      //   icon: "/icons/subOrder.svg",
-      //   screen: MainPermissions.get_it_requests,
-      // },
       {
-        name: "requests", // Поддержка
+        name: "requests",
         url: `/requests-it/${Sphere.fix}`,
         icon: "/icons/subOrder.svg",
         screen: MainPermissions.get_it_requests,
+        param: `?request_status=${request_status}`,
       },
       {
         name: "it_specialists",
@@ -213,14 +213,8 @@ export const sidebarRoutes: SidebarType[] = [
         icon: "/icons/users.svg",
         screen: MainPermissions.it_get_masters,
       },
-      // {
-      //   name: "Категории(Закуп)",
-      //   url: `/categories-it/${Sphere.purchase}`,
-      //   icon: "/icons/categories.svg",
-      //   screen: MainPermissions.get_categ_it,
-      // },
       {
-        name: "categories", // Поддержка
+        name: "categories",
         url: `/categories-it/${Sphere.fix}`,
         icon: "/icons/categories.svg",
         screen: MainPermissions.get_categ_it,
