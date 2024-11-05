@@ -31,7 +31,6 @@ export const uploadFileMutationV2 = () => {
   return useMutation({
     mutationKey: ["register"],
     mutationFn: async ({ files }: { files: any[] }) => {
-      // console.log(files, "files");
       const formData = new FormData();
       files?.forEach((item) => {
         formData.append("files", item, item?.name);

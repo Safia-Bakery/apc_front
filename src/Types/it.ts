@@ -17,13 +17,16 @@ interface ItrequestsParams {
 }
 
 interface ITrequestBody {
-  request_id: number;
+  request_id?: number;
   status?: number;
   deny_reason?: string;
   finishing_time?: string;
   fillial_id?: string;
   category_id?: string | number;
   pause_reason?: string;
+
+  description?: string;
+  files?: string[];
 }
 
 interface ItLogs {

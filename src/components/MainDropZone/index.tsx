@@ -6,18 +6,17 @@ import { baseURL } from "@/store/baseUrl";
 import { useAppSelector } from "@/store/utils/types";
 import { tokenSelector } from "@/store/reducers/auth";
 import Loading from "../Loader";
-import { useState } from "react";
+import { SetStateAction } from "react";
 
 const { Dragger } = Upload;
 
 interface Props {
-  forwardedRef?: any;
+  onChange: (value: SetStateAction<string[]>) => void;
 }
 
-const MainDropZone = ({ forwardedRef }: Props) => {
+const MainDropZone = ({ onChange }: Props) => {
   const { t } = useTranslation();
   const token = useAppSelector(tokenSelector);
-  const [fileUrls, $fileUrls] = useState();
 
   const props: UploadProps = {
     name: "files",
@@ -26,19 +25,22 @@ const MainDropZone = ({ forwardedRef }: Props) => {
     headers: { Authorization: `Bearer ${token}` },
 
     onChange(info) {
-      const { status } = info.file;
+      const { status } = info?.file;
       if (status !== "uploading") {
         <Loading />;
       }
       if (status === "done") {
-        forwardedRef?.current?.push(info?.file?.response?.[0]);
+        onChange((prev) => [...prev, info?.file?.response?.files?.[0]]);
+        // forwardedRef?.current?.push(info?.file?.response?.files?.[0]);
         message.success(`${info?.file?.name} file uploaded successfully.`);
       } else if (status === "error") {
         message.error(`${info?.file?.name} file upload failed.`);
       }
     },
-    onDrop(e) {
-      console.log("Dropped files", e.dataTransfer?.files);
+    onRemove(info) {
+      onChange((prev) =>
+        prev.filter((item) => item !== info?.response?.files?.[0])
+      );
     },
   };
   return (

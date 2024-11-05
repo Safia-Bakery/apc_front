@@ -23,6 +23,7 @@ import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import { useTranslation } from "react-i18next";
 import MainDropZone from "@/components/MainDropZone";
+import { itRequestMutation } from "@/hooks/it";
 
 interface InventoryFields {
   product: string;
@@ -46,13 +47,13 @@ const initialInventory: InventoryFields | undefined = {
 
 const CreateITRequest = () => {
   const { t } = useTranslation();
-  const [files, $files] = useState<FileItem[]>();
-  const { mutate, isPending } = requestMutation();
+  const [files, $files] = useState<string[]>([]);
+  const { mutate, isPending } = itRequestMutation();
   const { sphere } = useParams();
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
-  const inputref = useRef<any>(null);
   const perm = useAppSelector(permissionSelector);
+
   const {
     handleSubmit,
     register,
@@ -72,27 +73,23 @@ const CreateITRequest = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(`/requests-it/${sphere}`);
 
-  const handleFilesSelected = (data: FileItem[]) => $files(data);
-
   const onSubmit = (data: FormDataTypes) => {
-    const { inputFields, description } = data;
-    console.log(inputref, "inputref");
-    // mutate(
-    //   {
-    //     category_id: data.category_id!,
-    //     description,
-    //     fillial_id: branch?.id,
-    //     files,
-    //     ...(!!cat_prod && { cat_prod }),
-    //   },
-    //   {
-    //     onSuccess: () => {
-    //       goBack();
-    //       successToast("Заказ успешно создано");
-    //     },
-    //     onError: (e) => errorToast(e.message),
-    //   }
-    // );
+    const { category_id, description } = data;
+    mutate(
+      {
+        category_id,
+        description,
+        fillial_id: branch?.id,
+        files,
+      },
+      {
+        onSuccess: () => {
+          goBack();
+          successToast("Заказ успешно создано");
+        },
+        onError: (e) => errorToast(e.message),
+      }
+    );
   };
 
   const renderBranches = useMemo(() => {
@@ -148,12 +145,12 @@ const CreateITRequest = () => {
         </BaseInputs>
 
         <BaseInputs className={`mb-4 ${styles.uploadImage}`} label="add_file">
-          <MainDropZone forwardedRef={inputref} />
+          <MainDropZone onChange={$files} />
         </BaseInputs>
         <div>
           <button
             type="submit"
-            className={`btn btn-info   float-end ${styles.btn}`}
+            className={`btn btn-info float-end ${styles.btn}`}
           >
             {t("create")}
           </button>
