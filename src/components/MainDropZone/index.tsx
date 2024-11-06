@@ -23,6 +23,7 @@ const MainDropZone = ({ onChange }: Props) => {
     openFileDialogOnClick: true,
     action: `${baseURL}/file/upload`,
     headers: { Authorization: `Bearer ${token}` },
+    listType: "picture",
 
     onChange(info) {
       const { status } = info?.file;
@@ -31,7 +32,6 @@ const MainDropZone = ({ onChange }: Props) => {
       }
       if (status === "done") {
         onChange((prev) => [...prev, info?.file?.response?.files?.[0]]);
-        // forwardedRef?.current?.push(info?.file?.response?.files?.[0]);
         message.success(`${info?.file?.name} file uploaded successfully.`);
       } else if (status === "error") {
         message.error(`${info?.file?.name} file upload failed.`);

@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
@@ -6,12 +6,7 @@ import { Order, RequestStatus } from "@/utils/types";
 import { MainPermissions } from "@/utils/permissions";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import {
-  handleIdx,
-  isMobile,
-  ITRequestStatusArr as statuses,
-  requestRows,
-} from "@/utils/helpers";
+import { handleIdx, isMobile, requestRows } from "@/utils/helpers";
 import ITFilter from "./filter";
 import useQueryString from "custom/useQueryString";
 import AntdTable from "@/components/AntdTable";
@@ -21,7 +16,6 @@ import Table from "antd/es/table/Table";
 import { ColumnsType } from "antd/es/table";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
-import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
 import { getITRequests } from "@/hooks/it";
 
 const RequestsIT = () => {
@@ -29,7 +23,6 @@ const RequestsIT = () => {
   const navigate = useNavigate();
   const currentPage = Number(useQueryString("page")) || 1;
   const { search } = useLocation();
-  const navigateParams = useNavigateParams();
 
   const user = useQueryString("user");
   const id = Number(useQueryString("id"));

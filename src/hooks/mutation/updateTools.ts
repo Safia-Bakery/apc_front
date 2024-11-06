@@ -10,7 +10,7 @@ interface Body {
   min_amount?: number;
   max_amount?: number;
   ftime?: number | string;
-  image?: string;
+  image?: string | null;
   status?: number;
 }
 

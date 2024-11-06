@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { useForm } from "react-hook-form";
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 import MainInput from "@/components/BaseInputs/MainInput";
@@ -13,9 +13,9 @@ import { useTranslation } from "react-i18next";
 import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 import MainSelect from "@/components/BaseInputs/MainSelect";
 import AddCategory from "./addCategory";
-import imageUpload from "@/hooks/mutation/imageUpload";
-import Loading from "@/components/Loader";
 import { baseURL } from "@/store/baseUrl";
+import MainDropZone from "@/components/MainDropZone";
+import { Flex, Image } from "antd";
 
 const SelectDates = [
   { id: 24, name: "one_day" },
@@ -27,14 +27,13 @@ const EditInventoryProd = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
-  const [uploadedImg, $uploadedImg] = useState("");
+  const [uploadedImg, $uploadedImg] = useState<string[]>([]);
 
   const { data, refetch } = useTools({ id });
   const tool = data?.items?.[0];
 
   const { mutate } = updateToolsMutation();
-  const { mutate: imageUploadMutation, isPending: uploading } = imageUpload();
-  const { register, handleSubmit, getValues, reset, watch } = useForm();
+  const { register, handleSubmit, getValues, reset } = useForm();
 
   const onSubmit = () => {
     const { min_amount, max_amount, deadline, status } = getValues();
@@ -46,32 +45,22 @@ const EditInventoryProd = () => {
         max_amount,
         ftime: deadline,
         status: Number(status),
-        image: uploadedImg,
+        image: !!uploadedImg.length ? uploadedImg.at(-1) : null,
       },
       {
         onSuccess: () => {
           refetch();
           goBack();
           successToast("successfully updated");
-          $uploadedImg("");
+          $uploadedImg([]);
         },
         onError: (e) => errorToast(e.message),
       }
     );
   };
 
-  const hadleUploadImage = (e: ChangeEvent<HTMLInputElement>) => {
-    imageUploadMutation(
-      { file: e.target?.files?.[0] },
-      {
-        onSuccess: (data: any) => {
-          $uploadedImg(data.file_path);
-        },
-      }
-    );
-  };
-
   useEffect(() => {
+    if (tool?.image) $uploadedImg([tool?.image]);
     reset({
       min_amount: tool?.min_amount,
       max_amount: tool?.max_amount,
@@ -81,30 +70,30 @@ const EditInventoryProd = () => {
   }, [tool]);
 
   const renderImage = useMemo(() => {
-    if (!!uploadedImg)
-      return (
-        <img
-          src={`${baseURL}/${uploadedImg}`}
-          alt="category-files"
-          height={150}
-          width={150}
-        />
-      );
+    if (!!uploadedImg.length)
+      return uploadedImg.map((item) => (
+        <div className="relative w-min" key={item}>
+          <Image
+            src={`${baseURL}/${item}`}
+            alt="category-files"
+            height={100}
+            width={100}
+          />
 
-    if (tool?.image && !!id)
-      return (
-        <img
-          src={`${baseURL}/${tool?.image}`}
-          alt="category-files"
-          height={150}
-          width={150}
-        />
-      );
-  }, [uploadedImg, tool?.image, id]);
+          <button
+            onClick={() =>
+              $uploadedImg((prev) => prev.filter((child) => child !== item))
+            }
+            className="absolute top-1 right-1 z-10 bg-white rounded-full p-1"
+          >
+            <img src="/icons/delete.svg" alt="delete" />
+          </button>
+        </div>
+      ));
+  }, [uploadedImg, id]);
 
   return (
     <Card>
-      {uploading && <Loading />}
       <Header title={`${t("edit")} ${tool?.name}`}>
         <button className="btn btn-primary" onClick={goBack}>
           {t("back")}
@@ -122,11 +111,11 @@ const EditInventoryProd = () => {
           <MainSelect values={SelectDates} register={register("deadline")} />
         </BaseInputs>
         <AddCategory />
-        <BaseInputs label="upload_photo" className="relative">
-          <MainInput onChange={hadleUploadImage} type="file" />
-        </BaseInputs>
 
-        {renderImage}
+        <BaseInputs label="upload_photo" className="relative">
+          <MainDropZone onChange={$uploadedImg} />
+        </BaseInputs>
+        <Flex gap={20}>{renderImage}</Flex>
         <BaseInputs label="status">
           <MainCheckBox label={"active"} register={register("status")} />
         </BaseInputs>

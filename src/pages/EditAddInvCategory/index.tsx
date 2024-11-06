@@ -20,7 +20,6 @@ import Loading from "@/components/Loader";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 import { useInvTools } from "@/hooks/useInvTools";
-import Table, { ColumnsType } from "antd/es/table";
 import { MainPermissions } from "@/utils/permissions";
 import TableViewBtn from "@/components/TableViewBtn";
 import { permissionSelector } from "@/store/reducers/sidebar";
@@ -29,6 +28,8 @@ import InventoryRemainsFilter from "../InventoryRemains/filter";
 import AntdTable from "@/components/AntdTable";
 import cl from "classnames";
 import { Image } from "antd";
+import Table from "antd/es/table/Table";
+import { ColumnsType } from "antd/es/table";
 
 const EditAddInvCategory = () => {
   const { t } = useTranslation();
@@ -168,10 +169,12 @@ const EditAddInvCategory = () => {
       <AntdTable
         data={products?.items}
         totalItems={products?.total}
-        virtual
-        scroll={{ y: 700 }}
         columns={columns}
+        sticky
         loading={isFetching || isLoading}
+        // rowClassName={(item) =>
+        //   !service_filter ? requestRows[item?.status] : handleServiceRow(item)
+        // }
         rowClassName={(tool) =>
           cl({
             ["table-danger"]:
@@ -190,6 +193,35 @@ const EditAddInvCategory = () => {
           </Table.Summary>
         )}
       />
+      // <AntdTable
+      //   data={products?.items}
+      //   totalItems={products?.total}
+      //   columns={columns}
+      //   sticky
+      //   loading={isFetching || isLoading}
+      //   // virtual
+      //   // scroll={{ y: 500 }}
+      //   rowClassName={(tool) =>
+      //     cl({
+      //       ["table-danger"]:
+      //         tool.min_amount &&
+      //         tool.amount_left &&
+      //         tool.amount_left < tool.min_amount,
+      //       ["table-success"]:
+      //         tool.min_amount && tool.amount_left > tool.min_amount,
+      //     })
+      //   }
+      //   summary={() => (
+      //     <Table.Summary>
+      //       <Table.Summary.Row className="sticky top-0 z-10">
+      //         {/* {renderFilter} */}
+      //         <td>ww</td>
+      //         <td>ww</td>
+      //         <td>ww</td>
+      //       </Table.Summary.Row>
+      //     </Table.Summary>
+      //   )}
+      // />
     );
   }, [products, isFetching, isLoading]);
 
@@ -240,8 +272,53 @@ const EditAddInvCategory = () => {
       </Card>
 
       <Card>
-        <Header title={"products"} />
-        {renderItems}
+        <div className="overflow-x-auto md:overflow-visible content">
+          <Header title={"products"} />
+          {renderItems}
+          {/* <AntdTable
+            sticky
+            data={products?.items}
+            totalItems={products?.total}
+            columns={columns}
+            // loading={orderLoading || orderFetching}
+            // rowClassName={(item) =>
+            //   !service_filter ? requestRows[item?.status] : handleServiceRow(item)
+            // }
+            summary={() => (
+              <Table.Summary fixed={"top"}>
+                <Table.Summary.Row className="sticky top-0 z-10">
+                  {renderFilter}
+                </Table.Summary.Row>
+              </Table.Summary>
+            )}
+          /> */}
+          {/* <AntdTable
+            data={products?.items}
+            totalItems={products?.total}
+            columns={columns}
+            sticky
+            virtual
+            scroll={{ y: 500 }}
+            loading={isFetching || isLoading}
+            rowClassName={(tool) =>
+              cl({
+                ["table-danger"]:
+                  tool.min_amount &&
+                  tool.amount_left &&
+                  tool.amount_left < tool.min_amount,
+                ["table-success"]:
+                  tool.min_amount && tool.amount_left > tool.min_amount,
+              })
+            }
+            summary={() => (
+              <Table.Summary>
+                <Table.Summary.Row className="sticky top-0 z-10">
+                  {renderFilter}
+                </Table.Summary.Row>
+              </Table.Summary>
+            )}
+          /> */}
+        </div>
       </Card>
     </>
   );
