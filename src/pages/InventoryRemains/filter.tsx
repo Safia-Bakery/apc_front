@@ -59,6 +59,7 @@ const InventoryRemainsFilter: FC = () => {
         </BaseInput>
       </td>
       <td></td>
+      <td></td>
     </>
   );
 };

@@ -6,6 +6,8 @@ import { RequestStatus } from "@/utils/types";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 import { useTranslation } from "react-i18next";
+import { baseURL } from "@/store/baseUrl";
+import { Image } from "antd";
 
 const column = [
   { name: "№" },
@@ -13,6 +15,7 @@ const column = [
   { name: "quantity" },
   { name: "comments" },
   { name: "status" },
+  { name: "photo" },
   { name: "" },
 ];
 
@@ -69,6 +72,17 @@ const AddedInventoryProducts = () => {
                 <td>{item?.amount}</td>
                 <td>{item?.comment}</td>
                 <td>{t(handleStatus(item?.status))}</td>
+                <td>
+                  {item?.tool?.image ? (
+                    <Image
+                      src={`${baseURL}/${item.tool?.image}`}
+                      height={30}
+                      width={30}
+                    />
+                  ) : (
+                    t("not_given")
+                  )}
+                </td>
                 <td width={40}>
                   {!item.status && order.status === RequestStatus.received && (
                     <div

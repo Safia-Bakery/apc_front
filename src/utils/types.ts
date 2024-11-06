@@ -108,6 +108,7 @@ export interface Order {
       mainunit: string;
       name: string;
       producttype: string;
+      image?: string;
     };
   }[];
   fillial: {

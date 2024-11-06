@@ -18,6 +18,8 @@ import InventoryRemainsFilter from "./filter";
 import { numberWithCommas } from "@/utils/helpers";
 import AntdTable from "@/components/AntdTable";
 import Table, { ColumnsType } from "antd/es/table";
+import { Image } from "antd";
+import { baseURL } from "@/store/baseUrl";
 
 const InventoryRemains = () => {
   const { t } = useTranslation();
@@ -81,6 +83,16 @@ const InventoryRemains = () => {
         dataIndex: "status",
         title: t("status"),
         render: (_, record) => (!record.status ? t("not_active") : t("active")),
+      },
+      {
+        dataIndex: "image",
+        title: t("photo"),
+        render: (_, record) =>
+          record.image ? (
+            <Image src={`${baseURL}/${record.image}`} height={30} width={30} />
+          ) : (
+            t("not_given")
+          ),
       },
       {
         dataIndex: "action",
