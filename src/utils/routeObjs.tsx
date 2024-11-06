@@ -35,6 +35,7 @@ const ShowRequestInventory = lazy(() => import("@/pages/ShowRequestInventory"));
 
 const Categories = lazy(() => import("@/pages/Categories"));
 const EditAddCategory = lazy(() => import("@/pages/EditAddCategory"));
+const EditAddInvCategory = lazy(() => import("@/pages/EditAddInvCategory"));
 const EditAddRole = lazy(() => import("@/pages/EditAddRole"));
 const Roles = lazy(() => import("@/pages/Roles"));
 const ShowRole = lazy(() => import("@/pages/ShowRole"));
@@ -602,22 +603,22 @@ export const routes = [
     screen: MainPermissions.get_categories_inventory_factory,
   },
   {
-    element: <EditAddCategory dep={Departments.inventory_retail} />,
+    element: <EditAddInvCategory />,
     path: "/categories-inventory/:dep/:id",
     screen: MainPermissions.edit_categories_inventory_retail,
   },
   {
-    element: <EditAddCategory dep={Departments.inventory_factory} />,
+    element: <EditAddInvCategory />,
     path: "/categories-inventory/:dep/:id",
     screen: MainPermissions.edit_categories_inventory_factory,
   },
   {
-    element: <EditAddCategory dep={Departments.inventory_factory} />,
+    element: <EditAddInvCategory />,
     path: "/categories-inventory/:dep/add",
     screen: MainPermissions.add_categories_inventory_factory,
   },
   {
-    element: <EditAddCategory dep={Departments.inventory_factory} />,
+    element: <EditAddInvCategory />,
     path: "/categories-inventory/:dep/add",
     screen: MainPermissions.add_categories_inventory_factory,
   },
