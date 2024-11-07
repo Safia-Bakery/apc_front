@@ -1,22 +1,20 @@
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { BrigadaType, Departments, Sphere } from "@/utils/types";
 import { MainPermissions } from "@/utils/permissions";
 import Loading from "@/components/Loader";
-import Pagination from "@/components/Pagination";
 import { handleIdx } from "@/utils/helpers";
-import TableHead from "@/components/TableHead";
 import TableViewBtn from "@/components/TableViewBtn";
 import useBrigadas from "@/hooks/useBrigadas";
-import ItemsCount from "@/components/ItemsCount";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "reducers/sidebar";
 import useQueryString from "custom/useQueryString";
-import EmptyList from "@/components/EmptyList";
 import { useTranslation } from "react-i18next";
+import { ColumnsType } from "antd/es/table";
+import AntdTable from "@/components/AntdTable";
 
 interface Props {
   dep: Departments;
@@ -29,8 +27,8 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const permission = useAppSelector(permissionSelector);
+  const { pathname } = useLocation();
   const currentPage = Number(useQueryString("page")) || 1;
-  const [sort, $sort] = useState<BrigadaType[]>();
 
   const handleNavigate = (id: number | string) => () => navigate(`${id}`);
 
@@ -48,16 +46,65 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
     }
   }, [dep, sphere_status]);
 
-  const column = useMemo(() => {
-    return [
-      { name: "№", key: "id" },
-      { name: "name", key: "name" },
-      { name: renderDep?.tableTitle, key: "name" },
-      { name: "description", key: "description" },
-      { name: "status", key: "status" },
-      { name: "", key: "" },
-    ];
-  }, []);
+  const columns = useMemo<ColumnsType<BrigadaType>>(
+    () => [
+      {
+        title: "№",
+        dataIndex: "",
+        width: 50,
+        className: "!px-0 text-center",
+        render: (_, r, idx) => handleIdx(idx),
+      },
+      {
+        title: t("name_in_table"),
+        dataIndex: "name",
+      },
+      {
+        title: t(renderDep?.tableTitle),
+        dataIndex: "full_name",
+        render: (_, order) =>
+          !!order.user?.length ? order.user?.[0]?.full_name : t("not_given"),
+      },
+      {
+        title: t("description"),
+        dataIndex: "description",
+      },
+      {
+        title: t("role"),
+        dataIndex: "role",
+        render: (_, record) => (
+          <Link
+            to={
+              permission?.[MainPermissions.edit_roles]
+                ? `/roles/${record.user?.[0]?.group?.id}`
+                : pathname
+            }
+          >
+            {record.user?.[0]?.group?.name}
+          </Link>
+        ),
+      },
+      {
+        title: t("status"),
+        dataIndex: "status",
+        render: (_, record) =>
+          !!record.status ? t("active") : t("not_active"),
+      },
+      {
+        title: "",
+        dataIndex: "action",
+        render: (_, record) =>
+          permission?.[edit] && (
+            <TableViewBtn
+              onClick={handleNavigate(
+                `${record.id}?dep=${dep}&sphere_status=${sphere_status}`
+              )}
+            />
+          ),
+      },
+    ],
+    []
+  );
 
   const {
     data: brigadas,
@@ -93,40 +140,12 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
         )}
       </Header>
 
-      <div className="table-responsive  content">
-        <ItemsCount data={brigadas} />
-        <table className="table table-hover">
-          <TableHead column={column} onSort={(data) => $sort(data)} />
-
-          {!!brigadas?.items?.length && (
-            <tbody>
-              {(sort?.length ? sort : brigadas?.items)?.map((order, idx) => (
-                <tr className="bg-blue" key={idx}>
-                  <td width="40">{handleIdx(idx)}</td>
-                  <td width={250}>{order.name}</td>
-                  <td>
-                    {!!order.user?.length
-                      ? order.user?.[0]?.full_name
-                      : t("not_given")}
-                  </td>
-                  <td>{order.description}</td>
-                  <td>{!!order.status ? t("active") : t("not_active")}</td>
-                  <td width={40}>
-                    {permission?.[edit] && (
-                      <TableViewBtn
-                        onClick={handleNavigate(
-                          `${order.id}?dep=${dep}&sphere_status=${sphere_status}`
-                        )}
-                      />
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          )}
-        </table>
-        {!brigadas?.items?.length && !orderLoading && <EmptyList />}
-        {!!brigadas && <Pagination totalPages={brigadas.pages} />}
+      <div className="table-responsive content">
+        <AntdTable
+          columns={columns}
+          data={brigadas?.items}
+          totalItems={brigadas?.total}
+        />
       </div>
     </Card>
   );
