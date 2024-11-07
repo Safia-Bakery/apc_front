@@ -10,11 +10,11 @@ import { SetStateAction } from "react";
 
 const { Dragger } = Upload;
 
-interface Props {
-  onChange: (value: SetStateAction<string[]>) => void;
+interface Props extends UploadProps {
+  setData: (value: SetStateAction<string[]>) => void;
 }
 
-const MainDropZone = ({ onChange }: Props) => {
+const MainDropZone = ({ setData, ...others }: Props) => {
   const { t } = useTranslation();
   const token = useAppSelector(tokenSelector);
 
@@ -31,17 +31,18 @@ const MainDropZone = ({ onChange }: Props) => {
         <Loading />;
       }
       if (status === "done") {
-        onChange((prev) => [...prev, info?.file?.response?.files?.[0]]);
+        setData((prev) => [...prev, info?.file?.response?.files?.[0]]);
         message.success(`${info?.file?.name} file uploaded successfully.`);
       } else if (status === "error") {
         message.error(`${info?.file?.name} file upload failed.`);
       }
     },
     onRemove(info) {
-      onChange((prev) =>
+      setData((prev) =>
         prev.filter((item) => item !== info?.response?.files?.[0])
       );
     },
+    ...others,
   };
   return (
     <Dragger {...props}>

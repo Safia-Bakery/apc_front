@@ -172,6 +172,7 @@ export interface BrigadaType {
   name: string;
   description: string;
   status: number;
+  topic_id: number;
   is_outsource: boolean;
   sphere_status: number;
   user?: {

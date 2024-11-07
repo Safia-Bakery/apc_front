@@ -17,24 +17,28 @@ import Loading from "@/components/Loader";
 import EmptyList from "@/components/EmptyList";
 import useQueryString from "@/hooks/custom/useQueryString";
 import InvPagination from "../InvPagination";
+import { deptSelector } from "@/store/reducers/auth";
 
 const SelectCategoryTool = () => {
   const { id } = useParams();
 
   const selectedBranch = useAppSelector(branchSelector);
   const page = useQueryString("page");
+  const department = useAppSelector(deptSelector);
   const [toolsSearch, $toolsSearch] = useDebounce("");
 
   const { data: categories, isLoading: categoryLoading } = useCategories({
     category_status: 1,
-    department: Departments.inventory_retail,
+    department,
     enabled: false,
   });
   const { data, isLoading: toolsLoading } = useInvTools({
     ...(toolsSearch && !!selectedBranch?.id && { name: toolsSearch }),
     ...(page && { page: +page }),
     ...(id && !!selectedBranch?.id && { category_id: +id }),
-    enabled: (!!selectedBranch?.id || !!toolsSearch) && !!id,
+    enabled:
+      (!!selectedBranch?.id || !!toolsSearch) &&
+      (!!id || department === Departments.inventory_factory),
   });
 
   const parentRef = useRef<any>();
@@ -47,7 +51,7 @@ const SelectCategoryTool = () => {
   });
 
   return (
-    <WebAppContainer className="h-full overflow-y-auto ">
+    <WebAppContainer className="h-full overflow-y-auto">
       <InvInput
         disabled={!selectedBranch?.id}
         // disabled={!data?.items?.length}

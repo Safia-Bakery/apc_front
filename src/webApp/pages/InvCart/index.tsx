@@ -16,10 +16,14 @@ import { useForm } from "react-hook-form";
 import errorToast from "@/utils/errorToast";
 import Loading from "@/components/Loader";
 import invRequestMutation from "@/hooks/inventory";
+import { deptSelector } from "@/store/reducers/auth";
+import { Departments } from "@/utils/types";
+import { invFabricCategory } from "@/utils/keys";
 
 const InvCart = () => {
   const navigate = useNavigate();
   const selectedBranch = useAppSelector(branchSelector);
+  const dep = useAppSelector(deptSelector);
   const { state } = useLocation();
   const dispatch = useAppDispatch();
   const cart = useAppSelector(cartSelector);
@@ -36,7 +40,10 @@ const InvCart = () => {
 
     mutate(
       {
-        category_id: state?.category_id,
+        category_id:
+          dep === Departments.inventory_factory
+            ? invFabricCategory
+            : state?.category_id,
         fillial_id: selectedBranch?.id!,
         expenditure,
         description: !!comment ? comment : " ",

@@ -96,8 +96,13 @@ const EditAddMasters = () => {
   } = useForm();
 
   const onSubmit = () => {
-    const { brigada_name, brigada_description, status, is_outsource } =
-      getValues();
+    const {
+      brigada_name,
+      brigada_description,
+      status,
+      is_outsource,
+      topic_id,
+    } = getValues();
 
     mutate(
       {
@@ -105,6 +110,7 @@ const EditAddMasters = () => {
         description: brigada_description,
         name: brigada_name,
         is_outsource,
+        topic_id,
         ...(id && { id: Number(id) }),
         ...(!!sphere_status && { sphere_status }),
         ...(!!dep && { department: dep }),
@@ -165,8 +171,9 @@ const EditAddMasters = () => {
       reset({
         brigada_name: brigada?.name,
         brigada_description: brigada?.description,
-        status: !!brigada.status,
-        is_outsource: brigada.is_outsource,
+        status: !!brigada?.status,
+        is_outsource: brigada?.is_outsource,
+        topic_id: brigada?.topic_id,
       });
     }
   }, [brigada, id]);
@@ -211,6 +218,13 @@ const EditAddMasters = () => {
         </div>
 
         {renderUsers}
+
+        {dep === Departments.IT && (
+          <BaseInputs label={"theme_id"} className="w-full">
+            <MainInput type="number" register={register("topic_id")} />
+          </BaseInputs>
+        )}
+
         <BaseInputs label="description">
           <MainTextArea register={register("brigada_description")} />
         </BaseInputs>

@@ -145,7 +145,7 @@ const CreateITRequest = () => {
         </BaseInputs>
 
         <BaseInputs className={`mb-4 ${styles.uploadImage}`} label="add_file">
-          <MainDropZone onChange={$files} />
+          <MainDropZone setData={$files} />
         </BaseInputs>
         <div>
           <button

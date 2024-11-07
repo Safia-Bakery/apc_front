@@ -12,6 +12,7 @@ interface BodyType {
   sphere_status?: number;
   department?: Departments;
   is_outsource?: boolean;
+  topic_id?: number;
 }
 
 const brigadaMutation = () => {

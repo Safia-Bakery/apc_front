@@ -113,7 +113,7 @@ const EditInventoryProd = () => {
         <AddCategory />
 
         <BaseInputs label="upload_photo" className="relative">
-          <MainDropZone onChange={$uploadedImg} />
+          <MainDropZone setData={$uploadedImg} />
         </BaseInputs>
         <Flex gap={20}>{renderImage}</Flex>
         <BaseInputs label="status">

@@ -16,8 +16,8 @@ const TgRoutes = () => {
     if (!!tokenKey) {
       dispatch(loginHandler(tokenKey));
       navigate(pathname + search);
-      departmentParam && dispatch(getDepartment(Number(departmentParam)));
     }
+    departmentParam && dispatch(getDepartment(Number(departmentParam)));
   }, [tokenKey, departmentParam]);
 
   useEffect(() => {

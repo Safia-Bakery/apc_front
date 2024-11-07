@@ -35,3 +35,5 @@ export const yearMonthDate = "YYYY-MM-DD";
 
 export const screenHeight = window.screen.height;
 export const screenWidth = window.screen.width;
+
+export const invFabricCategory = 282;

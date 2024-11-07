@@ -25,7 +25,8 @@ const SelectBranchAndCateg = () => {
 
   const { data: categories, isLoading: categoryLoading } = useCategories({
     category_status: 1,
-    department: dep || Departments.inventory_retail,
+    department: dep,
+    enabled: dep !== Departments.inventory_factory,
   });
 
   const closeModal = () => $branchModal(false);
