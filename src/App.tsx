@@ -327,7 +327,30 @@ const App = () => {
             />
           </Route>
         )}
-        {permission?.[MainPermissions.inventory_reports] && (
+        {permission?.[MainPermissions.inventory_reports_retail] && (
+          <Route
+            path="/statistics-inventory"
+            element={
+              <Suspend>
+                <BaseStatsBlock
+                  routesArr={InventoryStatsRoutes}
+                  title={"Статистика Инвентарь"}
+                />
+              </Suspend>
+            }
+          >
+            <Route
+              index
+              path="service_level"
+              element={
+                <Suspend>
+                  <InventoryServiceStats />
+                </Suspend>
+              }
+            />
+          </Route>
+        )}
+        {permission?.[MainPermissions.reports_inv_factory] && (
           <Route
             path="/statistics-inventory"
             element={

@@ -108,12 +108,12 @@ export enum MainPermissions {
   get_requests_inventory_retail = 98,
   add_requests_inventory_retail = 99,
   edit_requests_inventory_retail = 100,
-  edit_product_inventory = 102,
-  get_product_inventory = 101,
-  get_inventory_purchase_prods = 103,
-  edit_inventory_purchase_prods = 104,
-  inventory_remains_in_stock = 105,
-  inventory_reports = 106,
+  edit_product_inventory_retail = 102,
+  get_product_inventory_retail = 101,
+  get_inventory_purchase_prods_retail = 103,
+  edit_inventory_purchase_prods_retail = 104,
+  inventory_remains_in_stock_retail = 105,
+  inventory_reports_retail = 106,
 
   get_faq = 107,
   add_faq = 108,
@@ -174,6 +174,13 @@ export enum MainPermissions {
   get_categories_inventory_factory = 147,
   edit_categories_inventory_factory = 146,
   add_categories_inventory_factory = 145,
+
+  remains_in_stock_inv_factory = 142,
+  reports_inv_factory = 150,
+  get_purchase_prods_inv_factory = 151,
+  edit_purchase_prods_inv_factory = 152,
+  edit_prods_inv_factory = 153,
+  get_prods_inv_factory = 154,
 
   it_request_change_categ = 148, //todo
   it_request_change_deadline = 149, //todo

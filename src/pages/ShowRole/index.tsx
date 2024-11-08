@@ -105,11 +105,7 @@ const ShowRole = () => {
           })}
         </table>
 
-        <button
-          className="btn btn-success float-end"
-          type="submit"
-          id="save_permission"
-        >
+        <button className="btn btn-success" type="submit" id="save_permission">
           {t("save")}
         </button>
       </form>

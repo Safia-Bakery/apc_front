@@ -148,7 +148,7 @@ const EditAddInvCategory = () => {
         title: "",
         render: (_, record) => {
           return (
-            permission?.[MainPermissions.edit_product_inventory] && (
+            permission?.[MainPermissions.edit_product_inventory_retail] && (
               <TableViewBtn
                 onClick={handleNavigate(`/inventory-remains/${record.id}`)}
               />
