@@ -60,6 +60,7 @@ const InventoryRemainsFilter: FC = () => {
       </td>
       <td></td>
       <td></td>
+      <td></td>
     </>
   );
 };

@@ -39,6 +39,7 @@ const InventoryRemains = () => {
   });
 
   const goBack = () => navigate(-1);
+  const handleMins = () => navigate("/inventory-remains?mins=1");
 
   const handleParentId = (id: string, name: string) => () =>
     navigateParams({ parent_id: id, parent_name: name });
@@ -120,10 +121,18 @@ const InventoryRemains = () => {
     if (!!parent_id)
       return (
         <AntdTable
-          data={data?.tools}
-          virtual
-          scroll={{ y: 700 }}
+          sticky
+          // virtual
+          // scroll={{ y: 700 }}
           columns={columns}
+          summary={() => (
+            <Table.Summary fixed={"top"}>
+              <Table.Summary.Row className="sticky top-0 z-10">
+                {renderFilter}
+              </Table.Summary.Row>
+            </Table.Summary>
+          )}
+          data={data?.tools}
           loading={isFetching || isLoading}
           rowClassName={(tool) =>
             cl({
@@ -135,18 +144,9 @@ const InventoryRemains = () => {
                 tool.min_amount && tool.amount_left > tool.min_amount,
             })
           }
-          summary={() => (
-            <Table.Summary fixed={"top"}>
-              <Table.Summary.Row className="sticky top-0 z-10">
-                {renderFilter}
-              </Table.Summary.Row>
-            </Table.Summary>
-          )}
         />
       );
   }, [data?.tools, isFetching, isLoading]);
-
-  const handleMins = () => navigate("/inventory-remains?mins=1");
 
   if (isFetching || isLoading) return <Loading />;
 

@@ -75,27 +75,27 @@ const ShowRole = () => {
               <Fragment key={item?.page_name}>
                 <thead>
                   <tr>
+                    <th className={"bg-primary text-white"} />
                     <th className={"bg-primary text-white"}>
                       {item?.page_name}
                     </th>
-                    <th className={"bg-primary text-white"} />
                   </tr>
                 </thead>
 
                 <tbody>
                   {item.actions.map((child) => (
                     <tr key={child?.id}>
-                      <td>
-                        {!view_ids
-                          ? child?.action_name
-                          : `${child?.action_name} = ${child?.id}`}
-                      </td>
                       <td width={50}>
                         <input
                           type="checkbox"
                           value={child?.id}
                           {...register(`${child?.id}`)}
                         />
+                      </td>
+                      <td>
+                        {!view_ids
+                          ? child?.action_name
+                          : `${child?.action_name} = ${child?.id}`}
                       </td>
                     </tr>
                   ))}

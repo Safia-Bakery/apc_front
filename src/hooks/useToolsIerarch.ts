@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import baseApi from "@/api/base_api";
-import { ToolsEarchType } from "@/utils/types";
+import { EPresetTimes, ToolsEarchType } from "@/utils/types";
 
 interface Props {
   parent_id?: string;
@@ -22,6 +22,7 @@ export const useToolsIerarch = ({ parent_id, enabled, name }: Props) => {
         .then(({ data: response }) => response as ToolsEarchType),
     enabled,
     refetchOnMount: true,
+    staleTime: EPresetTimes.MINUTE * 5,
   });
 };
 export default useToolsIerarch;

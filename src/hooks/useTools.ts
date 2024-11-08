@@ -24,6 +24,7 @@ export const useTools = ({ enabled = true, ...params }: Body) => {
           return response as ToolTypes;
         }),
     enabled,
+    staleTime: EPresetTimes.MINUTE * 5,
   });
 };
 export default useTools;

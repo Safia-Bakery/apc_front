@@ -43,7 +43,7 @@ const AddCategory = () => {
       <MainSelect
         values={categories?.items}
         onChange={handleSubmit}
-        value={tool?.category_id}
+        value={tool?.category_id || undefined}
       />
       {(isPending || isLoading || toolLoading) && <Loading />}
     </BaseInputs>

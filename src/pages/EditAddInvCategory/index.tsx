@@ -172,9 +172,6 @@ const EditAddInvCategory = () => {
         columns={columns}
         sticky
         loading={isFetching || isLoading}
-        // rowClassName={(item) =>
-        //   !service_filter ? requestRows[item?.status] : handleServiceRow(item)
-        // }
         rowClassName={(tool) =>
           cl({
             ["table-danger"]:

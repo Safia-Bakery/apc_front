@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import baseApi from "@/api/base_api";
 import { tokenSelector } from "reducers/auth";
 import { useAppSelector } from "@/store/utils/types";
-import { CountTypes } from "@/utils/types";
+import { CountTypes, EPresetTimes } from "@/utils/types";
 
 export const useOrderCounts = ({ enabled = true }: { enabled?: boolean }) => {
   const token = useAppSelector(tokenSelector);
@@ -18,6 +18,7 @@ export const useOrderCounts = ({ enabled = true }: { enabled?: boolean }) => {
 
     enabled: enabled && !!token,
     refetchOnMount: true,
+    staleTime: EPresetTimes.MINUTE * 5,
   });
 };
 export default useOrderCounts;
