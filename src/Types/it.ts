@@ -11,6 +11,7 @@ interface ItrequestsParams {
   brigada_id?: number;
   arrival_date?: string;
   rate?: boolean;
+  is_expired?: boolean;
   urgent?: boolean;
   started_at?: string;
   finished_at?: string;

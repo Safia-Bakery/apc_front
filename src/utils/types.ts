@@ -94,6 +94,7 @@ export interface Order {
   }[];
   category: Category;
   is_redirected?: boolean;
+  is_expired?: boolean;
   location?: { from_loc: string; to_loc: string } | null;
   expanditure: {
     id: number;
@@ -126,6 +127,7 @@ export interface Order {
   bread_size?: string;
   update_time: { [key: number | string]: string };
   finishing_time?: Date;
+
   comments: [
     {
       id: 3;

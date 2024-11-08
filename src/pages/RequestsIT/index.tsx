@@ -32,7 +32,7 @@ const RequestsIT = () => {
   const paused = useQueryString("paused");
   const created_at = useQueryString("created_at");
   const request_status = useQueryString("request_status");
-  const rate = useQueryString("rate");
+  const is_expired = useQueryString("is_expired");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
   const started_at = useQueryString("started_at");
@@ -114,10 +114,10 @@ const RequestsIT = () => {
         render: (_, record) => record?.description,
       },
       {
-        title: t("rate"),
-        dataIndex: "comments",
+        title: t("is_expired"),
+        dataIndex: "is_expired",
         ...(isMobile && { width: 100 }),
-        render: (_, record) => record?.comments?.[0]?.rating,
+        render: () => !!Number(is_expired) && t("yes"),
       },
       {
         title: t("status"),
@@ -150,7 +150,7 @@ const RequestsIT = () => {
     ...(!!request_status && { request_status }),
     ...(!!user && { user }),
     ...(!!responsible && { brigada_id: responsible }),
-    ...(!!rate?.toString() && { rate: !!rate }),
+    ...(!!is_expired?.toString() && { is_expired: !!Number(is_expired) }),
     ...(!!finished_at && { finished_at }),
     ...(!!started_at && { started_at }),
     ...(!!urgent?.toString() && { urgent: !!Number(urgent) }),

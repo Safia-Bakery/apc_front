@@ -45,7 +45,7 @@ const ITFilter: FC = () => {
   const responsible = Number(useQueryString("responsible"));
   const userQ = useQueryString("user");
   const idQ = useQueryString("id");
-  const rate = useQueryString("rate");
+  const is_expired = useQueryString("is_expired");
   const urgent = useQueryString("urgent");
   const paused = useQueryString("paused");
 
@@ -149,9 +149,9 @@ const ITFilter: FC = () => {
       <td className="!p-0">
         <BaseInputs className="!m-1">
           <MainSelect
-            values={RatingFilterVals}
-            value={rate?.toString()}
-            onChange={(e) => navigate({ rate: e.target.value })}
+            values={UrgentValsArr}
+            value={is_expired?.toString()}
+            onChange={(e) => navigate({ is_expired: e.target.value })}
           />
         </BaseInputs>
       </td>
