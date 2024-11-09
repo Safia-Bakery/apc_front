@@ -24,6 +24,7 @@ import { permissionSelector } from "reducers/sidebar";
 import { useTranslation } from "react-i18next";
 import MainDropZone from "@/components/MainDropZone";
 import { itRequestMutation } from "@/hooks/it";
+import { Image } from "antd";
 
 interface InventoryFields {
   product: string;
@@ -75,21 +76,22 @@ const CreateITRequest = () => {
 
   const onSubmit = (data: FormDataTypes) => {
     const { category_id, description } = data;
-    mutate(
-      {
-        category_id,
-        description,
-        fillial_id: branch?.id,
-        files,
-      },
-      {
-        onSuccess: () => {
-          goBack();
-          successToast("Заказ успешно создано");
-        },
-        onError: (e) => errorToast(e.message),
-      }
-    );
+    console.log(files, "files submitting");
+    // mutate(
+    //   {
+    //     category_id,
+    //     description,
+    //     fillial_id: branch?.id,
+    //     files,
+    //   },
+    //   {
+    //     onSuccess: () => {
+    //       goBack();
+    //       successToast("Заказ успешно создано");
+    //     },
+    //     onError: (e) => errorToast(e.message),
+    //   }
+    // );
   };
 
   const renderBranches = useMemo(() => {
@@ -111,6 +113,8 @@ const CreateITRequest = () => {
       fillial_id: branch?.id,
     });
   }, [branch?.id]);
+
+  console.log(files, "files");
 
   if (isPending || (categoryLoading && !!sphere)) return <Loading />;
 
@@ -145,7 +149,7 @@ const CreateITRequest = () => {
         </BaseInputs>
 
         <BaseInputs className={`mb-4 ${styles.uploadImage}`} label="add_file">
-          <MainDropZone setData={$files} />
+          <MainDropZone setData={$files} defaultFiles={files} />
         </BaseInputs>
         <div>
           <button

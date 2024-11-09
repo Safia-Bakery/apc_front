@@ -190,35 +190,6 @@ const EditAddInvCategory = () => {
           </Table.Summary>
         )}
       />
-      // <AntdTable
-      //   data={products?.items}
-      //   totalItems={products?.total}
-      //   columns={columns}
-      //   sticky
-      //   loading={isFetching || isLoading}
-      //   // virtual
-      //   // scroll={{ y: 500 }}
-      //   rowClassName={(tool) =>
-      //     cl({
-      //       ["table-danger"]:
-      //         tool.min_amount &&
-      //         tool.amount_left &&
-      //         tool.amount_left < tool.min_amount,
-      //       ["table-success"]:
-      //         tool.min_amount && tool.amount_left > tool.min_amount,
-      //     })
-      //   }
-      //   summary={() => (
-      //     <Table.Summary>
-      //       <Table.Summary.Row className="sticky top-0 z-10">
-      //         {/* {renderFilter} */}
-      //         <td>ww</td>
-      //         <td>ww</td>
-      //         <td>ww</td>
-      //       </Table.Summary.Row>
-      //     </Table.Summary>
-      //   )}
-      // />
     );
   }, [products, isFetching, isLoading]);
 
@@ -272,49 +243,6 @@ const EditAddInvCategory = () => {
         <div className="overflow-x-auto md:overflow-visible content">
           <Header title={"products"} />
           {renderItems}
-          {/* <AntdTable
-            sticky
-            data={products?.items}
-            totalItems={products?.total}
-            columns={columns}
-            // loading={orderLoading || orderFetching}
-            // rowClassName={(item) =>
-            //   !service_filter ? requestRows[item?.status] : handleServiceRow(item)
-            // }
-            summary={() => (
-              <Table.Summary fixed={"top"}>
-                <Table.Summary.Row className="sticky top-0 z-10">
-                  {renderFilter}
-                </Table.Summary.Row>
-              </Table.Summary>
-            )}
-          /> */}
-          {/* <AntdTable
-            data={products?.items}
-            totalItems={products?.total}
-            columns={columns}
-            sticky
-            virtual
-            scroll={{ y: 500 }}
-            loading={isFetching || isLoading}
-            rowClassName={(tool) =>
-              cl({
-                ["table-danger"]:
-                  tool.min_amount &&
-                  tool.amount_left &&
-                  tool.amount_left < tool.min_amount,
-                ["table-success"]:
-                  tool.min_amount && tool.amount_left > tool.min_amount,
-              })
-            }
-            summary={() => (
-              <Table.Summary>
-                <Table.Summary.Row className="sticky top-0 z-10">
-                  {renderFilter}
-                </Table.Summary.Row>
-              </Table.Summary>
-            )}
-          /> */}
         </div>
       </Card>
     </>

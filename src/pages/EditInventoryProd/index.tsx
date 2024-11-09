@@ -69,29 +69,6 @@ const EditInventoryProd = () => {
     });
   }, [tool]);
 
-  const renderImage = useMemo(() => {
-    if (!!uploadedImg.length)
-      return uploadedImg.map((item) => (
-        <div className="relative w-min" key={item}>
-          <Image
-            src={`${baseURL}/${item}`}
-            alt="category-files"
-            height={100}
-            width={100}
-          />
-
-          <button
-            onClick={() =>
-              $uploadedImg((prev) => prev.filter((child) => child !== item))
-            }
-            className="absolute top-1 right-1 z-10 bg-white rounded-full p-1"
-          >
-            <img src="/icons/delete.svg" alt="delete" />
-          </button>
-        </div>
-      ));
-  }, [uploadedImg, id]);
-
   return (
     <Card>
       <Header title={`${t("edit")} ${tool?.name}`}>
@@ -111,13 +88,12 @@ const EditInventoryProd = () => {
           <MainSelect values={SelectDates} register={register("deadline")} />
         </BaseInputs>
         <AddCategory />
-
-        <BaseInputs label="upload_photo" className="relative">
-          <MainDropZone setData={$uploadedImg} />
-        </BaseInputs>
-        <Flex gap={20}>{renderImage}</Flex>
         <BaseInputs label="status">
           <MainCheckBox label={"active"} register={register("status")} />
+        </BaseInputs>
+
+        <BaseInputs label="upload_photo" className="relative flex flex-col">
+          <MainDropZone setData={$uploadedImg} defaultFiles={uploadedImg} />
         </BaseInputs>
         <div className="flex gap-2">
           <button type="submit" className="btn btn-success mt-3">
