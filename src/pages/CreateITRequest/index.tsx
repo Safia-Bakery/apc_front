@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import cl from "classnames";
 import { useNavigate, useParams } from "react-router-dom";
@@ -7,8 +7,6 @@ import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import requestMutation from "@/hooks/mutation/orderMutation";
-import UploadComponent, { FileItem } from "@/components/FileUpload";
 import styles from "./index.module.scss";
 import BaseInputs from "@/components/BaseInputs";
 import MainSelect from "@/components/BaseInputs/MainSelect";
@@ -24,7 +22,6 @@ import { permissionSelector } from "reducers/sidebar";
 import { useTranslation } from "react-i18next";
 import MainDropZone from "@/components/MainDropZone";
 import { itRequestMutation } from "@/hooks/it";
-import { Image } from "antd";
 
 interface InventoryFields {
   product: string;
@@ -76,22 +73,21 @@ const CreateITRequest = () => {
 
   const onSubmit = (data: FormDataTypes) => {
     const { category_id, description } = data;
-    console.log(files, "files submitting");
-    // mutate(
-    //   {
-    //     category_id,
-    //     description,
-    //     fillial_id: branch?.id,
-    //     files,
-    //   },
-    //   {
-    //     onSuccess: () => {
-    //       goBack();
-    //       successToast("Заказ успешно создано");
-    //     },
-    //     onError: (e) => errorToast(e.message),
-    //   }
-    // );
+    mutate(
+      {
+        category_id,
+        description,
+        fillial_id: branch?.id,
+        files,
+      },
+      {
+        onSuccess: () => {
+          goBack();
+          successToast("Заказ успешно создано");
+        },
+        onError: (e) => errorToast(e.message),
+      }
+    );
   };
 
   const renderBranches = useMemo(() => {
@@ -113,8 +109,6 @@ const CreateITRequest = () => {
       fillial_id: branch?.id,
     });
   }, [branch?.id]);
-
-  console.log(files, "files");
 
   if (isPending || (categoryLoading && !!sphere)) return <Loading />;
 

@@ -213,7 +213,7 @@ const EditAddCategory: FC<Props> = ({ sphere_status, dep }) => {
 
         <MainCheckBox label={"active"} register={register("status")} />
 
-        {dep === Departments.APC && (
+        {(dep === Departments.APC || dep === Departments.IT) && (
           <MainCheckBox label="last" register={register("is_child")} />
         )}
 
