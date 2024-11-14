@@ -1,5 +1,5 @@
 import { FC, useMemo } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import Card from "@/components/Card";
 import Header from "@/components/Header";
@@ -27,6 +27,7 @@ const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
   const { t } = useTranslation();
   const { sphere } = useParams();
   const navigate = useNavigate();
+  const { search } = useLocation();
   const permission = useAppSelector(permissionSelector);
   const navigateParams = useNavigateParams();
   const currentPage = Number(useQueryString("page")) || 1;
@@ -102,7 +103,7 @@ const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
           <div className="flex gap-2">
             <button
               className="btn btn-success"
-              onClick={handleNavigate("add")}
+              onClick={handleNavigate(`add${!!search ? search : ""}`)}
               id="add_category"
             >
               {t("add")}
