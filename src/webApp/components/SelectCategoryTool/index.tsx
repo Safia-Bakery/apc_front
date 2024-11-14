@@ -2,15 +2,12 @@ import WebAppContainer from "@/webApp/components/WebAppContainer";
 import useDebounce from "@/hooks/custom/useDebounce";
 import { branchSelector } from "@/store/reducers/webInventory";
 import { useAppSelector } from "@/store/utils/types";
-import { Departments } from "@/utils/types";
 import InvInput from "@/webApp/components/InvInput";
-import { useRef } from "react";
 import toolIcon from "/icons/tool.svg";
 import arrow from "/icons/arrowBlack.svg";
 import CustomLink from "@/webApp/components/CustomLink";
 import { useParams } from "react-router-dom";
 import ToolCard from "@/webApp/components/ToolCard";
-import { useVirtualizer } from "@tanstack/react-virtual";
 import { useInvTools } from "@/hooks/useInvTools";
 import useCategories from "@/hooks/useCategories";
 import Loading from "@/components/Loader";
@@ -18,6 +15,7 @@ import EmptyList from "@/components/EmptyList";
 import useQueryString from "@/hooks/custom/useQueryString";
 import InvPagination from "../InvPagination";
 import { deptSelector } from "@/store/reducers/auth";
+import { Departments } from "@/utils/types";
 
 const SelectCategoryTool = () => {
   const { id } = useParams();
@@ -37,17 +35,8 @@ const SelectCategoryTool = () => {
     ...(page && { page: +page }),
     ...(id && !!selectedBranch?.id && { category_id: +id }),
     enabled:
-      (!!selectedBranch?.id || !!toolsSearch) &&
-      (!!id || department === Departments.inventory_factory),
-  });
-
-  const parentRef = useRef<any>();
-
-  const rowVirtualizer = useVirtualizer({
-    count: data?.items?.length!,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 130,
-    gap: 20,
+      !!selectedBranch?.id &&
+      (!!toolsSearch || !!id || department === Departments.inventory_factory),
   });
 
   return (
@@ -87,15 +76,8 @@ const SelectCategoryTool = () => {
 
         {(toolsLoading || categoryLoading) && <Loading />}
 
-        <div ref={parentRef} className="mt-3 pb-6">
-          <div
-            className="flex flex-col gap-4"
-            style={{
-              height: `${rowVirtualizer.getTotalSize()}px`,
-              width: "100%",
-              position: "relative",
-            }}
-          >
+        <div className="mt-3 pb-6">
+          <div className="flex flex-col gap-4">
             {!!data?.items?.length &&
               data.items.map((tool) => <ToolCard key={tool.id} tool={tool} />)}
             {!!data && <InvPagination totalPages={data?.pages} />}
