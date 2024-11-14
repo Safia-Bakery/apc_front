@@ -35,7 +35,7 @@ const InvCart = () => {
 
     const expenditure = Object.entries(cart).map((item) => ({
       tool_id: Number(item[0]),
-      amount: item[1].count,
+      amount: item?.[1]?.count,
     }));
 
     mutate(
@@ -46,6 +46,7 @@ const InvCart = () => {
             : state?.category_id,
         fillial_id: selectedBranch?.id!,
         expenditure,
+        department: dep,
         description: !!comment ? comment : " ",
       },
       {
@@ -70,7 +71,7 @@ const InvCart = () => {
       <InvHeader title={"Корзина"} goBack />
       <div className="bg-white h-[52px]" />
 
-      <WebAppContainer className="mt-4 overflow-y-auto h-[50vh] mb-2">
+      <WebAppContainer className="mt-4 overflow-y-auto max-h-[50vh] h-min mb-2">
         <div className="flex flex-col gap-4">
           {Object.values(cart).map((tool) => (
             <ToolCard key={tool.id} tool={tool} />

@@ -55,6 +55,7 @@ interface Body {
   category_id: number;
   description?: string;
   product?: string;
+  department?: number;
   expenditure?: {
     amount: number;
     tool_id: number | string;
@@ -64,12 +65,22 @@ interface Body {
 const invRequestMutation = () => {
   return useMutation({
     mutationKey: ["cars_mutation"],
-    mutationFn: async (body: Body) => {
+    mutationFn: async ({ department, ...body }: Body) => {
       if (body.id) {
-        const { data } = await baseApi.put("/api/v2/requests/inv", body);
+        const { data } = await baseApi.put(
+          `/api/v2/requests/inv/${
+            department === Departments.inventory_factory ? "factory" : "retail"
+          }`,
+          body
+        );
         return data;
       } else {
-        const { data } = await baseApi.post("/api/v2/requests/inv", body);
+        const { data } = await baseApi.post(
+          `/api/v2/requests/inv/${
+            department === Departments.inventory_factory ? "factory" : "retail"
+          }`,
+          body
+        );
         return data;
       }
     },
