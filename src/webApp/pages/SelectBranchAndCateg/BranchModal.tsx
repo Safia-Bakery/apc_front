@@ -2,9 +2,10 @@ import EmptyList from "@/components/EmptyList";
 import Modal from "@/components/Modal";
 import useDebounce from "@/hooks/custom/useDebounce";
 import useBranches from "@/hooks/useBranches";
+import { deptSelector } from "@/store/reducers/auth";
 import { branchSelector, selectBranch } from "@/store/reducers/webInventory";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
-import { BranchType } from "@/utils/types";
+import { BranchType, Departments } from "@/utils/types";
 import InvInput from "@/webApp/components/InvInput";
 import cl from "classnames";
 import { useEffect, useState } from "react";
@@ -20,8 +21,10 @@ const BranchModal = ({ isOpen, onClose }: Props) => {
   const [branchPage, $branchPage] = useState(1);
   const [branches, $branches] = useState<BranchType[]>([]);
   const [branchSearch, $branchSearch] = useDebounce("");
+  const dept = useAppSelector(deptSelector);
   const { data, isLoading: branchLoading } = useBranches({
     page: branchPage,
+    warehouse: dept === Departments.inventory_factory,
     ...(branchSearch && { body: { name: branchSearch } }),
   });
 
