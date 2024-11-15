@@ -8,7 +8,7 @@ import useQueryString from "@/hooks/custom/useQueryString";
 import { itemsPerPage } from "@/utils/helpers";
 import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
 import { useLocation } from "react-router-dom";
-import CustomNavigator from "./navigator";
+import Pagination from "../Pagination";
 
 type ReturnFunction<Tval> = (smt: Tval) => string;
 type RowClassName<T> = string | ReturnFunction<T>;
@@ -54,7 +54,6 @@ function AntdTable<T>({
 
   return (
     <div className={cl(styles.container_wrapper)}>
-      {!!data.length && <CustomNavigator data={data} />}
       <Table
         {...(others as any)}
         rootClassName="overflow-visible"
@@ -62,19 +61,7 @@ function AntdTable<T>({
         className={`common-table ${styles.table} align-center ${className}`}
         rowClassName={(item) => `clickable-row ${handleRowStyles(item)}`}
         footer={false}
-        pagination={
-          totalItems
-            ? {
-                total: totalItems,
-                hideOnSinglePage: false,
-                current: currentPage,
-                pageSize: itemsPerPage,
-                onChange: handleNavigate,
-                showSizeChanger: false,
-                position: ["bottomLeft"],
-              }
-            : false
-        }
+        pagination={false}
         // virtual
         columns={columns}
         title={() =>
@@ -89,6 +76,10 @@ function AntdTable<T>({
           )
         }
       />
+
+      {totalItems && (
+        <Pagination totalPages={Math.ceil(totalItems / itemsPerPage)} />
+      )}
     </div>
   );
 }
