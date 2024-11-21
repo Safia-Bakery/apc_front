@@ -182,6 +182,12 @@ export enum MainPermissions {
   edit_prods_inv_factory = 153,
   get_prods_inv_factory = 154,
 
-  it_request_change_categ = 148, //todo
-  it_request_change_deadline = 149, //todo
+  it_request_change_categ = 148,
+  it_request_change_deadline = 149,
+
+  get_apc_fabric_division = 155,
+  update_apc_fabric_division = 156,
+
+  get_apc_fabric_managers = 157,
+  update_apc_fabric_managers = 158,
 }

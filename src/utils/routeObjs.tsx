@@ -4,6 +4,16 @@ import { Departments, MarketingSubDep, SidebarType, Sphere } from "./types";
 import { MainPermissions } from "./permissions";
 import { ITRequestStatusArr } from "./helpers";
 
+const FactoryRequests = lazy(() => import("@/pages/factory/requests"));
+const ShowFactoryRequest = lazy(() => import("@/pages/factory/show-request"));
+const FactoryManagers = lazy(() => import("@/pages/factory/managers"));
+const FactoryDivisions = lazy(() => import("@/pages/factory/divisions"));
+const EditAddFabricMaster = lazy(
+  () => import("@/pages/factory/edit-add-managers")
+);
+const EditAddFactoryDivisions = lazy(
+  () => import("@/pages/factory/edit-add-division")
+);
 const RequestsStaff = lazy(() => import("@/pages/RequestsStaff"));
 const AddStaffOrder = lazy(() => import("@/pages/AddStaffRequest"));
 const ShowRequestStaff = lazy(() => import("@/pages/ShowRequestStaff"));
@@ -172,12 +182,23 @@ export const sidebarRoutes: SidebarType[] = [
         screen: MainPermissions.get_master,
       },
       {
+        name: "managers",
+        url: "/factory-managers",
+        icon: "/icons/user.svg",
+        screen: MainPermissions.get_apc_fabric_managers,
+      },
+      {
+        name: "branch_dep",
+        url: "/factory-divisions",
+        icon: "/icons/branch.svg",
+        screen: MainPermissions.get_apc_fabric_division,
+      },
+      {
         name: "categories",
         url: `/categories-apc-fabric`,
         icon: "/icons/categories.svg",
         screen: MainPermissions.get_categ_fab,
       },
-
       {
         name: "remains_in_stock",
         url: "/items-in-stock",
@@ -678,13 +699,7 @@ export const routes = [
     screen: MainPermissions.add_fabric_requests,
   },
   {
-    element: (
-      <ShowRequestApc
-        addExp={MainPermissions.add_expen_fab}
-        edit={MainPermissions.edit_fabric_requests}
-        attaching={MainPermissions.fabric_req_attach_master}
-      />
-    ),
+    element: <ShowFactoryRequest />,
     path: "/requests-apc-fabric/:id",
     screen: MainPermissions.edit_fabric_requests,
   },
@@ -737,14 +752,7 @@ export const routes = [
     screen: MainPermissions.get_requests_apc,
   },
   {
-    element: (
-      <RequestsApc
-        sphere_status={Sphere.fabric}
-        addExp={MainPermissions.add_expen_fab}
-        add={MainPermissions.add_fabric_requests}
-        edit={MainPermissions.edit_fabric_requests}
-      />
-    ),
+    element: <FactoryRequests />,
     path: "/requests-apc-fabric",
     screen: MainPermissions.get_fabric_requests,
   },
@@ -1091,6 +1099,11 @@ export const routes = [
     screen: MainPermissions.get_master,
   },
   {
+    element: <FactoryManagers />,
+    path: "/factory-managers",
+    screen: MainPermissions.get_apc_fabric_managers,
+  },
+  {
     element: (
       <Masters
         dep={Departments.APC}
@@ -1145,9 +1158,29 @@ export const routes = [
     screen: MainPermissions.edit_clients,
   },
   {
+    element: <EditAddFabricMaster />,
+    path: "/factory-managers/add",
+    screen: MainPermissions.update_apc_fabric_managers,
+  },
+  {
     element: <EditAddMasters />,
     path: "/masters/add",
     screen: MainPermissions.add_master,
+  },
+  {
+    element: <FactoryDivisions />,
+    path: "/factory-divisions",
+    screen: MainPermissions.get_apc_fabric_division,
+  },
+  {
+    element: <EditAddFactoryDivisions />,
+    path: "/factory-divisions/add",
+    screen: MainPermissions.update_apc_fabric_division,
+  },
+  {
+    element: <EditAddFactoryDivisions />,
+    path: "/factory-divisions/:id",
+    screen: MainPermissions.update_apc_fabric_division,
   },
   {
     element: <EditAddMasters />,
@@ -1158,6 +1191,11 @@ export const routes = [
     element: <EditAddMasters />,
     path: "/masters/:id",
     screen: MainPermissions.edit_master,
+  },
+  {
+    element: <EditAddFabricMaster />,
+    path: "/factory-managers/:id",
+    screen: MainPermissions.update_apc_fabric_managers,
   },
   {
     element: <EditAddMasters />,
@@ -1203,6 +1241,11 @@ export const routes = [
     element: <RemainsInStock />,
     path: "/items-in-stock/:id",
     screen: MainPermissions.get_warehouse_retail,
+  },
+  {
+    element: <RemainsInStock />,
+    path: "/items-in-stock/:id",
+    screen: MainPermissions.get_warehouse_fabric,
   },
   {
     element: (

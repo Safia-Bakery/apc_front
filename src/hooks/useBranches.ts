@@ -33,10 +33,11 @@ export const useBranches = ({
       baseApi
         .get(warehouse ? "/get/fillial/fabrica" : "/fillials", {
           params: { page, size, origin, ...body },
-          timeout: EPresetTimes.SECOND * 15,
+          timeout: EPresetTimes.MINUTE,
         })
         .then(({ data: response }) => response as BranchTypes),
     enabled,
+    staleTime: EPresetTimes.MINUTE * 4,
   });
 };
 export default useBranches;

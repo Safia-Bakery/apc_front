@@ -26,7 +26,7 @@ const Branches = () => {
   const { refetch: branchSync, isFetching: syncFetching } = useBranchSync({
     enabled: false,
   });
-  const permisisons = useAppSelector(permissionSelector);
+  const permission = useAppSelector(permissionSelector);
   const currentPage = Number(useQueryString("page")) || 1;
   const fillial_status = useQueryString("fillial_status");
   const country = useQueryString("country");
@@ -71,7 +71,7 @@ const Branches = () => {
         header: "",
         cell: ({ row }) => {
           return (
-            permisisons?.[MainPermissions.edit_fillials] && (
+            permission?.[MainPermissions.edit_fillials] && (
               <TableViewBtn
                 onClick={handleNavigate(`/branches/${row.original.id}`)}
               />
@@ -83,7 +83,7 @@ const Branches = () => {
     []
   );
 
-  const iikoBtn = permisisons?.[MainPermissions.synch_fillials_iiko];
+  const iikoBtn = permission?.[MainPermissions.synch_fillials_iiko];
 
   const {
     data: branches,
@@ -130,7 +130,7 @@ const Branches = () => {
               {t("sync_with_iico")}
             </button>
           )}
-          {permisisons?.[MainPermissions.add_fillials] && (
+          {permission?.[MainPermissions.add_fillials] && (
             <button
               className="btn btn-success  "
               onClick={handleNavigate("add")}

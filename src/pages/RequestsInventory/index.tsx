@@ -1,4 +1,4 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Order, RequestStatus } from "@/utils/types";
 import { useMemo } from "react";
 import dayjs from "dayjs";
@@ -16,7 +16,6 @@ import Table, { ColumnsType } from "antd/es/table";
 const RequestsInventory = () => {
   const { t } = useTranslation();
   const { dep } = useParams();
-  const navigate = useNavigate();
   const currentPage = Number(useQueryString("page")) || 1;
   const request_status = useQueryString("request_status");
   const created_at = useQueryString("created_at");
@@ -114,13 +113,9 @@ const RequestsInventory = () => {
 
   return (
     <Card>
-      <Header title={t("requests_for_inventory")}>
-        {/* <button onClick={() => navigate("add")} className="btn btn-success">
-          {t("add")}
-        </button> */}
-      </Header>
+      <Header title={t("requests_for_inventory")} />
 
-      <div className="table-responsive">
+      <div className="table-responsive content">
         <AntdTable
           sticky
           data={requests?.items}

@@ -77,7 +77,7 @@ function AntdTable<T>({
         }
       />
 
-      {totalItems && (
+      {!!totalItems && (
         <Pagination totalPages={Math.ceil(totalItems / itemsPerPage)} />
       )}
     </div>

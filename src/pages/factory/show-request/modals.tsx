@@ -28,17 +28,19 @@ import Loading from "@/components/Loader";
 import useCategories from "@/hooks/useCategories";
 import MainInput from "@/components/BaseInputs/MainInput";
 import AsyncAccordion from "@/components/AsyncAccordion";
-
-const unchangable: BaseReturnBoolean = {
-  [RequestStatus.finished]: true,
-  [RequestStatus.closed_denied]: true,
-};
+import {
+  apcFactoryRequestMutation,
+  getApcFactoryManagers,
+  getApcFactoryRequest,
+} from "@/hooks/factory";
+import { useEffect } from "react";
 
 interface Params {
   status?: RequestStatus;
-  item?: BrigadaType;
+  brigada_id?: number;
   time?: string;
   car_id?: number;
+  categ?: boolean;
 }
 
 const ApcModals = () => {
@@ -46,37 +48,43 @@ const ApcModals = () => {
   const { id } = useParams();
   const modal = Number(useQueryString("modal"));
   const photo = useQueryString("photo");
-  const sphere_status = Number(useQueryString("sphere_status"));
-  const dep = Number(useQueryString("dep"));
   const removeParams = useRemoveParams();
-  const { mutate: attach, isPending: attaching } = attachBrigadaMutation();
-  const { register, getValues, watch, handleSubmit } = useForm();
+  const { mutate: attach, isPending: attaching } = apcFactoryRequestMutation();
+  const { register, getValues, watch, handleSubmit, reset } = useForm();
 
   const closeModal = () => removeParams(["modal"]);
 
-  const { data: brigades, isFetching: brigadaLoading } = useBrigadas({
-    enabled: false,
-    ...(!!dep && { department: dep }),
-    ...(!!sphere_status && { sphere_status }),
+  const { data: categories, isLoading: categoriesLoading } = useCategories({
+    enabled: modal === ModalTypes.changeCateg,
+    department: Departments.APC,
+    sphere_status: Sphere.fabric,
+    category_status: 1,
   });
 
-  const { refetch: orderRefetch, isFetching: orderFetching } = useOrder({
+  const { data: brigades, isFetching: brigadaLoading } = useBrigadas({
+    enabled: false,
+    department: Departments.APC,
+    sphere_status: Sphere.fabric,
+  });
+
+  const {
+    refetch: orderRefetch,
+    isFetching: orderFetching,
+    data: order,
+  } = getApcFactoryRequest({
     id: Number(id),
   });
 
-  const handleBrigada =
-    ({ status, item, time, car_id }: Params) =>
+  const handleUpdate =
+    ({ status, brigada_id, categ }: Params) =>
     () => {
-      const { fixedReason, cancel_reason, pause_reason, price } = getValues();
+      const { fixedReason, cancel_reason, category_id } = getValues();
       attach(
         {
-          request_id: Number(id),
-          status,
-          ...(!!time && { finishing_time: time }),
-          ...(!!car_id && { car_id }),
-          ...(!!price && { price: +price }),
-          ...(!!pause_reason && { pause_reason }),
-          ...(!!item && { brigada_id: Number(item?.id) }),
+          id: Number(id),
+          status: !!status ? status : order?.status,
+          brigada_id: !!brigada_id ? Number(brigada_id) : order?.brigada?.id,
+          category_id: categ ? category_id : order?.category?.id,
           ...(status === RequestStatus.closed_denied && {
             deny_reason:
               fixedReason < 4 ? t(CancelReason[fixedReason]) : cancel_reason,
@@ -85,7 +93,7 @@ const ApcModals = () => {
         {
           onSuccess: () => {
             orderRefetch();
-            successToast("assigned");
+            successToast("updated");
           },
           onError: (e) => errorToast(e.message),
         }
@@ -106,28 +114,26 @@ const ApcModals = () => {
             {brigadaLoading ? (
               <Loading is_static />
             ) : (
-              brigades?.items
-                .filter((item) => !!item.user!?.length && !!item.status)
-                .map((item, idx) => (
-                  <div
-                    key={idx}
-                    className={
-                      "flex justify-between border-b border-b-black py-4 pr-1 pl-4 items-center"
-                    }
+              brigades?.items.map((item, idx) => (
+                <div
+                  key={idx}
+                  className={
+                    "flex justify-between border-b border-b-black py-4 pr-1 pl-4 items-center"
+                  }
+                >
+                  <h6 className="text-lg mb-0">{item?.name}</h6>
+                  <button
+                    id="attach_to_bridaga"
+                    onClick={handleUpdate({
+                      status: RequestStatus.received,
+                      brigada_id: item.id,
+                    })}
+                    className="btn btn-success btn-sm"
                   >
-                    <h6 className="text-lg mb-0">{item?.name}</h6>
-                    <button
-                      id="attach_to_bridaga"
-                      onClick={handleBrigada({
-                        status: RequestStatus.received,
-                        item,
-                      })}
-                      className="btn btn-success   btn-sm"
-                    >
-                      {t("assign")}
-                    </button>
-                  </div>
-                ))
+                    {t("assign")}
+                  </button>
+                </div>
+              ))
             )}
           </div>
         </div>
@@ -136,7 +142,7 @@ const ApcModals = () => {
       return (
         <form
           onSubmit={handleSubmit(
-            handleBrigada({
+            handleUpdate({
               status: RequestStatus.closed_denied,
             })
           )}
@@ -176,53 +182,30 @@ const ApcModals = () => {
           </div>
         </form>
       );
-    if (modal === ModalTypes.pause)
+
+    if (modal === ModalTypes.changeCateg)
       return (
-        <form
-          onSubmit={handleSubmit(
-            handleBrigada({ status: RequestStatus.paused })
-          )}
-          className={"w-[420px]"}
-        >
-          <Header title="pause_reason">
+        <>
+          <Header title="change">
             <button onClick={closeModal} className="close">
-              <span aria-hidden="true">&times;</span>
+              <span>&times;</span>
             </button>
           </Header>
-          <div className="p-3">
-            <BaseInput label="comments">
-              <MainTextArea register={register("pause_reason")} autoFocus />
-            </BaseInput>
-
-            <button className="btn btn-success" type="submit">
-              {t("send")}
+          <BaseInput label="select_category">
+            <MainSelect
+              values={categories?.items}
+              register={register("category_id")}
+            />
+          </BaseInput>
+          <div className="min-w-96">
+            <button
+              className="btn btn-success w-full"
+              onClick={handleUpdate({ categ: true })}
+            >
+              {t("apply")}
             </button>
           </div>
-        </form>
-      );
-
-    if (modal === ModalTypes.expense)
-      return (
-        <form
-          onSubmit={handleSubmit(
-            handleBrigada({ status: RequestStatus.solved })
-          )}
-        >
-          <Header title="add_expense">
-            <button onClick={closeModal}>
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </Header>
-          <div className="p-3">
-            <BaseInput label="add_expense">
-              <MainInput type="number" register={register("price")} />
-            </BaseInput>
-
-            <button className="btn btn-success w-full" type="submit">
-              {t("send")}
-            </button>
-          </div>
-        </form>
+        </>
       );
 
     if (modal === ModalTypes.showPhoto)
@@ -254,10 +237,22 @@ const ApcModals = () => {
         </div>
       );
 
-    if (modal === ModalTypes.changeCateg) return <AsyncAccordion />;
+    // if (modal === ModalTypes.changeCateg) return <AsyncAccordion />;
   };
 
-  if (orderFetching || attaching) return <Loading />;
+  useEffect(() => {
+    if (modal === ModalTypes.changeCateg)
+      reset({
+        category_id: order?.category?.id,
+      });
+  }, [modal, order?.category]);
+
+  if (
+    (categoriesLoading && modal === ModalTypes.changeCateg) ||
+    orderFetching ||
+    attaching
+  )
+    return <Loading />;
 
   return (
     <Modal

@@ -13,6 +13,7 @@ interface Props {
   values?: { id: number | string; name: string; status?: number }[];
   children?: ReactNode;
   onFocus?: () => void;
+  defaultValue?: string;
 }
 
 const MainSelect: FC<Props> = ({

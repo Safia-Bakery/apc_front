@@ -415,6 +415,7 @@ const localization = {
 
       theme_id: "ID Темы",
       is_expired: "Просрочен",
+      managers: "Менеджеры",
     },
   },
   uz: {
