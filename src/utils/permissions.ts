@@ -191,5 +191,5 @@ export enum MainPermissions {
   get_apc_fabric_managers = 157,
   update_apc_fabric_managers = 158,
 
-  get_all_folders = 158, // todo
+  get_all_folders = 159,
 }
