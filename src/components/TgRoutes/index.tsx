@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import useQueryString from "custom/useQueryString";
-import { getDepartment, loginHandler } from "reducers/auth";
+import { getDepartment, getFreezerState, loginHandler } from "reducers/auth";
 import { useAppDispatch } from "@/store/utils/types";
 import { TelegramApp } from "@/utils/tgHelpers";
 
 const TgRoutes = () => {
   const tokenKey = useQueryString("key");
   const departmentParam = useQueryString("department");
+  const order_id = useQueryString("order_id");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { pathname, search } = useLocation();
@@ -19,6 +20,10 @@ const TgRoutes = () => {
     }
     departmentParam && dispatch(getDepartment(Number(departmentParam)));
   }, [tokenKey, departmentParam]);
+
+  useEffect(() => {
+    if (order_id) dispatch(getFreezerState({ order_id }));
+  }, [order_id]);
 
   useEffect(() => {
     const script = document.createElement("script");

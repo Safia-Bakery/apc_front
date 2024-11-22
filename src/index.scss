@@ -12,6 +12,10 @@
   -webkit-text-size-adjust: 100%;
 
   --hoverGray: #c2c2c2;
+  --tgPrimary: #f9ecd5;
+  --tgBrown: #bea087;
+  --tgLighBrown: #dabc82;
+  --tgSelected: #aac183;
 }
 body {
   background-color: #f5f5f5;
@@ -358,9 +362,9 @@ p {
     min-width: 200px !important;
   }
 }
-.ant-table-cell {
-  padding: 10px !important;
-}
+// .ant-table-cell {
+//   padding: 10px !important;
+// }
 
 .ant-table-header {
   overflow: visible !important;
@@ -416,4 +420,10 @@ p {
 }
 .ant-btn-dangerous {
   border-color: #ff4d4f !important;
+}
+.ant-table-title {
+  padding: 0 !important;
+}
+.ant-table {
+  background: transparent !important;
 }

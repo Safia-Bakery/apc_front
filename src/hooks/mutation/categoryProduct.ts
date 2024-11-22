@@ -19,13 +19,13 @@ const categoryProductMutation = () => {
       if (!body.id) {
         const { data } = await baseApi.post("/v1/cat/product", body, {
           headers: { "Content-Type": contentType },
-          timeout: EPresetTimes.MINUTE * 5,
+          timeout: EPresetTimes.MINUTE * 4,
         });
         return data;
       } else {
         const { data } = await baseApi.put("/v1/cat/product", body, {
           headers: { "Content-Type": contentType },
-          timeout: EPresetTimes.MINUTE * 5,
+          timeout: EPresetTimes.MINUTE * 4,
         });
         return data;
       }

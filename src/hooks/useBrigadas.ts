@@ -18,7 +18,7 @@ const useBrigadas = ({ page, sphere_status, department, enabled }: Params) => {
         .get("/brigadas", { params: { page, sphere_status, department } })
         .then(({ data: response }) => response as BrigadaTypes),
     enabled,
-    staleTime: EPresetTimes.MINUTE * 5,
+    staleTime: EPresetTimes.MINUTE * 4,
   });
 };
 export default useBrigadas;

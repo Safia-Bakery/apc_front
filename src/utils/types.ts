@@ -557,7 +557,7 @@ export type InventoryTools = {
   amount_left: string;
   last_update: string;
   min_amount: string;
-  image: string;
+  image?: string;
   ftime?: number | null;
   status?: number;
   count: number;

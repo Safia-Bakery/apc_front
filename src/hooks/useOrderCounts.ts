@@ -18,7 +18,7 @@ export const useOrderCounts = ({ enabled = true }: { enabled?: boolean }) => {
 
     enabled: enabled && !!token,
     refetchOnMount: true,
-    staleTime: EPresetTimes.MINUTE * 5,
+    staleTime: EPresetTimes.MINUTE * 4,
   });
 };
 export default useOrderCounts;

@@ -305,10 +305,14 @@ const ShowRequestApcFabric = () => {
                     <th>{t("department")}</th>
                     <td>{order?.division?.name}</td>
                   </tr>
-                  {/* <tr>
-                    <th>{t("productt")}</th>
-                    <td>{order?.product}</td>
-                  </tr> */}
+                  <tr>
+                    <th>{t("manager")}</th>
+                    <td>
+                      {order?.division?.manager?.id
+                        ? order?.division?.manager?.name
+                        : t("not_given")}
+                    </td>
+                  </tr>
                   <tr>
                     <th>{t("file")}</th>
                     <td className="flex flex-col !border-none">

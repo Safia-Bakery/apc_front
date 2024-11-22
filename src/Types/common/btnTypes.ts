@@ -3,4 +3,5 @@ export enum BtnTypes {
   warning = "warning",
   danger = "danger",
   success = "success",
+  tgBrown = "tgBrown",
 }

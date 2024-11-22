@@ -18,7 +18,7 @@ export const useBranchSync = ({
       baseApi
         .get("/synch/department", {
           params: { page, size },
-          timeout: EPresetTimes.MINUTE * 5,
+          timeout: EPresetTimes.MINUTE * 4,
         })
         .then(({ data: response }) => {
           return response as BranchTypes;

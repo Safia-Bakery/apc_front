@@ -10,7 +10,7 @@ interface Params {
   started_at?: string;
   sphere_status?: Sphere;
 }
-const config = { timeout: EPresetTimes.MINUTE * 5 };
+const config = { timeout: EPresetTimes.MINUTE * 4 };
 export const useApcServiceStats = ({
   enabled,
   started_at = dayjs().startOf("month").format(yearMonthDate),

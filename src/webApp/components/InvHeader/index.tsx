@@ -5,12 +5,17 @@ type Props = {
   title?: string;
   rightChild?: ReactNode;
   goBack?: boolean;
+  sticky?: boolean;
 };
 
-const InvHeader = ({ title, rightChild, goBack }: Props) => {
+const InvHeader = ({ title, rightChild, goBack, sticky = false }: Props) => {
   const navigate = useNavigate();
   return (
-    <header className="py-4 px-3 flex items-center justify-between w-full bg-invHeader">
+    <header
+      className={`py-4 px-3 flex items-center justify-between w-full z-10 bg-invHeader ${
+        sticky ? "sticky top-0" : ""
+      }`}
+    >
       {goBack ? (
         <button onClick={() => navigate(-1)}>
           <img

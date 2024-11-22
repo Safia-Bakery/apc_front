@@ -20,6 +20,12 @@ import {
 } from "./utils/routeObjs";
 import { MainPermissions } from "@/utils/permissions";
 
+const FreezerCart = lazy(() => import("./webApp/pages/freezer/cart"));
+const ShowFreezerOrder = lazy(
+  () => import("./webApp/pages/freezer/show-order")
+);
+const MainFreezerRoute = lazy(() => import("./webApp/layouts/freezer"));
+const FreezerProducts = lazy(() => import("./webApp/pages/freezer/products"));
 const ControlPanel = lazy(() => import("@/pages/ControlPanel"));
 const TgRating = lazy(() => import("@/webApp/pages/TgRating"));
 
@@ -456,6 +462,48 @@ const App = () => {
               </Suspend>
             }
             path={"cart"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <InvSuccess />
+              </Suspend>
+            }
+            path={"success/:id"}
+          />
+        </Route>
+
+        <Route
+          element={
+            <Suspend>
+              <MainFreezerRoute />
+            </Suspend>
+          }
+          path={"freezer"}
+        >
+          <Route
+            element={
+              <Suspend>
+                <FreezerProducts />
+              </Suspend>
+            }
+            path={"products"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <FreezerCart />
+              </Suspend>
+            }
+            path={"cart"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <ShowFreezerOrder />
+              </Suspend>
+            }
+            path={"show-order"}
           />
           <Route
             element={

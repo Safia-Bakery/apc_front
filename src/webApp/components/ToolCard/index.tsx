@@ -6,13 +6,12 @@ import {
   incrementSelected,
 } from "@/store/reducers/webInventory";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
-import { ToolItemType } from "@/utils/types";
 import { Image } from "antd";
 import { CSSProperties } from "react";
 
 type Props = {
   style?: CSSProperties;
-  tool: ToolItemType;
+  tool: FreezerToolType;
 };
 
 const ToolCard = ({ style, tool }: Props) => {
@@ -49,7 +48,7 @@ const ToolCard = ({ style, tool }: Props) => {
             <div className="flex justify-evenly flex-1  text-white ">
               <button
                 className="flex flex-1 justify-center"
-                onClick={() => dispatch(decrementSelected(tool.id))}
+                onClick={() => dispatch(decrementSelected(tool.id?.toString()))}
               >
                 -
               </button>
@@ -58,7 +57,7 @@ const ToolCard = ({ style, tool }: Props) => {
               </span>
               <button
                 className="flex flex-1 justify-center"
-                onClick={() => dispatch(incrementSelected(tool.id))}
+                onClick={() => dispatch(incrementSelected(tool.id?.toString()))}
               >
                 +
               </button>

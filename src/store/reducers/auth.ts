@@ -7,12 +7,18 @@ interface State {
   token: string | null;
   link: string;
   invDepartment?: number;
+
+  freezerState: {
+    branch_id?: string | null;
+    order_id?: null | string;
+  };
 }
 
 const initialState: State = {
   token: null,
   link: "/home",
   invDepartment: undefined,
+  freezerState: {},
 };
 
 export const authReducer = createSlice({
@@ -35,6 +41,12 @@ export const authReducer = createSlice({
     getDepartment: (state, { payload }: PayloadAction<number>) => {
       state.invDepartment = payload;
     },
+    getFreezerState: (
+      state,
+      { payload }: PayloadAction<State["freezerState"]>
+    ) => {
+      state.freezerState = payload;
+    },
     loginHandler: (state, { payload }) => {
       state.token = payload;
     },
@@ -44,8 +56,9 @@ export const authReducer = createSlice({
 export const tokenSelector = (state: RootState) => state.auth.token;
 export const linkSelector = (state: RootState) => state.auth.link;
 export const deptSelector = (state: RootState) => state.auth.invDepartment;
+export const freezerState = (state: RootState) => state.auth.freezerState;
 
-export const { loginHandler, logoutHandler, getDepartment } =
+export const { loginHandler, getFreezerState, logoutHandler, getDepartment } =
   authReducer.actions;
 
 export default authReducer.reducer;

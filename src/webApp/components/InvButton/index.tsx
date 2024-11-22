@@ -10,6 +10,9 @@ export enum BtnSize {
 export enum InvBtnType {
   primary = "primary",
   white = "white",
+  tgPrimary = "tgPrimary",
+  tgSelected = "tgSelected",
+  tgLighBrown = "tgLighBrown",
 }
 
 type Props = {

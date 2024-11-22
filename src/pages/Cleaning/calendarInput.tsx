@@ -13,7 +13,7 @@ type Props = {
   closeModal?: () => void;
 };
 
-const CalendarInput = ({ selectedDate, selectedMonth, closeModal }: Props) => {
+const CalendarInput = ({ selectedDate, selectedMonth }: Props) => {
   const { t } = useTranslation();
   const [selectedItems, setSelectedItems] = useState<string>("");
   const [branchSearch, $branchSearch] = useDebounce("");

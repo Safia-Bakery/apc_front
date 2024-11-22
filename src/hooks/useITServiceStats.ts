@@ -10,7 +10,7 @@ interface Params {
   started_at?: string;
   department?: Departments;
 }
-const config = { timeout: EPresetTimes.MINUTE * 5 };
+const config = { timeout: EPresetTimes.MINUTE * 4 };
 export const useITServiseStats = ({
   enabled,
   started_at = dayjs().startOf("month").format(yearMonthDate),

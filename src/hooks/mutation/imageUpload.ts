@@ -8,7 +8,7 @@ const imageUpload = () => {
     mutationFn: async (body: any) => {
       const { data } = await baseApi.post("/v1/image/upload", body, {
         headers: { "Content-Type": "multipart/form-data" },
-        timeout: EPresetTimes.MINUTE * 5,
+        timeout: EPresetTimes.MINUTE * 4,
       });
       return data;
     },

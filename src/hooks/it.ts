@@ -19,7 +19,7 @@ export const getItrequest = ({
         })
         .then(({ data: response }) => (response as ITRequestRes) || null),
     enabled,
-    staleTime: EPresetTimes.MINUTE * 5,
+    staleTime: EPresetTimes.MINUTE * 4,
   });
 };
 

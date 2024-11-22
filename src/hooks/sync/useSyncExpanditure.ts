@@ -13,7 +13,7 @@ export const useSyncExpanditure = ({
     queryKey: ["expanditure_sync"],
     queryFn: () =>
       baseApi
-        .get("/synch/groups", { timeout: EPresetTimes.MINUTE * 5 })
+        .get("/synch/groups", { timeout: EPresetTimes.MINUTE * 4 })
         .then((response) => {
           if (response?.status === 200) {
             successToast("Синхронизирован");

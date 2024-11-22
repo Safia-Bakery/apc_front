@@ -19,7 +19,7 @@ export const uploadFileMutation = () => {
       });
       return baseApi
         .post("/v1/upload/file", formData, {
-          timeout: EPresetTimes.MINUTE * 5,
+          timeout: EPresetTimes.MINUTE * 4,
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then(({ data }) => data);

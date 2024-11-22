@@ -12,7 +12,7 @@ export const useCalendars = ({ enabled, ...params }: CalendarParams) => {
         .get("/calendar", { params })
         .then(({ data: response }) => response as CalendarTypes[]),
     enabled,
-    staleTime: EPresetTimes.MINUTE * 5,
+    staleTime: EPresetTimes.MINUTE * 4,
   });
 };
 
@@ -25,7 +25,7 @@ export const useCalendar = ({ enabled, id }: CalendarParam) => {
         .then(({ data: response }) => response as CalendarTypes);
     },
     enabled,
-    staleTime: EPresetTimes.MINUTE * 5,
+    staleTime: EPresetTimes.MINUTE * 4,
   });
 };
 

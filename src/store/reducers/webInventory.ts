@@ -4,7 +4,7 @@ import { ToolItemType } from "@/utils/types";
 
 interface State {
   selectedBranch?: { name: string; id: string };
-  cart: { [key: string]: ToolItemType };
+  cart: { [key: string]: FreezerToolType };
 }
 
 const initialState: State = {
@@ -23,7 +23,7 @@ export const webInventoryReducer = createSlice({
       state.selectedBranch = payload;
     },
 
-    addItem: (state, { payload }: PayloadAction<ToolItemType>) => {
+    addItem: (state, { payload }: PayloadAction<FreezerToolType>) => {
       if (!state.cart?.[payload.id])
         state.cart[payload.id] = { ...payload, count: 1 };
       else state.cart[payload.id].count += payload.count;

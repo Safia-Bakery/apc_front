@@ -2,12 +2,10 @@ import { Table } from "antd";
 import styles from "./index.module.scss";
 import { TableProps } from "antd/es/table";
 import cl from "classnames";
-import { ReactNode, useCallback, useEffect, useMemo } from "react";
+import { ReactNode, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useQueryString from "@/hooks/custom/useQueryString";
 import { itemsPerPage } from "@/utils/helpers";
-import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
-import { useLocation } from "react-router-dom";
 import Pagination from "../Pagination";
 
 type ReturnFunction<Tval> = (smt: Tval) => string;
@@ -32,18 +30,9 @@ function AntdTable<T>({
   ...others
 }: Props<T>) {
   const { t } = useTranslation();
-  const { search } = useLocation();
   const currentPage = Number(useQueryString("page")) || 1;
-  const navigateParams = useNavigateParams();
   const handleRowStyles = (item: T) =>
     typeof rowClassName === "function" ? rowClassName?.(item) : rowClassName;
-
-  const handleNavigate = useCallback(
-    (page: number) => {
-      navigateParams({ page });
-    },
-    [currentPage, search]
-  );
 
   const indexOfLastItem = Math.min(currentPage * itemsPerPage);
   const indexOfFirstItem = useMemo(() => {

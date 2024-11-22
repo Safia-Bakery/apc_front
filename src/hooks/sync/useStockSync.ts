@@ -17,7 +17,7 @@ export const useStockSync = ({
       baseApi
         .get("/v1/synch/left", {
           params: { store_id },
-          timeout: EPresetTimes.MINUTE * 5,
+          timeout: EPresetTimes.MINUTE * 4,
         })
         .then(({ data: response }) => {
           successToast("Синхронизировано");

@@ -102,7 +102,7 @@ const AddKRUSubTasks = () => {
         title: "№",
         dataIndex: "",
         width: 50,
-        className: "!px-0 text-center",
+        className: "!px-0 py-2 text-center",
         render: (_, r, idx) => handleIdx(idx),
       },
       {
@@ -116,6 +116,7 @@ const AddKRUSubTasks = () => {
       {
         title: "",
         width: 100,
+        className: "!p-2",
         dataIndex: "delete",
         render: (_, record) =>
           perm?.[MainPermissions.add_kru_sub_tasks] && (

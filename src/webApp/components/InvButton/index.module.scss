@@ -31,6 +31,21 @@
   border: 1px solid #dcc38b !important;
 }
 
+.tgBrown {
+  background-color: var(--tgBrown) !important;
+  border-radius: 20px;
+}
+
+.tgSelected {
+  background-color: var(--tgSelected) !important;
+  border-radius: 20px;
+}
+
+.tgLighBrown {
+  background-color: var(--tgLighBrown) !important;
+  border-radius: 20px;
+}
+
 .medium {
   height: 40px;
 }

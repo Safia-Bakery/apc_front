@@ -31,7 +31,7 @@ export const getApcFactoryRequest = ({
         })
         .then(({ data: response }) => (response as FactoryRequestRes) || null),
     enabled,
-    staleTime: EPresetTimes.MINUTE * 5,
+    staleTime: EPresetTimes.MINUTE * 4,
   });
 };
 
@@ -84,7 +84,7 @@ export const getApcFactoryManager = ({
         })
         .then(({ data: response }) => (response as ManagerRes) || null),
     enabled,
-    staleTime: EPresetTimes.MINUTE * 5,
+    staleTime: EPresetTimes.MINUTE * 4,
   });
 };
 
@@ -145,7 +145,7 @@ export const getApcFactoryDivision = ({
         })
         .then(({ data: response }) => (response as DivisionRes) || null),
     enabled,
-    staleTime: EPresetTimes.MINUTE * 5,
+    staleTime: EPresetTimes.MINUTE * 4,
   });
 };
 

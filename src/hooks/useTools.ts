@@ -12,7 +12,7 @@ interface Body {
   few_amounts?: boolean;
 }
 
-const config = { timeout: EPresetTimes.MINUTE * 5 };
+const config = { timeout: EPresetTimes.MINUTE * 4 };
 
 export const useTools = ({ enabled = true, ...params }: Body) => {
   return useQuery({
@@ -24,7 +24,7 @@ export const useTools = ({ enabled = true, ...params }: Body) => {
           return response as ToolTypes;
         }),
     enabled,
-    staleTime: EPresetTimes.MINUTE * 5,
+    staleTime: EPresetTimes.MINUTE * 4,
   });
 };
 export default useTools;

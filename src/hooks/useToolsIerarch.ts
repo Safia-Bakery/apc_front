@@ -22,7 +22,7 @@ export const useToolsIerarch = ({ parent_id, enabled, name }: Props) => {
         .then(({ data: response }) => response as ToolsEarchType),
     enabled,
     refetchOnMount: true,
-    staleTime: EPresetTimes.MINUTE * 5,
+    staleTime: EPresetTimes.MINUTE * 4,
   });
 };
 export default useToolsIerarch;
