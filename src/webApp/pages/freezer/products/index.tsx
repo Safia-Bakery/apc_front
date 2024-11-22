@@ -163,7 +163,7 @@ const FreezerProducts = () => {
             btnType={InvBtnType.primary}
             disabled={!Object.values(cart).length}
             className="w-full !h-11"
-            onClick={() => navigate("/tg/freezer/cart")}
+            onClick={() => navigate("/tg/collector/cart")}
           >
             Корзина ({Object.values(cart).length})
           </InvButton>

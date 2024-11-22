@@ -8,8 +8,8 @@ const MainFreezerRoute = () => {
   const { order_id } = useAppSelector(freezerState);
 
   useEffect(() => {
-    if (!!order_id) navigate("/tg/freezer/show-order");
-    else navigate("/tg/freezer/products");
+    if (!!order_id) navigate("/tg/collector/show-order");
+    else navigate("/tg/collector/products");
   }, [order_id]);
 
   return <Outlet />;

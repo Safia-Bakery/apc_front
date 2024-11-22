@@ -15,6 +15,7 @@ const EditAddFactoryDivisions = lazy(
   () => import("@/pages/factory/edit-add-division")
 );
 const RequestsStaff = lazy(() => import("@/pages/RequestsStaff"));
+const ParentTools = lazy(() => import("@/pages/ParentTools"));
 const AddStaffOrder = lazy(() => import("@/pages/AddStaffRequest"));
 const ShowRequestStaff = lazy(() => import("@/pages/ShowRequestStaff"));
 const LogysticsLogs = lazy(() => import("@/pages/LogysticsLogs"));
@@ -496,6 +497,12 @@ export const sidebarRoutes: SidebarType[] = [
     department: Departments.request_for_food,
   },
   {
+    name: "parent_tools",
+    url: "/parent-tools",
+    icon: "/icons/folder.svg",
+    screen: MainPermissions.get_all_folders,
+  },
+  {
     name: "users",
     url: "/users",
     icon: "/icons/users.svg",
@@ -553,6 +560,11 @@ export const routes = [
     element: <FormRequests />,
     path: "/requests-form",
     screen: MainPermissions.get_form_request,
+  },
+  {
+    element: <ParentTools />,
+    path: "/parent-tools",
+    screen: MainPermissions.get_all_folders,
   },
   {
     element: <KruTasks />,

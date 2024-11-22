@@ -68,7 +68,7 @@ const RemainsInStock = () => {
             />
             {t("sync_with_iico")}
           </button>
-          <button className="btn btn-primary  " onClick={goBack}>
+          <button className="btn btn-primary" onClick={goBack}>
             {t("back")}
           </button>
         </div>

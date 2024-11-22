@@ -53,7 +53,7 @@ const RequestsInventory = () => {
       {
         title: t("num"),
         dataIndex: "id",
-        width: 80,
+        width: 100,
         render: (_, order) => <Link to={`${order?.id}`}>{order?.id}</Link>,
       },
       {

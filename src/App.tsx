@@ -479,7 +479,7 @@ const App = () => {
               <MainFreezerRoute />
             </Suspend>
           }
-          path={"freezer"}
+          path={"collector"}
         >
           <Route
             element={

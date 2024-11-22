@@ -115,7 +115,7 @@ const AddKRUSubTasks = () => {
       },
       {
         title: "",
-        width: 100,
+        width: 50,
         className: "!p-2",
         dataIndex: "delete",
         render: (_, record) =>

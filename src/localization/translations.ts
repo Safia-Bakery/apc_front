@@ -417,6 +417,7 @@ const localization = {
       is_expired: "Просрочен",
       managers: "Менеджеры",
       manager: "Менеджер",
+      parent_tools: "Группы товаров",
     },
   },
   uz: {

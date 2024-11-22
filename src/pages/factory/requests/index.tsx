@@ -37,14 +37,14 @@ const FactoryRequests = () => {
       {
         title: "№",
         dataIndex: "",
-        width: 50,
+        width: 60,
         className: "!px-0 text-center",
         render: (_, r, idx) => handleIdx(idx),
       },
       {
         title: t("num"),
         dataIndex: "id",
-        width: 80,
+        width: 100,
         render: (_, order) =>
           permission?.[MainPermissions.edit_fabric_requests] ? (
             <Link to={`${order?.id}`} state={{ search }}>

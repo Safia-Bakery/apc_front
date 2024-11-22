@@ -41,6 +41,7 @@
 }
 
 .fadeIn {
+  animation-name: fadeIn;
   @keyframes fadeIn {
     0% {
       top: 40%;
@@ -49,9 +50,9 @@
       top: 50%;
     }
   }
-  animation-name: fadeIn;
 }
 .fadeOut {
+  animation-name: fadeOut;
   @keyframes fadeOut {
     0% {
       top: 50%;
@@ -65,5 +66,4 @@
       display: none;
     }
   }
-  animation-name: fadeOut;
 }

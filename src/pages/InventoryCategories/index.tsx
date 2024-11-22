@@ -32,7 +32,7 @@ const InventoryCategories = () => {
       {
         render: (_, r, idx) => idx + 1,
         title: "№",
-        width: 50,
+        width: 100,
       },
       {
         dataIndex: "name",
