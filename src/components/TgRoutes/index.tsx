@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import useQueryString from "custom/useQueryString";
-import { getDepartment, getFreezerState, loginHandler } from "reducers/auth";
+import { getDepartment, loginHandler } from "reducers/auth";
 import { useAppDispatch } from "@/store/utils/types";
 import { TelegramApp } from "@/utils/tgHelpers";
+import { getFreezerState } from "@/store/reducers/freezer";
 
 const TgRoutes = () => {
   const tokenKey = useQueryString("key");

@@ -1,6 +1,6 @@
 import Loading from "@/components/Loader";
 import { freezerRequestMutation, getFreezerRequest } from "@/hooks/freezer";
-import { freezerState, getFreezerState } from "@/store/reducers/auth";
+import { freezerState, getFreezerState } from "@/store/reducers/freezer";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import { dateTimeFormat } from "@/utils/keys";
 import FreezerItem from "@/webApp/components/FreezerItem";
@@ -35,7 +35,6 @@ const ShowOrder = () => {
         onSuccess: () => {
           TelegramApp.toMainScreen();
           successToast("Успешно изменен");
-          dispatch(getFreezerState({ order_id: undefined }));
         },
         onError: (e) => errorToast(e.message),
       }

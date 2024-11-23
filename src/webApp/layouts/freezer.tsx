@@ -1,4 +1,4 @@
-import { freezerState } from "@/store/reducers/auth";
+import { freezerState } from "@/store/reducers/freezer";
 import { useAppSelector } from "@/store/utils/types";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
