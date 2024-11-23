@@ -52,7 +52,10 @@ const ConsumptionStat = ({ sphere_status }: Props) => {
 
   const renderProductCount = useMemo(() => {
     if (data?.tests)
-      return data?.tests.reduce((acc, item) => (acc += item.price || 0), 0);
+      return data?.tests.reduce(
+        (acc, item) => (acc += item?.amount * (item?.price || 0)),
+        0
+      );
   }, [data?.tests]);
 
   const downloadAsPdf = () => onDownload();
