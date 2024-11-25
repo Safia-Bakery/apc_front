@@ -95,7 +95,7 @@ const ShowInventoryTool = () => {
           <button className="btn btn-success mr-2" onClick={downloadAsPdf}>
             {t("export_to_excel")}
           </button>
-          <button onClick={handleBack} className="btn btn-primary  ">
+          <button onClick={handleBack} className="btn btn-primary">
             {t("back")}
           </button>
         </Header>

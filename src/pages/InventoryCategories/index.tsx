@@ -71,13 +71,14 @@ const InventoryCategories = () => {
           </button>
         </div>
       </Header>
-
-      <AntdTable
-        data={categories?.items}
-        totalItems={categories?.total}
-        columns={columns}
-        loading={isLoading}
-      />
+      <div className="content">
+        <AntdTable
+          data={categories?.items}
+          totalItems={categories?.total}
+          columns={columns}
+          loading={isLoading}
+        />
+      </div>
     </Card>
   );
 };

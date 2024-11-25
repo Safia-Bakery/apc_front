@@ -8,6 +8,12 @@ const FactoryRequests = lazy(() => import("@/pages/factory/requests"));
 const ShowFactoryRequest = lazy(() => import("@/pages/factory/show-request"));
 const FactoryManagers = lazy(() => import("@/pages/factory/managers"));
 const FactoryDivisions = lazy(() => import("@/pages/factory/divisions"));
+const InventoryFactoryRemains = lazy(
+  () => import("@/pages/factory/tool-remains")
+);
+const EditInventoryFactoryProd = lazy(
+  () => import("@/pages/factory/edit-add-tool")
+);
 const EditAddFabricMaster = lazy(
   () => import("@/pages/factory/edit-add-managers")
 );
@@ -319,15 +325,9 @@ export const sidebarRoutes: SidebarType[] = [
       },
       {
         name: "inventory_products",
-        url: "/products-ierarch",
+        url: "/products-ierarch-factory",
         icon: "/icons/products.svg",
         screen: MainPermissions.get_prods_inv_factory,
-      },
-      {
-        name: "purchasing_requests",
-        url: "/order-products-inventory",
-        icon: "/icons/products.svg",
-        screen: MainPermissions.get_purchase_prods_inv_factory,
       },
       {
         name: "statistics",
@@ -1348,8 +1348,8 @@ export const routes = [
     screen: MainPermissions.edit_product_inventory_retail,
   },
   {
-    element: <EditInventoryProd />,
-    path: "/inventory-remains/:id",
+    element: <EditInventoryFactoryProd />,
+    path: "/inventory-remains-factory/:id",
     screen: MainPermissions.edit_prods_inv_factory,
   },
   {
@@ -1358,8 +1358,8 @@ export const routes = [
     screen: MainPermissions.inventory_remains_in_stock_retail,
   },
   {
-    element: <InventoryRemainsMins />,
-    path: "/inventory-remains",
+    element: <InventoryFactoryRemains />,
+    path: "/inventory-remains-factory",
     screen: MainPermissions.remains_in_stock_inv_factory,
   },
   {
@@ -1367,29 +1367,29 @@ export const routes = [
     path: "/order-products-inventory",
     screen: MainPermissions.get_inventory_purchase_prods_retail,
   },
-  {
-    element: <InventoryOrderedTools />,
-    path: "/order-products-inventory",
-    screen: MainPermissions.get_purchase_prods_inv_factory,
-  },
+  // {
+  //   element: <InventoryOrderedTools />,
+  //   path: "/order-products-inventory",
+  //   screen: MainPermissions.get_purchase_prods_inv_factory,
+  // },
   {
     element: <ShowInventoryTool />,
     path: "/order-products-inventory/:id",
     screen: MainPermissions.edit_inventory_purchase_prods_retail,
   },
-  {
-    element: <ShowInventoryTool />,
-    path: "/order-products-inventory/:id",
-    screen: MainPermissions.edit_purchase_prods_inv_factory,
-  },
+  // {
+  //   element: <EditInventoryFactoryProd />,
+  //   path: "/order-products-inventory/:id",
+  //   screen: MainPermissions.edit_purchase_prods_inv_factory,
+  // },
   {
     element: <InventoryRemains />,
     path: "/products-ierarch",
     screen: MainPermissions.get_product_inventory_retail,
   },
   {
-    element: <InventoryRemains />,
-    path: "/products-ierarch",
+    element: <InventoryFactoryRemains />,
+    path: "/products-ierarch-factory",
     screen: MainPermissions.get_prods_inv_factory,
   },
 

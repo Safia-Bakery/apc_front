@@ -1,8 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import baseApi from "@/api/base_api";
-import { EPresetTimes } from "@/utils/types";
+import { Category, EPresetTimes } from "@/utils/types";
 import {
+  CategoriesTools,
+  CategoryToolParams,
   DivisionRes,
   FactoryDivisionBody,
   FactoryDivisionParams,
@@ -13,6 +15,11 @@ import {
   FactoryRequestRes,
   ManagerBody,
   ManagerRes,
+  ToolRes,
+  ToolsBody,
+  ToolsParams,
+  ToolsProductsType,
+  ToolsRes,
 } from "@/Types/factory";
 
 export const getApcFactoryRequest = ({
@@ -187,5 +194,117 @@ export const factoryDivisionMutation = () => {
         return data;
       }
     },
+  });
+};
+
+export const getInvFactoryTool = ({
+  id,
+  enabled,
+}: {
+  id: number;
+  enabled?: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["factory_tool_v2", id],
+    queryFn: ({ signal }) =>
+      baseApi
+        .get(`/api/v2/inventory/factory/tools/${id}`, {
+          signal,
+        })
+        .then(({ data: response }) => (response as ToolRes) || null),
+    enabled,
+    staleTime: EPresetTimes.MINUTE * 4,
+  });
+};
+
+export const getInvFactoryTools = ({ enabled, ...params }: ToolsParams) => {
+  return useQuery({
+    queryKey: ["ApcFactory_tools", params],
+    queryFn: ({ signal }) =>
+      baseApi
+        .get("/api/v2/inventory/factory/tools", {
+          params,
+          signal,
+        })
+        .then(({ data: response }) => (response as ToolsRes) || null),
+    enabled,
+    staleTime: EPresetTimes.MINUTE * 4,
+  });
+};
+
+export const getInvFactoryCategoryTools = ({
+  enabled,
+  ...params
+}: FactoryDivisionParams) => {
+  return useQuery({
+    queryKey: ["ApcFactory_divisions", params],
+    queryFn: ({ signal }) =>
+      baseApi
+        .get("/api/v2/arc/factory/divisions", {
+          params,
+          signal,
+        })
+        .then(
+          ({ data: response }) =>
+            (response as BasePaginateRes<CategoriesTools>) || null
+        ),
+    enabled,
+    staleTime: EPresetTimes.MINUTE * 4,
+  });
+};
+
+export const factoryToolMutation = () => {
+  return useMutation({
+    mutationKey: ["factory_Division_mutation"],
+    mutationFn: async (body: ToolsBody) => {
+      const { data } = await baseApi.put(
+        `/api/v2/inventory/factory/tools/${body.id}`,
+        body
+      );
+      return data;
+    },
+  });
+};
+
+export const getInvFactoryCategories = ({
+  enabled,
+  status,
+}: {
+  enabled?: boolean;
+  status?: number;
+}) => {
+  return useQuery({
+    queryKey: ["ApcFactory_categories", status],
+    queryFn: ({ signal }) =>
+      baseApi
+        .get("/api/v2/inventory/factory/categories/", {
+          params: { status },
+          signal,
+        })
+        .then(
+          ({ data: response }) =>
+            (response as BasePaginateRes<Category>) || null
+        ),
+    enabled,
+  });
+};
+
+export const getInvFactoryCategoriesTools = ({
+  enabled,
+  ...params
+}: CategoryToolParams) => {
+  return useQuery({
+    queryKey: ["ApcFactory_categories_tools", params],
+    queryFn: ({ signal }) =>
+      baseApi
+        .get("/api/v2/inventory/factory/categories/tools", {
+          params,
+          signal,
+        })
+        .then(
+          ({ data: response }) =>
+            (response as BasePaginateRes<ToolsProductsType>) || null
+        ),
+    enabled,
   });
 };

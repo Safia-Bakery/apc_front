@@ -82,3 +82,76 @@ export interface FactoryDivisionRes {
   status: number;
   manager: ManagerRes;
 }
+
+export interface ToolsParams {
+  name?: string;
+  parent_id?: string;
+  enabled?: boolean;
+}
+
+export interface ToolsBody {
+  name?: string;
+  status?: number;
+  category_id?: number;
+  file?: string | null;
+  id: number;
+}
+
+export interface ToolRes {
+  id: number;
+  name: string;
+  status: number;
+  file: string;
+  category_id: number;
+  category: {
+    name: string;
+    description: string;
+    status: number;
+    id: number;
+    urgent: true;
+    sub_id: number;
+    department: number;
+    sphere_status: number;
+    file: string;
+    ftime: number;
+    parent_id: number;
+    is_child: true;
+    telegram_id: number;
+    telegram: {
+      id: number;
+      chat_id: string;
+      name: string;
+    };
+    price: number;
+  };
+}
+
+export interface ToolsProductsType {
+  id: number;
+  name: string;
+  status: number;
+  file: string;
+  parentid: string;
+}
+
+export interface ToolsRes {
+  groups: {
+    id: string;
+    name: string;
+    parent_id: string;
+  }[];
+
+  products: ToolsProductsType[];
+}
+
+export interface CategoriesTools {
+  id: number;
+  name: string;
+  status: number;
+  file: string;
+  parentid: string;
+}
+
+export interface CategoryToolParams extends BaseParams {
+  category_id?: number;
+}
