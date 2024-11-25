@@ -3,12 +3,12 @@ import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import InvButton, { InvBtnType } from "@/webApp/components/InvButton";
 import InvHeader from "@/webApp/components/InvHeader";
 import { useNavigate } from "react-router-dom";
-import ToolCard from "@/webApp/components/ToolCard";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 
 import errorToast from "@/utils/errorToast";
 import Loading from "@/components/Loader";
 import { freezerRequestMutation } from "@/hooks/freezer";
+import FreezerCard from "@/webApp/components/FreezerCard";
 
 const FreezerCart = () => {
   const navigate = useNavigate();
@@ -44,10 +44,10 @@ const FreezerCart = () => {
       {mutating && <Loading />}
       <div className="bg-white h-[52px]" />
 
-      <WebAppContainer className="mt-4 overflow-y-auto max-h-[50vh] h-min mb-2">
+      <WebAppContainer className="mt-4 overflow-y-auto max-h-[70vh] h-min mb-2">
         <div className="flex flex-col gap-4">
           {Object.values(cart).map((tool) => (
-            <ToolCard key={tool.id} tool={tool} />
+            <FreezerCard key={tool.id} tool={tool} />
           ))}
         </div>
 

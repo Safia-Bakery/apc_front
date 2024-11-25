@@ -6,10 +6,22 @@ type Props = {
   rightChild?: ReactNode;
   goBack?: boolean;
   sticky?: boolean;
+  customBack?: () => void;
 };
 
-const InvHeader = ({ title, rightChild, goBack, sticky = false }: Props) => {
+const InvHeader = ({
+  title,
+  rightChild,
+  goBack,
+  sticky = false,
+  customBack,
+}: Props) => {
   const navigate = useNavigate();
+
+  const handleNavigateBack = () => {
+    if (customBack) customBack();
+    else navigate(-1);
+  };
   return (
     <header
       className={`py-4 px-3 flex items-center justify-between w-full z-10 bg-invHeader ${
@@ -17,7 +29,7 @@ const InvHeader = ({ title, rightChild, goBack, sticky = false }: Props) => {
       }`}
     >
       {goBack ? (
-        <button onClick={() => navigate(-1)}>
+        <button onClick={handleNavigateBack}>
           <img
             src="/icons/arrow.svg"
             className="-rotate-90"

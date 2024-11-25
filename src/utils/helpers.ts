@@ -194,3 +194,7 @@ export const handleHRStatus: BaseObjType = {
   [RequestStatus.received]: "answered",
   [RequestStatus.closed_denied]: "denied",
 };
+
+export const screenSize = (percent: number) => {
+  return (percent * window.innerHeight) / 100;
+};

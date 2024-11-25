@@ -1,5 +1,9 @@
 import { baseURL } from "@/store/baseUrl";
-import { addItem, cartSelector } from "@/store/reducers/webInventory";
+import {
+  addItem,
+  cartSelector,
+  deleteItem,
+} from "@/store/reducers/webInventory";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import { Image } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
@@ -23,18 +27,10 @@ const FreezerItem = ({ style, tool }: Props) => {
   return (
     <div
       style={style}
-      className="rounded-3xl flex gap-5 w-full bg-white h-32 overflow-hidden"
+      className="rounded-3xl flex gap-5 w-full bg-white h-18 overflow-hidden"
     >
-      <Image
-        src={!!tool.image ? `${baseURL}/${tool.image}` : "/images/safia.png"}
-        height={130}
-        width={130}
-        className="rounded-2xl object-contain"
-        alt=""
-      />
-
       <div className="flex flex-1 justify-between pt-3 flex-col">
-        <div className="flex flex-1 justify-center flex-col">
+        <div className="flex flex-1 justify-center flex-col ml-4">
           <h5 className="font-bold text-base">{tool?.name}</h5>
           <h5 className="font-bold text-base mt-2 text-gray-500">
             Кол-во: x{tool.count || 0}
@@ -50,9 +46,12 @@ const FreezerItem = ({ style, tool }: Props) => {
               <CheckOutlined />
             </button>
           ) : (
-            <div className="flex justify-evenly flex-1 bg-tgPrimary h-full items-center">
+            <button
+              onClick={() => dispatch(deleteItem(tool?.id?.toString()))}
+              className="flex justify-evenly flex-1 bg-tgPrimary h-full items-center"
+            >
               <CheckOutlined className="text-white" />
-            </div>
+            </button>
           )}
         </div>
       </div>

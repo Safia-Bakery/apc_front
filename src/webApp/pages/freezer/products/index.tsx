@@ -1,20 +1,21 @@
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import useDebounce from "@/hooks/custom/useDebounce";
 import InvInput from "@/webApp/components/InvInput";
-import ToolCard from "@/webApp/components/ToolCard";
 
 import InvButton, { InvBtnType } from "@/webApp/components/InvButton";
 import { cartSelector } from "@/store/reducers/webInventory";
 import { useAppSelector } from "@/store/utils/types";
 import { useNavigate } from "react-router-dom";
 import InvHeader from "@/webApp/components/InvHeader";
-import { Empty, Flex, Table, Typography } from "antd";
+import { Empty, Typography } from "antd";
 import { FolderOutlined } from "@ant-design/icons";
 import AntdTable from "@/components/AntdTable";
 import { useMemo, useState } from "react";
 import useToolsIerarch from "@/hooks/useToolsIerarch";
 import { InventoryTools, ToolsFolderType } from "@/utils/types";
 import { ColumnsType } from "antd/es/table";
+import FreezerCard from "@/webApp/components/FreezerCard";
+import { screenSize } from "@/utils/helpers";
 
 interface LocalFolderType {
   name: string;
@@ -64,7 +65,7 @@ const FreezerProducts = () => {
       {
         dataIndex: "name",
         className: "!bg-red !p-1",
-        render: (_, record) => <ToolCard tool={record} />,
+        render: (_, record) => <FreezerCard tool={record} />,
       },
     ],
     []
@@ -73,35 +74,24 @@ const FreezerProducts = () => {
   const renderList = useMemo(() => {
     return (
       <>
-        <AntdTable
-          sticky
-          className="tg-table pt-3"
-          loading={isLoading}
-          rootClassName="!bg-transparent"
-          scroll={{ y: 250 }}
-          rowClassName={"!bg-transparent"}
-          columns={folderColumns}
-          data={searchedItems?.folders}
-          locale={{ emptyText: "" }}
-          summary={() =>
-            !!folderStack?.length && (
-              <Table.Summary fixed={"top"}>
-                <Table.Summary.Row>
-                  <td>
-                    <InvButton className="w-full" btnType={InvBtnType.primary}>
-                      Выбрано: {folderStack?.at(-1)?.name}
-                    </InvButton>
-                  </td>
-                </Table.Summary.Row>
-              </Table.Summary>
-            )
-          }
-        />
+        {!!searchedItems?.folders?.length && (
+          <AntdTable
+            sticky
+            className="tg-table"
+            loading={isLoading}
+            rootClassName="!bg-transparent"
+            scroll={{ y: screenSize(25) }}
+            rowClassName={"!bg-transparent"}
+            columns={folderColumns}
+            data={searchedItems?.folders}
+            locale={{ emptyText: "" }}
+          />
+        )}
 
         <AntdTable
-          className="tg-table pt-3"
+          className="tg-table pt-3 mb-10"
           loading={isLoading}
-          scroll={{ y: 250 }}
+          scroll={{ y: screenSize(65) }}
           rowClassName={"!bg-transparent pt-2"}
           columns={prodsColumns}
           data={searchedItems?.tools}
@@ -120,16 +110,21 @@ const FreezerProducts = () => {
 
   return (
     <>
-      <InvHeader sticky title={"Создать заказ"} />
+      <InvHeader
+        sticky
+        title={folderStack?.at(-1)?.name || "Создать заказ"}
+        customBack={handleBack}
+        goBack
+      />
 
-      <WebAppContainer className="h-full overflow-y-auto pb-10">
+      <WebAppContainer className="h-full overflow-y-auto pb-2">
         <InvInput
           placeholder="Поиск товаров"
           wrapperClassName="bg-white mb-5"
           onChange={(e) => $toolsSearch(e.target?.value)}
         />
 
-        <Flex align={"center"} gap={10}>
+        {/* <Flex align={"center"} gap={10}>
           {!!folderStack.length && (
             <InvButton
               className={"!min-w-9"}
@@ -146,22 +141,22 @@ const FreezerProducts = () => {
               }
             />
           )}
-          <Typography>Выбрать продукт</Typography>
-        </Flex>
-
-        {renderList}
-
-        <div className="fixed bottom-0 left-0 right-0 bg-white py-2 px-5 z-[105]">
-          <InvButton
-            btnType={InvBtnType.primary}
-            disabled={!Object.values(cart).length}
-            className="w-full !h-11"
-            onClick={() => navigate("/tg/collector/cart")}
-          >
-            Корзина ({Object.values(cart).length})
-          </InvButton>
-        </div>
+          
+        </Flex> */}
+        <Typography className="font-bold">Выбрать продукт</Typography>
       </WebAppContainer>
+      {renderList}
+
+      <div className="fixed bottom-0 left-0 right-0 bg-white py-2 px-5 z-[105]">
+        <InvButton
+          btnType={InvBtnType.primary}
+          disabled={!Object.values(cart).length}
+          className="w-full !h-11"
+          onClick={() => navigate("/tg/collector/cart")}
+        >
+          Корзина ({Object.values(cart).length})
+        </InvButton>
+      </div>
     </>
   );
 };

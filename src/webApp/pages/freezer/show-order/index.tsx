@@ -9,7 +9,11 @@ import WebAppContainer from "@/webApp/components/WebAppContainer";
 import { Empty, Flex } from "antd";
 import dayjs from "dayjs";
 import { CheckOutlined } from "@ant-design/icons";
-import { addItem } from "@/store/reducers/webInventory";
+import {
+  addItem,
+  cartSelector,
+  clearCart,
+} from "@/store/reducers/webInventory";
 import InvButton, { BtnSize, InvBtnType } from "@/webApp/components/InvButton";
 import { TelegramApp } from "@/utils/tgHelpers";
 import successToast from "@/utils/successToast";
@@ -18,6 +22,7 @@ import errorToast from "@/utils/errorToast";
 const ShowOrder = () => {
   const { order_id } = useAppSelector(freezerState);
   const dispatch = useAppDispatch();
+  const cart = useAppSelector(cartSelector);
   const { data, isLoading } = getFreezerRequest({
     enabled: !!order_id,
     id: +order_id!,
@@ -42,16 +47,18 @@ const ShowOrder = () => {
   };
 
   const handleSelectAll = () => {
-    data?.order_item.forEach(({ product: tool, amount }) =>
-      dispatch(
-        addItem({
-          image: tool.image,
-          name: tool.name,
-          id: tool.id,
-          count: amount,
-        })
-      )
-    );
+    if (data?.order_item?.length !== Object.keys(cart)?.length) {
+      data?.order_item.forEach(({ product: tool, amount }) =>
+        dispatch(
+          addItem({
+            image: tool.image,
+            name: tool.name,
+            id: tool.id,
+            count: amount,
+          })
+        )
+      );
+    } else dispatch(clearCart());
   };
 
   if (isLoading) return <Loading />;

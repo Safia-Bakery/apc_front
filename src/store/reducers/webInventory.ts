@@ -42,6 +42,13 @@ export const webInventoryReducer = createSlice({
         state.cart = updated;
       }
     },
+    deleteItem: (state, { payload }: PayloadAction<string>) => {
+      const updated = { ...state.cart };
+      delete updated[payload];
+
+      state.cart = updated;
+    },
+
     clearCart: (state) => {
       state.cart = {};
     },
@@ -55,7 +62,7 @@ export const cartSelector = (state: RootState) => state.webInventory.cart;
 
 export const {
   selectBranch,
-
+  deleteItem,
   addItem,
   incrementSelected,
   decrementSelected,
