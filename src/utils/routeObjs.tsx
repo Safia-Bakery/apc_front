@@ -754,7 +754,6 @@ export const routes = [
   {
     element: (
       <RequestsApc
-        sphere_status={Sphere.retail}
         addExp={MainPermissions.request_add_expanditure}
         add={MainPermissions.add_request_apc}
         edit={MainPermissions.edit_request_apc}

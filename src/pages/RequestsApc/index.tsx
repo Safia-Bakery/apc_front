@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Departments, Order, RequestStatus, Sphere } from "@/utils/types";
 import { MainPermissions } from "@/utils/permissions";
 import Pagination from "@/components/Pagination";
-import { FC, useMemo, useRef, useState } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
 import useOrders from "@/hooks/useOrders";
 import Card from "@/components/Card";
@@ -24,17 +24,31 @@ import { dateTimeFormat, yearMonthDate } from "@/utils/keys";
 interface Props {
   add: MainPermissions;
   edit: MainPermissions;
-  sphere_status: Sphere;
   addExp: MainPermissions;
 }
 
-const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
+const column = [
+  { name: "№", key: "" },
+  { name: "request_number", key: "id" },
+  { name: "client", key: "user" },
+  { name: "branch_dep", key: "name" },
+  { name: "group_problem", key: "category?.name" },
+  { name: "urgent", key: "urgent" },
+  { name: "brigade", key: "brigada" },
+  { name: "receipt_date", key: "created_at" },
+  { name: "finished", key: "finished_at" },
+  { name: "rate", key: "rate" },
+  { name: "status", key: "status" },
+  { name: "changed", key: "user_manager" },
+];
+
+const RequestsApc: FC<Props> = ({ add, edit, addExp }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [sort, $sort] = useState<Order[]>();
   const permission = useAppSelector(permissionSelector);
   const currentPage = Number(useQueryString("page")) || 1;
-  const { pathname, search } = useLocation();
+  const { pathname, search, state } = useLocation();
   const tableRef = useRef(null);
 
   const { onDownload } = useDownloadExcel({
@@ -45,7 +59,6 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
 
   const user = useQueryString("user");
   const id = Number(useQueryString("id"));
-  const system = useQueryString("system");
   const category_id = Number(useQueryString("category_id"));
   const created_at = useQueryString("created_at");
   const started_at = useQueryString("started_at");
@@ -56,29 +69,6 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
   const responsible = Number(useQueryString("responsible"));
-
-  const column = useMemo(() => {
-    const columns = [
-      { name: "№", key: "" },
-      { name: "request_number", key: "id" },
-      { name: "client", key: "user" },
-      { name: "branch_dep", key: "name" },
-      { name: "group_problem", key: "category?.name" },
-      { name: "urgent", key: "urgent" },
-      { name: "brigade", key: "brigada" },
-      { name: "receipt_date", key: "created_at" },
-      { name: "finished", key: "finished_at" },
-      { name: "rate", key: "rate" },
-      { name: "status", key: "status" },
-      { name: "changed", key: "user_manager" },
-    ];
-
-    if (Number(sphere_status) === Sphere.fabric) {
-      columns.splice(2, 0, { name: "Система", key: "is_bot" });
-    }
-
-    return columns;
-  }, [sphere_status]);
 
   const downloadAsPdf = () => onDownload();
 
@@ -102,8 +92,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
   } = useOrders({
     department: Departments.APC,
     page: currentPage,
-    sphere_status: Number(sphere_status),
-    ...(!!system && { is_bot: !!system }),
+    sphere_status: Sphere.retail,
     ...(!!category_id && { category_id }),
     ...(!!created_at && {
       created_at: dayjs(created_at).format(yearMonthDate),
@@ -118,9 +107,22 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
     ...(!!started_at && { started_at }),
   });
 
+  const handleNavigate = (url: string) => {
+    navigate(url, {
+      state: {
+        prevPath: pathname + search,
+        scrolled: window.scrollY,
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (state?.scrolled) window.scrollTo(0, state.scrolled);
+  }, []);
+
   const renderFilter = useMemo(() => {
-    return <RequestsFilter sphere_status={sphere_status} />;
-  }, [sphere_status]);
+    return <RequestsFilter />;
+  }, []);
 
   return (
     <Card>
@@ -133,9 +135,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
         </button>
         {permission?.[add] && (
           <button
-            onClick={() =>
-              navigate(`add?sphere_status=${sphere_status}&addExp=${addExp}`)
-            }
+            onClick={() => navigate(`add?&addExp=${addExp}`)}
             className="btn btn-success btn-fill"
           >
             {t("add")}
@@ -143,7 +143,7 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
         )}
       </Header>
 
-      <div className="table-responsive  content">
+      <div className="table-responsive content">
         <ItemsCount data={requests} />
         <table className="table table-hover table-bordered" ref={tableRef}>
           <TableHead
@@ -168,19 +168,21 @@ const RequestsApc: FC<Props> = ({ add, edit, sphere_status, addExp }) => {
                   <td width="40">{handleIdx(idx)}</td>
                   <td width="80">
                     {permission?.[edit] ? (
-                      <Link
-                        to={`/requests-apc-${Sphere[sphere_status]}/${order?.id}?sphere_status=${sphere_status}&dep=${Departments.APC}`}
-                        state={{ prevPath: pathname + search }}
+                      <span
+                        className="text-blue-500"
+                        // to={}
+                        onClick={() =>
+                          handleNavigate(
+                            `/requests-apc-retail/${order?.id}?dep=${Departments.APC}`
+                          )
+                        }
                       >
                         {order?.id}
-                      </Link>
+                      </span>
                     ) : (
                       <span className={"text-link"}>{order?.id}</span>
                     )}
                   </td>
-                  {Number(sphere_status) === Sphere.fabric && (
-                    <td>{order?.is_bot ? t("tg_bot") : t("web_site")}</td>
-                  )}
                   <td>{order?.user?.full_name}</td>
                   <td>
                     <span className={"not-set"}>

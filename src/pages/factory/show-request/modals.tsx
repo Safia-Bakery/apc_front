@@ -4,8 +4,6 @@ import { Link, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Modal from "@/components/Modal";
 import {
-  BaseReturnBoolean,
-  BrigadaType,
   Departments,
   FileType,
   ModalTypes,
@@ -19,18 +17,13 @@ import { CancelReason, detectFileType } from "@/utils/helpers";
 import MainSelect from "@/components/BaseInputs/MainSelect";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
-import useOrder from "@/hooks/useOrder";
-import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import useQueryString from "custom/useQueryString";
-import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
+import { useRemoveParams } from "custom/useCustomNavigate";
 import useBrigadas from "@/hooks/useBrigadas";
 import Loading from "@/components/Loader";
 import useCategories from "@/hooks/useCategories";
-import MainInput from "@/components/BaseInputs/MainInput";
-import AsyncAccordion from "@/components/AsyncAccordion";
 import {
   apcFactoryRequestMutation,
-  getApcFactoryManagers,
   getApcFactoryRequest,
 } from "@/hooks/factory";
 import { useEffect } from "react";
@@ -57,14 +50,14 @@ const ApcModals = () => {
   const { data: categories, isLoading: categoriesLoading } = useCategories({
     enabled: modal === ModalTypes.changeCateg,
     department: Departments.APC,
-    sphere_status: Sphere.fabric,
+    sphere_status: Sphere.retail,
     category_status: 1,
   });
 
   const { data: brigades, isFetching: brigadaLoading } = useBrigadas({
     enabled: false,
     department: Departments.APC,
-    sphere_status: Sphere.fabric,
+    sphere_status: Sphere.retail,
   });
 
   const {
@@ -236,8 +229,6 @@ const ApcModals = () => {
           </Link>
         </div>
       );
-
-    // if (modal === ModalTypes.changeCateg) return <AsyncAccordion />;
   };
 
   useEffect(() => {

@@ -29,7 +29,7 @@ import { dateTimeFormat } from "@/utils/keys";
 import useCategories from "@/hooks/useCategories";
 
 import Suspend from "@/components/Suspend";
-import { getApcFactoryManagers, getApcFactoryRequest } from "@/hooks/factory";
+import { getApcFactoryRequest } from "@/hooks/factory";
 import useBrigadas from "@/hooks/useBrigadas";
 
 const ApcModals = lazy(() => import("./modals"));

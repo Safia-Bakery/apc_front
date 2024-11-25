@@ -53,7 +53,7 @@ const ParentTools = () => {
       {
         render: (_, r, idx) => idx + 1,
         title: "№",
-        width: 50,
+        width: 100,
       },
       {
         dataIndex: "name",
@@ -117,19 +117,22 @@ const ParentTools = () => {
           )}
         </div>
       </Header>
-      <AntdTable
-        sticky
-        columns={columns}
-        summary={() => (
-          <Table.Summary fixed={"top"}>
-            <Table.Summary.Row className="sticky top-0 z-10">
-              {renderFilter}
-            </Table.Summary.Row>
-          </Table.Summary>
-        )}
-        data={data?.items}
-        loading={isFetching || isLoading || isPending}
-      />
+      <div className="content">
+        <AntdTable
+          sticky
+          columns={columns}
+          summary={() => (
+            <Table.Summary fixed={"top"}>
+              <Table.Summary.Row className="sticky top-0 z-10">
+                {renderFilter}
+              </Table.Summary.Row>
+            </Table.Summary>
+          )}
+          data={data?.items}
+          totalItems={data?.total}
+          loading={isFetching || isLoading || isPending}
+        />
+      </div>
     </Card>
   );
 };

@@ -1,5 +1,5 @@
-import { FC, lazy, useCallback, useMemo } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { FC, lazy, useMemo } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AddItems from "@/components/AddProduct";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
@@ -53,19 +53,23 @@ interface Props {
   addExp?: MainPermissions;
 }
 
+interface StateTypes {
+  prevPath?: string;
+  scrolled?: number;
+}
+
 const ShowRequestApc: FC<Props> = ({ attaching, addExp }) => {
   const { t } = useTranslation();
   const { id } = useParams();
+  const routeLocation = useLocation();
+  const state = routeLocation.state as StateTypes;
   const navigate = useNavigate();
   const modal = Number(useQueryString("modal"));
-  const sphere_status = Number(useQueryString("sphere_status"));
   const permissions = useAppSelector(permissionSelector);
   const navigateParams = useNavigateParams();
   const removeParams = useRemoveParams();
   const { mutate: attach, isPending: attachLoading } = attachBrigadaMutation();
-  const handleModal = (type: ModalTypes) => {
-    navigateParams({ modal: type });
-  };
+  const handleModal = (type: ModalTypes) => navigateParams({ modal: type });
   const { getValues } = useForm();
   const {
     data: order,
@@ -74,28 +78,20 @@ const ShowRequestApc: FC<Props> = ({ attaching, addExp }) => {
     isFetching: orderFetching,
   } = useOrder({ id: Number(id) });
 
-  const { data: categories, isLoading: categoryLoading } = useCategories({
-    enabled:
-      !!order?.category?.id &&
-      order?.status === RequestStatus.new &&
-      sphere_status === Sphere.fabric,
-    department: Departments.APC,
-    sphere_status: Sphere.fabric,
-    parent_id: Number(order?.category?.id),
-    category_status: 1,
-  });
-
   useBrigadas({
     enabled:
       order?.status! <= RequestStatus.received && modal === ModalTypes.assign,
-    sphere_status,
+    sphere_status: Sphere.retail,
     department: Departments.APC,
   });
   const isNew = order?.status === RequestStatus.new;
 
   const { mutate: synIIco, isPending } = syncExpenditure();
 
-  const handleBack = () => navigate(`/requests-apc-${Sphere[sphere_status!]}`);
+  const handleBack = () =>
+    navigate(state.prevPath ? state.prevPath : "/requests-apc-retail", {
+      state,
+    });
 
   const handleShowPhoto = (file: string) => () => {
     if (detectFileType(file) === FileType.other) return window.open(file);
@@ -226,14 +222,11 @@ const ShowRequestApc: FC<Props> = ({ attaching, addExp }) => {
       );
   }, [permissions, order?.status]);
 
-  const handleAssign = useCallback(() => {
+  const handleAssign = () => {
     navigateParams({
-      modal:
-        sphere_status === Sphere.fabric && !!categories?.items?.length
-          ? ModalTypes.changeCateg
-          : ModalTypes.assign,
+      modal: ModalTypes.assign,
     });
-  }, [categories?.items, sphere_status, order?.category]);
+  };
 
   const renderAssignment = useMemo(() => {
     if (attaching && permissions?.[attaching] && order?.status! <= 1) {
@@ -281,13 +274,7 @@ const ShowRequestApc: FC<Props> = ({ attaching, addExp }) => {
     );
   }, [modal]);
 
-  if (
-    isPending ||
-    attachLoading ||
-    orderLoading ||
-    orderFetching ||
-    (categoryLoading && order?.status === RequestStatus.new)
-  )
+  if (isPending || attachLoading || orderLoading || orderFetching)
     return <Loading />;
 
   return (
@@ -305,11 +292,10 @@ const ShowRequestApc: FC<Props> = ({ attaching, addExp }) => {
           >
             {t("logs")}
           </button>
-          {!!sphere_status && (
-            <button onClick={handleBack} className="btn btn-primary ml-2">
-              {t("back")}
-            </button>
-          )}
+
+          <button onClick={handleBack} className="btn btn-primary ml-2">
+            {t("back")}
+          </button>
         </Header>
         <div className="content">
           <div className="row ">

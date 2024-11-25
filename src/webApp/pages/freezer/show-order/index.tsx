@@ -1,6 +1,6 @@
 import Loading from "@/components/Loader";
 import { freezerRequestMutation, getFreezerRequest } from "@/hooks/freezer";
-import { freezerState, getFreezerState } from "@/store/reducers/freezer";
+import { freezerState } from "@/store/reducers/freezer";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import { dateTimeFormat } from "@/utils/keys";
 import FreezerItem from "@/webApp/components/FreezerItem";

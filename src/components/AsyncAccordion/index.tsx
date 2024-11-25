@@ -1,9 +1,3 @@
-// const AsyncAccordion = () => {
-//   return <div>AsyncAccordion</div>;
-// };
-
-// export default AsyncAccordion;
-
 import { useState } from "react";
 import { Button, Flex, Typography } from "antd";
 import useCategories from "@/hooks/useCategories";
@@ -17,7 +11,6 @@ import { useParams } from "react-router-dom";
 import useOrder from "@/hooks/useOrder";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
-import useQueryString from "@/hooks/custom/useQueryString";
 
 interface LocalCategType {
   name: string;
@@ -29,11 +22,13 @@ const AsyncAccordion = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const removeParams = useRemoveParams();
-  const sphere_status = Number(useQueryString("sphere_status"));
   const [folderStack, $folderStack] = useState<LocalCategType[]>([]);
   const { mutate: attach } = attachBrigadaMutation();
 
-  const { refetch: orderRefetch } = useOrder({ id: Number(id) });
+  const { refetch: orderRefetch } = useOrder({
+    id: Number(id),
+    enabled: false,
+  });
 
   const closeModal = () => removeParams(["modal"]);
   const handleBack = () => $folderStack((prev) => prev.slice(0, -1));
@@ -57,7 +52,7 @@ const AsyncAccordion = () => {
 
   const { data: parents } = useCategories({
     department: Departments.APC,
-    sphere_status,
+    sphere_status: Sphere.retail,
     ...(folderStack?.length && { parent_id: folderStack?.at(-1)?.id }),
     category_status: 1,
   });

@@ -29,7 +29,7 @@ const CreateApcRequest = () => {
   const branch = branchJson && JSON.parse(branchJson);
   const { data: categories, isLoading: categoryLoading } = useCategories({
     department: Departments.APC,
-    sphere_status,
+    sphere_status: Sphere.retail,
     category_status: 1,
   });
   const {

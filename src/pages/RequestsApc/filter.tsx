@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { useForm } from "react-hook-form";
-import { RatingFilterVals, RequestStatusArr, SystemArr } from "@/utils/helpers";
+import { RatingFilterVals, RequestStatusArr } from "@/utils/helpers";
 import useDebounce from "custom/useDebounce";
 import BaseInputs from "@/components/BaseInputs";
 import MainSelect from "@/components/BaseInputs/MainSelect";
@@ -22,7 +22,7 @@ interface Props {
   sphere_status?: Sphere;
 }
 
-const ApcFilter: FC<Props> = ({ sphere_status }) => {
+const ApcFilter: FC<Props> = () => {
   const navigate = useNavigateParams();
   const deleteParam = useRemoveParams();
 
@@ -30,7 +30,6 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
   const [id, $id] = useDebounce<string>("");
   const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
-  const system = useQueryString("system");
   const rate = useQueryString("rate");
   const category_id = Number(useQueryString("category_id"));
   const created_at = useQueryString("created_at");
@@ -41,7 +40,7 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
 
   const { data: categories, refetch: catRefetch } = useCategories({
     department: Departments.APC,
-    ...(!!sphere_status && { sphere_status }),
+    sphere_status: Sphere.retail,
     enabled: !!category_id,
   });
 
@@ -58,7 +57,7 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
   const { data: brigades, refetch: masterRefetch } = useBrigadas({
     enabled: !!responsible,
     department: Departments.APC,
-    sphere_status,
+    sphere_status: Sphere.retail,
   });
 
   const handleName = (e: ChangeEvent<HTMLInputElement>) =>
@@ -101,19 +100,6 @@ const ApcFilter: FC<Props> = ({ sphere_status }) => {
           />
         </BaseInput>
       </td>
-
-      {sphere_status === Sphere.fabric && (
-        <td className="p-0">
-          <BaseInput className="!m-1">
-            <MainSelect
-              value={system?.toString()}
-              values={SystemArr}
-              disabled
-              onChange={(e) => navigate({ system: e.target.value })}
-            />
-          </BaseInput>
-        </td>
-      )}
       <td className="p-0">
         <BaseInput className="!m-1">
           <MainInput

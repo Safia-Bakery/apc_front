@@ -4,7 +4,6 @@ import { Link, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Modal from "@/components/Modal";
 import {
-  BaseReturnBoolean,
   BrigadaType,
   Departments,
   FileType,
@@ -22,17 +21,11 @@ import errorToast from "@/utils/errorToast";
 import useOrder from "@/hooks/useOrder";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import useQueryString from "custom/useQueryString";
-import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
+import { useRemoveParams } from "custom/useCustomNavigate";
 import useBrigadas from "@/hooks/useBrigadas";
 import Loading from "@/components/Loader";
-import useCategories from "@/hooks/useCategories";
 import MainInput from "@/components/BaseInputs/MainInput";
 import AsyncAccordion from "@/components/AsyncAccordion";
-
-const unchangable: BaseReturnBoolean = {
-  [RequestStatus.finished]: true,
-  [RequestStatus.closed_denied]: true,
-};
 
 interface Params {
   status?: RequestStatus;
@@ -46,8 +39,6 @@ const ApcModals = () => {
   const { id } = useParams();
   const modal = Number(useQueryString("modal"));
   const photo = useQueryString("photo");
-  const sphere_status = Number(useQueryString("sphere_status"));
-  const dep = Number(useQueryString("dep"));
   const removeParams = useRemoveParams();
   const { mutate: attach, isPending: attaching } = attachBrigadaMutation();
   const { register, getValues, watch, handleSubmit } = useForm();
@@ -56,8 +47,8 @@ const ApcModals = () => {
 
   const { data: brigades, isFetching: brigadaLoading } = useBrigadas({
     enabled: false,
-    ...(!!dep && { department: dep }),
-    ...(!!sphere_status && { sphere_status }),
+    department: Departments.APC,
+    sphere_status: Sphere.retail,
   });
 
   const { refetch: orderRefetch, isFetching: orderFetching } = useOrder({
@@ -122,7 +113,7 @@ const ApcModals = () => {
                         status: RequestStatus.received,
                         item,
                       })}
-                      className="btn btn-success   btn-sm"
+                      className="btn btn-success btn-sm"
                     >
                       {t("assign")}
                     </button>
