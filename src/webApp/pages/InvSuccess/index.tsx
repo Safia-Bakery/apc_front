@@ -4,7 +4,11 @@ import InvHeader from "@/webApp/components/InvHeader";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import { useParams } from "react-router-dom";
 
-const InvSuccess = () => {
+interface Props {
+  freezer?: boolean;
+}
+
+const InvSuccess = ({ freezer = false }: Props) => {
   const { id } = useParams();
   return (
     <>
@@ -21,7 +25,9 @@ const InvSuccess = () => {
           </span>
         </div>
         <p className="text-center ">Ваша заявка принята.</p>
-        <p className="text-center">Примерное время доставки: 24 ч.</p>
+        {!freezer && (
+          <p className="text-center">Примерное время доставки: 24 ч.</p>
+        )}
         <div className="flex gap-3 mt-14 w-full">
           <InvButton
             btnType={InvBtnType.white}

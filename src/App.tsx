@@ -508,7 +508,7 @@ const App = () => {
           <Route
             element={
               <Suspend>
-                <InvSuccess />
+                <InvSuccess freezer />
               </Suspend>
             }
             path={"success/:id"}

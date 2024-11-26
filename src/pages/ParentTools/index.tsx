@@ -23,10 +23,12 @@ const ParentTools = () => {
   const name = useQueryString("name");
   const parent_id = useQueryString("parent_id");
   const parent_name = useQueryString("parent_name");
+  const status = useQueryString("status");
 
   const { data, isLoading, isFetching, refetch } = getParentTools({
     ...(!!parent_id && { parent_id }),
     ...(!!name && { name }),
+    ...(!!status && { status: Number(status) }),
   });
 
   const goBack = () => navigate(-1);
