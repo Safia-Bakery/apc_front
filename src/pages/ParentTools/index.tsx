@@ -14,6 +14,7 @@ import { getParentTools, parentToolMutation } from "@/hooks/parentTools";
 import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 import { useForm } from "react-hook-form";
 import successToast from "@/utils/successToast";
+import { handleIdx } from "@/utils/helpers";
 
 const ParentTools = () => {
   const { t } = useTranslation();
@@ -22,12 +23,14 @@ const ParentTools = () => {
   const { mutate, isPending } = parentToolMutation();
   const name = useQueryString("name");
   const parent_id = useQueryString("parent_id");
+  const page = Number(useQueryString("page")) || 1;
   const parent_name = useQueryString("parent_name");
   const status = useQueryString("status");
 
   const { data, isLoading, isFetching, refetch } = getParentTools({
     ...(!!parent_id && { parent_id }),
     ...(!!name && { name }),
+    ...(!!page && { page }),
     ...(!!status && { status: Number(status) }),
   });
 
@@ -53,7 +56,7 @@ const ParentTools = () => {
   const columns = useMemo<ColumnsType<ParentTools>>(
     () => [
       {
-        render: (_, r, idx) => idx + 1,
+        render: (_, r, idx) => handleIdx(idx),
         title: "№",
         width: 100,
       },
