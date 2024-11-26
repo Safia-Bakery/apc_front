@@ -11,7 +11,7 @@ import { Empty, Typography } from "antd";
 import { FolderOutlined } from "@ant-design/icons";
 import AntdTable from "@/components/AntdTable";
 import { useMemo, useState } from "react";
-import useToolsIerarch from "@/hooks/useToolsIerarch";
+import { useToolsIerarch } from "@/hooks/useToolsIerarch";
 import { InventoryTools, ToolsFolderType } from "@/utils/types";
 import { ColumnsType } from "antd/es/table";
 import FreezerCard from "@/webApp/components/FreezerCard";

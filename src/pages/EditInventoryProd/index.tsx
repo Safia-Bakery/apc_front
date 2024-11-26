@@ -15,7 +15,7 @@ import MainSelect from "@/components/BaseInputs/MainSelect";
 import AddCategory from "./addCategory";
 import MainDropZone from "@/components/MainDropZone";
 import Loading from "@/components/Loader";
-import useToolsIerarch from "@/hooks/useToolsIerarch";
+import { useToolsRetail } from "@/hooks/useToolsIerarch";
 
 const SelectDates = [
   { id: 24, name: "one_day" },
@@ -32,7 +32,7 @@ const EditInventoryProd = () => {
   const [uploadedImg, $uploadedImg] = useState<string[]>([]);
 
   const { data, refetch, isLoading } = useTools({ id });
-  const { isLoading: toolsFetching, refetch: toolsrefetch } = useToolsIerarch({
+  const { isLoading: toolsFetching, refetch: toolsrefetch } = useToolsRetail({
     ...(!!state?.parent_id && { parent_id: state?.parent_id }),
     enabled: false,
   });

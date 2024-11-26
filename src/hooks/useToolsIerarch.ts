@@ -25,6 +25,23 @@ export const useToolsIerarch = ({ parent_id, enabled, name }: Props) => {
     staleTime: EPresetTimes.MINUTE * 4,
   });
 };
-export default useToolsIerarch;
+
+export const useToolsRetail = ({ parent_id, enabled, name }: Props) => {
+  return useQuery({
+    queryKey: ["tools_inventory_retail", parent_id, name],
+    queryFn: () =>
+      baseApi
+        .get("/api/v2/inventory/retail/tools", {
+          params: {
+            parent_id,
+            name,
+          },
+        })
+        .then(({ data: response }) => response as ToolsEarchType),
+    enabled,
+    refetchOnMount: true,
+    staleTime: EPresetTimes.MINUTE * 4,
+  });
+};
 
 //productsIerarch

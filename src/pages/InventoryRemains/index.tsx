@@ -1,7 +1,7 @@
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import Loading from "@/components/Loader";
-import useToolsIerarch from "@/hooks/useToolsIerarch";
+import { useToolsRetail } from "@/hooks/useToolsIerarch";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./index.module.scss";
 import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
@@ -20,6 +20,8 @@ import AntdTable from "@/components/AntdTable";
 import Table, { ColumnsType } from "antd/es/table";
 import { Image } from "antd";
 import { baseURL } from "@/store/baseUrl";
+import MainInput from "@/components/BaseInputs/MainInput";
+import { useForm } from "react-hook-form";
 
 const InventoryRemains = () => {
   const { t } = useTranslation();
@@ -28,18 +30,20 @@ const InventoryRemains = () => {
   const permission = useAppSelector(permissionSelector);
   const { search, state } = useLocation();
 
-  const mins = useQueryString("mins");
+  // const mins = useQueryString("mins");
   const name = useQueryString("name");
   const parent_id = useQueryString("parent_id");
   const parent_name = useQueryString("parent_name");
 
-  const { data, isLoading, isFetching } = useToolsIerarch({
+  const { data, isLoading, isFetching } = useToolsRetail({
     ...(!!parent_id && { parent_id }),
     ...(!!name && { name }),
   });
 
+  const { reset, register, getValues } = useForm();
+
   const goBack = () => navigate(-1);
-  const handleMins = () => navigate("/inventory-remains?mins=1");
+  // const handleMins = () => navigate("/inventory-remains?mins=1");
 
   const handleParentId = (id: string, name: string) => () =>
     navigateParams({ parent_id: id, parent_name: name });
@@ -161,9 +165,17 @@ const InventoryRemains = () => {
     <Card className="pb-4">
       <Header title={!parent_name ? "Инвентарь / Товары" : parent_name}>
         <div className="flex gap-2">
-          <button className="btn btn-primary" onClick={handleMins}>
+          <MainInput
+            placeholder={t("search")}
+            register={register("name")}
+            className="!mb-0"
+            onKeyDown={(e) =>
+              e.key === "Enter" && navigateParams({ name: getValues("name") })
+            }
+          />
+          {/* <button className="btn btn-primary" onClick={handleMins}>
             {!mins ? t("upload_mins") : t("upload_all")}
-          </button>
+          </button> */}
           <button className="btn btn-primary" onClick={goBack}>
             {t("back")}
           </button>
