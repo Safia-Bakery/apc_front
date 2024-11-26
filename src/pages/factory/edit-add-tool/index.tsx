@@ -10,7 +10,11 @@ import { useTranslation } from "react-i18next";
 import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 import AddCategory from "./addCategory";
 import MainDropZone from "@/components/MainDropZone";
-import { factoryToolMutation, getInvFactoryTool } from "@/hooks/factory";
+import {
+  factoryToolMutation,
+  getInvFactoryTool,
+  getInvFactoryTools,
+} from "@/hooks/factory";
 import Loading from "@/components/Loader";
 
 const EditInventoryFactoryProd = () => {
@@ -31,6 +35,12 @@ const EditInventoryFactoryProd = () => {
     isLoading,
   } = getInvFactoryTool({ id: Number(id) });
 
+  const { isLoading: toolsFetching, refetch: toolsrefetch } =
+    getInvFactoryTools({
+      ...(!!state?.parent_id && { parent_id: state?.parent_id }),
+      enabled: false,
+    });
+
   const { mutate, isPending } = factoryToolMutation();
   const { register, handleSubmit, getValues, reset } = useForm();
 
@@ -46,8 +56,9 @@ const EditInventoryFactoryProd = () => {
         file: !!uploadedImg.length ? uploadedImg.at(-1) : null,
       },
       {
-        onSuccess: () => {
+        onSuccess: async () => {
           refetch();
+          await toolsrefetch();
           goBack();
           successToast("successfully updated");
           $uploadedImg([]);
@@ -64,7 +75,7 @@ const EditInventoryFactoryProd = () => {
     });
   }, [tool]);
 
-  if (isPending || isLoading) return <Loading />;
+  if (isPending || isLoading || toolsFetching) return <Loading />;
 
   return (
     <Card>

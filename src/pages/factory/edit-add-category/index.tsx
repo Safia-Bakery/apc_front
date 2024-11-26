@@ -26,10 +26,11 @@ import { Image } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { getInvFactoryCategoriesTools } from "@/hooks/factory";
 import { ToolsProductsType } from "@/Types/factory";
+import { Departments } from "@/utils/types";
 
 const EditAddInvFabricCategory = () => {
   const { t } = useTranslation();
-  const { id, dep: depId } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   const name = useQueryString("name");
   const page = Number(useQueryString("page")) || 1;
@@ -43,10 +44,11 @@ const EditAddInvFabricCategory = () => {
     isLoading,
     refetch,
   } = useCategory({ id: Number(id) });
+
   const { refetch: categoryRefetch } = useCategories({
     enabled: false,
     page: 1,
-    department: depId,
+    department: Departments.inventory_factory,
   });
   const { mutate } = categoryMutation();
 
@@ -66,6 +68,7 @@ const EditAddInvFabricCategory = () => {
     ...(name && { name }),
     ...(page && { page: +page }),
     ...(id && { category_id: +id }),
+    enabled: !!id,
   });
 
   const onSubmit = () => {
@@ -76,7 +79,7 @@ const EditAddInvFabricCategory = () => {
         description,
         status: +!!status,
         urgent: +!!urgent,
-        department: Number(depId),
+        department: Departments.inventory_factory,
         ...(id && { id: +id }),
       },
       {
@@ -156,14 +159,14 @@ const EditAddInvFabricCategory = () => {
         status: !!category.status,
       });
     }
-  }, [category, reset]);
+  }, [category]);
 
   if ((isLoading && !!id) || productLoading) return <Loading />;
 
   return (
     <>
       <Card className="overflow-hidden pb-3">
-        <Header title={`${t("edit_category")} №${id}`}>
+        <Header title={id ? `${t("edit_category")} №${id}` : "add"}>
           <button className="btn btn-primary" onClick={goBack}>
             {t("back")}
           </button>

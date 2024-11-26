@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { Category } from "@/utils/types";
+import { Category, Departments } from "@/utils/types";
 import TableViewBtn from "@/components/TableViewBtn";
 import useCategories from "@/hooks/useCategories";
 import useQueryString from "custom/useQueryString";
@@ -10,10 +10,13 @@ import { useTranslation } from "react-i18next";
 import AntdTable from "@/components/AntdTable";
 import { ColumnsType } from "antd/es/table";
 
-const InventoryCategories = () => {
+interface Props {
+  dep: Departments;
+}
+
+const InventoryCategories = ({ dep }: Props) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { dep } = useParams();
   const { search } = useLocation();
   const page = Number(useQueryString("page")) || 1;
   const parent_name = useQueryString("parent_name");

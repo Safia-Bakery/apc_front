@@ -26,12 +26,12 @@ const InventoryFactoryRemains = () => {
   const navigate = useNavigate();
   const navigateParams = useNavigateParams();
   const permission = useAppSelector(permissionSelector);
-  const handleNavigate = (route: string) => () =>
-    navigate(route, { state: { scrolled: window.scrollY, search } });
-
   const name = useQueryString("name");
   const parent_id = useQueryString("parent_id");
   const parent_name = useQueryString("parent_name");
+
+  const handleNavigate = (route: string) => () =>
+    navigate(route, { state: { scrolled: window.scrollY, search, parent_id } });
 
   const { data, isLoading, isFetching } = getInvFactoryTools({
     ...(!!parent_id && { parent_id }),

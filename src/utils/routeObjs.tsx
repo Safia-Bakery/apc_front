@@ -5,6 +5,9 @@ import { MainPermissions } from "./permissions";
 import { ITRequestStatusArr } from "./helpers";
 
 const FactoryRequests = lazy(() => import("@/pages/factory/requests"));
+const EditAddInvFabricCategory = lazy(
+  () => import("@/pages/factory/edit-add-category")
+);
 const ShowFactoryRequest = lazy(() => import("@/pages/factory/show-request"));
 const FactoryManagers = lazy(() => import("@/pages/factory/managers"));
 const FactoryDivisions = lazy(() => import("@/pages/factory/divisions"));
@@ -48,7 +51,6 @@ const RequestsIT = lazy(() => import("@/pages/RequestsIT"));
 const AddInventoryRequest = lazy(() => import("@/pages/AddInventoryRequest"));
 const RequestsInventory = lazy(() => import("@/pages/RequestsInventory"));
 const ShowRequestInventory = lazy(() => import("@/pages/ShowRequestInventory"));
-// const YandexMap = lazy(() => import("@/pages/Map"));
 
 const Categories = lazy(() => import("@/pages/Categories"));
 const EditAddCategory = lazy(() => import("@/pages/EditAddCategory"));
@@ -279,7 +281,7 @@ export const sidebarRoutes: SidebarType[] = [
       },
       {
         name: "categories",
-        url: `/categories-inventory/${Departments.inventory_retail}`,
+        url: `/categories-inventory-retail`,
         icon: "/icons/categories.svg",
         screen: MainPermissions.get_categories_inventory_retail,
       },
@@ -319,7 +321,7 @@ export const sidebarRoutes: SidebarType[] = [
       },
       {
         name: "categories",
-        url: `/categories-inventory/${Departments.inventory_factory}`,
+        url: `/categories-inventory-factory`,
         icon: "/icons/categories.svg",
         screen: MainPermissions.get_categories_inventory_factory,
       },
@@ -626,34 +628,34 @@ export const routes = [
     screen: MainPermissions.bot_settings,
   },
   {
-    element: <InventoryCategories />,
-    path: "/categories-inventory/:dep",
+    element: <InventoryCategories dep={Departments.inventory_retail} />,
+    path: "/categories-inventory-retail",
     screen: MainPermissions.get_categories_inventory_retail,
   },
   {
-    element: <InventoryCategories />,
-    path: "/categories-inventory/:dep",
+    element: <InventoryCategories dep={Departments.inventory_factory} />,
+    path: "/categories-inventory-factory",
     screen: MainPermissions.get_categories_inventory_factory,
   },
   {
     element: <EditAddInvCategory />,
-    path: "/categories-inventory/:dep/:id",
+    path: "/categories-inventory-retail/:id",
     screen: MainPermissions.edit_categories_inventory_retail,
   },
   {
-    element: <EditAddInvCategory />,
-    path: "/categories-inventory/:dep/:id",
+    element: <EditAddInvFabricCategory />,
+    path: "/categories-inventory-factory/:id",
     screen: MainPermissions.edit_categories_inventory_factory,
   },
   {
-    element: <EditAddInvCategory />,
-    path: "/categories-inventory/:dep/add",
+    element: <EditAddInvFabricCategory />,
+    path: "/categories-inventory-factory/add",
     screen: MainPermissions.add_categories_inventory_factory,
   },
   {
     element: <EditAddInvCategory />,
-    path: "/categories-inventory/:dep/add",
-    screen: MainPermissions.add_categories_inventory_factory,
+    path: "/categories-inventory-retail/add",
+    screen: MainPermissions.add_categories_inventory_retail,
   },
   {
     element: <ITTgLinks />,

@@ -47,6 +47,7 @@ const EditAddInvCategory = () => {
     isLoading,
     refetch,
   } = useCategory({ id: Number(id) });
+
   const { refetch: categoryRefetch } = useCategories({
     enabled: false,
     page: 1,
@@ -70,6 +71,7 @@ const EditAddInvCategory = () => {
     ...(name && { name }),
     ...(page && { page: +page }),
     ...(id && { category_id: +id }),
+    enabled: !!id,
   });
 
   const onSubmit = () => {
@@ -209,7 +211,7 @@ const EditAddInvCategory = () => {
   return (
     <>
       <Card className="overflow-hidden pb-3">
-        <Header title={`${t("edit_category")} №${id}`}>
+        <Header title={!!id ? `${t("edit_category")} №${id}` : "add"}>
           <button className="btn btn-primary" onClick={goBack}>
             {t("back")}
           </button>
