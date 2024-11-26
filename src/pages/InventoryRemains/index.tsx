@@ -2,7 +2,7 @@ import Card from "@/components/Card";
 import Header from "@/components/Header";
 import Loading from "@/components/Loader";
 import useToolsIerarch from "@/hooks/useToolsIerarch";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./index.module.scss";
 import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
 import useQueryString from "@/hooks/custom/useQueryString";
@@ -12,7 +12,7 @@ import { permissionSelector } from "@/store/reducers/sidebar";
 import { InventoryTools } from "@/utils/types";
 import { MainPermissions } from "@/utils/permissions";
 import TableViewBtn from "@/components/TableViewBtn";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import InventoryRemainsFilter from "./filter";
 import { numberWithCommas } from "@/utils/helpers";
@@ -26,7 +26,7 @@ const InventoryRemains = () => {
   const navigate = useNavigate();
   const navigateParams = useNavigateParams();
   const permission = useAppSelector(permissionSelector);
-  const handleNavigate = (route: string) => () => navigate(route);
+  const { search, state } = useLocation();
 
   const mins = useQueryString("mins");
   const name = useQueryString("name");
@@ -110,8 +110,15 @@ const InventoryRemains = () => {
         },
       },
     ],
-    []
+    [search]
   );
+
+  const handleNavigate = (route: string) => () =>
+    navigate(route, { state: { scrolled: window.scrollY, search, parent_id } });
+
+  useEffect(() => {
+    if (state?.scrolled) window.scrollTo(0, state.scrolled);
+  }, []);
 
   const renderFilter = useMemo(() => {
     return <InventoryRemainsFilter />;

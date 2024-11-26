@@ -50,14 +50,14 @@ const ApcModals = () => {
   const { data: categories, isLoading: categoriesLoading } = useCategories({
     enabled: modal === ModalTypes.changeCateg,
     department: Departments.APC,
-    sphere_status: Sphere.retail,
+    sphere_status: Sphere.fabric,
     category_status: 1,
   });
 
   const { data: brigades, isFetching: brigadaLoading } = useBrigadas({
     enabled: false,
     department: Departments.APC,
-    sphere_status: Sphere.retail,
+    sphere_status: Sphere.fabric,
   });
 
   const {

@@ -22,6 +22,7 @@ const AddCategory = () => {
     refetch,
     isLoading: toolLoading,
   } = useTools({ id, enabled: !!id });
+
   const tool = data?.items?.[0];
   const handleSubmit = (e: ChangeEvent<HTMLSelectElement>) => {
     mutate(

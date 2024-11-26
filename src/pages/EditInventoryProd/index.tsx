@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { useForm } from "react-hook-form";
@@ -14,6 +14,8 @@ import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 import MainSelect from "@/components/BaseInputs/MainSelect";
 import AddCategory from "./addCategory";
 import MainDropZone from "@/components/MainDropZone";
+import Loading from "@/components/Loader";
+import useToolsIerarch from "@/hooks/useToolsIerarch";
 
 const SelectDates = [
   { id: 24, name: "one_day" },
@@ -24,10 +26,16 @@ const EditInventoryProd = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
-  const goBack = () => navigate(-1);
+  const { state } = useLocation();
+  const goBack = () =>
+    navigate(`/products-ierarch${state.search ? state.search : ""}`, { state });
   const [uploadedImg, $uploadedImg] = useState<string[]>([]);
 
-  const { data, refetch } = useTools({ id });
+  const { data, refetch, isLoading } = useTools({ id });
+  const { isLoading: toolsFetching, refetch: toolsrefetch } = useToolsIerarch({
+    ...(!!state?.parent_id && { parent_id: state?.parent_id }),
+    enabled: false,
+  });
   const tool = data?.items?.[0];
 
   const { mutate } = updateToolsMutation();
@@ -46,8 +54,9 @@ const EditInventoryProd = () => {
         image: !!uploadedImg.length ? uploadedImg.at(-1) : null,
       },
       {
-        onSuccess: () => {
+        onSuccess: async () => {
           refetch();
+          await toolsrefetch();
           goBack();
           successToast("successfully updated");
           $uploadedImg([]);
@@ -66,6 +75,8 @@ const EditInventoryProd = () => {
       status: !!tool?.status,
     });
   }, [tool]);
+
+  if (toolsFetching || isLoading) return <Loading />;
 
   return (
     <Card>
