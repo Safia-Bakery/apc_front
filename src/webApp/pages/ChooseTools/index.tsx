@@ -9,10 +9,14 @@ import arrow from "/icons/primaryArrow.svg";
 import { useNavigate, useParams } from "react-router-dom";
 import SelectCategoryTool from "@/webApp/components/SelectCategoryTool";
 import useCategory from "@/hooks/useCategory";
+import { deptSelector } from "@/store/reducers/auth";
+import { Departments } from "@/utils/types";
+import SelectCategoryToolFactory from "@/webApp/components/SelectCategoryToolFactory";
 
 const ChooseTools = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const department = useAppSelector(deptSelector);
   const selectedBranch = useAppSelector(branchSelector);
   const { data: category } = useCategory({ id: Number(id) });
   const cart = useAppSelector(cartSelector);
@@ -38,7 +42,11 @@ const ChooseTools = () => {
           </WebAppContainer>
         </div>
 
-        <SelectCategoryTool />
+        {department === Departments.inventory_factory ? (
+          <SelectCategoryToolFactory />
+        ) : (
+          <SelectCategoryTool />
+        )}
       </div>
       <div className="fixed bottom-0 left-0 right-0 bg-white py-2 px-5 z-[105]">
         <InvButton

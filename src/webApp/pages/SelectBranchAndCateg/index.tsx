@@ -14,6 +14,7 @@ import { Departments } from "@/utils/types";
 import useCategories from "@/hooks/useCategories";
 import Loading from "@/components/Loader";
 import { deptSelector } from "@/store/reducers/auth";
+import SelectCategoryToolFactory from "@/webApp/components/SelectCategoryToolFactory";
 
 const SelectBranchAndCateg = () => {
   const selectedBranch = useAppSelector(branchSelector);
@@ -26,7 +27,7 @@ const SelectBranchAndCateg = () => {
   const { data: categories, isLoading: categoryLoading } = useCategories({
     category_status: 1,
     department: dep,
-    enabled: dep !== Departments.inventory_factory,
+    // enabled: dep !== Departments.inventory_factory,
   });
 
   const closeModal = () => $branchModal(false);
@@ -56,7 +57,11 @@ const SelectBranchAndCateg = () => {
       </div>
       <BranchModal isOpen={branchModal} onClose={closeModal} />
       <div className="mt-6">
-        <SelectCategoryTool />
+        {dep === Departments.inventory_factory ? (
+          <SelectCategoryToolFactory />
+        ) : (
+          <SelectCategoryTool />
+        )}
       </div>
       <div className="fixed bottom-0 left-0 right-0 bg-white py-3 px-5 z-[105]">
         {!cartLength && branchModal && (

@@ -232,30 +232,9 @@ export const getInvFactoryTools = ({ enabled, ...params }: ToolsParams) => {
   });
 };
 
-export const getInvFactoryCategoryTools = ({
-  enabled,
-  ...params
-}: FactoryDivisionParams) => {
-  return useQuery({
-    queryKey: ["ApcFactory_divisions", params],
-    queryFn: ({ signal }) =>
-      baseApi
-        .get("/api/v2/arc/factory/divisions", {
-          params,
-          signal,
-        })
-        .then(
-          ({ data: response }) =>
-            (response as BasePaginateRes<CategoriesTools>) || null
-        ),
-    enabled,
-    staleTime: EPresetTimes.MINUTE * 4,
-  });
-};
-
 export const factoryToolMutation = () => {
   return useMutation({
-    mutationKey: ["factory_Division_mutation"],
+    mutationKey: ["factory_tool_mutation"],
     mutationFn: async (body: ToolsBody) => {
       const { data } = await baseApi.put(
         `/api/v2/inventory/factory/tools/${body.id}`,

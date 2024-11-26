@@ -8,15 +8,15 @@ import arrow from "/icons/arrowBlack.svg";
 import CustomLink from "@/webApp/components/CustomLink";
 import { useParams } from "react-router-dom";
 import ToolCard from "@/webApp/components/ToolCard";
-import { useInvTools } from "@/hooks/useInvTools";
 import useCategories from "@/hooks/useCategories";
 import Loading from "@/components/Loader";
 import EmptyList from "@/components/EmptyList";
 import useQueryString from "@/hooks/custom/useQueryString";
 import InvPagination from "../InvPagination";
 import { deptSelector } from "@/store/reducers/auth";
+import { getInvFactoryCategoriesTools } from "@/hooks/factory";
 
-const SelectCategoryTool = () => {
+const SelectCategoryToolFactory = () => {
   const { id } = useParams();
 
   const selectedBranch = useAppSelector(branchSelector);
@@ -29,7 +29,7 @@ const SelectCategoryTool = () => {
     department,
     enabled: false,
   });
-  const { data, isLoading: toolsLoading } = useInvTools({
+  const { data, isLoading: toolsLoading } = getInvFactoryCategoriesTools({
     ...(toolsSearch && !!selectedBranch?.id && { name: toolsSearch }),
     ...(page && { page: +page }),
     ...(id && !!selectedBranch?.id && { category_id: +id }),
@@ -76,7 +76,17 @@ const SelectCategoryTool = () => {
         <div className="mt-3 pb-6">
           <div className="flex flex-col gap-4">
             {!!data?.items?.length &&
-              data.items.map((tool) => <ToolCard key={tool.id} tool={tool} />)}
+              data.items.map((tool) => (
+                <ToolCard
+                  key={tool.id}
+                  tool={{
+                    image: tool.file,
+                    name: tool.name,
+                    id: tool.id,
+                    count: 0,
+                  }}
+                />
+              ))}
             {!!data && <InvPagination totalPages={data?.pages} />}
           </div>
         </div>
@@ -86,4 +96,4 @@ const SelectCategoryTool = () => {
   );
 };
 
-export default SelectCategoryTool;
+export default SelectCategoryToolFactory;
