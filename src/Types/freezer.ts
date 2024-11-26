@@ -2,6 +2,7 @@ interface FreezerBody {
   products?: ProductItems[];
   id?: number;
   status?: number;
+  message_id?: string | null;
 }
 
 interface ProductItems {

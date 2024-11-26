@@ -5,6 +5,7 @@ interface State {
   freezerState: {
     branch_id?: string | null;
     order_id?: null | string;
+    message_id?: null | string;
   };
 }
 

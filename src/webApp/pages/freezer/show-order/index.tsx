@@ -20,7 +20,7 @@ import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 
 const ShowOrder = () => {
-  const { order_id } = useAppSelector(freezerState);
+  const { order_id, message_id } = useAppSelector(freezerState);
   const dispatch = useAppDispatch();
   const cart = useAppSelector(cartSelector);
   const { data, isLoading } = getFreezerRequest({
@@ -35,6 +35,7 @@ const ShowOrder = () => {
       {
         id: Number(order_id),
         status: 1,
+        message_id,
       },
       {
         onSuccess: () => {

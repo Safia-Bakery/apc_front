@@ -10,6 +10,7 @@ const TgRoutes = () => {
   const tokenKey = useQueryString("key");
   const departmentParam = useQueryString("department");
   const order_id = useQueryString("order_id");
+  const message_id = useQueryString("message_id");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { pathname, search } = useLocation();
@@ -23,7 +24,7 @@ const TgRoutes = () => {
   }, [tokenKey, departmentParam]);
 
   useEffect(() => {
-    if (order_id) dispatch(getFreezerState({ order_id }));
+    if (order_id) dispatch(getFreezerState({ order_id, message_id }));
   }, [order_id]);
 
   useEffect(() => {
