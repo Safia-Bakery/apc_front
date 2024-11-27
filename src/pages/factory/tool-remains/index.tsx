@@ -40,7 +40,7 @@ const InventoryFactoryRemains = () => {
     ...(!!name && { name }),
   });
 
-  const { reset, register, getValues } = useForm();
+  const { register, getValues } = useForm();
 
   const goBack = () => navigate(-1);
 
@@ -102,7 +102,7 @@ const InventoryFactoryRemains = () => {
   }, []);
 
   const renderItems = useMemo(() => {
-    if (!!parent_id)
+    if (!!parent_id || !!name)
       return (
         <AntdTable
           sticky
@@ -118,7 +118,7 @@ const InventoryFactoryRemains = () => {
           loading={isFetching || isLoading}
         />
       );
-  }, [data?.products, isFetching, isLoading]);
+  }, [data?.products, isFetching, isLoading, name]);
 
   if (isFetching || isLoading) return <Loading />;
 
