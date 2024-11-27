@@ -5,11 +5,11 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 export const freezerRequestMutation = () => {
   return useMutation({
     mutationKey: ["cars_mutation"],
-    mutationFn: async ({ ...body }: FreezerBody) => {
-      if (body.id) {
-        const { data } = await baseApi.put(
-          `/collector/order/${body.id}?status=${body.status}`
-        );
+    mutationFn: async ({ id, ...body }: FreezerBody) => {
+      if (id) {
+        const { data } = await baseApi.put(`/collector/order/${id}`, null, {
+          params: body,
+        });
         return data;
       } else {
         const { data } = await baseApi.post("/collector/order/", body);

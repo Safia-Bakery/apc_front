@@ -40,10 +40,9 @@ const InventoryRemains = () => {
     ...(!!name && { name }),
   });
 
-  const { reset, register, getValues } = useForm();
+  const { register, getValues } = useForm();
 
   const goBack = () => navigate(-1);
-  // const handleMins = () => navigate("/inventory-remains?mins=1");
 
   const handleParentId = (id: string, name: string) => () =>
     navigateParams({ parent_id: id, parent_name: name });

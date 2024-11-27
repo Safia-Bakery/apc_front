@@ -18,6 +18,7 @@ import InvButton, { BtnSize, InvBtnType } from "@/webApp/components/InvButton";
 import { TelegramApp } from "@/utils/tgHelpers";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
+import warnToast from "@/utils/warnToast";
 
 const ShowOrder = () => {
   const { order_id, message_id } = useAppSelector(freezerState);
@@ -31,20 +32,22 @@ const ShowOrder = () => {
   const { mutate, isPending } = freezerRequestMutation();
 
   const handleRequest = () => {
-    mutate(
-      {
-        id: Number(order_id),
-        status: 1,
-        message_id,
-      },
-      {
-        onSuccess: () => {
-          TelegramApp.toMainScreen();
-          successToast("Успешно изменен");
+    if (!!Object.keys(cart)?.length)
+      mutate(
+        {
+          id: Number(order_id),
+          status: 1,
+          message_id,
         },
-        onError: (e) => errorToast(e.message),
-      }
-    );
+        {
+          onSuccess: () => {
+            TelegramApp.toMainScreen();
+            successToast("Успешно изменен");
+          },
+          onError: (e) => errorToast(e.message),
+        }
+      );
+    else warnToast("Выберите продукт", "Нужно выбрать хотябы один продукт");
   };
 
   const handleSelectAll = () => {

@@ -19,6 +19,8 @@ import { baseURL } from "@/store/baseUrl";
 import InventoryRemainsFilter from "./filter";
 import { getInvFactoryTools } from "@/hooks/factory";
 import { ToolsProductsType } from "@/Types/factory";
+import MainInput from "@/components/BaseInputs/MainInput";
+import { useForm } from "react-hook-form";
 
 const InventoryFactoryRemains = () => {
   const { t } = useTranslation();
@@ -37,6 +39,8 @@ const InventoryFactoryRemains = () => {
     ...(!!parent_id && { parent_id }),
     ...(!!name && { name }),
   });
+
+  const { reset, register, getValues } = useForm();
 
   const goBack = () => navigate(-1);
 
@@ -122,6 +126,14 @@ const InventoryFactoryRemains = () => {
     <Card className="pb-4">
       <Header title={!parent_name ? "Инвентарь / Товары" : parent_name}>
         <div className="flex gap-2">
+          <MainInput
+            placeholder={t("search")}
+            register={register("name")}
+            className="!mb-0"
+            onKeyDown={(e) =>
+              e.key === "Enter" && navigateParams({ name: getValues("name") })
+            }
+          />
           <button className="btn btn-primary" onClick={goBack}>
             {t("back")}
           </button>
