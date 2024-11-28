@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 import { RequestStatus } from "@/utils/types";
@@ -11,7 +11,7 @@ import FactoryFilter from "./filter";
 import useQueryString from "custom/useQueryString";
 import AntdTable from "@/components/AntdTable";
 import DownloadExcell from "@/components/DownloadExcell";
-import { dateTimeFormat } from "@/utils/keys";
+import { dateTimeFormat, yearMonthDate } from "@/utils/keys";
 import Table from "antd/es/table/Table";
 import { ColumnsType } from "antd/es/table";
 import { permissionSelector } from "@/store/reducers/sidebar";
@@ -28,6 +28,10 @@ const FactoryRequests = () => {
   const user_id = Number(useQueryString("user_id"));
   const id = Number(useQueryString("id"));
   const status = useQueryString("status");
+  const responsible = Number(useQueryString("responsible"));
+  const category_id = Number(useQueryString("category_id"));
+  const created_at = useQueryString("created_at");
+  const user = useQueryString("user");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
   const permission = useAppSelector(permissionSelector);
@@ -105,7 +109,13 @@ const FactoryRequests = () => {
     ...(!!id && { id }),
     ...(!!branch?.id && { fillial_id: branch?.id }),
     ...(!!user_id && { user_id }),
+    ...(!!user && { user }),
     ...(!!status && { status }),
+    ...(!!responsible && { responsible }),
+    ...(!!category_id && { category_id }),
+    ...(!!created_at && {
+      created_at: dayjs(created_at).format(yearMonthDate),
+    }),
   });
 
   const renderFilter = useMemo(() => {

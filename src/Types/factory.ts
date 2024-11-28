@@ -25,6 +25,10 @@ export interface FactoryRequestParams extends BaseParams {
   status?: string;
   fillial_id?: string;
   user_id?: number;
+  created_at?: string;
+  user?: string;
+  responsible?: number;
+  category_id?: number;
 }
 
 export interface FactoryRequestBody {

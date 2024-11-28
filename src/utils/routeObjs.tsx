@@ -501,7 +501,7 @@ export const sidebarRoutes: SidebarType[] = [
   {
     name: "parent_tools",
     url: "/parent-tools",
-    icon: "/icons/folder.svg",
+    icon: "/icons/folder-icon.svg",
     screen: MainPermissions.get_all_folders,
   },
   {
