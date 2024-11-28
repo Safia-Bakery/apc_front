@@ -29,8 +29,6 @@ const InventoryRemains = () => {
   const navigateParams = useNavigateParams();
   const permission = useAppSelector(permissionSelector);
   const { search, state } = useLocation();
-
-  // const mins = useQueryString("mins");
   const name = useQueryString("name");
   const parent_id = useQueryString("parent_id");
   const parent_name = useQueryString("parent_name");
@@ -128,12 +126,10 @@ const InventoryRemains = () => {
   }, []);
 
   const renderItems = useMemo(() => {
-    if (!!parent_id)
+    if (!!parent_id || !!name)
       return (
         <AntdTable
           sticky
-          // virtual
-          // scroll={{ y: 700 }}
           columns={columns}
           summary={() => (
             <Table.Summary fixed={"top"}>
