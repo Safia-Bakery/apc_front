@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { MainPermissions } from "@/utils/permissions";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { handleIdx, numberWithCommas } from "@/utils/helpers";
+import { handleIdx, numberWithCommas, requestRows } from "@/utils/helpers";
 import AntdTable from "@/components/AntdTable";
 import { ColumnsType } from "antd/es/table";
 import useQueryString from "@/hooks/custom/useQueryString";
@@ -88,6 +88,7 @@ const CoinRequests = () => {
         <AntdTable
           sticky
           data={data?.items}
+          rowClassName={(item) => requestRows[item?.status]}
           totalItems={data?.total}
           columns={columns}
           loading={isLoading}

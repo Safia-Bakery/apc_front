@@ -8,7 +8,6 @@ import errorToast from "@/utils/errorToast";
 import { CancelReason, numberWithCommas } from "@/utils/helpers";
 import { ModalTypes, RequestStatus } from "@/utils/types";
 import { useForm } from "react-hook-form";
-import ShowRequestModals from "@/components/ShowRequestModals";
 import Loading from "@/components/Loader";
 import BaseInput from "@/components/BaseInputs";
 import MainSelect from "@/components/BaseInputs/MainSelect";
@@ -41,12 +40,15 @@ const ShowCoin = () => {
   const closeModal = () => $modal(undefined);
 
   const handleChange = ({ status }: { status: RequestStatus }) => {
-    const { deny_reason } = getValues();
+    const { fixedReason, cancel_reason } = getValues();
     attach(
       {
         id: Number(id),
         status,
-        ...(status === RequestStatus.denied && { deny_reason }),
+        ...(status === RequestStatus.closed_denied && {
+          deny_reason:
+            fixedReason < 4 ? t(CancelReason[fixedReason]) : cancel_reason,
+        }),
       },
       {
         onSuccess: () => {
@@ -119,11 +121,6 @@ const ShowCoin = () => {
         </div>
       );
   }, [order?.status]);
-
-  const renderModals = useMemo(() => {
-    if (!!order?.status.toString() && order?.status < RequestStatus.finished)
-      return <ShowRequestModals />;
-  }, [order?.status, modal]);
 
   if (attaching || isLoading) return <Loading />;
 
@@ -219,15 +216,14 @@ const ShowCoin = () => {
           {renderBtns}
         </div>
       </Card>
-      {renderModals}
       <Modal
         open={!!modal}
         closable
         onCancel={closeModal}
+        footer={null}
         classNames={{ content: "!p-0" }}
       >
-        <Header title="change" />
-        <div className="p-2">{renderChangeModals}</div>
+        {renderChangeModals}
       </Modal>
     </>
   );
