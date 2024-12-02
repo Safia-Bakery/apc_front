@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from "react";
+import { FC, PropsWithChildren, useState } from "react";
 import dayjs from "dayjs";
 import { useParams } from "react-router-dom";
 
@@ -40,6 +40,7 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
   const navigate = useNavigateParams();
   const { mutate, isPending: isLoading } = syncExpenditure();
   const { mutate: deleteExp } = deleteExpenditureMutation();
+  const [modal, $modal] = useState(false);
 
   const { data: products, refetch } = useOrder({
     id: Number(id),
@@ -71,7 +72,7 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
       }
     );
 
-  const handleModal = () => navigate({ add_product_modal: true });
+  const handleModal = () => $modal((prev) => !prev);
 
   return (
     <Card className="!min-h-min">
@@ -141,7 +142,13 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
 
         {children}
       </div>
-      {addExp && <AddProductModal addExp={addExp} />}
+      {addExp && (
+        <AddProductModal
+          addExp={addExp}
+          handleModal={handleModal}
+          modal={modal}
+        />
+      )}
     </Card>
   );
 };

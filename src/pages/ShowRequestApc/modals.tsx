@@ -1,12 +1,10 @@
 import cl from "classnames";
 import { useTranslation } from "react-i18next";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import Modal from "@/components/Modal";
 import {
   BrigadaType,
   Departments,
-  FileType,
   ModalTypes,
   RequestStatus,
   Sphere,
@@ -14,18 +12,18 @@ import {
 import Header from "@/components/Header";
 import BaseInput from "@/components/BaseInputs";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
-import { CancelReason, detectFileType } from "@/utils/helpers";
+import { CancelReason } from "@/utils/helpers";
 import MainSelect from "@/components/BaseInputs/MainSelect";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 import useOrder from "@/hooks/useOrder";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import useQueryString from "custom/useQueryString";
-import { useRemoveParams } from "custom/useCustomNavigate";
 import useBrigadas from "@/hooks/useBrigadas";
 import Loading from "@/components/Loader";
 import MainInput from "@/components/BaseInputs/MainInput";
 import AsyncAccordion from "@/components/AsyncAccordion";
+import { Modal } from "antd";
 
 interface Params {
   status?: RequestStatus;
@@ -34,16 +32,21 @@ interface Params {
   car_id?: number;
 }
 
-const ApcModals = () => {
+interface Props {
+  handleModal: (arg: ModalTypes | undefined) => void;
+  modal: ModalTypes | undefined;
+}
+
+const ApcModals = ({ modal, handleModal }: Props) => {
   const { t } = useTranslation();
   const { id } = useParams();
-  const modal = Number(useQueryString("modal"));
+  // const modal = Number(useQueryString("modal"));
   const photo = useQueryString("photo");
-  const removeParams = useRemoveParams();
+  // const removeParams = useRemoveParams();
   const { mutate: attach, isPending: attaching } = attachBrigadaMutation();
   const { register, getValues, watch, handleSubmit } = useForm();
 
-  const closeModal = () => removeParams(["modal"]);
+  const closeModal = () => handleModal(undefined);
 
   const { data: brigades, isFetching: brigadaLoading } = useBrigadas({
     enabled: false,
@@ -87,13 +90,13 @@ const ApcModals = () => {
   const renderModal = () => {
     if (modal === ModalTypes.assign)
       return (
-        <div className={"w-[420px]"}>
+        <div>
           <Header title="select_handler">
-            <button onClick={closeModal}>
+            {/* <button onClick={closeModal}>
               <span aria-hidden="true">&times;</span>
-            </button>
+            </button> */}
           </Header>
-          <div className={"overflow-y-auto max-h-80 h-full mt-2"}>
+          <div className={"overflow-y-auto mt-2"}>
             {brigadaLoading ? (
               <Loading is_static />
             ) : (
@@ -131,13 +134,8 @@ const ApcModals = () => {
               status: RequestStatus.closed_denied,
             })
           )}
-          className={"w-[420px]"}
         >
-          <Header title="deny_reason">
-            <button onClick={closeModal} className="close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </Header>
+          <Header title="deny_reason" />
           <div className="p-3">
             <BaseInput label="select_reason">
               <MainSelect
@@ -173,12 +171,11 @@ const ApcModals = () => {
           onSubmit={handleSubmit(
             handleBrigada({ status: RequestStatus.paused })
           )}
-          className={"w-[420px]"}
         >
           <Header title="pause_reason">
-            <button onClick={closeModal} className="close">
+            {/* <button onClick={closeModal} className="close">
               <span aria-hidden="true">&times;</span>
-            </button>
+            </button> */}
           </Header>
           <div className="p-3">
             <BaseInput label="comments">
@@ -200,9 +197,9 @@ const ApcModals = () => {
           )}
         >
           <Header title="add_expense">
-            <button onClick={closeModal}>
+            {/* <button onClick={closeModal}>
               <span aria-hidden="true">&times;</span>
-            </button>
+            </button> */}
           </Header>
           <div className="p-3">
             <BaseInput label="add_expense">
@@ -216,44 +213,49 @@ const ApcModals = () => {
         </form>
       );
 
-    if (modal === ModalTypes.showPhoto)
-      return (
-        <div className={"relative"}>
-          <button
-            onClick={() => removeParams(["modal", "photo"])}
-            className={cl(
-              "absolute top-2 right-2 w-5 h-5 rounded-full bg-gray-400 flex items-center justify-center border border-white"
-            )}
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <Link to={photo || ""} target="_blank" rel="noopener noreferrer">
-            {photo && detectFileType(photo) === FileType.photo ? (
-              <img
-                src={photo}
-                className={"max-h-[80vh] max-w-[80vw] block h-full"}
-                alt="uploaded-file"
-              />
-            ) : (
-              <video
-                src={photo || ""}
-                className={"max-h-[80vh] max-w-[80vw] block h-full"}
-                controls
-              />
-            )}
-          </Link>
-        </div>
-      );
+    // if (modal === ModalTypes.showPhoto)
+    //   return (
+    //     <div className={"relative"}>
+    //       <button
+    //         onClick={closeModal}
+    //         className={cl(
+    //           "absolute top-2 right-2 w-5 h-5 rounded-full bg-gray-400 flex items-center justify-center border border-white"
+    //         )}
+    //       >
+    //         <span aria-hidden="true">&times;</span>
+    //       </button>
+    //       <Link to={photo || ""} target="_blank" rel="noopener noreferrer">
+    //         {photo && detectFileType(photo) === FileType.photo ? (
+    //           <img
+    //             src={photo}
+    //             className={"max-h-[80vh] max-w-[80vw] block h-full"}
+    //             alt="uploaded-file"
+    //           />
+    //         ) : (
+    //           <video
+    //             src={photo || ""}
+    //             className={"max-h-[80vh] max-w-[80vw] block h-full"}
+    //             controls
+    //           />
+    //         )}
+    //       </Link>
+    //     </div>
+    //   );
 
-    if (modal === ModalTypes.changeCateg) return <AsyncAccordion />;
+    if (modal === ModalTypes.changeCateg)
+      return <AsyncAccordion closeModal={closeModal} />;
   };
 
   if (orderFetching || attaching) return <Loading />;
 
   return (
     <Modal
-      onClose={() => removeParams(["modal", !!photo ? "photo" : ""])}
-      isOpen={!!modal && modal !== ModalTypes.closed}
+      // onClose={closeModal}
+      closable
+      classNames={{ content: "!p-0" }}
+      onCancel={closeModal}
+      open={!!modal}
+      footer={null}
       className={cl("!h-[400px] w-min min-w-56 p-1 overflow-y-auto")}
     >
       {renderModal()}

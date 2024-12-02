@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Departments, Order, RequestStatus, Sphere } from "@/utils/types";
 import { MainPermissions } from "@/utils/permissions";
 import Pagination from "@/components/Pagination";
@@ -169,7 +169,7 @@ const RequestsApc: FC<Props> = ({ add, edit, addExp }) => {
                   <td width="80">
                     {permission?.[edit] ? (
                       <span
-                        className="text-blue-500"
+                        className="text-blue-500 cursor-pointer"
                         // to={}
                         onClick={() =>
                           handleNavigate(

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Button, Flex, Typography } from "antd";
 import useCategories from "@/hooks/useCategories";
 import { Sphere, Departments, Category } from "@/utils/types";
-import { useRemoveParams } from "@/hooks/custom/useCustomNavigate";
 import { BtnTypes } from "@/Types/common/btnTypes";
 import { useTranslation } from "react-i18next";
 import cl from "classnames";
@@ -18,10 +17,13 @@ interface LocalCategType {
   is_child?: boolean | null;
 }
 
-const AsyncAccordion = () => {
+interface Props {
+  closeModal: () => void;
+}
+
+const AsyncAccordion = ({ closeModal }: Props) => {
   const { t } = useTranslation();
   const { id } = useParams();
-  const removeParams = useRemoveParams();
   const [folderStack, $folderStack] = useState<LocalCategType[]>([]);
   const { mutate: attach } = attachBrigadaMutation();
 
@@ -30,7 +32,6 @@ const AsyncAccordion = () => {
     enabled: false,
   });
 
-  const closeModal = () => removeParams(["modal"]);
   const handleBack = () => $folderStack((prev) => prev.slice(0, -1));
 
   const handleChangeCateg = (category_id: number) => {
@@ -91,14 +92,14 @@ const AsyncAccordion = () => {
         </Flex>
         {!!folderStack.length && <h1>Выбрано: {folderStack?.at(-1)?.name}</h1>}
 
-        <button
-          onClick={() => removeParams(["modal", "photo"])}
+        {/* <button
+          onClick={closeModal}
           className={
             "absolute top-2 right-2 w-5 h-5 rounded-full bg-gray-400 flex items-center justify-center border border-white"
           }
         >
           <span aria-hidden="true">&times;</span>
-        </button>
+        </button> */}
       </div>
       <ul>
         {parents?.items.map((parent) => (

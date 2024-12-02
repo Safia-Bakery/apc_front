@@ -1,4 +1,4 @@
-import { FC, lazy, useMemo } from "react";
+import { FC, lazy, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AddItems from "@/components/AddProduct";
 import Card from "@/components/Card";
@@ -21,8 +21,7 @@ import {
   Sphere,
 } from "@/utils/types";
 import { MainPermissions } from "@/utils/permissions";
-import useQueryString from "custom/useQueryString";
-import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
+import { useNavigateParams } from "custom/useCustomNavigate";
 import useBrigadas from "@/hooks/useBrigadas";
 import syncExpenditure from "@/hooks/mutation/syncExpenditure";
 import Loading from "@/components/Loader";
@@ -30,9 +29,9 @@ import cl from "classnames";
 import { permissionSelector } from "reducers/sidebar";
 import { useTranslation } from "react-i18next";
 import { dateTimeFormat } from "@/utils/keys";
-import useCategories from "@/hooks/useCategories";
 import RequestPhotoReport from "@/components/RequestPhotoReport";
 import Suspend from "@/components/Suspend";
+import { Flex, Image } from "antd";
 
 const ApcModals = lazy(() => import("./modals"));
 
@@ -64,13 +63,12 @@ const ShowRequestApc: FC<Props> = ({ attaching, addExp }) => {
   const routeLocation = useLocation();
   const state = routeLocation.state as StateTypes;
   const navigate = useNavigate();
-  const modal = Number(useQueryString("modal"));
   const permissions = useAppSelector(permissionSelector);
   const navigateParams = useNavigateParams();
-  const removeParams = useRemoveParams();
   const { mutate: attach, isPending: attachLoading } = attachBrigadaMutation();
-  const handleModal = (type: ModalTypes) => navigateParams({ modal: type });
   const { getValues } = useForm();
+  const [modal, $modal] = useState<ModalTypes>();
+  const handleModal = (type: ModalTypes | undefined) => $modal(type);
   const {
     data: order,
     refetch: orderRefetch,
@@ -140,7 +138,7 @@ const ShowRequestApc: FC<Props> = ({ attaching, addExp }) => {
           onError: (e: any) => errorToast(e.message),
         }
       );
-    removeParams(["modal"]);
+    handleModal(undefined);
   };
 
   const handleRequestClose = () => {
@@ -222,12 +220,6 @@ const ShowRequestApc: FC<Props> = ({ attaching, addExp }) => {
       );
   }, [permissions, order?.status]);
 
-  const handleAssign = () => {
-    navigateParams({
-      modal: ModalTypes.assign,
-    });
-  };
-
   const renderAssignment = useMemo(() => {
     if (attaching && permissions?.[attaching] && order?.status! <= 1) {
       if (order?.brigada?.name) {
@@ -246,7 +238,7 @@ const ShowRequestApc: FC<Props> = ({ attaching, addExp }) => {
       return (
         <button
           id="assign"
-          onClick={handleAssign}
+          onClick={() => handleModal(ModalTypes.assign)}
           className="btn btn-success float-end"
         >
           {t("assign")}
@@ -254,7 +246,7 @@ const ShowRequestApc: FC<Props> = ({ attaching, addExp }) => {
       );
     }
     return <span>{order?.brigada?.name}</span>;
-  }, [permissions, order?.status, order?.brigada?.name, handleAssign]);
+  }, [permissions, order?.status, order?.brigada?.name]);
 
   const renderfileUploader = useMemo(() => {
     if (
@@ -269,7 +261,7 @@ const ShowRequestApc: FC<Props> = ({ attaching, addExp }) => {
   const renderModal = useMemo(() => {
     return (
       <Suspend>
-        <ApcModals />
+        <ApcModals handleModal={handleModal} modal={modal} />
       </Suspend>
     );
   }, [modal]);
@@ -359,17 +351,14 @@ const ShowRequestApc: FC<Props> = ({ attaching, addExp }) => {
                       {order?.file?.map((item, index) => {
                         if (item?.status === 0)
                           return (
-                            <div
-                              className={cl(
-                                "text-link cursor-pointer max-w-[150px] w-full text-truncate"
-                              )}
-                              onClick={handleShowPhoto(
-                                `${baseURL}/${item?.url}`
-                              )}
-                              key={item.url + index}
-                            >
-                              {t("file")} - {index + 1}
-                            </div>
+                            <Flex key={item.url}>
+                              <Image
+                                src={`${baseURL}/${item?.url}`}
+                                alt={`image - ${index}`}
+                                height={30}
+                                width={30}
+                              />
+                            </Flex>
                           );
                       })}
                     </td>

@@ -108,9 +108,9 @@ const ShowFormRequests = () => {
     );
   }, [order?.request_orpr]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, []);
 
   if (attaching || isLoading) return <Loading />;
 

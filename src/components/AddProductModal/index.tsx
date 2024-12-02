@@ -1,5 +1,4 @@
 import Header from "../Header";
-import Modal from "../Modal";
 import styles from "./index.module.scss";
 import BaseInput from "../BaseInputs";
 import MainTextArea from "../BaseInputs/MainTextArea";
@@ -10,8 +9,6 @@ import usedItemsMutation from "@/hooks/mutation/usedItems";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 import useOrder from "@/hooks/useOrder";
-import useQueryString from "custom/useQueryString";
-import { useRemoveParams } from "custom/useCustomNavigate";
 import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
 import { Departments } from "@/utils/types";
@@ -23,16 +20,17 @@ import cl from "classnames";
 import Loading from "../Loader";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { Modal } from "antd";
 
 interface Props {
   addExp: MainPermissions;
+  handleModal: () => void;
+  modal?: boolean;
 }
 
-const AddProductModal = ({ addExp }: Props) => {
+const AddProductModal = ({ addExp, modal, handleModal }: Props) => {
   const { t } = useTranslation();
   const { id } = useParams();
-  const removeRoute = useRemoveParams();
-  const modal = useQueryString("add_product_modal");
   const permissions = useAppSelector(permissionSelector);
   const { refetch: syncWithIiko, isFetching } = useSyncExpanditure({
     enabled: false,
@@ -46,10 +44,6 @@ const AddProductModal = ({ addExp }: Props) => {
 
   const { register, handleSubmit, getValues, reset, control, watch, setValue } =
     useForm();
-
-  const handleModal = () => {
-    if (!!modal) removeRoute(["add_product_modal"]);
-  };
 
   const onSubmit = () => {
     const { count, comment, product } = getValues();
@@ -86,15 +80,13 @@ const AddProductModal = ({ addExp }: Props) => {
   return (
     <Modal
       className={styles.modal}
-      isOpen={!!modal && !!permissions?.[addExp]}
-      onClose={handleModal}
+      open={!!modal && !!permissions?.[addExp]}
+      onCancel={handleModal}
+      closable
+      classNames={{ content: "!p-0" }}
     >
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <Header title={t("add_used_products")}>
-          <button onClick={handleModal} className="close ml-2">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </Header>
+        <Header title={t("add_used_products")} />
         <div className={styles.block}>
           <button
             disabled={isFetching}
