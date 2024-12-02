@@ -313,6 +313,7 @@ const localization = {
       leave_comment_to_be_better:
         "Оставьте свой отзыв и помогите нам стать ещё лучше",
       users: "Пользователи",
+      user: "Пользователь",
       incorrect_request: "Не правильная заявка",
       re_application: "Повторная заявка",
       test_request: "Тестовая заявка",
@@ -418,6 +419,7 @@ const localization = {
       managers: "Менеджеры",
       manager: "Менеджер",
       parent_tools: "Группы товаров",
+      coins: "Монеты",
     },
   },
   uz: {

@@ -4,6 +4,8 @@ import { Departments, MarketingSubDep, SidebarType, Sphere } from "./types";
 import { MainPermissions } from "./permissions";
 import { ITRequestStatusArr } from "./helpers";
 
+const CoinRequests = lazy(() => import("@/pages/coins/requests"));
+const ShowCoin = lazy(() => import("@/pages/coins/show-coin"));
 const FactoryRequests = lazy(() => import("@/pages/factory/requests"));
 const EditAddInvFabricCategory = lazy(
   () => import("@/pages/factory/edit-add-category")
@@ -491,12 +493,12 @@ export const sidebarRoutes: SidebarType[] = [
       },
     ],
   },
+
   {
-    name: "request_for_food",
-    url: "/requests-staff",
+    name: "coins",
+    url: "/coins",
     icon: "/icons/staff.svg",
-    screen: MainPermissions.get_staff_requests,
-    department: Departments.request_for_food,
+    screen: MainPermissions.get_coin_request,
   },
   {
     name: "parent_tools",
@@ -1528,6 +1530,18 @@ export const routes = [
     element: <Logs />,
     path: "/request/logs/:id",
     screen: MainPermissions.edit_requests_cctv,
+  },
+
+  {
+    element: <CoinRequests />,
+    path: "/coins",
+    screen: MainPermissions.get_coin_request,
+  },
+
+  {
+    element: <ShowCoin />,
+    path: "/coins/:id",
+    screen: MainPermissions.edit_coin_request,
   },
 
   // ===========================================================

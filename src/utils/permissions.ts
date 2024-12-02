@@ -192,4 +192,7 @@ export enum MainPermissions {
   update_apc_fabric_managers = 158,
 
   get_all_folders = 159,
+
+  get_coin_request = 160,
+  edit_coin_request = 161,
 }

@@ -130,7 +130,7 @@ const ShowCCTVRequests = () => {
         <div className="float-end mb10">
           <button
             onClick={handleModal(ModalTypes.cancelRequest)}
-            className="btn btn-danger   mr-2"
+            className="btn btn-danger mr-2"
           >
             {t("deny")}
           </button>

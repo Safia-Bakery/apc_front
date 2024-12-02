@@ -58,7 +58,10 @@ function AntdTable<T>({
             <div>
               {t("shown_items")}{" "}
               <b>
-                {indexOfFirstItem}-{indexOfLastItem === 0 ? 0 : indexOfLastItem}
+                {indexOfFirstItem}-
+                {totalItems < itemsPerPage
+                  ? totalItems || 0
+                  : indexOfLastItem || 0}
               </b>{" "}
               {t("from")} <b>{totalItems}</b>.
             </div>
