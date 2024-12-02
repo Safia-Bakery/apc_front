@@ -3,7 +3,7 @@ import { useDownloadExcel } from "react-export-table-to-excel";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
 import cl from "classnames";
-import useInventoryServiseStats from "@/hooks/useInventoryServiseStats";
+import { useInventoryServiseStats } from "@/hooks/useInventoryServiseStats";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
 
@@ -17,7 +17,11 @@ const column = [
   { name: "avg_handling_time_mins" },
 ];
 
-const InventoryServiceStats = () => {
+interface Props {
+  factory?: boolean;
+}
+
+const InventoryServiceStats = ({ factory }: Props) => {
   const { t } = useTranslation();
   const start = useUpdateQueryStr("start");
   const end = useUpdateQueryStr("end");
@@ -36,6 +40,7 @@ const InventoryServiceStats = () => {
   const { isLoading, data } = useInventoryServiseStats({
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),
+    factory,
   });
   const renderAvgCalculator = useMemo(() => {
     if (!!data) {

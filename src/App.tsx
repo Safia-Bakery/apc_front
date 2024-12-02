@@ -335,7 +335,7 @@ const App = () => {
         )}
         {permission?.[MainPermissions.inventory_reports_retail] && (
           <Route
-            path="/statistics-inventory"
+            path="/statistics-inventory-retail"
             element={
               <Suspend>
                 <BaseStatsBlock
@@ -358,7 +358,7 @@ const App = () => {
         )}
         {permission?.[MainPermissions.reports_inv_factory] && (
           <Route
-            path="/statistics-inventory"
+            path="/statistics-inventory-factory"
             element={
               <Suspend>
                 <BaseStatsBlock
@@ -373,7 +373,7 @@ const App = () => {
               path="service_level"
               element={
                 <Suspend>
-                  <InventoryServiceStats />
+                  <InventoryServiceStats factory />
                 </Suspend>
               }
             />

@@ -299,7 +299,7 @@ export const sidebarRoutes: SidebarType[] = [
       },
       {
         name: "statistics",
-        url: "/statistics-inventory",
+        url: "/statistics-inventory-retail",
         param: "/service_level",
         icon: "/icons/statistics.svg",
         screen: MainPermissions.inventory_reports_retail,
@@ -333,7 +333,7 @@ export const sidebarRoutes: SidebarType[] = [
       },
       {
         name: "statistics",
-        url: "/statistics-inventory",
+        url: "/statistics-inventory-factory",
         param: "/service_level",
         icon: "/icons/statistics.svg",
         screen: MainPermissions.reports_inv_factory,
