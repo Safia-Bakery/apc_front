@@ -37,7 +37,7 @@ const CoinRequests = () => {
       {
         title: t("branch"),
         dataIndex: "fillial_id",
-        render: (_, record) => record?.fillial?.name,
+        render: (_, record) => record?.fillial?.parentfillial?.name,
       },
       {
         title: t("user"),

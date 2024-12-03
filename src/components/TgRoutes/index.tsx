@@ -4,6 +4,7 @@ import useQueryString from "custom/useQueryString";
 import { getDepartment, loginHandler } from "reducers/auth";
 import { useAppDispatch } from "@/store/utils/types";
 import { getFreezerState } from "@/store/reducers/freezer";
+import errorToast from "@/utils/errorToast";
 
 const loadScript = (src: string): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -57,10 +58,10 @@ const TgRoutes = () => {
             telegram.isClosingConfirmationEnabled = true;
           }
         } else {
-          console.error("Telegram WebApp is not available.");
+          errorToast("Telegram WebApp is not available.");
         }
       } catch (error) {
-        console.error("Failed to load Telegram WebApp script:", error);
+        errorToast(`Failed to load Telegram WebApp script:${error}`);
       }
     };
 

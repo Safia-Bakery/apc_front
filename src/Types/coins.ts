@@ -17,6 +17,7 @@ interface CoinRes {
     name: string;
     manager_id: number;
     status: number;
+    parentfillial?: { name: string };
     manager?: {
       id: number;
       name: string;
