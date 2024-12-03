@@ -1,3 +1,4 @@
+import useUpdateEffect from "@/hooks/custom/useUpdateEffect";
 import { getFreezerBalances } from "@/hooks/freezer";
 import {
   addItem,
@@ -6,8 +7,9 @@ import {
   incrementSelected,
 } from "@/store/reducers/webInventory";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
+import { queryClient } from "@/utils/helpers";
 import { Spin } from "antd";
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties, useState } from "react";
 
 type Props = {
   style?: CSSProperties;
@@ -24,13 +26,9 @@ const FreezerClientItem = ({ style, tool }: Props) => {
     id: tool_id!,
   });
 
-  const addToCart = async (id: number) => {
-    $tool_id(id);
-    const my_tool = await tool_info;
-    // if (!!my_tool?.amount) dispatch(addItem(tool));
-  };
+  const addToCart = () => $tool_id(+tool.id);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (tool_id === tool_info?.tool?.id && !!tool_info?.amount)
       dispatch(addItem(tool));
   }, [tool_info, tool_id]);
@@ -41,6 +39,16 @@ const FreezerClientItem = ({ style, tool }: Props) => {
     else if (!tool_info?.amount)
       dispatch(incrementSelected(tool.id?.toString()));
     return;
+  };
+
+  const handleDecrement = () => {
+    dispatch(decrementSelected(tool?.id?.toString()));
+    if (cart[tool.id]?.count <= 1) {
+      $tool_id(undefined);
+      queryClient.removeQueries({
+        queryKey: ["freezer_tool_balances", tool.id],
+      });
+    }
   };
 
   return (
@@ -65,7 +73,7 @@ const FreezerClientItem = ({ style, tool }: Props) => {
             !cart[tool.id] ? (
               <button
                 className="flex flex-1 justify-center"
-                onClick={() => addToCart(+tool.id)}
+                onClick={addToCart}
               >
                 <img src="/icons/cart.svg" alt="cart" height={20} width={20} />
               </button>
@@ -73,9 +81,7 @@ const FreezerClientItem = ({ style, tool }: Props) => {
               <div className="flex justify-evenly flex-1  text-white ">
                 <button
                   className="flex flex-1 justify-center"
-                  onClick={() =>
-                    dispatch(decrementSelected(tool?.id?.toString()))
-                  }
+                  onClick={handleDecrement}
                 >
                   -
                 </button>
