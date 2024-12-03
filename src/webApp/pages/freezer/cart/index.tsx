@@ -8,7 +8,7 @@ import WebAppContainer from "@/webApp/components/WebAppContainer";
 import errorToast from "@/utils/errorToast";
 import Loading from "@/components/Loader";
 import { freezerRequestMutation } from "@/hooks/freezer";
-import FreezerCard from "@/webApp/components/FreezerCard";
+import FreezerClientItem from "@/webApp/components/FreezerClientItem";
 
 const FreezerCart = () => {
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ const FreezerCart = () => {
       <WebAppContainer className="mt-4 overflow-y-auto max-h-[70vh] h-min mb-2">
         <div className="flex flex-col gap-4">
           {Object.values(cart).map((tool) => (
-            <FreezerCard key={tool.id} tool={tool} />
+            <FreezerClientItem key={tool.id} tool={tool} />
           ))}
         </div>
 

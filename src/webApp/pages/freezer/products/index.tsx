@@ -14,15 +14,21 @@ import { useMemo, useState } from "react";
 import { useToolsIerarch } from "@/hooks/useToolsIerarch";
 import { InventoryTools, ToolsFolderType } from "@/utils/types";
 import { ColumnsType } from "antd/es/table";
-import FreezerCard from "@/webApp/components/FreezerCard";
+import FreezerClientItem from "@/webApp/components/FreezerClientItem";
 import { screenSize } from "@/utils/helpers";
+import FreezerItem from "@/webApp/components/FreezerItem";
+import { TelegramApp } from "@/utils/tgHelpers";
 
 interface LocalFolderType {
   name: string;
   id: string;
 }
 
-const FreezerProducts = () => {
+interface Props {
+  freezer?: boolean;
+}
+
+const FreezerProducts = ({ freezer }: Props) => {
   const [toolsSearch, $toolsSearch] = useDebounce("");
   const [folderStack, $folderStack] = useState<LocalFolderType[]>([]);
   const navigate = useNavigate();
@@ -65,7 +71,12 @@ const FreezerProducts = () => {
       {
         dataIndex: "name",
         className: "!bg-red !p-1",
-        render: (_, record) => <FreezerCard tool={record} />,
+        render: (_, record) =>
+          freezer ? (
+            <FreezerItem tool={record} add_limit={freezer} />
+          ) : (
+            <FreezerClientItem tool={record} />
+          ),
       },
     ],
     []
@@ -123,39 +134,30 @@ const FreezerProducts = () => {
           wrapperClassName="bg-white mb-5"
           onChange={(e) => $toolsSearch(e.target?.value)}
         />
-
-        {/* <Flex align={"center"} gap={10}>
-          {!!folderStack.length && (
-            <InvButton
-              className={"!min-w-9"}
-              onClick={handleBack}
-              btnType={InvBtnType.tgSelected}
-              children={
-                <img
-                  src="/icons/arrow.svg"
-                  className="-rotate-90"
-                  alt="go-back"
-                  height={24}
-                  width={24}
-                />
-              }
-            />
-          )}
-          
-        </Flex> */}
         <Typography className="font-bold">Выбрать продукт</Typography>
       </WebAppContainer>
       {renderList}
 
       <div className="fixed bottom-0 left-0 right-0 bg-white py-2 px-5 z-[105]">
-        <InvButton
-          btnType={InvBtnType.primary}
-          disabled={!Object.values(cart).length}
-          className="w-full !h-11"
-          onClick={() => navigate("/tg/collector/cart")}
-        >
-          Корзина ({Object.values(cart).length})
-        </InvButton>
+        {freezer ? (
+          <InvButton
+            btnType={InvBtnType.primary}
+            // disabled={!Object.values(cart).length}
+            className="w-full !h-11"
+            onClick={() => TelegramApp.toMainScreen()}
+          >
+            Закрыть
+          </InvButton>
+        ) : (
+          <InvButton
+            btnType={InvBtnType.primary}
+            disabled={!Object.values(cart).length}
+            className="w-full !h-11"
+            onClick={() => navigate("/tg/collector/cart")}
+          >
+            Корзина ({Object.values(cart).length})
+          </InvButton>
+        )}
       </div>
     </>
   );

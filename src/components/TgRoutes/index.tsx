@@ -3,13 +3,24 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import useQueryString from "custom/useQueryString";
 import { getDepartment, loginHandler } from "reducers/auth";
 import { useAppDispatch } from "@/store/utils/types";
-import { TelegramApp } from "@/utils/tgHelpers";
 import { getFreezerState } from "@/store/reducers/freezer";
+
+const loadScript = (src: string): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = src;
+    script.async = true;
+
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+
+    document.body.appendChild(script);
+  });
+};
 
 const TgRoutes = () => {
   const tokenKey = useQueryString("key");
   const departmentParam = useQueryString("department");
-  const order_id = useQueryString("order_id");
   const message_id = useQueryString("message_id");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -24,26 +35,46 @@ const TgRoutes = () => {
   }, [tokenKey, departmentParam]);
 
   useEffect(() => {
-    if (order_id) dispatch(getFreezerState({ order_id, message_id }));
-  }, [order_id]);
+    if (message_id) dispatch(getFreezerState({ message_id }));
+  }, [message_id]);
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://telegram.org/js/telegram-web-app.js";
-    script.async = true;
+    const loadAndInitializeTelegramWebApp = async () => {
+      try {
+        // Load the Telegram Web App script
+        await loadScript("https://telegram.org/js/telegram-web-app.js");
 
-    document.body.appendChild(script);
+        // Ensure Telegram WebApp is available
+        const telegram = (window as any).Telegram?.WebApp;
+        if (telegram) {
+          // Optional delay to ensure readiness
+          await new Promise((resolve) => setTimeout(resolve, 400));
+
+          telegram.expand();
+          telegram.enableClosingConfirmation();
+
+          if (!telegram.isClosingConfirmationEnabled) {
+            telegram.isClosingConfirmationEnabled = true;
+          }
+        } else {
+          console.error("Telegram WebApp is not available.");
+        }
+      } catch (error) {
+        console.error("Failed to load Telegram WebApp script:", error);
+      }
+    };
+
+    loadAndInitializeTelegramWebApp();
 
     return () => {
-      document.body.removeChild(script);
+      // Clean up the script on component unmount
+      const script = document.querySelector<HTMLScriptElement>(
+        `script[src="https://telegram.org/js/telegram-web-app.js"]`
+      );
+      if (script) {
+        document.body.removeChild(script);
+      }
     };
-  }, []);
-
-  useEffect(() => {
-    setTimeout(() => {
-      TelegramApp?.expand();
-      TelegramApp?.confirmClose();
-    }, 400);
   }, []);
 
   return <Outlet />;

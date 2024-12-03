@@ -21,6 +21,7 @@ import {
 import { MainPermissions } from "@/utils/permissions";
 
 const FreezerCart = lazy(() => import("./webApp/pages/freezer/cart"));
+// const SetTools = lazy(() => import("./webApp/pages/freezer/set-tools"));
 const ShowFreezerOrder = lazy(
   () => import("./webApp/pages/freezer/show-order")
 );
@@ -492,6 +493,14 @@ const App = () => {
           <Route
             element={
               <Suspend>
+                <FreezerProducts freezer />
+              </Suspend>
+            }
+            path={"set-tools"}
+          />
+          <Route
+            element={
+              <Suspend>
                 <FreezerCart />
               </Suspend>
             }
@@ -503,7 +512,7 @@ const App = () => {
                 <ShowFreezerOrder />
               </Suspend>
             }
-            path={"show-order"}
+            path={"show-order/:id"}
           />
           <Route
             element={

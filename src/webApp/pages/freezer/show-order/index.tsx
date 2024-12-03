@@ -19,10 +19,13 @@ import { TelegramApp } from "@/utils/tgHelpers";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 import warnToast from "@/utils/warnToast";
+import { useParams } from "react-router-dom";
 
 const ShowOrder = () => {
-  const { order_id, message_id } = useAppSelector(freezerState);
+  const { message_id } = useAppSelector(freezerState);
   const dispatch = useAppDispatch();
+
+  const { id: order_id } = useParams();
   const cart = useAppSelector(cartSelector);
   const { data, isLoading } = getFreezerRequest({
     enabled: !!order_id,
@@ -52,12 +55,12 @@ const ShowOrder = () => {
 
   const handleSelectAll = () => {
     if (data?.order_item?.length !== Object.keys(cart)?.length) {
-      data?.order_item.forEach(({ product: tool, amount }) =>
+      data?.order_item?.forEach(({ product: tool, amount }) =>
         dispatch(
           addItem({
-            image: tool.image,
-            name: tool.name,
-            id: tool.id,
+            image: tool?.image,
+            name: tool?.name,
+            id: tool?.id!,
             count: amount,
           })
         )
@@ -107,12 +110,12 @@ const ShowOrder = () => {
             data?.order_item?.map(({ product: tool, amount }) => (
               <FreezerItem
                 tool={{
-                  image: tool.image,
-                  name: tool.name,
-                  id: tool.id,
+                  image: tool?.image,
+                  name: tool?.name,
+                  id: tool?.id!,
                   count: amount,
                 }}
-                key={tool.id}
+                key={tool?.id}
               />
             ))
           ) : (

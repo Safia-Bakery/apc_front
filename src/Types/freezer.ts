@@ -13,7 +13,7 @@ interface ProductItems {
 interface FreezerOrderRes {
   id: number;
   branch_id: string;
-  branch: {
+  branch?: {
     id: string;
     name: string;
     status: number;
@@ -24,34 +24,34 @@ interface FreezerOrderRes {
   accepted_by: number;
   created_at?: string;
   updated_at?: string;
-  created_user: {
+  created_user?: {
     id: number;
     username: string;
     full_name: string;
     email: string;
     phone_number: string;
-    group: {
+    group?: {
       id: number;
       name: string;
       status: number;
     };
     status: number;
   };
-  accepted_user: {
+  accepted_user?: {
     id: number;
     username: string;
     full_name: string;
     email: string;
     phone_number: string;
-    group: {
+    group?: {
       id: number;
       name: string;
       status: number;
     };
     status: number;
   };
-  order_item: {
-    product: {
+  order_item?: {
+    product?: {
       name: string;
       id: number;
       code: string;
@@ -78,4 +78,28 @@ interface FreezerToolType {
   name?: string;
   id: string | number;
   count: number;
+}
+
+interface FreezerBalancesRes {
+  branch: {
+    name: string;
+  };
+  tool?: {
+    id: number;
+    name: string;
+    code: string;
+    mainunit: string;
+    producttype: string;
+    iikoid: string;
+    ftime: number;
+    status: number;
+    image: string;
+    category_id: number;
+  };
+  amount: number;
+}
+
+interface FreezerBalancesBody {
+  tool_id: number;
+  amount: number;
 }
