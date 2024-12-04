@@ -29,11 +29,13 @@ const FreezerCart = () => {
       {
         onSuccess: (data) => {
           dispatch(clearCart());
-          navigate(`/tg/inventory-request/success/${data.id}`, {
+          navigate(`/tg/collector/success/${data.id}`, {
             replace: true,
           });
         },
-        onError: (e) => errorToast(e.message),
+        onError: (e: any) => {
+          errorToast(e?.response?.data?.detail || e.message);
+        },
       }
     );
   };

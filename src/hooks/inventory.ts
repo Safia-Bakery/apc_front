@@ -1,26 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import baseApi from "@/api/base_api";
-import { Departments, Order, ValueLabel } from "@/utils/types";
-
-interface Params {
-  enabled?: boolean;
-  size?: number;
-  page?: number;
-  department?: Departments;
-  request_status?: string;
-  created_at?: string;
-  fillial_id?: string;
-  user?: string;
-  id?: number;
-}
+import { Departments, EPresetTimes, ValueLabel } from "@/utils/types";
 
 export const getInventoryRequests = ({
   enabled,
   department,
   request_status,
   ...params
-}: Params) => {
+}: InventoryReqParams) => {
   return useQuery({
     queryKey: ["inventory_requests", params, department, request_status],
     queryFn: ({ signal }) =>
@@ -43,33 +31,21 @@ export const getInventoryRequests = ({
           }
         )
         .then(
-          ({ data: response }) => (response as BasePaginateRes<Order>) || null
+          ({ data: response }) =>
+            (response as BasePaginateRes<InventoryReqsRes>) || null
         ),
     enabled,
   });
 };
 
-interface Body {
-  id?: number;
-  fillial_id: string;
-  category_id: number;
-  description?: string;
-  product?: string;
-  department?: number;
-  expenditure?: {
-    amount: number;
-    tool_id: number | string;
-  }[];
-}
-
-const invRequestMutation = () => {
+export const invRequestMutation = () => {
   return useMutation({
-    mutationKey: ["cars_mutation"],
-    mutationFn: async ({ department, ...body }: Body) => {
+    mutationKey: ["inv_request_mutation"],
+    mutationFn: async ({ department, ...body }: InventoryRequestBody) => {
       if (body.id) {
         const { data } = await baseApi.put(
           `/api/v2/requests/inv/${
-            department === Departments.inventory_factory ? "factory" : "retail"
+            department === Departments.inventory_factory ? "factory" : ""
           }`,
           body
         );
@@ -86,4 +62,30 @@ const invRequestMutation = () => {
     },
   });
 };
-export default invRequestMutation;
+
+export const getInvRequest = ({
+  id,
+  enabled,
+  department,
+}: {
+  id: number;
+  department: number;
+  enabled?: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["inv_request", id],
+    queryFn: ({ signal }) =>
+      baseApi
+        .get(
+          department === Departments.inventory_retail
+            ? `/api/v2/requests/inv/${id}`
+            : `/api/v2/requests/inv/factory/${id}`,
+          {
+            signal,
+          }
+        )
+        .then(({ data: response }) => (response as InventoryReqRes) || null),
+    enabled,
+    staleTime: EPresetTimes.MINUTE * 4,
+  });
+};

@@ -15,7 +15,7 @@ import WebAppContainer from "@/webApp/components/WebAppContainer";
 import { useForm } from "react-hook-form";
 import errorToast from "@/utils/errorToast";
 import Loading from "@/components/Loader";
-import invRequestMutation from "@/hooks/inventory";
+import { invRequestMutation } from "@/hooks/inventory";
 import { deptSelector } from "@/store/reducers/auth";
 import { Departments } from "@/utils/types";
 import { invFabricCategory } from "@/utils/keys";

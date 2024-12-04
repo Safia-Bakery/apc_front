@@ -11,13 +11,12 @@ import { Empty, Typography } from "antd";
 import { FolderOutlined } from "@ant-design/icons";
 import AntdTable from "@/components/AntdTable";
 import { useMemo, useState } from "react";
-import { useToolsIerarch } from "@/hooks/useToolsIerarch";
-import { InventoryTools, ToolsFolderType } from "@/utils/types";
 import { ColumnsType } from "antd/es/table";
 import FreezerClientItem from "@/webApp/components/FreezerClientItem";
 import { screenSize } from "@/utils/helpers";
 import FreezerItem from "@/webApp/components/FreezerItem";
 import { TelegramApp } from "@/utils/tgHelpers";
+import { getFreezerProducts } from "@/hooks/freezer";
 
 interface LocalFolderType {
   name: string;
@@ -34,18 +33,18 @@ const FreezerProducts = ({ freezer }: Props) => {
   const navigate = useNavigate();
   const cart = useAppSelector(cartSelector);
 
-  const { data: searchedItems, isLoading } = useToolsIerarch({
+  const { data: searchedItems, isLoading } = getFreezerProducts({
     parent_id: folderStack?.at(-1)?.id,
     ...(toolsSearch && { name: toolsSearch }),
   });
 
-  const handleFolder = (item: ToolsFolderType) => {
+  const handleFolder = (item: FreezerGroupType) => {
     $folderStack((prev) => [...prev, { name: item.name, id: item.id }]);
   };
 
   const handleBack = () => $folderStack((prev) => prev.slice(0, -1));
 
-  const folderColumns = useMemo<ColumnsType<ToolsFolderType>>(
+  const folderColumns = useMemo<ColumnsType<FreezerGroupType>>(
     () => [
       {
         dataIndex: "name",
@@ -66,16 +65,32 @@ const FreezerProducts = ({ freezer }: Props) => {
     []
   );
 
-  const prodsColumns = useMemo<ColumnsType<InventoryTools>>(
+  const prodsColumns = useMemo<ColumnsType<FreezerToolsProductsType>>(
     () => [
       {
         dataIndex: "name",
         className: "!bg-red !p-1",
         render: (_, record) =>
           freezer ? (
-            <FreezerItem tool={record} add_limit={freezer} />
+            <FreezerItem
+              tool={{
+                image: record.image,
+                name: record.name,
+                id: record.id,
+                parent_id: record.parentid,
+                count: Number(record.tool_balances?.amount),
+              }}
+              add_limit={freezer}
+            />
           ) : (
-            <FreezerClientItem tool={record} />
+            <FreezerClientItem
+              tool={{
+                image: record.image,
+                name: record.name,
+                id: record.id,
+                count: Number(record.tool_balances?.amount),
+              }}
+            />
           ),
       },
     ],
@@ -85,7 +100,7 @@ const FreezerProducts = ({ freezer }: Props) => {
   const renderList = useMemo(() => {
     return (
       <>
-        {!!searchedItems?.folders?.length && (
+        {!!searchedItems?.groups?.length && (
           <AntdTable
             sticky
             className="tg-table"
@@ -94,7 +109,7 @@ const FreezerProducts = ({ freezer }: Props) => {
             scroll={{ y: screenSize(25) }}
             rowClassName={"!bg-transparent"}
             columns={folderColumns}
-            data={searchedItems?.folders}
+            data={searchedItems?.groups}
             locale={{ emptyText: "" }}
           />
         )}
@@ -105,7 +120,7 @@ const FreezerProducts = ({ freezer }: Props) => {
           scroll={{ y: screenSize(65) }}
           rowClassName={"!bg-transparent pt-2"}
           columns={prodsColumns}
-          data={searchedItems?.tools}
+          data={searchedItems?.products}
           showHeader={false}
           locale={{
             emptyText: () => (

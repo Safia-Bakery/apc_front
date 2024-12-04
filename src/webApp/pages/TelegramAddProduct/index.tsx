@@ -250,7 +250,7 @@ const TelegramAddProduct = () => {
           {!btn && (
             <button
               type="button"
-              onClick={handleFinishOrder({ status: RequestStatus.finished })}
+              onClick={handleFinishOrder({ status: RequestStatus.solved })}
               className="btn btn-success w-full"
             >
               {t("fixed")}

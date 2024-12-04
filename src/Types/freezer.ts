@@ -103,3 +103,38 @@ interface FreezerBalancesBody {
   tool_id: number;
   amount: number;
 }
+
+interface FreezerProductsParams {
+  parent_id?: string;
+  name?: string;
+  enabled?: boolean;
+}
+
+interface FreezerToolsProductsType {
+  id: number;
+  name: string;
+  status: number;
+  file: string;
+  parentid: string;
+  image: string;
+  category_id: number;
+  tool_balances?: {
+    branch?: {
+      name: string;
+    };
+    amount: number;
+  };
+}
+
+interface FreezerGroupType {
+  id: string;
+  name: string;
+  parent_id: string;
+  status: number;
+}
+
+interface FreezerToolsRes {
+  groups: FreezerGroupType[];
+
+  products: FreezerToolsProductsType[];
+}

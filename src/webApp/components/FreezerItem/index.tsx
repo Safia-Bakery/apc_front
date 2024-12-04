@@ -16,6 +16,7 @@ type Props = {
     name?: string;
     id: string | number;
     count: number;
+    parent_id?: string;
   };
 };
 
@@ -31,14 +32,10 @@ const FreezerItem = ({ style, tool, add_limit }: Props) => {
       className="rounded-3xl flex gap-5 w-full bg-white h-18 overflow-hidden"
     >
       <div className="flex flex-1 justify-between pt-3 flex-col">
-        <div className="flex flex-1 justify-center flex-col ml-4">
+        <div className="flex flex-1 justify-center ml-4 flex-col">
           <h5 className="font-bold text-base">{tool?.name}</h5>
 
-          {!add_limit && (
-            <h5 className="font-bold text-base mt-2 text-gray-500">
-              Кол-во: x{tool.count || 0}
-            </h5>
-          )}
+          <p className="text-gray-500 text-xs">Кол-во: {tool.count || 0}</p>
         </div>
 
         {add_limit ? (
@@ -74,6 +71,8 @@ const FreezerItem = ({ style, tool, add_limit }: Props) => {
           tool_id={tool_id}
           closeModal={closeModal}
           tool_name={tool.name}
+          tool_count={tool.count}
+          tool_parent={tool.parent_id}
         />
       )}
     </div>

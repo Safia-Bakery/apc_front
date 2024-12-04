@@ -4,9 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import useOrder from "@/hooks/useOrder";
 import { useAppSelector } from "@/store/utils/types";
-import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 import { baseURL } from "@/store/baseUrl";
@@ -26,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import { dateTimeFormat } from "@/utils/keys";
 import InventoryModals from "./modals";
 import useQueryString from "@/hooks/custom/useQueryString";
+import { getInvRequest, invRequestMutation } from "@/hooks/inventory";
 
 const unchangable: BaseReturnBoolean = {
   [RequestStatus.finished]: true,
@@ -46,7 +45,7 @@ const ShowRequestInventory = () => {
   const removeParams = useRemoveParams();
 
   const navigateParams = useNavigateParams();
-  const { mutate: attach, isPending: attaching } = attachBrigadaMutation();
+  const { mutate: attach, isPending: attaching } = invRequestMutation();
   const handleModal = (type: ModalTypes) => () => {
     navigateParams({ modal: type });
   };
@@ -55,7 +54,7 @@ const ShowRequestInventory = () => {
     refetch: orderRefetch,
     isLoading,
     isFetching,
-  } = useOrder({ id: Number(id) });
+  } = getInvRequest({ id: Number(id), department: Number(dep) });
   const navigate = useNavigate();
 
   const handleShowPhoto = (file: string) => () => {
@@ -70,8 +69,9 @@ const ShowRequestInventory = () => {
     () => {
       attach(
         {
-          request_id: Number(id),
+          id: Number(id),
           status,
+          department: Number(dep),
         },
         {
           onSuccess: () => {

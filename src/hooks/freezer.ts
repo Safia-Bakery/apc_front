@@ -69,3 +69,22 @@ export const freezerBalanceMutation = () => {
     },
   });
 };
+
+export const getFreezerProducts = ({
+  enabled,
+  ...params
+}: FreezerProductsParams) => {
+  return useQuery({
+    queryKey: ["freezer_tools", params],
+    queryFn: ({ signal }) =>
+      baseApi
+        .get("/api/v2/tools/balances", {
+          signal,
+          params,
+        })
+        .then(({ data: response }) => (response as FreezerToolsRes) || null),
+    enabled,
+    staleTime: EPresetTimes.MINUTE * 4,
+    retry: false,
+  });
+};

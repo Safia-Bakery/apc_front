@@ -21,6 +21,7 @@ import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import useQueryString from "custom/useQueryString";
 import { useRemoveParams } from "custom/useCustomNavigate";
 import Loading from "@/components/Loader";
+import { getInvRequest, invRequestMutation } from "@/hooks/inventory";
 
 interface Params {
   status?: RequestStatus;
@@ -31,26 +32,28 @@ interface Params {
 
 const InventoryModals = () => {
   const { t } = useTranslation();
-  const { id } = useParams();
+  const { id, dep } = useParams();
   const modal = Number(useQueryString("modal"));
   const photo = useQueryString("photo");
   const removeParams = useRemoveParams();
-  const { mutate: attach, isPending: attaching } = attachBrigadaMutation();
+  const { mutate, isPending: attaching } = invRequestMutation();
   const { register, getValues, watch, handleSubmit } = useForm();
 
   const closeModal = () => removeParams(["modal"]);
 
-  const { refetch: orderRefetch, isFetching: orderFetching } = useOrder({
+  const { refetch: orderRefetch, isFetching: orderFetching } = getInvRequest({
     id: Number(id),
+    department: Number(dep),
   });
 
   const handleBrigada =
     ({ status }: Params) =>
     () => {
       const { fixedReason, cancel_reason, pause_reason } = getValues();
-      attach(
+      mutate(
         {
-          request_id: Number(id),
+          id: Number(id),
+          department: Number(dep),
           status,
           ...(!!pause_reason && { pause_reason }),
           ...(status === RequestStatus.closed_denied && {

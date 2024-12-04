@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { Order, RequestStatus } from "@/utils/types";
+import { RequestStatus } from "@/utils/types";
 import { useMemo } from "react";
 import dayjs from "dayjs";
 import Card from "@/components/Card";
@@ -41,7 +41,7 @@ const RequestsInventory = () => {
     ...(!!id && { id }),
   });
 
-  const columns = useMemo<ColumnsType<Order>>(
+  const columns = useMemo<ColumnsType<InventoryReqsRes>>(
     () => [
       {
         title: "№",
@@ -101,7 +101,7 @@ const RequestsInventory = () => {
         title: t("author"),
         dataIndex: "update_time",
         ...(isMobile && { width: 100 }),
-        render: (_, order) => order?.user_manager,
+        render: (_, order) => order?.user_manager || t("not_given"),
       },
     ],
     []

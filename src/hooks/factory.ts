@@ -286,3 +286,16 @@ export const getInvFactoryCategoriesTools = ({
     enabled,
   });
 };
+
+export const apcFactoryInvMutation = () => {
+  return useMutation({
+    mutationKey: ["ApcFactory_inv_mutation"],
+    mutationFn: async (body: FactoryRequestBody) => {
+      const { data } = await baseApi.put(
+        `/api/v2/arc/factory/requests/${body.id}`,
+        body
+      );
+      return data;
+    },
+  });
+};

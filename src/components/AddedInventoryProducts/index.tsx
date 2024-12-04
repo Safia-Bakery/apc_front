@@ -2,12 +2,13 @@ import Header from "../Header";
 import { useParams } from "react-router-dom";
 import useOrder from "@/hooks/useOrder";
 import updateInventoryProdMutation from "@/hooks/mutation/updateInventoryProd";
-import { RequestStatus } from "@/utils/types";
+import { Departments, RequestStatus } from "@/utils/types";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 import { useTranslation } from "react-i18next";
 import { baseURL } from "@/store/baseUrl";
 import { Image } from "antd";
+import { getInvRequest } from "@/hooks/inventory";
 
 const column = [
   { name: "№" },
@@ -20,12 +21,15 @@ const column = [
 ];
 
 const AddedInventoryProducts = () => {
-  const { id } = useParams();
+  const { id, dep } = useParams();
   const { t } = useTranslation();
 
   const { mutate } = updateInventoryProdMutation();
 
-  const { data: order, refetch } = useOrder({ id: Number(id) });
+  const { data: order, refetch } = getInvRequest({
+    id: Number(id),
+    department: Number(dep),
+  });
 
   const handleStatus = (status: number) => {
     if (order?.status! < RequestStatus.finished && !status) return "new";
@@ -68,14 +72,22 @@ const AddedInventoryProducts = () => {
             {order?.expanditure?.map((item, idx) => (
               <tr className="bg-blue" key={item.id}>
                 <td width="40">{idx + 1}</td>
-                <td>{item?.tool.name}</td>
+                <td>{item?.tool?.name}</td>
                 <td>{item?.amount}</td>
-                <td>{item?.comment}</td>
+                <td>{item?.comment || t("not_given")}</td>
                 <td>{t(handleStatus(item?.status))}</td>
                 <td>
-                  {item?.tool?.image ? (
+                  {(
+                    Number(dep) === Departments.inventory_factory
+                      ? item.tool?.file
+                      : item.tool?.image
+                  ) ? (
                     <Image
-                      src={`${baseURL}/${item.tool?.image}`}
+                      src={`${baseURL}/${
+                        Number(dep) === Departments.inventory_factory
+                          ? item.tool?.file
+                          : item.tool?.image
+                      }`}
                       height={30}
                       width={30}
                     />
