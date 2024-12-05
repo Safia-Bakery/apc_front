@@ -128,7 +128,9 @@ const EditAddInvFabricCategory = () => {
           return (
             permission?.[MainPermissions.edit_prods_inv_factory] && (
               <TableViewBtn
-                onClick={handleNavigate(`/inventory-remains/${record.id}`)}
+                onClick={handleNavigate(
+                  `/inventory-remains-factory/${record.id}`
+                )}
               />
             )
           );

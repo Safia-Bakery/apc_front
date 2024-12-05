@@ -1,6 +1,5 @@
 import { FC, useMemo } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { Category, Departments } from "@/utils/types";

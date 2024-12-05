@@ -34,6 +34,7 @@ import { MainPermissions } from "@/utils/permissions";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { getItrequest, itRequestMutation } from "@/hooks/it";
+import AntCascader from "@/components/AntCascader";
 
 const ITModals = () => {
   const { t } = useTranslation();
@@ -50,13 +51,6 @@ const ITModals = () => {
   const permissions = useAppSelector(permissionSelector);
 
   const closeModal = () => removeParams(["modal"]);
-
-  const { data: categories, isLoading: categoriesLoading } = useCategories({
-    enabled: modal === ModalTypes.changeCateg,
-    department: Departments.IT,
-    sphere_status: Sphere.fix,
-    category_status: 1,
-  });
 
   const { data: brigades, isFetching: brigadaLoading } = useBrigadas({
     enabled: modal === ModalTypes.assign,
@@ -325,33 +319,34 @@ const ITModals = () => {
           </div>
         </>
       );
-    if (
-      modal === ModalTypes.changeCateg &&
-      permissions?.[MainPermissions.it_request_change_categ]
-    )
-      return (
-        <>
-          <Header title="change">
-            <button onClick={closeModal} className="close">
-              <span>&times;</span>
-            </button>
-          </Header>
-          <BaseInput label="select_category">
-            <MainSelect
-              values={categories?.items}
-              register={register("category")}
-            />
-          </BaseInput>
-          <div className="min-w-96">
-            <button
-              className="btn btn-success w-full"
-              onClick={handleChange({ categ: true })}
-            >
-              {t("apply")}
-            </button>
-          </div>
-        </>
-      );
+    // if (
+    //   modal === ModalTypes.changeCateg &&
+    //   permissions?.[MainPermissions.it_request_change_categ]
+    // )
+    //   return (
+    //     <>
+    //       <AntCascader />
+    //       <Header title="change">
+    //         <button onClick={closeModal} className="close">
+    //           <span>&times;</span>
+    //         </button>
+    //       </Header>
+    //       <BaseInput label="select_category">
+    //         <MainSelect
+    //           values={categories?.items}
+    //           register={register("category")}
+    //         />
+    //       </BaseInput>
+    //       <div className="min-w-96">
+    //         <button
+    //           className="btn btn-success w-full"
+    //           onClick={handleChange({ categ: true })}
+    //         >
+    //           {t("apply")}
+    //         </button>
+    //       </div>
+    //     </>
+    //   );
     if (modal === ModalTypes.leaveMessage)
       return (
         <>
@@ -427,7 +422,7 @@ const ITModals = () => {
 
   if (
     orderFetching ||
-    (categoriesLoading && modal === ModalTypes.changeCateg) ||
+    // (categoriesLoading && modal === ModalTypes.changeCateg) ||
     attaching ||
     msgLoading
   )

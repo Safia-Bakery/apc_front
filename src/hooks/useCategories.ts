@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import baseApi from "@/api/base_api";
-import { Category, CategoryTypes } from "@/utils/types";
+import { Category } from "@/utils/types";
 
 interface Props {
   enabled?: boolean;
@@ -12,9 +12,10 @@ interface Props {
   category_status?: number | string;
   sphere_status?: number;
   parent_id?: number;
+  staleTime?: number;
 }
 
-export const useCategories = ({ enabled, ...params }: Props) => {
+export const useCategories = ({ enabled, staleTime, ...params }: Props) => {
   return useQuery({
     queryKey: ["categories", params],
     queryFn: () =>
@@ -23,6 +24,19 @@ export const useCategories = ({ enabled, ...params }: Props) => {
         .then(({ data: response }) => response as BasePaginateRes<Category>),
     enabled,
     refetchOnMount: true,
+    staleTime,
+  });
+};
+
+export const loadCategoriesChild = () => {
+  return useMutation({
+    mutationKey: ["category_child"],
+    mutationFn: async (parent_id: number) => {
+      const { data } = await baseApi.get("/category", {
+        params: { parent_id, status: 1 },
+      });
+      return data as BasePaginateRes<Category>;
+    },
   });
 };
 export default useCategories;

@@ -1,6 +1,5 @@
-import { Table } from "antd";
 import styles from "./index.module.scss";
-import { TableProps } from "antd/es/table";
+import Table, { TableProps } from "antd/es/table";
 import cl from "classnames";
 import { ReactNode, useMemo } from "react";
 import { useTranslation } from "react-i18next";

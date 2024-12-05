@@ -27,6 +27,7 @@ import { useTranslation } from "react-i18next";
 import { dateTimeFormat } from "@/utils/keys";
 import ITModals from "./modals";
 import { getItrequest, itRequestMutation } from "@/hooks/it";
+import EditCategory from "./edit-category";
 
 const unchangable: BaseReturnBoolean = {
   [RequestStatus.finished]: true,
@@ -240,17 +241,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                         {!unchangable[order!?.status] &&
                           permissions?.[
                             MainPermissions.it_request_change_categ
-                          ] && (
-                            <button
-                              className={cl(
-                                "btn btn-primary",
-                                styles.changeBtn
-                              )}
-                              onClick={handleModal(ModalTypes.changeCateg)}
-                            >
-                              {t("change")}
-                            </button>
-                          )}
+                          ] && <EditCategory />}
                       </div>
                     </td>
                   </tr>

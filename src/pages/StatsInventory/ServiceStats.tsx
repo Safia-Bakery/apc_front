@@ -118,7 +118,7 @@ const InventoryServiceStats = ({ factory }: Props) => {
             <tbody>
               <tr className="hover:bg-transparent">
                 <td rowSpan={Object.values(data!).length}>
-                  {t("inventory_retail")}
+                  {factory ? t("inventory_fabric") : t("inventory_retail")}
                 </td>
                 {[Object.entries(data!)?.[0]]?.map((item) => (
                   <Fragment key={item?.[0]}>
