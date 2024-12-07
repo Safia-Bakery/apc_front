@@ -99,6 +99,7 @@ export interface ToolsBody {
   category_id?: number;
   file?: string | null;
   id: number;
+  factory_ftime?: number;
 }
 
 export interface ToolRes {
@@ -107,6 +108,7 @@ export interface ToolRes {
   status: number;
   file: string;
   category_id: number;
+  factory_ftime?: number;
   category: {
     name: string;
     description: string;
@@ -121,6 +123,7 @@ export interface ToolRes {
     parent_id: number;
     is_child: true;
     telegram_id: number;
+
     telegram: {
       id: number;
       chat_id: string;
@@ -136,6 +139,7 @@ export interface ToolsProductsType {
   status: number;
   file: string;
   parentid: string;
+  factory_ftime: number;
 }
 
 export interface ToolsRes {

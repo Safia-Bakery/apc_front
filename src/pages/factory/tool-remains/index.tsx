@@ -63,6 +63,12 @@ const InventoryFactoryRemains = () => {
         title: t("name_in_table"),
       },
       {
+        dataIndex: "factory_ftime",
+        title: t("deadline_in_hours"),
+        render: (_, record) =>
+          record.factory_ftime ? record.factory_ftime : t("not_given"),
+      },
+      {
         dataIndex: "status",
         title: t("status"),
         render: (_, record) => (!record.status ? t("not_active") : t("active")),

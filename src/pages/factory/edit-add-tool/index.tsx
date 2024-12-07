@@ -16,6 +16,7 @@ import {
   getInvFactoryTools,
 } from "@/hooks/factory";
 import Loading from "@/components/Loader";
+import MainInput from "@/components/BaseInputs/MainInput";
 
 const EditInventoryFactoryProd = () => {
   const { t } = useTranslation();
@@ -24,7 +25,7 @@ const EditInventoryFactoryProd = () => {
   const navigate = useNavigate();
 
   const goBack = () =>
-    navigate(`/products-ierarch-factory${state.search ? state.search : ""}`, {
+    navigate(`/products-ierarch-factory${state?.search ? state.search : ""}`, {
       state,
     });
   const [uploadedImg, $uploadedImg] = useState<string[]>([]);
@@ -45,7 +46,7 @@ const EditInventoryFactoryProd = () => {
   const { register, handleSubmit, getValues, reset } = useForm();
 
   const onSubmit = () => {
-    const { status } = getValues();
+    const { status, factory_ftime } = getValues();
 
     mutate(
       {
@@ -53,6 +54,7 @@ const EditInventoryFactoryProd = () => {
         name: tool?.name,
         status: Number(status),
         category_id: tool?.category_id,
+        factory_ftime: !!factory_ftime ? +factory_ftime : tool?.factory_ftime,
         file: !!uploadedImg.length ? uploadedImg.at(-1) : null,
       },
       {
@@ -72,6 +74,7 @@ const EditInventoryFactoryProd = () => {
     if (tool?.file) $uploadedImg([tool?.file]);
     reset({
       status: !!tool?.status,
+      factory_ftime: tool?.factory_ftime,
     });
   }, [tool]);
 
@@ -89,6 +92,14 @@ const EditInventoryFactoryProd = () => {
         <AddCategory />
         <BaseInputs label="status">
           <MainCheckBox label={"active"} register={register("status")} />
+        </BaseInputs>
+
+        <BaseInputs label="deadline_in_hours">
+          <MainInput
+            type="number"
+            register={register("factory_ftime")}
+            placeholder={t("deadline_in_hours")}
+          />
         </BaseInputs>
 
         <BaseInputs label="upload_photo" className="relative flex flex-col">
