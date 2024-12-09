@@ -1,49 +1,53 @@
-import { useEffect, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import useOrder from "@/hooks/useOrder";
 import dayjs from "dayjs";
-import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
-import { numberWithCommas } from "@/utils/helpers";
+import { CancelReason, numberWithCommas } from "@/utils/helpers";
 import { ModalTypes, RequestStatus } from "@/utils/types";
 import { useForm } from "react-hook-form";
-import ShowRequestModals from "@/components/ShowRequestModals";
-import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import Loading from "@/components/Loader";
-import useQueryString from "@/hooks/custom/useQueryString";
 import { useTranslation } from "react-i18next";
 import { dateTimeFormat } from "@/utils/keys";
+import { editFormRequests, getFormRequest } from "@/hooks/forms";
+import AntModal from "@/components/AntModal";
+import MainSelect from "@/components/BaseInputs/MainSelect";
+import BaseInput from "@/components/BaseInputs";
+import MainTextArea from "@/components/BaseInputs/MainTextArea";
 
 const ShowFormRequests = () => {
   const { t } = useTranslation();
   const { id } = useParams();
-  const navigateParams = useNavigateParams();
-  const modal = Number(useQueryString("modal"));
-  const removeParams = useRemoveParams();
-  const { mutate: attach, isPending: attaching } = attachBrigadaMutation();
-  const handleModal = (type: ModalTypes) => () =>
-    navigateParams({ modal: type });
-  const { getValues } = useForm();
+  const [modal, $modal] = useState<ModalTypes>();
+  const { mutate, isPending: attaching } = editFormRequests();
+  const handleModal = (type: ModalTypes) => () => $modal(type);
   const {
     data: order,
     refetch: orderRefetch,
     isLoading,
-  } = useOrder({ id: Number(id) });
+  } = getFormRequest({ id: Number(id) });
   const isNew = order?.status === RequestStatus.new;
   const navigate = useNavigate();
+  const { watch, register, handleSubmit, getValues } = useForm();
   const handleBack = () => navigate("/requests-form");
+
+  const closeModal = () => $modal(undefined);
 
   const handleBrigada =
     ({ status }: { status: RequestStatus }) =>
     () => {
-      attach(
+      const { fixedReason, cancel_reason } = getValues();
+      mutate(
         {
-          request_id: Number(id),
+          id: Number(id),
           status,
-          deny_reason: getValues("cancel_reason"),
+          ...(status === RequestStatus.closed_denied && {
+            deny_reason:
+              fixedReason < 4 ? t(CancelReason[fixedReason]) : cancel_reason,
+          }),
+          request_products: order?.request_orpr,
         },
         {
           onSuccess: () => {
@@ -53,7 +57,7 @@ const ShowFormRequests = () => {
           onError: (e) => errorToast(e.message),
         }
       );
-      removeParams(["modal"]);
+      closeModal();
     };
 
   const renderBtns = useMemo(() => {
@@ -91,12 +95,52 @@ const ShowFormRequests = () => {
   }, [order?.status]);
 
   const renderModals = useMemo(() => {
-    if (
-      !!order?.status.toString() &&
-      (order?.status < RequestStatus.finished || modal === ModalTypes.showPhoto)
-    )
-      return <ShowRequestModals />;
-  }, [order?.status, modal]);
+    if (!!order?.status.toString() && order?.status < RequestStatus.finished)
+      return (
+        <AntModal
+          closable
+          onCancel={closeModal}
+          open={!!modal}
+          footer={null}
+          classNames={{ content: "!p-0" }}
+        >
+          <form
+            onSubmit={handleSubmit(
+              handleBrigada({ status: RequestStatus.closed_denied })
+            )}
+          >
+            <Header title="deny_reason" />
+            <div className="p-3">
+              <BaseInput label="select_reason">
+                <MainSelect
+                  register={register("fixedReason", {
+                    required: t("required_field"),
+                  })}
+                >
+                  <option value={undefined} />
+
+                  {Object.keys(CancelReason).map((item) => (
+                    <option key={item} value={item}>
+                      {t(CancelReason[+item])}
+                    </option>
+                  ))}
+                </MainSelect>
+              </BaseInput>
+
+              {watch("fixedReason") == 4 && (
+                <BaseInput label="comments">
+                  <MainTextArea register={register("cancel_reason")} />
+                </BaseInput>
+              )}
+
+              <button className="btn btn-success w-full" type="submit">
+                {t("send")}
+              </button>
+            </div>
+          </form>
+        </AntModal>
+      );
+  }, [order?.status, modal, watch("fixedReason"), register]);
 
   const renderPrice = useMemo(() => {
     return order?.request_orpr?.reduce(
@@ -107,10 +151,6 @@ const ShowFormRequests = () => {
       { totalAmount: 0 }
     );
   }, [order?.request_orpr]);
-
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, []);
 
   if (attaching || isLoading) return <Loading />;
 
@@ -123,12 +163,6 @@ const ShowFormRequests = () => {
             order?.status.toString() && t(RequestStatus[order?.status])
           }`}
         >
-          <button
-            className="btn btn-warning mr-2"
-            onClick={() => navigate(`/request/logs/${id}`)}
-          >
-            {t("logs")}
-          </button>
           <button onClick={handleBack} className="btn btn-primary">
             {t("back")}
           </button>

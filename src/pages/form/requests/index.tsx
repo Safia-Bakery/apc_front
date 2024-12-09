@@ -1,9 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Departments, Order, RequestStatus } from "@/utils/types";
+import { RequestStatus } from "@/utils/types";
 import { MainPermissions } from "@/utils/permissions";
 import { useMemo } from "react";
 import dayjs from "dayjs";
-import useOrders from "@/hooks/useOrders";
+
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { handleIdx, numberWithCommas, requestRows } from "@/utils/helpers";
@@ -17,12 +17,13 @@ import DownloadFormExcel from "@/components/DownloadFormExcel";
 import AntdTable from "@/components/AntdTable";
 import { Table } from "antd";
 import { ColumnsType } from "antd/es/table";
+import { getFormRequests } from "@/hooks/forms";
 
 const FormRequests = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const currentPage = Number(useQueryString("page")) || 1;
-  const request_status = useQueryString("request_status");
+  const request_status = Number(useQueryString("request_status"));
   const created_at = useQueryString("created_at");
   const user = useQueryString("user");
   const id = Number(useQueryString("id"));
@@ -30,7 +31,7 @@ const FormRequests = () => {
   const branch = branchJson && JSON.parse(branchJson);
   const permissions = useAppSelector(permissionSelector);
 
-  const columns = useMemo<ColumnsType<Order>>(
+  const columns = useMemo<ColumnsType<FormRes>>(
     () => [
       {
         title: "№",
@@ -97,11 +98,12 @@ const FormRequests = () => {
     data: requests,
     isLoading: orderLoading,
     isFetching: orderFetching,
-  } = useOrders({
+    refetch,
+    isRefetching,
+  } = getFormRequests({
     enabled: true,
     page: currentPage,
-    department: Departments.form,
-    ...(!!request_status && { request_status }),
+    ...(!!request_status && { status: request_status }),
     ...(!!created_at && {
       created_at: dayjs(created_at).format(yearMonthDate),
     }),
@@ -120,6 +122,9 @@ const FormRequests = () => {
               {t("add")}
             </button>
           )}
+          <button onClick={() => refetch()} className="btn btn-primary ml-2">
+            {t("refresh")}
+          </button>
         </div>
       </Header>
 
@@ -129,7 +134,7 @@ const FormRequests = () => {
           data={requests?.items}
           totalItems={requests?.total}
           columns={columns}
-          loading={orderFetching || orderLoading}
+          loading={orderFetching || orderLoading || isRefetching}
           rowClassName={(item) => requestRows[item.status]}
           summary={() => (
             <Table.Summary fixed={"top"}>

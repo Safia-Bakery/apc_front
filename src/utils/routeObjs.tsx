@@ -4,6 +4,10 @@ import { Departments, MarketingSubDep, SidebarType, Sphere } from "./types";
 import { MainPermissions } from "./permissions";
 import { ITRequestStatusArr } from "./helpers";
 
+const EditAddFormcategory = lazy(
+  () => import("@/pages/form/categories/edit-add-category")
+);
+const FormCategories = lazy(() => import("@/pages/form/categories"));
 const CoinRequests = lazy(() => import("@/pages/coins/requests"));
 const ShowCoin = lazy(() => import("@/pages/coins/show-coin"));
 const FactoryRequests = lazy(() => import("@/pages/factory/requests"));
@@ -96,10 +100,8 @@ const BotSettings = lazy(() => import("@/pages/BotSettings"));
 const EditAddTgLink = lazy(() => import("@/pages/EditAddTgLink"));
 const ITTgLinks = lazy(() => import("@/pages/ITTgLinks"));
 
-const FormRequests = lazy(() => import("@/pages/FormRequests"));
-const ShowFormRequests = lazy(() => import("@/pages/ShowFormRequests"));
-const AddFormRequest = lazy(() => import("@/pages/AddFormRequest"));
-const EditAddFormcategory = lazy(() => import("@/pages/EditAddFormcategory"));
+const FormRequests = lazy(() => import("@/pages/form/requests"));
+const ShowFormRequests = lazy(() => import("@/pages/form/show-request"));
 const InventoryCategories = lazy(() => import("@/pages/InventoryCategories"));
 const Cleaning = lazy(() => import("@/pages/Cleaning"));
 
@@ -598,28 +600,17 @@ export const routes = [
     screen: MainPermissions.edit_form_request,
   },
   {
-    element: <AddFormRequest />,
-    path: "/requests-form/add",
-    screen: MainPermissions.add_form_request,
-  },
-  {
-    element: (
-      <Categories
-        dep={Departments.form}
-        add={MainPermissions.add_form_category}
-        edit={MainPermissions.edit_form_category}
-      />
-    ),
+    element: <FormCategories />,
     path: "/categories-form",
     screen: MainPermissions.get_form_category,
   },
   {
-    element: <EditAddFormcategory dep={Departments.form} />,
+    element: <EditAddFormcategory />,
     path: "/categories-form/:id",
     screen: MainPermissions.edit_form_category,
   },
   {
-    element: <EditAddFormcategory dep={Departments.form} />,
+    element: <EditAddFormcategory />,
     path: "/categories-form/add",
     screen: MainPermissions.add_form_category,
   },

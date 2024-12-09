@@ -420,6 +420,7 @@ const localization = {
       manager: "Менеджер",
       parent_tools: "Группы товаров",
       coins: "Монеты",
+      universal_size: "Универсальный размер",
     },
   },
   uz: {
