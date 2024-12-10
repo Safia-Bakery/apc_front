@@ -38,8 +38,10 @@ export const Playground: FC = () => {
 
   const handleNavigate = (url: string) => {
     $loading(true);
-    navigate(url);
-    $loading(false);
+    startTransition(() => {
+      navigate(url);
+      $loading(false);
+    });
   };
 
   const menuItemStyles: MenuItemStyles = {
@@ -60,7 +62,7 @@ export const Playground: FC = () => {
   return (
     <>
       {collapsed && <div className={styles.overlay} onClick={handleSidebar} />}
-      {loading && <Loading />}
+      {(loading || isPending) && <Loading />}
       <Sidebar
         // collapsed={collapsed}
         className={cl(styles.sidebar, { [styles.collapsed]: collapsed })}
