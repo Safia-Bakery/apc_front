@@ -1,3 +1,17 @@
+interface OrderProducts {
+  id?: number;
+  amount?: number;
+  orpr_product?: {
+    name?: string;
+    prod_cat?: {
+      name: string;
+      price: number;
+    };
+  };
+  confirmed?: boolean;
+  deny_reason?: string;
+}
+
 interface FormRes {
   id: number;
   user?: {
@@ -25,19 +39,7 @@ interface FormRes {
   category?: FormCategoryRes;
   started_at: string;
   finished_at: string;
-  request_orpr?: {
-    id: number;
-    amount: number;
-    orpr_product?: {
-      name: string;
-      prod_cat?: {
-        name: string;
-        price: number;
-      };
-    };
-    confirmed: boolean;
-    deny_reason: string;
-  }[];
+  request_orpr?: OrderProducts[];
   price: number;
   phone_number: string;
   log?: {
@@ -67,17 +69,17 @@ interface FormBody {
   status?: number;
   deny_reason?: string;
   request_products?: {
-    id: number;
-    amount: number;
+    id?: number;
+    amount?: number;
     orpr_product?: {
-      name: string;
+      name?: string;
       prod_cat?: {
-        name: string;
-        price: number;
+        name?: string;
+        price?: number;
       };
     };
-    confirmed: boolean;
-    deny_reason: string;
+    confirmed?: boolean;
+    deny_reason?: string;
   }[];
 }
 

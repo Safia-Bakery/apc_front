@@ -421,6 +421,7 @@ const localization = {
       parent_tools: "Группы товаров",
       coins: "Монеты",
       universal_size: "Универсальный размер",
+      check_all: "Выбрать все",
     },
   },
   uz: {
