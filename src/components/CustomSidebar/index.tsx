@@ -16,6 +16,7 @@ import styles from "./index.module.scss";
 import { sidebarHandler, toggleSidebar } from "@/store/reducers/selects";
 import { MainPermissions } from "@/utils/permissions";
 import "./index.scss";
+import Loading from "../Loader";
 
 export const Playground: FC = () => {
   const { t } = useTranslation();
@@ -26,11 +27,19 @@ export const Playground: FC = () => {
   const navigate = useNavigate();
   const [isPending, startTransition] = useTransition();
 
+  const [loading, $loading] = useState(false);
+
   const [menuItem, $menuItem] = useState<MainPermissions>();
 
   const toggleSubItems = (item: MainPermissions) => {
     if (item === menuItem) $menuItem(undefined);
     else startTransition(() => $menuItem(item));
+  };
+
+  const handleNavigate = (url: string) => {
+    $loading(true);
+    navigate(url);
+    $loading(false);
   };
 
   const menuItemStyles: MenuItemStyles = {
@@ -51,6 +60,7 @@ export const Playground: FC = () => {
   return (
     <>
       {collapsed && <div className={styles.overlay} onClick={handleSidebar} />}
+      {loading && <Loading />}
       <Sidebar
         // collapsed={collapsed}
         className={cl(styles.sidebar, { [styles.collapsed]: collapsed })}
@@ -73,7 +83,7 @@ export const Playground: FC = () => {
               <MenuItem
                 className={cl(styles.content)}
                 active={pathname === "/home"}
-                onClick={() => navigate("/home")}
+                onClick={() => handleNavigate("/home")}
                 icon={
                   <img
                     className={styles.routeIcon}
@@ -107,7 +117,7 @@ export const Playground: FC = () => {
                         {route?.subroutes?.map((subroute) => (
                           <MenuItem
                             onClick={() =>
-                              navigate(
+                              handleNavigate(
                                 `${subroute.url}${
                                   !!subroute?.param ? subroute?.param : ""
                                 }`
@@ -134,7 +144,7 @@ export const Playground: FC = () => {
                         className={cl(styles.content)}
                         active={pathname.includes(route.url!)}
                         onClick={() =>
-                          navigate(
+                          handleNavigate(
                             `${route.url}${!!route?.param ? route?.param : ""}`
                           )
                         }

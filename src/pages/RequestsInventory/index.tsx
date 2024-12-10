@@ -28,6 +28,8 @@ const RequestsInventory = () => {
     data: requests,
     isLoading: orderLoading,
     isFetching: orderFetching,
+    refetch,
+    isRefetching,
   } = getInventoryRequests({
     enabled: true,
     page: currentPage,
@@ -104,7 +106,7 @@ const RequestsInventory = () => {
         render: (_, order) => order?.user_manager || t("not_given"),
       },
     ],
-    []
+    [requests?.items]
   );
 
   const renderFilter = useMemo(() => {
@@ -113,7 +115,11 @@ const RequestsInventory = () => {
 
   return (
     <Card>
-      <Header title={t("requests_for_inventory")} />
+      <Header title={t("requests_for_inventory")}>
+        <button className="btn btn-primary" onClick={() => refetch()}>
+          {t("refresh")}
+        </button>
+      </Header>
 
       <div className="table-responsive content">
         <AntdTable
@@ -121,7 +127,7 @@ const RequestsInventory = () => {
           data={requests?.items}
           totalItems={requests?.total}
           columns={columns}
-          loading={orderLoading || orderFetching}
+          loading={orderLoading || orderFetching || isRefetching}
           rowClassName={(item) => requestRows[item.status]}
           summary={() => (
             <Table.Summary fixed={"top"}>
