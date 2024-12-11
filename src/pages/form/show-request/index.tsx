@@ -50,13 +50,17 @@ const ShowFormRequests = () => {
         const { fixedReason, cancel_reason } = getValues();
         let problem: number[] = [];
         currentOrderProds.map((prod) => {
-          if (!prod.confirmed && !prod.deny_reason) {
+          if (
+            !prod.confirmed &&
+            !prod.deny_reason &&
+            status !== RequestStatus.closed_denied
+          ) {
             warnToast(`Выберите ${prod.orpr_product?.prod_cat?.name}`);
             problem.push(prod.id!);
           }
         });
 
-        if (!problem.length) {
+        if (!problem.length || status === RequestStatus.closed_denied) {
           mutate(
             {
               id: Number(id),
@@ -167,7 +171,7 @@ const ShowFormRequests = () => {
           </form>
         </AntModal>
       );
-  }, [order?.status, modal, watch("fixedReason"), register]);
+  }, [order?.status, modal, watch("fixedReason")]);
 
   const renderPrice = useMemo(() => {
     return order?.request_orpr?.reduce(
@@ -312,7 +316,9 @@ const ShowFormRequests = () => {
                               checked={!!item?.confirmed}
                               onChange={() =>
                                 isNew &&
-                                handleProdChange(item.id!, { confirmed: true })
+                                handleProdChange(item.id!, {
+                                  confirmed: !item?.confirmed,
+                                })
                               }
                             />
                           ) : (
