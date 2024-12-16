@@ -176,12 +176,6 @@ const RequestsIT = () => {
     return <ITFilter />;
   }, []);
 
-  // useEffect(() => {
-  //   const indexes = [0, 1, 4, 6];
-  //   const filtered = indexes.map((i) => statuses[i]);
-  //   navigateParams({ request_status: JSON.stringify(filtered) });
-  // }, []);
-
   return (
     <Card>
       <Header title={"it_requests"}>

@@ -10,7 +10,7 @@ import useBackExcel from "@/hooks/custom/useBackExcel";
 const DownloadExcell = () => {
   const { t } = useTranslation();
   const [active, $active] = useState(false);
-  const request_status = Number(useQueryString("request_status"));
+  const request_status = useQueryString("request_status");
   const category_id = Number(useQueryString("category_id"));
   const { register, getValues } = useForm();
 
@@ -23,7 +23,11 @@ const DownloadExcell = () => {
         {
           start_date,
           finish_date,
-          ...(!!request_status && { status: request_status }),
+          ...(!!request_status && {
+            status: JSON.parse(request_status).map(
+              (item: any) => item.value
+            ) as number[],
+          }),
           ...(!!category_id && { category_id }),
         },
         {
