@@ -6,6 +6,7 @@ interface HrAppointmentRes {
   description: string;
   department: number;
   deny_reason: string;
+  created_at?: string;
   position?: {
     id: number;
     name: string;
@@ -35,14 +36,13 @@ interface HrAppointmentRes {
 
 interface HrAppointmentBody {
   id?: number;
-  employee_name: string;
-  time_slot: string;
+  employee_name?: string;
+  time_slot?: string;
   status?: number;
-  description: string;
-  department?: number;
+  description?: string;
   deny_reason?: string;
-  position_id: number;
-  branch_id: string;
+  position_id?: number;
+  branch_id?: string;
 }
 
 interface HRPositions {

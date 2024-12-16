@@ -72,14 +72,12 @@ export const getAppointment = ({
 export const editAddAppointment = () => {
   return useMutation({
     mutationKey: ["edit_add_appointment"],
-    mutationFn: async ({ id, ...body }: HrAppointmentBody) => {
-      if (id) {
-        const { data } = await baseApi.put(`/api/v2/appointments/${id}`, body);
-        return data;
-      } else {
-        const { data } = await baseApi.post(`/api/v2/appointments`, body);
-        return data;
-      }
+    mutationFn: async (body: HrAppointmentBody) => {
+      const { data } = await baseApi[body.id ? "put" : "post"](
+        "/api/v2/appointments",
+        body
+      );
+      return data;
     },
   });
 };
