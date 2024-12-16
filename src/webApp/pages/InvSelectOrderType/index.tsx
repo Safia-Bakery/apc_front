@@ -1,4 +1,4 @@
-import InvHeader from "@/webApp/components/InvHeader";
+import InvHeader from "@/webApp/components/web-header";
 import invOrderType from "/icons/invOrderType.svg";
 import arrow from "/icons/arrowBlack.svg";
 import WebAppContainer from "@/webApp/components/WebAppContainer";

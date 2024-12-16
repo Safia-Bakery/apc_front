@@ -3,7 +3,7 @@ import { useAppSelector } from "@/store/utils/types";
 import cl from "classnames";
 import { useEffect } from "react";
 import InvButton, { InvBtnType } from "@/webApp/components/InvButton";
-import InvHeader from "@/webApp/components/InvHeader";
+import InvHeader from "@/webApp/components/web-header";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import arrow from "/icons/primaryArrow.svg";
 import { useNavigate, useParams } from "react-router-dom";

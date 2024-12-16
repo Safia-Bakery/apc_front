@@ -195,4 +195,10 @@ export enum MainPermissions {
 
   get_coin_request = 160,
   edit_coin_request = 161,
+
+  get_hr_requests = 162,
+  edit_hr_requests = 163,
+  get_hr_calendar = 164,
+  get_hr_position = 165,
+  edit_hr_position = 166,
 }

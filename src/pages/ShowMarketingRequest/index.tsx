@@ -200,7 +200,7 @@ const ShowMarketingRequest = () => {
                   <tr>
                     <th>{t("group_problem")}</th>
                     <td>
-                      {!order?.category?.name}{" "}
+                      {order?.category?.name}{" "}
                       {order?.is_redirected && (
                         <span className="font-bold"> ({t("has_changed")})</span>
                       )}

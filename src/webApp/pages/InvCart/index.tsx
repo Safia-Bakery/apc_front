@@ -6,7 +6,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import { useEffect } from "react";
 import InvButton, { InvBtnType } from "@/webApp/components/InvButton";
-import InvHeader from "@/webApp/components/InvHeader";
+import InvHeader from "@/webApp/components/web-header";
 import { useLocation, useNavigate } from "react-router-dom";
 import ToolCard from "@/webApp/components/ToolCard";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";

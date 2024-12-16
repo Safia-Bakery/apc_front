@@ -139,6 +139,8 @@ const RequestsIT = () => {
     data: requests,
     isLoading: orderLoading,
     isFetching: orderFetching,
+    refetch,
+    isRefetching,
   } = getITRequests({
     page: currentPage,
     ...(!!id && { id }),
@@ -185,6 +187,12 @@ const RequestsIT = () => {
       <Header title={"it_requests"}>
         <div className="flex flex-col-reverse md:flex-row gap-2 md:gap-0">
           <DownloadExcell />
+          <button
+            onClick={() => refetch()}
+            className="btn btn-primary mr-0 md:mr-2"
+          >
+            {t("refresh")}
+          </button>
           <button onClick={() => navigate("add")} className="btn btn-success">
             {t("add")}
           </button>
@@ -197,7 +205,7 @@ const RequestsIT = () => {
           data={requests?.items}
           totalItems={requests?.total}
           columns={columns}
-          loading={orderLoading || orderFetching}
+          loading={orderLoading || orderFetching || isRefetching}
           rowClassName={(item) =>
             !service_filter ? requestRows[item?.status] : handleServiceRow(item)
           }

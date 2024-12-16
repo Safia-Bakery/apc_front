@@ -1,0 +1,12 @@
+.add_event_btn {
+  opacity: 0 !important;
+  transition: 400ms all;
+  margin-top: 5px;
+}
+
+.ant-picker-cell:hover,
+.week-row:hover {
+  .add_event_btn {
+    opacity: 1 !important;
+  }
+}

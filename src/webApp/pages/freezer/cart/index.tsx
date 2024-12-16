@@ -1,14 +1,14 @@
 import { cartSelector, clearCart } from "@/store/reducers/webInventory";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import InvButton, { InvBtnType } from "@/webApp/components/InvButton";
-import InvHeader from "@/webApp/components/InvHeader";
+import InvHeader from "@/webApp/components/web-header";
 import { useNavigate } from "react-router-dom";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 
 import errorToast from "@/utils/errorToast";
 import Loading from "@/components/Loader";
 import { freezerRequestMutation } from "@/hooks/freezer";
-import FreezerClientItem from "@/webApp/components/FreezerClientItem";
+import FreezerClientItem from "@/webApp/pages/freezer/freezer-client-item";
 
 const FreezerCart = () => {
   const navigate = useNavigate();

@@ -11,37 +11,30 @@ import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
 import {
-  factoryDivisionMutation,
-  getApcFactoryDivision,
-  getApcFactoryDivisions,
-  getApcFactoryManagers,
-} from "@/hooks/factory";
-import MainSelect from "@/components/BaseInputs/MainSelect";
+  editAddPosition,
+  getPosition,
+  getPositions,
+} from "@/hooks/hr-registration";
 
-const EditAddFabricDivision = () => {
+const EditAddHrPosition = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
 
-  const { mutate } = factoryDivisionMutation();
+  const { mutate, isPending } = editAddPosition();
 
   const {
-    data: division,
+    data: position,
     refetch,
-    isLoading: divisionLoading,
-  } = getApcFactoryDivision({
-    id: id!,
+    isLoading: positionLoading,
+  } = getPosition({
+    id: Number(id),
     enabled: !!id,
   });
 
-  const { data: managers, isLoading: managersLoading } = getApcFactoryManagers({
-    status: 1,
-  });
-
-  const { refetch: divisionsRefetch } = getApcFactoryDivisions({
+  const { refetch: positionRefetch } = getPositions({
     enabled: false,
-    page: 1,
   });
 
   const {
@@ -53,18 +46,17 @@ const EditAddFabricDivision = () => {
   } = useForm();
 
   const onSubmit = () => {
-    const { name, manager_id, status } = getValues();
+    const { name, status } = getValues();
 
     mutate(
       {
         status: Number(status),
-        manager_id,
         name,
-        ...(id && { id }),
+        ...(id && { id: Number(id) }),
       },
       {
         onSuccess: () => {
-          divisionsRefetch();
+          positionRefetch();
           goBack();
           successToast(!!id ? "successfully updated" : "successfully created");
           if (!!id) {
@@ -77,16 +69,15 @@ const EditAddFabricDivision = () => {
   };
 
   useEffect(() => {
-    if (id && division && !!managers?.items?.length) {
+    if (id && position) {
       reset({
-        name: division?.name,
-        manager_id: division?.manager_id,
-        status: !!division?.status,
+        name: position?.name,
+        status: !!position?.status,
       });
     }
-  }, [division, id, managers]);
+  }, [position, id]);
 
-  if (managersLoading || (!!id && divisionLoading)) return <Loading />;
+  if ((!!id && positionLoading) || isPending) return <Loading />;
 
   return (
     <Card>
@@ -111,15 +102,6 @@ const EditAddFabricDivision = () => {
           </BaseInputs>
         </div>
 
-        <BaseInputs label="master" error={errors.manager_id}>
-          <MainSelect
-            register={register("manager_id", {
-              required: t("required_field"),
-            })}
-            values={managers?.items}
-          />
-        </BaseInputs>
-
         <MainCheckBox label={"active"} register={register("status")} />
 
         <button type="submit" className="btn btn-success">
@@ -130,4 +112,4 @@ const EditAddFabricDivision = () => {
   );
 };
 
-export default EditAddFabricDivision;
+export default EditAddHrPosition;

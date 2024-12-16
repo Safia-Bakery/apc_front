@@ -13,15 +13,17 @@ import { useEffect, useState } from "react";
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  onChange?: ({ name, id }: { name: string; id: string }) => void;
 };
 
-const BranchModal = ({ isOpen, onClose }: Props) => {
+const BranchModal = ({ isOpen, onClose, onChange }: Props) => {
   const dispatch = useAppDispatch();
   const selectedBranch = useAppSelector(branchSelector);
   const [branchPage, $branchPage] = useState(1);
   const [branches, $branches] = useState<BranchType[]>([]);
   const [branchSearch, $branchSearch] = useDebounce("");
   const dept = useAppSelector(deptSelector);
+
   const { data, isLoading: branchLoading } = useBranches({
     page: branchPage,
     warehouse: dept === Departments.inventory_factory,
@@ -64,7 +66,11 @@ const BranchModal = ({ isOpen, onClose }: Props) => {
             <li
               key={idx + branch.id}
               onClick={() => {
-                dispatch(selectBranch({ name: branch.name, id: branch.id }));
+                onChange
+                  ? onChange({ name: branch.name, id: branch.id })
+                  : dispatch(
+                      selectBranch({ name: branch.name, id: branch.id })
+                    );
                 onClose();
               }}
               className="flex justify-between items-center border-t border-[#E4E4E4] py-3"

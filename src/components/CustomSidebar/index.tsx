@@ -26,9 +26,7 @@ export const Playground: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [isPending, startTransition] = useTransition();
-
   const [loading, $loading] = useState(false);
-
   const [menuItem, $menuItem] = useState<MainPermissions>();
 
   const toggleSubItems = (item: MainPermissions) => {

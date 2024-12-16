@@ -20,11 +20,19 @@ import {
 } from "./utils/routeObjs";
 import { MainPermissions } from "@/utils/permissions";
 
+const HrSignRegistery = lazy(
+  () => import("./webApp/pages/hr-registration/registery")
+);
+const HrChooseDirection = lazy(
+  () => import("./webApp/pages/hr-registration/choose-direction")
+);
+const HrOrders = lazy(() => import("./webApp/pages/hr-registration/orders"));
 const FreezerCart = lazy(() => import("./webApp/pages/freezer/cart"));
 // const SetTools = lazy(() => import("./webApp/pages/freezer/set-tools"));
 const ShowFreezerOrder = lazy(
   () => import("./webApp/pages/freezer/show-order")
 );
+const HrRegisterty = lazy(() => import("./webApp/layouts/hr-registery"));
 const MainFreezerRoute = lazy(() => import("./webApp/layouts/freezer"));
 const FreezerProducts = lazy(() => import("./webApp/pages/freezer/products"));
 const ControlPanel = lazy(() => import("@/pages/ControlPanel"));
@@ -518,6 +526,48 @@ const App = () => {
             element={
               <Suspend>
                 <InvSuccess freezer />
+              </Suspend>
+            }
+            path={"success/:id"}
+          />
+        </Route>
+
+        <Route
+          element={
+            <Suspend>
+              <HrRegisterty />
+            </Suspend>
+          }
+          path={"hr-registery"}
+        >
+          <Route
+            element={
+              <Suspend>
+                <HrOrders />
+              </Suspend>
+            }
+            path={"orders"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <HrChooseDirection />
+              </Suspend>
+            }
+            path={"choose-direction"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <HrSignRegistery />
+              </Suspend>
+            }
+            path={"registery"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <InvSuccess freezer title="" />
               </Suspend>
             }
             path={"success/:id"}

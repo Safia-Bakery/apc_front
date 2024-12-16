@@ -4,7 +4,7 @@ import cl from "classnames";
 import { useState } from "react";
 import BranchModal from "./BranchModal";
 import InvButton, { InvBtnType } from "@/webApp/components/InvButton";
-import InvHeader from "@/webApp/components/InvHeader";
+import InvHeader from "@/webApp/components/web-header";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import arrow from "/icons/primaryArrow.svg";
 import warnIcon from "/icons/warn.svg";

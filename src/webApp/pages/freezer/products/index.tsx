@@ -6,15 +6,15 @@ import InvButton, { InvBtnType } from "@/webApp/components/InvButton";
 import { cartSelector } from "@/store/reducers/webInventory";
 import { useAppSelector } from "@/store/utils/types";
 import { useNavigate } from "react-router-dom";
-import InvHeader from "@/webApp/components/InvHeader";
+import InvHeader from "@/webApp/components/web-header";
 import { Empty, Typography } from "antd";
 import { FolderOutlined } from "@ant-design/icons";
 import AntdTable from "@/components/AntdTable";
 import { useMemo, useState } from "react";
 import { ColumnsType } from "antd/es/table";
-import FreezerClientItem from "@/webApp/components/FreezerClientItem";
+import FreezerClientItem from "@/webApp/pages/freezer/freezer-client-item";
 import { screenSize } from "@/utils/helpers";
-import FreezerItem from "@/webApp/components/FreezerItem";
+import FreezerItem from "@/webApp/pages/freezer/freezer-item";
 import { TelegramApp } from "@/utils/tgHelpers";
 import { getFreezerProducts } from "@/hooks/freezer";
 

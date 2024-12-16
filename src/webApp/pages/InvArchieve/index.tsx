@@ -1,4 +1,4 @@
-import InvHeader from "@/webApp/components/InvHeader";
+import InvHeader from "@/webApp/components/web-header";
 import calendar from "/icons/calendar.svg";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import InvButton, { BtnSize, InvBtnType } from "@/webApp/components/InvButton";

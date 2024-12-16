@@ -1,4 +1,4 @@
-import InvHeader from "@/webApp/components/InvHeader";
+import InvHeader from "@/webApp/components/web-header";
 
 const OrderReport = () => {
   return (

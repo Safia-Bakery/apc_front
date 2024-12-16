@@ -6,7 +6,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import { CheckOutlined, SettingOutlined } from "@ant-design/icons";
 import { CSSProperties, useState } from "react";
-import FreezerItemModal from "./modal";
+import FreezerItemModal from "./freezer-item-modal";
 
 type Props = {
   style?: CSSProperties;

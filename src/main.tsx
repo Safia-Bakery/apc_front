@@ -11,6 +11,8 @@ import { queryClient } from "./utils/helpers.ts";
 import { persistor, store } from "./store/rootConfig.ts";
 import Loading from "./components/Loader/index.tsx";
 import "./index.scss";
+import { ConfigProvider } from "antd";
+import ruRU from "antd/es/locale/ru_RU";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -23,18 +25,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const root = createRoot(container);
     root.render(
       <Provider store={store}>
-        <PersistGate persistor={persistor} loading={<Loading />}>
-          <QueryClientProvider client={queryClient}>
-            <BrowserRouter
-              future={{
-                v7_relativeSplatPath: true,
-                v7_startTransition: true,
-              }}
-            >
-              <App />
-            </BrowserRouter>
-          </QueryClientProvider>
-        </PersistGate>
+        <ConfigProvider locale={ruRU}>
+          <PersistGate persistor={persistor} loading={<Loading />}>
+            <QueryClientProvider client={queryClient}>
+              <BrowserRouter
+                future={{
+                  v7_relativeSplatPath: true,
+                  v7_startTransition: true,
+                }}
+              >
+                <App />
+              </BrowserRouter>
+            </QueryClientProvider>
+          </PersistGate>
+        </ConfigProvider>
       </Provider>
     );
   }

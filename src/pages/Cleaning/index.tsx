@@ -5,11 +5,9 @@ import {
   CalendarProps,
   Modal,
   Button,
-  ConfigProvider,
   AlertProps,
 } from "antd";
 import dayjs, { Dayjs } from "dayjs";
-import ruRU from "antd/es/locale/ru_RU";
 import weekday from "dayjs/plugin/weekday";
 import localeData from "dayjs/plugin/localeData";
 import Container from "@/components/Container";
@@ -204,62 +202,58 @@ const Cleaning = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <ConfigProvider locale={ruRU}>
-      <Container>
-        <Alert
-          message={
-            t("selected_date") + ` ${modalData?.date?.format("YYYY-MM-DD")}`
-          }
-        />
-        <Calendar
-          className="p-4"
-          value={value}
-          cellRender={cellRender}
-          mode="month"
-          onSelect={onSelect}
-          onPanelChange={onPanelChange}
-        />
-        <Modal
-          title={t("cleanings_on") + ` ${modalData.date.format("YYYY-MM-DD")}`}
-          open={isModalVisible}
-          onOk={handleModalOk}
-          onCancel={handleModalCancel}
-          footer={[
-            <Button
-              key="add"
-              disabled={
-                showInput || dayjs(modalData.date).isBefore(today, "day")
-              }
-              type="dashed"
-              className="bg-primary text-white"
-              onClick={handleAddClick}
-            >
-              {t("add")}
-            </Button>,
-            <Button
-              key="ok"
-              type="dashed"
-              className="bg-invBtn"
-              onClick={handleModalOk}
-            >
-              OK
-            </Button>,
-          ]}
-        >
-          {renderModal}
-          {showInput && (
-            <CalendarInput
-              closeModal={() => {
-                toggleModal();
-                setShowInput(false);
-              }}
-              selectedDate={dayjs(modalData.date).format(yearMonthDate)}
-              selectedMonth={selectedMonth}
-            />
-          )}
-        </Modal>
-      </Container>
-    </ConfigProvider>
+    <Container>
+      <Alert
+        message={
+          t("selected_date") + ` ${modalData?.date?.format("YYYY-MM-DD")}`
+        }
+      />
+      <Calendar
+        className="p-4"
+        value={value}
+        cellRender={cellRender}
+        mode="month"
+        onSelect={onSelect}
+        onPanelChange={onPanelChange}
+      />
+      <Modal
+        title={t("cleanings_on") + ` ${modalData.date.format("YYYY-MM-DD")}`}
+        open={isModalVisible}
+        onOk={handleModalOk}
+        onCancel={handleModalCancel}
+        footer={[
+          <Button
+            key="add"
+            disabled={showInput || dayjs(modalData.date).isBefore(today, "day")}
+            type="dashed"
+            className="bg-primary text-white"
+            onClick={handleAddClick}
+          >
+            {t("add")}
+          </Button>,
+          <Button
+            key="ok"
+            type="dashed"
+            className="bg-invBtn"
+            onClick={handleModalOk}
+          >
+            OK
+          </Button>,
+        ]}
+      >
+        {renderModal}
+        {showInput && (
+          <CalendarInput
+            closeModal={() => {
+              toggleModal();
+              setShowInput(false);
+            }}
+            selectedDate={dayjs(modalData.date).format(yearMonthDate)}
+            selectedMonth={selectedMonth}
+          />
+        )}
+      </Modal>
+    </Container>
   );
 };
 

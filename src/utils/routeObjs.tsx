@@ -14,6 +14,21 @@ const FactoryRequests = lazy(() => import("@/pages/factory/requests"));
 const EditAddInvFabricCategory = lazy(
   () => import("@/pages/factory/edit-add-category")
 );
+
+const CalendarView = lazy(
+  () => import("@/pages/hr-registration/calendar-view")
+);
+const HrPositions = lazy(() => import("@/pages/hr-registration/positions"));
+const EditAddHrPosition = lazy(
+  () => import("@/pages/hr-registration/positions/edit-add-position")
+);
+const HrRequests = lazy(() => import("@/pages/hr-registration/requests"));
+const AddHrRequest = lazy(
+  () => import("@/pages/hr-registration/requests/add-request")
+);
+const ShowHrRequest = lazy(
+  () => import("@/pages/hr-registration/requests/show-request")
+);
 const ShowFactoryRequest = lazy(() => import("@/pages/factory/show-request"));
 const FactoryManagers = lazy(() => import("@/pages/factory/managers"));
 const FactoryDivisions = lazy(() => import("@/pages/factory/divisions"));
@@ -450,6 +465,32 @@ export const sidebarRoutes: SidebarType[] = [
   },
 
   {
+    name: "hr_registration",
+    icon: "/icons/clients.svg",
+    screen: MainPermissions.get_hr_requests,
+    subroutes: [
+      {
+        name: "requests",
+        url: "/hr-requests",
+        icon: "/icons/subOrder.svg",
+        screen: MainPermissions.get_hr_requests,
+      },
+      {
+        name: "calendar",
+        url: "/hr-calendar",
+        icon: "/icons/clients.svg",
+        screen: MainPermissions.get_hr_calendar,
+      },
+      {
+        name: "positions",
+        url: "/hr-positions",
+        icon: "/icons/clients.svg",
+        screen: MainPermissions.get_hr_position,
+      },
+    ],
+  },
+
+  {
     name: "car_requests",
     icon: "/icons/logystics.svg",
     screen: MainPermissions.get_log_requests,
@@ -562,6 +603,41 @@ export const sidebarRoutes: SidebarType[] = [
 ];
 
 export const routes = [
+  {
+    element: <CalendarView />,
+    path: "/hr-calendar",
+    screen: MainPermissions.get_hr_calendar,
+  },
+  {
+    element: <HrPositions />,
+    path: "/hr-positions",
+    screen: MainPermissions.get_hr_position,
+  },
+  {
+    element: <EditAddHrPosition />,
+    path: "/hr-positions/add",
+    screen: MainPermissions.edit_hr_position,
+  },
+  {
+    element: <EditAddHrPosition />,
+    path: "/hr-positions/:id",
+    screen: MainPermissions.edit_hr_position,
+  },
+  {
+    element: <HrRequests />,
+    path: "/hr-requests",
+    screen: MainPermissions.get_hr_requests,
+  },
+  {
+    element: <AddHrRequest />,
+    path: "/hr-requests/add",
+    screen: MainPermissions.edit_hr_requests,
+  },
+  {
+    element: <ShowHrRequest />,
+    path: "/hr-requests/:id",
+    screen: MainPermissions.edit_hr_requests,
+  },
   {
     element: <FormRequests />,
     path: "/requests-form",
