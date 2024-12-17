@@ -331,7 +331,10 @@ const CustomCalendar: React.FC = () => {
               </span>
             }
           >
-            <Button icon={<InfoCircleOutlined />}></Button>
+            <Button
+              className="w-4 h-4 !p-0"
+              icon={<InfoCircleOutlined />}
+            ></Button>
           </Tooltip>
           <Select
             options={workerFunction}
