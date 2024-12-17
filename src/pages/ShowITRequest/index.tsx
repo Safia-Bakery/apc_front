@@ -101,7 +101,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
   const renderBtns = useMemo(() => {
     if (!!order?.status.toString() && !unchangable[order.status])
       return (
-        <div className="flex justify-between mb10 gap-2">
+        <div className="flex justify-between mb-2 gap-2">
           {!unchangable[order!?.status] &&
           order.status !== RequestStatus.closed_denied ? (
             <button

@@ -20,7 +20,11 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 import MainInput from "@/components/BaseInputs/MainInput";
 import warnToast from "@/utils/warnToast";
 import errorToast from "@/utils/errorToast";
-import { editAddAppointment, getAppointment } from "@/hooks/hr-registration";
+import {
+  editAddAppointment,
+  getAppointment,
+  getAppointments,
+} from "@/hooks/hr-registration";
 
 const ShowHrRequest = () => {
   const { t } = useTranslation();
@@ -38,6 +42,10 @@ const ShowHrRequest = () => {
   const navigate = useNavigate();
   const { watch, register, handleSubmit, getValues } = useForm();
   const handleBack = () => navigate("/hr-requests");
+  const { refetch, isRefetching } = getAppointments({
+    enabled: false,
+    page: 1,
+  });
 
   const closeModal = () => $modal(undefined);
 
@@ -55,6 +63,7 @@ const ShowHrRequest = () => {
       {
         onSuccess: () => {
           orderRefetch();
+          refetch();
           successToast("assigned");
         },
         onError: (e) => errorToast(e.message),
@@ -65,7 +74,7 @@ const ShowHrRequest = () => {
   const renderBtns = useMemo(() => {
     if (isNew)
       return (
-        <div className="float-end mb10">
+        <div className="float-end mb-2">
           <button
             onClick={handleModal(ModalTypes.cancelRequest)}
             className="btn btn-danger mr-2"
@@ -83,7 +92,7 @@ const ShowHrRequest = () => {
       );
     else
       return (
-        <div className="float-end mb10">
+        <div className="float-end mb-2">
           {order?.status! < RequestStatus.finished && (
             <button
               onClick={() => handleRequest({ status: RequestStatus.finished })}
@@ -144,7 +153,7 @@ const ShowHrRequest = () => {
       );
   }, [order?.status, modal, watch("fixedReason")]);
 
-  if (attaching || isLoading) return <Loading />;
+  if (attaching || isLoading || isRefetching) return <Loading />;
 
   return (
     <>

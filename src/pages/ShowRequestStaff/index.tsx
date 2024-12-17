@@ -53,7 +53,7 @@ const ShowRequestStaff = () => {
   const renderBtns = useMemo(() => {
     if (isNew)
       return (
-        <div className="float-end mb10">
+        <div className="float-end mb-2">
           <button
             onClick={handleModal(ModalTypes.cancelRequest)}
             className="btn btn-danger   mr-2"
@@ -71,7 +71,7 @@ const ShowRequestStaff = () => {
       );
     if (order?.status && order?.status < RequestStatus.finished)
       return (
-        <div className="float-end mb10">
+        <div className="float-end mb-2">
           <button
             onClick={handleBrigada({ status: RequestStatus.finished })}
             className="btn btn-success  "

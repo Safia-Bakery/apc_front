@@ -5,50 +5,37 @@ import BaseInputs from "@/components/BaseInputs";
 import MainSelect from "@/components/BaseInputs/MainSelect";
 import BaseInput from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
-import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
 import BranchSelect from "@/components/BranchSelect";
 import useQueryString from "custom/useQueryString";
-import { Departments, Sphere } from "@/utils/types";
-import dayjs from "dayjs";
-import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
-import useCategories from "@/hooks/useCategories";
+import { useNavigateParams } from "custom/useCustomNavigate";
 import { useForm } from "react-hook-form";
 import useUpdateEffect from "custom/useUpdateEffect";
-import useBrigadas from "@/hooks/useBrigadas";
+import { getPositions } from "@/hooks/hr-registration";
 
 const HrRequestFilter: FC = () => {
   const navigate = useNavigateParams();
-  const deleteParam = useRemoveParams();
 
-  const { data: categories, refetch: catRefetch } = useCategories({
-    department: Departments.APC,
+  const { data: positions, refetch: positionsRefetch } = getPositions({
     enabled: false,
-    sphere_status: Sphere.fabric,
-  });
-
-  const { data: brigades, refetch: masterRefetch } = useBrigadas({
-    enabled: false,
-    department: Departments.APC,
-    sphere_status: Sphere.fabric,
+    status: 1,
   });
 
   const { register, reset } = useForm();
   const [id, $id] = useDebounce<string>("");
   const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
-  const category_id = Number(useQueryString("category_id"));
+  const [employee_name, $employee_name] = useDebounce<string>("");
   const status = useQueryString("status");
-  const created_at = useQueryString("created_at");
-  const responsible = Number(useQueryString("responsible"));
+  const position_id = Number(useQueryString("position_id"));
   const userQ = useQueryString("user");
   const idQ = useQueryString("id");
+  const employee = useQueryString("employee_name");
 
-  const startRange = (start: Date | null) => {
-    if (start === undefined) deleteParam(["created_at"]);
-    if (!!start) navigate({ created_at: start.toISOString() });
-  };
   const handleName = (e: ChangeEvent<HTMLInputElement>) =>
     $user(e.target.value);
+
+  const handleEmployee = (e: ChangeEvent<HTMLInputElement>) =>
+    $employee_name(e.target.value);
 
   const handleID = (e: ChangeEvent<HTMLInputElement>) => $id(e.target.value);
 
@@ -57,14 +44,19 @@ const HrRequestFilter: FC = () => {
   }, [user]);
 
   useUpdateEffect(() => {
+    navigate({ employee_name });
+  }, [employee_name]);
+
+  useUpdateEffect(() => {
     navigate({ id });
   }, [id]);
 
   useEffect(() => {
-    if (!!userQ || !!idQ) {
+    if (!!userQ || !!idQ || !!employee) {
       reset({
         userName: userQ,
         id: Number(idQ),
+        employee,
       });
     }
   }, []);
@@ -84,6 +76,16 @@ const HrRequestFilter: FC = () => {
       </td>
       <td className="!p-0">
         <BaseInput className="!m-1">
+          <MainSelect
+            values={positions}
+            onFocus={() => positionsRefetch()}
+            value={position_id?.toString()}
+            onChange={(e) => navigate({ position_id: e.target.value })}
+          />
+        </BaseInput>
+      </td>
+      <td className="!p-0">
+        <BaseInput className="!m-1">
           <MainInput
             register={register("userName")}
             className="!mb-0"
@@ -91,30 +93,19 @@ const HrRequestFilter: FC = () => {
           />
         </BaseInput>
       </td>
-      <td className="!p-0">
+      <td width={150} className="!p-0 relative">
         <BaseInput className="!m-1">
-          <MainSelect
-            values={brigades?.items.filter((item) => !!item.status)}
-            onFocus={() => masterRefetch()}
-            value={responsible?.toString()}
-            onChange={(e) => navigate({ responsible: e.target.value })}
+          <MainInput
+            register={register("employee")}
+            className="!mb-0"
+            onChange={handleEmployee}
           />
         </BaseInput>
       </td>
-      <td width={150} className="!p-0 relative">
-        <div onClick={() => $enabled(true)} className={"m-1"}>
-          <BranchSelect enabled={enabled} warehouse />
-        </div>
-      </td>
       <td className="!p-0">
-        <BaseInputs className="!m-1">
-          <MainSelect
-            values={categories?.items}
-            onFocus={() => catRefetch()}
-            value={category_id?.toString()}
-            onChange={(e) => navigate({ category_id: e.target.value })}
-          />
-        </BaseInputs>
+        <div onClick={() => $enabled(true)} className={"m-1"}>
+          <BranchSelect enabled={enabled} />
+        </div>
       </td>
 
       <td className="!p-0">
@@ -134,7 +125,7 @@ const HrRequestFilter: FC = () => {
       </td>
 
       <td className="!p-0">
-        <MainDatePicker
+        {/* <MainDatePicker
           selected={
             !!created_at && created_at !== "undefined"
               ? dayjs(created_at).toDate()
@@ -143,7 +134,7 @@ const HrRequestFilter: FC = () => {
           onChange={startRange}
           dateFormat="d.MM.yyyy"
           wrapperClassName={"m-1"}
-        />
+        /> */}
       </td>
     </>
   );

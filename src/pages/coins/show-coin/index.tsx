@@ -104,7 +104,7 @@ const ShowCoin = () => {
   const renderBtns = useMemo(() => {
     if (isNew)
       return (
-        <div className="float-end mb10">
+        <div className="float-end mb-2">
           <button
             onClick={handleModal(ModalTypes.cancelRequest)}
             className="btn btn-danger mr-2"

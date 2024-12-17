@@ -478,7 +478,7 @@ export const sidebarRoutes: SidebarType[] = [
       {
         name: "calendar",
         url: "/hr-calendar",
-        icon: "/icons/clients.svg",
+        icon: "/icons/calendar.svg",
         screen: MainPermissions.get_hr_calendar,
       },
       {
@@ -1518,42 +1518,6 @@ export const routes = [
     path: "/faq/:id",
     screen: MainPermissions.edit_faq,
   },
-  // {
-  //   element: <HRQuestions />,
-  //   path: "/faq",
-  //   screen: MainPermissions.get_faq,
-  // },
-  // {
-  //   element: <HRRequests />,
-  //   path: "/hr-offers",
-  //   screen: MainPermissions.get_faq_requests,
-  // },
-  // {
-  //   element: <EditHRRequests />,
-  //   path: "/hr-offers/:id",
-  //   screen: MainPermissions.edit_faq_requests,
-  // },
-  // {
-  //   element: <HRRequests />,
-  //   path: "/hr-asked-questions",
-  //   screen: MainPermissions.get_faq_requests,
-  // },
-  // {
-  //   element: <EditHRRequests />,
-  //   path: "/hr-asked-questions/:id",
-  //   screen: MainPermissions.edit_faq_requests,
-  // },
-  // {
-  //   element: <HRRequests />,
-  //   path: "/hr-objections",
-  //   screen: MainPermissions.get_faq_requests,
-  // },
-  // {
-  //   element: <EditHRRequests />,
-  //   path: "/hr-objections/:id",
-  //   screen: MainPermissions.edit_faq_requests,
-  // },
-  // ===========================================================
 
   {
     element: <RequestsCCTV />,

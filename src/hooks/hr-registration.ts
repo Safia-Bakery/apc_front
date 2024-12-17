@@ -2,9 +2,12 @@ import baseApi from "@/api/base_api";
 import { EPresetTimes } from "@/utils/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-export const getAppointments = ({ enabled, ...params }: BaseParams) => {
+export const getAppointments = ({
+  enabled,
+  ...params
+}: HrAppointmentParams) => {
   return useQuery({
-    queryKey: ["hr_appointments", params],
+    queryKey: ["hr_appointments_requests", params],
     queryFn: ({ signal }) =>
       baseApi
         .get("/api/v2/appointments", {
@@ -16,7 +19,7 @@ export const getAppointments = ({ enabled, ...params }: BaseParams) => {
             (response as BasePaginateRes<HrAppointmentRes>) || null
         ),
     enabled,
-    staleTime: EPresetTimes.MINUTE * 4,
+    // staleTime: EPresetTimes.MINUTE * 4,
   });
 };
 export const getCalendarAppointments = ({ enabled }: { enabled?: boolean }) => {
@@ -103,13 +106,20 @@ export const getHrTimeSlots = ({
   });
 };
 
-export const getPositions = ({ enabled }: { enabled?: boolean }) => {
+export const getPositions = ({
+  enabled,
+  status,
+}: {
+  enabled?: boolean;
+  status?: number;
+}) => {
   return useQuery({
-    queryKey: ["get_positions"],
+    queryKey: ["get_positions", status],
     queryFn: ({ signal }) =>
       baseApi
         .get("/api/v2/positions", {
           signal,
+          params: { status },
         })
         .then(({ data: response }) => (response as HRPositions[]) || null),
     enabled,

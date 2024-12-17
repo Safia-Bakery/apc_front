@@ -1,3 +1,4 @@
+import { Table } from "antd";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
@@ -10,30 +11,26 @@ import { handleIdx, isMobile, requestRows } from "@/utils/helpers";
 
 import useQueryString from "custom/useQueryString";
 import AntdTable from "@/components/AntdTable";
-import { dateTimeFormat, yearMonthDate } from "@/utils/keys";
-import Table from "antd/es/table/Table";
+import { dateTimeFormat } from "@/utils/keys";
 import { ColumnsType } from "antd/es/table";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
-
-import HrRequestFilter from "./filter";
 import { getAppointments } from "@/hooks/hr-registration";
+import HrRequestFilter from "./filter";
+import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
 
 const HrRequests = () => {
   const { t } = useTranslation();
   const currentPage = Number(useQueryString("page")) || 1;
 
-  const user_id = Number(useQueryString("user_id"));
-  const id = Number(useQueryString("id"));
+  const id = useQueryString("id");
   const status = useQueryString("status");
-  const responsible = Number(useQueryString("responsible"));
-  const category_id = Number(useQueryString("category_id"));
-  const created_at = useQueryString("created_at");
+  const employee_name = useQueryString("employee_name");
+  const position_id = useQueryString("position_id");
   const user = useQueryString("user");
-  const branchJson = useQueryString("branch");
+  const branchJson = useUpdateQueryStr("branch");
   const branch = branchJson && JSON.parse(branchJson);
   const permission = useAppSelector(permissionSelector);
-
   const columns = useMemo<ColumnsType<HrAppointmentRes>>(
     () => [
       {
@@ -100,17 +97,14 @@ const HrRequests = () => {
     isRefetching,
     refetch,
   } = getAppointments({
+    enabled: true,
     page: currentPage,
-    ...(!!id && { id }),
-    ...(!!branch?.id && { fillial_id: branch?.id }),
-    ...(!!user_id && { user_id }),
-    ...(!!user && { user }),
-    ...(!!status && { status }),
-    ...(!!responsible && { responsible }),
-    ...(!!category_id && { category_id }),
-    ...(!!created_at && {
-      created_at: dayjs(created_at).format(yearMonthDate),
-    }),
+    ...(!!id && { request_id: Number(id) }),
+    ...(!!branch?.id && { branch_id: branch?.id }),
+    ...(!!user && { created_user: user }),
+    ...(!!status && { status: Number(status) }),
+    ...(!!employee_name && { employee_name }),
+    ...(!!position_id && { position_id: Number(position_id) }),
   });
 
   const renderFilter = useMemo(() => {

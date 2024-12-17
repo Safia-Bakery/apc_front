@@ -83,7 +83,7 @@ const InvCart = () => {
           <InvButton
             btnType={InvBtnType.primary}
             className="w-full"
-            disabled={!Object.values(cart).length}
+            disabled={!Object.values(cart).length && mutating}
             onClick={handleSubmit}
           >
             Подтвердить заказ

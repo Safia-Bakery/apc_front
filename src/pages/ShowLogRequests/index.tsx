@@ -79,7 +79,7 @@ const ShowLogRequests = () => {
   const renderBtns = useMemo(() => {
     if (isNew)
       return (
-        <div className="float-end mb10">
+        <div className="float-end mb-2">
           <button
             onClick={handleModal(ModalTypes.cancelRequest)}
             className="btn btn-danger   mr-2"
@@ -97,7 +97,7 @@ const ShowLogRequests = () => {
       );
     else
       return (
-        <div className="float-end mb10">
+        <div className="float-end mb-2">
           {order?.status! < 2 && (
             <button
               onClick={handleModal(ModalTypes.cars)}

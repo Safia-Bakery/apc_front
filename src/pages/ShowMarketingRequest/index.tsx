@@ -85,7 +85,7 @@ const ShowMarketingRequest = () => {
   const renderBtns = useMemo(() => {
     if (permissions?.[edit] && isNew)
       return (
-        <div className="float-end mb10">
+        <div className="float-end mb-2">
           <button
             onClick={handleModal(ModalTypes.reassign)}
             className="btn btn-primary  "
@@ -110,7 +110,7 @@ const ShowMarketingRequest = () => {
 
     if (permissions?.[edit])
       return (
-        <div className="float-end mb10">
+        <div className="float-end mb-2">
           {order?.status! < RequestStatus.sent_to_fix && (
             <button
               onClick={handleBrigada({

@@ -53,7 +53,7 @@ const EditHRRequests = () => {
   const renderBtns = useMemo(() => {
     if (!faq?.status)
       return (
-        <div className="float-end mb10">
+        <div className="float-end mb-2">
           <button
             onClick={() => onSubmit(RequestStatus.closed_denied)}
             className="btn btn-danger mr-2"

@@ -260,7 +260,6 @@ const CustomCalendar: React.FC = () => {
       <div style={{ marginTop: 20 }}>
         {viewMode === ViewMode.month && (
           <Calendar
-            // className="p-4"
             value={currentDate}
             onSelect={setCurrentDate}
             cellRender={cellRender}

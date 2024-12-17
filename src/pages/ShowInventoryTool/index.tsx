@@ -72,7 +72,7 @@ const ShowInventoryTool = () => {
   const renderBtns = useMemo(() => {
     if (!!order?.status?.toString() && order?.status < RequestStatus.finished)
       return (
-        <div className="float-end mb10">
+        <div className="float-end mb-2">
           <button
             onClick={() => onSubmit(RequestStatus.finished)}
             className="btn btn-success  "

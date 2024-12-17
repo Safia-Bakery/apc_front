@@ -45,11 +45,25 @@ interface HrAppointmentBody {
   branch_id?: string;
 }
 
+interface HrAppointmentParams extends BaseParams {
+  request_id?: number;
+  employee_name?: string;
+  status?: number;
+  position_id?: number;
+  branch_id?: string;
+  created_user?: string;
+}
+
 interface HRPositions {
-  id?: number;
+  id: number;
   name: string;
   department: number;
   created_at?: string;
+  status: number;
+}
+
+interface HRPositionsParams {
+  id?: number;
   status: number;
 }
 
