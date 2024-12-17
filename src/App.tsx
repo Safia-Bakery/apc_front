@@ -23,6 +23,9 @@ import { MainPermissions } from "@/utils/permissions";
 const HrSignRegistery = lazy(
   () => import("./webApp/pages/hr-registration/registery")
 );
+const HrRegisteryMain = lazy(
+  () => import("./webApp/pages/hr-registration/main")
+);
 const HrChooseDirection = lazy(
   () => import("./webApp/pages/hr-registration/choose-direction")
 );
@@ -540,6 +543,14 @@ const App = () => {
           }
           path={"hr-registery"}
         >
+          <Route
+            element={
+              <Suspend>
+                <HrRegisteryMain />
+              </Suspend>
+            }
+            path={"main"}
+          />
           <Route
             element={
               <Suspend>

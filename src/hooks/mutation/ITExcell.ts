@@ -6,7 +6,7 @@ interface Body {
   start_date: string;
   finish_date: string;
   category_id?: number;
-  status?: number[];
+  status?: number;
 }
 
 const ITExcellMutation = () => {

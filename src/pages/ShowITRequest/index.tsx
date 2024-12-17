@@ -36,7 +36,7 @@ const unchangable: BaseReturnBoolean = {
 
 const unchangableObj: BaseReturnBoolean = {
   [RequestStatus.solved]: true,
-  [RequestStatus.closed_denied]: true,
+  [RequestStatus.denied]: true,
   [RequestStatus.paused]: true,
 };
 
@@ -103,7 +103,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
       return (
         <div className="flex justify-between mb-2 gap-2">
           {!unchangable[order!?.status] &&
-          order.status !== RequestStatus.closed_denied ? (
+          order.status !== RequestStatus.denied ? (
             <button
               onClick={handleModal(ModalTypes.cancelRequest)}
               className="btn btn-danger"
@@ -401,9 +401,9 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                   <tr>
                     <th>{t("date_of_canceling")}</th>
                     <td>
-                      {order?.update_time[RequestStatus.closed_denied]
+                      {order?.update_time[RequestStatus.denied]
                         ? dayjs(
-                            order?.update_time[RequestStatus.closed_denied]
+                            order?.update_time[RequestStatus.denied]
                           ).format(dateTimeFormat)
                         : t("not_given")}
                     </td>

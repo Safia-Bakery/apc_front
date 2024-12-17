@@ -17,7 +17,6 @@ import errorToast from "@/utils/errorToast";
 import useQueryString from "custom/useQueryString";
 import { useRemoveParams } from "custom/useCustomNavigate";
 import useBrigadas from "@/hooks/useBrigadas";
-import useCategories from "@/hooks/useCategories";
 import Header from "@/components/Header";
 import Loading from "@/components/Loader";
 import BaseInput from "@/components/BaseInputs";
@@ -34,7 +33,6 @@ import { MainPermissions } from "@/utils/permissions";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { getItrequest, itRequestMutation } from "@/hooks/it";
-import AntCascader from "@/components/AntCascader";
 
 const ITModals = () => {
   const { t } = useTranslation();
@@ -139,7 +137,7 @@ const ITModals = () => {
           ...(!!car_id && { car_id }),
           ...(!!pause_reason && { pause_reason }),
           ...(!!item && { brigada_id: Number(item?.id) }),
-          ...(status === RequestStatus.closed_denied && {
+          ...(status === RequestStatus.denied && {
             deny_reason:
               fixedReason < 4 ? t(CancelReason[fixedReason]) : cancel_reason,
           }),
@@ -204,7 +202,7 @@ const ITModals = () => {
         <form
           onSubmit={handleSubmit(
             handleBrigada({
-              status: RequestStatus.closed_denied,
+              status: RequestStatus.denied,
             })
           )}
           className={"w-[420px]"}
@@ -311,7 +309,7 @@ const ITModals = () => {
             </BaseInput>
 
             <button
-              className="btn btn-success   w-full"
+              className="btn btn-success w-full"
               onClick={handleChange({ filial: true })}
             >
               {t("apply")}
@@ -319,34 +317,7 @@ const ITModals = () => {
           </div>
         </>
       );
-    // if (
-    //   modal === ModalTypes.changeCateg &&
-    //   permissions?.[MainPermissions.it_request_change_categ]
-    // )
-    //   return (
-    //     <>
-    //       <AntCascader />
-    //       <Header title="change">
-    //         <button onClick={closeModal} className="close">
-    //           <span>&times;</span>
-    //         </button>
-    //       </Header>
-    //       <BaseInput label="select_category">
-    //         <MainSelect
-    //           values={categories?.items}
-    //           register={register("category")}
-    //         />
-    //       </BaseInput>
-    //       <div className="min-w-96">
-    //         <button
-    //           className="btn btn-success w-full"
-    //           onClick={handleChange({ categ: true })}
-    //         >
-    //           {t("apply")}
-    //         </button>
-    //       </div>
-    //     </>
-    //   );
+
     if (modal === ModalTypes.leaveMessage)
       return (
         <>
@@ -366,10 +337,7 @@ const ITModals = () => {
             <BaseInput label="upload_photo">
               <MainInput type="file" register={register("uploaded_photo")} />
             </BaseInput>
-            <button
-              className="btn btn-success   w-full"
-              onClick={handleMessage}
-            >
+            <button className="btn btn-success w-full" onClick={handleMessage}>
               {t("apply")}
             </button>
           </div>
