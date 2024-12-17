@@ -35,6 +35,7 @@ import errorToast from "@/utils/errorToast";
 import warnToast from "@/utils/warnToast";
 import "./index.scss";
 import Loading from "@/components/Loader";
+import Card from "@/components/Card";
 
 dayjs.extend(weekday);
 
@@ -240,7 +241,7 @@ const CustomCalendar: React.FC = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <Container>
+    <Card className="p-4">
       {isRefetching && <Loading />}
       <Flex justify="space-between" align="center">
         <Radio.Group
@@ -259,6 +260,7 @@ const CustomCalendar: React.FC = () => {
       <div style={{ marginTop: 20 }}>
         {viewMode === ViewMode.month && (
           <Calendar
+            // className="p-4"
             value={currentDate}
             onSelect={setCurrentDate}
             cellRender={cellRender}
@@ -372,7 +374,7 @@ const CustomCalendar: React.FC = () => {
           </BaseInput>
         )}
       </Modal>
-    </Container>
+    </Card>
   );
 };
 
