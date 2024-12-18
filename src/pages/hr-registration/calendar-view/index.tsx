@@ -15,7 +15,6 @@ import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import "antd/dist/reset.css";
-import Container from "@/components/Container";
 import { useTranslation } from "react-i18next";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import {

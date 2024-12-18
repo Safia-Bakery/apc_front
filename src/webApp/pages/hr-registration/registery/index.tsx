@@ -1,13 +1,10 @@
-import InvHeader from "@/webApp/components/web-header";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import BranchModal from "../../SelectBranchAndCateg/BranchModal";
 import { useMemo, useState } from "react";
-import cl from "classnames";
-import arrow from "/icons/primaryArrow.svg";
-import warnIcon from "/icons/warn.svg";
+import { InfoCircleOutlined } from "@ant-design/icons";
 import BaseInput from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
-import { DatePicker, Select } from "antd";
+import { Button, DatePicker, Flex, Modal, Select, Tooltip } from "antd";
 import InvButton, { BtnSize, InvBtnType } from "@/webApp/components/InvButton";
 import {
   editAddAppointment,
@@ -23,24 +20,20 @@ import errorToast from "@/utils/errorToast";
 import { useNavigate } from "react-router-dom";
 import warnToast from "@/utils/warnToast";
 import { disabledDate, workerFunction } from "@/utils/hr-registry";
+import AntBranchSelect from "@/components/AntBranchSelect";
 
 type BranchType = { name: string; id: string };
 
-export enum HrModals {
-  first,
-  branch,
-  working_branch,
-}
-
 const HrSignRegistery = () => {
   const navigate = useNavigate();
-  const [modal, $modal] = useState<HrModals>();
-  const [branch, $branch] = useState<BranchType>();
+  const [branch, $branch] = useState<string>();
   const [is_intern, $is_intern] = useState<boolean>(false);
-  const [working_branch, $working_branch] = useState<BranchType>();
   const [position, $position] = useState<number>();
   const [meetDate, $meetDate] = useState<Dayjs>();
   const [meetTime, $meetTime] = useState("");
+  const [warnModal, $warnModal] = useState(true);
+
+  const closeWarnMdoal = () => $warnModal((prev) => !prev);
 
   const { mutate, isPending } = editAddAppointment();
   const {
@@ -50,96 +43,98 @@ const HrSignRegistery = () => {
     formState: { errors },
   } = useForm();
 
-  const { data: positions, isLoading: positionLoading } = getPositions({});
+  const { data: positions, isLoading: positionLoading } = getPositions({
+    status: 1,
+  });
+
   const { data: timeSlots, isLoading: timeLoading } = getHrTimeSlots({
     query_date: dayjs(meetDate).format(yearMonthDate),
     enabled: !!meetDate,
   });
 
-  const closeModal = () => $modal(undefined);
-
-  const handleBranch = (item: BranchType) => {
-    if (modal === HrModals.branch) {
-      $branch(item);
-      if (!working_branch) $working_branch(item);
-    }
-    if (modal === HrModals.working_branch) {
-      $working_branch(item);
-    }
-  };
-
   const onSubmit = () => {
     if (!position) return warnToast("Выберите Должность!!!");
     if (!meetTime) return warnToast("Выберите подходящее время!!!");
-    if (!branch?.id) {
+    if (!branch) {
       window.scrollTo(0, 0);
       warnToast("Выберите Филиал!!!");
     } else {
       const { employee_name, description } = getValues();
-      const [hours, minutes] = meetTime.split(":").map(Number);
-      const time_slot = meetDate!
-        .hour(hours)
-        ?.minute(minutes)
-        ?.second(0)
-        ?.toISOString();
+      // const [hours, minutes] = meetTime.split(":").map(Number);
+      // const time_slot = meetDate!
+      //   .hour(hours)
+      //   ?.minute(minutes)
+      //   ?.second(0)
+      //   ?.toISOString();
 
-      mutate(
-        {
-          employee_name,
-          time_slot,
-          description,
-          position_id: position!,
-          branch_id: branch?.id!,
+      navigate("/tg/hr-registery/select-time", {
+        state: {
+          data: {
+            employee_name,
+            description,
+            position_id: position!,
+            branch_id: branch!,
+          },
         },
-        {
-          onSuccess: (data) => {
-            navigate(`/tg/hr-registery/success/${data.id}`);
-          },
-          onError: (e) => {
-            errorToast(e.name + e.message);
-          },
-        }
-      );
+      });
+
+      // mutate(
+      //   {
+      //     employee_name,
+      //     time_slot,
+      //     description,
+      //     position_id: position!,
+      //     branch_id: branch!,
+      //   },
+      //   {
+      //     onSuccess: (data) => {
+      //       navigate(`/tg/hr-registery/success/${data.id}`);
+      //     },
+      //     onError: (e) => {
+      //       errorToast(e.name + e.message);
+      //     },
+      //   }
+      // );
     }
   };
-
-  const renderModal = useMemo(() => {
-    return (
-      <BranchModal
-        isOpen={modal === HrModals.branch || modal === HrModals.working_branch}
-        onClose={closeModal}
-        onChange={handleBranch}
-      />
-    );
-  }, [modal]);
 
   if (positionLoading) return <Loading />;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {isPending && <Loading />}
-      <InvHeader title="Оформление" sticky goBack />
 
+      <Modal footer={false} closable onClose={closeWarnMdoal} open={warnModal}>
+        <p className="text-sm text-center mt-5">
+          Пожалуйста, проверьте, что весь пакет документов полностью готов,
+          прежде чем приступать к записи на оформление
+        </p>
+        <Flex className="gap-x-4 mt-4" wrap flex={1}>
+          <Button
+            className="bg-[#46B72F] text-white rounded-xl flex flex-1 text-[11px]"
+            onClick={closeWarnMdoal}
+          >
+            Да, документы готовы
+          </Button>
+          <Button
+            className="bg-[#DC0004] text-white rounded-xl flex flex-1 text-[11px]"
+            onClick={() =>
+              navigate("/tg/hr-registery/main", { state: { isWarn: true } })
+            }
+          >
+            Нет, документы не готовы
+          </Button>
+        </Flex>
+      </Modal>
       <WebAppContainer>
-        <div
-          className="bg-white my-4 rounded-full"
-          onClick={() => $modal(HrModals.branch)}
+        <h1 className="text-xl mb-4">Подать заявку</h1>
+        <BaseInput label="Филиал">
+          <AntBranchSelect onChange={(e) => $branch(e)} />
+        </BaseInput>
+        <BaseInput
+          label="Укажите полное ФИО сотрудника"
+          error={errors.employee_name}
         >
-          <WebAppContainer className="flex items-center justify-between">
-            <h4
-              className={cl("font-normal text-[#BEA087] text-xl", {
-                ["!font-bold"]: !branch?.id,
-              })}
-            >
-              {!!branch?.name ? branch.name : "Выберите филиал"}
-            </h4>
-            <div className="flex gap-3 items-center">
-              {!branch?.id && <img src={warnIcon} alt="select-branch" />}
-              <img src={arrow} alt="select-branch" />
-            </div>
-          </WebAppContainer>
-        </div>
-        <BaseInput label="ФИО" error={errors.employee_name}>
           <MainInput
             placeholder="ФИО"
             register={register("employee_name", {
@@ -147,7 +142,7 @@ const HrSignRegistery = () => {
             })}
           />
         </BaseInput>
-        <BaseInput label="Должность">
+        <BaseInput label="Укажите должность сотрудника">
           <Select
             className="flex flex-1"
             placeholder="Должность"
@@ -157,7 +152,22 @@ const HrSignRegistery = () => {
           />
         </BaseInput>
 
-        <BaseInput label="Функция сотрудника">
+        <BaseInput label="Сотрудник будет работать в указанном филиале или проходит стажировку для другого?">
+          <Tooltip
+            placement="top"
+            color="white"
+            title={
+              <span className="text-black">
+                Если на вашем филиале стажируется сотрудник другого филиала, его
+                оформление будет производиться на фирму того филиала.
+              </span>
+            }
+          >
+            <Button
+              className="w-4 h-4 !p-0"
+              icon={<InfoCircleOutlined />}
+            ></Button>
+          </Tooltip>
           <Select
             options={workerFunction}
             className="flex flex-1"
@@ -209,10 +219,9 @@ const HrSignRegistery = () => {
           btnType={InvBtnType.primary}
           className="w-full capitalize"
         >
-          отправить
+          Далее
         </InvButton>
       </WebAppContainer>
-      {renderModal}
     </form>
   );
 };

@@ -20,6 +20,9 @@ import {
 } from "./utils/routeObjs";
 import { MainPermissions } from "@/utils/permissions";
 
+const HRSelectTime = lazy(
+  () => import("./webApp/pages/hr-registration/select-time")
+);
 const HrSignRegistery = lazy(
   () => import("./webApp/pages/hr-registration/registery")
 );
@@ -574,6 +577,14 @@ const App = () => {
               </Suspend>
             }
             path={"registery"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <HRSelectTime />
+              </Suspend>
+            }
+            path={"select-time"}
           />
           <Route
             element={

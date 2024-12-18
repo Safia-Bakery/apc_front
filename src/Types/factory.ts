@@ -26,7 +26,8 @@ export interface FactoryRequestParams extends BaseParams {
   fillial_id?: string;
   user_id?: number;
   created_at?: string;
-  user?: string;
+
+  user_name?: string;
   responsible?: number;
   category_id?: number;
 }

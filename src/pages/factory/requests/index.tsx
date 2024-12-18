@@ -19,16 +19,16 @@ import { useAppSelector } from "@/store/utils/types";
 
 import { getApcFactoryRequests } from "@/hooks/factory";
 import { FactoryRequestRes } from "@/Types/factory";
+import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
 
 const FactoryRequests = () => {
   const { t } = useTranslation();
   const currentPage = Number(useQueryString("page")) || 1;
   const { search } = useLocation();
 
-  const user_id = Number(useQueryString("user_id"));
   const id = Number(useQueryString("id"));
   const status = useQueryString("status");
-  const responsible = Number(useQueryString("responsible"));
+  const responsible = Number(useUpdateQueryStr("responsible"));
   const category_id = Number(useQueryString("category_id"));
   const created_at = useQueryString("created_at");
   const user = useQueryString("user");
@@ -108,8 +108,7 @@ const FactoryRequests = () => {
     page: currentPage,
     ...(!!id && { id }),
     ...(!!branch?.id && { fillial_id: branch?.id }),
-    ...(!!user_id && { user_id }),
-    ...(!!user && { user }),
+    ...(!!user && { user_name: user }),
     ...(!!status && { status }),
     ...(!!responsible && { responsible }),
     ...(!!category_id && { category_id }),
