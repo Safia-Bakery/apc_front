@@ -107,26 +107,28 @@ const ApcModals = () => {
             {brigadaLoading ? (
               <Loading is_static />
             ) : (
-              brigades?.items.map((item, idx) => (
-                <div
-                  key={idx}
-                  className={
-                    "flex justify-between border-b border-b-black py-4 pr-1 pl-4 items-center"
-                  }
-                >
-                  <h6 className="text-lg mb-0">{item?.name}</h6>
-                  <button
-                    id="attach_to_bridaga"
-                    onClick={handleUpdate({
-                      status: RequestStatus.received,
-                      brigada_id: item.id,
-                    })}
-                    className="btn btn-success btn-sm"
+              brigades?.items
+                ?.filter((item) => !!item.status)
+                ?.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className={
+                      "flex justify-between border-b border-b-black py-4 pr-1 pl-4 items-center"
+                    }
                   >
-                    {t("assign")}
-                  </button>
-                </div>
-              ))
+                    <h6 className="text-lg mb-0">{item?.name}</h6>
+                    <button
+                      id="attach_to_bridaga"
+                      onClick={handleUpdate({
+                        status: RequestStatus.received,
+                        brigada_id: item.id,
+                      })}
+                      className="btn btn-success btn-sm"
+                    >
+                      {t("assign")}
+                    </button>
+                  </div>
+                ))
             )}
           </div>
         </div>

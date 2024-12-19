@@ -16,7 +16,6 @@ import dayjs, { Dayjs } from "dayjs";
 import { yearMonthDate } from "@/utils/keys";
 import Loading from "@/components/Loader";
 import { useForm } from "react-hook-form";
-import errorToast from "@/utils/errorToast";
 import { useNavigate } from "react-router-dom";
 import warnToast from "@/utils/warnToast";
 import { disabledDate, workerFunction } from "@/utils/hr-registry";
@@ -54,7 +53,7 @@ const HrSignRegistery = () => {
 
   const onSubmit = () => {
     if (!position) return warnToast("Выберите Должность!!!");
-    if (!meetTime) return warnToast("Выберите подходящее время!!!");
+    // if (!meetTime) return warnToast("Выберите подходящее время!!!");
     if (!branch) {
       window.scrollTo(0, 0);
       warnToast("Выберите Филиал!!!");
@@ -188,7 +187,7 @@ const HrSignRegistery = () => {
           </BaseInput>
         )}
 
-        <BaseInput label="Пожалуйста, выберите подходящую дату">
+        {/* <BaseInput label="Пожалуйста, выберите подходящую дату">
           <DatePicker
             required
             disabledDate={disabledDate}
@@ -211,7 +210,7 @@ const HrSignRegistery = () => {
             loading={timeLoading}
             onChange={(val) => $meetTime(val)}
           />
-        </BaseInput>
+        </BaseInput> */}
 
         <InvButton
           btnSize={BtnSize.medium}
