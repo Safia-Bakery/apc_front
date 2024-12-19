@@ -1,9 +1,21 @@
+import Loading from "@/components/Loader";
 import useUpdateEffect from "@/hooks/custom/useUpdateEffect";
-import { EPresetTimes } from "@/utils/types";
+import { getMyAppointments } from "@/hooks/hr-registration";
+import { dateTimeFormat } from "@/utils/keys";
+import { EPresetTimes, RequestStatus } from "@/utils/types";
 import { Button, Flex, Modal } from "antd";
+import cl from "classnames";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useLocation, useNavigate } from "react-router-dom";
+
+const titleObj: { [key: number]: string } = {
+  [RequestStatus.closed_denied]: "Отклонен",
+  [RequestStatus.new]: "Запланировано",
+  [RequestStatus.received]: "Запланировано",
+  [RequestStatus.finished]: "Оформлено",
+};
 
 const docsDescr = `Документы, необходимые при приёме на работу:
 
@@ -22,6 +34,8 @@ const HrRegisteryMain = () => {
   const [copied, $copied] = useState(false);
   const [warnModal, $warnModal] = useState(false);
 
+  const { data, isLoading } = getMyAppointments({});
+
   const handleWarnModal = () => $warnModal((prev) => !prev);
   const closeWarnMdoal = () => {
     navigate("/tg/hr-registery/main");
@@ -38,6 +52,8 @@ const HrRegisteryMain = () => {
   useEffect(() => {
     if (state?.isWarn) handleWarnModal();
   }, [state?.isWarn]);
+
+  if (isLoading) return <Loading />;
 
   return (
     <div className="p-2">
@@ -77,29 +93,44 @@ const HrRegisteryMain = () => {
         </Flex>
       </Flex>
 
-      <Flex className="w-full mt-4 overflow-x-auto py-1" gap={10}>
-        {[...Array(6)].map((_, idx) => (
-          <Flex
-            className="rounded-lg overflow-hidden min-w-[150px] bg-[#F6F6F6]"
-            key={idx}
-            vertical
-          >
-            <div className="px-1 pt-2">
-              <p className="text-[10px]">№123456</p>
-              <p className="text-[10px] my-1">12.01.2024 9:30</p>
-              <p className="text-[10px] line-clamp-2">Имя Фамилия</p>
-            </div>
-
+      {!!data?.length && (
+        <Flex className="w-full mt-4 overflow-x-auto py-1" gap={10}>
+          {data.map((item, idx) => (
             <Flex
-              className="w-full bg-[#46B72F] text-white"
-              align="center"
-              justify="center"
+              className="rounded-lg overflow-hidden min-w-[150px] bg-[#F6F6F6]"
+              key={idx}
+              vertical
             >
-              Оформлено
+              <div className="px-1 pt-2">
+                <p className="text-[10px]">№{item.id}</p>
+                <p className="text-[10px] my-1">
+                  {dayjs(item.time_slot).format(dateTimeFormat)}
+                </p>
+                <p className="text-[10px] line-clamp-2">
+                  {item.employee_name || "Не задано"}
+                </p>
+              </div>
+
+              <Flex
+                className={cl(
+                  {
+                    ["bg-[#FF0000]"]:
+                      item.status === RequestStatus.closed_denied,
+                  },
+                  { ["bg-[#4630EB] "]: item.status === RequestStatus.received },
+                  { ["bg-[#4630EB] "]: item.status === RequestStatus.new },
+                  { ["bg-[#46B72F]"]: item.status === RequestStatus.finished },
+                  "w-full text-white"
+                )}
+                align="center"
+                justify="center"
+              >
+                {titleObj[item.status]}
+              </Flex>
             </Flex>
-          </Flex>
-        ))}
-      </Flex>
+          ))}
+        </Flex>
+      )}
 
       <Flex
         onClick={() => navigate("/tg/hr-registery/registery")}

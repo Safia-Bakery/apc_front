@@ -20,6 +20,7 @@ import {
 } from "./utils/routeObjs";
 import { MainPermissions } from "@/utils/permissions";
 
+const HrSuccess = lazy(() => import("./webApp/pages/hr-registration/success"));
 const HRSelectTime = lazy(
   () => import("./webApp/pages/hr-registration/select-time")
 );
@@ -589,7 +590,7 @@ const App = () => {
           <Route
             element={
               <Suspend>
-                <InvSuccess freezer title="" />
+                <HrSuccess />
               </Suspend>
             }
             path={"success/:id"}

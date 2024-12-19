@@ -80,7 +80,7 @@ export const editAddAppointment = () => {
         "/api/v2/appointments",
         body
       );
-      return data;
+      return data as HrAppointmentRes;
     },
   });
 };
