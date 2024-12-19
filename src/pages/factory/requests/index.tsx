@@ -110,7 +110,7 @@ const FactoryRequests = () => {
     ...(!!branch?.id && { fillial_id: branch?.id }),
     ...(!!user && { user_name: user }),
     ...(!!status && { status }),
-    ...(!!responsible && { responsible }),
+    ...(!!responsible && { brigada_id: responsible }),
     ...(!!category_id && { category_id }),
     ...(!!created_at && {
       created_at: dayjs(created_at).format(yearMonthDate),
