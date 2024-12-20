@@ -8,13 +8,25 @@ import MainInput from "@/components/BaseInputs/MainInput";
 import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
 import BranchSelect from "@/components/BranchSelect";
 import useQueryString from "custom/useQueryString";
-import { Departments, Sphere } from "@/utils/types";
+import { Departments, RequestStatus, Sphere } from "@/utils/types";
 import dayjs from "dayjs";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import useCategories from "@/hooks/useCategories";
 import { useForm } from "react-hook-form";
 import useUpdateEffect from "custom/useUpdateEffect";
 import useBrigadas from "@/hooks/useBrigadas";
+
+const requestStatusArr = [
+  { value: RequestStatus.new, label: "Новый" },
+  { value: RequestStatus.received, label: "Принятые" },
+  { value: RequestStatus.sent_to_fix, label: "Отправлен для ремонта" },
+  { value: RequestStatus.solved, label: "Решен" },
+  { value: RequestStatus.denied, label: "Отклонен" },
+  { value: RequestStatus.paused, label: "Остановлен" },
+  { value: RequestStatus.finished, label: "Закончен" },
+  { value: RequestStatus.resumed, label: "Переоткрыт" },
+  { value: RequestStatus.closed_denied, label: "Закрыт, отменен" },
+];
 
 const FactoryFilter: FC = () => {
   const navigate = useNavigateParams();
@@ -124,7 +136,7 @@ const FactoryFilter: FC = () => {
             onChange={(e) => navigate({ status: e.target.value })}
           >
             <option value={undefined} />
-            {ITRequestStatusArr.map((option) => (
+            {requestStatusArr.map((option) => (
               <option value={option.value} key={option.value}>
                 {option.label}
               </option>

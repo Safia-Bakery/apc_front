@@ -107,6 +107,8 @@ const FactoryRequests = () => {
     data: requests,
     isLoading: orderLoading,
     isFetching: orderFetching,
+    refetch,
+    isRefetching,
   } = getApcFactoryRequests({
     page: currentPage,
     ...(!!id && { id }),
@@ -134,6 +136,9 @@ const FactoryRequests = () => {
             status={status ? ([Number(status)] as any) : undefined}
             onSuccess={(data) => useBackExcel(data.file_name)}
           />
+          <button onClick={() => refetch()} className="btn btn-primary">
+            {t("refresh")}
+          </button>
         </div>
       </Header>
 
@@ -143,7 +148,7 @@ const FactoryRequests = () => {
           data={requests?.items}
           totalItems={requests?.total}
           columns={columns}
-          loading={orderLoading || orderFetching}
+          loading={orderLoading || orderFetching || isRefetching}
           rowClassName={(item) => requestRows[item?.status]}
           summary={() => (
             <Table.Summary fixed={"top"}>
