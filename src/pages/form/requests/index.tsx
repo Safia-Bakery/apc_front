@@ -13,11 +13,12 @@ import { useTranslation } from "react-i18next";
 import { dateTimeFormat, yearMonthDate } from "@/utils/keys";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "@/store/reducers/sidebar";
-import DownloadFormExcel from "@/components/DownloadFormExcel";
 import AntdTable from "@/components/AntdTable";
 import { Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { getFormRequests } from "@/hooks/forms";
+import DownloadExcell from "@/components/DownloadExcell";
+import useBackExcel from "@/hooks/custom/useBackExcel";
 
 const FormRequests = () => {
   const { t } = useTranslation();
@@ -116,7 +117,12 @@ const FormRequests = () => {
     <Card>
       <Header title={t("requests_for_form")}>
         <div className="flex">
-          <DownloadFormExcel />
+          <DownloadExcell<string>
+            callbackUrl="/v1/excell/uniforms"
+            status={request_status}
+            onSuccess={(data) => useBackExcel(data)}
+          />
+
           {permissions?.[MainPermissions.add_form_request] && (
             <button onClick={() => navigate("add")} className="btn btn-success">
               {t("add")}

@@ -1,5 +1,5 @@
 import WebAppContainer from "@/webApp/components/WebAppContainer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import BaseInput from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
@@ -19,8 +19,12 @@ const HrSignRegistery = () => {
   const [is_intern, $is_intern] = useState<boolean>(false);
   const [position, $position] = useState<number>();
   const [warnModal, $warnModal] = useState(true);
+  const [animate, setAnimate] = useState(false);
 
-  const closeWarnMdoal = () => $warnModal((prev) => !prev);
+  const closeWarnMdoal = () => {
+    $warnModal(false);
+    setAnimate(true); // Trigger the animation when modal is closed
+  };
 
   const {
     register,
@@ -57,8 +61,11 @@ const HrSignRegistery = () => {
   if (positionLoading) return <Loading />;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="min-h-svh h-full">
-      <Modal footer={false} closable onClose={closeWarnMdoal} open={warnModal}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className={`min-h-svh h-full ${animate ? "animate-fadeIn" : ""}`}
+    >
+      <Modal footer={false} closable onCancel={closeWarnMdoal} open={warnModal}>
         <p className="text-sm text-center mt-5">
           Пожалуйста, проверьте, что весь пакет документов полностью готов,
           прежде чем приступать к записи на оформление
@@ -80,7 +87,8 @@ const HrSignRegistery = () => {
           </Button>
         </Flex>
       </Modal>
-      <WebAppContainer className="pb-9">
+
+      <WebAppContainer className="pb-10">
         <h1 className="text-xl mb-4">Подать заявку</h1>
         {!warnModal && (
           <BaseInput label="Филиал">
@@ -144,7 +152,8 @@ const HrSignRegistery = () => {
           </BaseInput>
         )}
       </WebAppContainer>
-      <div className="sticky bottom-0 left-0 right-0 p-2 bg-[#DFDFDF]">
+
+      <div className="fixed bottom-0 left-0 right-0 p-2 bg-[#DFDFDF]">
         <Button
           htmlType="submit"
           className="bg-[#3B21FF] rounded-full text-white w-full transition-transform duration-300 hover:scale-105"

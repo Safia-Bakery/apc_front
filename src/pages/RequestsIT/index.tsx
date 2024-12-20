@@ -17,6 +17,9 @@ import { ColumnsType } from "antd/es/table";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
 import { getITRequests } from "@/hooks/it";
+import useBackExcel from "@/hooks/custom/useBackExcel";
+
+type ExcelResType = { file_name: string };
 
 const RequestsIT = () => {
   const { t } = useTranslation();
@@ -180,7 +183,10 @@ const RequestsIT = () => {
     <Card>
       <Header title={"it_requests"}>
         <div className="flex flex-col-reverse md:flex-row gap-2 md:gap-0">
-          <DownloadExcell />
+          <DownloadExcell<ExcelResType>
+            callbackUrl="/it/excell"
+            onSuccess={(data) => useBackExcel(data.file_name)}
+          />
           <button
             onClick={() => refetch()}
             className="btn btn-primary mr-0 md:mr-2"

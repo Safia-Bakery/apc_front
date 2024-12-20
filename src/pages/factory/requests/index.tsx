@@ -125,7 +125,7 @@ const FactoryRequests = () => {
     <Card>
       <Header title={"apc_fabric"}>
         <div className="flex flex-col-reverse md:flex-row gap-2 md:gap-0">
-          <DownloadExcell />
+          <DownloadExcell callbackUrl="" />
         </div>
       </Header>
 

@@ -1,4 +1,4 @@
-import { RequestStatusArr } from "@/utils/helpers";
+import { ITRequestStatusArr, RequestStatusArr } from "@/utils/helpers";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import useDebounce from "custom/useDebounce";
 import BaseInputs from "@/components/BaseInputs";
@@ -124,7 +124,7 @@ const FactoryFilter: FC = () => {
             onChange={(e) => navigate({ status: e.target.value })}
           >
             <option value={undefined} />
-            {RequestStatusArr.map((option) => (
+            {ITRequestStatusArr.map((option) => (
               <option value={option.value} key={option.value}>
                 {option.label}
               </option>

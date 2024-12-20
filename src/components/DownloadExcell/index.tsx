@@ -2,19 +2,32 @@ import { useForm } from "react-hook-form";
 import cl from "classnames";
 import { useState } from "react";
 import useQueryString from "@/hooks/custom/useQueryString";
-import ITExcellMutation from "@/hooks/mutation/ITExcell";
 import { useTranslation } from "react-i18next";
 import Loading from "../Loader";
-import useBackExcel from "@/hooks/custom/useBackExcel";
+import baseExcelMutation from "@/hooks/mutation/base_excell";
 
-const DownloadExcell = () => {
+interface ExcellTypes<T> {
+  callbackUrl: string;
+  callbackMethod?: "post" | "get";
+  category?: number;
+  status?: number;
+  onSuccess?: (val: T) => void;
+}
+
+function DownloadExcell<T>({
+  callbackMethod = "post",
+  callbackUrl,
+  category,
+  status,
+  onSuccess,
+}: ExcellTypes<T>) {
   const { t } = useTranslation();
   const [active, $active] = useState(false);
-  const request_status = Number(useQueryString("request_status"));
-  const category_id = Number(useQueryString("category_id"));
+  const request_status = Number(useQueryString("request_status")) || status;
+  const category_id = Number(useQueryString("category_id")) || category;
   const { register, getValues } = useForm();
 
-  const { mutate, isPending } = ITExcellMutation();
+  const { mutate, isPending } = baseExcelMutation();
 
   const handleActive = () => {
     if (active) {
@@ -22,14 +35,14 @@ const DownloadExcell = () => {
       mutate(
         {
           start_date,
+          callbackUrl,
+          callbackMethod,
           finish_date,
           ...(!!request_status && { status: request_status }),
           ...(!!category_id && { category_id }),
         },
         {
-          onSuccess: (data) => {
-            if (data.file_name) useBackExcel(data.file_name);
-          },
+          onSuccess: (data: any) => onSuccess?.(data),
         }
       );
     } else $active((prev) => !prev);
@@ -63,6 +76,7 @@ const DownloadExcell = () => {
       <button
         className="btn btn-primary md:mr-2"
         type="button"
+        disabled={!onSuccess}
         onClick={handleActive}
       >
         {t("export_to_excel")}
@@ -71,6 +85,6 @@ const DownloadExcell = () => {
       {isPending && <Loading />}
     </form>
   );
-};
+}
 
 export default DownloadExcell;

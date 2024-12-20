@@ -88,7 +88,7 @@ const HRSelectTime = () => {
   return (
     <>
       {/* <InvHeader goBack /> */}
-      <WebAppContainer className="pb-9">
+      <WebAppContainer className="pb-16">
         <h1 className="text-xl">Выберите время</h1>
 
         <p className="mt-2">День оформления</p>
@@ -140,7 +140,7 @@ const HRSelectTime = () => {
           </>
         )}
 
-        <div className="absolute bottom-0 left-0 right-0 p-2 bg-[#DFDFDF]">
+        <div className="fixed bottom-0 left-0 right-0 p-2 bg-[#DFDFDF]">
           <Button
             disabled={isPending}
             onClick={handleSubmit}
