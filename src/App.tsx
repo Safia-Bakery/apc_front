@@ -34,6 +34,9 @@ const HrChooseDirection = lazy(
   () => import("./webApp/pages/hr-registration/choose-direction")
 );
 const HrOrders = lazy(() => import("./webApp/pages/hr-registration/orders"));
+const ShowHrOrder = lazy(
+  () => import("./webApp/pages/hr-registration/orders/show-order")
+);
 const FreezerCart = lazy(() => import("./webApp/pages/freezer/cart"));
 // const SetTools = lazy(() => import("./webApp/pages/freezer/set-tools"));
 const ShowFreezerOrder = lazy(
@@ -562,6 +565,14 @@ const App = () => {
               </Suspend>
             }
             path={"orders"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <ShowHrOrder />
+              </Suspend>
+            }
+            path={"orders/:id"}
           />
           <Route
             element={

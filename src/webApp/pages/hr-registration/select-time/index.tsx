@@ -2,9 +2,8 @@ import { editAddAppointment, getHrTimeSlots } from "@/hooks/hr-registration";
 import errorToast from "@/utils/errorToast";
 import { yearMonthDate } from "@/utils/keys";
 import warnToast from "@/utils/warnToast";
-import InvHeader from "@/webApp/components/web-header";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
-import { Button, Empty, Flex } from "antd";
+import { Button, Flex } from "antd";
 import cl from "classnames";
 import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
@@ -150,6 +149,12 @@ const HRSelectTime = () => {
           </Button>
         </div>
       </WebAppContainer>
+      <img
+        src="/images/safia.jpg"
+        alt="safia-logo"
+        width={50}
+        className="sticky bottom-16 opacity-25 left-1/2 -translate-x-1/2"
+      />
     </>
   );
 };

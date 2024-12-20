@@ -1,5 +1,5 @@
 import WebAppContainer from "@/webApp/components/WebAppContainer";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import BaseInput from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
@@ -88,7 +88,7 @@ const HrSignRegistery = () => {
         </Flex>
       </Modal>
 
-      <WebAppContainer className="pb-10">
+      <WebAppContainer className="pb-10 relative">
         <h1 className="text-xl mb-4">Подать заявку</h1>
         {!warnModal && (
           <BaseInput label="Филиал">
@@ -151,6 +151,12 @@ const HrSignRegistery = () => {
             />
           </BaseInput>
         )}
+        <img
+          src="/images/safia.jpg"
+          alt="safia-logo"
+          width={50}
+          className="mt-14 mb-4 mx-auto opacity-30"
+        />
       </WebAppContainer>
 
       <div className="fixed bottom-0 left-0 right-0 p-2 bg-[#DFDFDF]">

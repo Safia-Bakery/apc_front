@@ -10,11 +10,20 @@ import { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const titleObj: { [key: number]: string } = {
+export const titleObj: { [key: number]: string } = {
   [RequestStatus.closed_denied]: "Отклонен",
+  [RequestStatus.denied]: "Не оформлен",
   [RequestStatus.new]: "Запланировано",
   [RequestStatus.received]: "Запланировано",
   [RequestStatus.finished]: "Оформлено",
+};
+
+export const statusClassName: { [key: number]: string } = {
+  [RequestStatus.received]: "bg-[#4630EB]",
+  [RequestStatus.new]: "bg-[#4630EB]",
+  [RequestStatus.finished]: "bg-[#46B72F]",
+  [RequestStatus.closed_denied]: "bg-[#FF0000]",
+  [RequestStatus.denied]: "bg-[#FF0000]",
 };
 
 const docsDescr = `Документы, необходимые при приёме на работу:
@@ -84,12 +93,17 @@ const HrRegisteryMain = () => {
       <Flex justify="space-between" align="center" gap={10}>
         <div className="">
           <h1 className="text-xl">Мои заяки</h1>
-          <p className="text-[#A3A3A3] text-[10px]">2 заявки в работе</p>
+          <p className="text-[#A3A3A3] text-xs">2 заявки в работе</p>
         </div>
 
-        <Flex className="" align="center" vertical>
+        <Flex
+          className=""
+          align="center"
+          vertical
+          // onClick={() => navigate(`/tg/hr-registery/orders`)}
+        >
           <img src="/icons/archive.svg" alt="archive" height={17} width={15} />
-          <h3 className="text-[10px]">Архив</h3>
+          <h3 className="text-xs">Архив</h3>
         </Flex>
       </Flex>
 
@@ -97,30 +111,25 @@ const HrRegisteryMain = () => {
         <Flex className="w-full mt-4 overflow-x-auto py-1" gap={10}>
           {data.map((item, idx) => (
             <Flex
+              onClick={() => navigate(`/tg/hr-registery/orders/${item.id}`)}
               className="rounded-lg overflow-hidden min-w-[150px] bg-[#F6F6F6]"
               key={idx}
               vertical
             >
               <div className="px-1 pt-2">
-                <p className="text-[10px]">№{item.id}</p>
-                <p className="text-[10px] my-1">
+                <p className="text-xs">№{item.id}</p>
+                <p className="text-xs my-1">
                   {dayjs(item.time_slot).format(dateTimeFormat)}
                 </p>
-                <p className="text-[10px] line-clamp-2">
+                <p className="text-xs line-clamp-2">
                   {item.employee_name || "Не задано"}
                 </p>
               </div>
 
               <Flex
                 className={cl(
-                  {
-                    ["bg-[#FF0000]"]:
-                      item.status === RequestStatus.closed_denied,
-                  },
-                  { ["bg-[#4630EB] "]: item.status === RequestStatus.received },
-                  { ["bg-[#4630EB] "]: item.status === RequestStatus.new },
-                  { ["bg-[#46B72F]"]: item.status === RequestStatus.finished },
-                  "w-full text-white"
+                  statusClassName[item.status],
+                  "w-full text-white text-sm"
                 )}
                 align="center"
                 justify="center"
@@ -193,6 +202,12 @@ const HrRegisteryMain = () => {
           8. Фото 3х4 – 4 шт. (на белом фоне в классическом виде)
         </p>
       </div>
+      <img
+        src="/images/safia.jpg"
+        alt="safia-logo"
+        width={50}
+        className="mx-auto my-3"
+      />
     </div>
   );
 };

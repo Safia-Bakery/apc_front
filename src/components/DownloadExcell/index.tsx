@@ -23,8 +23,8 @@ function DownloadExcell<T>({
 }: ExcellTypes<T>) {
   const { t } = useTranslation();
   const [active, $active] = useState(false);
-  const request_status = Number(useQueryString("request_status")) || status;
-  const category_id = Number(useQueryString("category_id")) || category;
+  const request_status = Number(useQueryString("request_status"));
+  const category_id = Number(useQueryString("category_id"));
   const { register, getValues } = useForm();
 
   const { mutate, isPending } = baseExcelMutation();
@@ -38,8 +38,12 @@ function DownloadExcell<T>({
           callbackUrl,
           callbackMethod,
           finish_date,
-          ...(!!request_status && { status: request_status }),
-          ...(!!category_id && { category_id }),
+          status: status ? status : request_status ? request_status : undefined,
+          category_id: category
+            ? category
+            : category_id
+            ? category_id
+            : undefined,
         },
         {
           onSuccess: (data: any) => onSuccess?.(data),

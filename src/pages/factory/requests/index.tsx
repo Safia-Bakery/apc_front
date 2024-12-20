@@ -20,6 +20,9 @@ import { useAppSelector } from "@/store/utils/types";
 import { getApcFactoryRequests } from "@/hooks/factory";
 import { FactoryRequestRes } from "@/Types/factory";
 import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
+import useBackExcel from "@/hooks/custom/useBackExcel";
+
+type ExcelResType = { file_name: string };
 
 const FactoryRequests = () => {
   const { t } = useTranslation();
@@ -125,7 +128,12 @@ const FactoryRequests = () => {
     <Card>
       <Header title={"apc_fabric"}>
         <div className="flex flex-col-reverse md:flex-row gap-2 md:gap-0">
-          <DownloadExcell callbackUrl="" />
+          <DownloadExcell<ExcelResType>
+            callbackUrl="/api/v2/arc/factory/excell"
+            category={!!category_id ? ([category_id] as any) : undefined}
+            status={status ? ([Number(status)] as any) : undefined}
+            onSuccess={(data) => useBackExcel(data.file_name)}
+          />
         </div>
       </Header>
 

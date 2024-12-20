@@ -40,6 +40,13 @@ const HrSuccess = () => {
       >
         Закрыть
       </Button>
+
+      <img
+        src="/images/safia.jpg"
+        alt="safia-logo"
+        width={50}
+        className="mt-8 mb-4 mx-auto"
+      />
     </WebAppContainer>
   );
 };

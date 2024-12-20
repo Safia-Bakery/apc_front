@@ -1,24 +1,19 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import dayjs from "dayjs";
 import successToast from "@/utils/successToast";
-import { CancelReason, numberWithCommas } from "@/utils/helpers";
+import { CancelReason } from "@/utils/helpers";
 import { ModalTypes, RequestStatus } from "@/utils/types";
 import { useForm } from "react-hook-form";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
 import { dateTimeFormat } from "@/utils/keys";
-import { editFormRequests, getFormRequest } from "@/hooks/forms";
 import AntModal from "@/components/AntModal";
 import MainSelect from "@/components/BaseInputs/MainSelect";
 import BaseInput from "@/components/BaseInputs";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
-import { Checkbox, Flex, Popconfirm } from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
-import MainInput from "@/components/BaseInputs/MainInput";
-import warnToast from "@/utils/warnToast";
 import errorToast from "@/utils/errorToast";
 import {
   editAddAppointment,
@@ -55,7 +50,7 @@ const ShowHrRequest = () => {
       {
         id: Number(id),
         status,
-        ...(status === RequestStatus.closed_denied && {
+        ...(status === RequestStatus.denied && {
           deny_reason:
             fixedReason < 4 ? t(CancelReason[fixedReason]) : cancel_reason,
         }),
@@ -117,7 +112,7 @@ const ShowHrRequest = () => {
         >
           <form
             onSubmit={handleSubmit(() =>
-              handleRequest({ status: RequestStatus.closed_denied })
+              handleRequest({ status: RequestStatus.denied })
             )}
           >
             <Header title="deny_reason" />
