@@ -18,14 +18,13 @@ const AntBranchSelect = ({ onChange }: Props) => {
       placeholder="Поиск"
       onChange={onChange}
       filterOption={false}
+      popupMatchSelectWidth={false}
       className="w-full"
       options={data?.items}
       fieldNames={{ label: "name", value: "id" }}
       onSearch={(e) => $name(e)}
       notFoundContent={true ? <Spin size="small" /> : null}
-    >
-      AntBranchSelect
-    </Select>
+    />
   );
 };
 

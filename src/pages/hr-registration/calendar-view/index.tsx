@@ -71,6 +71,7 @@ const CustomCalendar: React.FC = () => {
 
   const { data: positions, isLoading: positionLoading } = getPositions({
     enabled: !!selectedTime,
+    status: 1,
   });
   const {
     data: timeSlots,

@@ -110,6 +110,8 @@ const HrSignRegistery = () => {
           <Select
             className="flex flex-1"
             placeholder="Должность"
+            filterOption={false}
+            popupMatchSelectWidth={false}
             options={positions}
             fieldNames={{ label: "name", value: "id" }}
             onChange={(e) => $position(e)}
@@ -135,6 +137,8 @@ const HrSignRegistery = () => {
           <Select
             options={workerFunction}
             className="flex flex-1"
+            filterOption={false}
+            popupMatchSelectWidth={false}
             placeholder="Функция сотрудника"
             onChange={(val) => $is_intern(val === 1)}
           />
