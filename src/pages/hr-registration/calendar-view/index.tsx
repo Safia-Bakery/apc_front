@@ -38,13 +38,6 @@ import Card from "@/components/Card";
 
 dayjs.extend(weekday);
 
-interface Event {
-  id: number;
-  title: string;
-  date: Dayjs;
-  description: string;
-}
-
 enum ViewMode {
   month,
   week,
@@ -332,10 +325,7 @@ const CustomCalendar: React.FC = () => {
               </span>
             }
           >
-            <Button
-              className="w-4 h-4 !p-0"
-              icon={<InfoCircleOutlined />}
-            ></Button>
+            <Button className="w-4 h-4 !p-0" icon={<InfoCircleOutlined />} />
           </Tooltip>
           <Select
             options={workerFunction}
@@ -358,17 +348,15 @@ const CustomCalendar: React.FC = () => {
         {viewMode !== ViewMode.day && (
           <BaseInput label="Пожалуйста, выберите подходящее время">
             <Select
-              options={
-                timeSlots?.free &&
-                Object.keys(timeSlots?.free)?.map((item) => ({
-                  label: item,
-                  value: item,
-                }))
-              }
+              options={timeSlots?.free?.map((item) => ({
+                label: item,
+                value: item,
+              }))}
               className="flex flex-1"
+              labelInValue
               placeholder="Выберите время"
               loading={timeLoading}
-              onChange={(val) => $meetTime(val)}
+              onChange={(val) => $meetTime(val.value)}
             />
           </BaseInput>
         )}

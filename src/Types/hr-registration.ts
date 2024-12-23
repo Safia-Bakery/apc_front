@@ -90,7 +90,7 @@ interface TimeSlotsRes {
       branch_id: string;
     }[];
   };
-  free: { [key: string]: [] };
+  free: string[];
 }
 
 interface CalendarAppointment {
