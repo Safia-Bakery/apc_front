@@ -36,6 +36,8 @@ import "./index.scss";
 import Loading from "@/components/Loader";
 import Card from "@/components/Card";
 
+const daysOff = ["2024-12-31", "2025-01-01"];
+
 dayjs.extend(weekday);
 
 enum ViewMode {
@@ -123,6 +125,8 @@ const CustomCalendar: React.FC = () => {
       (data?.length &&
         data.filter((event) => dayjs(event.date).isSame(current, "day"))) ||
       [];
+    const isDayOff = daysOff.some((day) => dayjs(day).isSame(current, "day"));
+    const isWeekend = current.day() === 0 || current.day() === 6;
 
     return (
       <ul className="list-none p-0">
@@ -140,6 +144,7 @@ const CustomCalendar: React.FC = () => {
             className="add_event_btn"
             type="primary"
             onClick={() => openAddEventModal(current)}
+            disabled={isWeekend || isDayOff}
           >
             {t("add_meet")}
           </Button>
