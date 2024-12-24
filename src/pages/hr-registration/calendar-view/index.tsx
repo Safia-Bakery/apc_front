@@ -310,7 +310,7 @@ const CustomCalendar: React.FC = () => {
                         <p
                           onClick={() =>
                             eventsAtTime.length < 2 &&
-                            dayjs().isBefore(timeSlot) &&
+                            // dayjs().isBefore(timeSlot) &&
                             openAddEventModal(timeSlot)
                           }
                           className="mb-0 hover:shadow-md p-1 rounded-md cursor-pointer"
@@ -328,6 +328,7 @@ const CustomCalendar: React.FC = () => {
                             >
                               <Badge
                                 status={statusBadge[event.status]}
+                                className="line-clamp-1"
                                 text={event?.branch?.name}
                               />
                             </li>
