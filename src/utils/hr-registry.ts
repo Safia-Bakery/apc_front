@@ -1,4 +1,5 @@
 import dayjs, { Dayjs } from "dayjs";
+import { RequestStatus } from "./types";
 
 export const workerFunction = [
   {
@@ -21,4 +22,12 @@ export const disabledDate = (current: Dayjs) => {
   return (
     current.isBefore(today) || current.isAfter(twoWeeksFromNow) || isWeekend
   );
+};
+
+export const titleObj: { [key: number]: string } = {
+  [RequestStatus.closed_denied]: "Отклонен",
+  [RequestStatus.denied]: "Не оформлен",
+  [RequestStatus.new]: "Запланировано",
+  [RequestStatus.received]: "Запланировано",
+  [RequestStatus.finished]: "Оформлено",
 };

@@ -43,6 +43,7 @@ interface HrAppointmentBody {
   deny_reason?: string;
   position_id?: number;
   branch_id?: string;
+  files?: string[];
 }
 
 interface HrAppointmentParams extends BaseParams {
@@ -100,6 +101,8 @@ interface CalendarAppointment {
   status: number;
   description: string;
   department: number;
+  updated_at: string;
+  created_at: string;
   deny_reason: string;
   position?: {
     id: number;

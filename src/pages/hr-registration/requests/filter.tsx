@@ -7,13 +7,17 @@ import BaseInput from "@/components/BaseInputs";
 import MainInput from "@/components/BaseInputs/MainInput";
 import BranchSelect from "@/components/BranchSelect";
 import useQueryString from "custom/useQueryString";
-import { useNavigateParams } from "custom/useCustomNavigate";
+import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { useForm } from "react-hook-form";
 import useUpdateEffect from "custom/useUpdateEffect";
 import { getPositions } from "@/hooks/hr-registration";
+import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
+import dayjs from "dayjs";
+import { yearMonthDate } from "@/utils/keys";
 
 const HrRequestFilter: FC = () => {
   const navigate = useNavigateParams();
+  const deleteParam = useRemoveParams();
 
   const { data: positions, refetch: positionsRefetch } = getPositions({
     enabled: false,
@@ -26,6 +30,7 @@ const HrRequestFilter: FC = () => {
   const [user, $user] = useDebounce<string>("");
   const [employee_name, $employee_name] = useDebounce<string>("");
   const status = useQueryString("status");
+  const meet_date = useQueryString("meet_date");
   const position_id = Number(useQueryString("position_id"));
   const userQ = useQueryString("user");
   const idQ = useQueryString("id");
@@ -38,6 +43,11 @@ const HrRequestFilter: FC = () => {
     $employee_name(e.target.value);
 
   const handleID = (e: ChangeEvent<HTMLInputElement>) => $id(e.target.value);
+
+  const handleMeetTime = (start: Date | null) => {
+    if (start === undefined) deleteParam(["meet_date"]);
+    if (!!start) navigate({ meet_date: dayjs(start).format(yearMonthDate) });
+  };
 
   useUpdateEffect(() => {
     navigate({ user });
@@ -135,6 +145,17 @@ const HrRequestFilter: FC = () => {
           dateFormat="d.MM.yyyy"
           wrapperClassName={"m-1"}
         /> */}
+        <BaseInput className="!m-1">
+          <MainDatePicker
+            selected={
+              !!meet_date && meet_date !== "undefined"
+                ? dayjs(meet_date).toDate()
+                : undefined
+            }
+            onChange={handleMeetTime}
+            dateFormat="d.MM.yyyy"
+          />
+        </BaseInput>
       </td>
     </>
   );

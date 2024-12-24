@@ -11,8 +11,9 @@ import { Button, Flex, Modal, Radio } from "antd";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { statusClassName, titleObj } from "../main";
+import { statusClassName } from "../main";
 import cl from "classnames";
+import { titleObj } from "@/utils/hr-registry";
 
 const denyReasons = [
   "Не готовы документы",

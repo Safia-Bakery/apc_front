@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { InboxOutlined } from "@ant-design/icons";
 import {
   Calendar,
   Radio,
@@ -10,7 +11,13 @@ import {
   Flex,
   Select,
   Tooltip,
+  UploadProps,
+  message,
+  Popconfirm,
+  Space,
+  Input,
 } from "antd";
+import type { RadioChangeEvent } from "antd";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
@@ -27,7 +34,7 @@ import AntBranchSelect from "@/components/AntBranchSelect";
 import BaseInput from "@/components/BaseInputs";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
 import MainInput from "@/components/BaseInputs/MainInput";
-import { workerFunction } from "@/utils/hr-registry";
+import { titleObj, workerFunction } from "@/utils/hr-registry";
 import { dateTimeFormat, yearMonthDate } from "@/utils/keys";
 import { useForm } from "react-hook-form";
 import errorToast from "@/utils/errorToast";
@@ -35,8 +42,25 @@ import warnToast from "@/utils/warnToast";
 import "./index.scss";
 import Loading from "@/components/Loader";
 import Card from "@/components/Card";
+import Dragger from "antd/es/upload/Dragger";
+import { baseURL } from "@/store/baseUrl";
+import { useAppSelector } from "@/store/utils/types";
+import { tokenSelector } from "@/store/reducers/auth";
+import { RequestStatus } from "@/utils/types";
 
-const daysOff = ["2024-12-31", "2025-01-01"];
+// Статусы оформления:
+// 0 ----> Новый
+// 1 ----> Принят
+// 3 ----> Оформлен
+// 4 ---->  Отменен
+// 8 ----> Не оформлен
+
+const statusBadge: any = {
+  [RequestStatus.closed_denied]: "error",
+  [RequestStatus.denied]: "error",
+  [RequestStatus.finished]: "success",
+  [RequestStatus.received]: "processing",
+};
 
 dayjs.extend(weekday);
 
@@ -48,8 +72,10 @@ enum ViewMode {
 
 const CustomCalendar: React.FC = () => {
   const { t } = useTranslation();
+  const token = useAppSelector(tokenSelector);
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.month);
   const [currentDate, setCurrentDate] = useState<Dayjs>(dayjs());
+  const [reportFile, $reportFile] = useState<string[]>([]);
   const [selectedEvent, setSelectedEvent] =
     useState<CalendarAppointment | null>(null);
   const [selectedTime, $selectedTime] = useState<Dayjs>();
@@ -57,6 +83,8 @@ const CustomCalendar: React.FC = () => {
   const [is_intern, $is_intern] = useState(false);
   const [meetTime, $meetTime] = useState("");
   const [position, $position] = useState();
+  const [deny_reason, $deny_reason] = useState("");
+  const [other_deny_reason, $other_deny_reason] = useState("");
 
   const { isLoading, data, isRefetching, refetch } = getCalendarAppointments(
     {}
@@ -64,10 +92,40 @@ const CustomCalendar: React.FC = () => {
   const { mutate, isPending } = editAddAppointment();
   const { register, getValues, reset } = useForm();
 
+  const onDenyReasonChange = (e: RadioChangeEvent) =>
+    $deny_reason(e.target.value);
+
+  const editStatus = ({ status }: { status: RequestStatus }) => {
+    const denyreaon =
+      deny_reason === "Другое" ? other_deny_reason : deny_reason;
+    if (status !== RequestStatus.finished && !denyreaon)
+      warnToast("Выберите причину отмены");
+    else
+      mutate(
+        {
+          id: selectedEvent?.id,
+          status,
+          deny_reason: denyreaon,
+          ...(reportFile.length && { files: reportFile }),
+        },
+        {
+          onSuccess: () => {
+            refetch();
+            $deny_reason("");
+            $selectedTime(undefined);
+            setSelectedEvent(null);
+            $reportFile([]);
+          },
+          onError: (e) => errorToast(e.message),
+        }
+      );
+  };
+
   const { data: positions, isLoading: positionLoading } = getPositions({
     enabled: !!selectedTime,
     status: 1,
   });
+
   const {
     data: timeSlots,
     isLoading: timeLoading,
@@ -82,7 +140,7 @@ const CustomCalendar: React.FC = () => {
     if (!employee_name) return warnToast("Введите имя сотрудника!!!");
     if (!description && is_intern) return warnToast("Введите комментарии!!!");
     if (!position) return warnToast("Выберите Должность!!!");
-    if (!meetTime && viewMode !== ViewMode.day)
+    if (!meetTime && viewMode === ViewMode.month)
       return warnToast("Выберите подходящее время!!!");
     if (!selected_branch) {
       warnToast("Выберите Филиал!!!");
@@ -123,10 +181,10 @@ const CustomCalendar: React.FC = () => {
   const cellRender = (current: Dayjs) => {
     const eventsForDate =
       (data?.length &&
-        data.filter((event) => dayjs(event.date).isSame(current, "day"))) ||
+        data
+          .filter((event) => dayjs(event.date).isSame(current, "day"))
+          .sort((a, b) => dayjs(a.date).diff(dayjs(b.date)))) ||
       [];
-    const isDayOff = daysOff.some((day) => dayjs(day).isSame(current, "day"));
-    const isWeekend = current.day() === 0 || current.day() === 6;
 
     return (
       <ul className="list-none p-0">
@@ -136,7 +194,12 @@ const CustomCalendar: React.FC = () => {
             onClick={() => onEventClick({ ...event, date: event.date })}
             className="cursor-pointer"
           >
-            <Badge status="success" text={event.title} />
+            <Badge
+              status={statusBadge[event.status]}
+              text={`${dayjs(event.date).format("HH:mm")} - ${
+                event.branch?.name
+              }`}
+            />
           </li>
         ))}
         {current.isAfter(dayjs()) && (
@@ -144,7 +207,6 @@ const CustomCalendar: React.FC = () => {
             className="add_event_btn"
             type="primary"
             onClick={() => openAddEventModal(current)}
-            disabled={isWeekend || isDayOff}
           >
             {t("add_meet")}
           </Button>
@@ -153,40 +215,155 @@ const CustomCalendar: React.FC = () => {
     );
   };
 
+  const props: UploadProps = {
+    name: "files",
+    openFileDialogOnClick: true,
+    action: `${baseURL}/file/upload`,
+    headers: { Authorization: `Bearer ${token}` },
+    listType: "picture",
+    className: "max-w-96 my-6 h-fit",
+    disabled: selectedEvent?.status !== RequestStatus.received,
+
+    onChange(info) {
+      const { status } = info?.file;
+      if (status !== "uploading") {
+        <Loading />;
+      }
+      if (status === "done") {
+        $reportFile((prev) => [...prev, info?.file?.response?.files?.[0]]);
+        message.success(`${info?.file?.name} file uploaded successfully.`);
+      } else if (status === "error") {
+        message.error(`${info?.file?.name} file upload failed.`);
+      }
+    },
+    onRemove(info) {
+      $reportFile(info?.response?.files?.[0]);
+      // handleLocalRemove(info?.response?.files?.[0]);
+    },
+  };
+
   const weekViewRender = useMemo(() => {
     const weekStart = currentDate.startOf("week");
     const weekDays = Array.from({ length: 7 }, (_, i) =>
       weekStart.add(i, "day")
     );
 
+    // Generate all time slots (e.g., 24 hours in a day)
+    const timeSlots = Array.from({ length: 19 }, (_, i) =>
+      dayjs()
+        .startOf("day")
+        .add(9, "hour")
+        .add(i * 30, "minute")
+    );
+
+    const eventsForDate = (current: Dayjs) =>
+      (data?.length &&
+        data.filter((event) => dayjs(event.date).isSame(current, "day"))) ||
+      // .sort((a, b) => dayjs(a.date).diff(dayjs(b.date)))
+      [];
+
+    const groupEventsByTime = (events: CalendarAppointment[]) =>
+      events.reduce((acc: any, event) => {
+        const time = dayjs(event.date).format("HH:mm");
+        if (!acc[time]) {
+          acc[time] = [];
+        }
+        acc[time].push(event);
+        return acc;
+      }, {});
+
     return (
-      <Row gutter={16}>
-        {weekDays.map((day) => (
-          <Col key={day.toString()} span={3} className="week-row">
-            <div style={{ padding: 10, border: "1px solid #ddd" }}>
-              <strong>{day.format("dddd, MMMM D")}</strong>
-              {cellRender(day)}
-            </div>
-          </Col>
-        ))}
+      <Row gutter={16} wrap={false}>
+        {weekDays.map((day) => {
+          const events = eventsForDate(day);
+          const groupedEvents = groupEventsByTime(events);
+
+          return (
+            <Col key={day.toString()} span={3} className={`week-row min-w-64`}>
+              <div className="p-3 border border-[#0000003B] rounded-md">
+                <h3 className="text-center text-base w-full mb-0 capitalize">
+                  {day.format("dddd")}
+                </h3>
+                <p className="text-[#9A9A9A] text-sm text-center">
+                  {day.format("DD.MM.YYYY")}
+                </p>
+
+                <ul>
+                  {timeSlots.map((timeSlot) => {
+                    const timeKey = timeSlot.format("HH:mm");
+                    const eventsAtTime = groupedEvents[timeKey] || [];
+
+                    return (
+                      <li
+                        key={timeKey}
+                        className={`border-[0.5px] h-16 flex items-center border-[#4B4B4B47] p-2 rounded-md mb-2 cursor-pointer ${
+                          eventsAtTime.length >= 2
+                            ? "bg-[#B5FDAA]"
+                            : eventsAtTime.length === 0
+                            ? "bg-[#F4F4F4]"
+                            : ""
+                        }`}
+                        // onClick={() =>
+                        //   !eventsAtTime.length && openAddEventModal(timeSlot)
+                        // }
+                      >
+                        <p
+                          onClick={() =>
+                            eventsAtTime.length < 2 &&
+                            dayjs().isBefore(timeSlot) &&
+                            openAddEventModal(timeSlot)
+                          }
+                          className="mb-0 hover:shadow-md p-1 rounded-md cursor-pointer"
+                        >
+                          {timeKey}
+                        </p>
+                        <ul className="pl-4">
+                          {eventsAtTime.map((event: CalendarAppointment) => (
+                            <li
+                              onClick={() =>
+                                onEventClick({ ...event, date: event.date })
+                              }
+                              className="hover:shadow-md z-10 relative text-xs p-1 rounded-md"
+                              key={event.id}
+                            >
+                              <Badge
+                                status={statusBadge[event.status]}
+                                text={event?.branch?.name}
+                              />
+                            </li>
+                          ))}
+                        </ul>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </Col>
+          );
+        })}
       </Row>
     );
-  }, [data]);
+  }, [data, currentDate, openAddEventModal, onEventClick]);
 
   const dayViewRender = useMemo(() => {
     const timeSlots = Array.from(
-      { length: 11 },
-      (_, i) => currentDate.hour(i + 9).minute(0) // Start from 9:00 and go up to 19:00
+      { length: 20 }, // 20 intervals of 30 minutes = 10 hours (from 9:00 to 19:00)
+      (_, i) =>
+        currentDate
+          .startOf("day")
+          .hour(9)
+          .minute(0)
+          .add(i * 30, "minutes") // Increment by 30 minutes
     );
 
     return (
-      <div style={{ padding: 20, border: "1px solid #ddd" }}>
+      <div className="p-5 border border-[#ddd]">
         <h3>{currentDate.format("dddd, MMMM D, YYYY")}</h3>
         <div>
           {!!data?.length &&
             timeSlots.map((slot) => {
               const eventsForSlot = data?.filter((event) =>
-                dayjs(event.date).isSame(slot, "hour")
+                dayjs(event.date).isSame(slot, "minute")
               );
 
               return (
@@ -212,12 +389,15 @@ const CustomCalendar: React.FC = () => {
                           onEventClick({ ...event, date: event.date })
                         }
                       >
-                        <Badge status="success" text={event.title} />
+                        <Badge
+                          status={statusBadge[event.status]}
+                          text={event.branch?.name}
+                        />
                       </Flex>
                     ))}
                   </Flex>
                   <Flex className="w-[45%]">
-                    {eventsForSlot.length < 2 && (
+                    {eventsForSlot.length < 2 && dayjs().isBefore(slot) && (
                       <Button
                         // type="dashed"
                         type="primary"
@@ -240,7 +420,7 @@ const CustomCalendar: React.FC = () => {
 
   return (
     <Card className="p-4">
-      {isRefetching && <Loading />}
+      {(isRefetching || isPending) && <Loading />}
       <Flex justify="space-between" align="center">
         <Radio.Group
           value={viewMode}
@@ -255,7 +435,7 @@ const CustomCalendar: React.FC = () => {
           {t("refresh")}
         </button>
       </Flex>
-      <div style={{ marginTop: 20 }}>
+      <div className="mt-5 overflow-x-auto">
         {viewMode === ViewMode.month && (
           <Calendar
             value={currentDate}
@@ -269,29 +449,159 @@ const CustomCalendar: React.FC = () => {
 
       {/* Modal to display event details */}
       <Modal
-        title={selectedEvent?.title}
         open={!!selectedEvent}
         onCancel={closeModal}
+        // loading={isPending}
         footer={null}
+        classNames={{ content: "w-max h-max" }}
       >
-        <p>
-          <strong>{t("date")}:</strong>{" "}
-          {dayjs(selectedEvent?.date).format(dateTimeFormat)}
-        </p>
-        <p>
-          <strong>Сотрудник:</strong> {selectedEvent?.title}
-        </p>
-        <p>
-          <strong>{t("position")}:</strong> {selectedEvent?.position?.name}
-        </p>
-        <p>
-          <strong>{t("branch")}:</strong> {selectedEvent?.branch?.name}
-        </p>
-        {selectedEvent?.description && (
-          <p>
-            <strong>{t("description")}:</strong> {selectedEvent?.description}
-          </p>
-        )}
+        <Flex gap={30}>
+          <Flex vertical justify="space-between" className="min-w-80">
+            <p>Заявка № {selectedEvent?.id}</p>
+            <div className="">
+              <p>
+                <strong>Дата оформления:</strong>{" "}
+                {dayjs(selectedEvent?.date).format(dateTimeFormat)}
+              </p>
+              <p>
+                <strong>Статус:</strong> {titleObj[selectedEvent?.status!]}
+              </p>
+              <p>
+                <strong>Сотрудник:</strong> {selectedEvent?.title}
+              </p>
+              <p>
+                <strong>{t("position")}:</strong>{" "}
+                {selectedEvent?.position?.name}
+              </p>
+              <p>
+                <strong>{t("branch")}:</strong> {selectedEvent?.branch?.name}
+              </p>
+              {selectedEvent?.description && (
+                <p>
+                  <strong>{t("description")}:</strong>{" "}
+                  {selectedEvent?.description}
+                </p>
+              )}
+            </div>
+
+            <p>
+              <strong>Дата обработки:</strong>{" "}
+              {selectedEvent?.updated_at
+                ? dayjs(selectedEvent?.updated_at).format(dateTimeFormat)
+                : t("not_given")}
+            </p>
+          </Flex>
+
+          <Flex className="min-w-96 w-full" vertical>
+            <p>
+              Дата поступления заявки:{" "}
+              {dayjs(selectedEvent?.created_at).format(dateTimeFormat)}
+            </p>
+            <Dragger {...props}>
+              <p className="ant-upload-drag-icon">
+                <InboxOutlined />
+              </p>
+              <p className="ant-upload-text">{t("upload_files")}</p>
+              <p className="ant-upload-hint">{t("file_upload_descr")}</p>
+            </Dragger>
+
+            {selectedEvent?.status === RequestStatus.received && (
+              <Flex gap={20} className="justify-end mt-4">
+                <Popconfirm
+                  title={
+                    <Radio.Group
+                      onChange={onDenyReasonChange}
+                      value={deny_reason}
+                    >
+                      <Space direction="vertical">
+                        <Radio value={"Не готовы документы"}>
+                          Не готовы документы
+                        </Radio>
+                        <Radio value={"Семейные обстоятельства"}>
+                          Семейные обстоятельства
+                        </Radio>
+                        <Radio value={"Сотрудник не работает, увольнение"}>
+                          Сотрудник не работает, увольнение
+                        </Radio>
+                        <Radio value={"Другое"}>
+                          Другое
+                          {deny_reason === "Другое" ? (
+                            <Input
+                              onChange={(e) =>
+                                $other_deny_reason(e.target.value)
+                              }
+                              className="w-40 ml-3"
+                            />
+                          ) : null}
+                        </Radio>
+                      </Space>
+                    </Radio.Group>
+                  }
+                  onConfirm={() => editStatus({ status: RequestStatus.denied })}
+                  okText={t("yes")}
+                  cancelText={t("no")}
+                >
+                  <button
+                    disabled={isPending}
+                    className="btn btn-danger flex flex-1 justify-center w-max text-nowrap"
+                  >
+                    Не оформлен
+                  </button>
+                </Popconfirm>
+                <Popconfirm
+                  title={
+                    <Radio.Group
+                      onChange={onDenyReasonChange}
+                      value={deny_reason}
+                    >
+                      <Space direction="vertical">
+                        <Radio value={"Не готовы документы"}>
+                          Не готовы документы
+                        </Radio>
+                        <Radio value={"Семейные обстоятельства"}>
+                          Семейные обстоятельства
+                        </Radio>
+                        <Radio value={"Сотрудник не работает, увольнение"}>
+                          Сотрудник не работает, увольнение
+                        </Radio>
+                        <Radio value={"Другое"}>
+                          Другое
+                          {deny_reason === "Другое" ? (
+                            <Input
+                              onChange={(e) =>
+                                $other_deny_reason(e.target.value)
+                              }
+                              className="w-40 ml-3"
+                            />
+                          ) : null}
+                        </Radio>
+                      </Space>
+                    </Radio.Group>
+                  }
+                  onConfirm={() =>
+                    editStatus({ status: RequestStatus.closed_denied })
+                  }
+                  okText={t("yes")}
+                  cancelText={t("no")}
+                >
+                  <button
+                    disabled={isPending}
+                    className="btn btn-danger flex flex-1 justify-center"
+                  >
+                    Отменить
+                  </button>
+                </Popconfirm>
+                <button
+                  className="btn btn-primary flex flex-1 justify-center"
+                  disabled={isPending}
+                  onClick={() => editStatus({ status: RequestStatus.finished })}
+                >
+                  Оформлен
+                </button>
+              </Flex>
+            )}
+          </Flex>
+        </Flex>
       </Modal>
       <Modal
         loading={isPending || isRefetching || positionLoading}
@@ -350,7 +660,7 @@ const CustomCalendar: React.FC = () => {
           </BaseInput>
         )}
 
-        {viewMode !== ViewMode.day && (
+        {viewMode === ViewMode.month && (
           <BaseInput label="Пожалуйста, выберите подходящее время">
             <Select
               options={timeSlots?.free?.map((item) => ({

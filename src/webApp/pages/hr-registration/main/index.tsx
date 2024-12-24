@@ -1,6 +1,7 @@
 import Loading from "@/components/Loader";
 import useUpdateEffect from "@/hooks/custom/useUpdateEffect";
 import { getMyAppointments } from "@/hooks/hr-registration";
+import { titleObj } from "@/utils/hr-registry";
 import { dateTimeFormat } from "@/utils/keys";
 import { EPresetTimes, RequestStatus } from "@/utils/types";
 import { Button, Flex, Modal } from "antd";
@@ -9,14 +10,6 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useLocation, useNavigate } from "react-router-dom";
-
-export const titleObj: { [key: number]: string } = {
-  [RequestStatus.closed_denied]: "Отклонен",
-  [RequestStatus.denied]: "Не оформлен",
-  [RequestStatus.new]: "Запланировано",
-  [RequestStatus.received]: "Запланировано",
-  [RequestStatus.finished]: "Оформлено",
-};
 
 export const statusClassName: { [key: number]: string } = {
   [RequestStatus.received]: "bg-[#4630EB]",

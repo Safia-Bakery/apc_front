@@ -4,7 +4,6 @@ import Card from "@/components/Card";
 import Header from "@/components/Header";
 import dayjs from "dayjs";
 import successToast from "@/utils/successToast";
-import { CancelReason } from "@/utils/helpers";
 import { ModalTypes, RequestStatus } from "@/utils/types";
 import { useForm } from "react-hook-form";
 import Loading from "@/components/Loader";
@@ -21,6 +20,13 @@ import {
   getAppointments,
 } from "@/hooks/hr-registration";
 
+const denyReasons = [
+  "Не готовы документы",
+  "Семейные обстоятельства",
+  "Сотрудник не работает, увольнение",
+  "Другое",
+];
+
 const ShowHrRequest = () => {
   const { t } = useTranslation();
   const { id } = useParams();
@@ -33,7 +39,6 @@ const ShowHrRequest = () => {
     refetch: orderRefetch,
     isLoading,
   } = getAppointment({ id: Number(id) });
-  const isNew = order?.status === RequestStatus.new;
   const navigate = useNavigate();
   const { watch, register, handleSubmit, getValues } = useForm();
   const handleBack = () => navigate("/hr-requests");
@@ -51,8 +56,7 @@ const ShowHrRequest = () => {
         id: Number(id),
         status,
         ...(status === RequestStatus.denied && {
-          deny_reason:
-            fixedReason < 4 ? t(CancelReason[fixedReason]) : cancel_reason,
+          deny_reason: fixedReason !== "Другое" ? fixedReason : cancel_reason,
         }),
       },
       {
@@ -67,37 +71,26 @@ const ShowHrRequest = () => {
   };
 
   const renderBtns = useMemo(() => {
-    if (isNew)
-      return (
-        <div className="float-end mb-2">
-          <button
-            onClick={handleModal(ModalTypes.cancelRequest)}
-            className="btn btn-danger mr-2"
-          >
-            {t("deny")}
-          </button>
-          <button
-            onClick={() => handleRequest({ status: RequestStatus.received })}
-            className="btn btn-success"
-            id="recieve_request"
-          >
-            {t("receive")}
-          </button>
-        </div>
-      );
-    else
-      return (
-        <div className="float-end mb-2">
-          {order?.status! < RequestStatus.finished && (
+    return (
+      <div className="float-end mb-2">
+        {order?.status! < RequestStatus.finished && (
+          <>
+            <button
+              onClick={handleModal(ModalTypes.cancelRequest)}
+              className="btn btn-danger mr-2"
+            >
+              {t("deny")}
+            </button>
             <button
               onClick={() => handleRequest({ status: RequestStatus.finished })}
               className="btn btn-success"
             >
               {t("finish")}
             </button>
-          )}
-        </div>
-      );
+          </>
+        )}
+      </div>
+    );
   }, [order?.status]);
 
   const renderModals = useMemo(() => {
@@ -125,15 +118,15 @@ const ShowHrRequest = () => {
                 >
                   <option value={undefined} />
 
-                  {Object.keys(CancelReason).map((item) => (
+                  {denyReasons.map((item) => (
                     <option key={item} value={item}>
-                      {t(CancelReason[+item])}
+                      {item}
                     </option>
                   ))}
                 </MainSelect>
               </BaseInput>
 
-              {watch("fixedReason") == 4 && (
+              {watch("fixedReason") === "Другое" && (
                 <BaseInput label="comments">
                   <MainTextArea register={register("cancel_reason")} />
                 </BaseInput>
