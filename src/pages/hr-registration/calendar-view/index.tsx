@@ -47,6 +47,7 @@ import { baseURL } from "@/store/baseUrl";
 import { useAppSelector } from "@/store/utils/types";
 import { tokenSelector } from "@/store/reducers/auth";
 import { RequestStatus } from "@/utils/types";
+import { Link } from "react-router-dom";
 
 // Статусы оформления:
 // 0 ----> Новый
@@ -458,7 +459,9 @@ const CustomCalendar: React.FC = () => {
       >
         <Flex gap={30}>
           <Flex vertical justify="space-between" className="min-w-80">
-            <p>Заявка № {selectedEvent?.id}</p>
+            <Link to={`/hr-requests/${selectedEvent?.id}`}>
+              Заявка № {selectedEvent?.id}
+            </Link>
             <div className="">
               <p>
                 <strong>Дата оформления:</strong>{" "}

@@ -1,4 +1,3 @@
-import { RequestStatusArr } from "@/utils/helpers";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import useDebounce from "custom/useDebounce";
 import BaseInputs from "@/components/BaseInputs";
@@ -14,6 +13,14 @@ import { getPositions } from "@/hooks/hr-registration";
 import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
 import dayjs from "dayjs";
 import { yearMonthDate } from "@/utils/keys";
+import { RequestStatus } from "@/utils/types";
+
+const RequestStatusArr = [
+  { value: RequestStatus.received, label: "Принят" },
+  { value: RequestStatus.finished, label: "Оформлен" },
+  { value: RequestStatus.closed_denied, label: "Отменен" },
+  { value: RequestStatus.denied, label: "Не оформлен" },
+];
 
 const HrRequestFilter: FC = () => {
   const navigate = useNavigateParams();

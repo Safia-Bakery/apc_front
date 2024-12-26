@@ -19,6 +19,14 @@ import { getAppointments } from "@/hooks/hr-registration";
 import HrRequestFilter from "./filter";
 import useUpdateQueryStr from "@/hooks/custom/useUpdateQueryStr";
 
+export const RequestStatusHr: { [key: number]: string } = {
+  // { value: RequestStatus.new, label: "Новый" },
+  [RequestStatus.received]: "Принят",
+  [RequestStatus.finished]: "Оформлен",
+  [RequestStatus.closed_denied]: "Отменен",
+  [RequestStatus.denied]: "Не оформлен",
+};
+
 const HrRequests = () => {
   const { t } = useTranslation();
   const currentPage = Number(useQueryString("page")) || 1;
@@ -78,7 +86,7 @@ const HrRequests = () => {
         title: t("status"),
         dataIndex: "status",
         ...(isMobile && { width: 150 }),
-        render: (_, record) => t(RequestStatus[record.status]),
+        render: (_, record) => RequestStatusHr[record.status],
       },
       {
         title: t("meeting_time"),

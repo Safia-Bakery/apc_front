@@ -19,6 +19,7 @@ import {
   getAppointment,
   getAppointments,
 } from "@/hooks/hr-registration";
+import { RequestStatusHr } from ".";
 
 const denyReasons = [
   "Не готовы документы",
@@ -149,7 +150,7 @@ const ShowHrRequest = () => {
         <Header
           title={`${t("order")} №${id}`}
           subTitle={`${t("status")}: ${
-            order?.status.toString() && t(RequestStatus[order?.status])
+            order?.status.toString() && t(RequestStatusHr[order?.status])
           }`}
         >
           <button onClick={handleBack} className="btn btn-primary">
@@ -165,14 +166,14 @@ const ShowHrRequest = () => {
                     <th>{t("creator")}</th>
                     <td className="w-1/2"> {order?.user?.full_name}</td>
                   </tr>
-                  {/* <tr>
+                  <tr>
                     <th>{t("phone_number")}</th>
                     <td>
                       <a href={`tel:+${order?.user?.phone_number}`}>
                         +{order?.user?.phone_number}
                       </a>
                     </td>
-                  </tr> */}
+                  </tr>
 
                   <tr>
                     <th>{t("branch")}</th>

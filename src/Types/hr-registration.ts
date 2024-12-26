@@ -16,6 +16,7 @@ interface HrAppointmentRes {
   user?: {
     id: number;
     username: string;
+    phone_number: string;
     full_name: string;
     telegram_id: number;
     branch_id: string;
