@@ -80,13 +80,13 @@ const ShowHrRequest = () => {
               onClick={handleModal(ModalTypes.cancelRequest)}
               className="btn btn-danger mr-2"
             >
-              {t("deny")}
+              Не оформлен
             </button>
             <button
               onClick={() => handleRequest({ status: RequestStatus.finished })}
               className="btn btn-success"
             >
-              {t("finish")}
+              Оформлен
             </button>
           </>
         )}
