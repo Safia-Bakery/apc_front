@@ -27,6 +27,10 @@ export const hrDenyReason = [
     id: 3,
   },
   {
+    name: "Не пришел на оформление",
+    id: 5,
+  },
+  {
     name: "Другое",
     id: 4,
   },

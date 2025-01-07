@@ -7,7 +7,7 @@ import {
 import errorToast from "@/utils/errorToast";
 import { RequestStatus } from "@/utils/types";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
-import { Button, Flex, Modal, Radio } from "antd";
+import { Button, Flex, Input, Modal, Radio } from "antd";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -19,7 +19,8 @@ const denyReasons = [
   "Не готовы документы",
   "Семейные обстоятельства",
   "Сотрудник не работает, увольнение",
-  "Другое",
+  "Не пришел на оформление",
+  // "Другое",
 ];
 
 const inActiveBtn: { [key: number]: boolean } = {
@@ -31,30 +32,34 @@ const inActiveBtn: { [key: number]: boolean } = {
 const ShowHrOrder = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data, isLoading, refetch } = getAppointment({
+  const { data, isLoading, refetch, isRefetching } = getAppointment({
     id: Number(id),
     enabled: !!id,
   });
   const [modal, $modal] = useState(false);
   const [selectedReason, $selectedReason] = useState("");
-  const { refetch: ordersRefetch } = getMyAppointments({});
+  const [other_deny_reason, $other_deny_reason] = useState("");
+  const { refetch: ordersRefetch, isRefetching: appointmentRefetching } =
+    getMyAppointments({});
 
   const { mutate, isPending } = editAddAppointment();
 
   const handleModal = () => $modal((prev) => !prev);
 
   const handleCancel = () => {
+    const denyreaon =
+      selectedReason === "Другое" ? other_deny_reason : selectedReason;
     mutate(
       {
-        deny_reason: selectedReason,
+        deny_reason: denyreaon,
         id: Number(id),
         status: RequestStatus.closed_denied,
       },
       {
-        onSuccess: () => {
-          ordersRefetch();
-          refetch();
-          navigate(-1);
+        onSuccess: async () => {
+          await ordersRefetch();
+          await refetch();
+          if (!appointmentRefetching || !isRefetching) navigate(-1);
         },
         onError: (e) => errorToast(e.message),
       }
@@ -98,14 +103,15 @@ const ShowHrOrder = () => {
               {item}
             </Radio>
           ))}
-          {/* <Row>
-          <Col span={12} >
-            
-          </Col>
-          <Col span={12}>
-            <Radio value={2}>2022</Radio>
-          </Col>
-        </Row>  */}
+          <Radio value={"Другое"}>
+            Другое
+            {selectedReason === "Другое" ? (
+              <Input
+                onChange={(e) => $other_deny_reason(e.target.value)}
+                className="w-40 ml-3"
+              />
+            ) : null}
+          </Radio>
         </Radio.Group>
         <Flex className="w-full" justify="center">
           <Button

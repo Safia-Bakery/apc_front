@@ -21,18 +21,23 @@ export const useApcServiceStats = ({
     queryKey: ["Apc_service_stats", finished_at, started_at, params],
     queryFn: ({ signal }) =>
       baseApi
-        .get("/v1/arc/stats", {
-          params: {
-            finished_at,
-            started_at,
-            ...params,
-          },
-          ...config,
-          signal,
-        })
+        .get(
+          params.sphere_status === Sphere.retail
+            ? "/v1/arc/stats"
+            : "/v1/arc/factory/stats",
+          {
+            params: {
+              finished_at,
+              started_at,
+              ...params,
+            },
+            ...config,
+            signal,
+          }
+        )
         .then(({ data: response }) => response as ServiceStatsTypes),
     enabled,
-    staleTime: EPresetTimes.MINUTE * 10,
+    staleTime: EPresetTimes.MINUTE * 4,
     refetchOnMount: true,
   });
 };

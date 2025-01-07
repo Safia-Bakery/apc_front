@@ -1,4 +1,4 @@
-import { ServiceStatsType } from "@/utils/types";
+import { ServiceStatsType, Sphere } from "@/utils/types";
 import { Fragment, useEffect, useMemo, useRef } from "react";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import EmptyList from "@/components/EmptyList";
@@ -24,7 +24,11 @@ const column = [
   { name: "avg_handling_time_days_hours" },
 ];
 
-const ServiceStatsApc = () => {
+interface Props {
+  sphere?: Sphere;
+}
+
+const ServiceStatsApc = ({ sphere }: Props) => {
   const { t } = useTranslation();
   const start = useUpdateQueryStr("start");
   const end = useUpdateQueryStr("end");
@@ -41,6 +45,7 @@ const ServiceStatsApc = () => {
   const downloadAsPdf = () => onDownload();
 
   const { isLoading, data } = useApcServiceStats({
+    sphere_status: sphere,
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),
   });

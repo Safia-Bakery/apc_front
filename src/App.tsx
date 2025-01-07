@@ -210,7 +210,7 @@ const App = () => {
               path="service_level"
               element={
                 <Suspend>
-                  <ServiceStatsApc />
+                  <ServiceStatsApc sphere={Sphere.retail} />
                 </Suspend>
               }
             />
@@ -281,7 +281,7 @@ const App = () => {
               path="service_level"
               element={
                 <Suspend>
-                  <ServiceStatsApc />
+                  <ServiceStatsApc sphere={Sphere.fabric} />
                 </Suspend>
               }
             />

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import baseApi from "@/api/base_api";
-import { Category, EPresetTimes } from "@/utils/types";
+import { Category, EPresetTimes, ServiceStatsTypes } from "@/utils/types";
 import {
   CategoryToolParams,
   DivisionRes,
@@ -20,6 +20,8 @@ import {
   ToolsProductsType,
   ToolsRes,
 } from "@/Types/factory";
+import { yearMonthDate } from "@/utils/keys";
+import dayjs from "dayjs";
 
 export const getApcFactoryRequest = ({
   id,
@@ -286,6 +288,11 @@ export const getInvFactoryCategoriesTools = ({
     enabled,
   });
 };
+interface StatsParams {
+  enabled?: boolean;
+  finished_at?: string;
+  started_at?: string;
+}
 
 export const apcFactoryInvMutation = () => {
   return useMutation({

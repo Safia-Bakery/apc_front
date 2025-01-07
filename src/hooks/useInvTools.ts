@@ -8,6 +8,7 @@ interface Props {
   page?: number;
   size?: number;
   enabled?: boolean;
+  status?: number;
 }
 
 export const useInvTools = ({ enabled, ...params }: Props) => {

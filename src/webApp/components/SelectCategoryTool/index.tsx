@@ -33,6 +33,7 @@ const SelectCategoryTool = () => {
     ...(toolsSearch && !!selectedBranch?.id && { name: toolsSearch }),
     ...(page && { page: +page }),
     ...(id && !!selectedBranch?.id && { category_id: +id }),
+    status: 1,
     enabled: !!selectedBranch?.id && (!!toolsSearch || !!id),
   });
 
