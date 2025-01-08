@@ -10,13 +10,13 @@ import Loading from "@/components/Loader";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import warnToast from "@/utils/warnToast";
-import { workerFunction } from "@/utils/hr-registry";
+import { WorkerFunction, workerFunction } from "@/utils/hr-registry";
 import AntBranchSelect from "@/components/AntBranchSelect";
 
 const HrSignRegistery = () => {
   const navigate = useNavigate();
   const [branch, $branch] = useState<string>();
-  const [is_intern, $is_intern] = useState<boolean>(false);
+  const [is_intern, $is_intern] = useState<WorkerFunction>();
   const [position, $position] = useState<number>();
   const [warnModal, $warnModal] = useState(true);
   const [animate, setAnimate] = useState(false);
@@ -40,6 +40,7 @@ const HrSignRegistery = () => {
 
   const onSubmit = () => {
     if (!position) return warnToast("Выберите Должность!!!");
+    if (!is_intern) return warnToast("Выберите Функцию!!!");
     if (!branch) {
       window.scrollTo(0, 0);
       warnToast("Выберите Филиал!!!");
@@ -140,11 +141,11 @@ const HrSignRegistery = () => {
             filterOption={false}
             popupMatchSelectWidth={false}
             placeholder="Функция сотрудника"
-            onChange={(val) => $is_intern(val === 1)}
+            onChange={(val) => $is_intern(val)}
           />
         </BaseInput>
 
-        {is_intern && (
+        {is_intern === WorkerFunction.intern && (
           <BaseInput label="Добавьте комментарии" error={errors.description}>
             <MainTextArea
               register={register("description", {

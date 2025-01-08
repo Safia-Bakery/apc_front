@@ -4,7 +4,7 @@ import {
   clearCart,
 } from "@/store/reducers/webInventory";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import InvButton, { InvBtnType } from "@/webApp/components/InvButton";
 import InvHeader from "@/webApp/components/web-header";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -19,6 +19,7 @@ import { invRequestMutation } from "@/hooks/inventory";
 import { deptSelector } from "@/store/reducers/auth";
 import { Departments } from "@/utils/types";
 import { invFabricCategory } from "@/utils/keys";
+import MainDropZone from "@/components/MainDropZone";
 
 const InvCart = () => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const InvCart = () => {
   const dep = useAppSelector(deptSelector);
   const { state } = useLocation();
   const dispatch = useAppDispatch();
+  const [uploadedFiles, $uploadedFiles] = useState<string[]>([]);
   const cart = useAppSelector(cartSelector);
   const { mutate, isPending: mutating } = invRequestMutation();
 
@@ -49,6 +51,7 @@ const InvCart = () => {
         expenditure,
         department: dep,
         description: !!comment ? comment : " ",
+        ...(!!uploadedFiles.length && { files: uploadedFiles }),
       },
       {
         onSuccess: (data) => {
@@ -91,6 +94,9 @@ const InvCart = () => {
         </div>
       </WebAppContainer>
       <WebAppContainer>
+        {dep === Departments.inventory_factory && (
+          <MainDropZone setData={$uploadedFiles} defaultFiles={uploadedFiles} />
+        )}
         <BaseInput
           className="mt-4"
           label="При желании можно оставить комментарии"

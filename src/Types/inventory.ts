@@ -5,6 +5,7 @@ interface InventoryRequestBody {
   description?: string;
   product?: string;
   department?: number;
+  files?: string[];
   status?: number;
   expenditure?: {
     amount: number;

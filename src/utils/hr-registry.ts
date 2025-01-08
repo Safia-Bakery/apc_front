@@ -1,13 +1,18 @@
 import dayjs, { Dayjs } from "dayjs";
 import { RequestStatus } from "./types";
 
+export enum WorkerFunction {
+  intern = "intern",
+  works_in_selected_branch = "works_in_selected_branch",
+}
+
 export const workerFunction = [
   {
-    value: 1,
+    value: WorkerFunction.intern,
     label: "Проходит стажировку для другого",
   },
   {
-    value: 2,
+    value: WorkerFunction.works_in_selected_branch,
     label: "Будет работать на указаном филиале",
   },
 ];
