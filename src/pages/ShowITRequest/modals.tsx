@@ -381,20 +381,7 @@ const ITModals = () => {
       );
   };
 
-  useEffect(() => {
-    if (modal === ModalTypes.changeCateg)
-      reset({
-        category: order?.category.id,
-      });
-  }, [modal, order?.category]);
-
-  if (
-    orderFetching ||
-    // (categoriesLoading && modal === ModalTypes.changeCateg) ||
-    attaching ||
-    msgLoading
-  )
-    return <Loading />;
+  if (orderFetching || attaching || msgLoading) return <Loading />;
 
   return (
     <Modal

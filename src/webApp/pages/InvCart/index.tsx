@@ -95,7 +95,11 @@ const InvCart = () => {
       </WebAppContainer>
       <WebAppContainer>
         {dep === Departments.inventory_factory && (
-          <MainDropZone setData={$uploadedFiles} defaultFiles={uploadedFiles} />
+          <MainDropZone
+            setData={$uploadedFiles}
+            defaultFiles={uploadedFiles}
+            btnLabel="Загрузить фото"
+          />
         )}
         <BaseInput
           className="mt-4"

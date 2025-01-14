@@ -43,6 +43,7 @@ const localization = {
       requests_it: "Заявки ИТ",
       back: "Назад",
       change_working_time: "Изменить время работы бота",
+      time: "время",
       save: "Сохранить",
       main: "Главная",
       yes: "Да",
@@ -434,6 +435,7 @@ const localization = {
       calendar: "Календарь",
       add_meet: "Дабавить встречу",
       add_new_meet: "Дабавить новую встречу",
+      schedules: "Расписания",
     },
   },
   uz: {

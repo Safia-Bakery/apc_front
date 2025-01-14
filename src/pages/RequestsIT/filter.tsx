@@ -12,24 +12,35 @@ import MainInput from "@/components/BaseInputs/MainInput";
 import MainDatePicker from "@/components/BaseInputs/MainDatePicker";
 import BranchSelect from "@/components/BranchSelect";
 import useQueryString from "custom/useQueryString";
-import { Departments, Sphere } from "@/utils/types";
+import { Departments, EPresetTimes, Sphere } from "@/utils/types";
 import dayjs from "dayjs";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
-import useCategories from "@/hooks/useCategories";
+import useCategories, { loadCategoriesChild } from "@/hooks/useCategories";
 import { useForm } from "react-hook-form";
 import useUpdateEffect from "custom/useUpdateEffect";
 import useBrigadas from "@/hooks/useBrigadas";
 import StatusFilter from "@/components/StatusFilter";
+import AntCascader from "@/components/AntCascader";
+import { CascaderProps } from "antd";
+import errorToast from "@/utils/errorToast";
+
+interface Option {
+  value?: string | number | null;
+  label?: React.ReactNode;
+  children?: Option[];
+  isLeaf?: boolean;
+  loading?: boolean;
+}
 
 const ITFilter: FC = () => {
   const navigate = useNavigateParams();
   const deleteParam = useRemoveParams();
 
-  const { data: categories, refetch: catRefetch } = useCategories({
-    department: Departments.IT,
-    enabled: false,
-    sphere_status: Sphere.fix,
-  });
+  // const { data: categories, refetch: catRefetch } = useCategories({
+  //   department: Departments.IT,
+  //   enabled: false,
+  //   sphere_status: Sphere.fix,
+  // });
 
   const { data: brigades, refetch: masterRefetch } = useBrigadas({
     enabled: false,
@@ -47,7 +58,56 @@ const ITFilter: FC = () => {
   const idQ = useQueryString("id");
   const is_expired = useQueryString("is_expired");
   const urgent = useQueryString("urgent");
+
+  const [options, setOptions] = useState<Option[]>([]);
   const paused = useQueryString("paused");
+
+  const {
+    data: categories,
+    isLoading: categoriesLoading,
+    refetch: catRefetch,
+  } = useCategories({
+    enabled: false,
+    department: Departments.IT,
+    sphere_status: Sphere.fix,
+    category_status: 1,
+    staleTime: EPresetTimes.MINUTE * 4,
+  });
+
+  const { mutateAsync, isPending } = loadCategoriesChild();
+
+  const handleChange: CascaderProps<Option>["onChange"] = (value) => {
+    navigate({ category_id: Number(value?.at(-1)) });
+  };
+
+  const loadData = async (selectedOptions: Option[]) => {
+    const targetOption = selectedOptions[selectedOptions.length - 1];
+    targetOption.loading = true;
+
+    try {
+      const children = await mutateAsync(Number(targetOption.value));
+      targetOption.loading = false;
+      targetOption.children = children.items?.map((child) => ({
+        value: child.id,
+        label: child.name,
+      }));
+      setOptions([...options]); // Update options to trigger re-render
+    } catch (error) {
+      errorToast("Failed to load children:");
+      targetOption.loading = false;
+    }
+  };
+
+  useEffect(() => {
+    if (!!categories?.items?.length)
+      setOptions(
+        categories?.items?.map((item) => ({
+          label: item.name,
+          value: item.id,
+          isLeaf: !!item.is_child,
+        }))
+      );
+  }, [categories]);
 
   const startRange = (start: Date | null) => {
     if (start === undefined) deleteParam(["created_at"]);
@@ -114,11 +174,14 @@ const ITFilter: FC = () => {
       </td>
       <td className="!p-0">
         <BaseInputs className="!m-1">
-          <MainSelect
-            values={categories?.items}
+          <AntCascader
+            className="w-full"
+            loading={categoriesLoading || isPending}
+            changeOnSelect
             onFocus={() => catRefetch()}
-            value={category_id.toString()}
-            onChange={(e) => navigate({ category_id: e.target.value })}
+            onChange={handleChange}
+            options={options}
+            loadData={loadData}
           />
         </BaseInputs>
       </td>

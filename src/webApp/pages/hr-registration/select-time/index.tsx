@@ -143,7 +143,7 @@ const HRSelectTime = () => {
           <Button
             disabled={isPending}
             onClick={handleSubmit}
-            className="bg-[#3B21FF] rounded-full text-white w-full transition-transform duration-300 hover:scale-105"
+            className="bg-[#3B21FF] h-10 rounded-full text-white w-full transition-transform duration-300 hover:scale-105"
           >
             Подтвердить
           </Button>

@@ -18,6 +18,8 @@ const EditAddInvFabricCategory = lazy(
 const CalendarView = lazy(
   () => import("@/pages/hr-registration/calendar-view")
 );
+
+const Schedules = lazy(() => import("@/pages/hr-registration/schedules"));
 const HrPositions = lazy(() => import("@/pages/hr-registration/positions"));
 const EditAddHrPosition = lazy(
   () => import("@/pages/hr-registration/positions/edit-add-position")
@@ -487,6 +489,12 @@ export const sidebarRoutes: SidebarType[] = [
         icon: "/icons/clients.svg",
         screen: MainPermissions.get_hr_position,
       },
+      {
+        name: "schedules",
+        url: "/hr-schedules",
+        icon: "/icons/calendar.svg",
+        screen: MainPermissions.get_hr_schedules,
+      },
     ],
   },
 
@@ -607,6 +615,11 @@ export const routes = [
     element: <CalendarView />,
     path: "/hr-calendar",
     screen: MainPermissions.get_hr_calendar,
+  },
+  {
+    element: <Schedules />,
+    path: "/hr-schedules",
+    screen: MainPermissions.get_hr_schedules,
   },
   {
     element: <HrPositions />,

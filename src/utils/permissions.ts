@@ -201,4 +201,6 @@ export enum MainPermissions {
   get_hr_calendar = 164,
   get_hr_position = 165,
   edit_hr_position = 166,
+  get_hr_schedules = 167, // todo
+  edit_hr_schedules = 168, // todo
 }

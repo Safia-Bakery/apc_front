@@ -13,12 +13,14 @@ const { Dragger } = Upload;
 interface Props extends UploadProps {
   setData: (value: SetStateAction<string[]>) => void;
   defaultFiles?: string[];
+  btnLabel?: string;
 }
 
 const MainDropZone = ({
   setData,
   defaultFiles,
   name = "files",
+  btnLabel = "Загрузить файлы",
   listType = "picture",
   ...others
 }: Props) => {
@@ -90,7 +92,7 @@ const MainDropZone = ({
         ))}
       </Flex>
       <Button type="primary" onClick={toggleModal} className="w-60">
-        Загрузить файлы
+        {btnLabel}
       </Button>
       <Modal
         onCancel={toggleModal}

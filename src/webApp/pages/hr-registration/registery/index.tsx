@@ -167,7 +167,7 @@ const HrSignRegistery = () => {
       <div className="fixed bottom-0 left-0 right-0 p-2 bg-[#DFDFDF]">
         <Button
           htmlType="submit"
-          className="bg-[#3B21FF] rounded-full text-white w-full transition-transform duration-300 hover:scale-105"
+          className="bg-[#3B21FF] h-10 rounded-full text-white w-full transition-transform duration-300 hover:scale-105"
         >
           Далее
         </Button>
