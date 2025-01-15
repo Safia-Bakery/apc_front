@@ -107,7 +107,7 @@ const RequestsStaff = () => {
           </div>
           <div className="flex flex-col gap-2 justify-between">
             <DownloadExcel />
-            {permission?.[MainPermissions.staff_modal_time] && (
+            {permission?.has(MainPermissions.staff_modal_time) && (
               <button
                 onClick={() => navigateParams({ time_modal: 1 })}
                 className="btn btn-primary"
@@ -115,7 +115,7 @@ const RequestsStaff = () => {
                 {t("bot_settings")}
               </button>
             )}
-            {permission?.[MainPermissions.add_staff_requests] && (
+            {permission?.has(MainPermissions.add_staff_requests) && (
               <button
                 onClick={() => navigate("add")}
                 className="btn btn-success  "
@@ -145,7 +145,7 @@ const RequestsStaff = () => {
                 <tr className={requestRows[order?.status]} key={idx}>
                   <td width="40">{handleIdx(idx)}</td>
                   <td width="80">
-                    {permission?.[MainPermissions.edit_staff_requests] ? (
+                    {permission?.has(MainPermissions.edit_staff_requests) ? (
                       <Link
                         id="request_id"
                         to={`/requests-staff/${order?.id}`}

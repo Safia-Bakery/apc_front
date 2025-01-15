@@ -45,7 +45,7 @@ const HrPositions = () => {
         title: "",
         dataIndex: "action",
         render: (_, record) =>
-          permission?.[MainPermissions.edit_hr_position] && (
+          permission?.has(MainPermissions.edit_hr_position) && (
             <TableViewBtn onClick={() => navigate(`${record.id}`)} />
           ),
       },
@@ -67,7 +67,7 @@ const HrPositions = () => {
         <button className="btn btn-primary" onClick={() => refetch()}>
           {t("refresh")}
         </button>
-        {permission?.[MainPermissions.edit_hr_position] && (
+        {permission?.has(MainPermissions.edit_hr_position) && (
           <button
             className="btn btn-primary ml-3"
             onClick={() => navigate("add")}

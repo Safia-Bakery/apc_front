@@ -1,4 +1,5 @@
 import { lazy, useMemo } from "react";
+import { enableMapSet } from "immer";
 import dayjs from "dayjs";
 import { Route, Routes } from "react-router-dom";
 import "dayjs/locale/ru";
@@ -19,6 +20,8 @@ import {
   routes,
 } from "./utils/routeObjs";
 import { MainPermissions } from "@/utils/permissions";
+
+enableMapSet();
 
 const HrSuccess = lazy(() => import("./webApp/pages/hr-registration/success"));
 const HRSelectTime = lazy(
@@ -102,7 +105,7 @@ const App = () => {
   const renderScreen = useMemo(() => {
     if (!!permission && !!token)
       return routes.map((route) => {
-        if (!!permission?.[route.screen])
+        if (!!permission?.has(route.screen))
           return (
             <Route
               key={route.path}
@@ -145,7 +148,7 @@ const App = () => {
         />
         {renderScreen}
 
-        {permission?.[MainPermissions.stats_apc_retail] && (
+        {permission?.has(MainPermissions.stats_apc_retail) && (
           <Route
             path="/statistics-apc-retail"
             element={
@@ -216,7 +219,7 @@ const App = () => {
             />
           </Route>
         )}
-        {permission?.[MainPermissions.stats_apc_fabric] && (
+        {permission?.has(MainPermissions.stats_apc_fabric) && (
           <Route
             path="/statistics-apc-fabric"
             element={
@@ -288,7 +291,7 @@ const App = () => {
           </Route>
         )}
 
-        {permission?.[MainPermissions.it_statistics] && (
+        {permission?.has(MainPermissions.it_statistics) && (
           <Route
             path="/statistics-it"
             element={
@@ -312,7 +315,7 @@ const App = () => {
           </Route>
         )}
 
-        {permission?.[MainPermissions.stats_marketing] && (
+        {permission?.has(MainPermissions.stats_marketing) && (
           <Route
             path="/statistics-marketing"
             element={
@@ -352,7 +355,7 @@ const App = () => {
             />
           </Route>
         )}
-        {permission?.[MainPermissions.inventory_reports_retail] && (
+        {permission?.has(MainPermissions.inventory_reports_retail) && (
           <Route
             path="/statistics-inventory-retail"
             element={
@@ -375,7 +378,7 @@ const App = () => {
             />
           </Route>
         )}
-        {permission?.[MainPermissions.reports_inv_factory] && (
+        {permission?.has(MainPermissions.reports_inv_factory) && (
           <Route
             path="/statistics-inventory-factory"
             element={

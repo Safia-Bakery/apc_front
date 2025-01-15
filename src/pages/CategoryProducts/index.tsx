@@ -40,7 +40,7 @@ const CategoryProducts = () => {
   return (
     <Card>
       <Header title={`${t("products")}(${category_name})`}>
-        {permission?.[MainPermissions.edit_categ_it] && (
+        {permission?.has(MainPermissions.edit_categ_it) && (
           <div className="flex gap-2">
             <button
               className="btn btn-success  "
@@ -76,7 +76,7 @@ const CategoryProducts = () => {
                     <td>some</td>
                     <td>{category?.status ? t("active") : t("not_active")}</td>
                     <td width={40}>
-                      {permission?.[MainPermissions.edit_categ_it] && (
+                      {permission?.has(MainPermissions.edit_categ_it) && (
                         <TableViewBtn
                           onClick={handleNavigate(
                             `/categories-it/${sphere}/${id}/edit-product/${category.id}`

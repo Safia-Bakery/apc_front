@@ -62,7 +62,7 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
   return (
     <Card>
       <Header title={parent_name || "categories"}>
-        {permission?.[add] && (
+        {permission?.has(add) && (
           <div className="flex gap-2">
             <button
               className="btn btn-success"
@@ -116,7 +116,7 @@ const Categories: FC<Props> = ({ sphere_status, dep, add, edit }) => {
                         {category?.status ? t("active") : t("not_active")}
                       </td>
                       <td width={40}>
-                        {permission?.[edit] && (
+                        {permission?.has(edit) && (
                           <TableViewBtn onClick={() => handleEdit(category)} />
                         )}
                       </td>

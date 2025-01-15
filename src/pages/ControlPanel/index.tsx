@@ -133,7 +133,7 @@ const ControlPanel = () => {
   const mainPerms = useAppSelector(permissionSelector);
   const [selectMonth, $selectMonth] = useState(MonthVals.last_month);
 
-  const isMarkAdmin = mainPerms?.[MainPermissions.marketing_all_requests];
+  const isMarkAdmin = mainPerms?.has(MainPermissions.marketing_all_requests);
 
   const handleMonth = (e: ChangeEvent<HTMLSelectElement>) =>
     $selectMonth(e.target.value as MonthVals);

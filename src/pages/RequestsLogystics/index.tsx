@@ -103,7 +103,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
         <button onClick={downloadAsPdf} className="btn btn-primary   mr-2">
           {t("export_to_excel")}
         </button>
-        {permission?.[add] && (
+        {permission?.has(add) && (
           <button
             onClick={() => navigate("add")}
             className="btn btn-success  "
@@ -134,7 +134,7 @@ const RequestsLogystics: FC<Props> = ({ add, edit }) => {
                   <tr className={requestRows[order?.status]} key={idx}>
                     <td width="40">{handleIdx(idx)}</td>
                     <td width="80">
-                      {permission?.[edit] ? (
+                      {permission?.has(edit) ? (
                         <Link
                           id="request_id"
                           to={`/requests-logystics/${order?.id}`}

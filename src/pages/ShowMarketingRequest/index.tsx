@@ -83,7 +83,7 @@ const ShowMarketingRequest = () => {
     };
 
   const renderBtns = useMemo(() => {
-    if (permissions?.[edit] && isNew)
+    if (permissions?.has(edit) && isNew)
       return (
         <div className="float-end mb-2">
           <button
@@ -108,7 +108,7 @@ const ShowMarketingRequest = () => {
         </div>
       );
 
-    if (permissions?.[edit])
+    if (permissions?.has(edit))
       return (
         <div className="float-end mb-2">
           {order?.status! < RequestStatus.sent_to_fix && (

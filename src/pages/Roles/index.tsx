@@ -34,7 +34,7 @@ const Roles = () => {
   return (
     <Card>
       <Header title={"roles"}>
-        {permission?.[MainPermissions.add_role] && (
+        {permission?.has(MainPermissions.add_role) && (
           <button className="btn btn-success  " onClick={handleNavigate("add")}>
             {t("add")}
           </button>
@@ -55,7 +55,7 @@ const Roles = () => {
                 <tr className="bg-blue" key={role.id}>
                   <td width="40">{idx + 1}</td>
                   <td>
-                    {permission?.[MainPermissions.edit_roles] ? (
+                    {permission?.has(MainPermissions.edit_roles) ? (
                       <Link to={`/roles/${role.id}`}>{role.name}</Link>
                     ) : (
                       <span>{role?.name}</span>
@@ -63,7 +63,7 @@ const Roles = () => {
                   </td>
                   <td>{!role.status ? t("not_active") : t("active")}</td>
                   <td width={40}>
-                    {permission?.[MainPermissions.edit_roles] && (
+                    {permission?.has(MainPermissions.edit_roles) && (
                       <TableViewBtn
                         onClick={handleNavigate(`edit/${role.id}`)}
                       />

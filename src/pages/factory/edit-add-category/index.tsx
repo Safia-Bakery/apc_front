@@ -126,7 +126,7 @@ const EditAddInvFabricCategory = () => {
         title: "",
         render: (_, record) => {
           return (
-            permission?.[MainPermissions.edit_prods_inv_factory] && (
+            permission?.has(MainPermissions.edit_prods_inv_factory) && (
               <TableViewBtn
                 onClick={handleNavigate(
                   `/inventory-remains-factory/${record.id}`

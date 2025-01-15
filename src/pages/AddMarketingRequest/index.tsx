@@ -98,7 +98,7 @@ const AddMarketingRequest = () => {
           label={t("branch")}
           error={errors.fillial}
         >
-          {perm?.[MainPermissions.get_fillials_list] && (
+          {perm?.has(MainPermissions.get_fillials_list) && (
             <BranchSelect enabled />
           )}
         </BaseInputs>

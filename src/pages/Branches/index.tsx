@@ -71,7 +71,7 @@ const Branches = () => {
         header: "",
         cell: ({ row }) => {
           return (
-            permission?.[MainPermissions.edit_fillials] && (
+            permission?.has(MainPermissions.edit_fillials) && (
               <TableViewBtn
                 onClick={handleNavigate(`/branches/${row.original.id}`)}
               />
@@ -83,7 +83,7 @@ const Branches = () => {
     []
   );
 
-  const iikoBtn = permission?.[MainPermissions.synch_fillials_iiko];
+  const iikoBtn = permission?.has(MainPermissions.synch_fillials_iiko);
 
   const {
     data: branches,
@@ -130,7 +130,7 @@ const Branches = () => {
               {t("sync_with_iico")}
             </button>
           )}
-          {permission?.[MainPermissions.add_fillials] && (
+          {permission?.has(MainPermissions.add_fillials) && (
             <button
               className="btn btn-success  "
               onClick={handleNavigate("add")}

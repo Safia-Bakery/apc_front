@@ -221,7 +221,7 @@ const ShowRequestApc: FC<Props> = ({ attaching, addExp }) => {
   }, [permissions, order?.status]);
 
   const renderAssignment = useMemo(() => {
-    if (attaching && permissions?.[attaching] && order?.status! <= 1) {
+    if (attaching && permissions?.has(attaching) && order?.status! <= 1) {
       if (order?.brigada?.name) {
         return (
           <div className="flex items-center justify-between">
@@ -251,7 +251,7 @@ const ShowRequestApc: FC<Props> = ({ attaching, addExp }) => {
   const renderfileUploader = useMemo(() => {
     if (
       addExp &&
-      permissions?.[addExp] &&
+      permissions?.has(addExp) &&
       !isNew &&
       order?.status !== RequestStatus.closed_denied
     )

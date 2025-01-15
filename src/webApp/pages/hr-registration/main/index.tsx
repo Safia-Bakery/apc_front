@@ -84,16 +84,15 @@ const HrRegisteryMain = () => {
         </Button>
       </Modal>
       <Flex justify="space-between" align="center" gap={10}>
-        <div className="">
+        <div>
           <h1 className="text-xl">Мои заяки</h1>
           <p className="text-[#A3A3A3] text-xs">2 заявки в работе</p>
         </div>
 
         <Flex
-          className=""
           align="center"
           vertical
-          // onClick={() => navigate(`/tg/hr-registery/orders`)}
+          onClick={() => navigate(`/tg/hr-registery/orders`)}
         >
           <img src="/icons/archive.svg" alt="archive" height={17} width={15} />
           <h3 className="text-xs">Архив</h3>

@@ -70,7 +70,7 @@ const ClientsComments = () => {
         <button className="btn btn-primary mr-2" onClick={downloadAsPdf}>
           {t("export_to_excel")}
         </button>
-        {permission?.[MainPermissions.add_client_comment] && (
+        {permission?.has(MainPermissions.add_client_comment) && (
           <button
             className="btn btn-success"
             id="add_master"
@@ -95,7 +95,7 @@ const ClientsComments = () => {
                   <tr key={idx} className="bg-blue">
                     <td width="40">{handleIdx(idx)}</td>
                     <td>
-                      {permission?.[MainPermissions.add_client_comment] ? (
+                      {permission?.has(MainPermissions.add_client_comment) ? (
                         <Link to={`/client-comments/${comment?.id}`}>
                           {comment?.id}
                         </Link>

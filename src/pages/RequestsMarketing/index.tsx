@@ -80,7 +80,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
   return (
     <Card className="overflow-hidden">
       <Header title={title?.toString()}>
-        {add && permission?.[add] && (
+        {add && permission?.has(add) && (
           <button
             onClick={() => navigate(`add?sub_id=${sub_id}`)}
             className="btn btn-success  "
@@ -109,7 +109,7 @@ const RequestsMarketing: FC<Props> = ({ title, sub_id, add, edit }) => {
                 <tr className={requestRows[order.status]} key={idx}>
                   <td width="40">{handleIdx(idx)}</td>
                   <td width="80">
-                    {edit && permission?.[edit] ? (
+                    {edit && permission?.has(edit) ? (
                       <Link to={`${order?.id}?sub_id=${sub_id}&edit=${edit}`}>
                         {order?.id}
                       </Link>

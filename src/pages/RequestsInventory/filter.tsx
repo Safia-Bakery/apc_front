@@ -85,7 +85,7 @@ const ITFilter: FC = () => {
       </td>
       <td width={150} className="!p-0 relative">
         <div onClick={() => $enabled(true)} className={"m-1"}>
-          {perm?.[MainPermissions.get_fillials_list] && (
+          {perm?.has(MainPermissions.get_fillials_list) && (
             <BranchSelect enabled={enabled} />
           )}
         </div>

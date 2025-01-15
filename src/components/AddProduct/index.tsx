@@ -77,7 +77,7 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
   return (
     <Card className="!min-h-min">
       <Header title="products">
-        {synciiko && permissions?.[synciiko] && (
+        {synciiko && permissions?.has(synciiko) && (
           <button
             disabled={isLoading}
             onClick={handleSync}
@@ -93,7 +93,7 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
             {t("sync_with_iico")}
           </button>
         )}
-        {addExp && isFinished && permissions?.[addExp] && (
+        {addExp && isFinished && permissions?.has(addExp) && (
           <button
             className="btn btn-success   btn-sm"
             onClick={handleModal}

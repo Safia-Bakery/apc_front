@@ -190,7 +190,7 @@ const ShowRequestApcFabric = () => {
 
   const renderAssignment = useMemo(() => {
     if (
-      permissions?.[MainPermissions.fabric_req_attach_master] &&
+      permissions?.has(MainPermissions.fabric_req_attach_master) &&
       order?.status! <= 1
     ) {
       if (order?.brigada?.name) {
@@ -217,7 +217,7 @@ const ShowRequestApcFabric = () => {
 
   // const renderfileUploader = useMemo(() => {
   //   if (
-  //     // permissions?.[addExp] &&
+  //     // permissions?.has(addExp] &&
   //     !isNew &&
   //     order?.status !== RequestStatus.closed_denied
   //   )

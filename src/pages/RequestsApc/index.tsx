@@ -133,7 +133,7 @@ const RequestsApc: FC<Props> = ({ add, edit, addExp }) => {
         >
           {t("export_to_excel")}
         </button>
-        {permission?.[add] && (
+        {permission?.has(add) && (
           <button
             onClick={() => navigate(`add?&addExp=${addExp}`)}
             className="btn btn-success btn-fill"
@@ -167,7 +167,7 @@ const RequestsApc: FC<Props> = ({ add, edit, addExp }) => {
                 >
                   <td width="40">{handleIdx(idx)}</td>
                   <td width="80">
-                    {permission?.[edit] ? (
+                    {permission?.has(edit) ? (
                       <span
                         className="text-blue-500 cursor-pointer"
                         // to={}

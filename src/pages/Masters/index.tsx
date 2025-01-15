@@ -75,7 +75,7 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
         render: (_, record) => (
           <Link
             to={
-              permission?.[MainPermissions.edit_roles]
+              permission?.has(MainPermissions.edit_roles)
                 ? `/roles/${record.user?.[0]?.group?.id}`
                 : pathname
             }
@@ -94,7 +94,7 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
         title: "",
         dataIndex: "action",
         render: (_, record) =>
-          permission?.[edit] && (
+          permission?.has(edit) && (
             <TableViewBtn
               onClick={handleNavigate(
                 `${record.id}?dep=${dep}&sphere_status=${sphere_status}`
@@ -127,7 +127,7 @@ const Masters = ({ dep, sphere_status, add, edit }: Props) => {
   return (
     <Card>
       <Header title={renderDep?.mainTitle}>
-        {permission?.[add] && (
+        {permission?.has(add) && (
           <button
             className="btn btn-success  "
             id="add_master"

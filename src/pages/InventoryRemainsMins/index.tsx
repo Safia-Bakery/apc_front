@@ -73,7 +73,7 @@ const InventoryRemainsMins = () => {
         title: "",
         render: (_, record) => {
           return (
-            permission?.[MainPermissions.edit_product_inventory_retail] && (
+            permission?.has(MainPermissions.edit_product_inventory_retail) && (
               <TableViewBtn onClick={handleNavigate(`${record.id}`)} />
             )
           );

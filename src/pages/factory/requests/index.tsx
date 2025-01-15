@@ -53,7 +53,7 @@ const FactoryRequests = () => {
         dataIndex: "id",
         width: 100,
         render: (_, order) =>
-          permission?.[MainPermissions.edit_fabric_requests] ? (
+          permission?.has(MainPermissions.edit_fabric_requests) ? (
             <Link to={`${order?.id}`} state={{ search }}>
               {order?.id}
             </Link>

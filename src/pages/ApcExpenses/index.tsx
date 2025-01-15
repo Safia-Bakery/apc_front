@@ -41,7 +41,7 @@ const ApcExpenses = () => {
   return (
     <Card>
       <Header title={"expense_for_outsource"}>
-        {permission?.[MainPermissions.add_apc_expenses] && (
+        {permission?.has(MainPermissions.add_apc_expenses) && (
           <button className="btn btn-success  " onClick={handleNavigate("add")}>
             {t("add")}
           </button>
@@ -68,7 +68,7 @@ const ApcExpenses = () => {
                   <td>{dayjs(expense?.created_at).format(dateMonthYear)}</td>
                   <td>{!expense.status ? t("not_active") : t("active")}</td>
                   <td width={40}>
-                    {permission?.[MainPermissions.edit_apc_expenses] && (
+                    {permission?.has(MainPermissions.edit_apc_expenses) && (
                       <TableViewBtn onClick={handleNavigate(`${expense.id}`)} />
                     )}
                   </td>

@@ -36,7 +36,7 @@ const LogysticCars = () => {
   return (
     <Card>
       <Header title="tracks">
-        {permission?.[MainPermissions.add_log_cars] && (
+        {permission?.has(MainPermissions.add_log_cars) && (
           <button className="btn btn-success  " onClick={handleNavigate("add")}>
             {t("add_track")}
           </button>
@@ -60,7 +60,7 @@ const LogysticCars = () => {
                   <td>{car?.number}</td>
                   <td>{!car.status ? t("not_active") : t("active")}</td>
                   <td width={40}>
-                    {permission?.[MainPermissions.edit_log_cars] && (
+                    {permission?.has(MainPermissions.edit_log_cars) && (
                       <TableViewBtn onClick={handleNavigate(`${car.id}`)} />
                     )}
                   </td>

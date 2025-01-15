@@ -53,7 +53,7 @@ const HrRequests = () => {
         dataIndex: "id",
         width: 100,
         render: (_, order) =>
-          permission?.[MainPermissions.edit_hr_requests] ? (
+          permission?.has(MainPermissions.edit_hr_requests) ? (
             <Link to={`${order?.id}`}>{order?.id}</Link>
           ) : (
             order?.id

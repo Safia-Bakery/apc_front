@@ -70,7 +70,7 @@ const Users: FC<Props> = ({ add, edit }) => {
         render: (_, record) => (
           <Link
             to={
-              permission?.[MainPermissions.edit_roles]
+              permission?.has(MainPermissions.edit_roles)
                 ? `/roles/${record?.group?.id}`
                 : pathname
             }
@@ -94,7 +94,7 @@ const Users: FC<Props> = ({ add, edit }) => {
         width: 50,
         dataIndex: "action",
         render: (_, record) =>
-          permission?.[edit] && (
+          permission?.has(edit) && (
             <TableViewBtn onClick={handleNavigate(`${record?.id}`)} />
           ),
       },
@@ -115,7 +115,7 @@ const Users: FC<Props> = ({ add, edit }) => {
   return (
     <Card>
       <Header title={!client ? "users" : "client"}>
-        {permission?.[add] && (
+        {permission?.has(add) && (
           <button className="btn btn-success" onClick={handleNavigate("add")}>
             {t("add")}
           </button>

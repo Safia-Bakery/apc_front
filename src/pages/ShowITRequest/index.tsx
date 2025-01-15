@@ -152,7 +152,7 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
   }, [permissions, order?.status]);
 
   const renderAssignment = useMemo(() => {
-    if (permissions?.[attaching] && !unchangable[order!?.status]) {
+    if (permissions?.has(attaching) && !unchangable[order!?.status]) {
       if (order?.brigada?.name) {
         return (
           <div className="flex items-center justify-between">
@@ -239,9 +239,9 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                         </span>
 
                         {!unchangable[order!?.status] &&
-                          permissions?.[
+                          permissions?.has(
                             MainPermissions.it_request_change_categ
-                          ] && <EditCategory />}
+                          ) && <EditCategory />}
                       </div>
                     </td>
                   </tr>
@@ -343,9 +343,9 @@ const ShowITRequest: FC<Props> = ({ attaching }) => {
                         </span>
 
                         {!unchangable[order!?.status] &&
-                          permissions?.[
+                          permissions?.has(
                             MainPermissions.it_request_change_categ
-                          ] && (
+                          ) && (
                             <TableViewBtn
                               onClick={handleModal(ModalTypes.assingDeadline)}
                             />

@@ -51,7 +51,7 @@ const ManagersFabric = () => {
         width: 50,
         render: (_, record) => {
           return (
-            permission?.[MainPermissions.update_apc_fabric_division] && (
+            permission?.has(MainPermissions.update_apc_fabric_division) && (
               <TableViewBtn onClick={() => navigate(`${record.id}`)} />
             )
           );

@@ -47,7 +47,7 @@ const BotTimeModal = () => {
     );
   };
 
-  if (!permission?.[MainPermissions.staff_modal_time]) return;
+  if (!permission?.has(MainPermissions.staff_modal_time)) return;
 
   return (
     <Modal onClose={closeModal} isOpen={!!modal}>

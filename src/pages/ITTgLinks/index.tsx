@@ -30,7 +30,7 @@ const ITTgLinks = () => {
   return (
     <Card>
       <Header title={"tg_links"}>
-        {permission?.[MainPermissions.add_tg_link] && (
+        {permission?.has(MainPermissions.add_tg_link) && (
           <button className="btn btn-success" onClick={handleNavigate("add")}>
             {t("add")}
           </button>
@@ -49,7 +49,7 @@ const ITTgLinks = () => {
                   <td>{role?.name}</td>
                   <td>{role?.chat_id}</td>
                   <td width={40}>
-                    {permission?.[MainPermissions.edit_tg_link] && (
+                    {permission?.has(MainPermissions.edit_tg_link) && (
                       <TableViewBtn onClick={handleNavigate(`${role.id}`)} />
                     )}
                   </td>

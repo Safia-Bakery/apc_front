@@ -80,7 +80,7 @@ const AddProductModal = ({ addExp, modal, handleModal }: Props) => {
   return (
     <Modal
       className={styles.modal}
-      open={!!modal && !!permissions?.[addExp]}
+      open={!!modal && !!permissions?.has(addExp)}
       onCancel={handleModal}
       closable
       classNames={{ content: "!p-0" }}
@@ -104,7 +104,7 @@ const AddProductModal = ({ addExp, modal, handleModal }: Props) => {
           </button>
           <div className={styles.modalBody}>
             <div className="form-group field-apcitems-product_id relative">
-              {permissions?.[addExp] && (
+              {permissions?.has(addExp) && (
                 <Controller
                   name={"product"}
                   control={control}

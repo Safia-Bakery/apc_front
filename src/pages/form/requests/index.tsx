@@ -46,7 +46,7 @@ const FormRequests = () => {
         dataIndex: "id",
 
         render: (_, order) =>
-          permissions?.[MainPermissions.edit_form_request] ? (
+          permissions?.has(MainPermissions.edit_form_request) ? (
             <Link to={`/requests-form/${order?.id}`}>{order?.id}</Link>
           ) : (
             order?.id
@@ -123,7 +123,7 @@ const FormRequests = () => {
             onSuccess={(data) => useBackExcel(data)}
           />
 
-          {permissions?.[MainPermissions.add_form_request] && (
+          {permissions?.has(MainPermissions.add_form_request) && (
             <button onClick={() => navigate("add")} className="btn btn-success">
               {t("add")}
             </button>

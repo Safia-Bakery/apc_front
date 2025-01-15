@@ -57,7 +57,7 @@ const RequestsIT = () => {
         dataIndex: "id",
         width: 100,
         render: (_, order) =>
-          permission?.[MainPermissions.edit_it_requests] ? (
+          permission?.has(MainPermissions.edit_it_requests) ? (
             <Link to={`${order?.id}`} state={{ search }}>
               {order?.id}
             </Link>

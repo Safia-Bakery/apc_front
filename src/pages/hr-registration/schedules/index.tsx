@@ -62,7 +62,7 @@ const Schedules = () => {
       {
         title: "",
         render: (_, record) =>
-          permissions?.[MainPermissions.edit_hr_schedules] && (
+          permissions?.has(MainPermissions.edit_hr_schedules) && (
             <TableViewBtn onClick={() => handleModal(record)} />
           ),
         width: 60,
@@ -70,7 +70,7 @@ const Schedules = () => {
       {
         title: "",
         render: (_, record) =>
-          permissions?.[MainPermissions.edit_hr_schedules] && (
+          permissions?.has(MainPermissions.edit_hr_schedules) && (
             <Popconfirm
               title="Вы уверены, что хотите удалить это расписание?"
               onConfirm={() => handleDelete(record.id)}
@@ -160,7 +160,7 @@ const Schedules = () => {
           okText={t("yes")}
           cancelText={t("no")}
         >
-          {permissions?.[MainPermissions.edit_hr_schedules] && (
+          {permissions?.has(MainPermissions.edit_hr_schedules) && (
             <button className="btn btn-success mr-2">{t("add")}</button>
           )}
         </Popconfirm>

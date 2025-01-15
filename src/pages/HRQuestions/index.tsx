@@ -39,7 +39,7 @@ const FAQQuestions = () => {
   return (
     <Card>
       <Header title={"questions"}>
-        {permission?.[MainPermissions.add_faq] && (
+        {permission?.has(MainPermissions.add_faq) && (
           <button
             className="btn btn-success  "
             onClick={handleNavigate(`add`)}
@@ -68,7 +68,7 @@ const FAQQuestions = () => {
                     <td>{faq?.question}</td>
                     <td>{faq?.status ? t("active") : t("not_active")}</td>
                     <td width={40}>
-                      {permission?.[MainPermissions.edit_faq] && (
+                      {permission?.has(MainPermissions.edit_faq) && (
                         <TableViewBtn onClick={handleNavigate(`${faq.id}`)} />
                       )}
                     </td>

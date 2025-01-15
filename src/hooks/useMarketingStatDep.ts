@@ -36,7 +36,7 @@ export const useMarketingStatDep = ({
           return response as MarketingDepartmentTypes;
         }),
     staleTime: EPresetTimes.MINUTE * 10,
-    enabled: enabled && permmission?.[MainPermissions.stats_marketing],
+    enabled: enabled && permmission?.has(MainPermissions.stats_marketing),
   });
 };
 export default useMarketingStatDep;

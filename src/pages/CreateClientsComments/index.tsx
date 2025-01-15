@@ -77,7 +77,7 @@ const CreateClientsComments = () => {
   }, [files]);
 
   const renderBranchSelect = useMemo(() => {
-    if (perm?.[MainPermissions.get_fillials_list]) {
+    if (perm?.has(MainPermissions.get_fillials_list)) {
       return <BranchSelect origin={1} enabled />;
     }
   }, []);

@@ -64,7 +64,7 @@ const CoinRequests = () => {
         width: 50,
         render: (_, record) => {
           return (
-            permission?.[MainPermissions.edit_coin_request] && (
+            permission?.has(MainPermissions.edit_coin_request) && (
               <TableViewBtn onClick={() => navigate(`${record.id}`)} />
             )
           );

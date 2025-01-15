@@ -70,7 +70,7 @@ const HRRequests = () => {
                   <td>{faq?.comments}</td>
                   <td>{t(handleHRStatus[faq?.status] || "")}</td>
                   <td width={40}>
-                    {permission?.[MainPermissions.edit_faq] && (
+                    {permission?.has(MainPermissions.edit_faq) && (
                       <TableViewBtn onClick={handleNavigate(`${faq.id}`)} />
                     )}
                   </td>

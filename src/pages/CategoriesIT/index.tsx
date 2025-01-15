@@ -53,7 +53,7 @@ const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
         title: t("name_in_table"),
         dataIndex: "name",
         render: (_, record) =>
-          permission?.[edit] && !record.is_child ? (
+          permission?.has(edit) && !record.is_child ? (
             <span
               className="cursor-pointer text-blue-500"
               onClick={() =>
@@ -85,7 +85,7 @@ const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
         dataIndex: "",
         width: 50,
         render: (_, record) =>
-          permission?.[edit] && (
+          permission?.has(edit) && (
             <TableViewBtn onClick={handleNavigate(`${record.id}`)} />
           ),
       },
@@ -98,7 +98,7 @@ const CategoriesIT: FC<Props> = ({ dep, add, edit }) => {
   return (
     <Card>
       <Header title={parent_name || "categories"}>
-        {permission?.[add] && (
+        {permission?.has(add) && (
           <div className="flex gap-2">
             <button
               className="btn btn-success"

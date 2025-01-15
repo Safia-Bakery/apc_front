@@ -97,7 +97,7 @@ const CreateITRequest = () => {
         label={t("branch")}
         error={errors.fillial_id}
       >
-        {perm?.[MainPermissions.get_fillials_list] && (
+        {perm?.has(MainPermissions.get_fillials_list) && (
           <BranchSelect origin={1} enabled />
         )}
       </BaseInputs>

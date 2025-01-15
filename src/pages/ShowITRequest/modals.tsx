@@ -346,7 +346,7 @@ const ITModals = () => {
 
     if (
       modal === ModalTypes.assingDeadline &&
-      permissions?.[MainPermissions.it_request_change_deadline]
+      permissions?.has(MainPermissions.it_request_change_deadline)
     )
       return (
         <>

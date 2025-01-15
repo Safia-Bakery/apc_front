@@ -47,7 +47,7 @@ const KruTasks = () => {
         dataIndex: "name",
         title: t("name_in_table"),
         render: (_, order) =>
-          permission?.[MainPermissions.kru_sub_tasks] ? (
+          permission?.has(MainPermissions.kru_sub_tasks) ? (
             <Link to={`${order?.id}/add-task`}>{order?.name}</Link>
           ) : (
             order?.name
@@ -60,7 +60,7 @@ const KruTasks = () => {
         title: "",
         render: (_, record) => {
           return (
-            permission?.[MainPermissions.edit_kru_tasks] && (
+            permission?.has(MainPermissions.edit_kru_tasks) && (
               <TableViewBtn onClick={() => handleNavigate(`${record.id}`)} />
             )
           );
@@ -72,7 +72,7 @@ const KruTasks = () => {
         title: "",
         render: (_, record) => {
           return (
-            permission?.[MainPermissions.edit_kru_tasks] && (
+            permission?.has(MainPermissions.edit_kru_tasks) && (
               <Popconfirm
                 title="Вы действительно хотите удалить этот отчет?"
                 onConfirm={() => handleDelete(record.id)}

@@ -54,7 +54,7 @@ const FormCategories = () => {
         width: 80,
         dataIndex: "action",
         render: (_, record) =>
-          permission?.[MainPermissions.edit_form_category] && (
+          permission?.has(MainPermissions.edit_form_category) && (
             <TableViewBtn
               onClick={() => handleNavigate(`/categories-form/${record?.id}`)}
             />
@@ -67,7 +67,7 @@ const FormCategories = () => {
   return (
     <Card>
       <Header title={parent_name || "form_type_price"}>
-        {permission?.[MainPermissions.add_form_category] && (
+        {permission?.has(MainPermissions.add_form_category) && (
           <div className="flex gap-2">
             <button className="btn btn-primary" onClick={() => refetch()}>
               {t("refresh")}

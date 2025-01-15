@@ -6,7 +6,7 @@ import { sidebarRoutes } from "@/utils/routeObjs";
 
 interface State {
   sidebarItems?: SidebarType[];
-  permissions?: { [key in MainPermissions]: boolean };
+  permissions?: Set<any>;
 }
 
 const initialState: State = {
@@ -19,10 +19,13 @@ export const sidebarReducer = createSlice({
   initialState,
   reducers: {
     permissionHandler: (state, { payload }: PayloadAction<any[]>) => {
-      const permissions = payload.reduce((acc, number) => {
-        acc[number] = true;
-        return acc;
-      }, {});
+      console.log(payload, "payload");
+      const permissions = new Set(payload);
+      console.log(permissions, "permissions");
+      // const permissions = payload.reduce((acc, number) => {
+      //   acc[number] = true;
+      //   return acc;
+      // }, {});
       state.permissions = permissions;
     },
     sidebarItemsHandler: (state, { payload }: PayloadAction<[number[]]>) => {
@@ -37,14 +40,14 @@ export const sidebarReducer = createSlice({
             : item[0] === route.department
         )?.[2];
         if (
-          permissions?.[updatedRoute?.screen] ||
+          permissions?.has(updatedRoute?.screen) ||
           (updatedRoute?.subroutes &&
-            updatedRoute.subroutes.some(
-              (subroute) => permissions?.[subroute.screen]
+            updatedRoute.subroutes.some((subroute) =>
+              permissions?.has(subroute.screen)
             ))
         ) {
-          const filteredSubroutes = updatedRoute?.subroutes?.filter(
-            (sub) => permissions?.[sub?.screen]
+          const filteredSubroutes = updatedRoute?.subroutes?.filter((sub) =>
+            permissions?.has(sub?.screen)
           );
 
           if (!!filteredSubroutes?.length) {

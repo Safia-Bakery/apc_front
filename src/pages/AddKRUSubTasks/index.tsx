@@ -119,7 +119,7 @@ const AddKRUSubTasks = () => {
         className: "!p-2",
         dataIndex: "delete",
         render: (_, record) =>
-          perm?.[MainPermissions.add_kru_sub_tasks] && (
+          perm?.has(MainPermissions.add_kru_sub_tasks) && (
             <Flex gap={10}>
               <Popconfirm
                 title="Вы действительно хотите удалить эту подзадачу?"
