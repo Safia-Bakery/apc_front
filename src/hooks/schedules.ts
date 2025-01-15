@@ -45,3 +45,13 @@ export const editAddSchedule = () => {
     },
   });
 };
+
+export const deleteSchedule = () => {
+  return useMutation({
+    mutationKey: ["schedule_delete_mutation"],
+    mutationFn: async (id: number) => {
+      const { data } = await baseApi.delete(`/api/v2/schedules/${id}`);
+      return data;
+    },
+  });
+};

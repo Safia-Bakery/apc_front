@@ -6,19 +6,24 @@ import Header from "@/components/Header";
 import { handleIdx } from "@/utils/helpers";
 import AntdTable from "@/components/AntdTable";
 import { ColumnsType } from "antd/es/table";
-import { editAddSchedule, getSchedules } from "@/hooks/schedules";
+import {
+  deleteSchedule,
+  editAddSchedule,
+  getSchedules,
+} from "@/hooks/schedules";
 import TableViewBtn from "@/components/TableViewBtn";
-import { DatePicker, Popconfirm, TimePicker } from "antd";
+import { DatePicker, Popconfirm } from "antd";
 import BaseInput from "@/components/BaseInputs";
-import MainInput from "@/components/BaseInputs/MainInput";
 import { useForm } from "react-hook-form";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
-import { dateMonthYear, yearMonthDate } from "@/utils/keys";
+import { yearMonthDate } from "@/utils/keys";
 import errorToast from "@/utils/errorToast";
 import AntModal from "@/components/AntModal";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { MainPermissions } from "@/utils/permissions";
+import { DeleteOutlined } from "@ant-design/icons";
+import successToast from "@/utils/successToast";
 
 const Schedules = () => {
   const { t } = useTranslation();
@@ -51,11 +56,6 @@ const Schedules = () => {
         dataIndex: "date",
       },
       {
-        title: t("time"),
-        dataIndex: "time",
-        render: (_, record) => record?.time || "Весь день",
-      },
-      {
         title: t("description"),
         dataIndex: "description",
       },
@@ -65,7 +65,22 @@ const Schedules = () => {
           permissions?.[MainPermissions.edit_hr_schedules] && (
             <TableViewBtn onClick={() => handleModal(record)} />
           ),
-        width: 80,
+        width: 60,
+      },
+      {
+        title: "",
+        render: (_, record) =>
+          permissions?.[MainPermissions.edit_hr_schedules] && (
+            <Popconfirm
+              title="Вы уверены, что хотите удалить это расписание?"
+              onConfirm={() => handleDelete(record.id)}
+              okText={t("yes")}
+              cancelText={t("no")}
+            >
+              <DeleteOutlined color="red" />
+            </Popconfirm>
+          ),
+        width: 60,
       },
     ],
     []
@@ -80,6 +95,17 @@ const Schedules = () => {
   } = getSchedules({});
 
   const { mutate, isPending } = editAddSchedule();
+  const { mutate: removeSchedule, isPending: deleting } = deleteSchedule();
+
+  const handleDelete = (id: number) => {
+    removeSchedule(id, {
+      onSuccess: () => {
+        refetch();
+        successToast("success");
+      },
+      onError: (e: any) => errorToast(e?.response?.data?.detail || e.message),
+    });
+  };
 
   const handleAddSchedule = () => {
     const { description } = getValues();
@@ -117,14 +143,14 @@ const Schedules = () => {
                   defaultValue={dayjs()}
                 />
               </BaseInput>
-              <BaseInput label="selected_time">
+              {/* <BaseInput label="selected_time">
                 <TimePicker
                   onChange={(e) => $selected_time(e)}
                   format="HH:mm"
                   minuteStep={5}
                   className="block"
                 />
-              </BaseInput>
+              </BaseInput> */}
               <BaseInput label="description">
                 <MainTextArea register={register("description")} />
               </BaseInput>
@@ -168,15 +194,7 @@ const Schedules = () => {
               value={selected_date}
             />
           </BaseInput>
-          <BaseInput label="selected_time">
-            <TimePicker
-              onChange={(e) => $selected_time(e)}
-              format="HH:mm"
-              value={selected_time}
-              minuteStep={5}
-              className="block"
-            />
-          </BaseInput>
+
           <BaseInput label="description">
             <MainTextArea register={register("description")} />
           </BaseInput>
