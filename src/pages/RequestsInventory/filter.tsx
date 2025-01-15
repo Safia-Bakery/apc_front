@@ -25,10 +25,11 @@ const ITFilter: FC = () => {
   const [id, $id] = useDebounce<string>("");
   const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
-  const [reciever, $reciever] = useDebounce<string>("");
+  const [product, $product] = useDebounce<string>("");
   const created_at = useQueryString("created_at");
   const userQ = useQueryString("user");
   const idQ = useQueryString("id");
+  const productQ = useQueryString("product");
 
   const startRange = (start: Date | null) => {
     if (start === undefined) deleteParam(["created_at"]);
@@ -39,6 +40,8 @@ const ITFilter: FC = () => {
     $user(e.target.value);
 
   const handleID = (e: ChangeEvent<HTMLInputElement>) => $id(e.target.value);
+  const handleProd = (e: ChangeEvent<HTMLInputElement>) =>
+    $product(e.target.value);
 
   useUpdateEffect(() => {
     navigate({ user });
@@ -49,14 +52,15 @@ const ITFilter: FC = () => {
   }, [id]);
 
   useUpdateEffect(() => {
-    navigate({ reciever });
-  }, [reciever]);
+    navigate({ product });
+  }, [product]);
 
   useEffect(() => {
     if (!!userQ || !!idQ) {
       reset({
         sender: userQ,
         id: Number(idQ),
+        prods: productQ,
       });
     }
   }, []);
@@ -92,7 +96,11 @@ const ITFilter: FC = () => {
       </td>
       <td className="!p-0">
         <BaseInput className="!m-1">
-          <MainInput register={register("prods")} className="!mb-0" />
+          <MainInput
+            register={register("prods")}
+            onChange={handleProd}
+            className="!mb-0"
+          />
         </BaseInput>
       </td>
       <td className="!p-0">

@@ -20,6 +20,7 @@ const RequestsInventory = () => {
   const request_status = useQueryString("request_status");
   const created_at = useQueryString("created_at");
   const user = useQueryString("user");
+  const product = useQueryString("product");
   const id = Number(useQueryString("id"));
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
@@ -40,6 +41,7 @@ const RequestsInventory = () => {
     }),
     ...(!!branch?.id && { fillial_id: branch?.id }),
     ...(!!user && { user }),
+    ...(!!product && { product }),
     ...(!!id && { id }),
   });
 

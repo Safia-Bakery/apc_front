@@ -16,6 +16,7 @@ interface InventoryRequestBody {
 interface InventoryReqParams {
   enabled?: boolean;
   size?: number;
+  product?: string;
   page?: number;
   department?: number;
   request_status?: string;
