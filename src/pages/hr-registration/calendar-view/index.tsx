@@ -16,6 +16,7 @@ import {
   Popconfirm,
   Space,
   Input,
+  Alert,
 } from "antd";
 import type { RadioChangeEvent } from "antd";
 import type { Dayjs } from "dayjs";
@@ -77,6 +78,7 @@ const CustomCalendar: React.FC = () => {
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.month);
   const [currentDate, setCurrentDate] = useState<Dayjs>(dayjs());
   const [reportFile, $reportFile] = useState<string[]>([]);
+  const [fileError, $fileError] = useState(false);
   const [selectedEvent, setSelectedEvent] =
     useState<CalendarAppointment | null>(null);
   const [selectedTime, $selectedTime] = useState<Dayjs>();
@@ -101,6 +103,8 @@ const CustomCalendar: React.FC = () => {
       deny_reason === "Другое" ? other_deny_reason : deny_reason;
     if (status !== RequestStatus.finished && !denyreaon)
       warnToast("Выберите причину отмены");
+    if (status === RequestStatus.finished && !reportFile.length)
+      $fileError(true);
     else
       mutate(
         {
@@ -116,6 +120,7 @@ const CustomCalendar: React.FC = () => {
             $selectedTime(undefined);
             setSelectedEvent(null);
             $reportFile([]);
+            $fileError(false);
           },
           onError: (e) => errorToast(e.message),
         }
@@ -222,7 +227,9 @@ const CustomCalendar: React.FC = () => {
     action: `${baseURL}/file/upload`,
     headers: { Authorization: `Bearer ${token}` },
     listType: "picture",
-    className: "max-w-96 my-6 h-fit",
+    className: `max-w-96 my-6 h-fit ${
+      fileError ? "border-2 transition-colors border-red-600 rounded-lg" : ""
+    }`,
     disabled: selectedEvent?.status !== RequestStatus.received,
 
     onChange(info) {
@@ -232,13 +239,16 @@ const CustomCalendar: React.FC = () => {
       }
       if (status === "done") {
         $reportFile((prev) => [...prev, info?.file?.response?.files?.[0]]);
+        if (fileError) $fileError(false);
         message.success(`${info?.file?.name} file uploaded successfully.`);
       } else if (status === "error") {
         message.error(`${info?.file?.name} file upload failed.`);
       }
     },
     onRemove(info) {
-      $reportFile(info?.response?.files?.[0]);
+      $reportFile((prev) =>
+        prev.filter((item) => item !== info?.response?.files?.[0])
+      );
       // handleLocalRemove(info?.response?.files?.[0]);
     },
   };
@@ -304,9 +314,6 @@ const CustomCalendar: React.FC = () => {
                             ? "bg-[#F4F4F4]"
                             : ""
                         }`}
-                        // onClick={() =>
-                        //   !eventsAtTime.length && openAddEventModal(timeSlot)
-                        // }
                       >
                         <p
                           onClick={() =>
@@ -453,7 +460,6 @@ const CustomCalendar: React.FC = () => {
       <Modal
         open={!!selectedEvent}
         onCancel={closeModal}
-        // loading={isPending}
         footer={null}
         classNames={{ content: "w-max h-max" }}
       >
@@ -508,6 +514,9 @@ const CustomCalendar: React.FC = () => {
               <p className="ant-upload-text">{t("upload_files")}</p>
               <p className="ant-upload-hint">{t("file_upload_descr")}</p>
             </Dragger>
+            {fileError && (
+              <Alert message={"Пожалуйста, добавьте файлы"} type="error" />
+            )}
 
             {selectedEvent?.status === RequestStatus.received && (
               <Flex gap={20} className="justify-end mt-4">

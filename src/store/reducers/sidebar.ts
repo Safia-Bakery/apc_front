@@ -19,13 +19,7 @@ export const sidebarReducer = createSlice({
   initialState,
   reducers: {
     permissionHandler: (state, { payload }: PayloadAction<any[]>) => {
-      console.log(payload, "payload");
       const permissions = new Set(payload);
-      console.log(permissions, "permissions");
-      // const permissions = payload.reduce((acc, number) => {
-      //   acc[number] = true;
-      //   return acc;
-      // }, {});
       state.permissions = permissions;
     },
     sidebarItemsHandler: (state, { payload }: PayloadAction<[number[]]>) => {
