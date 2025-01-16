@@ -279,6 +279,7 @@ const localization = {
       departments_reports: "Отчёт по отделам ",
       directionn: "Направления",
       direction_report: "Отчет по направлениям",
+      reports: "Отчеты",
       receivedd: "Поступило",
       handled_on_time: "Обработанных во время",
       not_handled_on_time: "Обработанных не во время",

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import dayjs from "dayjs";
@@ -20,6 +20,8 @@ import {
   getAppointments,
 } from "@/hooks/hr-registration";
 import { RequestStatusHr } from ".";
+import { baseURL } from "@/store/baseUrl";
+import { Flex } from "antd";
 
 const denyReasons = [
   "Не готовы документы",
@@ -206,7 +208,7 @@ const ShowHrRequest = () => {
               >
                 <tbody>
                   <tr>
-                    <th>{t("receipt_date")}:</th>
+                    <th>{t("receipt_date")}</th>
                     <td>
                       {order?.created_at
                         ? dayjs(order?.created_at).format(dateTimeFormat)
@@ -214,11 +216,31 @@ const ShowHrRequest = () => {
                     </td>
                   </tr>
                   <tr>
-                    <th>{t("meeting_time")}:</th>
+                    <th>{t("meeting_time")}</th>
                     <td>
                       {order?.time_slot
                         ? dayjs(order?.time_slot).format(dateTimeFormat)
                         : t("not_given")}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>{t("reports")}</th>
+                    <td>
+                      {!!order?.file?.length ? (
+                        <Flex vertical>
+                          {[...order?.file, ...order?.file]?.map((item) => (
+                            <Link
+                              target="_blank"
+                              to={`${baseURL}/${item.url}`}
+                              key={item.id}
+                            >
+                              {t("file")}
+                            </Link>
+                          ))}
+                        </Flex>
+                      ) : (
+                        t("not_given")
+                      )}
                     </td>
                   </tr>
 

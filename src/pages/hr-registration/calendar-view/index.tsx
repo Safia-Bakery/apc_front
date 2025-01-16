@@ -492,6 +492,32 @@ const CustomCalendar: React.FC = () => {
                   {selectedEvent?.description}
                 </p>
               )}
+              {selectedEvent?.deny_reason && (
+                <p>
+                  <strong>{t("deny_reason")}:</strong>{" "}
+                  {selectedEvent?.deny_reason}
+                </p>
+              )}
+              {selectedEvent?.deny_reason && (
+                <p>
+                  <strong>{t("deny_reason")}:</strong>{" "}
+                  {selectedEvent?.deny_reason}
+                </p>
+              )}
+
+              {!!selectedEvent?.file?.length && (
+                <Flex vertical>
+                  {selectedEvent?.file?.map((item) => (
+                    <Link
+                      target="_blank"
+                      to={`${baseURL}/${item.url}`}
+                      key={item.id}
+                    >
+                      {t("file")}
+                    </Link>
+                  ))}
+                </Flex>
+              )}
             </div>
 
             <p>

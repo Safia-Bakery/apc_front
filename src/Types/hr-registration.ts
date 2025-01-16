@@ -4,6 +4,7 @@ interface HrAppointmentRes {
   time_slot: string;
   status: number;
   description: string;
+  file: { id: number; url: string }[];
   department: number;
   deny_reason: string;
   created_at?: string;
@@ -103,6 +104,7 @@ interface CalendarAppointment {
   description: string;
   department: number;
   updated_at: string;
+  file: { id: number; url: string }[];
   created_at: string;
   deny_reason: string;
   position?: {

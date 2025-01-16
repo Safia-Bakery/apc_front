@@ -38,20 +38,20 @@ const HRSelectTime = () => {
     let currentDate: Dayjs = dayjs();
     const endDate: Dayjs = currentDate.add(1.9, "week");
 
-    if (schedules?.length) {
-      while (currentDate.isBefore(endDate) || currentDate.isSame(endDate)) {
-        const dayOfWeek = currentDate.day();
-        // Exclude Saturdays (6) and Sundays (0)
-        if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-          if (
-            !schedules?.find(
-              (item) => item?.date === currentDate.format(yearMonthDate)
-            )
+    while (currentDate.isBefore(endDate) || currentDate.isSame(endDate)) {
+      const dayOfWeek = currentDate.day();
+      // Exclude Saturdays (6) and Sundays (0)
+      if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+        if (
+          !!schedules?.length &&
+          !schedules?.find(
+            (item) => item?.date === currentDate.format(yearMonthDate)
           )
-            weekdays.push(currentDate);
-        }
-        currentDate = currentDate.add(1, "day");
+        )
+          weekdays.push(currentDate);
+        else weekdays.push(currentDate);
       }
+      currentDate = currentDate.add(1, "day");
     }
 
     return weekdays;
