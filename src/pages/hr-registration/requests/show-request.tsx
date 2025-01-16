@@ -228,7 +228,7 @@ const ShowHrRequest = () => {
                     <td>
                       {!!order?.file?.length ? (
                         <Flex vertical>
-                          {[...order?.file, ...order?.file]?.map((item) => (
+                          {order?.file?.map((item) => (
                             <Link
                               target="_blank"
                               to={`${baseURL}/${item.url}`}
