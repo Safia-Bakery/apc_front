@@ -3,6 +3,7 @@ interface InventoryRequestBody {
   fillial_id?: string;
   category_id?: number;
   description?: string;
+  phone_number?: string;
   product?: string;
   department?: number;
   files?: string[];

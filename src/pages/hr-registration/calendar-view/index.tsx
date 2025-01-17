@@ -27,6 +27,7 @@ import { useTranslation } from "react-i18next";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import {
   editAddAppointment,
+  getAppointment,
   getCalendarAppointments,
   getHrTimeSlots,
   getPositions,
@@ -92,6 +93,10 @@ const CustomCalendar: React.FC = () => {
   const { isLoading, data, isRefetching, refetch } = getCalendarAppointments(
     {}
   );
+  const { data: appointment, isLoading: appointmentLoading } = getAppointment({
+    enabled: !!selectedEvent?.id,
+    id: selectedEvent?.id!,
+  });
   const { mutate, isPending } = editAddAppointment();
   const { register, getValues, reset } = useForm();
 
@@ -460,6 +465,7 @@ const CustomCalendar: React.FC = () => {
       <Modal
         open={!!selectedEvent}
         onCancel={closeModal}
+        loading={appointmentLoading}
         footer={null}
         classNames={{ content: "w-max h-max" }}
       >
@@ -498,25 +504,21 @@ const CustomCalendar: React.FC = () => {
                   {selectedEvent?.deny_reason}
                 </p>
               )}
-              {selectedEvent?.deny_reason && (
-                <p>
-                  <strong>{t("deny_reason")}:</strong>{" "}
-                  {selectedEvent?.deny_reason}
-                </p>
-              )}
-
-              {!!selectedEvent?.file?.length && (
-                <Flex vertical>
-                  {selectedEvent?.file?.map((item) => (
-                    <Link
-                      target="_blank"
-                      to={`${baseURL}/${item.url}`}
-                      key={item.id}
-                    >
-                      {t("file")}
-                    </Link>
-                  ))}
-                </Flex>
+              {!!appointment?.file?.length && (
+                <div className="text-base">
+                  <strong>{t("uploaded_files")}:</strong>
+                  <Flex vertical>
+                    {appointment?.file?.map((item) => (
+                      <Link
+                        target="_blank"
+                        to={`${baseURL}/${item.url}`}
+                        key={item.id}
+                      >
+                        {t("file")}
+                      </Link>
+                    ))}
+                  </Flex>
+                </div>
               )}
             </div>
 
@@ -530,7 +532,7 @@ const CustomCalendar: React.FC = () => {
 
           <Flex className="min-w-96 w-full" vertical>
             <p>
-              Дата поступления заявки:{" "}
+              <strong>Дата поступления заявки: </strong>
               {dayjs(selectedEvent?.created_at).format(dateTimeFormat)}
             </p>
             <Dragger {...props}>

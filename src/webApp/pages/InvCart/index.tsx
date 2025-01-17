@@ -4,6 +4,7 @@ import {
   clearCart,
 } from "@/store/reducers/webInventory";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
+import InputMask from "react-input-mask";
 import { useEffect, useState } from "react";
 import InvButton, { InvBtnType } from "@/webApp/components/InvButton";
 import InvHeader from "@/webApp/components/web-header";
@@ -20,6 +21,8 @@ import { deptSelector } from "@/store/reducers/auth";
 import { Departments } from "@/utils/types";
 import { invFabricCategory } from "@/utils/keys";
 import MainDropZone from "@/components/MainDropZone";
+import MainInput from "@/components/BaseInputs/MainInput";
+import { fixedString } from "@/utils/helpers";
 
 const InvCart = () => {
   const navigate = useNavigate();
@@ -31,10 +34,15 @@ const InvCart = () => {
   const cart = useAppSelector(cartSelector);
   const { mutate, isPending: mutating } = invRequestMutation();
 
-  const { getValues, register } = useForm();
+  const {
+    getValues,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleSubmit = () => {
-    const { comment } = getValues();
+  const onSubmit = () => {
+    const { comment, phone_number } = getValues();
 
     const expenditure = Object.entries(cart).map((item) => ({
       tool_id: Number(item[0]),
@@ -50,6 +58,9 @@ const InvCart = () => {
         fillial_id: selectedBranch?.id!,
         expenditure,
         department: dep,
+        ...(fixedString(phone_number).length > 7 && {
+          phone_number: fixedString(phone_number),
+        }),
         description: !!comment ? comment : " ",
         ...(!!uploadedFiles.length && { files: uploadedFiles }),
       },
@@ -70,7 +81,10 @@ const InvCart = () => {
   }, [selectedBranch?.id]);
 
   return (
-    <div className="overflow-y-auto h-svh pb-16">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="overflow-y-auto h-svh pb-16"
+    >
       {mutating && <Loading />}
       <InvHeader title={"Корзина"} goBack />
       <div className="bg-white h-[52px]" />
@@ -85,9 +99,9 @@ const InvCart = () => {
         <div className="fixed bottom-0 left-0 right-0 bg-white py-3 px-5 z-[105]">
           <InvButton
             btnType={InvBtnType.primary}
+            type="submit"
             className="w-full"
             disabled={!Object.values(cart).length && mutating}
-            onClick={handleSubmit}
           >
             Подтвердить заказ
           </InvButton>
@@ -101,6 +115,21 @@ const InvCart = () => {
             btnLabel="Загрузить фото"
           />
         )}
+
+        <BaseInput label="Номер телефона" error={errors.phone_number}>
+          <InputMask
+            className="form-control mb-2"
+            mask="(999-99)-999-99-99"
+            step={3}
+            alwaysShowMask={false}
+            defaultValue={"998"}
+            {...register("phone_number", {
+              required: "Обязательное поле",
+              min: 9,
+            })}
+          />
+        </BaseInput>
+
         <BaseInput
           className="mt-4"
           label="При желании можно оставить комментарии"
@@ -111,7 +140,7 @@ const InvCart = () => {
           />
         </BaseInput>
       </WebAppContainer>
-    </div>
+    </form>
   );
 };
 

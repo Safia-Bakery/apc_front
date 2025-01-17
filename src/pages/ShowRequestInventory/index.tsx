@@ -269,7 +269,7 @@ const ShowRequestInventory = () => {
                     </td>
                   </tr>
                   <tr>
-                    <th>{t("completion_date")}:</th>
+                    <th>{t("completion_date")}</th>
                     <td>
                       {order?.finished_at
                         ? dayjs(order?.finished_at).format(dateTimeFormat)
@@ -281,6 +281,14 @@ const ShowRequestInventory = () => {
                     <td>
                       {order?.finishing_time
                         ? dayjs(order?.finishing_time).format(dateTimeFormat)
+                        : t("not_given")}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Номер для связи</th>
+                    <td>
+                      {order?.phone_number
+                        ? order.phone_number
                         : t("not_given")}
                     </td>
                   </tr>
