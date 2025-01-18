@@ -67,7 +67,7 @@ const HrOrderItem = ({ id, title, description }: Props) => {
   };
 
   return (
-    <div className="rounded-3xl flex gap-5 w-full bg-white h-18 overflow-hidden">
+    <div className="rounded-3xl flex gap-5 w-full bg-white h-18 overflow-hidden shadow-lg">
       <div className="flex flex-1 justify-between pt-3 flex-col">
         <div className="flex flex-1 justify-center ml-4 flex-col">
           <h5 className="font-bold text-base">{title}</h5>

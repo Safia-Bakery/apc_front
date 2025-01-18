@@ -128,3 +128,8 @@ interface CalendarAppointment {
     country: string;
   };
 }
+
+interface MyAppointmentsRes {
+  new: HrAppointmentRes[];
+  archive: HrAppointmentRes[];
+}

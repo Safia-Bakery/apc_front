@@ -46,7 +46,7 @@ export const getMyAppointments = ({ enabled, ...params }: BaseParams) => {
         .get("/api/v2/appointments/my_records", {
           signal,
         })
-        .then(({ data: response }) => (response as HrAppointmentRes[]) || null),
+        .then(({ data: response }) => (response as MyAppointmentsRes) || null),
     enabled,
     staleTime: EPresetTimes.MINUTE * 4,
   });

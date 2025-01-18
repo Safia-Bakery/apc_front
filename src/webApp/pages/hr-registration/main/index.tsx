@@ -99,9 +99,9 @@ const HrRegisteryMain = () => {
         </Flex>
       </Flex>
 
-      {!!data?.length && (
+      {!!data?.new?.length && (
         <Flex className="w-full mt-4 overflow-x-auto py-1" gap={10}>
-          {data.map((item, idx) => (
+          {data?.new?.map((item, idx) => (
             <Flex
               onClick={() => navigate(`/tg/hr-registery/orders/${item.id}`)}
               className="rounded-lg overflow-hidden min-w-[150px] bg-[#F6F6F6]"
