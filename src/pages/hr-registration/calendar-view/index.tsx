@@ -18,6 +18,7 @@ import {
   Input,
   Alert,
 } from "antd";
+import arrow from "/icons/arrow.svg";
 import type { RadioChangeEvent } from "antd";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
@@ -258,6 +259,18 @@ const CustomCalendar: React.FC = () => {
     },
   };
 
+  const handleWeekChange = (offset: number) => {
+    // Change week by adding or subtracting the number of days
+    const newDate = currentDate.add(offset * 7, "day");
+    setCurrentDate(newDate);
+  };
+
+  const formatWeekRange = (date: Dayjs) => {
+    const startOfWeek = date.startOf("week").format("MMM DD");
+    const endOfWeek = date.endOf("week").format("MMM DD");
+    return `${startOfWeek} - ${endOfWeek}`;
+  };
+
   const weekViewRender = useMemo(() => {
     const weekStart = currentDate.startOf("week");
     const weekDays = Array.from({ length: 7 }, (_, i) =>
@@ -444,6 +457,24 @@ const CustomCalendar: React.FC = () => {
           <Radio.Button value={ViewMode.week}>{t("week")}</Radio.Button>
           <Radio.Button value={ViewMode.day}>{t("day")}</Radio.Button>
         </Radio.Group>
+
+        {viewMode === ViewMode.week && (
+          <Flex align="center">
+            <button
+              className="btn-primary btn"
+              onClick={() => handleWeekChange(-1)}
+            >
+              <img src={arrow} className="-rotate-90" alt="prev" />
+            </button>
+            <span className="mx-3">{formatWeekRange(currentDate)}</span>
+            <button
+              className="btn-primary btn"
+              onClick={() => handleWeekChange(1)}
+            >
+              <img src={arrow} className="rotate-90" alt="prev" />
+            </button>
+          </Flex>
+        )}
 
         <button className="btn btn-primary" onClick={() => refetch()}>
           {t("refresh")}
