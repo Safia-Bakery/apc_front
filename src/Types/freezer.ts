@@ -73,6 +73,11 @@ interface FreezerOrderRes {
   }[];
 }
 
+interface FreezerMyOrdersRes {
+  closed: FreezerOrderRes[];
+  active: FreezerOrderRes[];
+}
+
 interface FreezerToolType {
   image?: string;
   name?: string;

@@ -15,6 +15,7 @@ type Props = {
     image?: string;
     name?: string;
     id: string | number;
+    status?: number;
     count: number;
     parent_id?: string;
   };
@@ -31,21 +32,26 @@ const FreezerItem = ({ style, tool, add_limit }: Props) => {
       style={style}
       className="rounded-3xl flex gap-5 w-full bg-white h-18 overflow-hidden"
     >
-      <div className="flex flex-1 justify-between pt-3 flex-col">
+      <div
+        className={`flex flex-1 shadow-md justify-between pt-3 flex-col ${
+          !!tool.status ? "pb-3" : ""
+        }`}
+      >
         <div className="flex flex-1 justify-center ml-4 flex-col">
           <h5 className="font-bold text-base">{tool?.name}</h5>
 
-          <p className="text-gray-500 text-xs">Кол-во: {tool.count || 0}</p>
+          <p className="text-gray-500 text-s">Кол-во: {tool.count || 0}</p>
         </div>
 
-        {add_limit ? (
+        {add_limit && (
           <div
             onClick={() => $tool_id(+tool.id)}
             className="overflow-hidden flex items-center justify-center rounded-tl-2xl rounded-br-3xl w-20 h-9 self-end !border !border-tgPrimary"
           >
             <SettingOutlined />
           </div>
-        ) : (
+        )}
+        {!add_limit && !tool.status && (
           <div className="overflow-hidden flex items-center justify-center rounded-tl-2xl rounded-br-3xl w-20 h-9 self-end !border !border-tgPrimary">
             {!cart[tool.id] ? (
               <button

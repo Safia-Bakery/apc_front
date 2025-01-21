@@ -48,6 +48,8 @@ const ShowFreezerOrder = lazy(
 const HrRegisterty = lazy(() => import("./webApp/layouts/hr-registery"));
 const MainFreezerRoute = lazy(() => import("./webApp/layouts/freezer"));
 const FreezerProducts = lazy(() => import("./webApp/pages/freezer/products"));
+const FreezerOrders = lazy(() => import("./webApp/pages/freezer/orders"));
+// const FreezerShowOrder = lazy(() => import("./webApp/pages/freezer/orders"));
 const ControlPanel = lazy(() => import("@/pages/ControlPanel"));
 const TgRating = lazy(() => import("@/webApp/pages/TgRating"));
 
@@ -503,6 +505,14 @@ const App = () => {
           }
           path={"collector"}
         >
+          <Route
+            element={
+              <Suspend>
+                <FreezerOrders />
+              </Suspend>
+            }
+            path={"orders"}
+          />
           <Route
             element={
               <Suspend>

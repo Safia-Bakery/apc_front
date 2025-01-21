@@ -88,3 +88,22 @@ export const getFreezerProducts = ({
     retry: false,
   });
 };
+
+export const getFreezerMyOrders = ({
+  enabled,
+  ...params
+}: FreezerProductsParams) => {
+  return useQuery({
+    queryKey: ["freezer_my_orders", params],
+    queryFn: ({ signal }) =>
+      baseApi
+        .get("/collector/my-orders", {
+          signal,
+          params,
+        })
+        .then(({ data: response }) => (response as FreezerMyOrdersRes) || null),
+    enabled,
+    staleTime: EPresetTimes.MINUTE * 4,
+    retry: false,
+  });
+};

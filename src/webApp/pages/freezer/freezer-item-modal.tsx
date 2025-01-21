@@ -1,6 +1,6 @@
 import { freezerBalanceMutation, getFreezerProducts } from "@/hooks/freezer";
 import errorToast from "@/utils/errorToast";
-import { InputNumber, Modal, Typography } from "antd";
+import { Button, Flex, InputNumber, Modal, Typography } from "antd";
 import { useRef, useState } from "react";
 
 interface Props {
@@ -18,7 +18,7 @@ const FreezerItemModal = ({
   tool_count,
   tool_parent,
 }: Props) => {
-  const [count, $count] = useState<number>();
+  const [count, $count] = useState<number | undefined>(tool_count);
   const inputRef = useRef<any>(null);
   const { refetch, isLoading, isRefetching } = getFreezerProducts({
     enabled: false,
@@ -26,13 +26,21 @@ const FreezerItemModal = ({
   });
   const { mutate, isPending } = freezerBalanceMutation();
 
+  const handleIncrement = () => {
+    $count((prev) => (prev || 0) + 1);
+  };
+
+  const handleDecrement = () =>
+    count && count > 0 && $count((prev) => (prev || 0) - 1);
+
   const onSubmit = () => {
     mutate(
       { tool_id: tool_id!, amount: count || 0 },
       {
-        onSuccess: async () => {
+        onSuccess: async (data) => {
           await refetch();
           closeModal();
+          $count(data.amount);
         },
         onError: (e) => errorToast(e.message),
       }
@@ -51,21 +59,35 @@ const FreezerItemModal = ({
       classNames={{ content: "!p-1" }}
     >
       <Typography>Введите кол-во</Typography>
-      <InputNumber
-        onFocus={inputRef?.current?.focus({
-          cursor: "end",
-        })}
-        ref={inputRef}
-        // @ts-ignore
-        onWheel={(e) => e.target?.blur()}
-        className="w-full"
-        type="number"
-        autoFocus
-        placeholder="Кол-во"
-        controls
-        onChange={(e) => $count(Number(e))}
-        defaultValue={tool_count}
-      />
+      <Flex gap={15} className="mb-4">
+        <Button
+          onClick={handleDecrement}
+          className="bg-tgPrimary min-w-20 text-white hover:!bg-tgPrimary hover:!text-white"
+        >
+          -
+        </Button>
+        <InputNumber
+          // onFocus={inputRef?.current?.focus({
+          //   cursor: "end",
+          // })}
+          // ref={inputRef}
+          // @ts-ignore
+          onWheel={(e) => e.target?.blur()}
+          className="w-full"
+          type="number"
+          autoFocus
+          placeholder="Кол-во"
+          controls
+          onChange={(e) => $count(Number(e))}
+          value={count}
+        />
+        <Button
+          onClick={handleIncrement}
+          className="bg-tgPrimary min-w-20 text-white hover:!bg-tgPrimary hover:!text-white"
+        >
+          +
+        </Button>
+      </Flex>
     </Modal>
   );
 };

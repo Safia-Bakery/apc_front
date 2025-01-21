@@ -73,7 +73,7 @@ const ShowOrder = () => {
   return (
     <>
       {isPending && <Loading />}
-      <InvHeader sticky title={`Заказ №${order_id}`} />
+      <InvHeader sticky title={`Заказ №${order_id}`} goBack={!!data?.status} />
 
       <WebAppContainer className="mt-4 overflow-y-auto mb-2">
         <Flex vertical className={"overflow-y-auto"}>
@@ -97,14 +97,16 @@ const ShowOrder = () => {
             gap={8}
           >
             <h3>Продукты</h3>
-            <InvButton
-              btnSize={BtnSize.medium}
-              btnType={InvBtnType.primary}
-              onClick={handleSelectAll}
-            >
-              <CheckOutlined className="bg-transparent" />
-              <CheckOutlined className="-ml-[10px] bg-transparent" />
-            </InvButton>
+            {!data?.status && (
+              <InvButton
+                btnSize={BtnSize.medium}
+                btnType={InvBtnType.primary}
+                onClick={handleSelectAll}
+              >
+                <CheckOutlined className="bg-transparent" />
+                <CheckOutlined className="-ml-[10px] bg-transparent" />
+              </InvButton>
+            )}
           </Flex>
           {!!data?.order_item?.length ? (
             data?.order_item?.map(({ product: tool, amount }) => (
@@ -113,6 +115,7 @@ const ShowOrder = () => {
                   image: tool?.image,
                   name: tool?.name,
                   id: tool?.id!,
+                  status: data?.status,
                   count: amount,
                 }}
                 key={tool?.id}
@@ -123,14 +126,16 @@ const ShowOrder = () => {
           )}
         </div>
 
-        <InvButton
-          btnType={InvBtnType.primary}
-          disabled={!data?.order_item?.length || isPending}
-          className="w-full !h-11 mt-3"
-          onClick={handleRequest}
-        >
-          Закрыть
-        </InvButton>
+        {!data?.status && (
+          <InvButton
+            btnType={InvBtnType.primary}
+            disabled={!data?.order_item?.length || isPending}
+            className="w-full !h-11 mt-3"
+            onClick={handleRequest}
+          >
+            Закрыть
+          </InvButton>
+        )}
       </WebAppContainer>
     </>
   );
