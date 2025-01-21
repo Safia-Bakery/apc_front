@@ -7,6 +7,8 @@ import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import { CheckOutlined, SettingOutlined } from "@ant-design/icons";
 import { CSSProperties, useState } from "react";
 import FreezerItemModal from "./freezer-item-modal";
+import { CollectorsRole } from "@/utils/tg-helper";
+import useQueryString from "@/hooks/custom/useQueryString";
 
 type Props = {
   style?: CSSProperties;
@@ -24,6 +26,7 @@ type Props = {
 const FreezerItem = ({ style, tool, add_limit }: Props) => {
   const dispatch = useAppDispatch();
   const [tool_id, $tool_id] = useState<number>();
+  const role = useQueryString("role");
   const cart = useAppSelector(cartSelector);
   const closeModal = () => $tool_id(undefined);
 
@@ -34,7 +37,7 @@ const FreezerItem = ({ style, tool, add_limit }: Props) => {
     >
       <div
         className={`flex flex-1 shadow-md justify-between pt-3 flex-col ${
-          !!tool.status ? "pb-3" : ""
+          !!tool.status || role === CollectorsRole.seller ? "pb-3" : ""
         }`}
       >
         <div className="flex flex-1 justify-center ml-4 flex-col">
@@ -51,7 +54,7 @@ const FreezerItem = ({ style, tool, add_limit }: Props) => {
             <SettingOutlined />
           </div>
         )}
-        {!add_limit && !tool.status && (
+        {!add_limit && !tool.status && role === CollectorsRole.freezer && (
           <div className="overflow-hidden flex items-center justify-center rounded-tl-2xl rounded-br-3xl w-20 h-9 self-end !border !border-tgPrimary">
             {!cart[tool.id] ? (
               <button

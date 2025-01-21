@@ -20,12 +20,15 @@ import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 import warnToast from "@/utils/warnToast";
 import { useParams } from "react-router-dom";
+import useQueryString from "@/hooks/custom/useQueryString";
+import { CollectorsRole } from "@/utils/tg-helper";
 
 const ShowOrder = () => {
   const { message_id } = useAppSelector(freezerState);
   const dispatch = useAppDispatch();
 
   const { id: order_id } = useParams();
+  const role = useQueryString("role");
   const cart = useAppSelector(cartSelector);
   const { data, isLoading } = getFreezerRequest({
     enabled: !!order_id,
@@ -97,7 +100,7 @@ const ShowOrder = () => {
             gap={8}
           >
             <h3>Продукты</h3>
-            {!data?.status && (
+            {!data?.status && role === CollectorsRole.freezer && (
               <InvButton
                 btnSize={BtnSize.medium}
                 btnType={InvBtnType.primary}
@@ -126,7 +129,7 @@ const ShowOrder = () => {
           )}
         </div>
 
-        {!data?.status && (
+        {!data?.status && role === CollectorsRole.freezer && (
           <InvButton
             btnType={InvBtnType.primary}
             disabled={!data?.order_item?.length || isPending}

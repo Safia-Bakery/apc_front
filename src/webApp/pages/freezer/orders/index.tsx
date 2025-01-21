@@ -5,7 +5,7 @@ import { Empty, Flex } from "antd";
 import dayjs from "dayjs";
 import cl from "classnames";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getFreezerMyOrders } from "@/hooks/freezer";
 import Loading from "@/components/Loader";
 import { RequestStatus } from "@/utils/types";
@@ -21,6 +21,7 @@ const statusClassName: { [key: number]: string } = {
 
 const FreezerOrders = () => {
   const navigate = useNavigate();
+  const { search } = useLocation();
   const { t } = useTranslation();
   const history = useQueryString("history");
   const navigateParams = useNavigateParams();
@@ -59,7 +60,9 @@ const FreezerOrders = () => {
           {!!data?.[!history ? "active" : "closed"].length &&
             data?.[!history ? "active" : "closed"]?.map((item) => (
               <Flex
-                onClick={() => navigate(`/tg/collector/show-order/${item.id}`)}
+                onClick={() =>
+                  navigate(`/tg/collector/show-order/${item.id}${search}`)
+                }
                 className="rounded-lg overflow-hidden min-w-[150px] bg-[#F6F6F6] border border-tgBorder shadow-md"
                 key={item.id}
                 vertical
