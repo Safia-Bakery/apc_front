@@ -9,10 +9,12 @@ import { useNavigate } from "react-router-dom";
 import { getFreezerMyOrders } from "@/hooks/freezer";
 import Loading from "@/components/Loader";
 import { RequestStatus } from "@/utils/types";
+import useQueryString from "@/hooks/custom/useQueryString";
+import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
 
 const statusClassName: { [key: number]: string } = {
   [RequestStatus.received]: "bg-tgPrimary",
-  [RequestStatus.new]: "bg-[#4630EB]",
+  [RequestStatus.new]: "bg-tgSelected",
   [RequestStatus.closed_denied]: "bg-[#FF0000]",
   [RequestStatus.denied]: "bg-[#FF0000]",
 };
@@ -20,6 +22,8 @@ const statusClassName: { [key: number]: string } = {
 const FreezerOrders = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const history = useQueryString("history");
+  const navigateParams = useNavigateParams();
 
   const { data, isLoading } = getFreezerMyOrders({});
 
@@ -27,12 +31,33 @@ const FreezerOrders = () => {
 
   return (
     <>
-      <InvHeader sticky title={"Мои заказы"} />
+      <InvHeader
+        sticky
+        goBack={!!history}
+        title={!history ? "Активные заказы" : "История заказов"}
+        rightChild={
+          !history && (
+            <Flex
+              align="center"
+              vertical
+              onClick={() => navigateParams({ history: 1 })}
+            >
+              <img
+                src="/icons/archive-white.svg"
+                alt="archive"
+                height={17}
+                width={15}
+              />
+              <h3 className="text-xs text-white">Архив</h3>
+            </Flex>
+          )
+        }
+      />
 
       <WebAppContainer className="mt-4 overflow-y-auto mb-2 ">
         <Flex vertical gap={15}>
-          {!!data?.closed.length &&
-            data?.closed?.map((item) => (
+          {!!data?.[!history ? "active" : "closed"].length &&
+            data?.[!history ? "active" : "closed"]?.map((item) => (
               <Flex
                 onClick={() => navigate(`/tg/collector/show-order/${item.id}`)}
                 className="rounded-lg overflow-hidden min-w-[150px] bg-[#F6F6F6] border border-tgBorder shadow-md"
@@ -65,7 +90,9 @@ const FreezerOrders = () => {
               </Flex>
             ))}
 
-          {!data?.closed?.length && <Empty description={t("empty_list")} />}
+          {!data?.[!history ? "active" : "closed"]?.length && (
+            <Empty description={t("empty_list")} />
+          )}
         </Flex>
       </WebAppContainer>
     </>

@@ -73,7 +73,7 @@ const ShowOrder = () => {
   return (
     <>
       {isPending && <Loading />}
-      <InvHeader sticky title={`Заказ №${order_id}`} goBack={!!data?.status} />
+      <InvHeader sticky title={`Заказ №${order_id}`} goBack />
 
       <WebAppContainer className="mt-4 overflow-y-auto mb-2">
         <Flex vertical className={"overflow-y-auto"}>
