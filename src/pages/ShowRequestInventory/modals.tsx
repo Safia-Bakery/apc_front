@@ -83,7 +83,7 @@ const InventoryModals = () => {
             className={"w-[420px]"}
           >
             <Header title="pause_reason">
-              <button onClick={closeModal} className="close">
+              <button onClick={closeModal} className="close" type="button">
                 <span aria-hidden="true">&times;</span>
               </button>
             </Header>
@@ -109,7 +109,7 @@ const InventoryModals = () => {
             className={"w-[420px]"}
           >
             <Header title="deny_reason">
-              <button onClick={closeModal} className="close">
+              <button onClick={closeModal} className="close" type="button">
                 <span aria-hidden="true">&times;</span>
               </button>
             </Header>

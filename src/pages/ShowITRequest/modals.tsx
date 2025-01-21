@@ -163,7 +163,7 @@ const ITModals = () => {
         return (
           <div className={"w-[420px]"}>
             <Header title="select_handler">
-              <button onClick={closeModal} className="close">
+              <button onClick={closeModal} className="close" type="button">
                 <span aria-hidden="true">&times;</span>
               </button>
             </Header>
@@ -208,7 +208,7 @@ const ITModals = () => {
           className={"w-[420px]"}
         >
           <Header title="deny_reason">
-            <button onClick={closeModal} className="close">
+            <button onClick={closeModal} className="close" type="button">
               <span aria-hidden="true">&times;</span>
             </button>
           </Header>
@@ -250,7 +250,7 @@ const ITModals = () => {
           className={"w-[420px]"}
         >
           <Header title="pause_reason">
-            <button onClick={closeModal} className="close">
+            <button onClick={closeModal} className="close" type="button">
               <span aria-hidden="true">&times;</span>
             </button>
           </Header>
@@ -299,7 +299,7 @@ const ITModals = () => {
       return (
         <>
           <Header title="change">
-            <button onClick={closeModal} className="close">
+            <button onClick={closeModal} className="close" type="button">
               <span>&times;</span>
             </button>
           </Header>
@@ -322,7 +322,7 @@ const ITModals = () => {
       return (
         <>
           <Header title="leave_comment">
-            <button onClick={closeModal} className="close">
+            <button onClick={closeModal} className="close" type="button">
               <span>&times;</span>
             </button>
           </Header>
@@ -351,7 +351,7 @@ const ITModals = () => {
       return (
         <>
           <Header title="select_deadline">
-            <button onClick={closeModal} className="close">
+            <button onClick={closeModal} className="close" type="button">
               <span>&times;</span>
             </button>
           </Header>

@@ -118,6 +118,7 @@ const ShowRequestApcFabric = () => {
             <button
               onClick={() => handleModal(ModalTypes.cancelRequest)}
               className="btn btn-danger"
+              type="button"
             >
               {t("calcel")}
             </button>

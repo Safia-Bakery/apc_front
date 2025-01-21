@@ -204,7 +204,11 @@ const ShowRequestModals = () => {
             className={"w-[420px]"}
           >
             <Header title="deny_reason">
-              <button onClick={() => removeParams(["modal"])} className="close">
+              <button
+                onClick={() => removeParams(["modal"])}
+                className="close"
+                type="button"
+              >
                 <span aria-hidden="true">&times;</span>
               </button>
             </Header>

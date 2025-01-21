@@ -94,7 +94,7 @@ const ShowMarketingRequest = () => {
           </button>
           <button
             onClick={handleModal(ModalTypes.cancelRequest)}
-            className="btn btn-danger   mx-2"
+            className="btn btn-danger mx-2"
           >
             {t("deny")}
           </button>

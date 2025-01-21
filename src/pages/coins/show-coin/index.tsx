@@ -108,6 +108,7 @@ const ShowCoin = () => {
           <button
             onClick={handleModal(ModalTypes.cancelRequest)}
             className="btn btn-danger mr-2"
+            type="button"
           >
             {t("deny")}
           </button>

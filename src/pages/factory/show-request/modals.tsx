@@ -144,7 +144,7 @@ const ApcModals = () => {
           className={"w-[420px]"}
         >
           <Header title="deny_reason">
-            <button onClick={closeModal} className="close">
+            <button onClick={closeModal} className="close" type="button">
               <span aria-hidden="true">&times;</span>
             </button>
           </Header>
@@ -182,7 +182,7 @@ const ApcModals = () => {
       return (
         <>
           <Header title="change">
-            <button onClick={closeModal} className="close">
+            <button onClick={closeModal} className="close" type="button">
               <span>&times;</span>
             </button>
           </Header>
