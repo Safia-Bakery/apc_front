@@ -43,13 +43,12 @@ const HRSelectTime = () => {
       // Exclude Saturdays (6) and Sundays (0)
       if (dayOfWeek !== 0 && dayOfWeek !== 6) {
         if (
-          !!schedules?.length &&
           !schedules?.find(
             (item) => item?.date === currentDate.format(yearMonthDate)
           )
         )
           weekdays.push(currentDate);
-        else weekdays.push(currentDate);
+        // else weekdays.push(currentDate);
       }
       currentDate = currentDate.add(1, "day");
     }
