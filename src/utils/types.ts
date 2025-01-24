@@ -381,6 +381,8 @@ export type ToolItemType = {
   image?: string;
   category_id?: string | number;
   count: number;
+  confirmation?: boolean;
+  confirmer?: number;
 };
 
 export interface ToolTypes extends BasePaginatedResDeprecated {

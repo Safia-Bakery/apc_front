@@ -12,6 +12,8 @@ interface Body {
   ftime?: number | string;
   image?: string | null;
   status?: number;
+  confirmation?: boolean;
+  confirmer?: number; // for user's telegram id
 }
 
 const updateToolsMutation = () => {

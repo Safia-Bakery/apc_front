@@ -42,7 +42,14 @@ const EditInventoryProd = () => {
   const { register, handleSubmit, getValues, reset } = useForm();
 
   const onSubmit = () => {
-    const { min_amount, max_amount, deadline, status } = getValues();
+    const {
+      min_amount,
+      max_amount,
+      deadline,
+      status,
+      confirmation,
+      confirmer,
+    } = getValues();
 
     mutate(
       {
@@ -51,6 +58,8 @@ const EditInventoryProd = () => {
         max_amount,
         ftime: deadline,
         status: Number(status),
+        confirmation: !!Number(confirmation),
+        confirmer: Number(confirmer),
         image: !!uploadedImg.length ? uploadedImg.at(-1) : null,
       },
       {
@@ -73,6 +82,8 @@ const EditInventoryProd = () => {
       max_amount: tool?.max_amount,
       deadline: tool?.ftime,
       status: !!tool?.status,
+      confirmation: !!tool?.confirmation,
+      confirmer: tool?.confirmer,
     });
   }, [tool]);
 
@@ -97,6 +108,19 @@ const EditInventoryProd = () => {
           <MainSelect values={SelectDates} register={register("deadline")} />
         </BaseInputs>
         <AddCategory />
+        <BaseInputs label="Кто будет подтверждать">
+          <MainInput
+            register={register("confirmer")}
+            placeholder={"Введите телеграм ID"}
+            type="nuber"
+          />
+        </BaseInputs>
+        <BaseInputs>
+          <MainCheckBox
+            label={"Будет ли товар подтверждаться"}
+            register={register("confirmation")}
+          />
+        </BaseInputs>
         <BaseInputs label="status">
           <MainCheckBox label={"active"} register={register("status")} />
         </BaseInputs>
