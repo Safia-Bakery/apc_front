@@ -641,7 +641,7 @@ const App = () => {
                 <TopDescription />
               </Suspend>
             }
-            path={"description"}
+            path={"description/:id"}
           />
           <Route
             element={
@@ -649,7 +649,7 @@ const App = () => {
                 <TopQuestions />
               </Suspend>
             }
-            path={"questions"}
+            path={"questions/:id"}
           />
 
           <Route

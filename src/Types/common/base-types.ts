@@ -1,6 +1,7 @@
 interface BaseParams {
   enabled?: boolean;
   page?: number;
+  parent?: number;
   size?: number;
 }
 type BasePaginateRes<T> = {

@@ -3,8 +3,14 @@ import WebAppContainer from "@/webApp/components/WebAppContainer";
 import { Flex } from "antd";
 import dayjs from "dayjs";
 import Top50Header from "../../components/header";
+import { useKruCategories } from "@/hooks/kru";
+import { useNavigate } from "react-router-dom";
 
 const Tasker = () => {
+  const navigate = useNavigate();
+  const { data, isLoading, refetch, isFetching } = useKruCategories({
+    page: 1,
+  });
   return (
     <>
       <Top50Header />
@@ -16,28 +22,24 @@ const Tasker = () => {
         </Flex>
 
         <Flex gap={20} vertical>
-          <Flex
-            flex={1}
-            className="min-h-32 rounded-2xl relative overflow-hidden p-4"
-          >
-            <span className="z-10 font-bold opacity-60">9:00 - 11:00</span>
-            <img
-              src="/images/top-50.png"
-              alt="top-50-tasks"
-              className="w-full h-full absolute inset-0"
-            />
-          </Flex>
-          <Flex
-            flex={1}
-            className="min-h-32 rounded-2xl relative overflow-hidden p-4"
-          >
-            <span className="z-10 font-bold opacity-60">8:00 - 23:00</span>
-            <img
-              src="/images/dailytasks.png"
-              alt="top-50-tasks"
-              className="w-full h-full absolute inset-0"
-            />
-          </Flex>
+          {data?.items?.map((item) => (
+            <Flex
+              onClick={() => navigate(`/tg/top-50/description/${item.id}`)}
+              key={item.id}
+              flex={1}
+              className="min-h-32 rounded-2xl relative overflow-hidden p-4"
+            >
+              <span className="z-10 font-bold opacity-60">
+                {dayjs(item.start_time, "HH:mm").format("HH:mm")} -{" "}
+                {dayjs(item.end_time, "HH:mm").format("HH:mm")}
+              </span>
+              <img
+                src={`/images/${item.id === 25 ? "top-50" : "dailytasks"}.png`}
+                alt="top-50-tasks"
+                className="w-full h-full absolute inset-0"
+              />
+            </Flex>
+          ))}
         </Flex>
 
         <img

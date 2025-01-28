@@ -8,7 +8,6 @@ import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 import useUsers from "@/hooks/useUsers";
 import useUser from "@/hooks/useUser";
-import InputMask from "react-input-mask";
 import BaseInput from "@/components/BaseInputs";
 import MainSelect from "@/components/BaseInputs/MainSelect";
 import MainInput from "@/components/BaseInputs/MainInput";
@@ -18,6 +17,7 @@ import MainRadioBtns from "@/components/BaseInputs/MainRadioBtns";
 import { Sphere } from "@/utils/types";
 import useRoles from "@/hooks/useRoles";
 import { useTranslation } from "react-i18next";
+import InputMask from "@/components/BaseInputs/InputMask";
 
 const EditClient = () => {
   const { t } = useTranslation();

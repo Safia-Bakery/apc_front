@@ -26,6 +26,7 @@ import { Button, Flex, Modal, Popconfirm } from "antd";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { MainPermissions } from "@/utils/permissions";
+import MainTextArea from "@/components/BaseInputs/MainTextArea";
 
 const AddKRUSubTasks = () => {
   const { t } = useTranslation();
@@ -160,7 +161,7 @@ const AddKRUSubTasks = () => {
           <MainInput register={register("category_name")} disabled />
         </BaseInputs>
 
-        <Flex wrap justify="space-between" align="center">
+        <Flex wrap justify="space-between" align="center" className="mb-4">
           <h2>{t("subtasks")}</h2>
           <Button type="primary" onClick={showModal}>
             {t("add_sub_tasks")}
@@ -182,8 +183,8 @@ const AddKRUSubTasks = () => {
                 })}
               />
             </BaseInputs>
-            <BaseInputs label="task_description">
-              <MainInput register={register("description")} />
+            <BaseInputs label="description">
+              <MainTextArea register={register("description")} />
             </BaseInputs>
 
             <Flex justify="end" gap={20}>
@@ -209,18 +210,6 @@ const AddKRUSubTasks = () => {
           data={tasks?.items}
           columns={columns}
         />
-
-        {/* {isMobile && (
-          <div className="mb-2 z-10 relative">
-            <button
-              type="button"
-              className={cl("btn btn-primary w-min")}
-              onClick={addInputFields}
-            >
-              {t("add")}
-            </button>
-          </div>
-        )} */}
       </div>
 
       {mutating && <Loading />}

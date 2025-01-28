@@ -4,7 +4,6 @@ import {
   clearCart,
 } from "@/store/reducers/webInventory";
 import { useAppDispatch, useAppSelector } from "@/store/utils/types";
-import InputMask from "react-input-mask";
 import { useEffect, useState } from "react";
 import InvButton, { InvBtnType } from "@/webApp/components/InvButton";
 import InvHeader from "@/webApp/components/web-header";
@@ -21,8 +20,8 @@ import { deptSelector } from "@/store/reducers/auth";
 import { Departments } from "@/utils/types";
 import { invFabricCategory } from "@/utils/keys";
 import MainDropZone from "@/components/MainDropZone";
-import MainInput from "@/components/BaseInputs/MainInput";
 import { fixedString } from "@/utils/helpers";
+import InputMask from "@/components/BaseInputs/InputMask";
 
 const InvCart = () => {
   const navigate = useNavigate();
@@ -120,8 +119,6 @@ const InvCart = () => {
           <InputMask
             className="form-control mb-2"
             mask="(999-99)-999-99-99"
-            step={3}
-            alwaysShowMask={false}
             defaultValue={"998"}
             {...register("phone_number", {
               required: "Обязательное поле",

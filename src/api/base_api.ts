@@ -3,6 +3,7 @@ import { store } from "@/store/rootConfig";
 import { logoutHandler } from "@/store/reducers/auth";
 import { baseURL } from "@/store/baseUrl";
 import { EPresetTimes } from "@/utils/types";
+import errorToast from "@/utils/errorToast";
 
 const logoutObj: { [key: number]: boolean } = {
   401: true,
@@ -42,6 +43,10 @@ baseApi.interceptors.response.use(
       logoutObj[error?.response?.status] &&
       !window.location.pathname.includes("/tg/")
     ) {
+      errorToast(
+        `${error?.message} (api: ${error?.config?.url})`,
+        error?.response?.data?.detail
+      );
       store?.dispatch(logoutHandler());
     }
 

@@ -235,6 +235,7 @@ const localization = {
       person_name: "Имя",
       phone_number: "Номер телефона",
       subcategory: "Подкатегория",
+      subcategories: "Подкатегории",
       issue_date: "Дата оформления",
       food_qnt: "Количество еды",
       bread_qnt: "Количество хлеба",

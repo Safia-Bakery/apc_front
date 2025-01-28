@@ -2,12 +2,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import userMutation from "@/hooks/mutation/userMutation";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 import useUser from "@/hooks/useUser";
-import InputMask from "react-input-mask";
 import { fixedString } from "@/utils/helpers";
 import BaseInput from "@/components/BaseInputs";
 import MainSelect from "@/components/BaseInputs/MainSelect";
@@ -20,10 +19,12 @@ import MainRadioBtns from "@/components/BaseInputs/MainRadioBtns";
 import { Sphere } from "@/utils/types";
 import useQueryString from "custom/useQueryString";
 import { useTranslation } from "react-i18next";
+import InputMask from "@/components/BaseInputs/InputMask";
 
 const EditAddUser = () => {
   const { t } = useTranslation();
   const { id } = useParams();
+  const ref = useRef<any>(null);
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
 

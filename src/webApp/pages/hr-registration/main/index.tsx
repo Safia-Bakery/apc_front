@@ -158,6 +158,7 @@ const HrRegisteryMain = () => {
       <h3 className="mt-4 mb-2">Документы</h3>
       <div className="bg-[#F6F6F6] rounded-lg p-2 w-full text-xs relative">
         <div className="absolute top-3 right-3">
+          {/* @ts-ignore */}
           <CopyToClipboard text={docsDescr} onCopy={() => $copied(true)}>
             <img src={`/icons/${copied ? "tick" : "copy"}.svg`} />
           </CopyToClipboard>

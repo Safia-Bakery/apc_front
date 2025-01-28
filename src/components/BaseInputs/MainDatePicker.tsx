@@ -2,7 +2,7 @@ import { FC } from "react";
 import DatePicker, { registerLocale, setDefaultLocale } from "react-datepicker";
 import cl from "classnames";
 import { UseFormRegisterReturn } from "react-hook-form";
-import ru from "date-fns/locale/ru";
+import { ru } from "date-fns/locale/ru";
 import styles from "./index.module.scss";
 
 registerLocale("ru", ru);
