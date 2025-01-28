@@ -98,6 +98,12 @@ const InvCart = lazy(() => import("@/webApp/pages/InvCart"));
 const InvSuccess = lazy(() => import("@/webApp/pages/InvSuccess"));
 const UnAuthorized = lazy(() => import("@/webApp/pages/UnAuthorized"));
 
+const TopTasks = lazy(() => import("@/webApp/top-50/screens/tasks"));
+const TopDescription = lazy(
+  () => import("@/webApp/top-50/screens/description")
+);
+const TopQuestions = lazy(() => import("@/webApp/top-50/screens/questions"));
+
 dayjs.locale("ru");
 
 const App = () => {
@@ -611,6 +617,41 @@ const App = () => {
             }
             path={"select-time"}
           />
+          <Route
+            element={
+              <Suspend>
+                <HrSuccess />
+              </Suspend>
+            }
+            path={"success/:id"}
+          />
+        </Route>
+        <Route path={"top-50"}>
+          <Route
+            element={
+              <Suspend>
+                <TopTasks />
+              </Suspend>
+            }
+            path={"tasks"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <TopDescription />
+              </Suspend>
+            }
+            path={"description"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <TopQuestions />
+              </Suspend>
+            }
+            path={"questions"}
+          />
+
           <Route
             element={
               <Suspend>

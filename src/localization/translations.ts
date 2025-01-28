@@ -142,6 +142,8 @@ const localization = {
       handled_last_30: "Обработано за последних 30 дней",
       request_stats: "Статистика по заказам",
       select_date: "Выберите дату!",
+      start_time: "время началы",
+      end_time: "время заканчивании",
       select_date_time_of_event_start: "Укажите дата и время начало событий",
       select_date_time_of_event_end: "Укажите дата и время конец событий",
       event_description: "Описание события в детялях",
