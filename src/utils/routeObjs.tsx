@@ -122,10 +122,12 @@ const ShowFormRequests = lazy(() => import("@/pages/form/show-request"));
 const InventoryCategories = lazy(() => import("@/pages/InventoryCategories"));
 const Cleaning = lazy(() => import("@/pages/Cleaning"));
 
-const AddKRUSubTasks = lazy(() => import("@/pages/AddKRUSubTasks"));
+const AddKRUSubTasks = lazy(() => import("@/pages/kru/AddKRUSubTasks"));
 
-const EditKruTask = lazy(() => import("@/pages/EditKruTask"));
-const KruTasks = lazy(() => import("@/pages/KruTasks"));
+const EditKruTask = lazy(() => import("@/pages/kru/EditKruTask"));
+const KruBranches = lazy(() => import("@/pages/kru/branches"));
+const ShowKruBranches = lazy(() => import("@/pages/kru/branches/show-branch"));
+const KruTasks = lazy(() => import("@/pages/kru/KruTasks"));
 const LogsIt = lazy(() => import("@/pages/ShowITRequest/logs"));
 
 const indexes = [0, 1, 4, 6];
@@ -463,6 +465,12 @@ export const sidebarRoutes: SidebarType[] = [
         icon: "/icons/categories.svg",
         screen: MainPermissions.kru_tasks,
       },
+      {
+        name: "branches",
+        url: `/kru-branches`,
+        icon: "/icons/branch.svg",
+        screen: MainPermissions.kru_branches,
+      },
     ],
   },
 
@@ -677,6 +685,16 @@ export const routes = [
     element: <EditKruTask />,
     path: "/kru-tasks/add",
     screen: MainPermissions.edit_kru_tasks,
+  },
+  {
+    element: <KruBranches />,
+    path: "/kru-branches",
+    screen: MainPermissions.kru_branches,
+  },
+  {
+    element: <ShowKruBranches />,
+    path: "/kru-branches/:id",
+    screen: MainPermissions.kru_branches,
   },
   {
     element: <AddKRUSubTasks />,

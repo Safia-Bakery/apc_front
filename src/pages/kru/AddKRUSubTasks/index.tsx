@@ -22,11 +22,12 @@ import AntdTable from "@/components/AntdTable";
 import { ColumnsType } from "antd/es/table/interface";
 
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Button, Flex, Modal, Popconfirm } from "antd";
+import { Button, Flex, Modal, Popconfirm, Select } from "antd";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { MainPermissions } from "@/utils/permissions";
 import MainTextArea from "@/components/BaseInputs/MainTextArea";
+import { ValueLabel } from "@/utils/types";
 
 const AddKRUSubTasks = () => {
   const { t } = useTranslation();
@@ -60,37 +61,46 @@ const AddKRUSubTasks = () => {
 
   const { mutate, isPending: mutating } = editAddKruTaskMutation();
   const { mutate: deleteTask, isPending: deleting } = kruTaskDeletion();
-
+  const [selected_answers, $selected_answers] = useState<ValueLabel[]>([]);
   const [open, setOpen] = useState(false);
+  const [selected_task, $selected_task] = useState<number>();
 
   const showModal = () => setOpen(true);
-  const hideModal = () => setOpen(false);
+  const hideModal = () => {
+    setOpen(false);
+    if (selected_task) $selected_task(undefined);
+  };
 
   const handleEdit = (item: KruTaskRes) => {
     reset({
       task_name: item?.name,
       description: item?.description,
-      task_id: item.id,
     });
+    $selected_answers(
+      item.answers?.map((item) => ({ label: item, value: item })) || []
+    );
     showModal();
+    $selected_task(item.id);
   };
-
   const onSubmit = () => {
-    const { task_name, description, task_id } = getValues();
+    const { task_name, description } = getValues();
 
     mutate(
       {
         kru_category_id: Number(id),
         name: task_name,
         description,
-        id: task_id,
+        id: selected_task,
+        answers: selected_answers.map((item) => `${item.value}`),
       },
       {
         onSuccess: () => {
           refetch();
           hideModal();
           successToast("created");
-          reset({ task_name: "", description: "", task_id: undefined });
+          reset({ task_name: "", description: "" });
+          $selected_answers([]);
+          $selected_task(undefined);
         },
         onError: (e) => errorToast(e.message),
       }
@@ -140,6 +150,18 @@ const AddKRUSubTasks = () => {
     []
   );
 
+  const handleSelect = (data: any, option: any) => {
+    if (!selected_answers.find((tool) => tool.value === data.value))
+      $selected_answers((prev) => [
+        ...prev,
+        { value: data.value, label: data.value },
+      ]);
+  };
+
+  const handleDesect = (id: any) => {
+    $selected_answers((prev) => prev.filter((tool) => tool.value !== id.value));
+  };
+
   useEffect(() => {
     reset({
       category_name: category?.name,
@@ -181,6 +203,20 @@ const AddKRUSubTasks = () => {
                 register={register("task_name", {
                   required: t("required_field"),
                 })}
+              />
+            </BaseInputs>
+            <BaseInputs label="answers">
+              <Select
+                mode="tags"
+                labelInValue
+                style={{ width: "100%" }}
+                // onChange={handleChange}
+                onSelect={handleSelect}
+                onDeselect={handleDesect}
+                tokenSeparators={[","]}
+                open={false}
+                value={selected_answers}
+                // options={options}
               />
             </BaseInputs>
             <BaseInputs label="description">

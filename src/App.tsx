@@ -99,6 +99,7 @@ const InvSuccess = lazy(() => import("@/webApp/pages/InvSuccess"));
 const UnAuthorized = lazy(() => import("@/webApp/pages/UnAuthorized"));
 
 const TopTasks = lazy(() => import("@/webApp/top-50/screens/tasks"));
+const Top50Success = lazy(() => import("@/webApp/top-50/screens/success"));
 const TopDescription = lazy(
   () => import("@/webApp/top-50/screens/description")
 );
@@ -655,7 +656,7 @@ const App = () => {
           <Route
             element={
               <Suspend>
-                <HrSuccess />
+                <Top50Success />
               </Suspend>
             }
             path={"success/:id"}

@@ -109,8 +109,18 @@ export const kruTaskDeletion = () => {
 export const kruFinishedTasks = () => {
   return useMutation({
     mutationKey: ["finished_KruTask"],
-    mutationFn: async (body: FinishedTasksBody[]) => {
-      const { data } = await baseApi.post("/kru/finished-tasks/", body);
+    mutationFn: async (body: FinishedTasksBody) => {
+      const { data } = await baseApi.post(`/kru/finished-tasks/`, body);
+      return data;
+    },
+  });
+};
+
+export const kruAddTools = () => {
+  return useMutation({
+    mutationKey: ["kru_add_tools"],
+    mutationFn: async (body: { tool_ids: number[]; branch_id: string }) => {
+      const { data } = await baseApi.post("/tools/branch", body);
       return data;
     },
   });
@@ -125,7 +135,43 @@ export const useKruAvailableTask = ({
     queryFn: () =>
       baseApi
         .get("/kru/tasks/available/", { params })
-        .then(({ data: response }) => (response as KruTaskRes[]) || null),
+        .then(
+          ({ data: response }) => (response as KruAvailableTasksRes) || null
+        ),
+    enabled,
+    refetchOnMount: true,
+    staleTime: EPresetTimes.MINUTE * 4,
+  });
+};
+
+export const useKruTools = ({ enabled, ...params }: KruToolsParams) => {
+  return useQuery({
+    queryKey: ["kru_tools", params],
+    queryFn: () =>
+      baseApi
+        .get("/kru/tools/", { params })
+        .then(({ data: response }) => (response as KruToolsRes) || null),
+    enabled,
+    refetchOnMount: true,
+    staleTime: EPresetTimes.MINUTE * 4,
+  });
+};
+
+export const useKruBranchTools = ({
+  enabled,
+  branch_id,
+}: {
+  enabled?: boolean;
+  branch_id: string;
+}) => {
+  return useQuery({
+    queryKey: ["kru_tools", branch_id],
+    queryFn: () =>
+      baseApi
+        .get("/tools/branch", { params: { branch_id } })
+        .then(
+          ({ data: response }) => (response as { tool: KruTool }[]) || null
+        ),
     enabled,
     refetchOnMount: true,
     staleTime: EPresetTimes.MINUTE * 4,

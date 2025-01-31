@@ -1,26 +1,41 @@
-import React from "react";
 import Top50Header from "../../components/header";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import { Button, Flex } from "antd";
-import { dateMonthYear } from "@/utils/keys";
 import dayjs from "dayjs";
-import { useNavigate, useParams } from "react-router-dom";
-import { useKruCategory } from "@/hooks/kru";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useKruAvailableTask, useKruCategory } from "@/hooks/kru";
+import useQueryString from "@/hooks/custom/useQueryString";
+import Loading from "@/components/Loader";
 
 const Description = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { search } = useLocation();
+  const tg_id = useQueryString("tg_id");
   const { data: category, isLoading } = useKruCategory({
     id: Number(id),
     enabled: !!id,
   });
+  const { data: availabeTasks, isLoading: availableLoading } =
+    useKruAvailableTask({
+      category_id: +id!,
+      tg_id: Number(tg_id),
+      enabled: !!id && !!tg_id,
+    });
+
+  if (availableLoading || isLoading) return <Loading />;
+
   return (
     <>
       <Top50Header />
-      <h1 className="w-full py-5 bg-[#F2F2F2] text-center"></h1>
-      <WebAppContainer className="pt-0">
+      <h1 className="w-full py-5 bg-[#F2F2F2] text-center text-base">
+        {category?.name}
+      </h1>
+      <WebAppContainer className="pt-0 ">
         <Flex className="my-6" justify="space-between">
-          <h3 className="text-sm">Количество задач: 50</h3>
+          <h3 className="text-sm">
+            Количество задач: {availabeTasks?.products?.length || 0}
+          </h3>
           <h3 className="text-sm">
             {dayjs(category?.start_time, "HH:mm").format("HH:mm")} -{" "}
             {dayjs(category?.end_time, "HH:mm").format("HH:mm")}
@@ -35,10 +50,15 @@ const Description = () => {
         <img
           src="/images/safia.jpg"
           alt="safia-logo"
-          width={50}
-          className="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-50"
+          width={120}
+          className="absolute bottom-20 left-1/2 -translate-x-1/2 opacity-40"
         />
-        <Button className="bg-[#009D6E] w-full rounded-xl absolute">
+
+        <Button
+          disabled={!availabeTasks?.products?.length}
+          onClick={() => navigate(`/tg/top-50/questions/${id}` + search)}
+          className="bg-[#009D6E] rounded-xl absolute right-2 left-2 bottom-2 text-white"
+        >
           Начать выполнять задачи
         </Button>
       </WebAppContainer>

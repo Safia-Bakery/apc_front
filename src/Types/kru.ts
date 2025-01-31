@@ -38,6 +38,7 @@ interface KruTaskBody {
   id?: number;
   kru_category_id: number;
   description?: string;
+  answers?: string[];
 }
 
 interface KruTaskParams extends BaseParams {
@@ -52,16 +53,52 @@ interface KruTaskRes {
   kru_category_id?: number;
   description?: string;
   status?: number;
+  answers?: string[];
+}
+
+interface KruAvailableTasksRes {
+  products: {
+    id: number;
+    name: string;
+    num: string;
+    code: string;
+  }[];
+  tasks: KruTaskRes[];
 }
 
 interface FinishedTasksBody {
-  task_id: number;
-  comment: string;
-  file: string;
+  tg_id: number;
+  tool_id: number;
+  answers?: {
+    task_id: number;
+    comment: string;
+  }[];
 }
 
 interface KruAvailableTaskParams {
-  category_id?: number;
+  category_id: number;
   category_name?: string;
   enabled?: boolean;
+  tg_id: number;
+}
+
+interface KruToolsParams {
+  enabled?: boolean;
+  tool_name: string;
+}
+
+interface KruToolsRes {
+  folders: {
+    id: string;
+    name: string;
+    parent_id: string;
+  }[];
+  tools: KruTool[];
+}
+interface KruTool {
+  id: number;
+  name: string;
+  status: number;
+  image: string;
+  parentid: string;
 }

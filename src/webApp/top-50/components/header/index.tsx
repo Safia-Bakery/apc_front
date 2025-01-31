@@ -14,15 +14,15 @@ const Top50Header = ({ clasName }: Props) => {
         clasName
       )}
     >
-      <Flex onClick={() => navigate(-1)} gap={2} align={"center"}>
+      <Flex onClick={() => navigate(-1)} gap={10} align={"center"}>
         <div className="rotate-180">
           <ArrowIcon color="#4E9CFF" />
         </div>
-        <Typography color={"#4E9CFF"}>Назад</Typography>
+        <Typography className="text-[#4E9CFF]">Назад</Typography>
       </Flex>
 
       <Flex align={"center"} vertical>
-        <Typography color={"black"} className="text-xs">
+        <Typography className="text-xs text-[#898989]">
           мини-приложение
         </Typography>
       </Flex>
