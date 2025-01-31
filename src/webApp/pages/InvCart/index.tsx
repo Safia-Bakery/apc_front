@@ -31,6 +31,7 @@ const InvCart = () => {
   const dispatch = useAppDispatch();
   const [uploadedFiles, $uploadedFiles] = useState<string[]>([]);
   const cart = useAppSelector(cartSelector);
+  const [phone_number, $phone_number] = useState<string>("");
   const { mutate, isPending: mutating } = invRequestMutation();
 
   const {
@@ -41,38 +42,40 @@ const InvCart = () => {
   } = useForm();
 
   const onSubmit = () => {
-    const { comment, phone_number } = getValues();
-
-    const expenditure = Object.entries(cart).map((item) => ({
-      tool_id: Number(item[0]),
-      amount: item?.[1]?.count,
-    }));
-
-    mutate(
-      {
-        category_id:
-          dep === Departments.inventory_factory
-            ? invFabricCategory
-            : state?.category_id,
-        fillial_id: selectedBranch?.id!,
-        expenditure,
-        department: dep,
-        ...(fixedString(phone_number).length > 7 && {
-          phone_number: fixedString(phone_number),
-        }),
-        description: !!comment ? comment : " ",
-        ...(!!uploadedFiles.length && { files: uploadedFiles }),
-      },
-      {
-        onSuccess: (data) => {
-          dispatch(clearCart());
-          navigate(`/tg/inventory-request/success/${data.id}`, {
-            replace: true,
-          });
+    if (fixedString(phone_number || "").length < 9) {
+      errorToast("Введите правильный номер телефона");
+    } else {
+      const { comment } = getValues();
+      const expenditure = Object.entries(cart).map((item) => ({
+        tool_id: Number(item[0]),
+        amount: item?.[1]?.count,
+      }));
+      mutate(
+        {
+          category_id:
+            dep === Departments.inventory_factory
+              ? invFabricCategory
+              : state?.category_id,
+          fillial_id: selectedBranch?.id!,
+          expenditure,
+          department: dep,
+          ...(fixedString(phone_number).length > 7 && {
+            phone_number: fixedString(phone_number),
+          }),
+          description: !!comment ? comment : " ",
+          ...(!!uploadedFiles.length && { files: uploadedFiles }),
         },
-        onError: (e) => errorToast(e.message),
-      }
-    );
+        {
+          onSuccess: (data) => {
+            dispatch(clearCart());
+            navigate(`/tg/inventory-request/success/${data.id}`, {
+              replace: true,
+            });
+          },
+          onError: (e) => errorToast(e.message),
+        }
+      );
+    }
   };
 
   useEffect(() => {
@@ -120,10 +123,11 @@ const InvCart = () => {
             className="form-control mb-2"
             mask="(999-99)-999-99-99"
             defaultValue={"998"}
-            {...register("phone_number", {
-              required: "Обязательное поле",
-              min: 9,
-            })}
+            onChange={(e) => $phone_number(e.target.value)}
+            // {...register("phone_number", {
+            //   required: "Обязательное поле",
+            //   min: 9,
+            // })}
           />
         </BaseInput>
 

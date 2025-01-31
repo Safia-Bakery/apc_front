@@ -52,6 +52,7 @@ const InvArchieve = () => {
         rightChild={
           <button onClick={() => startRef.current?.setOpen(true)}>
             <img src={calendar} alt="calendar" />
+            {/* @ts-ignore */}
             <ReactDatePicker
               className="!border mb-6 !border-[#0000000F] rounded-lg max-w-80 w-full text-center hidden py-2"
               selectsRange

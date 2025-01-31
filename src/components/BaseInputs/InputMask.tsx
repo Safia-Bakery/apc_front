@@ -43,7 +43,7 @@ const MainInput: FC<Props> = ({
       // @ts-ignore
       onWheel={(e) => e.target?.blur()}
       defaultValue={defaultValue}
-      {...register}
+      // {...register}
       {...others}
     />
   );
