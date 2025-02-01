@@ -11,6 +11,7 @@ interface KruCategoryBody {
 interface KruCategoryParams extends BaseParams {
   id?: number;
   name?: string;
+  tg_id?: number;
 }
 
 interface KruCategoryRes {

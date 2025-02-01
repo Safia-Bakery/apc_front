@@ -1,17 +1,19 @@
 import { dateMonthYear } from "@/utils/keys";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
-import { Button, Flex } from "antd";
+import { Flex } from "antd";
 import dayjs from "dayjs";
 import Top50Header from "../../components/header";
 import { useKruCategories } from "@/hooks/kru";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
+import useQueryString from "@/hooks/custom/useQueryString";
 
 const Tasker = () => {
   const navigate = useNavigate();
   const { search } = useLocation();
+  const tg_id = useQueryString("tg_id");
   const { data, isLoading, refetch, isFetching } = useKruCategories({
     page: 1,
+    tg_id: Number(tg_id),
   });
   return (
     <>

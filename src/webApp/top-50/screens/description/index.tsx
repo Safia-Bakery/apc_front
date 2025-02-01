@@ -1,7 +1,6 @@
 import Top50Header from "../../components/header";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import { Button, Flex } from "antd";
-import dayjs from "dayjs";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useKruAvailableTask, useKruCategory } from "@/hooks/kru";
 import useQueryString from "@/hooks/custom/useQueryString";
@@ -16,6 +15,7 @@ const Description = () => {
   const { data: category, isLoading } = useKruCategory({
     id: Number(id),
     enabled: !!id,
+    tg_id: Number(tg_id),
   });
   const {
     data: availabeTasks,

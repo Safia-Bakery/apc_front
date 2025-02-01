@@ -6,7 +6,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import useQueryString from "@/hooks/custom/useQueryString";
 import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
 import { Button, Flex } from "antd";
-import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 import cl from "classnames";
 import Loading from "@/components/Loader";
