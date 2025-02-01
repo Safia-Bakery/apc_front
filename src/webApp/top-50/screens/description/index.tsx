@@ -45,8 +45,8 @@ const Description = () => {
             Количество задач: {availabeTasks?.products?.length || 0}
           </h3>
           <h3 className="text-sm">
-            {dayjs(category?.start_time, "HH:mm").format("HH:mm")} -{" "}
-            {dayjs(category?.end_time, "HH:mm").format("HH:mm")}
+            {category?.start_time.slice(0, 5)} -{" "}
+            {category?.end_time.slice(0, 5)}
           </h3>
         </Flex>
 

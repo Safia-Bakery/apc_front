@@ -35,14 +35,12 @@ const Tasker = () => {
             >
               {item.id === 26 && (
                 <span className="z-10 font-bold opacity-60">
-                  {dayjs(item.start_time, "HH:mm").format("HH:mm")} -{" "}
-                  {dayjs(item.end_time, "HH:mm").format("HH:mm")}
+                  {item.start_time.slice(0, 5)} - {item.end_time.slice(0, 5)}
                 </span>
               )}
               {item.id === 27 && (
                 <span className="z-10 font-bold opacity-60">
-                  {dayjs(item.start_time, "HH:mm").format("HH:mm")} -{" "}
-                  {dayjs(item.end_time, "HH:mm").format("HH:mm")}
+                  {item.start_time.slice(0, 5)} - {item.end_time.slice(0, 5)}
                 </span>
               )}
               <img
