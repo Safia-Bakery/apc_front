@@ -69,6 +69,7 @@ interface KruAvailableTasksRes {
 interface FinishedTasksBody {
   tg_id: number;
   tool_id: number;
+  kru_category_id: number;
   answers?: {
     task_id: number;
     comment: string;

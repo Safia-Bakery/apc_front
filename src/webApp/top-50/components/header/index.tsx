@@ -10,7 +10,7 @@ const Top50Header = ({ clasName }: Props) => {
   return (
     <header
       className={cl(
-        "sticky top-0 left-0 right-0 px-2 py-3 bg-white flex items-center justify-between",
+        "sticky top-0 left-0 z-10 right-0 px-2 py-3 bg-white flex items-center justify-between",
         clasName
       )}
     >

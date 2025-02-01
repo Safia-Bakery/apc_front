@@ -5,7 +5,7 @@ import { kruFinishedTasks, useKruAvailableTask } from "@/hooks/kru";
 import { useNavigate, useParams } from "react-router-dom";
 import useQueryString from "@/hooks/custom/useQueryString";
 import { useNavigateParams } from "@/hooks/custom/useCustomNavigate";
-import { Button } from "antd";
+import { Button, Flex } from "antd";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 import cl from "classnames";
@@ -27,31 +27,32 @@ const Questions = () => {
   const currentTool = availabeTasks?.products?.[page];
 
   const handleSubmit = () => {
-    if (page < availabeTasks?.products?.length! - 1)
-      mutate(
-        {
-          tg_id: Number(tg_id),
-          tool_id: Number(currentTool?.id),
-          ...(!!answers && {
-            answers: Object.entries(answers).map((item) => ({
-              task_id: +item[0],
-              comment: item[1],
-            })),
-          }),
-        },
-        {
-          onSuccess: () => {
-            successToast("success");
+    mutate(
+      {
+        tg_id: Number(tg_id),
+        tool_id: Number(currentTool?.id),
+        kru_category_id: Number(id),
+        ...(!!answers && {
+          answers: Object.entries(answers).map((item) => ({
+            task_id: +item[0],
+            comment: item[1],
+          })),
+        }),
+      },
+      {
+        onSuccess: () => {
+          // successToast("success");
+          if (page < availabeTasks?.products?.length! - 1) {
             navigateParams({ page: page + 1 });
             $answers({});
             window.scrollTo({ top: 0, behavior: "smooth" });
-          },
-          onError: (e) => errorToast(e.message),
-        }
-      );
-    else {
-      navigate(`/tg/top-50/success/${id}`);
-    }
+          } else {
+            navigate(`/tg/top-50/success/${id}`);
+          }
+        },
+        onError: (e) => errorToast(e.message),
+      }
+    );
   };
 
   if (isLoading) return <Loading />;
@@ -59,9 +60,14 @@ const Questions = () => {
   return (
     <>
       <Top50Header />
-      <h1 className="w-full py-5 bg-[#F2F2F2] text-center text-base">
-        {currentTool?.name}
-      </h1>
+      <Flex justify="space-between" align="center">
+        <h1 className="w-full m-auto py-5 bg-[#F2F2F2] text-center text-base max-w-[270px] overflow-hidden whitespace-nowrap text-ellipsis">
+          {currentTool?.name}
+        </h1>
+        <div className="bg-[#D9D9D9] rounded-full text-sm text-center py-1 px-2 flex absolute z-0 right-3">{`${
+          page + 1
+        } | ${availabeTasks?.products?.length}`}</div>
+      </Flex>
       <WebAppContainer className="pt-0 h-screen">
         {availabeTasks?.tasks?.map((item) => (
           <div className="mb-10" key={item.id}>
@@ -88,7 +94,7 @@ const Questions = () => {
         ))}
 
         <Button
-          disabled={isPending}
+          disabled={isPending || Object.keys(answers).length < 3}
           onClick={handleSubmit}
           className="bg-[#009D6E] rounded-xl w-full sticky right-2 left-2 bottom-2  text-white"
         >

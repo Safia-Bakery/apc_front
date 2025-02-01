@@ -6,6 +6,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useKruAvailableTask, useKruCategory } from "@/hooks/kru";
 import useQueryString from "@/hooks/custom/useQueryString";
 import Loading from "@/components/Loader";
+import { useEffect } from "react";
 
 const Description = () => {
   const navigate = useNavigate();
@@ -16,12 +17,19 @@ const Description = () => {
     id: Number(id),
     enabled: !!id,
   });
-  const { data: availabeTasks, isLoading: availableLoading } =
-    useKruAvailableTask({
-      category_id: +id!,
-      tg_id: Number(tg_id),
-      enabled: !!id && !!tg_id,
-    });
+  const {
+    data: availabeTasks,
+    isLoading: availableLoading,
+    refetch,
+  } = useKruAvailableTask({
+    category_id: +id!,
+    tg_id: Number(tg_id),
+    enabled: !!id && !!tg_id,
+  });
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   if (availableLoading || isLoading) return <Loading />;
 
