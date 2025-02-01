@@ -18,12 +18,16 @@ export const useKruCategories = ({ enabled, ...params }: KruCategoryParams) => {
   });
 };
 
-export const useKruCategory = ({ enabled, id }: KruCategoryParams) => {
+export const useKruCategory = ({
+  enabled,
+  id,
+  ...params
+}: KruCategoryParams) => {
   return useQuery({
-    queryKey: ["kru_category", id],
+    queryKey: ["kru_category", id, params],
     queryFn: () =>
       baseApi
-        .get(`/kru/categories/${id}`)
+        .get(`/kru/categories/${id}`, { params })
         .then(({ data: response }) => (response as KruCategoryRes) || null),
     enabled: enabled && !!id,
     refetchOnMount: true,

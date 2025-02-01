@@ -12,26 +12,30 @@ const Description = () => {
   const { id } = useParams();
   const { search } = useLocation();
   const tg_id = useQueryString("tg_id");
-  const { data: category, isLoading } = useKruCategory({
+  const {
+    data: category,
+    isLoading,
+    refetch,
+  } = useKruCategory({
     id: Number(id),
     enabled: !!id,
     tg_id: Number(tg_id),
   });
-  const {
-    data: availabeTasks,
-    isLoading: availableLoading,
-    refetch,
-  } = useKruAvailableTask({
-    category_id: +id!,
-    tg_id: Number(tg_id),
-    enabled: !!id && !!tg_id,
-  });
+  // const {
+  //   data: availabeTasks,
+  //   isLoading: availableLoading,
+  //   refetch,
+  // } = useKruAvailableTask({
+  //   category_id: +id!,
+  //   tg_id: Number(tg_id),
+  //   enabled: !!id && !!tg_id,
+  // });
 
   useEffect(() => {
     refetch();
   }, []);
 
-  if (availableLoading || isLoading) return <Loading />;
+  if (isLoading) return <Loading />;
 
   return (
     <>
@@ -42,7 +46,7 @@ const Description = () => {
       <WebAppContainer className="pt-0 ">
         <Flex className="my-6" justify="space-between">
           <h3 className="text-sm">
-            Количество задач: {availabeTasks?.products?.length || 0}
+            Количество задач: {category?.products_count || 0}
           </h3>
           <h3 className="text-sm">
             {category?.start_time.slice(0, 5)} -{" "}
@@ -63,7 +67,7 @@ const Description = () => {
         />
 
         <Button
-          disabled={!availabeTasks?.products?.length}
+          disabled={!category?.products_count}
           onClick={() => navigate(`/tg/top-50/questions/${id}` + search)}
           className="bg-[#009D6E] rounded-xl absolute right-2 left-2 bottom-2 text-white"
         >

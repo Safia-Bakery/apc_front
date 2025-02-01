@@ -19,6 +19,7 @@ interface KruCategoryRes {
   name: string;
   description: string;
   status: number;
+  products_count?: number;
   parent: number;
   start_time: string;
   end_time: string;
