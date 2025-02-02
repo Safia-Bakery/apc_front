@@ -1,12 +1,19 @@
-import { useNavigate } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useRoutes,
+} from "react-router-dom";
 import cl from "classnames";
 import ArrowIcon from "../../assets/arrow";
-import { Flex, Typography } from "antd";
+import { Flex, Popover, Typography } from "antd";
 
-type Props = { clasName?: string };
+type Props = { clasName?: string; showPopover?: boolean };
 
-const Top50Header = ({ clasName }: Props) => {
+const Top50Header = ({ clasName, showPopover = false }: Props) => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const { search } = useLocation();
   return (
     <header
       className={cl(
@@ -28,7 +35,23 @@ const Top50Header = ({ clasName }: Props) => {
       </Flex>
 
       <div className="w-16">
-        <img src="/icons/info.svg" className=" float-end" alt="info" />
+        <Popover
+          content={
+            showPopover && (
+              <div className="p-1">
+                <button
+                  onClick={() => navigate(`/tg/top-50/reports/${id}${search}`)}
+                >
+                  Загрузить отчёты
+                </button>
+              </div>
+            )
+          }
+          title="Меню"
+          trigger="click"
+        >
+          <img src="/icons/info.svg" className=" float-end" alt="info" />
+        </Popover>
       </div>
     </header>
   );

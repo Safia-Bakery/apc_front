@@ -105,3 +105,13 @@ interface KruTool {
   image: string;
   parentid: string;
 }
+interface KruReportsBody {
+  report_type: number;
+  start_date?: string;
+  finish_date?: string;
+  category_id?: number;
+  branch_id?: string;
+  product_code?: string;
+  product_name?: string;
+  answer?: string;
+}

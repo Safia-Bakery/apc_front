@@ -104,6 +104,7 @@ const TopDescription = lazy(
   () => import("@/webApp/top-50/screens/description")
 );
 const TopQuestions = lazy(() => import("@/webApp/top-50/screens/questions"));
+const Top50Reports = lazy(() => import("@/webApp/top-50/screens/reports"));
 
 dayjs.locale("ru");
 
@@ -651,6 +652,14 @@ const App = () => {
               </Suspend>
             }
             path={"questions/:id"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <Top50Reports />
+              </Suspend>
+            }
+            path={"reports/:id"}
           />
 
           <Route

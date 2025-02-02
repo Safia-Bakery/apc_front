@@ -130,6 +130,16 @@ export const kruAddTools = () => {
   });
 };
 
+export const kruDownloadReports = () => {
+  return useMutation({
+    mutationKey: ["kru_add_tools"],
+    mutationFn: async (body: KruReportsBody) => {
+      const { data } = await baseApi.post("/kru/reports/", body);
+      return data;
+    },
+  });
+};
+
 export const useKruAvailableTask = ({
   enabled,
   ...params

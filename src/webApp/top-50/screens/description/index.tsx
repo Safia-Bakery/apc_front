@@ -39,7 +39,7 @@ const Description = () => {
 
   return (
     <>
-      <Top50Header />
+      <Top50Header showPopover />
       <h1 className="w-full py-5 bg-[#F2F2F2] text-center text-base">
         {category?.name}
       </h1>

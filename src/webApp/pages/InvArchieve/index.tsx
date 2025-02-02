@@ -11,7 +11,6 @@ import dayjs from "dayjs";
 import { dateTimeFormatWeb, yearMonthDate } from "@/utils/keys";
 import { RequestStatus } from "@/utils/types";
 import { useTranslation } from "react-i18next";
-import Pagination from "@/components/Pagination";
 import EmptyList from "@/components/EmptyList";
 import ReactDatePicker from "react-datepicker";
 import InvPagination from "@/webApp/components/InvPagination";
@@ -50,7 +49,7 @@ const InvArchieve = () => {
         title="Архив"
         goBack
         rightChild={
-          <button onClick={() => startRef.current?.setOpen(true)}>
+          <div onClick={() => startRef.current?.setOpen(true)}>
             <img src={calendar} alt="calendar" />
             {/* @ts-ignore */}
             <ReactDatePicker
@@ -63,7 +62,7 @@ const InvArchieve = () => {
                 setDateRange(update);
               }}
             />
-          </button>
+          </div>
         }
       />
 
