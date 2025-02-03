@@ -1,38 +1,32 @@
-import Top50Header from "../../components/header";
-import WebAppContainer from "@/webApp/components/WebAppContainer";
-import { useNavigate, useParams } from "react-router-dom";
-import { Button, Select } from "antd";
-import BaseInput from "@/components/BaseInputs";
-import ReactDatePicker from "react-datepicker";
-import { useRef, useState } from "react";
 import AntBranchSelect from "@/components/AntBranchSelect";
-import { kruDownloadReports, useKruTools } from "@/hooks/kru";
-import useDebounce from "@/hooks/custom/useDebounce";
-import errorToast from "@/utils/errorToast";
-import dayjs from "dayjs";
-import { yearMonthDate } from "@/utils/keys";
+import BaseInput from "@/components/BaseInputs";
+import Card from "@/components/Card";
+import Header from "@/components/Header";
+import Loading from "@/components/Loader";
 import useBackExcel from "@/hooks/custom/useBackExcel";
+import useDebounce from "@/hooks/custom/useDebounce";
+import { kruDownloadReports, useKruCategories, useKruTools } from "@/hooks/kru";
+import errorToast from "@/utils/errorToast";
+import { yearMonthDate } from "@/utils/keys";
+import { DatePicker, Select } from "antd";
+import dayjs from "dayjs";
+import { useState } from "react";
 
-const date = new Date();
-const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+const { RangePicker } = DatePicker;
+const dateFormat = "YYYY/MM/DD";
 
 const showBranch = [1, 3];
 const showCode = [1, 2];
 
-const Top50Reports = () => {
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const startRef = useRef<any>(null);
+const KruReports = () => {
   const [report_type, $report_type] = useState<string>();
   const [branch, $branch] = useState<string>();
   const [tool_name, $tool_name] = useDebounce("");
   const [product_code, $product_code] = useState<string>();
+  const [selected_category, $selected_category] = useState<string>();
   const [product_name, $product_name] = useState<string>();
   const [answer, $answer] = useState<string>();
-  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
-    firstDay,
-    date,
-  ]);
+  const [dateRange, setDateRange] = useState<[string, string]>(["", ""]);
   const [startDate, endDate] = dateRange;
 
   const handleSelect = (item: KruTool | undefined) => {
@@ -40,16 +34,20 @@ const Top50Reports = () => {
     $product_name(item?.name);
   };
 
+  const { data: categories, isLoading } = useKruCategories({
+    page: 1,
+  });
+
   const { mutate, isPending: downloading } = kruDownloadReports();
   const handleDownload = () => {
     mutate(
       {
         report_type: Number(report_type),
-        category_id: Number(id),
-        ...(startDate && {
+        category_id: Number(selected_category),
+        ...(!!startDate && {
           start_date: dayjs(startDate).format(yearMonthDate),
         }),
-        ...(endDate && { finish_date: dayjs(endDate).format(yearMonthDate) }),
+        ...(!!endDate && { finish_date: dayjs(endDate).format(yearMonthDate) }),
         ...(branch && { branch_id: branch }),
         ...(product_code && { product_code }),
         ...(product_name && { product_name }),
@@ -68,14 +66,23 @@ const Top50Reports = () => {
     enabled: !!tool_name,
     tool_name,
   });
+
+  if (isLoading) return <Loading />;
+
   return (
-    <>
-      <Top50Header />
-      <h1 className="w-full py-5 bg-[#F2F2F2] text-center text-base">
-        Загрузить отчеты
-      </h1>
-      <WebAppContainer className="pt-0 ">
-        <div className=""></div>
+    <Card>
+      <Header title={"Загрузить отчеты"} />
+
+      <div className="table-responsive content">
+        <BaseInput label="Выберите категорию">
+          <Select
+            className="w-full flex"
+            placeholder="Выберите категорию"
+            fieldNames={{ label: "name", value: "id" }}
+            onChange={(e) => $selected_category(e)}
+            options={categories?.items}
+          />
+        </BaseInput>
         <BaseInput label="Тип отчёта">
           <Select
             className="w-full flex"
@@ -100,14 +107,14 @@ const Top50Reports = () => {
             <Select
               loading={isPending}
               showSearch
+              onSearch={(e) => $tool_name(e)}
               allowClear
               onClear={() => handleSelect(undefined)}
-              onSearch={(e) => $tool_name(e)}
               className="flex"
               fieldNames={{ label: "name", value: "name" }}
               placeholder="Введите текст для поиска..."
               options={tool_item?.tools}
-              onSelect={(_, r) => handleSelect(r)}
+              onSelect={(e, r) => handleSelect(r)}
               // value={selected_tools}
             />
           </BaseInput>
@@ -133,31 +140,28 @@ const Top50Reports = () => {
 
         {showBranch.includes(Number(report_type)) && (
           <BaseInput label="Выберите Дату">
-            {/* @ts-ignore */}
-            <ReactDatePicker
-              className="!border mb-6 rounded-lg w-full text-center py-2 !flex flex-1"
-              selectsRange
-              startDate={startDate}
-              wrapperClassName="flex"
-              endDate={endDate}
-              ref={startRef}
-              onChange={(update) => {
-                setDateRange(update);
-              }}
+            <RangePicker
+              defaultValue={[
+                dayjs("2015/01/01", dateFormat),
+                dayjs("2015/01/01", dateFormat),
+              ]}
+              className="flex w-96"
+              format={dateFormat}
+              onChange={(e, r) => setDateRange(r)}
             />
           </BaseInput>
         )}
 
-        <Button
+        <button
           onClick={handleDownload}
           disabled={downloading}
-          className="bg-[#009D6E] rounded-xl absolute right-2 left-2 bottom-2 text-white"
+          className="btn btn-success"
         >
           Загрузить
-        </Button>
-      </WebAppContainer>
-    </>
+        </button>
+      </div>
+    </Card>
   );
 };
 
-export default Top50Reports;
+export default KruReports;

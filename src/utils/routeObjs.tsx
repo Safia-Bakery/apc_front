@@ -126,6 +126,7 @@ const AddKRUSubTasks = lazy(() => import("@/pages/kru/AddKRUSubTasks"));
 
 const EditKruTask = lazy(() => import("@/pages/kru/EditKruTask"));
 const KruBranches = lazy(() => import("@/pages/kru/branches"));
+const KruReports = lazy(() => import("@/pages/kru/reports"));
 const ShowKruBranches = lazy(() => import("@/pages/kru/branches/show-branch"));
 const KruTasks = lazy(() => import("@/pages/kru/KruTasks"));
 const LogsIt = lazy(() => import("@/pages/ShowITRequest/logs"));
@@ -471,6 +472,12 @@ export const sidebarRoutes: SidebarType[] = [
         icon: "/icons/branch.svg",
         screen: MainPermissions.kru_branches,
       },
+      {
+        name: "reports",
+        url: `/kru-reports`,
+        icon: "/icons/statistics.svg",
+        screen: MainPermissions.kru_reports,
+      },
     ],
   },
 
@@ -690,6 +697,11 @@ export const routes = [
     element: <KruBranches />,
     path: "/kru-branches",
     screen: MainPermissions.kru_branches,
+  },
+  {
+    element: <KruReports />,
+    path: "/kru-reports",
+    screen: MainPermissions.kru_reports,
   },
   {
     element: <ShowKruBranches />,
