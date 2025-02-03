@@ -96,7 +96,7 @@ const KruReports = () => {
           />
         </BaseInput>
 
-        {showBranch.includes(Number(report_type)) && (
+        {/* {showBranch.includes(Number(report_type)) && (
           <BaseInput label="Выберите филиал">
             <AntBranchSelect onChange={(e) => $branch(e)} />
           </BaseInput>
@@ -136,7 +136,7 @@ const KruReports = () => {
               ]}
             />
           </BaseInput>
-        )}
+        )} */}
 
         {showBranch.includes(Number(report_type)) && (
           <BaseInput label="Выберите Дату">
