@@ -27,7 +27,7 @@ import { MainPermissions } from "@/utils/permissions";
 import { ColumnsType } from "antd/es/table";
 import AntdTable from "@/components/AntdTable";
 
-const EditKruTask = () => {
+const EditKruCategory = () => {
   const { id } = useParams();
   const { t } = useTranslation();
   const page = Number(useQueryString("page")) || 1;
@@ -37,12 +37,15 @@ const EditKruTask = () => {
     page,
     enabled: !!id,
   });
-  const { data: categoriesChild, isLoading: categoriesChildLoading } =
-    useKruCategories({
-      page,
-      parent: Number(id),
-      enabled: !!id,
-    });
+  const {
+    data: categoriesChild,
+    isLoading: categoriesChildLoading,
+    refetch: refetchChild,
+  } = useKruCategories({
+    page,
+    parent: Number(id),
+    enabled: !!id,
+  });
   const { refetch } = useKruCategories({ page: 1, enabled: false });
   const [start_time, $start_time] = useState<Dayjs | null>();
   const [end_time, $end_time] = useState<Dayjs | null>();
@@ -77,6 +80,7 @@ const EditKruTask = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const {
     data: category,
     isLoading,
@@ -100,7 +104,9 @@ const EditKruTask = () => {
       {
         onSuccess: () => {
           refetch();
-          categoryrefetch();
+          if (!!id) {
+            categoryrefetch();
+          }
           successToast("success");
           navigate("/kru-tasks");
         },
@@ -241,7 +247,13 @@ const EditKruTask = () => {
       </form>
 
       <div className="table-responsive content">
-        <h1>{t("subcategories")}</h1>
+        <Flex justify="space-between" align="center">
+          <h1>{t("subcategories")}</h1>
+
+          <button className="btn btn-primary" onClick={() => refetchChild()}>
+            {t("refresh")}
+          </button>
+        </Flex>
         <AntdTable
           data={categoriesChild?.items}
           totalItems={categoriesChild?.total}
@@ -258,4 +270,4 @@ const EditKruTask = () => {
   );
 };
 
-export default EditKruTask;
+export default EditKruCategory;

@@ -6,15 +6,22 @@ import Top50Header from "../../components/header";
 import { useKruCategories } from "@/hooks/kru";
 import { useLocation, useNavigate } from "react-router-dom";
 import useQueryString from "@/hooks/custom/useQueryString";
+import { dailyTasksId, top50id } from "@/utils/tg-helper";
+import Loading from "@/components/Loader";
 
 const Tasker = () => {
   const navigate = useNavigate();
   const { search } = useLocation();
   const tg_id = useQueryString("tg_id");
-  const { data, isLoading, refetch, isFetching } = useKruCategories({
+  const { data, isLoading } = useKruCategories({
     page: 1,
     tg_id: Number(tg_id),
   });
+  const dailytaskItem = data?.items.find((item) => item.id === dailyTasksId);
+  const top50Item = data?.items.find((item) => item.id === top50id);
+
+  if (isLoading) return <Loading />;
+
   return (
     <>
       <Top50Header />
@@ -26,32 +33,51 @@ const Tasker = () => {
         </Flex>
 
         <Flex gap={20} vertical>
-          {data?.items?.map((item) => (
-            <Flex
-              onClick={() =>
-                navigate(`/tg/top-50/description/${item.id}` + search)
-              }
-              key={item.id}
-              flex={1}
-              className="min-h-32 rounded-2xl relative overflow-hidden p-4"
-            >
-              {item.id === 26 && (
-                <span className="z-10 font-bold opacity-60">
-                  {item.start_time.slice(0, 5)} - {item.end_time.slice(0, 5)}
-                </span>
-              )}
-              {item.id === 27 && (
-                <span className="z-10 font-bold opacity-60">
-                  {item.start_time.slice(0, 5)} - {item.end_time.slice(0, 5)}
-                </span>
-              )}
-              <img
-                src={`/images/${item.id === 26 ? "top-50" : "dailytasks"}.png`} // checking whether it is top-50
-                alt="top-50-tasks"
-                className="w-full h-full absolute inset-0"
-              />
-            </Flex>
-          ))}
+          <Flex // top 50 item
+            onClick={() =>
+              !!top50Item?.products_count &&
+              navigate(`/tg/top-50/description/${top50id}` + search)
+            }
+            flex={1}
+            vertical
+            className="min-h-32 rounded-2xl relative overflow-hidden p-4"
+          >
+            <span className="z-10 font-bold opacity-60">
+              {top50Item?.start_time?.slice(0, 5)} -{" "}
+              {top50Item?.end_time?.slice(0, 5)}
+            </span>
+
+            {!top50Item?.products_count && (
+              <span className="z-10 font-bold opacity-60">
+                Задачи завершены
+              </span>
+            )}
+            <img
+              src={`/images/top-50.png`}
+              alt="top-50-tasks"
+              className="w-full h-full absolute inset-0"
+            />
+          </Flex>
+
+          <Flex // daily tasks
+            onClick={() =>
+              navigate(`/tg/top-50/sub-tasks/${dailyTasksId}` + search)
+            }
+            flex={1}
+            vertical
+            className="min-h-32 rounded-2xl relative overflow-hidden p-4"
+          >
+            <span className="z-10 font-bold opacity-60">
+              {dailytaskItem?.start_time?.slice(0, 5)} -{" "}
+              {dailytaskItem?.end_time?.slice(0, 5)}
+            </span>
+
+            <img
+              src={`/images/dailytasks.png`} // checking whether it is top-50
+              alt="top-50-tasks"
+              className="w-full h-full absolute inset-0"
+            />
+          </Flex>
         </Flex>
 
         <img

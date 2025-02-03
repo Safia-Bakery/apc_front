@@ -100,10 +100,17 @@ const UnAuthorized = lazy(() => import("@/webApp/pages/UnAuthorized"));
 
 const TopTasks = lazy(() => import("@/webApp/top-50/screens/tasks"));
 const Top50Success = lazy(() => import("@/webApp/top-50/screens/success"));
+const Top50SubTasks = lazy(() => import("@/webApp/top-50/screens/sub-tasks"));
+const DescriptionDailyTasks = lazy(
+  () => import("@/webApp/top-50/screens/description-daily")
+);
 const TopDescription = lazy(
   () => import("@/webApp/top-50/screens/description")
 );
 const TopQuestions = lazy(() => import("@/webApp/top-50/screens/questions"));
+const QuestionsDailyTasks = lazy(
+  () => import("@/webApp/top-50/screens/questions-daily")
+);
 const Top50Reports = lazy(() => import("@/webApp/top-50/screens/reports"));
 
 dayjs.locale("ru");
@@ -648,10 +655,34 @@ const App = () => {
           <Route
             element={
               <Suspend>
+                <DescriptionDailyTasks />
+              </Suspend>
+            }
+            path={"description-daily/:id"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <Top50SubTasks />
+              </Suspend>
+            }
+            path={"sub-tasks/:id"}
+          />
+          <Route
+            element={
+              <Suspend>
                 <TopQuestions />
               </Suspend>
             }
             path={"questions/:id"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <QuestionsDailyTasks />
+              </Suspend>
+            }
+            path={"questions-daily/:id"}
           />
           <Route
             element={

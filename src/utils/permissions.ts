@@ -168,7 +168,7 @@ export enum MainPermissions {
   kru_tasks = 140,
   edit_kru_tasks = 141,
   kru_branches = 169,
-  kru_reports = 171,
+  kru_reports = 170,
 
   get_requests_inventory_factory = 143,
   edit_requests_inventory_factory = 144,

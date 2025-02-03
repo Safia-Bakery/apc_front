@@ -20,6 +20,7 @@ interface KruCategoryRes {
   description: string;
   status: number;
   products_count?: number;
+  tasks_count?: number;
   parent: number;
   start_time: string;
   end_time: string;
@@ -70,11 +71,12 @@ interface KruAvailableTasksRes {
 
 interface FinishedTasksBody {
   tg_id: number;
-  tool_id: number;
+  tool_id?: number;
   kru_category_id: number;
   answers?: {
     task_id: number;
-    comment: string;
+    comment?: string;
+    file?: string;
   }[];
 }
 

@@ -21,7 +21,6 @@ const KruTasks = () => {
   const navigate = useNavigate();
   const permission = useAppSelector(permissionSelector);
   const page = Number(useQueryString("page")) || 1;
-
   const { data, isLoading, refetch, isFetching } = useKruCategories({ page });
   const { mutate, isPending } = kruCategoryDeletion();
 
@@ -103,7 +102,7 @@ const KruTasks = () => {
         </button>
       </Header>
 
-      <div className="table-responsive  content ">
+      <div className="table-responsive content ">
         <AntdTable
           data={data?.items}
           totalItems={data?.total}

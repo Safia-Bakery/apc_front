@@ -14,6 +14,7 @@ interface Props extends UploadProps {
   setData: (value: SetStateAction<string[]>) => void;
   defaultFiles?: string[];
   btnLabel?: string;
+  btnClassName?: string;
 }
 
 const MainDropZone = ({
@@ -22,6 +23,7 @@ const MainDropZone = ({
   name = "files",
   btnLabel = "Загрузить файлы",
   listType = "picture",
+  btnClassName,
   ...others
 }: Props) => {
   const { t } = useTranslation();
@@ -91,7 +93,11 @@ const MainDropZone = ({
           </div>
         ))}
       </Flex>
-      <Button type="primary" onClick={toggleModal} className="w-60">
+      <Button
+        type="primary"
+        onClick={toggleModal}
+        className={`w-60 ${btnClassName}`}
+      >
         {btnLabel}
       </Button>
       <Modal

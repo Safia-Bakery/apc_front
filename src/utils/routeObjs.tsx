@@ -124,7 +124,7 @@ const Cleaning = lazy(() => import("@/pages/Cleaning"));
 
 const AddKRUSubTasks = lazy(() => import("@/pages/kru/AddKRUSubTasks"));
 
-const EditKruTask = lazy(() => import("@/pages/kru/EditKruTask"));
+const EditKruTask = lazy(() => import("@/pages/kru/edit-category"));
 const KruBranches = lazy(() => import("@/pages/kru/branches"));
 const KruReports = lazy(() => import("@/pages/kru/reports"));
 const ShowKruBranches = lazy(() => import("@/pages/kru/branches/show-branch"));

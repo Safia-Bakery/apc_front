@@ -2,12 +2,12 @@ import Top50Header from "../../components/header";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import { Button, Flex } from "antd";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useKruAvailableTask, useKruCategory } from "@/hooks/kru";
+import { useKruCategory } from "@/hooks/kru";
 import useQueryString from "@/hooks/custom/useQueryString";
 import Loading from "@/components/Loader";
 import { useEffect } from "react";
 
-const Description = () => {
+const DescriptionDailyTasks = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { search } = useLocation();
@@ -37,7 +37,7 @@ const Description = () => {
       <WebAppContainer className="pt-0 ">
         <Flex className="my-6" justify="space-between">
           <h3 className="text-sm">
-            Количество задач: {category?.products_count || 0}
+            Количество задач: {category?.tasks_count || 0}
           </h3>
           <h3 className="text-sm">
             {category?.start_time?.slice(0, 5)} -{" "}
@@ -58,8 +58,8 @@ const Description = () => {
         />
 
         <Button
-          disabled={!category?.products_count}
-          onClick={() => navigate(`/tg/top-50/questions/${id}` + search)}
+          disabled={!category?.tasks_count}
+          onClick={() => navigate(`/tg/top-50/questions-daily/${id}` + search)}
           className="bg-[#009D6E] rounded-xl absolute right-2 left-2 bottom-2 text-white"
         >
           Начать выполнять задачи
@@ -69,4 +69,4 @@ const Description = () => {
   );
 };
 
-export default Description;
+export default DescriptionDailyTasks;

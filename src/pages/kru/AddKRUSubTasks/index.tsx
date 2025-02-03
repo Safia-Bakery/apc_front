@@ -150,7 +150,7 @@ const AddKRUSubTasks = () => {
     []
   );
 
-  const handleSelect = (data: any, option: any) => {
+  const handleSelect = (data: any) => {
     if (!selected_answers.find((tool) => tool.value === data.value))
       $selected_answers((prev) => [
         ...prev,
