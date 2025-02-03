@@ -151,7 +151,7 @@ const Top50Reports = () => {
         <Button
           onClick={handleDownload}
           disabled={downloading}
-          className="bg-[#009D6E] rounded-xl absolute right-2 left-2 bottom-2 text-white"
+          className="bg-[#009D6E] rounded-xl absolute right-2 left-2 bottom-2 text-white h-12"
         >
           Загрузить
         </Button>

@@ -60,7 +60,7 @@ const DescriptionDailyTasks = () => {
         <Button
           disabled={!category?.tasks_count}
           onClick={() => navigate(`/tg/top-50/questions-daily/${id}` + search)}
-          className="bg-[#009D6E] rounded-xl absolute right-2 left-2 bottom-2 text-white"
+          className="bg-[#009D6E] rounded-xl absolute right-2 left-2 bottom-2 text-white h-12"
         >
           Начать выполнять задачи
         </Button>

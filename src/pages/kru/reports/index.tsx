@@ -13,8 +13,10 @@ import dayjs from "dayjs";
 import { useState } from "react";
 
 const { RangePicker } = DatePicker;
-const dateFormat = "YYYY/MM/DD";
+const currentDate = dayjs();
 
+// First day of the current month
+const firstDayOfMonth = dayjs().startOf("month");
 const showBranch = [1, 3];
 const showCode = [1, 2];
 
@@ -138,19 +140,19 @@ const KruReports = () => {
           </BaseInput>
         )} */}
 
-        {showBranch.includes(Number(report_type)) && (
-          <BaseInput label="Выберите Дату">
-            <RangePicker
-              defaultValue={[
-                dayjs("2015/01/01", dateFormat),
-                dayjs("2015/01/01", dateFormat),
-              ]}
-              className="flex w-96"
-              format={dateFormat}
-              onChange={(e, r) => setDateRange(r)}
-            />
-          </BaseInput>
-        )}
+        {/* {showBranch.includes(Number(report_type)) && ( */}
+        <BaseInput label="Выберите Дату">
+          <RangePicker
+            defaultValue={[
+              dayjs(currentDate, yearMonthDate),
+              dayjs(firstDayOfMonth, yearMonthDate),
+            ]}
+            className="flex w-96"
+            format={yearMonthDate}
+            onChange={(e, r) => setDateRange(r)}
+          />
+        </BaseInput>
+        {/* )} */}
 
         <button
           onClick={handleDownload}

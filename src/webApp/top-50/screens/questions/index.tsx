@@ -95,7 +95,7 @@ const Questions = () => {
         <Button
           disabled={isPending || Object.keys(answers).length < 3}
           onClick={handleSubmit}
-          className="bg-[#009D6E] rounded-xl w-full sticky right-2 left-2 bottom-2  text-white"
+          className="bg-[#009D6E] rounded-xl w-full sticky right-2 left-2 bottom-2 text-white h-12"
         >
           Далее
         </Button>

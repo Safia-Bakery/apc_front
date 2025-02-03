@@ -113,7 +113,7 @@ const QuestionsDailyTasks = () => {
         <Button
           disabled={isPending || (!answer && !files.length)}
           onClick={handleSubmit}
-          className="bg-[#009D6E] rounded-xl absolute right-2 left-2 bottom-2 text-white"
+          className="bg-[#009D6E] rounded-xl absolute right-2 left-2 bottom-2 text-white h-12"
         >
           Далее
         </Button>
