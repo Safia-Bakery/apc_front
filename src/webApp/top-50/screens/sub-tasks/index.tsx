@@ -4,6 +4,7 @@ import WebAppContainer from "@/webApp/components/WebAppContainer";
 import { Flex } from "antd";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Top50Header from "../../components/header";
+import Loading from "@/components/Loader";
 
 const Top50SubTasks = () => {
   const { id } = useParams();
@@ -11,16 +12,15 @@ const Top50SubTasks = () => {
   const navigate = useNavigate();
   const { search } = useLocation();
   const tg_id = useQueryString("tg_id");
-  const {
-    data: categoriesChild,
-    isLoading: categoriesChildLoading,
-    refetch: refetchChild,
-  } = useKruCategories({
-    page,
-    parent: Number(id),
-    tg_id: Number(tg_id),
-    enabled: !!id,
-  });
+  const { data: categoriesChild, isLoading: categoriesChildLoading } =
+    useKruCategories({
+      page,
+      parent: Number(id),
+      tg_id: Number(tg_id),
+      enabled: !!id,
+    });
+
+  if (categoriesChildLoading) return <Loading />;
 
   return (
     <>
@@ -38,11 +38,13 @@ const Top50SubTasks = () => {
               }
               key={item.id}
               vertical
-              className="bg-invBtn rounded-2xl py-2 px-3"
+              className={`bg-invBtn rounded-2xl py-2 px-3 ${
+                !item?.tasks_count ? "opacity-60" : ""
+              }`}
             >
               <div className="">{item.name}</div>
               {!item?.tasks_count && (
-                <span className="z-10 font-bold opacity-60">
+                <span className="z-10 text-sm opacity-60">
                   Задачи завершены
                 </span>
               )}
