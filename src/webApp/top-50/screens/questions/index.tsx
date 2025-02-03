@@ -1,5 +1,5 @@
 import WebAppContainer from "@/webApp/components/WebAppContainer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Top50Header from "../../components/header";
 import { kruFinishedTasks, useKruAvailableTask } from "@/hooks/kru";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,10 +14,14 @@ const Questions = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const navigateParams = useNavigateParams();
-  const page = Number(useQueryString("page")) || 0;
+  const [page, $page] = useState(0);
   const tg_id = useQueryString("tg_id");
   const { mutate, isPending } = kruFinishedTasks();
-  const { data: availabeTasks, isLoading } = useKruAvailableTask({
+  const {
+    data: availabeTasks,
+    isLoading,
+    refetch,
+  } = useKruAvailableTask({
     category_id: +id!,
     tg_id: Number(tg_id),
     enabled: !!id && !!tg_id,
@@ -42,7 +46,7 @@ const Questions = () => {
         onSuccess: () => {
           // successToast("success");
           if (page < availabeTasks?.products?.length! - 1) {
-            navigateParams({ page: page + 1 });
+            $page((prev) => prev + 1);
             $answers({});
             window.scrollTo({ top: 0, behavior: "smooth" });
           } else {
@@ -53,6 +57,10 @@ const Questions = () => {
       }
     );
   };
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   if (isLoading) return <Loading />;
 
