@@ -102,6 +102,7 @@ interface KruTool {
   id: number;
   name: string;
   status: number;
+  code: string;
   image: string;
   parentid: string;
 }

@@ -30,6 +30,7 @@ const Top50Reports = () => {
   const [branch, $branch] = useState<string>();
   const [tool_name, $tool_name] = useDebounce("");
   const [product_code, $product_code] = useState<string>();
+  const [product_name, $product_name] = useState<string>();
   const [answer, $answer] = useState<string>();
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
     firstDay,
@@ -37,17 +38,25 @@ const Top50Reports = () => {
   ]);
   const [startDate, endDate] = dateRange;
 
+  const handleSelect = (item: KruTool) => {
+    $product_code(item.code);
+    $product_name(item.name);
+  };
+
   const { mutate, isPending: downloading } = kruDownloadReports();
   const handleDownload = () => {
     mutate(
       {
         report_type: Number(report_type),
-        start_date: dayjs(startDate).format(yearMonthDate),
-        finish_date: dayjs(endDate).format(yearMonthDate),
         category_id: Number(id),
-        branch_id: branch,
-        product_code,
-        answer,
+        ...(startDate && {
+          start_date: dayjs(startDate).format(yearMonthDate),
+        }),
+        ...(endDate && { finish_date: dayjs(endDate).format(yearMonthDate) }),
+        ...(branch && { branch_id: branch }),
+        ...(product_code && { product_code }),
+        ...(product_name && { product_name }),
+        ...(answer && { answer }),
       },
       {
         onSuccess: (data) => {
@@ -99,6 +108,7 @@ const Top50Reports = () => {
               fieldNames={{ label: "name", value: "name" }}
               placeholder="Введите текст для поиска..."
               options={tool_item?.tools}
+              onSelect={(e, r) => handleSelect(r)}
               // value={selected_tools}
             />
           </BaseInput>
