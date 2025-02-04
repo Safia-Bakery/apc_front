@@ -44,7 +44,6 @@ const Questions = () => {
       },
       {
         onSuccess: () => {
-          // successToast("success");
           if (page < availabeTasks?.products?.length! - 1) {
             $page((prev) => prev + 1);
             $answers({});

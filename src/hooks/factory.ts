@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import baseApi from "@/api/base_api";
-import { Category, EPresetTimes, ServiceStatsTypes } from "@/utils/types";
+import { Category, EPresetTimes } from "@/utils/types";
 import {
   CategoryToolParams,
   DivisionRes,
@@ -12,6 +12,7 @@ import {
   FactoryRequestBody,
   FactoryRequestParams,
   FactoryRequestRes,
+  InvFactoryManagers,
   ManagerBody,
   ManagerRes,
   ToolRes,
@@ -20,8 +21,6 @@ import {
   ToolsProductsType,
   ToolsRes,
 } from "@/Types/factory";
-import { yearMonthDate } from "@/utils/keys";
-import dayjs from "dayjs";
 
 export const getApcFactoryRequest = ({
   id,
@@ -288,11 +287,6 @@ export const getInvFactoryCategoriesTools = ({
     enabled,
   });
 };
-interface StatsParams {
-  enabled?: boolean;
-  finished_at?: string;
-  started_at?: string;
-}
 
 export const apcFactoryInvMutation = () => {
   return useMutation({
@@ -304,5 +298,49 @@ export const apcFactoryInvMutation = () => {
       );
       return data;
     },
+  });
+};
+
+export const getInvFactoryManagers = ({
+  enabled,
+  ...params
+}: {
+  enabled?: boolean;
+  name?: string;
+}) => {
+  return useQuery({
+    queryKey: ["inv_factory_managers", params],
+    queryFn: ({ signal }) =>
+      baseApi
+        .get("/factory/managers", {
+          params,
+          signal,
+        })
+        .then(
+          ({ data: response }) => (response as InvFactoryManagers[]) || null
+        ),
+    enabled,
+  });
+};
+
+export const getInvFactoryManagersDivisions = ({
+  enabled,
+  ...params
+}: {
+  enabled?: boolean;
+  manager_id: number;
+}) => {
+  return useQuery({
+    queryKey: ["inv_factory_managers_divisions", params],
+    queryFn: ({ signal }) =>
+      baseApi
+        .get("/factory/managers/divisions", {
+          params,
+          signal,
+        })
+        .then(
+          ({ data: response }) => (response as InvFactoryManagers[]) || null
+        ),
+    enabled,
   });
 };

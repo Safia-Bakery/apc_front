@@ -86,6 +86,12 @@ interface InventoryReqRes {
     id: string;
     name: string;
     origin: number;
+    manager?: {
+      id: number;
+      name?: string;
+      description: string;
+      status: number;
+    };
     parentfillial: {
       name: string;
     };

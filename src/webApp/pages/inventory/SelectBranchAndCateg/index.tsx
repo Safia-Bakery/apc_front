@@ -40,7 +40,12 @@ const SelectBranchAndCateg = () => {
   return (
     <div className="overflow-hidden h-svh overflow-y-auto">
       <InvHeader title="Новая заявка" goBack />
-      <div className="bg-white my-4" onClick={() => $branchModal(true)}>
+      <div
+        className="bg-white my-4"
+        onClick={() =>
+          dep === Departments.inventory_retail && $branchModal(true)
+        }
+      >
         <WebAppContainer className="flex items-center justify-between">
           <h4
             className={cl("font-normal text-[#BEA087] text-xl", {

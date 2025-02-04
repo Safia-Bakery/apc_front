@@ -5,11 +5,15 @@ import WebAppContainer from "@/webApp/components/WebAppContainer";
 import CustomLink from "@/webApp/components/CustomLink";
 import { useEffect } from "react";
 import { TelegramApp } from "@/utils/tgHelpers";
+import { deptSelector } from "@/store/reducers/auth";
+import { useAppSelector } from "@/store/utils/types";
+import { Departments } from "@/utils/types";
 
 const InvSelectOrderType = () => {
   useEffect(() => {
     TelegramApp?.confirmClose();
   }, []);
+  const dep = useAppSelector(deptSelector);
 
   return (
     <div>
@@ -17,7 +21,11 @@ const InvSelectOrderType = () => {
 
       <WebAppContainer>
         <CustomLink
-          to={"add-order"}
+          to={
+            dep === Departments.inventory_retail
+              ? "add-order"
+              : "select-manager"
+          }
           className="flex bg-[#F9EED9] items-center rounded-2xl mb-4 px-4 py-3"
         >
           <img src={invOrderType} alt="order-icon" />

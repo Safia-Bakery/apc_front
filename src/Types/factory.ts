@@ -165,3 +165,10 @@ export interface CategoryToolParams extends BaseParams {
   category_id?: number;
   name?: string;
 }
+
+export interface InvFactoryManagers {
+  id: string | number;
+  name: string;
+  description: string;
+  status: number;
+}

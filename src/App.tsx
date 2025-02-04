@@ -86,16 +86,22 @@ const TelegramAddProduct = lazy(
 );
 const AddInventoryRequest = lazy(() => import("@/pages/AddInventoryRequest"));
 const InvSelectOrderType = lazy(
-  () => import("@/webApp/pages/InvSelectOrderType")
+  () => import("@/webApp/pages/inventory/InvSelectOrderType")
 );
 const InventoryLayout = lazy(() => import("./webApp/layouts/inventory"));
-const InvArchieve = lazy(() => import("@/webApp/pages/InvArchieve"));
+const InvArchieve = lazy(() => import("@/webApp/pages/inventory/InvArchieve"));
+const InvSelectManager = lazy(
+  () => import("@/webApp/pages/inventory/select-manager")
+);
+const InvSelectManagerBranch = lazy(
+  () => import("@/webApp/pages/inventory/select-manager-branch")
+);
 const SelectBranchAndCateg = lazy(
-  () => import("@/webApp/pages/SelectBranchAndCateg")
+  () => import("@/webApp/pages/inventory/SelectBranchAndCateg")
 );
 const ChooseTools = lazy(() => import("@/webApp/pages/ChooseTools"));
-const InvCart = lazy(() => import("@/webApp/pages/InvCart"));
-const InvSuccess = lazy(() => import("@/webApp/pages/InvSuccess"));
+const InvCart = lazy(() => import("@/webApp/pages/inventory/InvCart"));
+const InvSuccess = lazy(() => import("@/webApp/pages/inventory/InvSuccess"));
 const UnAuthorized = lazy(() => import("@/webApp/pages/UnAuthorized"));
 
 const TopTasks = lazy(() => import("@/webApp/top-50/screens/tasks"));
@@ -477,6 +483,22 @@ const App = () => {
               </Suspend>
             }
             path={"archieve"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <InvSelectManager />
+              </Suspend>
+            }
+            path={"select-manager"}
+          />
+          <Route
+            element={
+              <Suspend>
+                <InvSelectManagerBranch />
+              </Suspend>
+            }
+            path={"select-manager-branch/:id"}
           />
           <Route
             element={

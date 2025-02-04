@@ -205,6 +205,14 @@ const ShowRequestInventory = () => {
                     <th>{t("department")}</th>
                     <td>{order?.fillial?.parentfillial?.name}</td>
                   </tr>
+                  {order?.fillial?.manager?.name && (
+                    <tr>
+                      <th>{t("manager")}</th>
+                      <td>
+                        {order?.fillial?.manager?.name} ({order.fillial?.name})
+                      </td>
+                    </tr>
+                  )}
                   <tr>
                     <th>{t("file")}</th>
                     <td className="flex flex-col !border-none">
