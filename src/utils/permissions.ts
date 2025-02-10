@@ -100,6 +100,7 @@ export enum MainPermissions {
   add_categ_it = 87,
   get_categ_it = 88,
   edit_categ_it = 86,
+  get_it_cctv_requests = 172,
 
   get_client_comment = 95,
   edit_client_comment = 97,

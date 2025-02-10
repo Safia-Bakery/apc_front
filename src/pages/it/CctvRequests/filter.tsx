@@ -1,8 +1,4 @@
-import {
-  ITRequestStatusArr,
-  RatingFilterVals,
-  UrgentValsArr,
-} from "@/utils/helpers";
+import { ITRequestStatusArr, UrgentValsArr } from "@/utils/helpers";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import useDebounce from "custom/useDebounce";
 import BaseInputs from "@/components/BaseInputs";
@@ -32,7 +28,7 @@ interface Option {
   loading?: boolean;
 }
 
-const ITFilter: FC = () => {
+const CctvFilter: FC = () => {
   const navigate = useNavigateParams();
   const deleteParam = useRemoveParams();
 
@@ -240,4 +236,4 @@ const ITFilter: FC = () => {
   );
 };
 
-export default ITFilter;
+export default CctvFilter;

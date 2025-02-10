@@ -65,7 +65,7 @@ const MarketingStatCategory = lazy(
 const ServiceStatsMarketing = lazy(
   () => import("@/pages/StatsMarketing/ServiceStats")
 );
-const ServiceStatsIT = lazy(() => import("@/pages/StatsIT/ServiceStatsIT"));
+const ServiceStatsIT = lazy(() => import("@/pages/it/StatsIT/ServiceStatsIT"));
 const DepartmentStat = lazy(
   () => import("@/pages/StatsMarketing/DepartmentStat")
 );

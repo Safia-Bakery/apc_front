@@ -56,21 +56,22 @@ const CreateLogRequests = lazy(() => import("@/pages/CreateLogRequests"));
 const ShowLogRequests = lazy(() => import("@/pages/ShowLogRequests"));
 const Masters = lazy(() => import("@/pages/Masters"));
 const Logs = lazy(() => import("@/pages/LogsScreen"));
-const CategoriesIT = lazy(() => import("@/pages/CategoriesIT"));
+const CategoriesIT = lazy(() => import("@/pages/it/CategoriesIT"));
 const CategoryProducts = lazy(() => import("@/pages/CategoryProducts"));
 const EditAddCategoryProduct = lazy(
   () => import("@/pages/EditAddCategoryProduct")
 );
 const EditClient = lazy(() => import("@/pages/EditClient"));
-const CreateITRequest = lazy(() => import("@/pages/CreateITRequest"));
+const CreateITRequest = lazy(() => import("@/pages/it/CreateITRequest"));
 const CreateApcRequest = lazy(() => import("@/pages/CreateApcRequest"));
 const ShowRequestApc = lazy(() => import("@/pages/ShowRequestApc"));
-const ShowITRequest = lazy(() => import("@/pages/ShowITRequest"));
+const ShowITRequest = lazy(() => import("@/pages/it/ShowITRequest"));
 const RequestsApc = lazy(() => import("@/pages/RequestsApc"));
 const ShowMarketingRequest = lazy(() => import("@/pages/ShowMarketingRequest"));
 const RequestsMarketing = lazy(() => import("@/pages/RequestsMarketing"));
 const AddMarketingRequest = lazy(() => import("@/pages/AddMarketingRequest"));
-const RequestsIT = lazy(() => import("@/pages/RequestsIT"));
+const RequestsIT = lazy(() => import("@/pages/it/RequestsIT"));
+const RequestsITCctv = lazy(() => import("@/pages/it/CctvRequests"));
 const AddInventoryRequest = lazy(() => import("@/pages/AddInventoryRequest"));
 const RequestsInventory = lazy(() => import("@/pages/RequestsInventory"));
 const ShowRequestInventory = lazy(() => import("@/pages/ShowRequestInventory"));
@@ -115,7 +116,7 @@ const EditAddApcExpense = lazy(() => import("@/pages/EditAddApcExpense"));
 
 const BotSettings = lazy(() => import("@/pages/BotSettings"));
 const EditAddTgLink = lazy(() => import("@/pages/EditAddTgLink"));
-const ITTgLinks = lazy(() => import("@/pages/ITTgLinks"));
+const ITTgLinks = lazy(() => import("@/pages/it/ITTgLinks"));
 
 const FormRequests = lazy(() => import("@/pages/form/requests"));
 const ShowFormRequests = lazy(() => import("@/pages/form/show-request"));
@@ -129,7 +130,7 @@ const KruBranches = lazy(() => import("@/pages/kru/branches"));
 const KruReports = lazy(() => import("@/pages/kru/reports"));
 const ShowKruBranches = lazy(() => import("@/pages/kru/branches/show-branch"));
 const KruTasks = lazy(() => import("@/pages/kru/KruTasks"));
-const LogsIt = lazy(() => import("@/pages/ShowITRequest/logs"));
+const LogsIt = lazy(() => import("@/pages/it/ShowITRequest/logs"));
 
 const indexes = [0, 1, 4, 6];
 const filtered = indexes.map((i) => ITRequestStatusArr[i]);
@@ -261,6 +262,13 @@ export const sidebarRoutes: SidebarType[] = [
         icon: "/icons/subOrder.svg",
         screen: MainPermissions.get_it_requests,
         param: `?request_status=${request_status}`,
+      },
+      {
+        name: "cctv",
+        url: `/requests-cctv/${Sphere.fix}`,
+        icon: "/icons/subOrder.svg",
+        screen: MainPermissions.get_it_cctv_requests,
+        // param: `?request_status=${request_status}`,
       },
       {
         name: "it_specialists",
@@ -841,6 +849,16 @@ export const routes = [
   },
   {
     element: (
+      <ShowITRequest
+        edit={MainPermissions.edit_it_requests}
+        attaching={MainPermissions.edit_it_requests}
+      />
+    ),
+    path: "/requests-cctv/:sphere/:id",
+    screen: MainPermissions.edit_it_requests,
+  },
+  {
+    element: (
       <ShowRequestApc
         addExp={MainPermissions.request_add_expanditure}
         edit={MainPermissions.edit_request_apc}
@@ -864,6 +882,11 @@ export const routes = [
     element: <RequestsIT />,
     path: "/requests-it/:sphere",
     screen: MainPermissions.get_it_requests,
+  },
+  {
+    element: <RequestsITCctv />,
+    path: "/requests-cctv/:sphere",
+    screen: MainPermissions.get_it_cctv_requests,
   },
   {
     element: (

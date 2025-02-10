@@ -51,6 +51,34 @@ export const getITRequests = ({
   });
 };
 
+export const getCctvRequests = ({
+  enabled,
+  request_status,
+  ...params
+}: ItrequestsParams) => {
+  return useQuery({
+    queryKey: ["cctv_it_requests", params, request_status],
+    queryFn: ({ signal }) =>
+      baseApi
+        .get("/api/v2/requests/video", {
+          params: {
+            ...params,
+            ...(!!request_status &&
+              (JSON.parse(request_status) as ValueLabel[])?.length && {
+                request_status: (JSON.parse(request_status) as ValueLabel[])
+                  .map((item) => item.value)
+                  .join(","),
+              }),
+          },
+          signal,
+        })
+        .then(
+          ({ data: response }) => (response as BasePaginateRes<Order>) || null
+        ),
+    enabled,
+  });
+};
+
 export const itRequestMutation = () => {
   return useMutation({
     mutationKey: ["it_request_mutation"],
