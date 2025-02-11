@@ -36,6 +36,7 @@ const EditCategory = () => {
     sphere_status: Sphere.fix,
     category_status: 1,
     staleTime: EPresetTimes.MINUTE * 4,
+    page_name: "request_info",
   });
 
   const { mutateAsync, isPending } = loadCategoriesChild();
@@ -63,7 +64,10 @@ const EditCategory = () => {
     targetOption.loading = true;
 
     try {
-      const children = await mutateAsync(Number(targetOption.value));
+      const children = await mutateAsync({
+        page_name: "request_info",
+        parent_id: Number(targetOption.value),
+      });
       targetOption.loading = false;
       targetOption.children = children.items?.map((child) => ({
         value: child.id,

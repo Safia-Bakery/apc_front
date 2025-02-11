@@ -81,7 +81,9 @@ const CctvFilter: FC = () => {
     targetOption.loading = true;
 
     try {
-      const children = await mutateAsync(Number(targetOption.value));
+      const children = await mutateAsync({
+        parent_id: Number(targetOption.value),
+      });
       targetOption.loading = false;
       targetOption.children = children.items?.map((child) => ({
         value: child.id,

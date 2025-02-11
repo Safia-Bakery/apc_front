@@ -13,6 +13,7 @@ interface Props {
   sphere_status?: number;
   parent_id?: number;
   staleTime?: number;
+  page_name?: string;
 }
 
 export const useCategories = ({ enabled, staleTime, ...params }: Props) => {
@@ -31,9 +32,9 @@ export const useCategories = ({ enabled, staleTime, ...params }: Props) => {
 export const loadCategoriesChild = () => {
   return useMutation({
     mutationKey: ["category_child"],
-    mutationFn: async (parent_id: number) => {
+    mutationFn: async (body: { parent_id: number; page_name?: string }) => {
       const { data } = await baseApi.get("/category", {
-        params: { parent_id, status: 1 },
+        params: { ...body, status: 1 },
       });
       return data as BasePaginateRes<Category>;
     },
