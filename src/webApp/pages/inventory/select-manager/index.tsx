@@ -6,22 +6,22 @@ import InvHeader from "@/webApp/components/web-header";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import cl from "classnames";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const InvSelectManager = () => {
-  const navigate = useNavigate();
+  const { t } = useTranslation();
   const { data: managers, isLoading } = getInvFactoryManagers({});
   const [selected_manager, $selected_manager] = useState<number>();
 
   if (isLoading) return <Loading />;
   return (
     <>
-      <InvHeader title="Новая заявка" goBack sticky />
+      <InvHeader title={t("new_order")} goBack sticky />
 
       <div className="bg-white my-4">
         <WebAppContainer>
           <h3 className={"text-[#BEA087] text-xl"}>
-            Выберите своего бригадира
+            {t("select_your_master")}
           </h3>
         </WebAppContainer>
       </div>
@@ -53,7 +53,7 @@ const InvSelectManager = () => {
             disabled={!selected_manager}
             className="w-full"
           >
-            Далее
+            {t("next")}
           </InvButton>
         </CustomLink>
       </div>

@@ -12,9 +12,11 @@ import useCategory from "@/hooks/useCategory";
 import { deptSelector } from "@/store/reducers/auth";
 import { Departments } from "@/utils/types";
 import SelectCategoryToolFactory from "@/webApp/components/SelectCategoryToolFactory";
+import { useTranslation } from "react-i18next";
 
 const ChooseTools = () => {
   const { id } = useParams();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const department = useAppSelector(deptSelector);
   const selectedBranch = useAppSelector(branchSelector);
@@ -59,7 +61,7 @@ const ChooseTools = () => {
             })
           }
         >
-          Корзина ({Object.values(cart).length})
+          {t("cart")} ({Object.values(cart).length})
         </InvButton>
       </div>
     </div>

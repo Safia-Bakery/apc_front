@@ -9,6 +9,7 @@ import { BranchType, Departments } from "@/utils/types";
 import InvInput from "@/webApp/components/InvInput";
 import cl from "classnames";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   isOpen: boolean;
@@ -17,6 +18,7 @@ type Props = {
 };
 
 const BranchModal = ({ isOpen, onClose, onChange }: Props) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const selectedBranch = useAppSelector(branchSelector);
   const [branchPage, $branchPage] = useState(1);
@@ -49,10 +51,10 @@ const BranchModal = ({ isOpen, onClose, onChange }: Props) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} className="p-5 !min-w-[90%]">
-      <h4 className="text-center mt-3 mb-6">Выберите филиал</h4>
+      <h4 className="text-center mt-3 mb-6">{t("select_branch")}</h4>
 
       <InvInput
-        placeholder="Поиск филиала"
+        placeholder={t("search_branch")}
         wrapperClassName="bg-[#F6F6F6] mb-5"
         onChange={(e) => $branchSearch(e.target?.value)}
       />
@@ -88,7 +90,7 @@ const BranchModal = ({ isOpen, onClose, onChange }: Props) => {
             </li>
           ))}
 
-        {branchLoading && <span>loading...</span>}
+        {branchLoading && <span>{t("loading")}...</span>}
 
         {!branches.length && <EmptyList />}
       </ul>

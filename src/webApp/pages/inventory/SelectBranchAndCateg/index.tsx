@@ -15,8 +15,10 @@ import useCategories from "@/hooks/useCategories";
 import Loading from "@/components/Loader";
 import { deptSelector } from "@/store/reducers/auth";
 import SelectCategoryToolFactory from "@/webApp/components/SelectCategoryToolFactory";
+import { useTranslation } from "react-i18next";
 
 const SelectBranchAndCateg = () => {
+  const { t } = useTranslation();
   const selectedBranch = useAppSelector(branchSelector);
   const [branchModal, $branchModal] = useState(false);
   const cart = useAppSelector(cartSelector);
@@ -39,7 +41,7 @@ const SelectBranchAndCateg = () => {
 
   return (
     <div className="overflow-hidden h-svh overflow-y-auto">
-      <InvHeader title="Новая заявка" goBack />
+      <InvHeader title={t("new_order")} goBack />
       <div
         className="bg-white my-4"
         onClick={() =>
@@ -52,7 +54,7 @@ const SelectBranchAndCateg = () => {
               ["!font-bold"]: !selectedBranch?.id,
             })}
           >
-            {!!selectedBranch?.name ? selectedBranch.name : "Выберите филиал"}
+            {!!selectedBranch?.name ? selectedBranch.name : t("select_branch")}
           </h4>
           <div className="flex gap-3 items-center">
             {!selectedBranch?.id && <img src={warnIcon} alt="select-branch" />}
@@ -75,7 +77,7 @@ const SelectBranchAndCateg = () => {
             className="w-full"
             onClick={handleBranch}
           >
-            Подтвердить
+            {t("approve")}
           </InvButton>
         )}
 
@@ -90,7 +92,7 @@ const SelectBranchAndCateg = () => {
               })
             }
           >
-            Корзина ({cartLength})
+            {t("cart")} ({cartLength})
           </InvButton>
         )}
       </div>

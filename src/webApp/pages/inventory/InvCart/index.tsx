@@ -22,8 +22,10 @@ import { invFabricCategory } from "@/utils/keys";
 import MainDropZone from "@/components/MainDropZone";
 import { fixedString } from "@/utils/helpers";
 import InputMask from "@/components/BaseInputs/InputMask";
+import { useTranslation } from "react-i18next";
 
 const InvCart = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const selectedBranch = useAppSelector(branchSelector);
   const dep = useAppSelector(deptSelector);
@@ -43,7 +45,7 @@ const InvCart = () => {
 
   const onSubmit = () => {
     if (fixedString(phone_number || "").length < 9) {
-      errorToast("Введите правильный номер телефона");
+      errorToast(t("input_phone_number"));
     } else {
       const { comment } = getValues();
       const expenditure = Object.entries(cart).map((item) => ({
@@ -88,7 +90,7 @@ const InvCart = () => {
       className="overflow-y-auto h-svh pb-16"
     >
       {mutating && <Loading />}
-      <InvHeader title={"Корзина"} goBack />
+      <InvHeader title={t("cart")} goBack />
       <div className="bg-white h-[52px]" />
 
       <WebAppContainer className="mt-4 overflow-y-auto max-h-[50vh] h-min mb-2">
@@ -105,7 +107,7 @@ const InvCart = () => {
             className="w-full"
             disabled={!Object.values(cart).length && mutating}
           >
-            Подтвердить заказ
+            {t("approve_order")}
           </InvButton>
         </div>
       </WebAppContainer>
@@ -114,11 +116,11 @@ const InvCart = () => {
           <MainDropZone
             setData={$uploadedFiles}
             defaultFiles={uploadedFiles}
-            btnLabel="Загрузить фото"
+            btnLabel={t("upload_photo")}
           />
         )}
 
-        <BaseInput label="Номер телефона" error={errors.phone_number}>
+        <BaseInput label={t("phone_number")} error={errors.phone_number}>
           <InputMask
             className="form-control mb-2"
             mask="(999-99)-999-99-99"
@@ -131,12 +133,9 @@ const InvCart = () => {
           />
         </BaseInput>
 
-        <BaseInput
-          className="mt-4"
-          label="При желании можно оставить комментарии"
-        >
+        <BaseInput className="mt-4" label={t("leave_comment_optional")}>
           <MainTextArea
-            placeholder={"Введите"}
+            placeholder={t("comments")}
             register={register("comment")}
           />
         </BaseInput>

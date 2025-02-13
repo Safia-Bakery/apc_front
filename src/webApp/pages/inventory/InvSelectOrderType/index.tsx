@@ -3,13 +3,26 @@ import invOrderType from "/icons/invOrderType.svg";
 import arrow from "/icons/arrowBlack.svg";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import CustomLink from "@/webApp/components/CustomLink";
-import { useEffect } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { TelegramApp } from "@/utils/tgHelpers";
 import { deptSelector } from "@/store/reducers/auth";
-import { useAppSelector } from "@/store/utils/types";
+import { useAppDispatch, useAppSelector } from "@/store/utils/types";
 import { Departments } from "@/utils/types";
+import { useTranslation } from "react-i18next";
+import { changeLanguage, langSelector } from "@/store/reducers/selects";
+import { Language } from "@/utils/keys";
+import i18n from "@/localization";
 
 const InvSelectOrderType = () => {
+  const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const lang = useAppSelector(langSelector);
+
+  const handleLang = (e: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(changeLanguage(e.target.value as Language));
+    i18n.changeLanguage(e.target.value as Language);
+  };
+
   useEffect(() => {
     TelegramApp?.confirmClose();
   }, []);
@@ -17,7 +30,20 @@ const InvSelectOrderType = () => {
 
   return (
     <div>
-      <InvHeader title="Инвентарь" />
+      <InvHeader
+        title={t("inventory")}
+        rightChild={
+          <select
+            onChange={handleLang}
+            value={lang}
+            className="!bg-transparent"
+          >
+            {Object.keys(Language).map((item) => (
+              <option key={item}>{item}</option>
+            ))}
+          </select>
+        }
+      />
 
       <WebAppContainer>
         <CustomLink
@@ -32,11 +58,11 @@ const InvSelectOrderType = () => {
 
           <div className="flex flex-1 flex-col mx-2">
             <h6 className="mb-1 font-normal text-base text-left text-black">
-              Подать заявку
+              {t("create_order")}
             </h6>
 
             <p className="text-xs text-gray-400 text-left">
-              Здесь можете оформить заявку в отдел Инвентаря
+              {t("here_create_order")}
             </p>
           </div>
 
@@ -51,10 +77,12 @@ const InvSelectOrderType = () => {
           <img src={invOrderType} alt="order-icon" />
 
           <div className="flex flex-1 flex-col mx-2">
-            <h6 className="mb-1 font-normal text-base text-left">Архив</h6>
+            <h6 className="mb-1 font-normal text-base text-left">
+              {t("archieve")}
+            </h6>
 
             <p className="text-xs text-gray-400 text-left">
-              Здесь можете посмотреть за статусами всех заявок
+              {t("here_you_can_see_orders")}
             </p>
           </div>
 

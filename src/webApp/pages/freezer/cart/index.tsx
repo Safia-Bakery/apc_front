@@ -9,8 +9,10 @@ import errorToast from "@/utils/errorToast";
 import Loading from "@/components/Loader";
 import { freezerRequestMutation } from "@/hooks/freezer";
 import FreezerClientItem from "@/webApp/pages/freezer/freezer-client-item";
+import { useTranslation } from "react-i18next";
 
 const FreezerCart = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const cart = useAppSelector(cartSelector);
@@ -42,7 +44,7 @@ const FreezerCart = () => {
 
   return (
     <div className="overflow-y-auto h-svh pb-16">
-      <InvHeader goBack sticky title={"Корзина"} />
+      <InvHeader goBack sticky title={t("cart")} />
       {mutating && <Loading />}
       <div className="bg-white h-[52px]" />
 

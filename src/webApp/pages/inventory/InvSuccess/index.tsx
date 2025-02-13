@@ -2,6 +2,7 @@ import { TelegramApp } from "@/utils/tgHelpers";
 import InvButton, { InvBtnType } from "@/webApp/components/InvButton";
 import InvHeader from "@/webApp/components/web-header";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const InvSuccess = ({ freezer = false, title = "Корзина" }: Props) => {
+  const { t } = useTranslation();
   const { id } = useParams();
   return (
     <>
@@ -19,15 +21,17 @@ const InvSuccess = ({ freezer = false, title = "Корзина" }: Props) => {
       </div>
       <WebAppContainer className="h-svh flex items-center justify-center flex-col">
         <img src="/images/safia.jpg" alt="" width={170} height={75} />
-        <h3 className="text-lg text-center mt-2">Спасибо за заявку!</h3>
+        <h3 className="text-lg text-center mt-2">
+          {t("appreciate_for_order")}
+        </h3>
         <div className="flex justify-between my-8">
           <span>
-            Номер вашей заяки: <span className="font-bold">{id}</span>
+            {t("you_request_order")}: <span className="font-bold">{id}</span>
           </span>
         </div>
-        <p className="text-center ">Ваша заявка принята.</p>
+        <p className="text-center ">{t("your_request_received")}</p>
         {!freezer && (
-          <p className="text-center">Примерное время доставки: 24 ч.</p>
+          <p className="text-center">{t("approximate_delivery_time")}</p>
         )}
         <div className="flex gap-3 mt-14 w-full">
           <InvButton
@@ -35,13 +39,13 @@ const InvSuccess = ({ freezer = false, title = "Корзина" }: Props) => {
             onClick={() => TelegramApp.toMainScreen()}
             className="flex-1"
           >
-            На главную
+            {t("to_main")}
           </InvButton>
           <InvButton
             className="flex-1"
             onClick={() => TelegramApp.toMainScreen()}
           >
-            Закрыть
+            {t("to_close")}
           </InvButton>
         </div>
       </WebAppContainer>

@@ -74,8 +74,8 @@ const Breadcrumbs: FC = () => {
   const location = useLocation();
   const pathname = location.pathname;
   const dispatch = useAppDispatch();
-  const handleLogout = () => dispatch(logoutHandler());
   const lang = useAppSelector(langSelector);
+  const handleLogout = () => dispatch(logoutHandler());
 
   const { data: me } = useToken({ enabled: false });
 
@@ -105,7 +105,7 @@ const Breadcrumbs: FC = () => {
         <ul className={styles.breadcrump}>
           <button
             onClick={() => dispatch(sidebarHandler(true))}
-            className="btn btn-primary p-2   btn-round btn-icon mr-3"
+            className="btn btn-primary p-2 btn-round btn-icon mr-3"
           >
             <img
               width={22}

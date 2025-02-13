@@ -46,7 +46,7 @@ const InvArchieve = () => {
   return (
     <div className="flex flex-col">
       <InvHeader
-        title="Архив"
+        title={t("archieve")}
         goBack
         rightChild={
           <div onClick={() => startRef.current?.setOpen(true)}>
@@ -74,7 +74,7 @@ const InvArchieve = () => {
             btnType={orderStatus === 0 ? InvBtnType.primary : InvBtnType.white}
             btnSize={BtnSize.medium}
           >
-            В работе
+            {t("in_progress")}
           </InvButton>
           <InvButton
             className="flex flex-1 items-center justify-center"
@@ -82,7 +82,7 @@ const InvArchieve = () => {
             btnType={orderStatus === 1 ? InvBtnType.primary : InvBtnType.white}
             btnSize={BtnSize.medium}
           >
-            Закрытые
+            {t("closed")}
           </InvButton>
         </WebAppContainer>
       </div>
@@ -95,25 +95,27 @@ const InvArchieve = () => {
           >
             {/* card */}
             <div className="flex w-full gap-2">
-              <span className="text-tgTextGray flex flex-1">Номер заявки</span>
+              <span className="text-tgTextGray flex flex-1">
+                {t("request_number")}
+              </span>
               <span className=" text-right flex flex-1 justify-end">
                 {order?.id}
               </span>
             </div>
             <div className="flex w-full gap-2 mt-1">
-              <span className="text-tgTextGray flex flex-1">Филиал</span>
+              <span className="text-tgTextGray flex flex-1">{t("branch")}</span>
               <span className=" text-right flex flex-1 justify-end">
                 {order?.fillial?.name}
               </span>
             </div>
             <div className="flex w-full gap-2 mt-1">
-              <span className="text-tgTextGray flex flex-1">Дата</span>
+              <span className="text-tgTextGray flex flex-1">{t("date")}</span>
               <span className=" text-right flex flex-1 justify-end">
                 {dayjs(order?.created_at).format(dateTimeFormatWeb)}
               </span>
             </div>
             <div className="flex w-full gap-2 mt-1">
-              <span className="text-tgTextGray flex flex-1">Статус</span>
+              <span className="text-tgTextGray flex flex-1">{t("status")}</span>
               <span className=" text-right flex flex-1 justify-end">
                 {order?.status?.toString() && t(RequestStatus[order?.status])}
               </span>
@@ -124,7 +126,7 @@ const InvArchieve = () => {
               className="flex w-full gap-2 mt-2"
               onClick={() => $selectedItem(idx)}
             >
-              <span className="font-bold flex flex-1 ">Посмотреть заказ</span>
+              <span className="font-bold flex flex-1 ">{t("see_order")}</span>
               <span className=" text-right flex flex-1 justify-end">
                 <img
                   src={arrow}

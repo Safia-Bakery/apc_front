@@ -17,6 +17,7 @@ import { screenSize } from "@/utils/helpers";
 import FreezerItem from "@/webApp/pages/freezer/freezer-item";
 import { TelegramApp } from "@/utils/tgHelpers";
 import { getFreezerProducts } from "@/hooks/freezer";
+import { useTranslation } from "react-i18next";
 
 interface LocalFolderType {
   name: string;
@@ -32,6 +33,7 @@ const FreezerProducts = ({ freezer }: Props) => {
   const [folderStack, $folderStack] = useState<LocalFolderType[]>([]);
   const navigate = useNavigate();
   const cart = useAppSelector(cartSelector);
+  const { t } = useTranslation();
 
   const { data: searchedItems, isLoading } = getFreezerProducts({
     parent_id: folderStack?.at(-1)?.id,
@@ -170,7 +172,7 @@ const FreezerProducts = ({ freezer }: Props) => {
             className="w-full !h-11"
             onClick={() => navigate("/tg/collector/cart")}
           >
-            Корзина ({Object.values(cart).length})
+            {t("cart")} ({Object.values(cart).length})
           </InvButton>
         )}
       </div>

@@ -8,10 +8,12 @@ import InvHeader from "@/webApp/components/web-header";
 import WebAppContainer from "@/webApp/components/WebAppContainer";
 import cl from "classnames";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 const InvSelectManagerBranch = () => {
   const { id } = useParams();
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { data: divisions, isLoading } = getInvFactoryManagersDivisions({
     manager_id: Number(id),
@@ -25,11 +27,11 @@ const InvSelectManagerBranch = () => {
   if (isLoading) return <Loading />;
   return (
     <>
-      <InvHeader title="Новая заявка" goBack sticky />
+      <InvHeader title={t("new_order")} goBack sticky />
 
       <div className="bg-white my-4">
         <WebAppContainer>
-          <h3 className={"text-[#BEA087] text-xl"}>Выберите свой отдел</h3>
+          <h3 className={"text-[#BEA087] text-xl"}>{t("select_your_dep")}</h3>
         </WebAppContainer>
       </div>
 
@@ -67,7 +69,7 @@ const InvSelectManagerBranch = () => {
               )
             }
           >
-            Далее
+            {t("next")}
           </InvButton>
         </CustomLink>
       </div>
