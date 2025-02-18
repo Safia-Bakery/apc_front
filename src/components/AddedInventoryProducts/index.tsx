@@ -2,7 +2,7 @@ import Header from "../Header";
 import { useParams } from "react-router-dom";
 import useOrder from "@/hooks/useOrder";
 import updateInventoryProdMutation from "@/hooks/mutation/updateInventoryProd";
-import { Departments, RequestStatus } from "@/utils/types";
+import { BaseReturnBoolean, Departments, RequestStatus } from "@/utils/types";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 import { useTranslation } from "react-i18next";
@@ -22,6 +22,11 @@ const column = [
   { name: "photo" },
   { name: "" },
 ];
+
+const disableExpenditure: BaseReturnBoolean = {
+  [RequestStatus.new]: true,
+  [RequestStatus.closed_denied]: true,
+};
 
 const AddedInventoryProducts = () => {
   const { id, dep } = useParams();
@@ -60,13 +65,15 @@ const AddedInventoryProducts = () => {
   return (
     <>
       <Header title="products">
-        <button
-          className="btn btn-success btn-sm"
-          onClick={handleModal}
-          id={"add_expenditure"}
-        >
-          {t("add")}
-        </button>
+        {!disableExpenditure[order?.status!] && (
+          <button
+            className="btn btn-success btn-sm"
+            onClick={handleModal}
+            id={"add_expenditure"}
+          >
+            {t("add")}
+          </button>
+        )}
       </Header>
 
       <div className="content table-responsive table-full-width overflow-hidden !p-0 !min-h-min">
