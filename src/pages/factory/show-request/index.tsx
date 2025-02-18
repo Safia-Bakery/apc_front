@@ -31,6 +31,7 @@ import useCategories from "@/hooks/useCategories";
 import Suspend from "@/components/Suspend";
 import { getApcFactoryRequest } from "@/hooks/factory";
 import useBrigadas from "@/hooks/useBrigadas";
+import AddItems from "@/components/AddProduct";
 
 const ApcModals = lazy(() => import("./modals"));
 
@@ -443,11 +444,6 @@ const ShowRequestApcFabric = () => {
       </Card>
 
       {/* {renderfileUploader} */}
-
-      {/* {!isNew && order?.status !== RequestStatus.closed_denied && (
-        <AddItems addExp={addExp}>
-        </AddItems>
-      )} */}
       {renderModal}
     </>
   );

@@ -9,6 +9,9 @@ import { useTranslation } from "react-i18next";
 import { baseURL } from "@/store/baseUrl";
 import { Image } from "antd";
 import { getInvRequest } from "@/hooks/inventory";
+import { useState } from "react";
+import AddProductModal from "../AddProductModal";
+import { MainPermissions } from "@/utils/permissions";
 
 const column = [
   { name: "№" },
@@ -23,6 +26,9 @@ const column = [
 const AddedInventoryProducts = () => {
   const { id, dep } = useParams();
   const { t } = useTranslation();
+
+  const [modal, $modal] = useState(false);
+  const handleModal = () => $modal((prev) => !prev);
 
   const { mutate } = updateInventoryProdMutation();
 
@@ -53,7 +59,16 @@ const AddedInventoryProducts = () => {
 
   return (
     <>
-      <Header title="products" />
+      <Header title="products">
+        <button
+          className="btn btn-success btn-sm"
+          onClick={handleModal}
+          id={"add_expenditure"}
+        >
+          {t("add")}
+        </button>
+      </Header>
+
       <div className="content table-responsive table-full-width overflow-hidden !p-0 !min-h-min">
         <table className="table table-hover">
           <thead>
@@ -111,6 +126,12 @@ const AddedInventoryProducts = () => {
         </table>
         <hr />
       </div>
+
+      <AddProductModal
+        addExp={MainPermissions.edit_prods_inv_factory}
+        handleModal={handleModal}
+        modal={modal}
+      />
     </>
   );
 };

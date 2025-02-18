@@ -329,7 +329,6 @@ const ShowRequestInventory = () => {
             </div>
           </div>
           <hr />
-
           <AddedInventoryProducts />
           {renderBtns}
         </div>

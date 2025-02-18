@@ -21,6 +21,7 @@ import Loading from "../Loader";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "antd";
+import { getInvRequest } from "@/hooks/inventory";
 
 interface Props {
   addExp: MainPermissions;
@@ -30,9 +31,15 @@ interface Props {
 
 const AddProductModal = ({ addExp, modal, handleModal }: Props) => {
   const { t } = useTranslation();
-  const { id } = useParams();
+  const { id, dep } = useParams();
   const permissions = useAppSelector(permissionSelector);
   const { refetch: syncWithIiko, isFetching } = useSyncExpanditure({
+    enabled: false,
+  });
+
+  const { refetch: invRefetch } = getInvRequest({
+    id: Number(id),
+    department: Number(dep),
     enabled: false,
   });
 
@@ -61,6 +68,7 @@ const AddProductModal = ({ addExp, modal, handleModal }: Props) => {
           reset();
           handleModal();
           orderRefetch();
+          if (!!dep) invRefetch();
         },
         onError: (e) => errorToast(e.message),
       }
@@ -83,12 +91,13 @@ const AddProductModal = ({ addExp, modal, handleModal }: Props) => {
       open={!!modal && !!permissions?.has(addExp)}
       onCancel={handleModal}
       closable
+      footer={false}
       classNames={{ content: "!p-0" }}
     >
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <Header title={t("add_used_products")} />
         <div className={styles.block}>
-          <button
+          {/* <button
             disabled={isFetching}
             type="button"
             className="btn btn-primary float-end mr-3 z-30 relative"
@@ -101,7 +110,7 @@ const AddProductModal = ({ addExp, modal, handleModal }: Props) => {
             ) : (
               t("sync_with_iico")
             )}
-          </button>
+          </button> */}
           <div className={styles.modalBody}>
             <div className="form-group field-apcitems-product_id relative">
               {permissions?.has(addExp) && (
@@ -120,10 +129,6 @@ const AddProductModal = ({ addExp, modal, handleModal }: Props) => {
                 />
               )}
             </div>
-
-            {/* <BaseInput label="Количество">
-              <MainInput type="number" register={register("count")} />
-            </BaseInput> */}
 
             <BaseInput label="quantity">
               <div className="flex gap-4 w-full">
