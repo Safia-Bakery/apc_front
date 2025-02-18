@@ -18,7 +18,6 @@ import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 import useOrder from "@/hooks/useOrder";
 import attachBrigadaMutation from "@/hooks/mutation/attachBrigadaMutation";
-import useQueryString from "custom/useQueryString";
 import useBrigadas from "@/hooks/useBrigadas";
 import Loading from "@/components/Loader";
 import MainInput from "@/components/BaseInputs/MainInput";
@@ -40,9 +39,6 @@ interface Props {
 const ApcModals = ({ modal, handleModal }: Props) => {
   const { t } = useTranslation();
   const { id } = useParams();
-  // const modal = Number(useQueryString("modal"));
-  const photo = useQueryString("photo");
-  // const removeParams = useRemoveParams();
   const { mutate: attach, isPending: attaching } = attachBrigadaMutation();
   const { register, getValues, watch, handleSubmit } = useForm();
 
@@ -196,11 +192,7 @@ const ApcModals = ({ modal, handleModal }: Props) => {
             handleBrigada({ status: RequestStatus.solved })
           )}
         >
-          <Header title="add_expense">
-            {/* <button onClick={closeModal}>
-              <span aria-hidden="true">&times;</span>
-            </button> */}
-          </Header>
+          <Header title="add_expense" />
           <div className="p-3">
             <BaseInput label="add_expense">
               <MainInput type="number" register={register("price")} />

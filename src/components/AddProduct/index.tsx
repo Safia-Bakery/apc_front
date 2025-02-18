@@ -9,7 +9,6 @@ import useOrder from "@/hooks/useOrder";
 import syncExpenditure from "@/hooks/mutation/syncExpenditure";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
-import { useNavigateParams } from "custom/useCustomNavigate";
 import deleteExpenditureMutation from "@/hooks/mutation/deleteExpenditure";
 import { RequestStatus } from "@/utils/types";
 import { MainPermissions } from "@/utils/permissions";
@@ -37,7 +36,6 @@ const AddItems: FC<Props> = ({ children, synciiko, addExp }) => {
   const { t } = useTranslation();
   const { id } = useParams();
   const permissions = useAppSelector(permissionSelector);
-  const navigate = useNavigateParams();
   const { mutate, isPending: isLoading } = syncExpenditure();
   const { mutate: deleteExp } = deleteExpenditureMutation();
   const [modal, $modal] = useState(false);

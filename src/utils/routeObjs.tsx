@@ -268,7 +268,7 @@ export const sidebarRoutes: SidebarType[] = [
         url: `/requests-cctv/${Sphere.fix}`,
         icon: "/icons/subOrder.svg",
         screen: MainPermissions.get_it_cctv_requests,
-        // param: `?request_status=${request_status}`,
+        param: `?request_status=${request_status}`,
       },
       {
         name: "it_specialists",
