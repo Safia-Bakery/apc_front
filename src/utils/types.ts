@@ -707,8 +707,17 @@ export interface InvServiceStatType {
   avg_finishing: number;
 }
 
-export interface InvServiceStatTypes {
+export interface InvRetailServiceStatTypes {
   [key: string]: InvServiceStatType;
+}
+
+export interface InvFactoryServiceStatTypes {
+  service_level: { [key: string]: InvServiceStatType };
+  service_efficiency: {
+    avg_processing_time: number;
+    category: string;
+    total_requests: number;
+  }[];
 }
 
 export interface ItServiceStatType {

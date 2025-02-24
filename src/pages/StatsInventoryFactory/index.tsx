@@ -1,11 +1,11 @@
-import { Fragment, useEffect, useMemo, useRef } from "react";
-import { useDownloadExcel } from "react-export-table-to-excel";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import EmptyList from "@/components/EmptyList";
 import useUpdateQueryStr from "custom/useUpdateQueryStr";
 import cl from "classnames";
-import { useInventoryServiseStats } from "@/hooks/useInventoryServiseStats";
+import { useInvServiseStatsFactory } from "@/hooks/useInventoryServiseStats";
 import Loading from "@/components/Loader";
 import { useTranslation } from "react-i18next";
+import SelectModal from "./SelectModal";
 
 const column = [
   { name: "department" },
@@ -17,34 +17,19 @@ const column = [
   { name: "avg_handling_time_mins" },
 ];
 
-interface Props {
-  factory?: boolean;
-}
-
-const InventoryServiceStats = ({ factory }: Props) => {
+const StatsInventoryFactory = () => {
   const { t } = useTranslation();
   const start = useUpdateQueryStr("start");
   const end = useUpdateQueryStr("end");
 
-  const tableRef = useRef(null);
-  const btnAction = document.getElementById("export_to_excell");
-
-  const { onDownload } = useDownloadExcel({
-    currentTableRef: tableRef.current,
-    filename: t("servise_level_stats"),
-    sheet: t("service_level"),
-  });
-
-  const downloadAsPdf = () => onDownload();
-
-  const { isLoading, data } = useInventoryServiseStats({
+  const { isLoading, data } = useInvServiseStatsFactory({
     ...(!!start && { started_at: start }),
     ...(!!end && { finished_at: end }),
-    factory,
   });
+
   const renderAvgCalculator = useMemo(() => {
-    if (!!data) {
-      const mainObj = Object.values(data);
+    if (!!data?.service_level) {
+      const mainObj = Object.values(data.service_level);
       const totals = mainObj.reduce(
         (acc, curr) => {
           acc.total_req += curr.total_tools;
@@ -88,19 +73,12 @@ const InventoryServiceStats = ({ factory }: Props) => {
         avg_finishing: (totals.avg_finishing / mainObj.length).toFixed(2),
       };
     }
-  }, [data]);
-
-  useEffect(() => {
-    if (btnAction)
-      btnAction.addEventListener("click", () => {
-        document.getElementById("service_stat")?.click();
-      });
-  }, [btnAction]);
+  }, [data?.service_level]);
 
   return (
     <>
-      <table className="table table-bordered w-full border-dark" ref={tableRef}>
-        {!!data ? (
+      <table className="table table-bordered w-full border-dark">
+        {!!data?.service_level ? (
           <>
             <thead>
               <tr className="hover:bg-transparent">
@@ -117,10 +95,10 @@ const InventoryServiceStats = ({ factory }: Props) => {
             </thead>
             <tbody>
               <tr className="hover:bg-transparent">
-                <td rowSpan={Object.values(data!).length}>
-                  {factory ? t("inventory_fabric") : t("inventory_retail")}
+                <td rowSpan={Object.values(data?.service_level!).length}>
+                  {t("inventory_fabric")}
                 </td>
-                {[Object.entries(data!)?.[0]]?.map((item) => (
+                {[Object.entries(data?.service_level!)?.[0]]?.map((item) => (
                   <Fragment key={item?.[0]}>
                     <td>{item?.[0]}</td>
                     <td>{item?.[1]?.total_tools}</td>
@@ -147,7 +125,7 @@ const InventoryServiceStats = ({ factory }: Props) => {
                 ))}
               </tr>
 
-              {Object.entries(data!)
+              {Object.entries(data?.service_level!)
                 ?.splice(1)
                 ?.map((item) => (
                   <tr key={item?.[0]} className="hover:bg-transparent">
@@ -211,13 +189,36 @@ const InventoryServiceStats = ({ factory }: Props) => {
           </tbody>
         )}
       </table>
+      <br />
+      <h3>Эффективность обслуживания</h3>
+      {!!data?.service_efficiency?.length && (
+        <table className="table table-bordered w-full border-dark">
+          <thead>
+            <tr>
+              <th>№</th>
+              <th>Категория</th>
+              <th>Количество поступивших заявок</th>
+              <th>Среднее время обработки 1 заявки (часы)</th>
+            </tr>
+          </thead>
 
-      {!Object.keys(data || {}) && !isLoading && <EmptyList />}
-      <button id={"service_stat"} className="hidden" onClick={downloadAsPdf}>
-        download
-      </button>
+          <tbody>
+            {data?.service_efficiency?.map((item, idx) => (
+              <tr key={idx}>
+                <td>{idx + 1}</td>
+                <td>{item.category}</td>
+                <td>{item.total_requests}</td>
+                <td>{item.avg_processing_time}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      {!Object.keys(data?.service_level || {}) && !isLoading && <EmptyList />}
+      <SelectModal />
     </>
   );
 };
 
-export default InventoryServiceStats;
+export default StatsInventoryFactory;

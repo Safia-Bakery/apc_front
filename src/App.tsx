@@ -77,7 +77,10 @@ const BrigadaCategStat = lazy(
 );
 const BrigadaStat = lazy(() => import("@/pages/StatsApc/BrigadaStat"));
 const InventoryServiceStats = lazy(
-  () => import("@/pages/StatsInventory/ServiceStats")
+  () => import("@/pages/StatsInventoryRetail/ServiceStats")
+);
+const StatsInventoryFactory = lazy(
+  () => import("@/pages/StatsInventoryFactory")
 );
 const ServiceStatsApc = lazy(() => import("@/pages/StatsApc/ServiceStats"));
 
@@ -418,7 +421,7 @@ const App = () => {
               path="service_level"
               element={
                 <Suspend>
-                  <InventoryServiceStats factory />
+                  <StatsInventoryFactory />
                 </Suspend>
               }
             />
