@@ -16,6 +16,7 @@ import AddCategory from "./addCategory";
 import MainDropZone from "@/components/MainDropZone";
 import Loading from "@/components/Loader";
 import { useToolsRetail } from "@/hooks/useToolsIerarch";
+import { useInvTools } from "@/hooks/useInvTools";
 
 const SelectDates = [
   { id: 24, name: "one_day" },
@@ -30,6 +31,12 @@ const EditInventoryProd = () => {
   const goBack = () =>
     navigate(`/products-ierarch${state.search ? state.search : ""}`, { state });
   const [uploadedImg, $uploadedImg] = useState<string[]>([]);
+
+  const { refetch: toolsRefetch } = useInvTools({
+    ...(!!state?.page && { page: +state?.page }),
+    ...(!!state?.category_id && { category_id: +state?.category_id }),
+    enabled: false,
+  });
 
   const { data, refetch, isLoading } = useTools({ id });
   const { isLoading: toolsFetching, refetch: toolsrefetch } = useToolsRetail({
@@ -65,8 +72,15 @@ const EditInventoryProd = () => {
       {
         onSuccess: async () => {
           refetch();
-          await toolsrefetch();
-          goBack();
+
+          if (state?.category_id) {
+            toolsRefetch();
+            navigate(-1);
+          }
+          if (!state?.category_id) {
+            await toolsrefetch();
+            goBack();
+          }
           successToast("successfully updated");
           $uploadedImg([]);
         },

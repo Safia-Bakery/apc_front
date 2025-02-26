@@ -40,7 +40,8 @@ const EditAddInvCategory = () => {
 
   const goBack = () => navigate(-1);
   const permission = useAppSelector(permissionSelector);
-  const handleNavigate = (route: string) => () => navigate(route);
+  const handleNavigate = (route: string) => () =>
+    navigate(route, { state: { page, category_id: id } });
 
   const {
     data: category,
