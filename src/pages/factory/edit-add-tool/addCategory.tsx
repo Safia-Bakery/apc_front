@@ -22,7 +22,7 @@ const AddCategory = () => {
     data: tool,
     refetch,
     isLoading: toolLoading,
-  } = getInvFactoryTool({ id: Number(id) });
+  } = getInvFactoryTool({ id: Number(id), enabled: false });
 
   const handleSubmit = (e: ChangeEvent<HTMLSelectElement>) => {
     mutate(

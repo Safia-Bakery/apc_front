@@ -2,7 +2,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import successToast from "@/utils/successToast";
 import errorToast from "@/utils/errorToast";
 import BaseInputs from "@/components/BaseInputs";
@@ -12,8 +12,8 @@ import AddCategory from "./addCategory";
 import MainDropZone from "@/components/MainDropZone";
 import {
   factoryToolMutation,
+  getInvFactoryCategoriesTools,
   getInvFactoryTool,
-  getInvFactoryTools,
 } from "@/hooks/factory";
 import Loading from "@/components/Loader";
 import MainInput from "@/components/BaseInputs/MainInput";
@@ -24,10 +24,7 @@ const EditInventoryFactoryProd = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const goBack = () =>
-    navigate(`/products-ierarch-factory${state?.search ? state.search : ""}`, {
-      state,
-    });
+  const goBack = () => navigate(-1);
   const [uploadedImg, $uploadedImg] = useState<string[]>([]);
 
   const {
@@ -37,8 +34,9 @@ const EditInventoryFactoryProd = () => {
   } = getInvFactoryTool({ id: Number(id) });
 
   const { isLoading: toolsFetching, refetch: toolsrefetch } =
-    getInvFactoryTools({
-      ...(!!state?.parent_id && { parent_id: state?.parent_id }),
+    getInvFactoryCategoriesTools({
+      ...(!!state?.parent_id && { category_id: Number(state?.parent_id) }),
+      ...(!!state?.page && { page: Number(state?.page) }),
       enabled: false,
     });
 
@@ -59,7 +57,7 @@ const EditInventoryFactoryProd = () => {
       },
       {
         onSuccess: async () => {
-          refetch();
+          await refetch();
           await toolsrefetch();
           goBack();
           successToast("successfully updated");
@@ -78,6 +76,10 @@ const EditInventoryFactoryProd = () => {
     });
   }, [tool]);
 
+  const renderCategs = useMemo(() => {
+    return <AddCategory />;
+  }, []);
+
   if (isPending || isLoading || toolsFetching) return <Loading />;
 
   return (
@@ -89,7 +91,7 @@ const EditInventoryFactoryProd = () => {
       </Header>
 
       <form className="content" onSubmit={handleSubmit(onSubmit)}>
-        <AddCategory />
+        {renderCategs}
         <BaseInputs label="status">
           <MainCheckBox label={"active"} register={register("status")} />
         </BaseInputs>

@@ -37,7 +37,8 @@ const EditAddInvFabricCategory = () => {
 
   const goBack = () => navigate(-1);
   const permission = useAppSelector(permissionSelector);
-  const handleNavigate = (route: string) => () => navigate(route);
+  const handleNavigate = (route: string) => () =>
+    navigate(route, { state: { parent_id: id, page } });
 
   const {
     data: category,

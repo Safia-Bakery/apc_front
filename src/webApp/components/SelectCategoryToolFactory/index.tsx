@@ -33,6 +33,7 @@ const SelectCategoryToolFactory = () => {
     ...(toolsSearch && !!selectedBranch?.id && { name: toolsSearch }),
     ...(page && { page: +page }),
     ...(id && !!selectedBranch?.id && { category_id: +id }),
+    status: 1,
     enabled: !!selectedBranch?.id && (!!toolsSearch || !!id),
   });
 
@@ -40,7 +41,6 @@ const SelectCategoryToolFactory = () => {
     <WebAppContainer className="h-full overflow-y-auto">
       <InvInput
         disabled={!selectedBranch?.id}
-        // disabled={!data?.items?.length}
         placeholder="Поиск товаров"
         wrapperClassName="bg-white mb-5"
         onChange={(e) => $toolsSearch(e.target?.value)}
