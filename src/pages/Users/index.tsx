@@ -61,7 +61,6 @@ const Users: FC<Props> = ({ add, edit }) => {
       {
         title: t("login"),
         dataIndex: "username",
-        render: (_, record) => record?.full_name,
       },
       {
         title: t("role"),

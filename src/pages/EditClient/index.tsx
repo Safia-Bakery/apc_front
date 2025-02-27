@@ -25,6 +25,7 @@ const EditClient = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
   const { data: roles } = useRoles({});
+  const [phone_number, $phone_number] = useState<string>("");
   const { refetch: usersRefetch } = useUsers({
     enabled: false,
     page: 1,
@@ -68,6 +69,7 @@ const EditClient = () => {
   useEffect(() => {
     if (id && user) {
       $sphere_status(user.sphere_status === Sphere.fabric);
+      $phone_number(user.phone_number);
       reset({
         full_name: user.full_name,
         group_id: user.group?.id,
@@ -103,11 +105,13 @@ const EditClient = () => {
               <InputMask
                 className="form-control mb-2"
                 mask="(999-99)-999-99-99"
-                disabled
                 defaultValue={"998"}
-                {...register("phone_number", {
-                  required: "required",
-                })}
+                value={phone_number}
+                onChange={(e) => $phone_number(e.target.value)}
+                // {...register("phone_number", {
+                //   required: "Обязательное поле",
+                //   min: 9,
+                // })}
               />
             </BaseInputs>
 

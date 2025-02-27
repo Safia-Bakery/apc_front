@@ -24,13 +24,13 @@ import InputMask from "@/components/BaseInputs/InputMask";
 const EditAddUser = () => {
   const { t } = useTranslation();
   const { id } = useParams();
-  const ref = useRef<any>(null);
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
 
   const { data: roles } = useRoles({});
   const { data: user, refetch: userRefetch } = useUser({ id: Number(id) });
   const [sphere_status, $sphere_status] = useState<boolean>();
+  const [phone_number, $phone_number] = useState<string>("");
   const client = useQueryString("client");
 
   const { mutate } = userMutation();
@@ -39,7 +39,6 @@ const EditAddUser = () => {
     const {
       username,
       password,
-      phone_number,
       full_name,
       email,
       group_id,
@@ -47,32 +46,36 @@ const EditAddUser = () => {
       brigada_id,
       status,
     } = getValues();
-
-    mutate(
-      {
-        full_name,
-        username,
-        group_id,
-        password,
-        status: !status ? 2 : 0,
-        sphere_status: sphere_status ? Sphere.fabric : Sphere.retail,
-        ...(fixedString(phone_number).length > 5 && {
-          phone_number: fixedString(phone_number),
-        }),
-        ...(!!email && { email }),
-        ...(brigada_id && { brigada_id }),
-        ...(!!telegram_id && { telegram_id }),
-        ...(!!id && { user_id: Number(id) }),
-      },
-      {
-        onSuccess: () => {
-          navigate(!client ? "/users" : "/clients");
-          successToast(!!id ? "successfully updated" : "successfully created");
-          if (!!id) userRefetch();
+    if (fixedString(phone_number || "").length < 9) {
+      errorToast(t("input_phone_number"));
+    } else
+      mutate(
+        {
+          full_name,
+          username,
+          group_id,
+          password,
+          status: !status ? 2 : 0,
+          sphere_status: sphere_status ? Sphere.fabric : Sphere.retail,
+          ...(fixedString(phone_number).length > 7 && {
+            phone_number: fixedString(phone_number),
+          }),
+          ...(!!email && { email }),
+          ...(brigada_id && { brigada_id }),
+          ...(!!telegram_id && { telegram_id }),
+          ...(!!id && { user_id: Number(id) }),
         },
-        onError: (e) => errorToast(e.message),
-      }
-    );
+        {
+          onSuccess: () => {
+            navigate(!client ? "/users" : "/clients");
+            successToast(
+              !!id ? "successfully updated" : "successfully created"
+            );
+            if (!!id) userRefetch();
+          },
+          onError: (e) => errorToast(e.message),
+        }
+      );
   };
   const {
     register,
@@ -85,6 +88,7 @@ const EditAddUser = () => {
   useEffect(() => {
     if (id && user) {
       $sphere_status(user.sphere_status === Sphere.fabric);
+      $phone_number(user.phone_number);
       reset({
         full_name: user.full_name,
         username: user.username,
@@ -129,9 +133,12 @@ const EditAddUser = () => {
                 className="form-control mb-2"
                 mask="(999-99)-999-99-99"
                 defaultValue={"998"}
-                {...register("phone_number", {
-                  required: "required",
-                })}
+                value={phone_number}
+                onChange={(e) => $phone_number(e.target.value)}
+                // {...register("phone_number", {
+                //   required: "Обязательное поле",
+                //   min: 9,
+                // })}
               />
             </BaseInputs>
 
