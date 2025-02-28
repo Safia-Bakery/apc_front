@@ -61,7 +61,7 @@ interface FormParams extends BaseParams {
   id?: number;
   fillial_id?: string;
   created_at?: string;
-  status?: number;
+  status?: string;
 }
 
 interface FormBody {

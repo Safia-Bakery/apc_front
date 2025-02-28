@@ -24,7 +24,8 @@ const FormRequests = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const currentPage = Number(useQueryString("page")) || 1;
-  const request_status = Number(useQueryString("request_status"));
+  const request_status = useQueryString("request_status");
+  const status = Number(useQueryString("request_status"));
   const created_at = useQueryString("created_at");
   const user = useQueryString("user");
   const id = Number(useQueryString("id"));
@@ -119,7 +120,7 @@ const FormRequests = () => {
         <div className="flex">
           <DownloadExcell<string>
             callbackUrl="/v1/excell/uniforms"
-            status={request_status}
+            status={Number(request_status)}
             onSuccess={(data) => useBackExcel(data)}
           />
 

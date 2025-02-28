@@ -1,4 +1,3 @@
-import { RequestStatusArr } from "@/utils/helpers";
 import { ChangeEvent, useEffect, useState } from "react";
 import useDebounce from "custom/useDebounce";
 import BaseInputs from "@/components/BaseInputs";
@@ -11,16 +10,19 @@ import dayjs from "dayjs";
 import { useNavigateParams, useRemoveParams } from "custom/useCustomNavigate";
 import { useForm } from "react-hook-form";
 import useUpdateEffect from "custom/useUpdateEffect";
-import StatusFilter from "@/components/StatusFilter";
+import { Select } from "antd";
+import { RequestStatus } from "@/utils/types";
+
+export const RequestStatusArr = [
+  { value: RequestStatus.new, label: "Новый" },
+  { value: RequestStatus.received, label: "Принят" },
+  { value: RequestStatus.finished, label: "Закончен" },
+  { value: RequestStatus.closed_denied, label: "Отклонен" },
+];
 
 const FormFilter = () => {
   const navigate = useNavigateParams();
   const deleteParam = useRemoveParams();
-
-  // const { data: categories, refetch: catRefetch } = useCategories({
-  //   department: Departments.form,
-  //   enabled: false,
-  // });
 
   const { register, reset } = useForm();
   const [id, $id] = useDebounce<string>("");
@@ -35,6 +37,8 @@ const FormFilter = () => {
   };
 
   const handleID = (e: ChangeEvent<HTMLInputElement>) => $id(e.target.value);
+
+  const handleStatus = (e: any) => navigate({ request_status: e });
 
   useUpdateEffect(() => {
     navigate({ id });
@@ -91,16 +95,6 @@ const FormFilter = () => {
         </BaseInput>
       </td>
 
-      {/* <td className="!p-0">
-        <BaseInput className="!m-1">
-          <MainInput
-            register={register("userName")}
-            className="!mb-0"
-            onChange={handleName}
-          />
-        </BaseInput>
-      </td> */}
-
       <td className="!p-0">
         <BaseInput className="!m-1">
           <MainInput register={register("comment")} className="!mb-0" />
@@ -108,7 +102,14 @@ const FormFilter = () => {
       </td>
       <td className="!p-0">
         <BaseInputs className="!m-1">
-          <StatusFilter options={RequestStatusArr} />
+          <Select
+            className="w-full h-[38px]"
+            allowClear
+            options={RequestStatusArr}
+            placeholder={""}
+            onClear={() => deleteParam(["request_status"])}
+            onSelect={handleStatus}
+          />
         </BaseInputs>
       </td>
     </>
