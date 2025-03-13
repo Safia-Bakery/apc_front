@@ -264,10 +264,7 @@ const ShowRequestApcFabric = () => {
         <div className="content">
           <div className="row ">
             <div className="col-md-6">
-              <table
-                id="w0"
-                className="table table-striped table-bordered detail-view"
-              >
+              <table className="table table-striped table-bordered detail-view">
                 <tbody>
                   <tr>
                     <th className="w-1/3">{t("client")}</th>

@@ -11,9 +11,7 @@ import errorToast from "@/utils/errorToast";
 import useOrder from "@/hooks/useOrder";
 import { permissionSelector } from "reducers/sidebar";
 import { useAppSelector } from "@/store/utils/types";
-import { Departments } from "@/utils/types";
 import { MainPermissions } from "@/utils/permissions";
-import useSyncExpanditure from "@/hooks/sync/useSyncExpanditure";
 import BaseInputs from "../BaseInputs";
 import { SelectWrapper } from "../InputWrappers";
 import cl from "classnames";
@@ -33,9 +31,6 @@ const AddProductModal = ({ addExp, modal, handleModal }: Props) => {
   const { t } = useTranslation();
   const { id, dep } = useParams();
   const permissions = useAppSelector(permissionSelector);
-  const { refetch: syncWithIiko, isFetching } = useSyncExpanditure({
-    enabled: false,
-  });
 
   const { refetch: invRefetch } = getInvRequest({
     id: Number(id),
@@ -97,20 +92,6 @@ const AddProductModal = ({ addExp, modal, handleModal }: Props) => {
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <Header title={t("add_used_products")} />
         <div className={styles.block}>
-          {/* <button
-            disabled={isFetching}
-            type="button"
-            className="btn btn-primary float-end mr-3 z-30 relative"
-            onClick={() => syncWithIiko()}
-          >
-            {isFetching ? (
-              <div className="w-6 ">
-                <Loading is_static />
-              </div>
-            ) : (
-              t("sync_with_iico")
-            )}
-          </button> */}
           <div className={styles.modalBody}>
             <div className="form-group field-apcitems-product_id relative">
               {permissions?.has(addExp) && (
@@ -120,7 +101,7 @@ const AddProductModal = ({ addExp, modal, handleModal }: Props) => {
                   render={({ field }) => (
                     <BaseInputs className="!mb-0 mt-4" label="select_product">
                       <SelectWrapper
-                        department={Departments.APC}
+                        // department={dep ? +dep : Departments.APC}
                         field={field}
                         register={register("product")}
                       />

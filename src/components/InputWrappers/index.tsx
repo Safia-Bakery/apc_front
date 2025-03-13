@@ -11,7 +11,7 @@ export const SelectWrapper = forwardRef<
     type?: string;
     register?: any;
     error?: any;
-    department: Departments;
+    department?: Departments;
     paginate?: boolean;
   }
 >(({ field, register, error, department, paginate }, ref) => {
