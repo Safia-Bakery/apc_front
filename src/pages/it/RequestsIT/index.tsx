@@ -92,6 +92,12 @@ const RequestsIT = () => {
         render: (_, record) => record?.category?.name,
       },
       {
+        title: t("execution_time"),
+        ...(isMobile && { width: 160 }),
+        dataIndex: "category",
+        render: (_, record) => `${record?.category?.ftime} ${t("hours")}`,
+      },
+      {
         title: t("urgent"),
         dataIndex: "urgent",
         ...(isMobile && { width: 160 }),

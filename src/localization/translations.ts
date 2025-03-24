@@ -294,7 +294,7 @@ const localization = {
       price: "Цена",
       summ: "Сумма",
       stats_cunsumption: "статистика по расходам",
-      hours: "часов",
+      hours: "час(-ов)",
       total_avg: "Общее / Среднее(%)",
       servise_level_stats: "статистика по уровнем сервиса",
       service_level: "уровень сервиса",

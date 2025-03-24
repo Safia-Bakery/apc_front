@@ -185,6 +185,11 @@ const CctvFilter: FC = () => {
       </td>
       <td className="!p-0">
         <BaseInputs className="!m-1">
+          <MainInput className="!mb-0" />
+        </BaseInputs>
+      </td>
+      <td className="!p-0">
+        <BaseInputs className="!m-1">
           <MainSelect
             values={UrgentValsArr}
             value={urgent?.toString()}
