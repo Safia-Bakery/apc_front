@@ -40,6 +40,7 @@ const RequestsCctv = () => {
   const branch = branchJson && JSON.parse(branchJson);
   const started_at = useQueryString("started_at");
   const finished_at = useQueryString("finished_at");
+  const ftime = useQueryString("ftime");
   const service_filter = useQueryString("service_filter");
   const permission = useAppSelector(permissionSelector);
 
@@ -160,6 +161,7 @@ const RequestsCctv = () => {
     ...(!!branch?.id && { fillial_id: branch?.id }),
     ...(!!request_status && { request_status }),
     ...(!!user && { user }),
+    ...(!!ftime && { ftime }),
     ...(!!responsible && { brigada_id: responsible }),
     ...(!!is_expired?.toString() && { is_expired: !!Number(is_expired) }),
     ...(!!finished_at && { finished_at }),

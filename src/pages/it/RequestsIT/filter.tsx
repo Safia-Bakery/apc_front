@@ -1,4 +1,4 @@
-import { ITRequestStatusArr, UrgentValsArr } from "@/utils/helpers";
+import { FtimeVals, ITRequestStatusArr, UrgentValsArr } from "@/utils/helpers";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import useDebounce from "custom/useDebounce";
 import BaseInputs from "@/components/BaseInputs";
@@ -48,6 +48,7 @@ const RequestsIT: FC = () => {
   const idQ = useQueryString("id");
   const is_expired = useQueryString("is_expired");
   const urgent = useQueryString("urgent");
+  const ftime = useQueryString("ftime");
 
   const [options, setOptions] = useState<Option[]>([]);
   const paused = useQueryString("paused");
@@ -179,7 +180,12 @@ const RequestsIT: FC = () => {
       </td>
       <td className="!p-0">
         <BaseInputs className="!m-1">
-          <MainInput className="!mb-0" />
+          <MainSelect
+            value={ftime?.toString()}
+            values={FtimeVals}
+            onChange={(e) => navigate({ ftime: e.target.value })}
+            className="!mb-0"
+          />
         </BaseInputs>
       </td>
       <td className="!p-0">

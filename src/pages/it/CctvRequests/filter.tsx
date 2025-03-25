@@ -1,4 +1,4 @@
-import { ITRequestStatusArr, UrgentValsArr } from "@/utils/helpers";
+import { FtimeVals, ITRequestStatusArr, UrgentValsArr } from "@/utils/helpers";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import useDebounce from "custom/useDebounce";
 import BaseInputs from "@/components/BaseInputs";
@@ -47,7 +47,7 @@ const CctvFilter: FC = () => {
   const [id, $id] = useDebounce<string>("");
   const [enabled, $enabled] = useState(false);
   const [user, $user] = useDebounce<string>("");
-  const category_id = Number(useQueryString("category_id"));
+  const ftime = useQueryString("ftime");
   const created_at = useQueryString("created_at");
   const responsible = Number(useQueryString("responsible"));
   const userQ = useQueryString("user");
@@ -185,7 +185,12 @@ const CctvFilter: FC = () => {
       </td>
       <td className="!p-0">
         <BaseInputs className="!m-1">
-          <MainInput className="!mb-0" />
+          <MainSelect
+            value={ftime?.toString()}
+            values={FtimeVals}
+            onChange={(e) => navigate({ ftime: e.target.value })}
+            className="!mb-0"
+          />
         </BaseInputs>
       </td>
       <td className="!p-0">

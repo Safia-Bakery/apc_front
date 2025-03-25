@@ -41,6 +41,7 @@ const RequestsIT = () => {
   const started_at = useQueryString("started_at");
   const finished_at = useQueryString("finished_at");
   const service_filter = useQueryString("service_filter");
+  const ftime = useQueryString("ftime");
   const permission = useAppSelector(permissionSelector);
 
   const columns = useMemo<ColumnsType<Order>>(
@@ -160,6 +161,7 @@ const RequestsIT = () => {
     ...(!!branch?.id && { fillial_id: branch?.id }),
     ...(!!request_status && { request_status }),
     ...(!!user && { user }),
+    ...(!!ftime && { ftime }),
     ...(!!responsible && { brigada_id: responsible }),
     ...(!!is_expired?.toString() && { is_expired: !!Number(is_expired) }),
     ...(!!finished_at && { finished_at }),

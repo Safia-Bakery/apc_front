@@ -91,6 +91,16 @@ export const ITRequestStatusArr = [
   { value: RequestStatus.closed_denied, label: "Закрыт, отменен" },
 ];
 
+export const FtimeVals = [
+  { id: 1, name: "1 час(-ов)" },
+  { id: 8, name: "8 час(-ов)" },
+  { id: 10, name: "10 час(-ов)" },
+  { id: 24, name: "24 час(-ов)" },
+  { id: 48, name: "48 час(-ов)" },
+  { id: 72, name: "72 час(-ов)" },
+  { id: 96, name: "96 час(-ов)" },
+];
+
 export const UrgentValsArr = [
   { id: 0, name: "no" },
   { id: 1, name: "yes" },
