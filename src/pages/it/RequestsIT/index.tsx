@@ -99,25 +99,6 @@ const RequestsIT = () => {
         render: (_, record) => `${record?.category?.ftime} ${t("hours")}`,
       },
       {
-        title: t("urgent"),
-        dataIndex: "urgent",
-        ...(isMobile && { width: 160 }),
-        render: (_, record) =>
-          !!record?.category?.urgent ? t("yes") : t("no"),
-      },
-      {
-        title: t("reopened"),
-        dataIndex: "update_time",
-        ...(isMobile && { width: 100 }),
-        render: (_, record) =>
-          !!(
-            record?.update_time?.[RequestStatus.paused] ||
-            record?.update_time?.[RequestStatus.resumed]
-          )
-            ? t("yes")
-            : t("no"),
-      },
-      {
         title: t("comment_table"),
         ...(isMobile && { width: 160 }),
         dataIndex: "description",
@@ -141,6 +122,15 @@ const RequestsIT = () => {
         ...(isMobile && { width: 160 }),
         render: (_, record) => dayjs(record?.created_at).format(dateTimeFormat),
       },
+      {
+        title: t("date_of_solving"),
+        dataIndex: "finished_at",
+        ...(isMobile && { width: 160 }),
+        render: (_, record) =>
+          record?.finished_at
+            ? dayjs(record?.finished_at).format(dateTimeFormat)
+            : "-----------",
+      },
     ],
     [search]
   );
@@ -158,13 +148,15 @@ const RequestsIT = () => {
     ...(!!created_at && {
       created_at: dayjs(created_at).format(yearMonthDate),
     }),
+    ...(!!finished_at && {
+      finished_at: dayjs(finished_at).format(yearMonthDate),
+    }),
     ...(!!branch?.id && { fillial_id: branch?.id }),
     ...(!!request_status && { request_status }),
     ...(!!user && { user }),
     ...(!!ftime && { ftime }),
     ...(!!responsible && { brigada_id: responsible }),
     ...(!!is_expired?.toString() && { is_expired: !!Number(is_expired) }),
-    ...(!!finished_at && { finished_at }),
     ...(!!started_at && { started_at }),
     ...(!!urgent?.toString() && { urgent: !!Number(urgent) }),
     ...(!!paused?.toString() && { paused: !!Number(paused) }),

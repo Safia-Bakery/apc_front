@@ -43,6 +43,7 @@ const RequestsIT: FC = () => {
   const [user, $user] = useDebounce<string>("");
   const category_id = Number(useQueryString("category_id"));
   const created_at = useQueryString("created_at");
+  const finished_at = useQueryString("finished_at");
   const responsible = Number(useQueryString("responsible"));
   const userQ = useQueryString("user");
   const idQ = useQueryString("id");
@@ -105,6 +106,10 @@ const RequestsIT: FC = () => {
   const startRange = (start: Date | null) => {
     if (start === undefined) deleteParam(["created_at"]);
     if (!!start) navigate({ created_at: start.toISOString() });
+  };
+  const finishedRange = (start: Date | null) => {
+    if (start === undefined) deleteParam(["finished_at"]);
+    if (!!start) navigate({ finished_at: start.toISOString() });
   };
   const handleName = (e: ChangeEvent<HTMLInputElement>) =>
     $user(e.target.value);
@@ -188,24 +193,6 @@ const RequestsIT: FC = () => {
           />
         </BaseInputs>
       </td>
-      <td className="!p-0">
-        <BaseInputs className="!m-1">
-          <MainSelect
-            values={UrgentValsArr}
-            value={urgent?.toString()}
-            onChange={(e) => navigate({ urgent: e.target.value })}
-          />
-        </BaseInputs>
-      </td>
-      <td className="!p-0">
-        <BaseInputs className="!m-1">
-          <MainSelect
-            values={UrgentValsArr}
-            value={paused?.toString()}
-            onChange={(e) => navigate({ paused: e.target.value })}
-          />
-        </BaseInputs>
-      </td>
 
       <td className="!p-0">
         <BaseInput className="!m-1">
@@ -235,6 +222,18 @@ const RequestsIT: FC = () => {
               : undefined
           }
           onChange={startRange}
+          dateFormat="d.MM.yyyy"
+          wrapperClassName={"m-1"}
+        />
+      </td>
+      <td className="!p-0">
+        <MainDatePicker
+          selected={
+            !!finished_at && finished_at !== "undefined"
+              ? dayjs(finished_at).toDate()
+              : undefined
+          }
+          onChange={finishedRange}
           dateFormat="d.MM.yyyy"
           wrapperClassName={"m-1"}
         />
