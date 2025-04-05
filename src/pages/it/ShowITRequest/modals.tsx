@@ -33,6 +33,7 @@ import { MainPermissions } from "@/utils/permissions";
 import { useAppSelector } from "@/store/utils/types";
 import { permissionSelector } from "@/store/reducers/sidebar";
 import { getItrequest, itRequestMutation } from "@/hooks/it";
+import MainCheckBox from "@/components/BaseInputs/MainCheckBox";
 
 const ITModals = () => {
   const { t } = useTranslation();
@@ -67,11 +68,13 @@ const ITModals = () => {
 
   const { mutate: msgMutation, isPending: msgLoading } = orderMsgMutation();
   const handleMessage = () => {
-    const { left_comment, uploaded_photo } = getValues();
+    const { left_comment, uploaded_photo, send_to_client } = getValues();
+
     msgMutation(
       {
         request_id: Number(id),
         message: left_comment,
+        send_to_client,
         photo: uploaded_photo[0],
       },
       {
@@ -336,6 +339,12 @@ const ITModals = () => {
             </BaseInput>
             <BaseInput label="upload_photo">
               <MainInput type="file" register={register("uploaded_photo")} />
+            </BaseInput>
+            <BaseInput>
+              <MainCheckBox
+                label={"Отправить клиенту"}
+                register={register("send_to_client")}
+              />
             </BaseInput>
             <button className="btn btn-success w-full" onClick={handleMessage}>
               {t("apply")}
