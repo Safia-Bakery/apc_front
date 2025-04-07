@@ -37,6 +37,7 @@ const FactoryRequests = () => {
   const user = useQueryString("user");
   const branchJson = useQueryString("branch");
   const branch = branchJson && JSON.parse(branchJson);
+  const request_ids = useQueryString("request_ids");
   const permission = useAppSelector(permissionSelector);
 
   const columns = useMemo<ColumnsType<FactoryRequestRes>>(
@@ -117,6 +118,7 @@ const FactoryRequests = () => {
     ...(!!status && { status }),
     ...(!!responsible && { brigada_id: responsible }),
     ...(!!category_id && { category_id }),
+    ...(!!request_ids && { request_ids }),
     ...(!!created_at && {
       created_at: dayjs(created_at).format(yearMonthDate),
     }),

@@ -12,6 +12,9 @@ import Loading from "@/components/Loader";
 import { Link } from "react-router-dom";
 import { yearMonthDate } from "@/utils/keys";
 import dayjs from "dayjs";
+import { ExportOutlined } from "@ant-design/icons";
+import useQueryString from "@/hooks/custom/useQueryString";
+import { Flex } from "antd";
 
 const column = [
   { name: "№" },
@@ -32,6 +35,7 @@ const ServiceStatsApc = ({ sphere }: Props) => {
   const { t } = useTranslation();
   const start = useUpdateQueryStr("start");
   const end = useUpdateQueryStr("end");
+  const request_ids = useQueryString("request_ids");
 
   const tableRef = useRef(null);
   const btnAction = document.getElementById("export_to_excell");
@@ -125,19 +129,62 @@ const ServiceStatsApc = ({ sphere }: Props) => {
                     {mainKey[1][0]?.finished_on_time}
                   </td>
                   <td className="text-center !bg-tableSuccess">
-                    {fixedN(mainKey[1][0]?.percentage_finished_on_time)}%
+                    <Flex justify="space-between" align="center">
+                      <p className="flex flex-1 text-center justify-center">
+                        {fixedN(mainKey[1][0]?.percentage_finished_on_time)}%
+                      </p>
+                      {!!mainKey[1][0]?.finished_on_time_requests?.length && (
+                        <Link
+                          to={`/requests-apc-fabric?request_ids=${mainKey[1][0]?.finished_on_time_requests.join(
+                            ","
+                          )}`}
+                        >
+                          <ExportOutlined />
+                        </Link>
+                      )}
+                    </Flex>
                   </td>
                   <td className="text-center !bg-tableWarn">
                     {mainKey[1][0]?.not_finished_on_time}
                   </td>
                   <td className="text-center !bg-tableWarn">
-                    {fixedN(mainKey[1][0]?.percentage_not_finished_on_time)}%
+                    <Flex justify="space-between" align="center">
+                      <p className="flex flex-1 text-center justify-center">
+                        {fixedN(mainKey[1][0]?.percentage_not_finished_on_time)}
+                        %
+                      </p>
+
+                      {!!mainKey[1][0]?.not_finished_on_time_requests
+                        ?.length && (
+                        <Link
+                          to={`/requests-apc-fabric?request_ids=${mainKey[1][0]?.not_finished_on_time_requests.join(
+                            ","
+                          )}`}
+                        >
+                          <ExportOutlined />
+                        </Link>
+                      )}
+                    </Flex>
                   </td>
                   <td className="text-center !bg-tableDanger">
                     {mainKey[1][0]?.status_zero}
                   </td>
                   <td className="text-center !bg-tableDanger">
-                    {fixedN(mainKey[1][0]?.percentage_status_zero)}%
+                    <Flex justify="space-between" align="center">
+                      <p className="flex flex-1 text-center justify-center">
+                        {fixedN(mainKey[1][0]?.percentage_status_zero)}%
+                      </p>
+
+                      {!!mainKey[1][0]?.status_zero_requests?.length && (
+                        <Link
+                          to={`/requests-apc-fabric?request_ids=${mainKey[1][0]?.status_zero_requests.join(
+                            ","
+                          )}`}
+                        >
+                          <ExportOutlined />
+                        </Link>
+                      )}
+                    </Flex>
                   </td>
                   <td className="text-center">
                     {mainKey[1][0]?.avg_finishing}
@@ -158,10 +205,21 @@ const ServiceStatsApc = ({ sphere }: Props) => {
                         <td className="text-center">{item.total_requests}</td>
 
                         <td className="text-center !bg-tableSuccess">
+                          {/* <Flex justify="space-between" align="center"> */}
                           {item.finished_on_time}
+
+                          {/* <ExportOutlined /> */}
+
+                          {/* </Flex> */}
                         </td>
                         <td className="text-center !bg-tableSuccess">
+                          {/* <Link
+                            to={`/requests-apc-fabric?request_ids=${item.finished_on_time_requests.join(
+                              ","
+                            )}`}
+                          > */}
                           {fixedN(item.percentage_finished_on_time)}%
+                          {/* </Link> */}
                         </td>
 
                         <td className="text-center !bg-tableWarn">

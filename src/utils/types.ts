@@ -683,6 +683,9 @@ export interface ServiceStatsType {
   total_requests: number;
   finished_on_time: number;
   not_finished_on_time: number;
+  finished_on_time_requests: number[];
+  not_finished_on_time_requests: number[];
+  status_zero_requests: number[];
   status_zero: number;
   percentage_finished_on_time: number;
   percentage_not_finished_on_time: number;
