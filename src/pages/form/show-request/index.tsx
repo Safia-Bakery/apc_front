@@ -20,6 +20,7 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 import MainInput from "@/components/BaseInputs/MainInput";
 import warnToast from "@/utils/warnToast";
 import errorToast from "@/utils/errorToast";
+import { convertCyrillicToLatin } from "@/utils/letter-converter";
 
 const ShowFormRequests = () => {
   const { t } = useTranslation();
@@ -198,12 +199,9 @@ const ShowFormRequests = () => {
       "^LL640\r\n" + // 70 mm × 8 dots/mm = 560 dots (label length)
       "^LH0,0\r\n" + // label‑home
       "^FWR\r\n" + // rotate every field 90° clockwise (vertical)
-      //           x , y   (x across 35 mm, y down 70 mm)
-      "^FO180,20^A0R,40,40^FDGayratbek Akhmedov^FS\r\n" +
-      "^FO150,20^A0R,40,40^FDSafia Sayram.^FS\r\n" +
-      "^FO80,20^A0R,32,32^FDCap 1x^FS\r\n" +
-      "^FO50,20^A0R,32,32^FDTrausers 2x^FS\r\n" +
-      "^FO20,20^A0R,32,32^FDHijab 3x^FS\r\n" +
+      `^FO245,40^A0R,40,40^FD${convertCyrillicToLatin(order?.user?.full_name||"")}^FS\r\n` +
+      `^FO210,40^A0R,40,40^FD${convertCyrillicToLatin(order?.fillial?.parentfillial?.name||"")}^FS\r\n` +
+      `${order?.request_orpr?.map((prod, idx) => `^FO${200-((idx+1)*25)},40^A0R,32,32^FD${convertCyrillicToLatin(prod.orpr_product?.prod_cat?.name||"")} ${(prod.amount)}x^FS\r\n` ).join('')}`+
       "^XZ\r\n";
 
     /* 2️⃣ Pick the GoDEX device and send --------------------------------- */
