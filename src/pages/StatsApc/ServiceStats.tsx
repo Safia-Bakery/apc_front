@@ -60,6 +60,33 @@ const ServiceStatsApc = ({ sphere }: Props) => {
     }&finished_at=${!end ? dayjs().format(yearMonthDate) : end}`;
   }, [data, end, start]);
 
+  const renderTotal = useMemo(() => {
+    let total_requests = 0;
+    let finished_on_time = 0;
+    let not_finished_on_time = 0;
+    let status_zero = 0;
+    // Iterate over each key in the object
+    for (const key in data) {
+      // Check if the key has an array with items
+      if (Array.isArray(data[key]) && data[key].length > 0) {
+        // Iterate over the array of objects
+        data[key].forEach((item) => {
+          // Sum up the total_requests values
+          total_requests += item.total_requests;
+          finished_on_time += item.finished_on_time;
+          not_finished_on_time += item.not_finished_on_time;
+          status_zero += item.status_zero;
+        });
+      }
+    }
+    return {
+      total_requests,
+      finished_on_time,
+      status_zero,
+      not_finished_on_time,
+    };
+  }, [data]);
+
   const calculator = (idx: any, key: keyof ServiceStatsType) => {
     const sumWithInitial = data?.[idx]?.reduce(
       (accumulator, currentValue) => accumulator + +currentValue[key],
@@ -205,21 +232,10 @@ const ServiceStatsApc = ({ sphere }: Props) => {
                         <td className="text-center">{item.total_requests}</td>
 
                         <td className="text-center !bg-tableSuccess">
-                          {/* <Flex justify="space-between" align="center"> */}
                           {item.finished_on_time}
-
-                          {/* <ExportOutlined /> */}
-
-                          {/* </Flex> */}
                         </td>
                         <td className="text-center !bg-tableSuccess">
-                          {/* <Link
-                            to={`/requests-apc-fabric?request_ids=${item.finished_on_time_requests.join(
-                              ","
-                            )}`}
-                          > */}
                           {fixedN(item.percentage_finished_on_time)}%
-                          {/* </Link> */}
                         </td>
 
                         <td className="text-center !bg-tableWarn">
@@ -288,6 +304,19 @@ const ServiceStatsApc = ({ sphere }: Props) => {
                 </tr>
               </Fragment>
             ))}
+          <tr className="text-center">
+            <th colSpan={3} className="text-center">
+              Общий:
+            </th>
+            <td>{renderTotal.total_requests}</td>
+            <td>{renderTotal.finished_on_time}</td>
+            <td></td>
+            <td>{renderTotal.not_finished_on_time}</td>
+            <td></td>
+            <td>{renderTotal.status_zero}</td>
+            <td></td>
+            <td></td>
+          </tr>
         </tbody>
       </table>
       {isLoading && <Loading />}
