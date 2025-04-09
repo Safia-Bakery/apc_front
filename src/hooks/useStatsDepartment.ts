@@ -56,7 +56,7 @@ export const useStatsDepartment = ({
           return response as DepartmentStatTypes[];
         }),
     staleTime: EPresetTimes.MINUTE * 10,
-    enabled: enabled && permmission?.has(MainPermissions.stats_apc_fabric),
+    enabled,
   });
 };
 export default useStatsDepartment;

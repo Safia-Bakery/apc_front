@@ -54,7 +54,7 @@ export const useStatsBrigadaCateg = ({
           return response as BrigadaCategStatTypes;
         }),
     staleTime: EPresetTimes.MINUTE * 10,
-    enabled: enabled && permmission?.has(MainPermissions.stats_apc_fabric),
+    enabled,
   });
 };
 export default useStatsBrigadaCateg;

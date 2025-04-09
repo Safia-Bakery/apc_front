@@ -46,7 +46,7 @@ export const useStatsBrigada = ({
         .then(({ data: response }) => {
           return response as DepartmentStatTypes[];
         }),
-    enabled: enabled && permmission?.has(MainPermissions.stats_apc_fabric),
+    enabled,
   });
 };
 export default useStatsBrigada;
