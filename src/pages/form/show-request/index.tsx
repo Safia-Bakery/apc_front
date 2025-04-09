@@ -94,10 +94,10 @@ const ShowFormRequests = () => {
   const renderBtns = useMemo(() => {
     if (isNew)
       return (
-        <div className="float-end mb-2">
+        <>
           <button
             onClick={handleModal(ModalTypes.cancelRequest)}
-            className="btn btn-danger mr-2"
+            className="btn btn-danger"
           >
             {t("deny")}
           </button>
@@ -108,20 +108,18 @@ const ShowFormRequests = () => {
           >
             {t("receive")}
           </button>
-        </div>
+        </>
       );
     else
       return (
-        <div className="float-end mb-2">
-          {order?.status! < RequestStatus.finished && (
-            <button
-              onClick={() => handleRequest({ status: RequestStatus.finished })}
-              className="btn btn-success"
-            >
-              {t("finish")}
-            </button>
-          )}
-        </div>
+        order?.status! < RequestStatus.finished && (
+          <button
+            onClick={() => handleRequest({ status: RequestStatus.finished })}
+            className="btn btn-success"
+          >
+            {t("finish")}
+          </button>
+        )
       );
   }, [order?.status]);
 
@@ -190,6 +188,47 @@ const ShowFormRequests = () => {
     $order_prods((prev) =>
       prev.map((item) => (item.id === id ? { ...item, ...changed } : item))
     );
+  };
+
+  const handlePrint = async () => {
+    /* 1️⃣ ZPL payload ---------------------------------------------------- */
+    const zpl =
+      "^XA\r\n" +
+      "^PW280\r\n" + // 35 mm × 8 dots/mm = 280 dots (label width)
+      "^LL640\r\n" + // 70 mm × 8 dots/mm = 560 dots (label length)
+      "^LH0,0\r\n" + // label‑home
+      "^FWR\r\n" + // rotate every field 90° clockwise (vertical)
+      //           x , y   (x across 35 mm, y down 70 mm)
+      "^FO180,20^A0R,40,40^FDGayratbek Akhmedov^FS\r\n" +
+      "^FO150,20^A0R,40,40^FDSafia Sayram.^FS\r\n" +
+      "^FO80,20^A0R,32,32^FDCap 1x^FS\r\n" +
+      "^FO50,20^A0R,32,32^FDTrausers 2x^FS\r\n" +
+      "^FO20,20^A0R,32,32^FDHijab 3x^FS\r\n" +
+      "^XZ\r\n";
+
+    /* 2️⃣ Pick the GoDEX device and send --------------------------------- */
+    try {
+      //@ts-ignore
+      const device = await navigator.usb.requestDevice({
+        filters: [{ vendorId: 0x195f }], // GoDEX International VID
+      });
+
+      await device.open();
+      if (device.configuration === null) await device.selectConfiguration(1);
+      await device.claimInterface(0);
+
+      const outEp =
+        device.configuration.interfaces[0].alternates[0].endpoints.find(
+          (e: any) => e.direction === "out"
+        ).endpointNumber;
+
+      await device.transferOut(outEp, new TextEncoder().encode(zpl));
+      await device.close();
+
+      console.log("✅ ZPL label sent – check the printer!");
+    } catch (error) {
+      console.error("Failed to print label:", error);
+    }
   };
 
   const handleCheckAll = () => {
@@ -371,7 +410,12 @@ const ShowFormRequests = () => {
             </div>
           </div>
           <hr />
-          {renderBtns}
+          <div className="float-end mb-2 gap-2 flex">
+            <button onClick={handlePrint} className="btn btn-primary">
+              {t("print")}
+            </button>
+            {renderBtns}
+          </div>
         </div>
       </Card>
       {renderModals}

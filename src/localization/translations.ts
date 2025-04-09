@@ -466,6 +466,8 @@ const localization = {
       search_branch: "Поиск филиала",
       loading: "загрузка",
       approve: "Подтвердить",
+
+      print: "Распечатать",
     },
   },
   uz: {
@@ -933,6 +935,7 @@ const localization = {
       search_branch: "Filialni qidirish",
       loading: "Yuklanmoqda",
       approve: "Tasdiqlash",
+      print: "Printerdan chiqarish",
     },
   },
 };
