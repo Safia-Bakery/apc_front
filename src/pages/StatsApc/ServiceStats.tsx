@@ -304,19 +304,39 @@ const ServiceStatsApc = ({ sphere }: Props) => {
                 </tr>
               </Fragment>
             ))}
-          <tr className="text-center">
-            <th colSpan={3} className="text-center">
-              Общий:
-            </th>
-            <td>{renderTotal.total_requests}</td>
-            <td>{renderTotal.finished_on_time}</td>
-            <td></td>
-            <td>{renderTotal.not_finished_on_time}</td>
-            <td></td>
-            <td>{renderTotal.status_zero}</td>
-            <td></td>
-            <td></td>
-          </tr>
+          {!!renderTotal.total_requests && (
+            <tr className="text-center">
+              <th colSpan={3} className="text-center">
+                Общий:
+              </th>
+              <td>{renderTotal.total_requests}</td>
+              <td>{renderTotal.finished_on_time}</td>
+              <td>
+                {(
+                  (renderTotal.finished_on_time * 100) /
+                  renderTotal.total_requests
+                ).toFixed(2)}
+                %
+              </td>
+              <td>{renderTotal.not_finished_on_time}</td>
+              <td>
+                {(
+                  (renderTotal.not_finished_on_time * 100) /
+                  renderTotal.total_requests
+                ).toFixed(2)}
+                %
+              </td>
+              <td>{renderTotal.status_zero}</td>
+              <td>
+                {(
+                  (renderTotal.status_zero * 100) /
+                  renderTotal.total_requests
+                ).toFixed(2)}
+                %
+              </td>
+              <td></td>
+            </tr>
+          )}
         </tbody>
       </table>
       {isLoading && <Loading />}
