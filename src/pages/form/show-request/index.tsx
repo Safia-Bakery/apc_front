@@ -201,7 +201,7 @@ const ShowFormRequests = () => {
       "^FWR\r\n" + // rotate every field 90° clockwise (vertical)
       `^FO245,40^A0R,40,40^FD${convertCyrillicToLatin(order?.user?.full_name||"")}^FS\r\n` +
       `^FO210,40^A0R,40,40^FD${convertCyrillicToLatin(order?.fillial?.parentfillial?.name||"")}^FS\r\n` +
-      `${order?.request_orpr?.map((prod, idx) => `^FO${200-((idx+1)*25)},40^A0R,32,32^FD${convertCyrillicToLatin(prod.orpr_product?.prod_cat?.name||"")} ${(prod.amount)}x^FS\r\n` ).join('')}`+
+      `${order?.request_orpr?.map((prod, idx) => `^FO${180-((idx+1)*25)},40^AAR,32,32^FD${convertCyrillicToLatin(prod.orpr_product?.prod_cat?.name||"")} ${(prod.amount)}x^FS\r\n` ).join('')}`+
       "^XZ\r\n";
 
     /* 2️⃣ Pick the GoDEX device and send --------------------------------- */
